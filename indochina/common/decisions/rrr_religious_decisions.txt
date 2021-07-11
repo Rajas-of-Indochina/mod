@@ -1,0 +1,140 @@
+﻿
+select_personal_deity_khurmazta_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+
+	desc = select_personal_deity_hinduism_decision_desc
+	selection_tooltip = select_personal_deity_hinduism_decision_tooltip
+
+	is_shown = {
+		religion = religion:zoroastrianism_religion
+		faith = {
+			has_doctrine_parameter = select_personal_god_active
+		}
+	}
+
+	is_valid = {
+	}
+
+	is_valid_showing_failures_only = {
+		# Have to at _least_ not be in piety debt.
+		piety >= 0
+	}
+
+	cooldown = { years = 2 }
+
+	effect = {
+		custom_tooltip = select_personal_deity_hinduism_decision_tt
+		trigger_event = religious_decision.0103
+	}
+
+	ai_check_interval = 96
+
+	ai_potential = {
+		piety >= minor_piety_value
+		#NOR = {
+		#	has_character_modifier = bhakti_khurmazta_zravan # Brahma
+		#	has_character_modifier = bhakti_khurmazta_adbad # Indra
+		#	has_character_modifier = bhakti_khurmazta_weshparkar # Shiva
+		#}
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+
+adopt_vegetarianism_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+
+	desc = adopt_vegetarianism_decision_desc
+	selection_tooltip = adopt_vegetarianism_decision_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		OR = {
+			religion = religion:hinduism_religion
+			faith = {
+				has_doctrine_parameter = pacifist_opinion_active
+			}
+		}
+		NOT = { has_character_modifier = vegetarianism_modifier }
+	}
+
+	effect = {
+		add_character_modifier = {
+			modifier = vegetarianism_modifier
+		}
+
+		stress_impact = {
+			gluttonous = medium_stress_impact_gain
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	ai_check_interval = 120
+
+	ai_potential = {
+		# AI considers taking if their income exceeds their expenses * 1.4 (decision will reduce it by 20%).
+		monthly_character_income > monthly_character_expenses_plus_fourty_percent
+	}
+
+	ai_will_do = {
+		base = 0
+
+		# If ai_zeal is 20 points higher than ai_greed, becomes 100% chance.
+		ai_value_modifier = {
+			ai_zeal = 5
+			ai_greed = -5
+		}
+	}
+}
+
+renounce_vegetarianism_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+
+	desc = renounce_vegetarianism_decision_desc
+	selection_tooltip = renounce_vegetarianism_decision_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		OR = {
+			religion = religion:hinduism_religion
+			faith = {
+				has_doctrine_parameter = pacifist_opinion_active
+			}
+		}
+		has_character_modifier = vegetarianism_modifier
+	}
+
+	effect = {
+		add_piety = medium_piety_loss
+		remove_character_modifier = vegetarianism_modifier
+
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			temperate = minor_stress_impact_gain
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	ai_check_interval = 60
+
+	ai_potential = {
+		# AI will consider if we're spending more money than we're making, and their treasury is low.
+		monthly_character_expenses > monthly_character_income
+		short_term_gold < minor_gold_value
+		long_term_gold < minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 0
+
+		# If ai_rationality + ai_greed exceeds ai_zeal by 20 points or more, becomes 100% chance.
+		ai_value_modifier = {
+			ai_rationality = 5
+			ai_zeal = -5
+			ai_greed = 5
+		}
+	}
+}
