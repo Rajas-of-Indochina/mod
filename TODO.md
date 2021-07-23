@@ -4,9 +4,11 @@ Feel free to add suggestions
 ## Nusantara
 - Bandanesia
 - West Papua
+- Organize Sumatera
 - Nicknames for Javanese rulers based on their capital county before ascension		
 - Implement holy sites		
-- MMJM Hot spring event + others		
+- MMJM Hot spring event + others
+- MMJM Unit models
 - War refugees		
 - Syncretization of two faiths
 
@@ -14,6 +16,8 @@ Feel free to add suggestions
 - Headhunting religious tenet
 - Adventurers, claimants, pirates		
 - Expanded trade routes		
+- Organize Thailand/Laos
+- Thai migration events/CB
 - Trade route events, such as random courtiers spawning		
 - Volcanos?		
 - Binukot for Filipino cultures		
@@ -27,6 +31,9 @@ Feel free to add suggestions
 ## The Hundred Yue
 - Southern China and Taiwan
 - Interactions with the Dragon Throne
+
+## Jambudvipa
+- Improvements to vanilla India and Tibet
 
 ## The Austronesian Expansion (Get it?)
 - Oceania
