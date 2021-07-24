@@ -16,6 +16,7 @@ Feel free to add suggestions
 
 ## Shine And Polish
 - Reduce probability of AI converting culture
+- Religious/cultural minority in a county
 - 1066 and 1260? start dates
 - Nicknames for Javanese rulers based on their capital county before ascension
 - Regnal names
@@ -70,3 +71,8 @@ Feel free to add suggestions
 
 ## Oriental Rajas
 - Integration with Orient Empires
+
+## The White Man Cometh
+- ~1500 (1512?) start date? Maybe? Possibly?
+- Colonization mechanics
+- End date of 1700
