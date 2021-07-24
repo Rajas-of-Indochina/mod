@@ -5,8 +5,6 @@ Feel free to add suggestions
 - Bandanesia
 - West Papua
 - Organize Sumatera
-- Nicknames for Javanese rulers based on their capital county before ascension
-- Regnal names
 - Andamanese cultures
 - Implement holy sites
 - Headhunting religious tenet
@@ -17,7 +15,12 @@ Feel free to add suggestions
 - Unite Nusantara decision
 
 ## Shine And Polish
+- Reduce probability of AI converting culture
 - 1066 and 1260? start dates
+- Nicknames for Javanese rulers based on their capital county before ascension
+- Regnal names
+- Post-death names for Vietnamese
+- Teknonyms, father-son linked names for Nuosu
 - Adventurers, claimants, pirates
 - War refugees
 - Spawn Random Courtier decision
