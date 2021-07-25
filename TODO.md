@@ -6,6 +6,7 @@ Feel free to add suggestions
 - West Papua
 - Organize Sumatera
 - Andamanese cultures
+- Carve inscription decision (like raise Runestone)
 - Implement holy sites
 - Headhunting religious tenet
 - Some representation of the clan systems for certain cultures (e.g. Batak)
@@ -18,6 +19,7 @@ Feel free to add suggestions
 - Reduce probability of AI converting culture
 - Religious/cultural minority in a county
 - 1066 and 1260? start dates
+- Rice terraces innovation for certain mountainous cultures, like Ifugao and Hani
 - Nicknames for Javanese rulers based on their capital county before ascension
 - Regnal names
 - Post-death names for Vietnamese
@@ -50,12 +52,16 @@ Feel free to add suggestions
 - Clan contracts
 - Convert between church/city/castle holdings
 
+## Submods
+- Lifestyles (Raiding, Tribute, Organized Crime, Arts Patronage, Occultism)
+
 ## Inspiration (Mods with mechanics that are probably worth implementing)
 - Degrees of Consanguinity https://steamcommunity.com/sharedfiles/filedetails/?id=2547475648
 - Add Holy Sites https://steamcommunity.com/sharedfiles/filedetails/?id=2549007625
 - Scaling Diplomatic Range https://steamcommunity.com/sharedfiles/filedetails/?id=2554712801
 - Better Battles https://steamcommunity.com/sharedfiles/filedetails/?id=2551503055
 - More Holding Graphics https://steamcommunity.com/sharedfiles/filedetails/?id=2262523658
+- Mercantile Dynasty Legacy from https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub
 
 ## The Hundred Yue
 - Southern China and Taiwan
