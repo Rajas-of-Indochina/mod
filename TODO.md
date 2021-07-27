@@ -7,6 +7,7 @@ Feel free to add suggestions
 - Organize Sumatera
 - Andamanese cultures
 - Carve inscription decision (like raise Runestone)
+- Cockfighting event
 - Implement holy sites
 - Headhunting religious tenet
 - Some representation of the clan systems for certain cultures (e.g. Batak)
@@ -54,6 +55,10 @@ Feel free to add suggestions
 
 ## Submods
 - Lifestyles (Raiding, Tribute, Organized Crime, Arts Patronage, Occultism)
+- R3 - ROI Religious Revamp
+    Right to Rule (Government Type) faith doctrine
+    Send Missionaries decision
+    6 or more Holy Sites per faith
 
 ## Inspiration (Mods with mechanics that are probably worth implementing)
 - Degrees of Consanguinity https://steamcommunity.com/sharedfiles/filedetails/?id=2547475648
@@ -62,6 +67,12 @@ Feel free to add suggestions
 - Better Battles https://steamcommunity.com/sharedfiles/filedetails/?id=2551503055
 - More Holding Graphics https://steamcommunity.com/sharedfiles/filedetails/?id=2262523658
 - Mercantile Dynasty Legacy from https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub
+- Ports on rivers https://steamcommunity.com/sharedfiles/filedetails/?id=2228417684
+- Map Modes GUI https://steamcommunity.com/sharedfiles/filedetails/?id=2552708382
+- Submission to Authority https://steamcommunity.com/sharedfiles/filedetails/?id=2451533084
+- Flexible Holding Types or Convert Holdings
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2236798591
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2229092265
 
 ## The Hundred Yue
 - Southern China and Taiwan
@@ -69,6 +80,7 @@ Feel free to add suggestions
 
 ## Jambudvipa
 - Improvements to vanilla India and Tibet
+- Caste system
 
 ## The Austronesian Expansion (Get it?)
 - Oceania
