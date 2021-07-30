@@ -91,6 +91,6 @@ Feel free to add suggestions
 - Integration with Orient Empires
 
 ## The White Man Cometh
-- ~1500 (1512?) start date? Maybe? Possibly?
+- 1492 start date? Maybe? Possibly?
 - Colonization mechanics
-- End date of 1700
+- End date of ~1700
