@@ -17,13 +17,16 @@ Feel free to add suggestions
 - Unite Nusantara decision
 
 ## Shine And Polish
-- Reduce probability of AI converting culture
+- For feudal (namely Khmer and Java) should have a coronation ceremony with selection of a regnal name and burial of the previous ruler
+- Children of concubines should be disinherited by default, but may be granted inheritance later
+- Children of second wives should be lower in inheiritance priority
+
 - Religious/cultural minority in a county
 - 1066 and 1260? start dates
 - Rice terraces innovation for certain mountainous cultures, like Ifugao and Hani
 - Nicknames for Javanese rulers based on their capital county before ascension
 - Regnal names
-- Post-death names for Vietnamese
+- Post-death names (for Khmer, Vietnamese, others)
 - Teknonyms, father-son linked names for Nuosu
 - Adventurers, claimants, pirates
 - War refugees
@@ -73,6 +76,7 @@ Feel free to add suggestions
 - Flexible Holding Types or Convert Holdings
     https://steamcommunity.com/sharedfiles/filedetails/?id=2236798591
     https://steamcommunity.com/sharedfiles/filedetails/?id=2229092265
+- Women's Rights  https://forum.paradoxplaza.com/forum/threads/women-in-ck3.1280459/
 
 ## The Hundred Yue
 - Southern China and Taiwan
