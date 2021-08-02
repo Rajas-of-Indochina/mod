@@ -963,6 +963,9 @@ found_witch_coven_decision_effects = {
 convert_whole_realm_to_feudalism_effect = {
 	#TOOLTIP INFO
 	#PLAYER EFFECTS
+
+	custom_tooltip = all_holding_will_change
+
 	##Liege has clan? Convert to clan!
 	if = {
 		limit = {
@@ -970,6 +973,7 @@ convert_whole_realm_to_feudalism_effect = {
 			liege = { has_government = clan_government }
 		}
 		change_government = clan_government
+		custom_tooltip = clan_liege_vassals_will_convert
 	}
 	##Liege has feudal? Convert to feudal!
 	else_if = {
@@ -978,57 +982,28 @@ convert_whole_realm_to_feudalism_effect = {
 			liege = { has_government = feudal_government }
 		}
 		change_government = feudal_government
-	}
-
-	else_if = {
-		limit = {
-			is_independent_ruler = yes
-			OR = {
-				religion_tag = christianity_religion
-				religion_tag = hinduism_religion
-			}
-		}
-		change_government = feudal_government
-	}
-
-	##You're an independent anything else? Convert to Clan!
-	else = { change_government = clan_government }
-	##General
-	custom_tooltip = all_holding_will_change
-	##Liege has clan? Convert to clan!
-	if = {
-		limit = {
-			is_independent_ruler = no
-			liege = { has_government = clan_government }
-		}
-		custom_tooltip = clan_liege_vassals_will_convert
-	}
-	#Liege has feudal? Convert to feudal!
-	if = {
-		limit = {
-			is_independent_ruler = no
-			liege = { has_government = feudal_government }
-		}
 		custom_tooltip = feudal_liege_vassals_will_convert
 	}
-	## If I am Hindu or Christian, we will become feudal.
-	if = {
+
+	## Convert to feudalism if faith has Divine Right to Rule doctrine
+	else_if = {
 		limit = {
 			is_independent_ruler = yes
-			faith = {
-				OR = {
-					religion_tag = christianity_religion
-					religion_tag = hinduism_religion
-				}
-			}
-			custom_tooltip = christian_hindu_vassals_will_convert
+			faith = { has_doctrine = doctrine_right_to_rule_divine }
 		}
+		change_government = feudal_government
+		custom_tooltip = vassals_will_convert_feudal
 	}
-	## If I am not Hindu or Christian, we will become Clan.
+	## (Else) Convert to clan if faith has Material Right to Rule doctrine
 	else_if = {
-		limit = { is_independent_ruler = yes }
-		custom_tooltip = non_christian_hindu_vassals_will_convert
+		limit = {
+			is_independent_ruler = yes
+			faith = { has_doctrine = doctrine_right_to_rule_material }
+		}
+		change_government = clan_government
+		custom_tooltip = vassals_will_convert_clan
 	}
+	else = { change_government = clan_government }
 
 	hidden_effect = {
 		#Nuke tribal authorities.
