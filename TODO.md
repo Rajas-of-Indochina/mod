@@ -20,6 +20,8 @@ Feel free to add suggestions
 - For feudal (namely Khmer and Java) should have a coronation ceremony with selection of a regnal name and burial of the previous ruler
 - Children of concubines should be disinherited by default, but may be granted inheritance later
 - Children of second wives should be lower in inheiritance priority
+- Historically accurate birth infant mortality rates
+- Bride price and/or dowry
 
 - Religious/cultural minority in a county
 - 1066 and 1260? start dates
