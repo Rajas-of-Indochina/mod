@@ -93,6 +93,10 @@ Feel free to add suggestions
     https://steamcommunity.com/sharedfiles/filedetails/?id=2236798591
     https://steamcommunity.com/sharedfiles/filedetails/?id=2229092265
 - Women's Rights  https://forum.paradoxplaza.com/forum/threads/women-in-ck3.1280459/
+- Bail Out Anyone https://steamcommunity.com/sharedfiles/filedetails/?id=2253837157
+- Prisoner Transfer https://steamcommunity.com/sharedfiles/filedetails/?id=2221952570
+- https://steamcommunity.com/workshop/filedetails/?id=2439159121
+- Useful Liege/Vassal Alliances https://steamcommunity.com/sharedfiles/filedetails/?id=2229456694
 
 ## The Hundred Yue
 - Southern China and Taiwan
