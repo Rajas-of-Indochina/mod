@@ -22,6 +22,20 @@ Feel free to add suggestions
 - Children of second wives should be lower in inheiritance priority
 - Historically accurate birth infant mortality rates
 - Bride price and/or dowry
+- Allies tab
+- Grant title to minor noble
+- Recruit courtiers from random county culture incl minority groups
+- Decision to send a trade caravan
+    Must be along a trade route
+    Only every 3 years
+    Costs gold. Returns the next year with more gold, dependent on the current state of the trade routes
+
+- Disable force converting zealots
+- Mines and other trade resources
+- Enslave populace decision
+    Gives gold, nukes development in that county, and gives your capital a temporary "slave trading" modifier
+
+- Higher birth rates, higher death rates for children
 
 - Religious/cultural minority in a county
 - 1066 and 1260? start dates
