@@ -20,6 +20,8 @@ Feel free to add suggestions
 - For feudal (namely Khmer and Java) should have a coronation ceremony with selection of a regnal name and burial of the previous ruler
 - Children of concubines should be disinherited by default, but may be granted inheritance later
 - Children of second wives should be lower in inheiritance priority
+- Forced marriage for prisoners
+
 - Historically accurate birth infant mortality rates
 - Bride price and/or dowry
 - Allies tab
@@ -29,6 +31,29 @@ Feel free to add suggestions
     Must be along a trade route
     Only every 3 years
     Costs gold. Returns the next year with more gold, dependent on the current state of the trade routes
+
+- Reduced likelihood of converting faith
+
+- Poetry
+
+- Take more prisoners during sieges
+- Wives AND Concubines
+- More penalty for marrying unlanded
+- Children of concubines lower in succession
+- Marrying unlanded lowborn should have a severe opinion/other penalty
+- Marrying unlanded nobility should not
+
+- Raise Runestone -> Commission Inscription
+
+- Spawn more unlanded nobles at game start
+- Assess whether faiths should have wives or concubines
+- Primogeniture for Kambujadesa
+
+- Raid Or Trade? event
+- Fire and Blood event
+    Make this a CB?
+- Interaction to ask someone to stop raiding you (offer truce)
+- Nonaggression pact between friends
 
 - Disable force converting zealots
 - Mines and other trade resources
@@ -40,7 +65,6 @@ Feel free to add suggestions
 - Religious/cultural minority in a county
 - 1066 and 1260? start dates
 - Rice terraces innovation for certain mountainous cultures, like Ifugao and Hani
-- Nicknames for Javanese rulers based on their capital county before ascension
 - Regnal names
 - Post-death names (for Khmer, Vietnamese, others)
 - Teknonyms, father-son linked names for Nuosu
@@ -69,15 +93,34 @@ Feel free to add suggestions
 - Tributaries and Mandala
 - Cultural MAA
 - Divvy up Austronesian
-- Clan contracts
 - Convert between church/city/castle holdings
+- Suggestion to sway someone
+
+- Fund mercenary company decision
 
 ## Submods
 - Lifestyles (Raiding, Tribute, Organized Crime, Arts Patronage, Occultism)
+    8 perks each
+
+    "Suzerain" (Diplomacy)
+        Extra gold from tributaries
+    Raider (Martial)
+        Faster raid speed
+        Faster move speed
+        More loot
+        Less fatal casualties
+        Dread gain from raiding
+        Loot capacity
+        Stuff from Pillaging dynasty legacies, or the one added by that one mod
+    Patron (Stewardship)
+    "Mafioso" (Intrigue)
+        Extortionist? Racketeer?
+    Occulist (Learning)
+
 - R3 - ROI Religious Revamp
-    Right to Rule (Government Type) faith doctrine
     Send Missionaries decision
     6 or more Holy Sites per faith
+    Decision to convert government
 
 ## Inspiration (Mods with mechanics that are probably worth implementing)
 - Degrees of Consanguinity https://steamcommunity.com/sharedfiles/filedetails/?id=2547475648
@@ -97,6 +140,7 @@ Feel free to add suggestions
 - Prisoner Transfer https://steamcommunity.com/sharedfiles/filedetails/?id=2221952570
 - https://steamcommunity.com/workshop/filedetails/?id=2439159121
 - Useful Liege/Vassal Alliances https://steamcommunity.com/sharedfiles/filedetails/?id=2229456694
+- Music https://steamcommunity.com/sharedfiles/filedetails/?id=2556566633
 
 ## The Hundred Yue
 - Southern China and Taiwan
