@@ -1,6 +1,56 @@
 ﻿# Roadmap / Todo list
 Feel free to add suggestions
 
+## Tribute
+- Demand tribute: 1-time payment, truce
+- Tributary map mode?
+
+## Interactions
+- Ask for money
+    gives them hook, you 30 gold (50 with golden obligations)
+- Antagonize
+- Interaction to ask someone to stop raiding you (offer truce)
+- Nonaggression pact between friends
+- Do not convert zealots
+- More Send Gift options (giving less opinion but adds different modifiers. AI should also do these)
+    Send slaves (boosts building speed)
+    Send honor guard (boosts combat)
+    Send ???
+- Send missionaries
+- Sell into slavery
+
+- Demand Tribute
+    Give 10%? of income and a truce
+- Offer trade deal
+    Must have a resource to trade
+- Maybe tributary amounts can be given away in a single lump sum every year
+    Wha bout levies tho
+
+- Status of realm priest doctrine?
+- More powerful realm priest
+- Possible title for realm priest
+
+- Allies should offer to join wars
+- Generally "nice" AI should be better towards the playerds
+
+- Upon death of spouse, children should transfer to someone
+
+## CBs
+-
+
+## Other
+- Succession law birth order
+    Child of concubine should be lower in birth order (or maybe status of concubines law)
+- Grandchildren should (probably) get all the claims of their deceased parents, at least under partition
+- You should have a way to escape a siege
+
+
+## Decisions
+- Expel minorities
+    Some counties should have a historical minority group
+- Take a journey to a county or friend, or across the world
+- Convert government if under a liege with a different government or have joined a faith with a different government
+
 ## Nusantara
 - Bandanesia
 - West Papua
@@ -12,7 +62,6 @@ Feel free to add suggestions
 - Headhunting religious tenet
 - Some representation of the clan systems for certain cultures (e.g. Batak)
 - MMJM Hot spring event + others
-- MMJM Unit models
 - Syncretization of two faiths
 - Unite Nusantara decision
 
@@ -34,6 +83,8 @@ Feel free to add suggestions
 
 - Reduced likelihood of converting faith
 
+- Journey to the West decision
+- Journey to the East decision
 - Poetry
 
 - Take more prisoners during sieges
@@ -52,8 +103,6 @@ Feel free to add suggestions
 - Raid Or Trade? event
 - Fire and Blood event
     Make this a CB?
-- Interaction to ask someone to stop raiding you (offer truce)
-- Nonaggression pact between friends
 
 - Disable force converting zealots
 - Mines and other trade resources
@@ -94,7 +143,6 @@ Feel free to add suggestions
 - Cultural MAA
 - Divvy up Austronesian
 - Convert between church/city/castle holdings
-- Suggestion to sway someone
 
 - Fund mercenary company decision
 
@@ -122,6 +170,8 @@ Feel free to add suggestions
     6 or more Holy Sites per faith
     Decision to convert government
 
+    Remove vegetarian trait if switching to a faith without vegetarianism
+
 ## Inspiration (Mods with mechanics that are probably worth implementing)
 - Degrees of Consanguinity https://steamcommunity.com/sharedfiles/filedetails/?id=2547475648
 - Add Holy Sites https://steamcommunity.com/sharedfiles/filedetails/?id=2549007625
@@ -132,15 +182,17 @@ Feel free to add suggestions
 - Ports on rivers https://steamcommunity.com/sharedfiles/filedetails/?id=2228417684
 - Map Modes GUI https://steamcommunity.com/sharedfiles/filedetails/?id=2552708382
 - Submission to Authority https://steamcommunity.com/sharedfiles/filedetails/?id=2451533084
-- Flexible Holding Types or Convert Holdings
+- Flexible Holding Types
     https://steamcommunity.com/sharedfiles/filedetails/?id=2236798591
-    https://steamcommunity.com/sharedfiles/filedetails/?id=2229092265
 - Women's Rights  https://forum.paradoxplaza.com/forum/threads/women-in-ck3.1280459/
 - Bail Out Anyone https://steamcommunity.com/sharedfiles/filedetails/?id=2253837157
 - Prisoner Transfer https://steamcommunity.com/sharedfiles/filedetails/?id=2221952570
 - https://steamcommunity.com/workshop/filedetails/?id=2439159121
 - Useful Liege/Vassal Alliances https://steamcommunity.com/sharedfiles/filedetails/?id=2229456694
 - Music https://steamcommunity.com/sharedfiles/filedetails/?id=2556566633
+- Icons https://steamcommunity.com/sharedfiles/filedetails/?id=2378432770
+- Christian Enclave in India https://steamcommunity.com/sharedfiles/filedetails/?id=2531123594&searchtext=
+- Ports https://steamcommunity.com/sharedfiles/filedetails/?id=2228417684
 
 ## The Hundred Yue
 - Southern China and Taiwan
