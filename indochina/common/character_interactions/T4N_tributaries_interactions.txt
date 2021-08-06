@@ -298,7 +298,7 @@ call_tributaries_to_war = {
 	}
 }
 
-#ruler offers tribute to other character
+# Offer tribute to recipient
 offer_tribute = {
 	category = interaction_category_diplomacy
 	use_diplomatic_range = yes
@@ -804,7 +804,7 @@ offer_tribute = {
 	}
 }
 
-#Ruler offers character to become a tribute
+# Demand tribute from recipient
 ruler_offer_tribute_to_recipient = {
 	category = interaction_category_diplomacy
 	use_diplomatic_range = yes
@@ -891,39 +891,12 @@ ruler_offer_tribute_to_recipient = {
 	}
 
 	ai_accept = {
-		base = 5
+		base = -30
 
 		modifier = {
-			add = -1000
+			add = -100
 			scope:actor.realm_size < scope:recipient.realm_size
 			desc = will_not_accept_smaller_suzerain
-		}
-		modifier = {
-			add = 500
-			scope:actor.realm_size > scope:recipient.realm_size
-			desc = will_accept_bigger_suzerain		
-		}
-		modifier = {
-			scope:recipient = {
-				OR = {
-					has_trait = craven
-					has_trait = trusting
-					has_trait = lazy
-				}
-			}
-			add = -40
-			desc = dislike_those_traits
-		}
-		modifier = {
-			scope:recipient = {
-				OR = {
-					has_trait = brave
-					has_trait = paranoid
-					has_trait = diligent
-				}
-			}
-			add = 60
-			desc = like_those_traits	
 		}
 		modifier = {
 			scope:actor = {
@@ -931,13 +904,6 @@ ruler_offer_tribute_to_recipient = {
 			}
 			factor = 0
 			desc = do_not_want_to_fight_suzerain_war
-		}	
-		modifier = { # Perk boost
-			desc = offer_vassalization_true_ruler_perk_tt
-			trigger = {
-				scope:actor = { has_perk = true_ruler_perk }
-			}
-			add = true_ruler_value
 		}
 
 		# MAIN
@@ -1055,13 +1021,6 @@ ruler_offer_tribute_to_recipient = {
 				}
 			}
 		}
-		modifier = { #I am a King!
-			desc = offer_vassalization_interaction_aibehavior_amkingtier_tt
-			trigger = {
-				scope:recipient = { highest_held_title_tier = tier_kingdom }
-			}
-			add = -50
-		}
 		modifier = { #We just fought against each other.
 			desc = offer_vassalization_interaction_aibehavior_recent_war_tt
 			trigger = {
@@ -1142,7 +1101,7 @@ ruler_offer_tribute_to_recipient = {
 			add = -500
 		}
 		modifier = {
-		desc = offer_vassalization_interaction_aibehavior_power_tt
+			desc = offer_vassalization_interaction_aibehavior_power_tt
 	  	  	add = {
 				value = 1
 					subtract = {
@@ -1294,36 +1253,18 @@ ruler_offer_tribute_to_recipient = {
 	}
 
 	ai_will_do = {
-		base = 10
-		
+		base = 100
+
+		# Cynical rulers are happy to offer religious protection to potential vassals, but only when it makes them accept a vassalization offer they would otherwise refuse.
+		# Zealous rulers become increasingly reluctant to offer religious protection, as they want to enforce religious homogeneity in their realm.
 		modifier = {
-			scope:recipient.realm_size > scope:actor.realm_size
-			add = 20
-		}
-		modifier = {
-			scope:recipient.realm_size < scope:actor.realm_size
-			factor = 0
-		}
-		modifier = {
-			scope:actor = {
-				OR = {
-					has_trait = craven
-					has_trait = trusting
-					has_trait = lazy
-				}
+			add = {
+				value = ai_zeal
+				multiply = -2
+				max = 1
 			}
-			add = -40
+			scope:religious_exemption = yes
 		}
-		modifier = {
-			scope:actor = {
-				OR = {
-					has_trait = brave
-					has_trait = paranoid
-					has_trait = diligent
-				}
-			}
-			add = 60	
-		}		
 	}
 
 	send_options_exclusive = yes
@@ -1397,16 +1338,11 @@ annex_tributary = {
 			}
 		}
 		exists = scope:recipient.var:possible_vasalisation_year
-		scope:recipient.var:possible_vasalisation_year.compare_value <= current_year		
 	}
 
 	is_valid_showing_failures_only = {
 		scope:actor.primary_title.tier > scope:recipient.primary_title.tier
 	}
-
-	#auto_accept = {
-	#	always = yes
-	#}
 
 	on_accept = {
 		scope:recipient = {
@@ -1424,6 +1360,16 @@ annex_tributary = {
 					remove_list_variable = { name = permanent_tributaries target = prev }
 				}
 			}
+		}
+	}
+
+	ai_accept = {
+		base = -10
+
+		modifier = {
+			add = -100
+			scope:recipient.var:possible_vasalisation_year.compare_value <= current_year
+			desc = trib_annexation_too_early
 		}
 	}
 

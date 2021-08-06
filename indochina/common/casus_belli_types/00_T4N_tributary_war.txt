@@ -57,13 +57,14 @@
 			desc = trib_on_victory_desc
 		}
 	}
-
     on_victory = {
         make_tributary = {
             TYPE = tributary_non_permanent
             SUZERAIN = scope:attacker
             TRIBUTARY = scope:defender
         }
+
+        add_truce_attacker_victory_effect = yes
     }
 
 	on_white_peace_desc = {
@@ -79,11 +80,42 @@
 			desc = trib_on_white_peace_desc
 		}
 	}
+	on_white_peace = {
+		# Prestige loss for the attacker
+		scope:attacker = {
+			add_prestige = {
+				value = minor_prestige_value
+				multiply = -1.0
+			}
+			stress_impact = {
+ 				ambitious = medium_stress_impact_gain
+ 				arrogant = medium_stress_impact_gain
+ 			}
+		}
 
-	on_white_peace = { 
-        scope:attacker = {
-            prestige = -150 
-        }
+		# Prestige for the attacker's war allies
+		add_from_contribution_attackers = {
+			prestige = minor_prestige_value
+			opinion = {
+				modifier = contributed_in_war
+			}
+		}
+
+		# Prestige for the defender's war allies
+		add_from_contribution_defenders = {
+			prestige = minor_prestige_value
+			opinion = {
+				modifier = contributed_in_war
+			}
+		}
+
+		scope:defender = {
+			stress_impact = {
+ 				arrogant = medium_stress_impact_gain
+ 			}
+		}
+
+		add_truce_white_peace_effect = yes
     }
 
 	on_defeat_desc = {
@@ -99,18 +131,53 @@
 			desc = trib_on_defeat
 		}
 	}
-
     on_defeat = {
-        scope:attacker = {
-            prestige = -150
-            pay_long_term_gold = { target = scope:defender gold = 150 }
-        }
-    }
+
+		# Prestige loss for the attacker
+		scope:attacker = {
+			pay_short_term_gold = {
+				gold = 2
+				target = scope:defender
+				yearly_income = yes
+			}
+			add_prestige = {
+				value = medium_prestige_value
+				multiply = -1.0
+			}
+		}
+
+		# Prestige for Defender
+		scope:defender = {
+			add_prestige = medium_prestige_value
+		}
+
+		# Prestige for the attacker's war allies
+		add_from_contribution_attackers = {
+			prestige = minor_prestige_value
+			opinion = {
+				modifier = contributed_in_war
+			}
+		}
+
+		# Prestige for the defender's war allies
+		add_from_contribution_defenders = {
+			prestige = minor_prestige_value
+			opinion = {
+				modifier = contributed_in_war
+			}
+		}
+
+		add_truce_attacker_defeat_effect = yes
+
+		scope:attacker = {
+			save_temporary_scope_as = loser
+		}
+		on_lost_aggression_war_discontent_loss = yes
+	}
 
     on_invalidated_desc = {
         desc = trib_on_invalidated_desc
     }
-
 }
 
 permament_tributary_war_cb = {
@@ -124,7 +191,7 @@ permament_tributary_war_cb = {
 
     truce_days = 970
 
-    allowed_for_character_display_regardless = {
+    allowed_for_character = {
         scope:defender = {
             primary_title = {
                 tier >= tier_county
@@ -172,13 +239,14 @@ permament_tributary_war_cb = {
 			desc = perma_trib_on_victory_desc
 		}
 	}
-
     on_victory = {
         make_tributary = {
             TYPE = tributary_permanent
             SUZERAIN = scope:attacker
             TRIBUTARY = scope:defender
         }
+
+        add_truce_attacker_victory_effect = yes
     }
 
 	on_white_peace_desc = {
@@ -194,7 +262,6 @@ permament_tributary_war_cb = {
 			desc = perma_trib_on_white_peace_desc
 		}
 	}
-
 	on_white_peace = { 
         scope:attacker = {
             prestige = -150 
@@ -214,12 +281,18 @@ permament_tributary_war_cb = {
 			desc = perma_trib_on_defeat_desc
 		}
 	}
-
     on_defeat = {
         scope:attacker = {
             prestige = -150
             pay_long_term_gold = { target = scope:defender gold = 150 }
         }
+
+		add_truce_attacker_defeat_effect = yes
+
+		scope:attacker = {
+			save_temporary_scope_as = loser
+		}
+		on_lost_aggression_war_discontent_loss = yes
     }
 
 	on_invalidated_desc = {
@@ -239,7 +312,7 @@ independence_tributary_war_cb = {
 
     truce_days = 970
 
-    allowed_for_character_display_regardless = {
+    allowed_for_character = {
         scope:defender = {
             exists = var:suzerain
             OR = {
@@ -252,7 +325,6 @@ independence_tributary_war_cb = {
     cost = {
         prestige = 150
     }
-
 
 	on_victory_desc = {
 		first_valid = {
@@ -267,7 +339,6 @@ independence_tributary_war_cb = {
 			desc = trib_indp_on_victory_desc
 		}
 	}
-
     on_victory = {
         scope:attacker = {
             delete_variable = var:my_suzerain
@@ -288,6 +359,8 @@ independence_tributary_war_cb = {
                 remove_list_variable = { name = all_tributaries target = scope:attacker }
             }           
         }
+
+        add_truce_attacker_victory_effect = yes
     }
 
 	on_white_peace_desc = {
@@ -324,12 +397,18 @@ independence_tributary_war_cb = {
 			desc = trib_indp_on_defeat_desc
 		}
 	}
-
     on_defeat = {
         scope:attacker = {
             prestige = -150
             pay_long_term_gold = { target = scope:defender gold = 150 }
         }
+
+		add_truce_attacker_defeat_effect = yes
+
+		scope:attacker = {
+			save_temporary_scope_as = loser
+		}
+		on_lost_aggression_war_discontent_loss = yes
     }
 
     on_invalidated_desc = {
