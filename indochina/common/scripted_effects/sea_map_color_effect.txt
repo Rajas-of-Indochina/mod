@@ -8,8 +8,11 @@
 			limit = {
 				holder = {
 					OR = {
+						# is me
 						this = scope:target_character
-						target_is_liege_or_above = scope:target_character
+
+						# liege is me
+						any_liege_or_above = { this = scope:target_character }
 					}
 				}
 			}
@@ -22,8 +25,13 @@
 				holder = {
 					exists = var:my_suzerain
 					OR = {
+						# has a suzerain and suzerain is me
 						var:my_suzerain = scope:target_character
-						var:my_suzerain = { target_is_liege_or_above = scope:target_character }
+
+						# liege has a suzerain and suzerain is me
+						any_liege_or_above = {
+							var:my_suzerain = scope:target_character
+						}
 					}
 				}
 			}
