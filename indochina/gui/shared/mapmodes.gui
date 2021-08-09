@@ -1,4 +1,4 @@
-types MapModes
+﻿types MapModes
 {
 	type map_modes_debug = flowcontainer {
 		ignoreinvisible = yes
@@ -611,6 +611,23 @@ types MapModes
 					text = "SIRO_DYNASTY_MAP"
 
 					tooltip = "SIRO_DYNASTY_MAP_TOOLTIP"
+					using = tooltip_ws
+				}
+
+				button_tertiary = {
+					name = "sea_tributary_map"
+					visible = "[CanChangeMapMode]"
+					parentanchor = hcenter
+
+					size = { 110 25 }
+					onclick = "[SetMapMode('debug_character_pools')]"
+					onclick = "[GetScriptedGui('sea_tributary_map').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+					down = "[And( GetScriptedGui('sea_tributary_map').IsShown(GuiScope.End), IsMapMode('debug_character_pools') )]"
+					enabled = "[And(Not(IsObserver), GetScriptedGui('sea_tributary_map').IsValid(GuiScope.End))]"
+
+					text = "SEA_TRIBUTARY_MAP"
+
+					tooltip = "SEA_TRIBUTARY_MAP_TOOLTIP"
 					using = tooltip_ws
 				}
 
