@@ -3,7 +3,7 @@ Feel free to add suggestions
 
 ## Tribute
 - Demand tribute: 1-time payment, truce
-- Tributary map mode?
+- Release vassal as tributary
 
 ## Interactions
 - Ask for money
@@ -193,6 +193,7 @@ Feel free to add suggestions
 - Icons https://steamcommunity.com/sharedfiles/filedetails/?id=2378432770
 - Christian Enclave in India https://steamcommunity.com/sharedfiles/filedetails/?id=2531123594&searchtext=
 - Ports https://steamcommunity.com/sharedfiles/filedetails/?id=2228417684
+- Higher Mortality https://steamcommunity.com/sharedfiles/filedetails/?id=2428173603&searchtext=disease
 
 ## The Hundred Yue
 - Southern China and Taiwan
