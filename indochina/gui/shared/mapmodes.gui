@@ -63,14 +63,14 @@
 		filter_mouse = all
 		alwaystransparent = yes
 
-		size = { 170 95 }
+		size = { 185 95 }
 
 		background = {
 			using = Background_Area_Dark
 			margin_left = 10
 			margin_bottom = 10
 			margin_top = -12
-			margin_right = 10
+			margin_right = 20
 			color = { 0.15 0.15 0.15 0.75 }
 		}
 
@@ -87,7 +87,7 @@
 			position = { 0 -95 }
 			direction = vertical
 			ignoreinvisible = yes
-			min_width = 170
+			min_width = 185
 			margin_left = 2
 			margin_top = 3
 			margin_bottom = 5
@@ -189,12 +189,150 @@
 		}
 
 		flowcontainer = {
+			visible = "[And( GetScriptedGui('sea_tributary_map').IsShown(GuiScope.End), And( And( Not( GetVariableSystem.Exists( 'mapmodes_expand' ) ), IsMapMode('debug_character_pools') ), IsDefaultGUIMode ) )]"
+			parentanchor = bottom|right
+			position = { 0 -95 }
+			direction = vertical
+			ignoreinvisible = yes
+			min_width = 185
+			margin_left = 2
+			margin_top = 3
+			margin_bottom = 5
+			spacing = 5
+
+			state = {
+				name = _show
+				using = Animation_FadeIn_Standard
+			}
+
+			state = {
+				name = _hide
+				using = Animation_FadeOut_Standard
+			}
+
+			background = {
+				using = Background_Area_Dark
+				margin = { 10 10 }
+				margin_top = 5
+				color = { 0.15 0.15 0.15 0.75 }
+			}
+
+			text_single = {
+				parentanchor = hcenter
+				text = "SEA_TRIBUTARY_MAP_LEGEND"
+				default_format = "#color_yellow"
+			}
+
+			flowcontainer = {
+				direction = vertical
+				spacing = 20
+				margin_bottom = 10
+				widget = {
+					hbox = {
+						icon = {
+							texture = "gfx/interface/colors/white.dds"
+							size = { 8 8 }
+							color = { 0.0 0.7 0.15 1 }
+						}
+						spacing = 5
+						text_single = {
+							margin_top = -6
+							align = center
+							text = "SEA_TRIBUTARY_MAP_ME"
+						}
+						expand = {}
+					}
+				}
+				widget = {
+					hbox = {
+						icon = {
+							texture = "gfx/interface/colors/white.dds"
+							size = { 8 8 }
+							color = { 1.0 0.85 0.0 1 }
+						}
+						spacing = 5
+						text_single = {
+							margin_top = -6
+							align = center
+							text = "SEA_TRIBUTARY_MAP_MY_TRIBUTARY"
+						}
+						expand = {}
+					}
+				}
+				widget = {
+					hbox = {
+						icon = {
+							texture = "gfx/interface/colors/white.dds"
+							size = { 8 8 }
+							color = { 1.0 0.25 0.0 1 }
+						}
+						spacing = 5
+						text_single = {
+							margin_top = -6
+							align = center
+							text = "SEA_TRIBUTARY_MAP_MY_SUZERAIN"
+						}
+						expand = {}
+					}
+				}
+				widget = {
+					hbox = {
+						icon = {
+							texture = "gfx/interface/colors/white.dds"
+							size = { 8 8 }
+							color = { 1.0 0.8 0.4 1 }
+						}
+						spacing = 5
+						text_single = {
+							margin_top = -6
+							align = center
+							text = "SEA_TRIBUTARY_MAP_ANY_TRIBUTARY_SUZERAIN"
+						}
+						expand = {}
+					}
+				}
+				widget = {
+					hbox = {
+						icon = {
+							texture = "gfx/interface/colors/white.dds"
+							size = { 8 8 }
+							color = { 1.0 0.95 0.50 1 }
+						}
+						spacing = 5
+						text_single = {
+							margin_top = -6
+							align = center
+							text = "SEA_TRIBUTARY_MAP_ANY_TRIBUTARY"
+						}
+						expand = {}
+					}
+				}
+				widget = {
+					hbox = {
+						icon = {
+							texture = "gfx/interface/colors/white.dds"
+							size = { 8 8 }
+							color = { 0.98 0.50 0.4 1 }
+						}
+						spacing = 5
+						text_single = {
+							margin_top = -6
+							align = center
+							text = "SEA_TRIBUTARY_MAP_ANY_SUZERAIN"
+						}
+						expand = {}
+					}
+				}
+			}
+		}
+
+		flowcontainer = {
 			visible = "[And( And( Not( GetVariableSystem.Exists( 'mapmodes_expand' ) ), IsMapMode('realms') ), IsDefaultGUIMode )]"
 			parentanchor = top|right
 			position = { 0 -40 }
 			direction = vertical
 			ignoreinvisible = yes
-			min_width = 170
+			min_width = 185
 			tooltip = "ZOOM_LEVEL_PAPER_MAP_TOOLTIP"
 
 			state = {
@@ -308,38 +446,6 @@
 			}
 		}
 
-		## Realm
-		icon_button_mapmode = {
-			name = "map_mode_realms_button"
-			position = { 0 25 }
-			size = { 50 50 }
-			visible = "[CanChangeMapMode]"
-
-			blockoverride "mm_button"
-			{
-				onclick = "[SetMapMode('realms')]"
-				onclick = "[ClearExploringRealms]"
-				down = "[IsMapMode('realms')]"
-				shortcut = "map_mode_1"
-				tooltip = "MAPMODE_REALMS"
-			}
-			blockoverride "mm_icon"
-			{
-				size = { 50 50 }
-				down = "[IsMapMode('realms')]"
-				texture = "gfx/interface/icons/flat_icons/mapmode_realm.dds"
-			}
-
-			blockoverride "mm_glow"
-			{
-				visible = no
-			}
-
-			blockoverride "mm_bg_color"
-			{
-				color = { 0.18 0.18 0 1 }
-			}
-		}
 
 		flowcontainer = {
 			parentanchor = right|bottom
@@ -353,6 +459,64 @@
 				direction = horizontal
 				ignoreinvisible = yes
 				spacing = -3
+
+				## Realm
+				icon_button_mapmode = {
+					name = "map_mode_realms_button"
+					position = { 0 25 }
+					size = { 38 38 }
+					visible = "[CanChangeMapMode]"
+
+					blockoverride "mm_button"
+					{
+						onclick = "[SetMapMode('realms')]"
+						onclick = "[ClearExploringRealms]"
+						down = "[IsMapMode('realms')]"
+						shortcut = "map_mode_1"
+						tooltip = "MAPMODE_REALMS"
+					}
+					blockoverride "mm_icon"
+					{
+						size = { 38 38 }
+						down = "[IsMapMode('realms')]"
+						texture = "gfx/interface/icons/flat_icons/mapmode_realm.dds"
+					}
+
+					blockoverride "mm_glow"
+					{
+						visible = no
+					}
+
+					blockoverride "mm_bg_color"
+					{
+						color = { 0.18 0.18 0 1 }
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "sea_tributaries_map"
+					size = { 38 38 }
+					parentanchor = vcenter
+					enabled = "[And(Not(IsObserver), GetScriptedGui('sea_tributary_map').IsValid(GuiScope.End))]"
+
+					blockoverride "mm_button"
+					{
+						onclick = "[SetMapMode('debug_character_pools')]"
+						onclick = "[GetScriptedGui('sea_tributary_map').Execute(GuiScope.End)]"
+						down = "[And( GetScriptedGui('sea_tributary_map').IsShown(GuiScope.End), IsMapMode('debug_character_pools') )]"
+						tooltip = "SEA_TRIBUTARYe_MAP_TOOLTIP"
+					}
+					blockoverride "mm_icon"
+					{
+						down = "[And( GetScriptedGui('sea_tributary_map').IsShown(GuiScope.End), IsMapMode('debug_character_pools') )]"
+						texture = "gfx/interface/icons/flat_icons/mapmode_trade.dds"
+					}
+
+					blockoverride "mm_glow"
+					{
+						visible = "[And( GetScriptedGui('sea_tributary_map').IsShown(GuiScope.End), IsMapMode('debug_character_pools') )]"
+					}
+				}
 
 				icon_button_mapmode = {
 					name = "map_mode_duchies_button"
@@ -611,23 +775,6 @@
 					text = "SIRO_DYNASTY_MAP"
 
 					tooltip = "SIRO_DYNASTY_MAP_TOOLTIP"
-					using = tooltip_ws
-				}
-
-				button_tertiary = {
-					name = "sea_tributary_map"
-					visible = "[CanChangeMapMode]"
-					parentanchor = hcenter
-
-					size = { 110 25 }
-					onclick = "[SetMapMode('debug_character_pools')]"
-					onclick = "[GetScriptedGui('sea_tributary_map').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-					down = "[And( GetScriptedGui('sea_tributary_map').IsShown(GuiScope.End), IsMapMode('debug_character_pools') )]"
-					enabled = "[And(Not(IsObserver), GetScriptedGui('sea_tributary_map').IsValid(GuiScope.End))]"
-
-					text = "SEA_TRIBUTARY_MAP"
-
-					tooltip = "SEA_TRIBUTARY_MAP_TOOLTIP"
 					using = tooltip_ws
 				}
 
