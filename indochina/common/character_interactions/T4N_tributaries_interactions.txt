@@ -597,8 +597,25 @@ ruler_offer_tribute_to_recipient = {
 					TYPE = tributary_permanent
 					SUZERAIN = scope:actor
 					TRIBUTARY = scope:recipient
-				}		
+				}
 			}
+			#payment of one time tribute for 5 year truce
+			else_if = {
+				limit = {
+					scope:one_time_trib = yes
+				}
+				pay_short_term_gold = {
+					gold = 5
+					target = scope:actor
+					yearly_income = yes
+				}
+				truce_days = 970
+				add_truce_both_ways = {
+					character = scope:actor
+					years = 5
+					name = truce_paid_tribute
+				}
+			}	
 			save_scope_as = trib
 			scope:actor = {
 				trigger_event = { id = tributaries.9 }
@@ -849,6 +866,7 @@ ruler_offer_tribute_to_recipient = {
 			scope:permanent_trib = yes
 			desc = CONTRACT_HIGH_TAXES_REASON
 		}
+
 	}
 
 	#Non Permanent trib
@@ -856,7 +874,7 @@ ruler_offer_tribute_to_recipient = {
 		is_shown = {
 			always = yes
 		}
-		flag = non_permanent_trib							# If selected then scope:flag_name will be set to yes
+		flag = non_permanent_trib						# If selected then scope:flag_name will be set to yes
 		localization = non_permanent_trib				# Loc_key for option label
 		starts_enabled = { always = yes	}				# Trigger for whether this should be on when the window opens. If not defined, defaults to off
 	}
@@ -867,6 +885,14 @@ ruler_offer_tribute_to_recipient = {
 		}
 		flag = permanent_trib
 		localization = permanent_trib
+	}
+	#One-time trib
+	send_option = {
+		is_shown = {
+			always = yes
+		}
+		flag = one_time_trib
+		localization = one_time_trib
 	}
 
 	ai_potential = {
