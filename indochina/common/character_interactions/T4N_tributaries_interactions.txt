@@ -1070,3 +1070,107 @@ turn_non_perma_tributary_to_perma = {
 		base = 10
 	}	
 }
+
+#release vassal as tributary / copy of 'grant independence'
+#needs some tweaking on conditions maybe
+independent_tributary_interaction = {
+	category = interaction_category_vassal
+	force_notification = yes
+	greeting = positive
+	notification_text = independent_tributary_interaction_notification
+
+	desc =  independent_tributary_interaction_desc
+	
+	is_shown = {
+		scope:recipient = {
+			is_vassal_of = scope:actor
+		}
+		NOT = { scope:recipient = scope:actor }
+	}
+
+	is_valid_showing_failures_only = {
+		NOT = { scope:actor = { is_at_war_with = scope:recipient } }
+		scope:actor = {
+			is_independent_ruler = yes
+			NOT = {
+				is_at_war = yes
+			}
+		}
+		custom_description = {
+			text = is_at_war_with_another_vassal
+			object = scope:recipient
+			NOT = {
+				scope:actor = {
+					any_vassal_or_below = {
+						is_at_war_with = scope:recipient
+					}
+				}
+			}
+		}
+		custom_description = {
+			text = is_de_jure_vassal_check
+			object = scope:recipient
+			NOT = { #Can not be used against de jure vassals
+				scope:recipient.primary_title = {
+					any_this_title_or_de_jure_above = {
+						holder = scope:actor
+					}
+				}
+			}
+		}
+	}
+
+	auto_accept = yes
+
+	on_accept = {
+		scope:actor = {
+			stress_impact = {
+				ambitious = medium_stress_impact_gain
+				arrogant = minor_stress_impact_gain
+				greedy = minor_stress_impact_gain
+			}
+			hidden_effect = {	
+				send_interface_toast = {
+					title = independent_tributary_interaction_toast
+					left_icon = scope:actor
+					right_icon = scope:recipient
+
+					custom_tooltip = independent_tributary_interaction_toast_desc
+				}
+			}
+		}
+			add_opinion = {
+				target = scope:actor
+				modifier = granted_independence_opinion
+			}
+
+			add_truce_both_ways = {
+				character = scope:actor
+				days = 3650
+				name = truce_independent_tributary
+			}
+
+			create_title_and_vassal_change = {
+				type = independency
+				save_scope_as = change
+				add_claim_on_loss = yes
+			}
+			becomes_independent = {
+				change = scope:change
+			}
+			
+			#makes them as a permanent_tributary
+			make_tributary = {
+				TYPE = tributary_permanent
+				SUZERAIN = scope:actor
+				TRIBUTARY = scope:recipient
+			}
+
+			resolve_title_and_vassal_change = scope:change
+		}
+	}
+
+	ai_will_do = {
+		base = 0 #The AI should never do this!
+	}
+}
