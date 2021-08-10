@@ -1139,6 +1139,59 @@ independent_tributary_interaction = {
 				}
 			}
 		}
+
+		scope:recipient = {
+			#Send notifications
+			if = {
+				limit = {
+					any_liege_or_above = {
+						is_ai = no
+						NOT = { this = scope:actor }
+					}
+				}
+				every_liege_or_above = {
+					limit = {
+						is_ai = no
+						NOT = { this = scope:actor }
+					}
+					trigger_event = vassal_interaction.0023
+				}
+			}
+			if = {
+				limit = {
+					any_liege_or_above = {
+						any_vassal = {
+							is_ai = no
+							NOR = {
+								this = scope:recipient
+								this = scope:actor
+							}
+						}
+					}
+				}
+				every_liege_or_above = {
+					limit = {
+						any_vassal = {
+							is_ai = no
+							NOR = {
+								this = scope:recipient
+								this = scope:actor
+							}
+						}
+					}
+					every_vassal = {
+						limit = {
+							is_ai = no
+							NOT = { this = scope:recipient }
+						}
+						trigger_event = {
+							id = vassal_interaction.0022
+							days = 3
+						}
+					}
+				}
+			}
+
 			add_opinion = {
 				target = scope:actor
 				modifier = granted_independence_opinion
@@ -1158,7 +1211,7 @@ independent_tributary_interaction = {
 			becomes_independent = {
 				change = scope:change
 			}
-			
+
 			#makes them as a permanent_tributary
 			make_tributary = {
 				TYPE = tributary_permanent
