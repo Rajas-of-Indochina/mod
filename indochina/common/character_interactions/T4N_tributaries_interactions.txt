@@ -605,21 +605,23 @@ ruler_offer_tribute_to_recipient = {
 					scope:one_time_trib = yes
 				}
 				pay_short_term_gold = {
-					gold = 5
+					gold = 0.75 # 15% income * 5 years
 					target = scope:actor
 					yearly_income = yes
-				}
-				truce_days = 970
-				add_truce_both_ways = {
-					character = scope:actor
-					years = 5
-					name = truce_paid_tribute
 				}
 			}	
 			save_scope_as = trib
 			scope:actor = {
 				trigger_event = { id = tributaries.9 }
 			}
+		}
+		scope:actor = {
+			add_truce_one_way = { # "Tributary" may still attack the "suzerain"
+				character = scope:recipient
+				days = standard_truce_duration_days # 1825
+				name = truce_paid_tribute
+			}
+
 		}
 	}
 
