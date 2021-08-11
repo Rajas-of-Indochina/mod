@@ -1,0 +1,125 @@
+﻿get_loan_for_hook_interaction = {
+    category = interaction_category_diplomacy
+
+    auto_accept = yes
+    use_diplomatic_range = yes
+
+    desc = get_loan_for_hook_interaction_desc
+
+    is_shown = {
+        scope:recipient = {
+            is_ai = yes
+        }
+        NOT = { scope:recipient = scope:actor }
+    }
+
+    is_valid_showing_failures_only = {
+        scope:actor = {
+            is_physically_able_adult = yes
+            NOT = {
+                is_at_war_with = scope:recipient
+            }
+        }
+        scope:recipient = {
+            is_imprisoned = no
+        }
+        scope:recipient = {
+            custom_description = {
+                text = demand_payment_too_little_gold
+                gold >= 1
+            }
+        }
+    }
+    on_accept = {
+        scope:actor = {
+            send_interface_toast = {
+                title = get_loan_for_hook_interaction_message
+                left_icon = scope:recipient
+
+                scope:recipient = {
+                    add_hook = { #Hook effect must match gain_hook option condition
+                        target = scope:actor
+                        type = favor_hook
+                    }
+                }
+                scope:actor = {
+                    if = {
+                        #checks if actor has 'golden obligations' perk, get 50 instead.
+                        limit = {
+                            scope:actor = {
+                                has_perk = golden_obligations_perk
+                            }
+                            gold > 50
+                        }
+                        scope:recipient ={
+                            pay_short_term_gold = {
+                                target = scope:actor
+                                gold = 50
+                            }
+                        }
+                    }
+                    else_if = {
+                        limit = {
+                            gold > 30
+                        }
+                        scope:recipient = {
+                            pay_short_term_gold = {
+                                target = scope:actor
+                                gold = 30
+                            }
+                        }
+                    }
+                    else = {
+                        #if not enough money
+                        scope:recipient = {
+                            pay_short_term_gold = {
+                                target = scope:actor
+                                gold = {
+                                    value = scope:actor.gold
+                                    floor = yes
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ai_potential = {
+        NOT = {
+            has_trait = generous
+        }
+        OR = {
+            ai_greed >= low_positive_ai_value
+            is_at_war = yes
+        }
+    }
+
+    ai_target_quick_trigger = {
+        adult = yes
+    }
+
+    ai_frequency = 36
+
+    ai_will_do = {
+        base = 100
+
+        modifier = { #ai won't use the interaction if they'll get nothing out of it
+            factor = 0
+            scope:recipient.gold < 8
+        }
+
+        modifier = {
+            factor = 0
+            scope:actor = {
+                OR = {
+                    has_relation_friend = scope:recipient
+                    has_relation_lover = scope:recipient
+                    has_relation_best_friend = scope:recipient
+                    has_relation_soulmate = scope:recipient
+                }
+            }
+        }
+    }
+}
