@@ -40,7 +40,6 @@
 			desc = task_religious_relations_effect_desc_opinion
 		}
 
-
 		triggered_desc = {
 			trigger = {
 				scope:councillor_liege = {	has_perk = clerical_justifications_perk }
@@ -814,6 +813,26 @@ task_conversion = {
 
 	on_finish_task_county = {
 		scope:county = {
+
+			# If pluralist faith, create significant minority group modifer
+			if = {
+				limit = {
+					scope:councillor.faith = { has_doctrine_parameter = pluralism_pluralistic_proselytization_penalty }
+				}
+				county_religious_minority_major_modifier = {
+					COUNTY = this
+					FAITH = this.faith
+				}
+			}
+			# If righteous or fundamentalist faith, create minor minority group modifier
+			else
+			{
+				county_religious_minority_minor_modifier = {
+					COUNTY = this
+					FAITH = this.faith
+				}
+			}
+
 			set_county_faith = scope:councillor.faith
 		}
 		if = {
