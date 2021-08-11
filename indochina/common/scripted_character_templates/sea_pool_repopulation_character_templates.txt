@@ -458,12 +458,41 @@ pool_repopulate_local_flavor = {
 	faith = root.faith
 	
 	random_culture = {
+		culture:ashkenazi = {
+			trigger = {
+				NOT = {
+					root.faith = { religion = { is_in_family = rf_pagan } }
+					root.faith = { religion = { is_in_family = rf_animism } }
+				}
+				root.capital_province = {
+					OR = {
+						geographical_region = world_europe
+						geographical_region = world_asia_minor
+					}
+					NOT = {
+						geographical_region = world_europe_west_iberia
+					}
+				}
+			}
+		}
 		culture:sephardi = {
 			trigger = {
 				root.capital_province = {
 					OR = {
 						geographical_region = world_europe_west_iberia
 						geographical_region = world_middle_east
+					}
+				}
+			}
+		}
+		culture:mizrahi = {
+			trigger = {
+				root.capital_province = {
+					OR = {
+						geographical_region = world_middle_east
+						geographical_region = world_steppe_tarim
+						geographical_region = world_steppe_west
+						geographical_region = world_india
 					}
 				}
 			}
@@ -545,23 +574,6 @@ pool_repopulate_local_flavor = {
 			trigger = {
 				root.faith = { religion = { is_in_family = rf_pagan } }
 				root.faith = { religion = { is_in_family = rf_animism } }
-			}
-		}
-		culture:ashkenazi = {
-			trigger = {
-				NOT = {
-					root.faith = { religion = { is_in_family = rf_pagan } }
-				}
-				root.capital_province = {
-					OR = {
-						geographical_region = world_europe
-						geographical_region = world_asia_minor
-						geographical_region = world_mainland_southeast_asia
-					}
-					NOT = {
-						geographical_region = world_europe_west_iberia
-					}
-				}
 			}
 		}
 		culture:assyrian = {
@@ -740,6 +752,7 @@ pool_repopulate_local_flavor = {
 				OR = {
 					culture = culture:ashkenazi
 					culture = culture:sephardi
+					culture = culture:mizrahi
 				}
 			}
 			random_list = {
@@ -778,6 +791,16 @@ pool_repopulate_local_flavor = {
 						}
 					}
 					set_character_faith = faith:karaism
+				}
+				30 = {
+					trigger = {
+						root.capital_province = {
+							OR = {
+								geographical_region = world_india
+							}
+						}
+					}
+					set_character_faith = faith:malabarism
 				}
 			}
 		}
