@@ -4,7 +4,7 @@ request_nonaggression_pact_interaction = {
 	desc = request_nonaggression_pact_interaction.desc
 
 	greeting = positive
-	notification_text = NEGOTIATE_ALLIANCE_NOTIFICATION
+	notification_text = negotiate_nap_notification
 
 	is_shown = {
 		scope:recipient = {
@@ -25,15 +25,19 @@ request_nonaggression_pact_interaction = {
 	
 	is_valid_showing_failures_only = {
 		
-		#custom_description = {
-			#needs to be reworked to remember NAP status instead of relying on Truce
-			#maybe some kind of way to store NAP status
-			#text = "already_have_truce"
-			#subject = scope:recipient
-			#scope:actor = {
-			#	has_truce = scope:recipient
-			#}
-		#}
+		custom_description = {
+			#checks if characters already have NAP opinion modifier
+			text = "already_has_nap"
+			subject = scope:recipient
+			scope:recipient = {
+				NOT = {
+					has_opinion_modifier = {
+						modifier = negotiated_nap_opinion
+						target = scope:actor
+					}
+				}
+			}
+		}
 		
 		scope:recipient = {
 			is_landed = yes
@@ -50,7 +54,7 @@ request_nonaggression_pact_interaction = {
 		scope:recipient = { is_diplomatically_available = yes }
 		
 		custom_description = {
-			text = "has_already_rejected_nap"
+			text = "already_rejected_nap"
 			subject = scope:recipient
 			scope:actor = {
 				NOT = {
@@ -77,7 +81,7 @@ request_nonaggression_pact_interaction = {
 
 	on_auto_accept = {
 		scope:recipient = {
-			trigger_event = nonaggressionpact.001
+			trigger_event = non_aggression_pact.001
 		}
 	}
 
@@ -124,7 +128,7 @@ request_nonaggression_pact_interaction = {
 	
 	on_decline = {
 		scope:actor = {
-			trigger_event = nonaggressionpact.003
+			trigger_event = non_aggression_pact.003
 		}
 		scope:actor = {
 			add_opinion = {
@@ -144,7 +148,7 @@ request_nonaggression_pact_interaction = {
 	}
 	
 	ai_accept = { # Copied from negotiate alliance perk. Needs tweaking for relevant modifiers.
-		base = -25
+		base = -15
 
 		# Tier Differences
 		modifier = {
