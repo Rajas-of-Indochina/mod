@@ -43,6 +43,8 @@ Feel free to add suggestions
 - MMJM Hot spring event + others
 - Syncretization of two faiths
 - Unite Nusantara decision
+- Unite Greater Nusantara (All of Maritime SEA) under a native faith (similar to Unite India), grant discounted holy wars against all coastal duchies
+- Unite Greater India (Suvarnabhumi + Nusantara (Maybe just western Nusantara), maybe also Burma?), under a Dharmic faith, grant kingdom-level invasion CB against India
 
 ## The Silk Road
 - New interface showing silk road stuff, resources, religious minorities
