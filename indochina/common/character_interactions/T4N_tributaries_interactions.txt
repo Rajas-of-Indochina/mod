@@ -1,4 +1,4 @@
-﻿#Tributaries Character Inetractions
+﻿#Tributaries Character Interactions
 
 call_suzerain_to_war = {
 	use_diplomatic_range = no
@@ -583,20 +583,28 @@ ruler_offer_tribute_to_recipient = {
 				limit = {
 					scope:non_permanent_trib = yes
 				}
+				custom_tooltip = non_permanent_trib_recipient_tooltip
 				make_tributary = {
 					TYPE = tributary_non_permanent
 					SUZERAIN = scope:actor
 					TRIBUTARY = scope:recipient
+				}
+				scope:actor = {
+					custom_tooltip = non_permanent_trib_tooltip
 				}
 			}
 			else_if = {
 				limit = {
 					scope:permanent_trib = yes
 				}
+				custom_tooltip = permanent_trib_recipient_tooltip
 				make_tributary = {
 					TYPE = tributary_permanent
 					SUZERAIN = scope:actor
 					TRIBUTARY = scope:recipient
+				}
+				scope:actor = {
+					custom_tooltip = permanent_trib_tooltip
 				}
 			}
 			#payment of one time tribute for 5 year truce
@@ -604,10 +612,14 @@ ruler_offer_tribute_to_recipient = {
 				limit = {
 					scope:one_time_trib = yes
 				}
+				custom_tooltip = one_time_trib_recipient_tooltip
 				pay_short_term_gold = {
 					gold = 0.75 # 15% income * 5 years
 					target = scope:actor
 					yearly_income = yes
+				}
+				scope:actor = {
+					custom_tooltip = one_time_trib_tooltip
 				}
 			}	
 			save_scope_as = trib

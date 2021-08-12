@@ -1,0 +1,527 @@
+request_nonaggression_pact_interaction = {
+	category = interaction_category_diplomacy
+	use_diplomatic_range = yes
+	desc = request_nonaggression_pact_interaction.desc
+
+	greeting = positive
+	notification_text = negotiate_nap_notification
+
+	is_shown = {
+		scope:recipient = {
+			NOT = { this = scope:actor }
+			NOT = { is_allied_to = scope:actor }
+			NOT = { target_is_vassal_or_below = scope:actor } # Can only sign with external rulers/peer vassals, though the alliance is preserved if they somehow become your vassals
+			NOT = { target_is_liege_or_above = scope:actor }
+			is_ruler = yes
+			primary_title.tier > tier_barony
+		}
+		scope:actor = {
+			OR = {
+				has_relation_friend = scope:recipient
+				has_relation_best_friend = scope:recipient
+			}
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		
+		custom_description = {
+			#checks if characters already have NAP opinion modifier
+			text = "already_has_nap"
+			subject = scope:recipient
+			scope:recipient = {
+				NOT = {
+					has_opinion_modifier = {
+						modifier = negotiated_nap_opinion
+						target = scope:actor
+					}
+				}
+			}
+		}
+		
+		scope:recipient = {
+			is_landed = yes
+			is_at_war = no
+			is_imprisoned = no
+		}
+		
+		scope:actor = {
+			is_landed = yes
+			is_at_war = no
+			is_imprisoned = no
+		}
+		
+		scope:recipient = { is_diplomatically_available = yes }
+		
+		custom_description = {
+			text = "already_rejected_nap"
+			subject = scope:recipient
+			scope:actor = {
+				NOT = {
+					has_opinion_modifier = {
+						modifier = refused_nap_opinion
+						target = scope:recipient
+					}
+				}
+			}
+		}
+	}
+	
+	can_send = {
+		custom_description = { # Exploit prevention
+			text = "has_sent_interaction_already"
+			subject = scope:recipient
+			scope:actor = {
+				NOT = {
+					has_pending_interaction_of_type = request_nonaggression_pact_interaction
+				}
+			}
+		}
+	}
+
+	on_auto_accept = {
+		scope:recipient = {
+			trigger_event = non_aggression_pact.001
+		}
+	}
+
+	#Use hook
+	send_option = {
+		is_valid = {
+			scope:actor = {
+				has_usable_hook = scope:recipient
+			}
+		}
+		flag = hook	
+		localization = GENERIC_SPEND_A_HOOK
+	}
+	should_use_extra_icon = {
+		scope:actor = { has_usable_hook = scope:recipient }
+	}
+	extra_icon = "gfx/interface/icons/character_interactions/hook_icon.dds"
+
+	send_options_exclusive = no
+		
+	on_accept = {
+		scope:actor = {
+			custom_tooltip = negotiate_nap_effect_tooltip
+			trigger_event = nonaggressionpact.002
+			add_truce_both_ways = { #mutual non-aggression
+				character = scope:recipient
+				days = standard_truce_duration_days # 1825
+				name = truce_nap
+			}
+
+			if = {
+				limit = { scope:hook = yes }
+				use_hook = scope:recipient
+			}
+		}
+		scope:recipient = { # This opinion modifier controls the interaction, and is removed when breaking the alliance in any way (though on_actions)
+			custom_tooltip = negotiate_nap_effect_recipient_tooltip
+			add_opinion = {
+				modifier = negotiated_nap_opinion
+				target = scope:actor
+			}
+		}
+	}
+	
+	on_decline = {
+		scope:actor = {
+			trigger_event = non_aggression_pact.003
+		}
+		scope:actor = {
+			add_opinion = {
+				modifier = refused_nap_opinion
+				target = scope:recipient
+			}
+		}
+	}
+
+	auto_accept = {
+		custom_description = {
+			text = "spending_hook"
+			subject = scope:actor
+			object = scope:recipient
+			scope:hook = yes
+		}
+	}
+	
+	ai_accept = { # Copied from negotiate alliance perk. Needs tweaking for relevant modifiers.
+		base = -15
+
+		# Tier Differences
+		modifier = {
+			scope:actor = {
+				tier_difference = {
+					target = scope:recipient
+					value >= 1
+				}
+			}
+			add = {
+				value = 30
+				if = {
+					limit = {
+						tier_difference = {
+							target = scope:recipient
+							value = 2
+						}
+					}
+					add = 30
+				}
+				if = {
+					limit = {
+						tier_difference = {
+							target = scope:recipient
+							value = 3
+						}
+					}
+					add = 60
+				}
+				if = {
+					limit = {
+						tier_difference = {
+							target = scope:recipient
+							value = 4
+						}
+					}
+					add = 90
+				}
+				if = {
+					limit = {
+						tier_difference = {
+							target = scope:recipient
+							value = 5
+						}
+					}
+					add = 120
+				}
+			}
+			desc = RANK_DIFFERENCE_REASON
+		}
+		modifier = {
+			scope:actor = {
+				tier_difference = {
+					target = scope:recipient
+					value <= -1
+				}
+			}
+			add = {
+				value = -30
+				if = {
+					limit = {
+						tier_difference = {
+							target = scope:recipient
+							value = -2
+						}
+					}
+					add = -30
+				}
+				if = {
+					limit = {
+						tier_difference = {
+							target = scope:recipient
+							value = -3
+						}
+					}
+					add = -60
+				}
+				if = {
+					limit = {
+						tier_difference = {
+							target = scope:recipient
+							value = -4
+						}
+					}
+					add = -90
+				}
+				if = {
+					limit = {
+						tier_difference = {
+							target = scope:recipient
+							value = -5
+						}
+					}
+					add = -120
+				}
+			}
+			desc = RANK_DIFFERENCE_REASON
+		}
+		opinion_modifier = { # More likely to accept if Recipient likes the Actor
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.25
+			desc = AI_OPINION_REASON
+		}
+		# Dynasty Prestige Levels
+		modifier = {
+			add = -5
+			desc = AI_DYNASTY_PRESTIGE_REASON
+			scope:actor = { has_dynasty = yes }
+			NOT = { scope:actor.dynasty = scope:recipient.dynasty }
+			scope:actor.dynasty = { dynasty_prestige_level = 0 }
+		}
+		modifier = {
+			desc = AI_DYNASTY_PRESTIGE_REASON
+			scope:actor = { has_dynasty = yes }
+			NOT = { scope:actor.dynasty = scope:recipient.dynasty }
+			scope:actor.dynasty = { dynasty_prestige_level >= 2 }
+			add = {
+				value = 10
+				if = {
+					limit = {
+						scope:actor.dynasty = { dynasty_prestige_level >= 3 }
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						scope:actor.dynasty = { dynasty_prestige_level >= 4 }
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						scope:actor.dynasty = { dynasty_prestige_level >= 5 }
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						scope:actor.dynasty = { dynasty_prestige_level >= 6 }
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						scope:actor.dynasty = { dynasty_prestige_level >= 7 }
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						scope:actor.dynasty = { dynasty_prestige_level >= 8 }
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						scope:actor.dynasty = { dynasty_prestige_level >= 9 }
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						scope:actor.dynasty = { dynasty_prestige_level >= 10 }
+					}
+					add = 5
+				}
+			}
+		}
+		modifier = { #Faith compatibility
+			scope:recipient.faith = {
+				faith_hostility_level = {
+					target = scope:actor.faith
+					value > faith_fully_accepted_level
+				}
+			}
+			add = {
+				value = -20
+				if = {
+					limit = {
+						scope:recipient.faith = {
+							faith_hostility_level = {
+								target = scope:actor.faith
+								value >= faith_astray_level
+							}
+						}
+					}
+					subtract = 20
+				}
+				if = {
+					limit = {
+						scope:recipient.faith = {
+							faith_hostility_level = {
+								target = scope:actor.faith
+								value >= faith_hostile_level
+							}
+						}
+					}
+					subtract = 40
+				}
+				if = {
+					limit = {
+						scope:recipient.faith = {
+							faith_hostility_level = {
+								target = scope:actor.faith
+								value >= faith_evil_level
+							}
+						}
+					}
+					subtract = 60
+				}
+			}
+			desc = MARRY_DIFFERENT_FAITH_REASON
+		}
+		
+		modifier = {
+			add = intimidated_reason_value
+			scope:recipient = {
+				target_is_liege_or_above = scope:actor
+				has_dread_level_towards = {
+					target = scope:actor
+					level = 1
+				}
+			}
+			desc = INTIMIDATED_REASON
+		}
+		modifier = {
+			add = cowed_reason_value
+			scope:recipient = {
+				target_is_liege_or_above = scope:actor
+				has_dread_level_towards = {
+					target = scope:actor
+					level = 2
+				}
+			}
+			desc = COWED_REASON
+		}
+		
+		modifier = {
+			add = intimidated_external_reason_value
+			scope:recipient = {
+				NOT = { target_is_liege_or_above = scope:actor }
+				has_dread_level_towards = {
+					target = scope:actor
+					level = 1
+				}
+			}
+			desc = INTIMIDATED_REASON
+		}
+		modifier = {
+			add = cowed_external_reason_value
+			scope:recipient = {
+				NOT = { target_is_liege_or_above = scope:actor }
+				has_dread_level_towards = {
+					target = scope:actor
+					level = 2
+				}
+			}
+			desc = COWED_REASON
+		}
+		
+		modifier = {
+	  	  	add = {
+				value = 1
+					subtract = {
+					value = scope:recipient.max_military_strength
+					divide = { value = scope:actor.max_military_strength min = 1 }
+					}
+				multiply = 10
+	  		}
+			desc = offer_vassalization_interaction_aibehavior_power_tt
+		}
+		# Recipient is a Claimant to Actor's titles.
+		modifier = {
+			scope:recipient = {
+				any_claim = {
+					holder = scope:actor
+				}
+			}
+			add = {
+				value = -200
+				if = {
+					limit = {
+						NOT = {
+							scope:recipient.house = scope:actor.house
+						}
+					}
+					multiply = 2
+				}
+				if = {
+					limit = {
+						NOT = {
+							scope:recipient.dynasty = scope:actor.dynasty
+						}
+					}
+					multiply = 2
+				}
+				if = {
+					limit = {
+						scope:recipient.dynasty = scope:actor.dynasty
+						OR = {
+							has_trait = bastard
+							has_trait = legitimized_bastard
+						}
+					}
+					multiply = 1.5
+				}
+				if = { # Primary heir will probably inherit the lands after the rulers death
+					limit = {
+						scope:recipient = { is_primary_heir_of = scope:actor }
+					}
+					divide = 4
+				}
+			}
+			desc = IS_CLAIMANT_TO_ACTORS_TITLES
+		}
+		#Actor has claims on recipient's titles.
+		modifier = {
+			scope:actor = {
+				any_claim = {
+					holder = scope:recipient
+				}
+			}
+			add = 25
+			desc = IS_CLAIMANT_TO_RECIPIENT_TITLES
+		}
+		modifier = {
+			scope:recipient = {
+				NOT = {
+					any_claim = {
+						holder = scope:actor
+					}
+				}
+			}
+			scope:recipient.house = scope:actor.house
+			add = 15
+			desc = IS_SAME_HOUSE_REASON
+		}
+		modifier = {
+			scope:recipient = {
+				has_opinion_modifier = {
+					target = scope:actor
+					modifier = declared_war
+				}
+			}
+			add = -100
+			desc = DECLARED_WAR_REASON
+		}
+	}
+
+	ai_potential = {
+		is_at_war = no
+	}
+	
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		max = 10
+	}
+	
+	ai_targets = {
+		ai_recipients = peer_vassals
+		max = 5
+	}
+	ai_frequency = 72
+	
+	ai_will_do = {
+		base = 0
+		
+		modifier = {
+			add = 100
+			any_ally = {
+				count < 2
+			}
+		}
+	}
+}
