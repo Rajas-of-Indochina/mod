@@ -1,13 +1,7 @@
 ﻿# Roadmap / Todo list
 Feel free to add suggestions
 
-## Tribute
-- Demand tribute: 1-time payment, truce
-- Release vassal as tributary
-
 ## Interactions
-- Ask for money
-    gives them hook, you 30 gold (50 with golden obligations)
 - Antagonize
 - Interaction to ask someone to stop raiding you (offer truce)
 - Nonaggression pact between friends
@@ -18,32 +12,17 @@ Feel free to add suggestions
     Send ???
 - Send missionaries
 - Sell into slavery
-
-- Demand Tribute
-    Give 10%? of income and a truce
 - Offer trade deal
     Must have a resource to trade
-- Maybe tributary amounts can be given away in a single lump sum every year
-    Wha bout levies tho
 
-- Status of realm priest doctrine?
-- More powerful realm priest
-- Possible title for realm priest
-
+- Possible title for realm priest and other councilors
 - Allies should offer to join wars
-- Generally "nice" AI should be better towards the playerds
-
 - Upon death of spouse, children should transfer to someone
 
-## CBs
--
-
 ## Other
-- Succession law birth order
-    Child of concubine should be lower in birth order (or maybe status of concubines law)
-- Grandchildren should (probably) get all the claims of their deceased parents, at least under partition
+- Child of concubine should not be able to inherit by default, but can be permitted inheritance, at an opinion malus for all other children of concubines
 - You should have a way to escape a siege
-
+- "The Old Ways" event, where a follower of an organized religion is prompted to switch to the local beliefs
 
 ## Decisions
 - Expel minorities
@@ -64,6 +43,9 @@ Feel free to add suggestions
 - MMJM Hot spring event + others
 - Syncretization of two faiths
 - Unite Nusantara decision
+
+## The Silk Road
+- New interface showing silk road stuff, resources, religious minorities
 
 ## Shine And Polish
 - For feudal (namely Khmer and Java) should have a coronation ceremony with selection of a regnal name and burial of the previous ruler
