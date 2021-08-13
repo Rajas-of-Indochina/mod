@@ -1,7 +1,7 @@
 ﻿get_loan_for_hook_interaction = {
     category = interaction_category_diplomacy
 
-    auto_accept = yes
+    auto_accept = yes # Needs a condition, i.e. characters who want the gold more than the hook should say no
     use_diplomatic_range = yes
 
     desc = get_loan_for_hook_interaction_desc
@@ -46,10 +46,8 @@
                     if = {
                         #checks if actor has 'golden obligations' perk, get 50 instead.
                         limit = {
-                            scope:actor = {
-                                has_perk = golden_obligations_perk
-                            }
-                            gold > 50
+                            has_perk = golden_obligations_perk
+                            scope:recipient.gold >= 50
                         }
                         scope:recipient ={
                             pay_short_term_gold = {
@@ -60,7 +58,7 @@
                     }
                     else_if = {
                         limit = {
-                            gold > 30
+                            scope:recipient.gold >= 30
                         }
                         scope:recipient = {
                             pay_short_term_gold = {
@@ -75,7 +73,7 @@
                             pay_short_term_gold = {
                                 target = scope:actor
                                 gold = {
-                                    value = scope:actor.gold
+                                    value = scope:recipient.gold
                                     floor = yes
                                 }
                             }
