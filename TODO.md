@@ -19,12 +19,19 @@ Feel free to add suggestions
 
 - Possible title for realm priest and other councilors
 - Allies should offer to join wars
-- Upon death of spouse, children should transfer to someone
+- Convert between church/city/castle holdings
+    Flexible Holding Types https://steamcommunity.com/sharedfiles/filedetails/?id=2236798591
+- Fund mercenary company decision
+- Give raiders gold to leave you alone (truce)
 
 ## Other
 - Child of concubine should not be able to inherit by default, but can be permitted inheritance, at an opinion malus for all other children of concubines
 - You should have a way to escape a siege
 - "The Old Ways" event, where a follower of an organized religion is prompted to switch to the local beliefs
+- Compatibility with Sinews of War https://steamcommunity.com/sharedfiles/filedetails/?id=2566883856
+- Tribal conquet should subjugate when it's a single county ruler
+    Same with holy wars (for pluralist)
+- Upon death of spouse, children should transfer to someone
 
 ## Decisions
 - Expel minorities
@@ -33,10 +40,7 @@ Feel free to add suggestions
 - Convert government if under a liege with a different government or have joined a faith with a different government
 
 ## Nusantara
-- Bandanesia
-- West Papua
-- Organize Sumatera
-- Andamanese cultures
+- Cultural MAA
 - Carve inscription decision (like raise Runestone)
 - Cockfighting event
 - Implement holy sites
@@ -125,12 +129,6 @@ Feel free to add suggestions
 - Nuosu torch festival ref: http://en.yizuren.com/Culture/33564.html
 - Tattoos via raiding events, headhunting, single combat
 - Single combat
-- Tributaries and Mandala
-- Cultural MAA
-- Divvy up Austronesian
-- Convert between church/city/castle holdings
-
-- Fund mercenary company decision
 
 ## Submods
 - Lifestyles (Raiding, Tribute, Organized Crime, Arts Patronage, Occultism)
@@ -168,8 +166,6 @@ Feel free to add suggestions
 - Ports on rivers https://steamcommunity.com/sharedfiles/filedetails/?id=2228417684
 - Map Modes GUI https://steamcommunity.com/sharedfiles/filedetails/?id=2552708382
 - Submission to Authority https://steamcommunity.com/sharedfiles/filedetails/?id=2451533084
-- Flexible Holding Types
-    https://steamcommunity.com/sharedfiles/filedetails/?id=2236798591
 - Women's Rights  https://forum.paradoxplaza.com/forum/threads/women-in-ck3.1280459/
 - Prisoner Transfer https://steamcommunity.com/sharedfiles/filedetails/?id=2221952570
 - https://steamcommunity.com/workshop/filedetails/?id=2439159121
