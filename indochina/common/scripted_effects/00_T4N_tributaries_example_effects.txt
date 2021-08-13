@@ -25,9 +25,12 @@ free_tributary = {
 			}
 			remove_list_variable = { name = non_permanent_tributaries target = prev }				
 		}
-		else = {
-			remove_list_variable = { name = permanent_tributaries target = prev }
-		}
+        if = {
+            limit = {
+                is_target_in_variable_list = { name = permanent_tributaries target = prev }
+            }
+            remove_list_variable = { name = permanent_tributaries target = prev }
+        }
 		remove_list_variable = { name = all_tributaries target = prev }
 		trigger_event = { id = tributaries.4 }
 	}
@@ -132,6 +135,11 @@ make_custom_tributary = {
 	}
 }
 
+## PARAMS
+# TYPE
+# TRIBUTARY
+# SUZERAIN
+##
 pass_tributary_type_to_heir = {
 	$SCOPE$ = {
 		switch = {
@@ -140,22 +148,22 @@ pass_tributary_type_to_heir = {
 			flag:karling_tributary = {
 				make_tributary = {
 					TYPE = tributary_karling
-					TRIBUTARY = $NEW_RULER$
-					SUZERAIN = var:my_suzerain
+					TRIBUTARY = $TRIBUTARY$
+					SUZERAIN = $SUZERAIN$
 				}				
 			}
 			flag:china_tributary = {
 				make_tributary = {
 					TYPE = tributary_china
-					TRIBUTARY = $NEW_RULER$
-					SUZERAIN = var:my_suzerain
+					TRIBUTARY = $TRIBUTARY$
+					SUZERAIN = $SUZERAIN$
 				}	
 			}
 			flag:permanent_tributary = {
 				make_tributary = {
 					TYPE = tributary_permanent
-					TRIBUTARY = $NEW_RULER$
-					SUZERAIN = var:my_suzerain
+					TRIBUTARY = $TRIBUTARY$
+					SUZERAIN = $SUZERAIN$
 				}	
 			}
 		}
