@@ -3,6 +3,8 @@
 call_suzerain_to_war = {
     use_diplomatic_range = no
 
+    desc = call_suzerain_interaction_desc
+
     is_shown = {
         scope:actor = { #put here every tributary type which should be able to call suzerain
             scope:recipient = {
@@ -251,6 +253,9 @@ call_suzerain_to_war = {
 call_tributaries_to_war = {
     category = interaction_category_diplomacy
     use_diplomatic_range = no
+
+    desc = call_tributary_interaction_desc
+
     is_shown = {
         scope:actor = {
             is_suzerain = yes
@@ -302,6 +307,9 @@ call_tributaries_to_war = {
 offer_tribute = {
     category = interaction_category_diplomacy
     use_diplomatic_range = yes
+
+    desc = offer_tribute_interaction_desc
+
     is_shown = {
         scope:actor = { # actor is tributary
             NOR = {
@@ -556,6 +564,15 @@ offer_tribute = {
 ruler_offer_tribute_to_recipient = {
     category = interaction_category_diplomacy
     use_diplomatic_range = yes
+
+    desc = demand_tribute_interaction_desc
+
+    popup_on_receive = yes
+    pause_on_receive = yes
+
+    ai_min_reply_days = 4
+    ai_max_reply_days = 9
+
     is_shown = {
         scope:actor = {
             is_at_war = no
@@ -626,6 +643,10 @@ ruler_offer_tribute_to_recipient = {
                 days = standard_truce_duration_days # 1825
                 name = truce_paid_tribute
             }
+            add_opinion = {
+                modifier = gave_tribute
+                target = scope:recipient
+            }
         }
     }
 
@@ -635,6 +656,10 @@ ruler_offer_tribute_to_recipient = {
         }
         scope:actor = {
             trigger_event = { id = tributaries.11 }
+            add_opinion = {
+                modifier = refused_to_give_tribute_opinion
+                target = scope:recipient
+            }
         }
     }
 
@@ -887,6 +912,11 @@ ruler_offer_tribute_to_recipient = {
     ai_will_do = {
         base = 100
 
+        modifier = { # Will not target a more powerful realm
+            scope:actor.max_military_strength <= scope:recipient.max_military_strength
+            add = -1000
+        }
+
         modifier = {
             add = 1
             scope:one_time_trib = yes
@@ -907,6 +937,8 @@ ruler_offer_tribute_to_recipient = {
 free_tributary = {
     category = interaction_category_diplomacy
     use_diplomatic_range = yes
+
+    desc = free_tributary_interaction_desc
 
     is_shown = {
         scope:actor = {
@@ -963,6 +995,8 @@ free_tributary = {
 annex_tributary = {
     category = interaction_category_diplomacy
     use_diplomatic_range = no
+
+    desc = annex_tributary_interaction_desc
 
     is_shown = {
         scope:actor = {
@@ -1022,6 +1056,8 @@ turn_non_perma_tributary_to_perma = {
             }
         }
     }
+
+    desc = make_permanent_tributary_interaction_desc
 
     is_valid_showing_failures_only = {
         exists = scope:recipient.var:possible_permafication_year
