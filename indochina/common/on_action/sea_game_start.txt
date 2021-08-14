@@ -1,9 +1,37 @@
 ﻿# Called from code after history generation
 # Empty scope
 on_game_start = {
+	on_actions = {
+		set_tributaries_on_game_start
+		nerf_philippines_and_east_nusantara_on_game_start
+		holy_site_buildings_on_game_start
+	}
+}
+
+nerf_philippines_and_east_nusantara_on_game_start = {
 
 	effect = {
 
+		every_county = {
+			limit = {
+				title_province = {
+					OR = {
+						geographical_region = world_east_nusantara
+						geographical_region = world_philippines
+						geographical_region = world_sulawesi
+					}
+				}
+			}
+			add_county_modifier = {
+				modifier = sea_underpopulated_modifier
+			}
+		}
+	}
+}
+
+holy_site_buildings_on_game_start = {
+
+	effect = {
 		every_religion_global = {
 			limit = {
 				is_in_family = rf_animism
@@ -21,6 +49,12 @@ on_game_start = {
 				}
 			}
 		}
+	}
+}
+
+set_tributaries_on_game_start = {
+
+	effect = {
 
 		## Set tributaries
 		# Srivijaya
@@ -48,6 +82,13 @@ on_game_start = {
 			TYPE = tributary_permanent
 			SUZERAIN = title:e_srivijaya.holder
 			TRIBUTARY = title:d_wijayapura.holder
+		}
+
+		# Kambuja
+		make_tributary = {
+			TYPE = tributary_permanent
+			SUZERAIN = title:e_kambujadesa.holder
+			TRIBUTARY = title:d_nakhon_phanom.holder
 		}
 	}
 }
