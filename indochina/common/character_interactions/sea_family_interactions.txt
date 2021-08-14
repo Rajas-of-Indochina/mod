@@ -1,0 +1,75 @@
+﻿
+recognize_child_of_concubine_interaction = {
+	category = interaction_category_diplomacy
+	desc = recognize_child_of_concubine_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			OR = {
+				has_trait = child_of_concubine_female
+				has_trait = child_of_concubine_male
+			}
+			is_child_of = scope:actor
+		}
+	}
+
+	is_valid = {
+		scope:recipient = { is_diplomatically_available = yes }
+	}
+
+	auto_accept = yes
+
+	on_accept = {
+		scope:actor = {
+			send_interface_message = {
+				type = event_generic_neutral
+				title = dynast_legitimize_bastard_interaction_notification
+				right_icon = scope:recipient
+				show_as_tooltip = {
+					scope:recipient = {
+						add_trait_force_tooltip = legitimized_bastard
+						add_opinion = {
+							target = scope:actor
+							modifier = legitimized_me_opinion
+						}
+					}
+				}
+			}
+		}
+
+		hidden_effect = {
+			scope:recipient = {
+				trigger_event = child_of_concubine_interaction.0001
+				every_parent = {
+					limit = {
+						is_landed = yes
+						NOT = { this = scope:actor }
+					}
+					trigger_event = child_of_concubine_interaction.0002
+				}
+				every_sibling = {
+					limit = {
+						is_landed = yes
+						NOT = { this = scope:actor }
+					}
+					trigger_event = child_of_concubine_interaction.0002
+				}
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_targets = {
+		ai_recipients = children
+		max = 10
+	}
+
+	ai_frequency = 120
+
+	ai_will_do = {
+		base = 100
+	}
+}
