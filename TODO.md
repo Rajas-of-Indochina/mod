@@ -3,15 +3,12 @@ Feel free to add suggestions
 
 ## Interactions
 - Antagonize
-- Interaction to ask someone to stop raiding you (offer truce)
-- Nonaggression pact between friends
 - Do not convert zealots
 - More Send Gift options (giving less opinion but adds different modifiers. AI should also do these)
     Send slaves (boosts building speed)
     Send honor guard (boosts combat)
     Send ???
 - Send missionaries
-- Sell into slavery
 - Offer trade deal
     Must have a resource to trade
 - Offer to join anyone's war
@@ -25,7 +22,6 @@ Feel free to add suggestions
 - Give raiders gold to leave you alone (truce)
 
 ## Other
-- Child of concubine should not be able to inherit by default, but can be permitted inheritance, at an opinion malus for all other children of concubines
 - You should have a way to escape a siege
 - "The Old Ways" event, where a follower of an organized religion is prompted to switch to the local beliefs
 - Compatibility with Sinews of War https://steamcommunity.com/sharedfiles/filedetails/?id=2566883856
@@ -48,7 +44,6 @@ Feel free to add suggestions
 - Some representation of the clan systems for certain cultures (e.g. Batak)
 - MMJM Hot spring event + others
 - Syncretization of two faiths
-- Unite Nusantara decision
 - Unite Greater Nusantara (All of Maritime SEA) under a native faith (similar to Unite India), grant discounted holy wars against all coastal duchies
 - Unite Greater India (Suvarnabhumi + Nusantara (Maybe just western Nusantara), maybe also Burma?), under a Dharmic faith, grant kingdom-level invasion CB against India
 
@@ -56,14 +51,13 @@ Feel free to add suggestions
 - New interface showing silk road stuff, resources, religious minorities
 
 ## Shine And Polish
+- Succession for Annam: If a child would inherit the primary title, a new governor is appointed by China. Reverts to standard feudal if title is usurped.
+- Story chain for Vietnam
+
 - For feudal (namely Khmer and Java) should have a coronation ceremony with selection of a regnal name and burial of the previous ruler
-- Children of concubines should be disinherited by default, but may be granted inheritance later
-- Children of second wives should be lower in inheiritance priority
 - Forced marriage for prisoners
 
-- Historically accurate birth infant mortality rates
 - Bride price and/or dowry
-- Allies tab
 - Grant title to minor noble
 - Recruit courtiers from random county culture incl minority groups
 - Decision to send a trade caravan
@@ -71,37 +65,23 @@ Feel free to add suggestions
     Only every 3 years
     Costs gold. Returns the next year with more gold, dependent on the current state of the trade routes
 
-- Reduced likelihood of converting faith
-
 - Journey to the West decision
 - Journey to the East decision
 - Poetry
 
 - Take more prisoners during sieges
-- Wives AND Concubines
 - More penalty for marrying unlanded
-- Children of concubines lower in succession
 - Marrying unlanded lowborn should have a severe opinion/other penalty
 - Marrying unlanded nobility should not
-
-- Raise Runestone -> Commission Inscription
-
-- Spawn more unlanded nobles at game start
-- Assess whether faiths should have wives or concubines
-- Primogeniture for Kambujadesa
 
 - Raid Or Trade? event
 - Fire and Blood event
     Make this a CB?
 
 - Disable force converting zealots
-- Mines and other trade resources
 - Enslave populace decision
     Gives gold, nukes development in that county, and gives your capital a temporary "slave trading" modifier
 
-- Higher birth rates, higher death rates for children
-
-- Religious/cultural minority in a county
 - 1066 and 1260? start dates
 - Rice terraces innovation for certain mountainous cultures, like Ifugao and Hani
 - Regnal names
@@ -109,20 +89,12 @@ Feel free to add suggestions
 - Teknonyms, father-son linked names for Nuosu
 - Adventurers, claimants, pirates
 - War refugees
-- Spawn Random Courtier decision
-- Expanded trade routes
-- Special buildings such as mines
-- Trade route events, such as random courtiers spawning based on connected counties, and Radhanites etc
 - Clean up impassable areas, rivers, and locators
-- Terrain and development
-- Organize Thailand/Laos
 - Thai migration events/CB
-- Story chain for Vietnam
 - Raiding revamp, incl. raising raiders reducing your domain income, or something
 - More unique buildings
 - Volcanos?
 - Binukot for Filipino cultures
-- Additional succession types, incl. Filipino and Burmese
 - Lunar New Year (c/o Tianxia)
 - Slaves as a form of wealth, in trade, events, and others, as a CB or in raids
 - Festivals for all faiths
