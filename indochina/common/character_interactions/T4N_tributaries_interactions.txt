@@ -1,24 +1,28 @@
 ﻿#Tributaries Character Interactions
 
 call_suzerain_to_war = {
+    category = interaction_category_diplomacy
     use_diplomatic_range = no
-
-    desc = call_suzerain_interaction_desc
+    desc = call_suzerain_to_war_desc
+    interface_priority = 60
+    interface = call_ally
+    special_interaction = call_ally_interaction
+    popup_on_receive = yes
+    pause_on_receive = yes
 
     is_shown = {
         scope:actor = { #put here every tributary type which should be able to call suzerain
-            scope:recipient = {
-                is_tributary = yes
-            }
-            OR = {
-                is_defender = yes
-                is_attacker = yes
+            is_at_war = yes
+            exists = var:my_suzerain
+            var:my_suzerain = {
+                this = scope:recipient
             }
             NOT = { is_at_war_with = scope:recipient }
         }
-        scope:recipient = {
-            exists = var:suzerain
-        }
+    }
+
+    has_valid_target = {
+        exists = scope:target
     }
 
     is_valid_showing_failures_only = {
@@ -36,11 +40,61 @@ call_suzerain_to_war = {
         }
     }
 
+    on_decline = {
+        #The war could theoretically end on the day the decline is sent
+        if = {
+            limit = {
+                exists = scope:target
+            }
+            scope:target = {
+                if = {
+                    limit = {
+                        is_attacker = scope:actor
+                    }
+                    scope:actor = {
+                        add_opinion = {
+                            modifier = rejected_call_to_offensive_war
+                            target = scope:recipient
+                        }
+                    }
+                    scope:recipient = {
+                        add_prestige_experience = major_prestige_loss
+                    }
+                }
+                else = {
+                    scope:actor = {
+                        add_opinion = {
+                            modifier = rejected_call_to_defensive_war
+                            target = scope:recipient
+                        }
+                    }
+                    scope:recipient = {
+                        add_prestige_experience = massive_prestige_loss
+                    }
+                }
+                hidden_effect = {
+                    if = {
+                        limit = {
+                            NOT = { was_called = scope:recipient }
+                        }
+                        set_called_to = scope:recipient
+                    }
+                }
+            }
+            scope:actor = {
+                trigger_event = call_ally.0101
+            }
+        }
+    }
+
     on_accept = {
-        scope:actor = {
+        scope:target = {
+            hidden_effect = {
+                set_called_to = scope:recipient
+            }
             if = {
                 limit = {
-                    is_attacker = yes
+                    is_attacker = scope:actor
                 }
                 add_attacker = scope:recipient
             }
@@ -50,12 +104,6 @@ call_suzerain_to_war = {
         }
     }
 
-    ai_target_quick_trigger = {                         # Quick triggers for the ai_targets
-        adult = yes                                     # The target needs to be adult
-        attracted_to_owner = yes                        # The target needs to be attracted to owner
-        owner_attracted = yes                           # Owner needs to be attracted to the target
-        prison = yes                                    # Target must be in prison
-    }
     ai_accept = {
         base = 20
 
