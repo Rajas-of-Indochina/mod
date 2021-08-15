@@ -1,6 +1,27 @@
 ﻿# Roadmap / Todo list
 Feel free to add suggestions
 
+## Next up
+- Fill out the 867 start map
+- Cultural MAA
+- Carve inscription decision (like raise Runestone)
+- Holy Sites for all faiths (for Hindu and Buddhist faiths, at least 5 in Southeast Asia)
+- Headhunting religious tenet
+- Austronesian Tattoos
+- Add in everything else from MMJM
+- Gamelan music, and anything else that might fit
+- Unite Greater Nusantara (All of Maritime SEA) under a native faith (similar to Unite India), grant discounted holy wars against all coastal duchies?
+- Unite Greater India (Suvarnabhumi + Nusantara (Maybe just western Nusantara), maybe also Burma?), under a Dharmic faith, grant kingdom-level invasion CB against India
+- Syncretization of two faiths
+- Journey to the West decision
+- Journey to the East decision
+- 1066 and 1260? start dates
+- Rice terraces innovation for certain mountainous cultures, like Ifugao and Hani
+- Adventurers, claimants, pirates
+- Thai migration events/CB
+- Offer trade deal
+    Must have a resource to trade
+
 ## Interactions
 - Antagonize
 - Do not convert zealots
@@ -9,8 +30,6 @@ Feel free to add suggestions
     Send honor guard (boosts combat)
     Send ???
 - Send missionaries
-- Offer trade deal
-    Must have a resource to trade
 - Offer to join anyone's war
 - Bail Out Anyone https://steamcommunity.com/sharedfiles/filedetails/?id=2253837157
 
@@ -25,7 +44,7 @@ Feel free to add suggestions
 - You should have a way to escape a siege
 - "The Old Ways" event, where a follower of an organized religion is prompted to switch to the local beliefs
 - Compatibility with Sinews of War https://steamcommunity.com/sharedfiles/filedetails/?id=2566883856
-- Tribal conquet should subjugate when it's a single county ruler
+- Tribal conquest should subjugate when it's a single county ruler
     Same with holy wars (for pluralist)
 - Upon death of spouse, children should transfer to someone
 
@@ -36,24 +55,19 @@ Feel free to add suggestions
 - Convert government if under a liege with a different government or have joined a faith with a different government
 
 ## Nusantara
-- Cultural MAA
-- Carve inscription decision (like raise Runestone)
 - Cockfighting event
-- Implement holy sites
-- Headhunting religious tenet
 - Some representation of the clan systems for certain cultures (e.g. Batak)
-- MMJM Hot spring event + others
-- Syncretization of two faiths
-- Unite Greater Nusantara (All of Maritime SEA) under a native faith (similar to Unite India), grant discounted holy wars against all coastal duchies
-- Unite Greater India (Suvarnabhumi + Nusantara (Maybe just western Nusantara), maybe also Burma?), under a Dharmic faith, grant kingdom-level invasion CB against India
+
+## The Hundred Yue
+- Southern China and Taiwan
+- Interactions with the Dragon Throne
+- Succession for Annam: If a child would inherit the primary title, a new governor is appointed by China. Reverts to standard feudal if title is usurped.
+- Story chain for Vietnam
 
 ## The Silk Road
 - New interface showing silk road stuff, resources, religious minorities
 
 ## Shine And Polish
-- Succession for Annam: If a child would inherit the primary title, a new governor is appointed by China. Reverts to standard feudal if title is usurped.
-- Story chain for Vietnam
-
 - For feudal (namely Khmer and Java) should have a coronation ceremony with selection of a regnal name and burial of the previous ruler
 - Forced marriage for prisoners
 
@@ -65,10 +79,7 @@ Feel free to add suggestions
     Only every 3 years
     Costs gold. Returns the next year with more gold, dependent on the current state of the trade routes
 
-- Journey to the West decision
-- Journey to the East decision
 - Poetry
-
 - Take more prisoners during sieges
 - More penalty for marrying unlanded
 - Marrying unlanded lowborn should have a severe opinion/other penalty
@@ -82,15 +93,11 @@ Feel free to add suggestions
 - Enslave populace decision
     Gives gold, nukes development in that county, and gives your capital a temporary "slave trading" modifier
 
-- 1066 and 1260? start dates
-- Rice terraces innovation for certain mountainous cultures, like Ifugao and Hani
 - Regnal names
 - Post-death names (for Khmer, Vietnamese, others)
 - Teknonyms, father-son linked names for Nuosu
-- Adventurers, claimants, pirates
 - War refugees
 - Clean up impassable areas, rivers, and locators
-- Thai migration events/CB
 - Raiding revamp, incl. raising raiders reducing your domain income, or something
 - More unique buildings
 - Volcanos?
@@ -117,9 +124,9 @@ Feel free to add suggestions
         Loot capacity
         Stuff from Pillaging dynasty legacies, or the one added by that one mod
     Patron (Stewardship)
-    "Mafioso" (Intrigue)
+    "Mafioso" or "Mob Boss" (Intrigue)
         Extortionist? Racketeer?
-    Occulist (Learning)
+    Occultist (Learning)
 
 - R3 - ROI Religious Revamp
     Send Missionaries decision
@@ -147,10 +154,6 @@ Feel free to add suggestions
 - Christian Enclave in India https://steamcommunity.com/sharedfiles/filedetails/?id=2531123594&searchtext=
 - Ports https://steamcommunity.com/sharedfiles/filedetails/?id=2228417684
 - Higher Mortality https://steamcommunity.com/sharedfiles/filedetails/?id=2428173603&searchtext=disease
-
-## The Hundred Yue
-- Southern China and Taiwan
-- Interactions with the Dragon Throne
 
 ## Jambudvipa
 - Improvements to vanilla India and Tibet
