@@ -166,6 +166,91 @@
 		}
 	}
 
+	tenet_ancestor_worship = {
+		icon = core_tenet_runestone
+
+		piety_cost = {
+			value = faith_tenet_cost_low
+
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_ancestor_worship }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+
+		is_shown = {
+			OR = {
+				has_doctrine = pagan_hostility_doctrine
+				has_doctrine = animism_hostility_doctrine
+			}
+		}
+
+		can_pick = {
+			custom_description = {
+				text = incompatible_tenet_sacred_heritage_trigger
+				NOT = { flag:tenet_sacred_heritage = { is_in_list = selected_doctrines } }
+			}
+		}
+
+		parameters = {
+			increased_dynasty_prestige_birth_mult = 1
+			increased_dynasty_prestige_marriage_mult = 1
+			increased_dynasty_prestige_long_reign_mult = 0.5
+			pilgrimage_decision_active = yes
+		}
+
+		character_modifier = {
+			close_relative_opinion = 5
+		}
+	}
+
+	tenet_sacred_heritage = {
+		icon = core_tenet_followers
+		piety_cost = {
+			value = faith_tenet_cost_low
+
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_sacred_heritage }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+
+		is_shown = {
+			OR = {
+				has_doctrine = pagan_hostility_doctrine
+				has_doctrine = animism_hostility_doctrine
+			}
+		}
+
+		can_pick = {
+			custom_description = {
+				text = incompatible_tenet_ancestor_worship_trigger
+				NOT = { flag:tenet_ancestor_worship = { is_in_list = selected_doctrines } }
+			}
+			custom_description = {
+				text = incompatible_tenet_communal_identity_trigger
+				NOT = { flag:tenet_communal_identity = { is_in_list = selected_doctrines } }
+			}
+		}
+
+		parameters = {
+			sacred_heritage_same_culture_conversion_bonus_active = yes
+			sacred_heritage_same_faith_promote_culture_bonus_active = yes
+			sacred_heritage_other_culture_conversion_penalty_active = yes
+
+			increased_dynasty_prestige_birth_mult = 0.5
+			increased_dynasty_prestige_marriage_mult = 0.5
+		}
+
+		character_modifier = {
+			name = "tenet_sacred_heritage_opinion"
+			same_faith_opinion = 5
+			close_relative_opinion = 5
+		}
+	}
+
 	tenet_communal_identity = {
 		icon = core_tenet_followers
 		piety_cost = {
@@ -190,7 +275,10 @@
 		}
 
 		can_pick = {
-			always = yes
+			custom_description = {
+				text = incompatible_tenet_sacred_heritage_trigger
+				NOT = { flag:tenet_sacred_heritage = { is_in_list = selected_doctrines } }
+			}
 		}
 
 		parameters = {
@@ -1476,38 +1564,6 @@
 		}
 	}
 
-	tenet_ancestor_worship = {
-		icon = core_tenet_runestone
-
-		piety_cost = {
-			value = faith_tenet_cost_low
-
-			# Multiplier for keeping same tenet
-			if = {
-				limit = { has_doctrine = tenet_ancestor_worship }
-				multiply = faith_unchanged_doctrine_cost_mult
-			}
-		}
-
-		is_shown = {
-			OR = {
-				has_doctrine = pagan_hostility_doctrine
-				has_doctrine = animism_hostility_doctrine
-			}
-		}
-
-		parameters = {
-			increased_dynasty_prestige_birth_mult = 1
-			increased_dynasty_prestige_marriage_mult = 1
-			increased_dynasty_prestige_long_reign_mult = 0.5
-			pilgrimage_decision_active = yes
-		}
-
-		character_modifier = {
-			close_relative_opinion = 5
-		}
-	}
-
 	tenet_astrology = {
 		icon = core_tenet_bigbook
 
@@ -2654,4 +2710,3 @@
 	#	}
 	#}
 }
-
