@@ -3,6 +3,6 @@ tags={
 	"Historical"
 	"Map"
 }
-name="Rajas of Indochina Dev Build"
+name="Rajas of Indochina"
 supported_version="1.4.*"
 remote_file_id="2509174436"
