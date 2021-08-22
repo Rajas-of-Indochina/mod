@@ -4,6 +4,8 @@ Feel free to add suggestions
 ## Next up
 - Fill out the 867 start map
 - Cultural MAA
+- Moluccan faiths
+- Multiple suzerains per tributary
 - Carve inscription decision (like raise Runestone)
 - Holy Sites for all faiths (for Hindu and Buddhist faiths, at least 5 in Southeast Asia)
 - Headhunting religious tenet
@@ -13,14 +15,10 @@ Feel free to add suggestions
 - Unite Greater Nusantara (All of Maritime SEA) under a native faith (similar to Unite India), grant discounted holy wars against all coastal duchies?
 - Unite Greater India (Suvarnabhumi + Nusantara (Maybe just western Nusantara), maybe also Burma?), under a Dharmic faith, grant kingdom-level invasion CB against India
 - Syncretization of two faiths
-- Journey to the West decision
-- Journey to the East decision
 - 1066 and 1260? start dates
 - Rice terraces innovation for certain mountainous cultures, like Ifugao and Hani
-- Adventurers, claimants, pirates
 - Thai migration events/CB
-- Offer trade deal
-    Must have a resource to trade
+- Abdicate as a monk decision for buddhists and hindus
 
 ## Formable Empires/Kingdoms
 - Viet Nam for Annam and Champa
@@ -37,6 +35,7 @@ Feel free to add suggestions
 - Send missionaries
 - Offer to join anyone's war
 - Bail Out Anyone https://steamcommunity.com/sharedfiles/filedetails/?id=2253837157
+
 - Useful Liege/Vassal Alliances https://steamcommunity.com/sharedfiles/filedetails/?id=2229456694
 
 - Send character:
@@ -45,6 +44,9 @@ Feel free to add suggestions
     as missionary
     stewardship something
     as a mercenary
+
+- Offer trade deal
+    Must have a resource to trade
 
 - Possible title for realm priest and other councilors
 - Allies should offer to join wars
@@ -186,6 +188,15 @@ Feel free to add suggestions
 - Tribal conquest should subjugate when it's a single county ruler
     Same with holy wars (for pluralist)
 - Upon death of spouse, children should transfer to someone
+- Adventurers, claimants, pirates
+
+## Decisions
+- Expel minorities
+    Some counties should have a historical minority group
+- Take a journey to a county or friend, or across the world
+- Convert government if under a liege with a different government or have joined a faith with a different government
+- Journey to the West decision
+- Journey to the East decision
 
 ## Nusantara
 - Cockfighting event
