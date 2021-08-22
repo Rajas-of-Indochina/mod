@@ -1,40 +1,33 @@
 ﻿
-## Use CFP clothing if available ##
-sea_check_for_cfp = {
-    trigger_if = { cfp_is_loaded = yes }
-    trigger_else = { always = no }
-}
-
-
 portrait_burmese_clothing_trigger = {
     AND = {
-        sea_check_for_cfp = yes
+        cfp_is_loaded = yes
         scope:culture = { portrait_burmese_clothing_contents_trigger = yes }
     }
 }
 portrait_burmese_clothing_spouse_trigger = {
     AND = {
-        sea_check_for_cfp = yes
+        cfp_is_loaded = yes
         culture = { portrait_burmese_clothing_contents_trigger = yes }
     }
 }
 portrait_burmese_clothing_contents_trigger = {
     AND = {
-        sea_check_for_cfp = yes
+        cfp_is_loaded = yes
         has_graphical_culture = austronesian_clothing_gfx
     }
 }
 
 portrait_indian_clothing_contents_trigger = {
-    AND = {
-        has_graphical_culture = indian_clothing_gfx
-
-        OR = {
-            # does not have austronesian
+    OR = {
+        AND = {
+            cfp_is_loaded = yes
+            has_graphical_culture = indian_clothing_gfx
             NOT = { has_graphical_culture = austronesian_clothing_gfx }
-
-            # cfp is not installed
-            NOT = { sea_check_for_cfp = yes }
+        }
+        AND = {
+            cfp_is_loaded = no
+            has_graphical_culture = indian_clothing_gfx
         }
     }
 }
