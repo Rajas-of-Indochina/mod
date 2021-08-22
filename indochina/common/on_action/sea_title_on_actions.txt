@@ -1,0 +1,27 @@
+﻿# A title is transferred to a new character
+# root = the new holder
+# scope:title = the title that changes hands
+# scope:previous_holder = previous holder. Might be dead
+
+# Titles created by Filipinos are stuck to Barangay Elective
+
+on_title_gain = {
+	on_actions = {
+		add_barangay_succession_type
+	}
+}
+
+add_barangay_succession_type = {
+	effect = {
+		if = {
+			limit = {
+				scope:transfer_type = flag:created
+				has_government = tribal_government
+				root.culture_group = culture_group:filipino_group
+			}
+			scope:title = {
+				add_title_law = barangay_elective_succession_law
+			}
+		}
+	}
+}
