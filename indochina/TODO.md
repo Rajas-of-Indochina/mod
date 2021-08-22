@@ -22,16 +22,29 @@ Feel free to add suggestions
 - Offer trade deal
     Must have a resource to trade
 
-## Interactions
+## Formable Empires/Kingdoms
+- Viet Nam for Annam and Champa
+
+## Interactions Submod
 - Antagonize
 - Do not convert zealots
 - More Send Gift options (giving less opinion but adds different modifiers. AI should also do these)
     Send slaves (boosts building speed)
     Send honor guard (boosts combat)
+    Send elephants
     Send ???
+- Find a white elephant random event, which can then be kept or sent as a gift
 - Send missionaries
 - Offer to join anyone's war
 - Bail Out Anyone https://steamcommunity.com/sharedfiles/filedetails/?id=2253837157
+- Useful Liege/Vassal Alliances https://steamcommunity.com/sharedfiles/filedetails/?id=2229456694
+
+- Send character:
+    As spy
+    as diplomat
+    as missionary
+    stewardship something
+    as a mercenary
 
 - Possible title for realm priest and other councilors
 - Allies should offer to join wars
@@ -39,6 +52,132 @@ Feel free to add suggestions
     Flexible Holding Types https://steamcommunity.com/sharedfiles/filedetails/?id=2236798591
 - Fund mercenary company decision
 - Give raiders gold to leave you alone (truce)
+- Higher Mortality https://steamcommunity.com/sharedfiles/filedetails/?id=2428173603&searchtext=disease
+- Coronations https://steamcommunity.com/sharedfiles/filedetails/?id=2530914310
+
+- Imprison anyone within your realm
+- Ask someone to join or leave a faction
+- Rulers with negative opinion should yell at you if you enter their lands
+- Release troops to accelerate retreat
+- Demand prisoner from vassal
+    Refusal may be a cream
+- Visit vassal
+- Show character location
+- Make barons relevant
+- Conquest/holy war should vassalize when single county
+- Nobles should be harder to capture during a siege, easy to capture in battle
+- Knights and commanders should be captured not killed
+- No marrying peasants
+- Scaling diplo range
+- Fix gruesome festivals
+- No more free holdings when converting gov
+    Do all the stuff in the doc for authority
+- Anyone can hold a city w/ differing administration
+- Satellite tribal holdings that upgrade based on improvements built
+- Bigger courts (?) more deaths
+- Allow subjugation more often?
+- Vague success chances
+- Gather troops should be slow, incl for MAA
+- Show All Factions based on culture and faith
+- Hook to force someone to join war
+- You should always have a friend and a rival (probably) scaling based on rank
+- More tyranny, more dread
+    Salt the earth
+- No ending war during a battle
+- End war with individual ally
+- Conquest only targets neighboring
+- More execution methods than burn at stake
+- Executing should always cause tyranny for same faith
+- Who gets terrified at 14 dread
+
+- More interactions relating to alliances
+
+- More levels of upgrades for buildings (esp tribal)
+- Small tribal holdings
+
+- County control should be more important to show integration, easier to lead to revolts
+
+- Move and siege speeds
+- Character travel time
+- Independent barons
+- Easier to siege lesser counties, harder to siege others
+
+- Negotiate peace with gold or something
+
+- Anywhere connected by trade routes may send courtiers
+- Administer city like a castle with minuses
+
+- Visit county to make local improvements
+
+- Drop the minority thing, either do it right or don't do it at all
+
+- Slower gather troops
+- MAA distance from capital
+
+- Borrow from moneylenders
+- Big Men who have lots of hooks
+- Invest in mercenary companies
+- Personal relationship with your culture's mercenary companies
+
+- Flavor when declaring war based on the type of war and the combatants
+- No changing generals etc outside your territory
+
+- Calculate warscore against all allies, a la EU4 (?)
+- Make sieges make sense (also immersive)
+- Duel for siege
+- Separate peace deals
+
+- Councilors and sub-councilors
+
+- Loan gold, if unrepaid, may get CB
+
+- Succession crisis
+- Faction stuff
+
+  #### Rivalries
+    - Dynastic rivals
+        Nemesis ruler heir becomes rival
+        Designate someone nemesis
+    - Antagonize
+    - Nemesis may make their friends your rivals
+    - Prestige for beating rivals
+    - Rival-related CBs
+    - Older dynasties may create rival branches out of nowhere ?
+    - 2 schemes at once, +1 with perk
+
+    - Similar mechanics for friends and allies
+        Special stuff between liege-vassal
+
+  #### Lifestyles (Raiding, Tribute, Organized Crime, Arts Patronage, Occultism)
+    8 perks each
+
+    "Suzerain" (Diplomacy)
+        Extra gold from tributaries
+        Individuals pay special tribute
+    Raider (Martial)
+        Faster raid speed
+        Faster move speed
+        More loot
+        Less fatal casualties
+        Dread gain from raiding
+        Loot capacity
+        Stuff from Pillaging dynasty legacies, or the one added by that one mod
+        Recruit into raiding band
+    Patron (Stewardship)
+        Recruit artists
+    "Mafioso" or "Mob Boss" (Intrigue)
+        Extortionist? Racketeer?
+        Recruit others into your gang
+        Threaten vassals and courtiers for money
+    Occultist (Learning)
+        Witch Coven
+
+## Decisions
+- Expel minorities
+    Some counties should have a historical minority group
+- Take a journey to a county or friend, or across the world
+- Convert government if under a liege with a different government or have joined a faith with a different government
+- Overcome Sin
 
 ## Other
 - You should have a way to escape a siege
@@ -47,12 +186,6 @@ Feel free to add suggestions
 - Tribal conquest should subjugate when it's a single county ruler
     Same with holy wars (for pluralist)
 - Upon death of spouse, children should transfer to someone
-
-## Decisions
-- Expel minorities
-    Some counties should have a historical minority group
-- Take a journey to a county or friend, or across the world
-- Convert government if under a liege with a different government or have joined a faith with a different government
 
 ## Nusantara
 - Cockfighting event
@@ -110,24 +243,6 @@ Feel free to add suggestions
 - Single combat
 
 ## Submods
-- Lifestyles (Raiding, Tribute, Organized Crime, Arts Patronage, Occultism)
-    8 perks each
-
-    "Suzerain" (Diplomacy)
-        Extra gold from tributaries
-    Raider (Martial)
-        Faster raid speed
-        Faster move speed
-        More loot
-        Less fatal casualties
-        Dread gain from raiding
-        Loot capacity
-        Stuff from Pillaging dynasty legacies, or the one added by that one mod
-    Patron (Stewardship)
-    "Mafioso" or "Mob Boss" (Intrigue)
-        Extortionist? Racketeer?
-    Occultist (Learning)
-
 - R3 - ROI Religious Revamp
     Send Missionaries decision
     6 or more Holy Sites per faith
@@ -148,12 +263,9 @@ Feel free to add suggestions
 - Women's Rights  https://forum.paradoxplaza.com/forum/threads/women-in-ck3.1280459/
 - Prisoner Transfer https://steamcommunity.com/sharedfiles/filedetails/?id=2221952570
 - https://steamcommunity.com/workshop/filedetails/?id=2439159121
-- Useful Liege/Vassal Alliances https://steamcommunity.com/sharedfiles/filedetails/?id=2229456694
 - Music https://steamcommunity.com/sharedfiles/filedetails/?id=2556566633
 - Icons https://steamcommunity.com/sharedfiles/filedetails/?id=2378432770
 - Christian Enclave in India https://steamcommunity.com/sharedfiles/filedetails/?id=2531123594&searchtext=
-- Ports https://steamcommunity.com/sharedfiles/filedetails/?id=2228417684
-- Higher Mortality https://steamcommunity.com/sharedfiles/filedetails/?id=2428173603&searchtext=disease
 
 ## Jambudvipa
 - Improvements to vanilla India and Tibet
