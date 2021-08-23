@@ -5,6 +5,37 @@
 	WATERLEVEL = 3.8
 }
 
+NSetup = {
+	# chance that a courtless character is sent to a court as a guest instead of a regular courtier on game start (0..1)
+	COURTLESS_CHARACTER_GUEST_CHANCE = 0.25
+	# Random range for number of characters per pool (duchy) generated at the start of the game
+	GENERATED_POOL_CHARACTERS = { 8 15 }
+	# Templates used for the pool character. The weights correspond to the template names at the same index.
+	# The scope of the template is a random ruler whose capital is in that pool.
+	GENERATED_POOL_CHARACTER_TEMPLATES = {
+		"pool_repopulate_spouse"
+		"pool_repopulate_prowess"
+		"pool_repopulate_diplomacy"
+		"pool_repopulate_martial"
+		"pool_repopulate_stewardship"
+		"pool_repopulate_intrigue"
+		"pool_repopulate_learning"
+		"pool_repopulate_local_flavor"
+	}
+	GENERATED_POOL_CHARACTER_TEMPLATE_WEIGHTS = {
+		2
+		5
+		2
+		2
+		2
+		2
+		2
+		2
+	}
+	DESIRED_NEIGHBOR_POOLS = 4		# How many pools should we try to consider bordering? Pools bordering the sea will consider pools further removed by sea neighboring until this number is hit, or MAX_POOL_NEIGHBOR_DISTANCE is hit
+	MAX_POOL_NEIGHBOR_DISTANCE = 3	# How many sea zones away can we search at most?
+}
+
 NReligion = {
 	DEFAULT_FERVOR = 50				# Default fervor
 	TIME_AT_PEACE_FOR_PIETY = 730 # For faiths with a doctrine with piety_from_long_peace, how long do they need to be at peace (in days)
