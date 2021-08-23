@@ -38,6 +38,19 @@ Feel free to add suggestions
 
 - Useful Liege/Vassal Alliances https://steamcommunity.com/sharedfiles/filedetails/?id=2229456694
 
+- Less opinion bonus for being siblings, more willing to war over your claims
+- Move down all succession types by an age
+- Game mode disabling primogeniture
+- Form faction against primogeniture
+
+- Factions based on:
+    Faith, culture
+    war, peace, populists, other interests (check CK2 and CK2+)
+        - Court: Each member is interested above all in improving their position in the realm, though council positions, new titles and ensuring they have to contribute as little as possible to their liege be it men or gold.
+        - Prosperity: Seeking to improve their personal finances rather than prestige, these vassals would prefer peace though they are not opposed to war as long as taxes are kept low.
+        - Glory: War gives everyone an opportunity for Glory, as long as you win of course. So long as you keep providing the realm with regular victories and prestige these vassals will happily support you.
+        - Tradition: Piety and victories over heathens will keep the members of the tradition faction on your side, so long as the church is not overly burdened by taxes.
+
 - Send character:
     As spy
     as diplomat
