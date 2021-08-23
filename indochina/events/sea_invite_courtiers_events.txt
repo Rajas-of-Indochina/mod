@@ -1,0 +1,138 @@
+﻿
+namespace = sea_invite_courtiers
+
+# Invite male courtier
+sea_invite_courtiers.0001 = {
+	type = character_event
+	title = sea_invite_courtiers.0001.title
+	desc = sea_invite_courtiers.0001.desc
+
+	theme = realm
+
+	left_portrait = {
+		character = root
+		animation = idle
+	}
+	right_portrait = {
+		character = scope:target
+		animation = idle
+	}
+
+	trigger = { exists = capital_province } #If I lost it before I got this event, I shouldn't get a physician
+
+	immediate = {
+
+		every_realm_county = {
+			if = {
+				limit = { this.holder = root }
+				add_to_list = counties_list
+				add_to_list = counties_list
+			}
+			else = {
+				add_to_list = counties_list
+			}
+		}
+
+		random_in_list = {
+			list = counties_list
+			save_scope_as = target_county
+		}
+
+		# Create random courtier
+		create_character = {
+			employer = root
+			age = { 18 50 }
+			gender = male
+			random_traits = yes
+			faith = scope:target_county.faith
+			culture = scope:target_county.culture
+			dynasty = generate
+			save_scope_as = target
+		}
+	}
+
+	# Hire them
+	option = {
+		name = sea_invite_courtiers.0001.a
+	}
+
+	# Don't hire them
+	option = {
+		name = sea_invite_courtiers.0001.b
+		hidden_effect = {
+			scope:target = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+}
+
+# Invite female courtier
+sea_invite_courtiers.0002 = {
+	type = character_event
+	title = sea_invite_courtiers.0002.title
+	desc = sea_invite_courtiers.0002.desc
+
+	theme = realm
+
+	left_portrait = {
+		character = root
+		animation = idle
+	}
+	right_portrait = {
+		character = scope:target
+		animation = idle
+	}
+
+	trigger = { exists = capital_province } #If I lost it before I got this event, I shouldn't get a physician
+
+	immediate = {
+
+		every_realm_county = {
+			if = {
+				limit = { this.holder = root }
+				add_to_list = counties_list
+				add_to_list = counties_list
+			}
+			else = {
+				add_to_list = counties_list
+			}
+		}
+
+		random_in_list = {
+			list = counties_list
+			save_scope_as = target_county
+		}
+
+		# Create random courtier
+		create_character = {
+			employer = root
+			age = { 16 30 }
+			gender = female
+			random_traits = yes
+			faith = scope:target_county.faith
+			culture = scope:target_county.culture
+			dynasty = generate
+			save_scope_as = target
+		}
+	}
+
+	# Hire them
+	option = {
+		name = sea_invite_courtiers.0002.a
+	}
+
+	# Don't hire them
+	option = {
+		name = sea_invite_courtiers.0002.b
+		hidden_effect = {
+			scope:target = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+}
