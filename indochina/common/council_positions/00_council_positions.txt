@@ -600,10 +600,34 @@ councillor_court_chaplain = {
 	valid_character = {
 		exists = root.liege_or_court_owner
 		can_be_court_chaplain_trigger = { COURT_OWNER = root.liege_or_court_owner }
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_trait = devoted
+						faith = { religion_tag = buddhism_religion }
+					}
+					AND = {
+						has_trait = devoted
+						faith = { religion_tag = jainism_religion }	
+					}
+				}
+			}
+		}
 	}
 
 	on_get_position = {
 		got_council_position_effect = yes
+		if = {
+			limit = {
+				NOT = { has_trait = devoted}
+				OR = {
+					faith = { religion_tag = buddhism_religion }
+					faith = { religion_tag = jainism_religion }	
+				}
+			}
+			add_trait = devoted	
+		}
 	}
 
 	on_fired_from_position = {

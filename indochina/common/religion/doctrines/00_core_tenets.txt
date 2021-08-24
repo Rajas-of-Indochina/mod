@@ -183,6 +183,7 @@
 			OR = {
 				has_doctrine = pagan_hostility_doctrine
 				has_doctrine = animism_hostility_doctrine
+				has_doctrine = eastern_hostility_doctrine
 			}
 		}
 
@@ -1332,8 +1333,6 @@
 			}
 		}
 
-
-
 		parameters = {
 			meditation_mechanics_active = yes
 		}
@@ -1531,6 +1530,50 @@
 
 		character_modifier = {
 			monthly_piety_gain_per_happy_powerful_vassal_add = 0.3
+		}
+	}
+
+	tenet_dhammavicaya = {
+		icon = core_tenet_altar
+			piety_cost = {
+			if = {
+				limit = {
+					OR = {
+						religion_tag = islam_religion
+						religion_tag = judaism_religion
+					}
+				}
+				value = faith_tenet_cost_low
+			}
+			else = {
+				value = faith_tenet_cost_mid
+			}
+
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_literalism }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+
+		is_shown = {
+			religion_tag = buddhism_religion
+		}
+
+		traits = {
+			virtues = {
+				education_learning_3
+				education_learning_4
+				scholar
+			}
+		}
+
+		character_modifier = {
+			monthly_learning_lifestyle_xp_gain_mult = 0.1
+		}
+
+		parameters = {
+			literalist_debate_enabled = yes
 		}
 	}
 
