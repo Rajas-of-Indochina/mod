@@ -7,20 +7,58 @@
 
 on_title_gain = {
 	on_actions = {
-		add_barangay_succession_type
+		add_cultural_succession_type
 	}
 }
 
-add_barangay_succession_type = {
+add_cultural_succession_type = {
 	effect = {
-		if = {
+		if = { # Barangay
 			limit = {
 				scope:transfer_type = flag:created
-				has_government = tribal_government
+				scope:title = { tier >= tier_duchy }
+
 				root.culture_group = culture_group:filipino_group
 			}
 			scope:title = {
 				add_title_law = barangay_elective_succession_law
+			}
+		}
+		else_if = { # Tanistry
+			limit = {
+				scope:transfer_type = flag:created
+				scope:title = { tier >= tier_duchy }
+				OR = {
+					root.culture_group = culture_group:brythonic_group
+					root.culture_group = culture_group:goidelic_group
+				}
+			}
+			scope:title = {
+				add_title_law = gaelic_elective_succession_law
+			}
+		}
+		else_if = { # Thing
+			limit = {
+				scope:transfer_type = flag:created
+				scope:title = { tier >= tier_duchy }
+				OR = {
+					root.culture_group = culture_group:north_germanic_group
+				}
+			}
+			scope:title = {
+				add_title_law = scandinavian_elective_succession_law
+			}
+		}
+		else_if = { # Witenagemot
+			limit = {
+				scope:transfer_type = flag:created
+				scope:title = { tier >= tier_kingdom }
+				OR = {
+					root.culture = culture:anglo_saxon
+				}
+			}
+			scope:title = {
+				add_title_law = saxon_elective_succession_law
 			}
 		}
 	}
