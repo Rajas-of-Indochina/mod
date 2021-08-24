@@ -55,7 +55,7 @@ Feel free to add suggestions
     As spy
     as diplomat
     as missionary
-    stewardship something
+    as a merchant
     as a mercenary
 
 - Offer trade deal
