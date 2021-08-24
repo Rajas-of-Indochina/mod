@@ -6,10 +6,6 @@
 }
 
 NSetup = {
-	# chance that a courtless character is sent to a court as a guest instead of a regular courtier on game start (0..1)
-	COURTLESS_CHARACTER_GUEST_CHANCE = 0.25
-	# Random range for number of characters per pool (duchy) generated at the start of the game
-	GENERATED_POOL_CHARACTERS = { 8 15 }
 	# Templates used for the pool character. The weights correspond to the template names at the same index.
 	# The scope of the template is a random ruler whose capital is in that pool.
 	GENERATED_POOL_CHARACTER_TEMPLATES = {
@@ -32,76 +28,36 @@ NSetup = {
 		2
 		2
 	}
-	DESIRED_NEIGHBOR_POOLS = 4		# How many pools should we try to consider bordering? Pools bordering the sea will consider pools further removed by sea neighboring until this number is hit, or MAX_POOL_NEIGHBOR_DISTANCE is hit
-	MAX_POOL_NEIGHBOR_DISTANCE = 3	# How many sea zones away can we search at most?
 }
 
 NReligion = {
-	DEFAULT_FERVOR = 50				# Default fervor
-	TIME_AT_PEACE_FOR_PIETY = 730 # For faiths with a doctrine with piety_from_long_peace, how long do they need to be at peace (in days)
-
-	# Hostility levels start at 0 (same faith or equivalent to same faith)
-	HOSTILITY_OPINION_EFFECTS = {	# The opinion effects of each hostility level
-		0
-		-10
-		-20
-		-30
-	}
-
-	HOSTILITY_COUNTY_OPINION_EFFECTS = {	# The opinion effects of each hostility level on counties. Modified by fervor of the county's faith divided by 100
-		0
-		-15
-		-30
-		-45
-	}
-	
-	HOSTILITY_COMBAT_MOD_MULT = {	# Multiplier to how big of an effect tolerance_advantage_mod has. The higher it is, the greater the effect
-		0
-		0
-		0.005
-		0.01
-	}
-	
-	HOSTILITY_LEVEL_NAMES = {	# Localization for each hostility level. See _doctrines.info for more info
-		"FAITH_HOSTILITY_RIGHTEOUS"
-		"FAITH_HOSTILITY_ASTRAY"
-		"FAITH_HOSTILITY_HOSTILE"
-		"FAITH_HOSTILITY_EVIL"
-	}
 	PIETY_LOSS_PER_MISSING_SPOUSE = 0 # If you have fewer spouses than expected in a polygamous faith, you'll lose this much piety for each spouse you fall short.
-	DESIRED_SPOUSES_PER_TIER = { 1 1 1 2 3 4 }  # Number of spouses you are expected to have per tier, starging with unlanded, then baron and ending with emperor
-	FAITH_CONVERSION_PIETY_MINIMUM = 250 # The minimum amount of piety converting faith costs
-	FAITH_CREATION_FERVOR_DISCOUNT_PER_MISSING_FERVOR = 1 # How much cheaper does creating a faith get per fervor below 100%? 1 means 1% per point
-	FAITH_CREATION_FERVOR_DISCOUNT_MAX = 50 # What percentage does the discount cap out at? With these numbers, 0-50 fervor means a 50% discount. Above 50 means between 0% and 50% discount
-	MINIMUM_MODIFIED_PARTICIPATION_TO_GET_PART_OF_GHW_POT = 100 # How much GHW participation (after multiplying by ghw_score_mult) is necessary in order to receive part of the pot?
-	PART_OF_GHW_POT_DESIGNATED_FOR_KINGDOM_RECIPIENT = 10 # How many percent of the pot will be reserved for the person receiving the kingdom?
-	GHW_HOSTILITY_MIN_LEVEL = 2 # Any independent ruler within the target kingdom at least this hostile to the caller faith will be a forced defender
-	PREFERRED_GENDER_CHANCE = 3 # When deciding if clergy characters should be male or female a 3 here means that the preferred gender will be three times as likely
-	THEOCRATIC_LESSEE_INCOME = 6 # The yearly income that a theocratic lessee has to improve provinces is multiplied with this
-	GHW_DAYS_LIMIT_CAN_CHANGE_TARGET = 30  # is GHW starts sooner than this number, you can no longer change target
-	GHW_COST_PIETY_CHANGE_TARGET = 250  # cost to chagne GHW target. Grows linearly with each change
-	MAX_FERVOR = 100 # Max amount of fervor
-	HEAD_OF_FAITH_PIETY_GAIN = 1.0 # Monthly piety gain for heads of faith
-	MINIMUM_FAITH_SIZE_FERVOR_MODIFIER = 10 # Adjusts the size modifier for monthly fervor gain for a faith according to the following formula: 1/squareroot(max(define_value, faith_size)/define_value) where define value is the value of MINIMUM_FAITH_SIZE_FERVOR_MODIFIER and faith_size is the current amount of provinces that follows the faith.
+	FAITH_CREATION_FERVOR_DISCOUNT_MAX = 90 # What percentage does the discount cap out at? With these numbers, 0-50 fervor means a 50% discount. Above 50 means between 0% and 50% discount
+}
 
-	FAITH_COLORS = {
-		0.9  0.1  0.29 1.0 #Red
-		0.24 0.71 0.29 1.0 #Green
-		1.0  0.88 0.1  1.0 #Yellow
-		0.0  0.51 0.78 1.0 #Blue
-		0.96 0.51 0.19 1.0 #Orange
-		0.57 0.12 0.71 1.0 #Purple
-		0.27 0.94 0.94 1.0 #Cyan
-		0.94 0.2  0.9  1.0 #Magenta
-		0.82 0.96 0.24 1.0 #Lime
-		0.98 0.75 0.75 1.0 #Pink
-		0.0  0.5  0.5  1.0 #Teal
-		0.9  0.75 1.0  1.0 #Lavender
-		0.67 0.43 0.16 1.0 #Brown
-		0.5  0.0  0.0  1.0 #Maroon
-		0.67 1.0  0.76 1.0 #Mint
-		0.5  0.5  0.0  1.0 #Olive
-		1.0  0.85 0.69 1.0 #Coral
-		0.0  0.0  0.5  1.0 #Navy
-	}
+NChildbirth = {
+	BASE_NR_OF_CHILDREN_PER_COUPLE = { 3 3 4 5 6 7 } # Based on tier of character or parents; whichever is higher Unlanded, Baron, Count, ..., Emperor
+
+	SECONDARY_SPOUSE_FERTILITY_MULTIPLIER = 0.6
+	CONCUBINE_FERTILITY_MULTIPLIER = 0.6
+	NOT_SPOUSE_FERTILITY_MULTIPLIER = 0.4
+
+	NEWBORN_HEALTH_BASE = 3.2
+	NEWBORN_HEALTH_SPAN = 1.8
+	NEWBORN_HEALTH_FEMALE_BONUS = 0.5
+}
+
+NCharacter = {
+	RANDOM_CHARACTER_MIN_FERTILITY = 0.2
+	RANDOM_CHARACTER_MAX_FERTILITY = 0.75
+
+	RANDOM_CHARACTER_MIN_HEALTH = 3.0
+	RANDOM_CHARACTER_MAX_HEALTH = 6.0
+	RANDOM_CHARACTER_AGE_MIN_HEALTH = 2.5 # This is the minimum starting base health characters get after adjustments for age
+
+	BASE_FERTILITY = 0.7
+	BASE_HEALTH = 4.5
+
+	MALE_ATTRACTION_CUTOFF_AGE = 55		# After this age, the attraction of traits no longer have any effect #changed 65
+	FEMALE_ATTRACTION_CUTOFF_AGE = 40	# After this age, the attraction of traits no longer have any effect #changed 50
 }
