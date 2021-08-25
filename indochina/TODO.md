@@ -44,12 +44,43 @@ Feel free to add suggestions
 - Form faction against primogeniture
 
 - Factions based on:
-    Faith, culture
-    war, peace, populists, other interests (check CK2 and CK2+)
-        - Court: Each member is interested above all in improving their position in the realm, though council positions, new titles and ensuring they have to contribute as little as possible to their liege be it men or gold.
-        - Prosperity: Seeking to improve their personal finances rather than prestige, these vassals would prefer peace though they are not opposed to war as long as taxes are kept low.
-        - Glory: War gives everyone an opportunity for Glory, as long as you win of course. So long as you keep providing the realm with regular victories and prestige these vassals will happily support you.
-        - Tradition: Piety and victories over heathens will keep the members of the tradition faction on your side, so long as the church is not overly burdened by taxes.
+
+    - Court: Each member is interested above all in improving their position in the realm, though council positions, new titles and ensuring they have to contribute as little as possible to their liege be it men or gold.
+    - Prosperity: Seeking to improve their personal finances rather than prestige, these vassals would prefer peace though they are not opposed to war as long as taxes are kept low.
+    - Glory: War gives everyone an opportunity for Glory, as long as you win of course. So long as you keep providing the realm with regular victories and prestige these vassals will happily support you.
+
+    Court
+        Greed
+        Treacherous
+        Evil
+        Vengeful
+        Spineless
+    Prosperity
+        Rationality
+        Honor
+        Compassionate
+        Content
+        Godless
+    Glory
+        Magnanimous
+        Bold
+        Insane
+        Zealous
+
+    Above a certain discontent a faction will begin to support claimants. If no claimants are available they will demand lowered crown authority.
+
+    - Some claimant factions should always be shown
+    - Faith/Culture factions
+        Will be happy if someone of their faith/culture is appointed to council, or granted a title
+        Will be angered if someone of their faith/culture is fired from council, or title revoked, or executed
+        Goes double if they are a powerful vassal
+        May be joined by counties as well, and opinion will shift accordingly
+        Will demand independence when provoked
+
+    Each discontent faction increases your stress gain
+    50-70% is discontent
+    70%+ they will begin to make demands. If demands are not met discontent goes up
+    If it reaches 100% they make an ultimatum
 
 - Send character:
     As spy
