@@ -10,6 +10,29 @@
         scope:recipient = {
             is_ai = yes
         }
+
+        # Must be liege, vassal, friend, family, or ally
+        OR = {
+            AND = {
+                scope:actor = { exists = liege }
+                scope:actor.liege = scope:recipient
+            }
+            AND = {
+                scope:recipient = { exists = liege }
+                scope:recipient.liege = scope:actor
+            }
+            scope:actor = {
+                OR = {
+                    has_relation_friend = scope:recipient
+                    has_relation_lover = scope:recipient
+                    has_relation_best_friend = scope:recipient
+                    has_relation_soulmate = scope:recipient
+                }
+            }
+            scope:actor = { is_any_family_relation_or_spouse_trigger = { CHARACTER = scope:recipient } }
+            scope:actor = { is_allied_to = scope:recipient }
+        }
+
         NOT = { scope:recipient = scope:actor }
     }
 
@@ -23,6 +46,11 @@
         scope:recipient = {
             is_imprisoned = no
         }
+        NOR = {
+            scope:recipient = { has_relation_rival = scope:actor }
+            scope:recipient = { has_relation_nemesis = scope:actor }
+        }
+        NOT = { scope:recipient = { has_hook = scope:actor } }
         scope:recipient = {
             custom_description = {
                 text = demand_payment_too_little_gold
