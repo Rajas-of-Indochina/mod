@@ -402,3 +402,644 @@ dharma_jainism.009 = {# New statue of the tirthankaras
 		add_piety = -20
 	}
 }
+#######################################
+# Mahamastakabhisheka Festival
+#######################################
+dharma_jainism.100 = {# Prepare for the Mahamastakabhisheka Festival
+	type = character_event
+	title = dharma_jainism.100.t
+	desc = dharma_jainism.100.desc
+	theme = friendly
+	
+	left_portrait = root
+	
+	immediate = {
+		add_character_flag = planning_an_activity
+	}
+	
+	option = {# Time to travel to Shravanabelagola 
+		name = dharma_jainism.100.a
+		trigger_event = {
+			id = dharma_jainism.101
+			days = { 2 20 }
+		}
+	}
+}
+dharma_jainism.101 = {# arriving in Shravanabelagola 
+	type = character_event
+	title = dharma_jainism.101.t
+	desc = dharma_jainism.0152.desc
+	theme = forest_temple
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Time to climb the stairs
+		name = dharma_jainism.101.a
+
+		trigger_event = {
+			id = dharma_jainism.102
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.102 = {# Climbing the grand staircase
+	type = character_event
+	title = dharma_jainism.102.t
+	desc = dharma_jainism.0152.desc
+
+	theme = forest_temple
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = { # prepare the Grand anointing of the statue
+		name = dharma_jainism.102.a
+		stress_impact = {
+			lazy = minor_stress_gain # Lazy people don't climbing all the stairs
+		}
+		trigger_event = {
+			id = dharma_jainism.103
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.103 = {# The grand Anointing of the Statue
+	type = character_event
+	title = dharma_jainism.103.t
+	desc = dharma_jainism.103.desc
+	theme = forest_temple
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = {# I will personally lead the anointing
+		name = dharma_jainism.103.lead
+		add_prestige = 30
+		add_piety = 10
+		stress_impact = {
+			arrogant = minor_stress_gain # Arrogant people like to lead the anointing!
+			humble = minor_stress_impact_loss # Shy people don't like to be leading the anointing
+			zealous = minor_stress_impact_loss # Zealous people like to be involved regardless
+		}
+		trigger_event = {
+			id = dharma_jainism.104
+			days = { 2 5 }
+		}
+	}	
+	option = {# Help the monks with the anointing
+		name = dharma_jainism.103.help
+		add_prestige = 10
+		add_piety = 10
+		stress_impact = {
+			arrogant = minor_stress_gain # Humble people like to help the monks.
+			humble = minor_stress_impact_loss # Shy people don't like to be leading the anointing
+			zealous = minor_stress_impact_loss # Zealous people like to be involved regardless
+		}
+		trigger_event = {
+			id = dharma_jainism.104
+			days = { 2 5 }
+		}
+	}	
+	option = {# Stay on the ground floor
+		name = dharma_jainism.103.participate
+		add_piety = 30
+		trigger_event = {
+			id = dharma_jainism.104
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.104 = {# Meditating on Bahubali's teachings
+	type = character_event
+	title = dharma_jainism.104.t
+	desc = dharma_jainism.104.desc
+	theme = forest_temple
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = {# Compassion
+		name = dharma_jainism.104.compassion
+
+		random_list = {
+			30 = {
+				if = {
+					trigger = {
+						has_trait = callous
+					}
+					remove_trait = callous
+				}
+				if = {
+					trigger = {
+						has_trait = sadistic
+					}
+					remove_trait = sadistic
+				}
+				add_trait = compassionate
+			}
+			70 = {
+				add_piety = 50
+			}
+		}
+		add_character_modifier = {
+			modifier = jain_vow_asteya
+			days = 150
+		}
+		trigger_event = {
+			id = dharma_jainism.0155
+			days = { 2 5 }
+		}
+	}
+	option = {# Non-Violence
+		name = dharma_jainism.104.ahimsa
+		random_list = {
+			30 = {
+				if = {
+					trigger = {
+						has_trait = vengeful
+					}
+					remove_trait = vengeful
+				}
+				add_trait = forgiving
+			}
+			70 = {
+				add_piety = 50
+			}
+		}
+		add_character_modifier = {
+			modifier = jain_vow_ahimsa
+			days = 150
+		}
+		trigger_event = {
+			id = dharma_jainism.0155
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.105 = {# Mahamastakabhisheka concludes
+	type = character_event
+	title = dharma_jainism.105.t
+	desc = dharma_jainism.105.desc
+	theme = forest_temple
+	
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+	
+	option = {# Back Home
+		name = dharma_jainism.105.a
+		add_piety = 50
+	}
+
+	after = {
+		trigger_event = { id = dharma_jainism.106 days = 1	}		
+	}
+}
+dharma_jainism.106 = {# Misc cleanup
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+#######################################
+# Paryushana Festival
+#######################################
+dharma_jainism.107 = {# Prepare for the Paryushana Festival
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.107.digambara.title
+			}
+			desc = dharma_jainism.107.svetembara.title
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.107.digambara.desc
+			}
+			desc = dharma_jainism.107.svetembara.desc
+		}
+	}
+	theme = friendly
+	
+	left_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = dharma_jainism.107.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_dharma_paryushana_festival
+			}	
+		}
+		trigger_event = { id = dharma_jainism.108	days = { 2 5 }	}
+	}
+}
+dharma_jainism.108 = {# Inviting the Monks and community for the festival
+	type = character_event
+	title = dharma_jainism.108.t
+	desc = dharma_jainism.108.desc
+	theme = realm
+	
+	right_portrait = root
+	
+	option = { # time to invite the local monks
+		name = dharma_jainism.108.a
+		add_piety = 10
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			cynical = minor_stress_impact_gain
+		}
+		trigger_event = { id = dharma_jainism.109	days = { 2 5 }	}
+	}	
+}
+dharma_jainism.109 = {# Paryushana begins - Fasting Begins
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.109.digambara.title
+			}
+			desc = dharma_jainism.109.svetembara.title
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.109.digambara.desc
+			}
+			desc = dharma_jainism.109.svetembara.desc
+		}
+	}
+	theme = india_shrine
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = {# The fast begins
+		name = dharma_jainism.109.a
+		add_character_modifier = {
+			modifier = fasting_bad_modifier
+			days = 12
+		}
+		trigger_event = {
+			id = dharma_jainism.110
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.110 = {# Reading from the Holy Texts 
+	type = character_event
+	title = dharma_jainism.110.t
+	desc = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.110.digambara.desc
+			}
+			desc = dharma_jainism.110.svetembara.desc
+		}
+	}
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = {# holy texts
+		name = dharma_jainism.110.a
+		random_list = {
+			10 = {			add_learning_lifestyle_xp = minor_lifestyle_xp	}
+			90 = {	add_piety = 50	}
+		}
+		trigger_event = {
+			id = dharma_jainism.111
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.111 = {# Procession to the main Jain temple
+	type = character_event
+	title = dharma_jainism.111.t
+	desc = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.111.digambara.desc
+			}
+			desc = dharma_jainism.111.svetembara.desc
+		}
+	}
+	theme = wood_temple
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = {# I shall lead
+		name = dharma_jainism.111.a
+		add_prestige = 25
+		stress_impact = {
+			zealous = minor_stress_loss
+			shy = minor_stress_impact_gain
+		}
+		trigger_event = {
+			id = dharma_jainism.112
+			days = { 2 5 }
+		}
+	}
+	option = {# the monks shall lead
+		name = dharma_jainism.111.a
+		add_piety = 25
+		stress_impact = {
+			zealous = minor_stress_loss
+			shy = minor_stress_impact_gain
+		}
+		trigger_event = {
+			id = dharma_jainism.112
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.112 = {# Das Dharma - 5 Great vows
+	type = character_event
+	title = dharma_jainism.112.t
+	desc = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.112.digambara.desc
+			}
+			desc = dharma_jainism.112.svetembara.desc
+		}
+	}
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = {# Ahimsa
+		name = dharma_jainism.112.ahimsa
+		add_character_modifier = {
+			modifier = jain_vow_ahimsa
+			days = 100
+		}
+		trigger_event = {
+			id = dharma_jainism.113
+			days = { 2 5 }
+		}
+	}
+	option = {# Satya
+		name = dharma_jainism.112.satya
+		add_character_modifier = {
+			modifier = jain_vow_satya
+			days = 100
+		}
+		trigger_event = {
+			id = dharma_jainism.113
+			days = { 2 5 }
+		}
+	}
+	option = {# Asteya
+		name = dharma_jainism.112.asteya
+		add_character_modifier = {
+			modifier = jain_vow_asteya
+			days = 100
+		}
+		trigger_event = {
+			id = dharma_jainism.113
+			days = { 2 5 }
+		}
+	}
+	option = {# Aparigraha
+		name = dharma_jainism.112.aparigraha
+		add_character_modifier = {
+			modifier = jain_vow_aparigraha
+			days = 100
+		}
+		trigger_event = {
+			id = dharma_jainism.113
+			days = { 2 5 }
+		}
+	}
+	option = {# Brahamacarya
+		name = dharma_jainism.112.brahmacarya
+		add_character_modifier = {
+			modifier = jain_vow_brahamacarya
+			days = 100
+		}
+		trigger_event = {
+			id = dharma_jainism.113
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.113 = {# Dhoop Dashami/ Sugandh Dashami - burning of the inceses to burn karma away
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.113.digambara.title
+			}
+			desc = dharma_jainism.113.svetembara.title
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.113.digambara.desc
+			}
+			desc = dharma_jainism.113.svetembara.desc
+		}
+	}
+	theme = wood_temple
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					any_child = {
+						age >= 6
+						age <= 8					
+					}
+					any_child = {
+						age >= 9
+						age <= 13
+						is_female = no
+					}
+				}
+			}
+			add_character_flag = RICE_pamir_chawmos_has_kid
+			every_child = {
+				limit = {
+					age >= 6
+					age <= 8				
+				}
+				add_character_modifier = {
+					modifier = RICE_pamir_chailaksambaik
+					years = 3
+				}
+			}
+			every_child = {
+				limit = {
+					age >= 9
+					age <= 13
+					is_female = no				
+				}
+				add_character_modifier = {
+					modifier = RICE_pamir_butsambaik
+					years = 3
+				}
+			}
+		}
+	}
+	
+	option = {# Ok
+		name = dharma_jainism.113.a
+		add_piety = 10
+		trigger_event = {
+			id = dharma_jainism.114
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.114 = {# Paryushana asking for forgiveness
+	type = character_event
+	title = dharma_jainism.114.t
+	desc = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.114.digambara.desc
+			}
+			desc = dharma_jainism.114.svetembara.desc
+		}
+	}
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # Ok
+		name = dharma_jainism.114.a
+		random_list = {
+			30 = {
+				if = {
+					trigger = {
+						has_trait = callous
+					}
+					remove_trait = callous
+				}
+				if = {
+					trigger = {
+						has_trait = sadistic
+					}
+					remove_trait = sadistic
+				}
+				add_trait = compassionate
+			}
+			70 = {
+				add_piety = 50
+			}
+		}
+		stress_impact = {
+			compassionate = minor_stress_impact_loss
+			forgiving = minor_stress_impact_loss
+			vengeful = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+		}
+		trigger_event = {
+			id = dharma_jainism.115
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.115 = {# Paryushana concludes
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.115.digambara.title
+			}
+			desc = dharma_jainism.115.svetembara.title
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_jainism.115.digambara.desc
+			}
+			desc = dharma_jainism.115.svetembara.desc
+		}
+	}
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # Ok
+		name = dharma_jainism.115.a
+		add_character_modifier = {
+			modifier = exhausted_modifier
+			days = 11
+		}
+		hidden_effect = { trigger_event = { id = dharma_jainism.116 days = 1 } }
+
+	}
+}
+dharma_jainism.116 = {# Misc cleanup
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
+

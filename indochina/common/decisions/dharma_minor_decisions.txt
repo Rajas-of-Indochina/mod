@@ -164,6 +164,60 @@ select_personal_nat_decision = {# Burmese Gods and Goddesses
 		base = 100
 	}
 }
+select_personal_deity_buddhist_decision = {# Buddhist Gods and Goddesses
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds"
+
+	desc = select_personal_deity_buddhist_decision_desc
+	selection_tooltip = select_personal_deity_buddhist_decision_tooltip
+
+	is_shown = {
+		OR = {
+			faith = faith:theravada
+			faith = faith:mahayana
+			faith = faith:vajrayana
+		}
+	}
+
+	is_valid = {
+
+	}
+
+	is_valid_showing_failures_only = {
+	}
+
+	effect = {
+		custom_tooltip = select_personal_meditional_deity_decision_tt
+		trigger_event = dharma_buddhism.202
+	}
+
+	ai_check_interval = 96
+	cooldown = { months = 36 }	
+
+	ai_potential = {
+		piety >= minor_piety_value
+		NOR = {
+			# Bon Tibetan Deities
+			has_character_modifier = tibet_deity_sipe_gyalmo # Sipe Gyalmo
+			has_character_modifier = tibet_deity_shenlha_okar # Shenlha Okar
+			has_character_modifier = tibet_deity_tonpa_shenrab # Tonpa Shenrab
+			has_character_modifier = tibet_deity_yeshe_walmo # Yeshe Walmo
+			has_character_modifier = tibet_deity_takla_mebar # Takla Mebar
+			has_character_modifier = tibet_deity_Zhambala # Zhambala
+			has_character_modifier = tibet_deity_sherab_chamma # Sherab Chamma
+			# Buddhist Tibetan Deities
+			has_character_modifier = tibet_deity_palden_lhamo # Palden_Lhamo
+			has_character_modifier = tibet_deity_tara # Tara
+			has_character_modifier = tibet_deity_avalokitesvara  # Avalokiteśvara 
+			has_character_modifier = tibet_deity_yamantaka # Yamantaka
+			has_character_modifier = tibet_deity_hevajra # Hevajra
+			has_character_modifier = tibet_deity_vajrayogini # Vajrayogini
+		}
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
 #######################################
 # Hindu Decisions
 #######################################
@@ -212,4 +266,100 @@ buddhist_retreat_decision = {# Go on a Buddhist Retreat
 #######################################
 # Jain Decisions
 #######################################
+dharma_attend_mahamastakabhisheka_festival = {# Jain Mahamastakabhisheka festival
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 4380 } # It is a 12 year festival
+	desc = dharma_attend_mahamastakabhisheka_festival_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:jainism_religion
+		any_sub_realm_barony = { title_province = { has_building = gammateshwara_statue_01 } }# the giant statue must be built first and in your realm
+	}
+	
+	is_valid = {
+		religion = religion:jainism_religion
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
 
+	effect = {
+		custom_tooltip = dharma_attend_mahamastakabhisheka_festival_effect_tooltip
+		trigger_event = { id = pamir.0150 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+dharma_attend_paryushana_festival = {# Jain Paryushana festival
+	title = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_attend_paryushana_festival_digambara
+			}
+			desc = dharma_attend_paryushana_festival
+		}
+	}
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 4380 } # It is a 12 year festival
+	desc = {
+		first_valid = {
+			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
+				trigger = { faith = faith:digambara }
+				desc = dharma_attend_paryushana_festival_digambara_desc
+			}
+			desc = dharma_attend_paryushana_festival_desc
+		}
+	}
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:jainism_religion
+	}
+	
+	is_valid = {
+		religion = religion:jainism_religion
+		custom_description = {
+			text = dharma_decision_paryushana_month_requirement
+			current_month >= 8
+			current_month <= 10
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_paryushana_festival_effect_tooltip
+		trigger_event = { id = pamir.0150 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to host monks
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
