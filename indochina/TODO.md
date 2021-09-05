@@ -1,6 +1,72 @@
 ﻿# Roadmap / Todo list
 Feel free to add suggestions
 
+## Add these events
+    Burmese Settlers [Event 1.0]
+    Fires between 846 and 860
+    Triggers: Nanzhao King has access to at least 200 gold
+    Event to Nanzhao:
+    “Our recent expansions have been very successful, especially from the help of Burmese horse raiders who have devastated the Pyu realms. Many have already moved into the now-empty lands to settle. They can ensure the Pyu cannot rebuild for our next incursion! Shall we fund them, my liege?”
+    Option 1: Yes, fund their settlements!
+    Lose 200 gold
+    Option 2: No it is too costly.
+    Lose 300 Prestige
+
+    Founding of Pagan [Event 1.1]
+    Event to Duke of Pagan:
+    Duke must be Burmese culture
+    Nanzhao picked Option 1:
+    “My liege, the King of Nanzhao has generously funded us to build cities in the lands we took from the Pyu!”
+    Option 1: “Excellent!”
+    Culture Conversion cost to Burmese reduced 50% for 20 years
+    Cost to build new holdings decreased by 20% for 20 years
+    +5% Monthly Control in Burmese provinces for 2 years
+    Gain 300 Gold
+    Nanzhao picked Option 2
+    “My liege, the King of Nanzhao has left us on our own without support!”
+    Option 1: “We shall strike it alone then”
+    Gain 100 Prestige
+    Increased Levy size by 10% for 10 years
+
+    Burmese Settlers [Event 1.2]
+    Event to any Burmese count or higher title except Duke of Pagan: =
+    Nanzhao picked Option 1:
+    “My liege, the King of Nanzhao has generously funded us to build cities in the lands we took from the Pyu!”
+    Option 1: “Excellent!”
+    Culture Conversion cost to Burmese reduced 50% for 10 years
+    +5% Monthly Control in Burmese provinces for 2 years
+    Gain 100 Gold
+    Nanzhao picked Option 2
+    “My liege, the King of Nanzhao has left us on our own without support!”
+    Option 1: “We shall strike it alone then”
+    Gain 100 Prestige
+    Increased Levy size by 10% for 10 years
+
+    Burmese Settlers [Event 1.3]
+    Event to any Pyu duke or higher title holder
+    Nanzhao picked Option 1:
+    “My liege, the wicked King of Nanzhao has generously funded the horse raiding barbarians to take over our lands permanently!”
+    Option 1: “This will only lead to bloodshed!”
+    -5% Men at Arms maintenance
+    +50 Levy size in all Pyu provinces
+    +5% Archer Toughness, +5% Skirmisher Toughness
+    Lose 100 Prestige
+    Option 2: “War is not our way”
+    +10% Monthly Development in all Pyu provinces for 3 years
+    Gain 50 Prestige
+    Nanzhao picked Option 2
+    “My liege, the King of Nanzhao has left those horse raiding barbarians alone in our lands! The time is ripe to push back”
+    Option 1: “War is sometimes necessary for survival”
+    -10% Men at Arms maintenance
+    +100 Levy size in all Pyu provinces
+    +5% Archer Toughness, +5% Skirmisher Toughness, +5% Heavy Infantry Damage
+    Character gains claims on any Burmese provinces neighbouring controlled lands
+    Lose 100 Prestige
+    Option 2: “War is not our way”
+    +10% Monthly Development in all Pyu provinces for 5 years
+    Culture Conversion cost to Pyu reduced by 20% for 10 years
+    Gain 50 Prestige
+
 ## Next up
 - Fill out the 867 start map
 - Cultural MAA
@@ -20,6 +86,11 @@ Feel free to add suggestions
 - Thai migration events/CB
 - Abdicate as a monk decision for buddhists and hindus
 
+## Casus Belli
+- Humiliate Rival
+- Steal development
+- Release captives
+
 ## Formable Empires/Kingdoms
 - Viet Nam for Annam and Champa
 
@@ -38,8 +109,6 @@ Feel free to add suggestions
 
 - Useful Liege/Vassal Alliances https://steamcommunity.com/sharedfiles/filedetails/?id=2229456694
 
-- Less opinion bonus for being siblings, more willing to war over your claims
-- Move down all succession types by an age
 - Game mode disabling primogeniture
 - Form faction against primogeniture
 
@@ -197,9 +266,23 @@ Feel free to add suggestions
   #### Lifestyles (Raiding, Tribute, Organized Crime, Arts Patronage, Occultism)
     8 perks each
 
-    "Suzerain" (Diplomacy)
+    "Suzerain" Or Subjugator(Diplomacy)
+        Focus gives +10 Natural Dread, +1 Diplomacy
+
+        1. Bonus prestige per tributary
+        2. + Tributary acceptance
+        3. Bonus gold per tributary
+        4. +2 Knights, +25% effectiveness
+        5. Cheaper tributary CB
+        6. Siege speed bonus
+        7. More better courtiers
+        8. Can demand one-time tribute
+
+        Trait gives Dread, Prestige, Gold
+
         Extra gold from tributaries
         Individuals pay special tribute
+
     Raider (Martial)
         Faster raid speed
         Faster move speed
