@@ -554,7 +554,6 @@ religious_decision.0002 = {
 # by Sean Hughes		#
 # 0101-0120				#
 #########################
-
 scripted_trigger is_vaguely_tamil_bhakti_trigger = {
 	OR = {
 		has_culture = culture:tamil
@@ -562,6 +561,28 @@ scripted_trigger is_vaguely_tamil_bhakti_trigger = {
 		AND = {
 			is_landed = yes
 			capital_county.kingdom = title:k_tamilakam
+		}
+	}
+}
+
+scripted_trigger is_vaguely_marathi_bhakti_trigger = {
+	OR = {
+		has_culture = culture:marathi
+		# We deliberately use the de jure rather than the geographical area to make this at least a *little* more fluid.
+		AND = {
+			is_landed = yes
+			capital_county.kingdom = title:k_maharastra
+		}
+	}
+}
+
+scripted_trigger is_vaguely_rajput_bhakti_trigger = {
+	OR = {
+		has_culture = culture:rajput
+		# We deliberately use the de jure rather than the geographical area to make this at least a *little* more fluid.
+		AND = {
+			is_landed = yes
+			capital_county.kingdom = title:k_rajputana
 		}
 	}
 }
@@ -771,7 +792,23 @@ religious_decision.0101 = {# Hindu Bhakti
 			NOT = { has_character_modifier = bhakti_hinduism_varuna }
 		}
 		set_bhakti_effect = { BHAKTI = bhakti_hinduism_varuna }
-	}		
+	}
+	option = {# Khandoba - Marathi Deity
+		name = religious_decision.0101.khandoba
+		trigger = {
+			is_vaguely_marathi_bhakti_trigger = yes
+			NOT = { has_character_modifier = bhakti_hinduism_khandoba }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_khandoba }
+	}	
+	option = {# Devnarayan - Rajathasni Deity
+		name = religious_decision.0101.devnarayan
+		trigger = {
+			is_vaguely_rajput_bhakti_trigger = yes
+			NOT = { has_character_modifier = bhakti_hinduism_devnarayan }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_devnarayan }
+	}					
 	
 	# Opt-Out
 	option = {# Exit decision
@@ -783,6 +820,7 @@ religious_decision.0101 = {# Hindu Bhakti
 		}		
 	}
 }
+
 
 scripted_trigger is_vaguely_danish_bhakti_trigger = {
 	OR = {
