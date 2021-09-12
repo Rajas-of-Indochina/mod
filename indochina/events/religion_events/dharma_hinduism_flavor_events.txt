@@ -173,7 +173,7 @@ dharma_hinduism.007 = {# Local Hindu Temple wants a new Murti statue
 
 	option = {# patronize the statue
 		name = dharma_hinduism.007.patronize
-		add_gold = -50
+		remove_short_term_gold = 50
 		add_piety = 40
 	}
 	option = {# patronize the statue
@@ -262,5 +262,266 @@ dharma_hinduism.010 = {# Studying the Vedas at the Temple
 		}
 	}
 }
+#######################################
+# Animal Sacrifices
+#######################################
+dharma_hinduism.011 = {# Animal sacrifice - What type of Animals
+	type = character_event
+	title = dharma_hinduism.011.t
+	desc = dharma_hinduism.011.desc
+	theme = india_shrine
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = {# Goat
+		name = dharma_hinduism.011.a
+		remove_short_term_gold = 20
+		custom_tooltip = dharma_hinduism.011.tooltip	
+		add_character_flag = dharma_animal_sacrifice_goat
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_vedic_animal_sacrifice
+			}	
+		}	
+	}	
+	option = {# Water Buffalo
+		name = dharma_hinduism.011.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 100
+			}
+		}
+		remove_short_term_gold = 30
+		custom_tooltip = dharma_hinduism.011.tooltip
+		add_character_flag = dharma_animal_sacrifice_buffalo
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_vedic_animal_sacrifice
+			}	
+		}	
+	}	
+	option = {# Horses
+		name = dharma_hinduism.011.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 150
+			}
+		}
+		remove_short_term_gold = 40
+		custom_tooltip = dharma_hinduism.011.tooltip
+		add_character_flag = dharma_animal_sacrifice_horse
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_vedic_animal_sacrifice
+			}	
+		}	
+	}
+}
+dharma_hinduism.012 = {# Animal sacrifice - How Grand of a ceremony
+	type = character_event
+	title = dharma_hinduism.012.t
+	desc = dharma_hinduism.012.desc
+	theme = india_shrine
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Small
+		name = dharma_hinduism.012.a
+		remove_short_term_gold = 50
+		custom_tooltip = dharma_hinduism.012.tooltip	
+		add_character_flag = dharma_animal_sacrifice_small	
+	}	
+	option = { # Medium
+		name = dharma_hinduism.012.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 100
+			}
+		}
+		remove_short_term_gold = 100
+		custom_tooltip = dharma_hinduism.012.tooltip
+		add_character_flag = dharma_animal_sacrifice_medium	
+	}	
+	option = { # Large
+		name = dharma_hinduism.012.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 150
+			}
+		}
+		remove_short_term_gold = 150
+		custom_tooltip = dharma_hinduism.012.tooltip
+		add_character_flag = dharma_animal_sacrifice_large
+	}
+
+	after = {
+		trigger_event = {
+			id = dharma_hinduism.013
+			days = 1
+		}
+	}
+}
+dharma_hinduism.013 = {# Sacrifice time
+	type = character_event
+	title = dharma_hinduism.013.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_faith = faith:kalikula_shaktism
+				}
+				desc = dharma_hinduism.013.desc.shakti
+			}
+			triggered_desc = {
+				trigger = {
+					has_faith = faith:shrautism
+				}
+				desc = dharma_hinduism.013.desc.vedic
+			}
+		}
+	}
+	theme = india_shrine
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = {# High God
+		name = dharma_hinduism.013.a
+		if = {
+			limit = {
+				faith = faith:kalikula_shaktism	
+			}
+			dharma_vedic_devi_animal_sacrifice_effect = yes
+		}
+		else = {
+			dharma_vedic_indra_animal_sacrifice_effect = yes
+		}
+	}	
+	option = {# War God
+		name = dharma_hinduism.013.b
+		trigger = {
+			NOT = { faith = faith:shrautism	}
+		}
+		dharma_vedic_indra_goat_sacrifice_effect = yes
+	}	
+	option = {# Wealth God
+		name = dharma_hinduism.013.c
+		if = {
+			limit = {
+				faith = faith:kalikula_shaktism	
+			}
+			dharma_vedic_lakshmi_animal_sacrifice_effect = yes
+		}
+		else = {
+			dharma_vedic_bhaga_animal_sacrifice_effect = yes
+		}
+	}	
+	option = {# Household God
+		name = dharma_hinduism.013.d
+		if = {
+			limit = {
+				faith = faith:kalikula_shaktism	
+			}
+			dharma_vedic_parvati_animal_sacrifice_effect = yes
+		}
+		else = {
+			dharma_vedic_agni_animal_sacrifice_effect = yes
+		}
+	}	
+	option = {# Knowledge God
+		name = dharma_hinduism.013.e
+		if = {
+			limit = {
+				faith = faith:kalikula_shaktism	
+			}
+			dharma_vedic_saraswati_animal_sacrifice_effect = yes
+		}
+		else = {
+			dharma_vedic_brhaspati_animal_sacrifice_effect = yes
+		}
+	}	
+	option = {# Fertility God
+		name = dharma_hinduism.013.f
+		trigger = {
+			NOT = { faith = faith:kalikula_shaktism	}
+		}
+		dharma_vedic_aditi_animal_sacrifice_effect = yes
+	}
+	
+	after = {
+		if = {
+			limit = {
+				has_character_flag = dharma_animal_sacrifice_small
+			}
+			remove_character_flag = dharma_animal_sacrifice_small
+		}
+		if = {
+			limit = {
+				has_character_flag = dharma_animal_sacrifice_medium
+			}
+			remove_character_flag = dharma_animal_sacrifice_medium
+		}
+		if = {
+			limit = {
+				has_character_flag = dharma_animal_sacrifice_large
+			}
+			remove_character_flag = dharma_animal_sacrifice_large
+		}
+		if = {
+			limit = {
+				has_character_flag = dharma_animal_sacrifice_goat
+			}
+			remove_character_flag = dharma_animal_sacrifice_goat
+		}
+		if = {
+			limit = {
+				has_character_flag = dharma_animal_sacrifice_buffalo
+			}
+			remove_character_flag = dharma_animal_sacrifice_buffalo
+		}
+		if = {
+			limit = {
+				has_character_flag = dharma_animal_sacrifice_horse
+			}
+			remove_character_flag = dharma_animal_sacrifice_horse
+		}
+		trigger_event = {
+			id = dharma_hinduism.0037
+			days = 1
+		}
+	}
+	
+}
+dharma_hinduism.014 = {# Misc cleanup
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
 
 

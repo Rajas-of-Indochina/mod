@@ -53,6 +53,262 @@ pet_elephant_decision = {# Pet Elephant decision
 		}
 	}
 }
+go_on_pilgrimage_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	ai_check_interval = 60
+
+	desc = go_on_pilgrimage_decision_desc
+	selection_tooltip = go_on_pilgrimage_decision_tooltip
+
+	cooldown = { years = pilgrimage_cooldown_year_amount }
+
+	is_shown = {
+		is_landed = yes
+		NOR = {
+			# These Faiths historically shunned going on pilgrimages, saying they were a waste of time & money.
+			faith = faith:waldensian
+			faith = faith:paulician
+			faith = faith:lollard
+		}
+
+		# Also we must have an actual holy site we can visit.
+		faith = {	
+			any_holy_site = {
+				exists = this
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	effect = {
+		custom_tooltip = pilgrimage_effect_1
+		custom_tooltip = pilgrimage_effect_2
+		if = { #What is the minimum you will have to pay?
+			limit = {
+				faith = {
+					any_holy_site = {
+						squared_distance = {
+							target = root.capital_province
+							value <= short_pilgrimage_max_length
+						}
+					}
+				}
+			}
+			custom_tooltip = pilgrimage_effect_3
+		}
+		else_if = {
+			limit = {
+				faith = {
+					any_holy_site = {
+						squared_distance = {
+							target = root.capital_province
+							value <= medium_pilgrimage_max_length
+						}
+					}
+				}
+			}
+			custom_tooltip = pilgrimage_effect_4
+		}
+		else_if = {
+			limit = {
+				faith = {
+					any_holy_site = {
+						squared_distance = {
+							target = root.capital_province
+							value <= long_pilgrimage_max_length
+						}
+					}
+				}
+			}
+			custom_tooltip = pilgrimage_effect_5
+		}
+		else = {
+			custom_tooltip = pilgrimage_effect_6
+		}
+		if = {
+			limit = { has_trait = ill }
+			custom_tooltip = line_break
+			custom_tooltip = pilgrimage_illness_warning
+		}
+		if = {
+			limit = { is_ai = yes }
+			trigger_event = pilgrimage.0999
+		}
+		if = {
+			limit = { religion = religion:jainism_religion }
+			trigger_event = pilgrimage.0004
+		}
+		else = {
+			limit = { 
+				not = {
+					religion = religion:jainism_religion 
+				} 
+			}
+			trigger_event = pilgrimage.0001
+		}
+
+	}
+
+	ai_potential = {
+		is_landed = yes
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = -100
+			NOT = { short_term_gold >= pilgrimage_medium_extra_cost }
+		}
+		modifier = {
+			add = 30
+			short_term_gold >= pilgrimage_long_extra_cost
+		}
+		modifier = {
+			add = 20
+			piety_level <= 2
+		}
+		modifier = {
+			add = 20
+			has_trait = zealous
+		}
+		modifier = {
+			add = 20
+			has_trait = zealous
+			NOT = { has_trait = pilgrim }
+		}
+		modifier = {
+			add = -30
+			has_trait = cynical
+		}
+		modifier = {
+			add = -30
+			has_trait = pilgrim
+		}
+	}
+}
+start_hunt_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_activity.dds"
+	ai_check_interval = 60
+
+	cost = {
+		gold = {
+			add = standard_activity_cost
+			divide = 1.5
+			if = {
+				limit = {
+					has_character_flag = free_hunt
+				}
+				multiply = 0
+			}
+
+		}
+	}
+
+	cooldown = { days = standard_hunting_cooldown_time }
+
+	is_shown = {
+		is_landed = yes
+		highest_held_title_tier > tier_barony
+		NOT = {
+			religion = religion:jainism_religion
+		}
+	}
+	is_valid = {
+		NOT = {
+			religion = religion:jainism_religion
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = start_hunt_decision_go_on_hunt
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_flag = free_hunt
+				}
+				remove_character_flag = free_hunt
+			}
+		}
+
+		#Stress loss
+		if = {
+			limit = {
+				has_trait = lazy
+			}
+			custom_tooltip = start_hunt_decision_stress_lazy
+		}
+		else = {
+			stress_impact = {
+				base = hunt_stress_loss_value
+				craven = activity_stress_gain_impact
+				diligent = activity_stress_loss_impact
+				athletic = activity_stress_loss_impact
+				sadistic = activity_stress_loss_impact
+				brave = activity_stress_loss_impact
+				hunter_1 = activity_stress_loss_impact
+				hunter_2 = activity_stress_loss_impact
+				hunter_3 = activity_stress_loss_impact
+				generous = activity_stress_loss_impact
+			}
+		}
+
+		custom_tooltip = start_hunt_decision_prestige
+		
+		hidden_effect = {
+			random_sub_realm_barony = {
+				title_province = {
+					spawn_activity = {
+						type = activity_hunt
+						owner = root
+					}
+				}
+			}
+		}
+	}
+	
+	ai_potential = {
+		short_term_gold > standard_activity_cost
+	}
+
+	ai_will_do = {
+		base = 35
+
+		ai_value_modifier = {
+			ai_energy = 1
+			ai_greed = -0.5
+			ai_compassion = -0.5
+		}
+
+		modifier = {
+			add = 10
+			has_trait_rank = {
+				trait = education_martial
+				rank > 0
+			}
+		}
+		modifier = {
+			add = 10
+			has_trait_rank = {
+				trait = education_martial
+				rank > 2
+			}
+		}
+
+		modifier = {
+			add = 35
+			stress > low_stress
+		}
+	}
+}
 #######################################
 # Select Personal diety
 #######################################
@@ -221,7 +477,65 @@ select_personal_deity_buddhist_decision = {# Buddhist Gods and Goddesses
 #######################################
 # Hindu Decisions
 #######################################
+dharma_vedic_animal_sacrifice = {# Hindu Animal Sacrifice
+	picture = "gfx/interface/illustrations/decisions/decision_vedic_sacrifice.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 1825 } #3650 1825
+	desc = dharma_vedic_animal_sacrifice_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:shrautism
+			faith = faith:kalikula_shaktism
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:shrautism
+			faith = faith:kalikula_shaktism	
+		}
+		gold >= 50
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
 
+	effect = {
+		custom_tooltip = dharma_vedic_animal_sacrifice_tooltip
+		custom_tooltip = dharma_vedic_animal_sacrifice_costs_tooltip
+		trigger_event = {
+			id = dharma_hinduism.011
+		}
+	}
+
+	ai_potential = {
+		short_term_gold > 50
+	}
+
+	ai_will_do = {
+		base = 40
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
 #######################################
 # Buddhist Decisions
 #######################################
@@ -266,6 +580,47 @@ buddhist_retreat_decision = {# Go on a Buddhist Retreat
 #######################################
 # Jain Decisions
 #######################################
+dharma_jain_abdication = {# Abdicate and become a monk
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_holy_day.dds"
+	desc = dharma_jain_abdication_desc
+	selection_tooltip = dharma_jain_abdication_tooltip
+
+	is_shown = {
+		religion = religion:jainism_religion
+		has_trait = zealous
+		holds_landed_title = yes
+		is_at_war = no
+	}
+
+	is_valid = {
+		religion = religion:jainism_religion
+		has_trait = zealous
+		holds_landed_title = yes
+		is_at_war = no
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		trigger_event = dharma_jainism.010
+	}
+
+	ai_check_interval = 96
+
+	ai_potential = {
+		piety >= major_piety_value
+	}
+
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 10
+			age >= 60
+		}
+	}
+}
 dharma_attend_mahamastakabhisheka_festival = {# Jain Mahamastakabhisheka festival
 	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds" 
 	ai_check_interval = 24
@@ -289,7 +644,7 @@ dharma_attend_mahamastakabhisheka_festival = {# Jain Mahamastakabhisheka festiva
 
 	effect = {
 		custom_tooltip = dharma_attend_mahamastakabhisheka_festival_effect_tooltip
-		trigger_event = { id = pamir.0150 }
+		trigger_event = { id = dharma_jainism.100 }
 	}
 
 	cost = { 
@@ -316,7 +671,7 @@ dharma_attend_paryushana_festival = {# Jain Paryushana festival
 	}
 	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds" 
 	ai_check_interval = 24
-	cooldown = { days = 4380 } # It is a 12 year festival
+	cooldown = { days = 1095 } # It is an annual festival but let this only happen every couple of years
 	desc = {
 		first_valid = {
 			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
@@ -348,7 +703,7 @@ dharma_attend_paryushana_festival = {# Jain Paryushana festival
 
 	effect = {
 		custom_tooltip = dharma_attend_paryushana_festival_effect_tooltip
-		trigger_event = { id = pamir.0150 }
+		trigger_event = { id = dharma_jainism.107 }
 	}
 
 	cost = { 
@@ -363,3 +718,48 @@ dharma_attend_paryushana_festival = {# Jain Paryushana festival
 		base = 50
 	}
 }
+dharma_attend_mahavir_kalyanak_festival = {# Jain  Mahavir Janma Kalyanak festival
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 1095 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_mahavir_kalyanak_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:jainism_religion
+	}
+	
+	is_valid = {
+		religion = religion:jainism_religion
+		custom_description = {
+			text = dharma_decision_mahavir_kalyanak_month_requirement
+			current_month >= 3
+			current_month <= 4
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_mahavir_kalyanak_festival_effect_tooltip
+		trigger_event = { id = dharma_jainism.117 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to host monks
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+
