@@ -75,3 +75,81 @@ unite_nusantara_decision = {
 		base = 100
 	}
 }
+
+unite_the_javanese_thrones_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	ai_check_interval = 60
+	desc = unite_the_javanese_thrones_decision_desc
+
+	is_shown = {
+		has_culture_group = culture_group:austronesian_group
+		game_start_date >= 1000.1.1
+		OR = {
+			has_title = title:k_panjalu
+			has_title = title:k_janggala
+		}
+		OR = {
+			calc_true_if = { #At least 2 of the titles has de jure land
+				amount >= 2
+				title:k_panjalu = { any_in_de_jure_hierarchy = { tier = tier_county } }
+				title:k_janggala = { any_in_de_jure_hierarchy = { tier = tier_county } }
+			}
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:unite_the_javanese_thrones_decision
+			}
+		}
+		highest_held_title_tier < tier_empire
+	}
+
+	is_valid = {
+		has_culture_group = culture_group:austronesian_group
+		trigger_if = {
+			limit = { title:k_panjalu = { any_in_de_jure_hierarchy = { tier = tier_county } } } #Has de jure land
+			completely_controls = title:k_panjalu
+			has_title = title:k_panjalu
+		}
+		trigger_if = {
+			limit = { title:k_janggala = { any_in_de_jure_hierarchy = { tier = tier_county } } } #Has de jure land
+			completely_controls = title:k_janggala
+			has_title = title:k_janggala
+		}
+		custom_description = {
+   			text = unite_the_javanese_thrones_decision_primary
+			OR = {
+				has_primary_title = title:k_panjalu
+				has_primary_title = title:k_janggala
+			}
+		}
+	}
+
+	effect = {
+		save_scope_as = javanese_uniter
+
+		show_as_tooltip = { unite_the_javanese_thrones_decision_effects = yes } #Actually applied in iberia_north_africa.0005 - prestige, laws, title changes
+
+		#Events
+		trigger_event = maritime_southeast_asia.0002
+
+		#Can only be done once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:unite_the_javanese_thrones_decision
+		}
+		set_global_variable = {
+			name = unite_the_javanese_thrones_decision
+			value = scope:javanese_uniter
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
