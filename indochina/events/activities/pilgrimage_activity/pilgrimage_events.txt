@@ -625,7 +625,7 @@ pilgrimage.0009 = {# General Vishnu Sites part 1
 		}
 	}
 	option = {# Another Jyortilingas Holy Site
-		name = pilgrimage.0012.other_vishnu
+		name = pilgrimage.0009.other_vishnu
 		trigger_event = pilgrimage.0020
 	}
 	option = {# A different Holy Site
@@ -5725,11 +5725,9 @@ pilgrimage.3202 = {# Holiness of the Forest
 
 	option = {
 		name = pilgrimage.3202.a
-		
 		custom_tooltip = pilgrimage.3202.a.tt
 		add_learning_lifestyle_xp = major_lifestyle_xp
 		set_up_next_pilgrimage_event_effect = { DAYS = 90 }
-
 		stress_impact = {
 			base = minor_stress_loss
 			calm = minor_stress_loss
@@ -5791,16 +5789,15 @@ pilgrimage.3203 = {# Troublesome Monsoon
 		add_piety = minor_piety_gain
 		set_up_next_pilgrimage_event_effect = { DAYS = 40 }
 		random_list = {
-				10 = {
-					contract_disease_effect = { DISEASE = pneumonic TREATMENT_EVENT = no }
-				}
-				30 = {
-					contract_disease_effect = { DISEASE = pneumonic TREATMENT_EVENT = no }
-				}
-				60 = {# nothing
-
-				}
+			10 = {
+				contract_disease_effect = { DISEASE = pneumonic TREATMENT_EVENT = no }
 			}
+			30 = {
+				contract_disease_effect = { DISEASE = pneumonic TREATMENT_EVENT = no }
+			}
+			60 = {# nothing
+			}
+		}
 	}
 
 	option = {
@@ -5880,6 +5877,848 @@ pilgrimage.3204 = {# Dry Season Troubles
 		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
 	}
 }
+pilgrimage.3205 = {# The poor villagers
+ 	type = character_event
+	title = pilgrimage.3205.t
+	desc = pilgrimage.3205.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_pilgrimage_3205
+		}
+		OR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_pilgrimage_3205
+				value = yes
+			}
+		}
+	}
+
+	option = {# I can learn much from these villagers.
+		name = pilgrimage.3205.a	
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		stress_impact = {
+			arrogant = minor_stress_gain
+			humble = minor_stress_loss
+		}
+	}
+	option = {# They are just peasants
+		name = pilgrimage.3205.b
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		stress_impact = {
+			arrogant = minor_stress_loss
+			humble = minor_stress_gain
+		}
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+pilgrimage.3206 = {# Village Pipal Tree
+ 	type = character_event
+	title = pilgrimage.3206.t
+	desc = pilgrimage.3206.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_pilgrimage_3206
+		}
+		OR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_pilgrimage_3206
+				value = yes
+			}
+		}
+	}
+
+	option = {# I must stay and learn what these people can teach me.
+		name = pilgrimage.3206.a	
+		set_up_next_pilgrimage_event_effect = { DAYS = 60 }
+		custom_tooltip = pilgrimage.3202.a.tt
+		add_learning_lifestyle_xp = major_lifestyle_xp
+		stress_impact = {
+			base = minor_stress_loss
+			calm = minor_stress_loss
+			patient = minor_stress_loss
+			impatient = medium_stress_gain
+		}
+	}
+	option = {# I don't have the Time.
+		name = pilgrimage.3206.b
+		set_up_next_pilgrimage_event_effect = { DAYS = 10 }
+		stress_impact = {
+			zealous = minor_stress_gain
+			patient = minor_stress_gain
+		}
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+pilgrimage.3207 = {# Vaishya Merchant
+ 	type = character_event
+	title = pilgrimage.3207.t
+	desc = pilgrimage.3207.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {	exists = scope:activity.var:had_pilgrimage_3207	}
+		religion = religion:hinduism_religion
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_pilgrimage_3207
+				value = yes
+			}
+		}
+	}
+
+	option = {# I must thank them for their kindness.
+		name = pilgrimage.3207.a	
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		add_piety = minor_piety_gain
+		stress_impact = {
+			humble = minor_stress_loss
+			compassionate = minor_stress_loss
+			arrogant = minor_stress_gain
+		}
+	}
+	option = {# They are only giving me what is my right
+		name = pilgrimage.3207.b
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		add_prestige = minor_prestige_gain
+		stress_impact = {
+			humble = minor_stress_gain
+			compassionate = minor_stress_gain
+			arrogant = minor_stress_loss
+		}
+	}
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+pilgrimage.3208 = {# Fellow Dharmic pilgrims
+ 	type = character_event
+	title = pilgrimage.3208.t
+	desc = pilgrimage.3208.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {	exists = scope:activity.var:had_pilgrimage_3208	}
+		religion = religion:hinduism_religion
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_pilgrimage_3208
+				value = yes
+			}
+		}
+	}
+
+	option = {# Join with the fellow Dharmic Pilgrims
+		name = pilgrimage.3208.a	
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		stress_impact = {
+			gregarious = minor_stress_loss
+			trusting = minor_stress_loss
+			paranoid = minor_stress_gain
+			shy = minor_stress_gain
+		}
+	}
+	option = {# Stick to your own camp.
+		name = pilgrimage.3208.b
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		stress_impact = {
+			gregarious = minor_stress_gain
+			trusting = minor_stress_gain
+			paranoid = minor_stress_loss
+			shy = minor_stress_loss
+		}
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+scripted_trigger pilgrimage_3213_potential_rival_trigger = {# Potential Rival Trigger
+	is_ai = yes
+	is_adult = yes
+	faith = root.faith
+	NOT = { is_courtier_of = root }
+}
+pilgrimage.3211 = {# Splendid City
+ 	type = character_event
+	title = pilgrimage.3211.t
+	desc = pilgrimage.3211.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_pilgrimage_3211
+		}
+		OR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+		}
+	}
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_pilgrimage_3211
+				value = yes
+			}
+		}
+	}
+
+	option = {# Let us rest and enjoy city life!
+		name = pilgrimage.3211.a	
+		custom_tooltip = pilgrimage_hindu_splendid_city_tt
+		hidden_effect = {
+			random_list = {
+				20 = {# New Friend
+					trigger_event = { id = pilgrimage.3212 days = { 5 15 } }
+				}
+				20 = {# New Enemy
+					trigger_event = { id = pilgrimage.3213 days = { 5 15 } }
+
+				}
+				60 = {# Relaxing Day
+					trigger_event = { id = pilgrimage.3214 days = { 5 15 } }
+				}
+			}
+		}
+		stress_impact = {
+			lazy = minor_stress_loss
+			patient = minor_stress_loss
+			gregarious = minor_stress_loss
+			impatient = minor_stress_gain
+			zealous = minor_stress_gain
+			shy = minor_stress_gain
+		}
+	}
+	option = {# I shall take my rest and then continue on.
+		name = pilgrimage.3211.b
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		stress_impact = {
+			lazy = minor_stress_gain
+			patient = minor_stress_gain
+			gregarious = minor_stress_gain
+			impatient = minor_stress_loss
+			zealous = minor_stress_loss
+			shy = minor_stress_loss
+		}
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+pilgrimage.3212 = {# Splendid City - new friend
+ 	type = character_event
+	title = pilgrimage.3212.t
+	desc = pilgrimage.3212.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		OR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+		}
+		any_relation = {
+			type = potential_friend
+			pilgrimage_2004_potential_friend_trigger = yes
+		}
+	}
+
+	immediate = {
+		random_relation = {
+			type = potential_friend
+			limit = { pilgrimage_2004_potential_friend_trigger = yes }
+			save_scope_as = new_friend_far_away_from_home
+		}
+	}
+
+	option = {# a new Friend!
+		name = pilgrimage.3212.a	
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		set_relation_friend = scope:new_friend_far_away_from_home
+		reverse_add_opinion = {
+			target = scope:new_friend_far_away_from_home
+			modifier = courtly_friends_opinion
+		}
+		hidden_effect = {
+			add_opinion = {
+				target = scope:new_friend_far_away_from_home
+				modifier = courtly_friends_opinion
+			}
+		}
+		stress_impact = {
+			gregarious = minor_stress_loss
+			shy = minor_stress_gain
+		}
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+pilgrimage.3213 = {# Splendid City - new enemy
+ 	type = character_event
+	title = pilgrimage.3213.t
+	desc = pilgrimage.3213.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_pilgrimage_3204
+		}
+		OR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+		}
+	}
+
+	immediate = {
+		random_relation = {
+			type = potential_rival
+			limit = { pilgrimage_3213_potential_rival_trigger = yes }
+			save_scope_as = new_enemy_far_away_from_home
+		}
+	}
+
+	option = {# A new enemy
+		name = pilgrimage.3213.a
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		set_relation_rival = scope:new_enemy_far_away_from_home
+			reverse_add_opinion = {
+			target = scope:new_enemy_far_away_from_home
+			modifier = bitter_rivalry_opinion
+		}
+		hidden_effect = {
+			add_opinion = {
+				target = scope:new_enemy_far_away_from_home
+				modifier = bitter_rivalry_opinion
+			}
+		}
+
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+pilgrimage.3214 = {# Splendid City - a relaxing day
+ 	type = character_event
+	title = pilgrimage.3214.t
+	desc = pilgrimage.3214.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+
+	option = {# a wonderful relaxing day
+		name = pilgrimage.3214.a	
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		stress_impact = {
+			base = minor_stress_loss
+		}
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+pilgrimage.3215 = {# Philosophical ponderings 
+ 	type = character_event
+	title = pilgrimage.3215.t
+	desc = pilgrimage.3215.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_pilgrimage_3215
+		}
+		OR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_pilgrimage_3215
+				value = yes
+			}
+		}
+	}
+
+	option = {# This is a marvelous opportunity.
+		name = pilgrimage.3215.a	
+		add_learning_lifestyle_xp = major_lifestyle_xp
+		set_up_next_pilgrimage_event_effect = { DAYS = 60 }
+		stress_impact = {
+			base = minor_stress_gain
+			mystic_1 = minor_stress_loss
+			mystic_2 = minor_stress_loss
+			mystic_3 = minor_stress_loss
+			theologian = minor_stress_loss
+			zealous = minor_stress_loss
+			scholar = minor_stress_loss
+		}
+	}
+	option = {#It is time to rest
+		name = pilgrimage.3215.b
+		set_up_next_pilgrimage_event_effect = { DAYS = 15 }
+		stress_impact = {
+			base = minor_stress_loss
+			mystic_1 = minor_stress_gain
+			mystic_2 = minor_stress_gain
+			mystic_3 = minor_stress_gain
+			theologian = minor_stress_gain
+			zealous = minor_stress_gain
+			scholar = minor_stress_gain
+		}
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+pilgrimage.3216 = {# What's happening at home?
+ 	type = character_event
+	title = pilgrimage.3216.t
+	desc = pilgrimage.3216.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_pilgrimage_3216
+		}
+		OR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_pilgrimage_3216
+				value = yes
+			}
+		}
+	}
+
+	option = {# I am sure everything is fine.
+		name = pilgrimage.3216.a	
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		stress_impact = {
+			base = minor_stress_loss
+			trusting = medium_stress_loss
+			paranoid = medium_stress_gain
+		}
+	}
+	option = {# I cannot let go of these thoughts
+		name = pilgrimage.3216.b
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		stress_impact = {
+			base = minor_stress_gain
+			trusting = medium_stress_gain
+			paranoid = medium_stress_gain
+		}
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+pilgrimage.3217 = {# Stepwell
+ 	type = character_event
+	title = pilgrimage.3217.t
+	desc = pilgrimage.3217.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_pilgrimage_3217
+		}
+		OR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_pilgrimage_3217
+				value = yes
+			}
+		}
+	}
+
+	option = {# I must learn more about these reservoirs
+		name = pilgrimage.3217.a	
+		custom_tooltip = pilgrimage.3202.a.tt
+		add_stewardship_lifestyle_xp = major_lifestyle_xp
+		set_up_next_pilgrimage_event_effect = { DAYS = 90 }
+		stress_impact = {
+			scholar = minor_stress_loss
+			administrator = minor_stress_loss
+			overseer = minor_stress_loss
+		}
+	}
+
+	option = {# Such a futile endeavor, rain falls where it wills
+		name = pilgrimage.3217.b
+		set_up_next_pilgrimage_event_effect = { DAYS = 10 }
+		stress_impact = {
+			scholar = minor_stress_gain
+			administrator = minor_stress_gain
+			overseer = minor_stress_gain
+		}
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+
+pilgrimage.3218 = {# Seeing an elephant
+ 	type = character_event
+	title = pilgrimage.3218.t
+	desc = pilgrimage.3218.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_pilgrimage_3218
+		}
+		OR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_pilgrimage_3218
+				value = yes
+			}
+		}
+	}
+
+	option = {# It is always a joy to travel with elephants
+		name = pilgrimage.3218.a	
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		stress_impact = {
+			base = minor_stress_loss
+		}
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+	}
+}
+pilgrimage.3219 = {# Tiger Attack
+ 	type = character_event
+	title = pilgrimage.3219.t
+	desc = pilgrimage.3219.desc
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_pilgrimage_3219
+		}
+		OR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_pilgrimage_3219
+				value = yes
+			}
+		}
+		play_music_cue = "mx_cue_combat_stinger"
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = { has_trait = hunter_3 }
+				}
+				random = {
+					chance = 25
+					save_scope_value_as = {
+						name = increase_hunter
+						value = yes
+					}
+				}
+			}
+		}
+	}
+
+	option = {# I must fight this beast!
+		name = pilgrimage.3219.attack
+		set_up_next_pilgrimage_event_effect = { DAYS = 20 }
+		duel = {
+			skill = prowess
+			value = average_skill_rating
+			15 = {
+				desc = pilgrimage.3219.attack.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = pilgrimage.3219.attack.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+					if = {
+						limit = { exists = scope:increase_hunter }
+						change_trait_rank = {
+							trait = lifestyle_hunter
+							rank = 1
+						}
+					}
+				}
+			}
+			10 = {
+				desc = pilgrimage.3219.attack.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = pilgrimage.3219.attack.failure_title
+					left_icon = root
+					increase_wounds_effect = { REASON = hunting_accident }
+				}
+			}
+		}
+		stress_impact = {
+			craven = major_stress_impact_gain
+			brave = major_stress_impact_loss
+		}
+	}
+	option = {# Turn, and run!
+		name = pilgrimage.3219.hide
+		set_up_next_pilgrimage_event_effect = { DAYS = 10 }
+		duel = {
+			skill = intrigue
+			value = average_skill_rating
+			15 = {
+				desc = pilgrimage.3219.hide.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = pilgrimage.3219.hide.success_title
+					left_icon = root
+					custom_tooltip = pilgrimage.3219.b.success_tt
+				}
+			}
+			10 = {
+				desc = pilgrimage.3219.hide.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = pilgrimage.3219.hide.failure_title
+					left_icon = root
+					increase_wounds_effect = {
+						REASON = hunting_accident
+					}
+				}
+			}
+		}
+		stress_impact = {
+			brave = major_stress_impact_gain
+			craven = major_stress_impact_loss
+		}
+	}
+
+	after = {
+		# Do not run the normal set_up_next_pilgrimage_event effect here, as it's run in the options.
+		if = {
+			limit = { exists = scope:increase_hunter }
+			clear_saved_scope = increase_hunter
+		}
+	}
+}
+pilgrimage.3220 = {# Mischevious Monkeys
+ 	type = character_event
+	title = pilgrimage.3220.t
+	desc = {
+		first_valid = {
+			triggered_desc = {# Friendly monkeys
+				trigger = { has_character_flag = pilgrimage_india_playful_monkey }
+				desc = pilgrimage.3220.desc.friendly
+			}
+			triggered_desc = {# Theiving monkeys!
+			trigger = { has_character_flag = pilgrimage_india_theiving_monkey }
+			desc = pilgrimage.3220.desc.theiving
+			}
+		}
+	}
+	theme = pilgrimage_activity
+	override_icon = {
+		reference = "gfx/interface/event_window/type_faith.dds"
+	}
+	left_portrait = root
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_pilgrimage_3220
+		}
+		OR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+		}
+	}
+
+	immediate = {
+		random_list = {
+			1 = { add_character_flag = pilgrimage_india_playful_monkey }
+			1 = { add_character_flag = pilgrimage_india_theiving_monkey }
+		}
+		scope:activity = {
+			set_variable = {
+				name = had_pilgrimage_3220
+				value = yes
+			}
+		}
+	}
+
+	option = {# help the villagers
+		name = pilgrimage.3220.friendly	
+		add_piety = minor_piety_gain
+		stress_impact = {
+			base = minor_stress_loss
+			compassionate = medium_stress_loss
+			athletic = medium_stress_loss
+			just = medium_stress_loss
+
+		}
+	}
+	option = {# we can not help them.
+		name = pilgrimage.3220.theiving
+		remove_short_term_gold = minor_gold_value
+		stress_impact = {
+			base = minor_stress_gain
+			greedy = medium_stress_gain
+		}
+	}
+	after = {
+		set_up_next_pilgrimage_event_effect = { DAYS = 30 }
+	}
+}
 #######################################
 # Buddhist Journey Events 3301-3400
 #######################################
@@ -5906,7 +6745,6 @@ pilgrimage.3301 = {# Critical Monk
 		}
 		religion = religion:buddhism_religion
 	}
-
 	immediate = {
 		random_dummy_gender_clergy_effect = yes
 		create_character = {
@@ -5937,7 +6775,6 @@ pilgrimage.3301 = {# Critical Monk
 		add_prestige = medium_prestige_gain
 		add_piety = medium_piety_gain
 	}
-
 	option = {
 		name = pilgrimage.3301.a
 		add_piety = major_piety_gain
@@ -5970,6 +6807,7 @@ pilgrimage.3301 = {# Critical Monk
 		set_up_next_pilgrimage_event_effect = { DAYS = 30 }
 	}
 }
+
 #######################################
 # Jain Journey Events 3401-3500
 #######################################
