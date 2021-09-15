@@ -298,7 +298,6 @@ pilgrimage.0005 = {# Jain Second selection event
 	}
 }
 ##### Hindu Pilgrimage Selection #### 
-
 pilgrimage.0006 = {# Hindu Pilgrimage Selection
 	type = character_event
 	title = pilgrimage.0006.t
@@ -1705,8 +1704,1079 @@ pilgrimage.0021 = {# Jyortilingas
 		remove_character_flag = planning_an_activity
 	}
 }
+##### Buddhist mahayana Pilgrimage Selection #### 
+pilgrimage.0030 = {# Buddhist Pilgrimage Selection
+	type = character_event
+	title = pilgrimage.0030.t
+	desc = pilgrimage.0030.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
 
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
 
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# Sites holy to the Buddha's life
+		name = pilgrimage.0030.buddha_life
+		trigger_event = pilgrimage.0031
+	}
+	option = {# Important Sites in India
+		name = pilgrimage.0030.india
+		trigger_event = pilgrimage.0032
+	}
+	option = {# Important sites in Central Asia
+		name = pilgrimage.0030.central_asia
+		trigger = {
+			OR = {
+				faith = faith:lamaism
+				faith = faith:mahayana
+				faith = faith:vajrayana
+				faith = faith:pudgalavada
+			}
+		}
+		trigger_event = pilgrimage.0034
+	}
+	option = {# Important sites in Tibet
+		name = pilgrimage.0030.tibet
+		trigger = {
+			OR = {
+				faith = faith:lamaism
+			}
+		}
+		trigger_event = pilgrimage.0036
+	}
+	option = {# Important sites in Himyalayas
+		name = pilgrimage.0030.himyalayas
+		trigger = {
+			OR = {
+				faith = faith:lamaism
+				faith = faith:vajrayana
+			}
+		}
+		trigger_event = pilgrimage.0035
+	}
+	option = {# Important sites in Burma
+		name = pilgrimage.0030.burma
+		trigger = {
+			OR = {
+				faith = faith:theravada
+				faith = faith:mahayana
+				faith = faith:pudgalavada
+				faith = faith:ari
+			}
+		}
+		trigger_event = pilgrimage.0038
+	}	
+	option = {# mainland Southeast Asian Holy Sites
+		name = pilgrimage.0030.southasia
+		trigger = {
+			OR = {
+				faith = faith:theravada
+				faith = faith:mahayana
+				faith = faith:pudgalavada
+			}
+		}
+		trigger_event = pilgrimage.0039
+	}	
+	option = {# Southeast Asian Holy Sites
+		name = pilgrimage.0030.indonesia
+		trigger = {
+			OR = {
+				faith = faith:theravada
+				faith = faith:mahayana
+				faith = faith:pudgalavada
+				faith = faith:vajrayana
+				faith = faith:ari
+				faith = faith:phat_giao
+				faith = faith:azhaliism
+
+			}
+		}
+		trigger_event = pilgrimage.0040
+	}
+	option = {# Vietnamese Asian Holy Sites
+		name = pilgrimage.0030.vietnam
+		trigger = {
+			OR = {
+				faith = faith:phat_giao
+			}
+		}
+		trigger_event = pilgrimage.0041
+	}
+	option = {# Azhaliism Asian Holy Sites
+		name = pilgrimage.0030.azhaliism
+		trigger = {
+			OR = {
+				faith = faith:azhaliism
+			}
+		}
+		trigger_event = pilgrimage.0042
+	}			
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0030.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0031 = {# The life of the Buddha
+	type = character_event
+	title = pilgrimage.0031.t
+	desc = pilgrimage.0031.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# Bodh Gaya
+		name = pilgrimage.0031.bodh_gaya
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_1
+		}
+	}
+	option = {# Sarnath
+		name = pilgrimage.0031.sarnath
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_2
+		}
+	}
+	option = {# Kusinagara
+		name = pilgrimage.0031.kusinagara
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_3
+		}
+	}		
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0032 = {# Indian Holy Sites part 1
+	type = character_event
+	title = pilgrimage.0031.t
+	desc = pilgrimage.0031.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# vaishali
+		name = pilgrimage.0032.vaishali
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_4
+		}
+	}
+	option = {# sravasti
+		name = pilgrimage.0032.sravasti
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_6
+		}
+	}
+	option = {# sankassa
+		name = pilgrimage.0032.sankassa
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_7
+		}
+	}
+	option = {# amaravati
+	name = pilgrimage.0032.amaravati
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_8
+		}
+	}
+	option = {# A different Indian Holy Site
+		name = pilgrimage.0032.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0033
+	}			
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0033 = {# Indian Holy Sites part 2
+	type = character_event
+	title = pilgrimage.0033.t
+	desc = pilgrimage.0033.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# sanchi
+		name = pilgrimage.0033.sanchi
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_9
+		}
+	}
+	option = {# ajanta
+		name = pilgrimage.0033.ajanta
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_10
+		}
+	}
+	option = {# ellora
+		name = pilgrimage.0033.ellora
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_11
+		}
+	}
+	option = {# ratnagiri
+		name = pilgrimage.0033.ratnagiri
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_12
+		}
+	}
+	option = {# atamasthana
+		name = pilgrimage.0033.atamasthana
+		trigger = {
+			faith = faith:theravada
+		}
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_13
+		}
+	}						
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0034 = {# Central Asian
+	type = character_event
+	title = pilgrimage.0034.t
+	desc = pilgrimage.0034.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+
+	option = {# dunhuang
+		name = pilgrimage.0034.dunhuang
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_13
+		}
+	}	
+	option = {# bamiyan
+		name = pilgrimage.0034.bamiyan
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_14
+		}
+	}
+	option = {# balkh
+		name = pilgrimage.0034.balkh
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_15
+		}
+	}
+	option = {# gilgit
+		name = pilgrimage.0034.gilgit
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_16
+		}
+	}
+	option = {# khotan
+		name = pilgrimage.0034.khotan
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_17
+		}
+	}			
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0035 = {# Himalayan Sites
+	type = character_event
+	title = pilgrimage.0035.t
+	desc = pilgrimage.0035.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# khotang
+		name = pilgrimage.0035.khotang
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_18
+		}
+	}
+	option = {# paro
+		name = pilgrimage.0035.paro
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_19
+		}
+	}
+	option = {# kathmandu
+		name = pilgrimage.0035.kathmandu
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_20
+		}
+	}
+	option = {# purang
+		name = pilgrimage.0035.purang
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_21
+		}
+	}			
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0036 = {# Tibetan Sites part 1
+	type = character_event
+	title = pilgrimage.0036.t
+	desc = pilgrimage.0036.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# sagya
+		name = pilgrimage.0036.sagya
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_9
+		}
+	}
+	option = {# lhasa
+		name = pilgrimage.0036.lhasa
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_10
+		}
+	}
+	option = {# zetang
+		name = pilgrimage.0036.zetang
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_11
+		}
+	}
+	option = {# namtso
+		name = pilgrimage.0036.namtso
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_12
+		}
+	}
+	option = {# A different Tibet Holy Site
+		name = pilgrimage.0036.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0037
+	}				
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0037 = {# Tibetan Sites part 2
+	type = character_event
+	title = pilgrimage.0037.t
+	desc = pilgrimage.0037.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# amne_machin
+		name = pilgrimage.0037.amne_machin
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_13
+		}
+	}
+	option = {# ngawa
+		name = pilgrimage.0037.ngawa
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_14
+		}
+	}
+	option = {# rebgong
+		name = pilgrimage.0037.rebgong
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_15
+		}
+	}		
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0038 = {# Burmese Pilgrimage Sites
+	type = character_event
+	title = pilgrimage.0038.t
+	desc = pilgrimage.0038.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# taungbyone
+		name = pilgrimage.0038.taungbyone
+		if = {# ari
+			limit = {
+				exists = scope:holy_site_9
+				OR = {
+					faith = faith:ari
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_9
+			}
+		}
+		if = {# theravada
+			limit = {
+				exists = scope:holy_site_14
+				OR = {
+					faith = faith:theravada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_14
+			}
+		}
+	}
+	option = {# dagon
+		name = pilgrimage.0038.dagon
+		if = {# ari
+			limit = {
+				exists = scope:holy_site_10
+				OR = {
+					faith = faith:ari
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_10
+			}
+		}
+		if = {# theravada
+			limit = {
+				exists = scope:holy_site_15
+				OR = {
+					faith = faith:theravada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_15
+			}
+		}
+		if = {# mahayana, pudgalavada
+			limit = {
+				exists = scope:holy_site_18
+				OR = {
+					faith = faith:mahayana
+					faith = faith:pudgalavada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_18
+			}
+		}
+	}
+	option = {# pagan
+		name = pilgrimage.0038.pagan
+		if = {# ari
+			limit = {
+				exists = scope:holy_site_11
+				OR = {
+					faith = faith:ari
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_11
+			}
+		}
+		if = {# theravada
+			limit = {
+				exists = scope:holy_site_16
+				OR = {
+					faith = faith:theravada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_16
+			}
+		}
+	}
+	option = {# kyaikhtiyo
+		name = pilgrimage.0038.kyaikhtiyo
+		if = {# ari
+			limit = {
+				exists = scope:holy_site_12
+				OR = {
+					faith = faith:ari
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_12
+			}
+		}
+		if = {# theravada
+			limit = {
+				exists = scope:holy_site_17
+				OR = {
+					faith = faith:theravada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_17
+			}
+		}
+		if = {# mahayana, pudgalavada
+			limit = {
+				exists = scope:holy_site_19
+				OR = {
+					faith = faith:mahayana
+					faith = faith:pudgalavada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_19
+			}
+		}
+	}
+	option = {# myitsone
+		name = pilgrimage.0038.myitsone
+		if = {# ari
+			limit = {
+				exists = scope:holy_site_13
+				OR = {
+					faith = faith:ari
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_13
+			}
+		}
+		if = {# theravada
+			limit = {
+				exists = scope:holy_site_18
+				OR = {
+					faith = faith:theravada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_18
+			}
+		}
+		if = {# mahayana, pudgalavada
+			limit = {
+				exists = scope:holy_site_20
+				OR = {
+					faith = faith:mahayana
+					faith = faith:pudgalavada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_20
+			}
+		}
+	}
+	option = {# zwegabin
+		name = pilgrimage.0038.zwegabin
+		trigger = {
+			exists = scope:holy_site_18
+			faith = faith:ari
+		}
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_18
+		}
+	}							
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0039 = {# Southeast Asian Holy Sites
+	type = character_event
+	title = pilgrimage.0039.t
+	desc = pilgrimage.0039.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# preah_vihear
+		name = pilgrimage.0039.preah_vihear
+		if = {# mahayana, pudgalavada
+			limit = {
+				exists = scope:holy_site_19
+				OR = {
+					faith = faith:mahayana
+					faith = faith:pudgalavada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_22
+			}
+		}
+		if = {# theravada
+			limit = {
+				exists = scope:holy_site_21
+				OR = {
+					faith = faith:theravada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_21
+			}
+		}
+	}
+	option = {# haripunjaya
+		name = pilgrimage.0039.haripunjaya
+		trigger = {
+			exists = scope:holy_site_19
+			faith = faith:ari
+		}
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_19
+		}
+	}
+	option = {# ayutthaya
+		name = pilgrimage.0039.ayutthaya
+		trigger = {
+			exists = scope:holy_site_20
+			faith = faith:ari
+		}
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_20
+		}
+	}			
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0040 = {# Indonesian Holy Sites
+	type = character_event
+	title = pilgrimage.0040.t
+	desc = pilgrimage.0040.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# borobudur
+		name = pilgrimage.0040.borobudur
+		if = {# theravada, mahayana, vajrayana, pudgalavada
+			limit = {
+				exists = scope:holy_site_19
+				OR = {
+					faith = faith:theravada
+					faith = faith:mahayana
+					faith = faith:vajrayana
+					faith = faith:pudgalavada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_22
+			}
+		}
+		if = {# ari, phat_giao, azhaliism
+			limit = {
+				exists = scope:holy_site_24
+				OR = {
+					faith = faith:ari
+					faith = faith:phat_giao
+					faith = faith:azhaliism
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_14
+			}
+		}
+	}
+	option = {# mount_bromo
+		name = pilgrimage.0040.mount_bromo
+		if = {# theravada, mahayana, vajrayana, pudgalavada
+			limit = {
+				exists = scope:holy_site_19
+				OR = {
+					faith = faith:theravada
+					faith = faith:mahayana
+					faith = faith:vajrayana
+					faith = faith:pudgalavada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_23
+			}
+		}
+		if = {# ari, phat_giao, azhaliism
+			limit = {
+				exists = scope:holy_site_24
+				OR = {
+					faith = faith:ari
+					faith = faith:phat_giao
+					faith = faith:azhaliism
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_15
+			}
+		}
+	}
+	option = {# muaro_jambi
+		name = pilgrimage.0040.muaro_jambi
+		if = {# theravada, mahayana, vajrayana, pudgalavada
+			limit = {
+				exists = scope:holy_site_19
+				OR = {
+					faith = faith:theravada
+					faith = faith:mahayana
+					faith = faith:vajrayana
+					faith = faith:pudgalavada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_24
+			}
+		}
+		if = {# ari, phat_giao, azhaliism
+			limit = {
+				exists = scope:holy_site_24
+				OR = {
+					faith = faith:ari
+					faith = faith:phat_giao
+					faith = faith:azhaliism
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_16
+			}
+		}
+	}
+	option = {# muara_takus
+		name = pilgrimage.0040.muara_takus
+		if = {# theravada, mahayana, vajrayana, pudgalavada
+			limit = {
+				exists = scope:holy_site_19
+				OR = {
+					faith = faith:theravada
+					faith = faith:mahayana
+					faith = faith:vajrayana
+					faith = faith:pudgalavada
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_25
+			}
+		}
+		if = {# ari, phat_giao, azhaliism
+			limit = {
+				exists = scope:holy_site_24
+				OR = {
+					faith = faith:ari
+					faith = faith:phat_giao
+					faith = faith:azhaliism
+				}
+			}
+			holy_site_selection_event_option_effect = {
+				HOLY_SITE = scope:holy_site_17
+			}
+		}
+	}			
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0041 = {# Vietnamese 
+	type = character_event
+	title = pilgrimage.0041.t
+	desc = pilgrimage.0041.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# ha_long
+		name = pilgrimage.0041.ha_long
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_9
+		}
+	}
+	option = {# po_nagar
+		name = pilgrimage.0041.po_nagar
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_10
+		}
+	}
+	option = {# tran_quoc
+		name = pilgrimage.0041.tran_quoc
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_11
+		}
+	}
+	option = {# muang_thaen
+		name = pilgrimage.0041.muang_thaen
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_12
+		}
+	}
+	option = {# preah_vihear
+		name = pilgrimage.0041.preah_vihear
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_13
+		}
+	}				
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
+pilgrimage.0042 = {# Azhaliism
+	type = character_event
+	title = pilgrimage.0042.t
+	desc = pilgrimage.0042.desc
+	theme = pilgrimage_activity
+	override_background = {
+		event_background = temple
+	}
+	left_portrait = root
+
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
+
+		set_up_holy_sites_for_selection_effect = yes
+	}
+	
+	option = {# er_hai_lake
+		name = pilgrimage.0042.er_hai_lake
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_9
+		}
+	}
+	option = {# zizipuwu
+		name = pilgrimage.0042.zizipuwu
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_10
+		}
+	}
+	option = {# hsenwi
+		name = pilgrimage.0042.hsenwi
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_11
+		}
+	}
+	option = {# lugu_lake
+		name = pilgrimage.0042.lugu_lake
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_12
+		}
+	}
+	option = {# preah_vihear
+		name = pilgrimage.0042.preah_vihear
+		holy_site_selection_event_option_effect = {
+			HOLY_SITE = scope:holy_site_13
+		}
+	}				
+	option = {# A different Holy Site
+		name = pilgrimage.0007.other_site
+		custom_tooltip = pilgrimage_other_selections_available_tt
+		trigger_event = pilgrimage.0030
+	}
+	option = { # I don't want to go on a pilgrimage after all
+		name = pilgrimage.0006.exit
+		remove_decision_cooldown = go_on_pilgrimage_decision
+		remove_character_flag = planning_an_activity
+	}
+}
 ##### AI Pilgrimage Selection #### 
 pilgrimage.0999 = {# AI Desitnation selection event
 	hidden = yes
