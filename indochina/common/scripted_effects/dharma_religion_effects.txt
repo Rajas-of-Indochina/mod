@@ -33,13 +33,6 @@ set_yidam_effect = {# Buddhist deities
 	}
 	else_if = {	
 		limit = {
-			has_character_modifier = buddhist_deity_zhangzhung_meri
-		}
-		remove_character_modifier = buddhist_deity_zhangzhung_meri
-		add_piety = massive_piety_loss
-	}
-	else_if = {	
-		limit = {
 			has_character_modifier = buddhist_deity_Zhambala
 		}
 		remove_character_modifier = buddhist_deity_Zhambala
@@ -151,42 +144,14 @@ set_yidam_effect = {# Buddhist deities
 		remove_character_modifier = buddhist_deity_samantabhadra
 		add_piety = massive_piety_loss
 	}
-	# Vajarayana Deities
 	else_if = {	
 		limit = {
-			has_character_modifier = buddhist_deity_vajrayogini
+			has_character_modifier = buddhist_deity_ratnasambhava
 		}
-		remove_character_modifier = buddhist_deity_vajrayogini
+		remove_character_modifier = buddhist_deity_ratnasambhava
 		add_piety = massive_piety_loss
 	}
-	else_if = {	
-		limit = {
-			has_character_modifier = buddhist_deity_vajrayogini
-		}
-		remove_character_modifier = buddhist_deity_vajrayogini
-		add_piety = massive_piety_loss
-	}
-	else_if = {	
-		limit = {
-			has_character_modifier = buddhist_deity_vajrayogini
-		}
-		remove_character_modifier = buddhist_deity_vajrayogini
-		add_piety = massive_piety_loss
-	}
-	else_if = {	
-		limit = {
-			has_character_modifier = buddhist_deity_vajrayogini
-		}
-		remove_character_modifier = buddhist_deity_vajrayogini
-		add_piety = massive_piety_loss
-	}
-	else_if = {	
-		limit = {
-			has_character_modifier = buddhist_deity_vajrayogini
-		}
-		remove_character_modifier = buddhist_deity_vajrayogini
-		add_piety = massive_piety_loss
-	}
+
 	# No Yidam
 	else = {
 		# If no current bhakti, cost is reduced.
@@ -290,7 +255,7 @@ set_nat_effect = {# Burmese Deities
 	add_character_modifier = $NAT$
 }
 #######################################
-# Animal Sacrifices
+# Animal Sacrifices 
 #######################################
 dharma_vedic_devi_animal_sacrifice_effect = {
 	random_list = {
@@ -1372,5 +1337,178 @@ dharma_vedic_aditi_animal_sacrifice_effect = {
 		}
 	}
 }
+#######################################
+# Visting Places Effects
+#######################################
+dharma_set_up_next_nalanda_event_effect = {# Visiting Nalanda
+	scope:activity = {
+		change_variable = {
+			name = dharma_nalanda_event_counter
+			add = 1
+		}
+	}
+	save_scope_value_as = {
+		name = event_counter
+		value = scope:activity.var:dharma_nalanda_event_counter
+	}
+	if = {
+		limit = { # TODO: Is any fallback handling needed in an else here?
+			exists = scope:activity
+		}
+		if = {
+			limit = {
+				scope:activity.var:dharma_nalanda_event_counter = {
+					compare_value <= 5
+				}
+			}
+			trigger_event = {
+				on_action = dharma_nalanda_journey_events
+				days = $DAYS$
+			}
+		}
+		else = {
+			if = { #For event background 
+				limit = { scope:activity.var:dharma_nalanda_visit_done = no }
+				scope:activity = {
+					set_variable = {
+						name = dharma_nalanda_visit_done
+						value = yes
+					}
+				}
+			}
+			trigger_event = {
+				on_action = dharma_nalanda_visit_over_events
+				days = $DAYS$
+			}
+		}
+		scope:activity = {
+			change_variable = {
+				name = dharma_nalanda_event_counter
+				add = 1
+			}
+		}
+	}
+}
+dharma_set_up_next_sharada_peeth_event_effect = {# Visiting Sharada Peeth
+	scope:activity = {
+		change_variable = {
+			name = dharma_sharada_peeth_event_counter
+			add = 1
+		}
+	}
+	save_scope_value_as = {
+		name = event_counter
+		value = scope:activity.var:dharma_sharada_peeth_event_counter
+	}
+	if = {
+		limit = { # TODO: Is any fallback handling needed in an else here?
+			exists = scope:activity
+		}
+		if = {
+			limit = {
+				scope:activity.var:dharma_sharada_peeth_event_counter = {
+					compare_value <= 5
+				}
+			}
+			trigger_event = {
+				on_action = dharma_sharada_peeth_visit_events
+				days = $DAYS$
+			}
+		}
+		else = {
+			if = { #For event background 
+				limit = { scope:activity.var:dharma_sharada_peeth_visit_done = no }
+				scope:activity = {
+					set_variable = {
+						name = dharma_sharada_peeth_visit_done
+						value = yes
+					}
+				}
+			}
+			trigger_event = {
+				on_action = dharma_sharada_peeth_visit_over_events
+				days = $DAYS$
+			}
+		}
+		scope:activity = {
+			change_variable = {
+				name = dharma_sharada_peeth_event_counter
+				add = 1
+			}
+		}
+	}
+}
+#######################################
+# Buddhist Retreat Effects
+#######################################
+dharma_set_up_next_buddhist_retreat_event_effect = {# Visiting Nalanda
+	scope:activity = {
+		change_variable = {
+			name = dharma_buddhist_retreat_event_counter
+			add = 1
+		}
+	}
+	save_scope_value_as = {
+		name = event_counter
+		value = scope:activity.var:dharma_buddhist_retreat_event_counter
+	}
+	if = {
+		limit = { # TODO: Is any fallback handling needed in an else here?
+			exists = scope:activity
+		}
+		if = {
+			limit = {
+				scope:activity.var:dharma_buddhist_retreat_event_counter = {
+					compare_value <= scope:activity.var:dharma_buddhist_retreate_length_value 
+				}
+			}
+			trigger_event = {
+				on_action = dharma_buddhist_retreat_events
+				days = $DAYS$
+			}
+		}
+		else = {
+			if = { #For event background 
+				limit = { scope:activity.var:dharma_buddhist_retreat_done = no }
+				scope:activity = {
+					set_variable = {
+						name = dharma_buddhist_retreat_done
+						value = yes
+					}
+				}
+			}
+			trigger_event = {
+				on_action = dharma_buddhist_retreat_over_events
+				days = $DAYS$
+			}
+		}
+		scope:activity = {
+			change_variable = {
+				name = dharma_buddhist_retreat_event_counter
+				add = 1
+			}
+		}
+	}
+}
+#######################################
+# General Effects
+#######################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

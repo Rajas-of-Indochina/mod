@@ -20,6 +20,30 @@ activity_vedic_animal_sacrifice = {# Vedic Animal Sacrifice
 		}	
 	}
 }
+activity_dharma_visit_sharada_peeth = {# Visiting Nalanda
+	solo = yes
+	color = { 0.80 0.80 0.18 1 } # Yellow
+	on_spawn = {
+		invite_character_to_activity = activity_owner
+		accept_invitation_for_character = activity_owner
+
+		set_variable = {
+			name = dharma_sharada_peeth_event_counter
+			value = 0
+		}
+	}
+	on_activate = {
+		activity_owner = {
+			trigger_event = dharma_hinduism.301
+			days = dharma_visit_arrival_duration
+		}
+	}
+	on_complete = {
+		activity_owner = {
+			remove_character_flag = planning_an_activity
+		}	
+	}
+}
 #######################################
 # Jain activities
 #######################################
@@ -86,6 +110,16 @@ activity_dharma_buddhist_retreat = {# Buddhist Retreats
 	on_spawn = {
 		invite_character_to_activity = activity_owner
 		accept_invitation_for_character = activity_owner
+
+		set_variable = {
+			name = dharma_buddhist_retreat_event_counter
+			value = 0
+		}
+
+		set_variable = {
+			name = dharma_buddhist_retreat_outcome_counter
+			value = 0
+		}
 	}
 	on_activate = {
 		activity_owner = {
@@ -98,9 +132,26 @@ activity_dharma_buddhist_retreat = {# Buddhist Retreats
 		}	
 	}
 }
+activity_dharma_visit_nalanda = {# Visiting Nalanda
+	solo = yes
+	color = { 0.80 0.80 0.18 1 } # Yellow
+	on_spawn = {
+		invite_character_to_activity = activity_owner
+		accept_invitation_for_character = activity_owner
 
-
-
-
-
-
+		set_variable = {
+			name = dharma_nalanda_event_counter
+			value = 0
+		}
+	}
+	on_activate = {
+		activity_owner = {
+			trigger_event = dharma_buddhism.301
+		}
+	}
+	on_complete = {
+		activity_owner = {
+			remove_character_flag = planning_an_activity
+		}	
+	}
+}
