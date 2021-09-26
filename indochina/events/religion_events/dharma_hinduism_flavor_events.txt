@@ -424,7 +424,7 @@ dharma_hinduism.013 = {# Sacrifice time
 		trigger = {
 			NOT = { faith = faith:shrautism	}
 		}
-		dharma_vedic_indra_goat_sacrifice_effect = yes
+		dharma_vedic_durga_animal_sacrifice_effect = yes
 	}	
 	option = {# Wealth God
 		name = dharma_hinduism.013.c
@@ -508,13 +508,1075 @@ dharma_hinduism.013 = {# Sacrifice time
 			remove_character_flag = dharma_animal_sacrifice_horse
 		}
 		trigger_event = {
-			id = dharma_hinduism.0037
+			id = dharma_hinduism.014
 			days = 1
 		}
 	}
 	
 }
 dharma_hinduism.014 = {# Misc cleanup
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+#######################################
+# Visiting Sharada Peeth
+#######################################
+dharma_hinduism.300 = {# Decide to Visit Sharada Peeth
+	type = character_event
+	title = dharma_hinduism.300.t
+	desc = dharma_hinduism.300.desc
+	theme = faith
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+	
+	immediate = {
+		title:b_srinagara = { save_scope_as = sharada_peeth_location }
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+
+	option = {# I shall stay
+		name = dharma_hinduism.300.stay
+		remove_decision_cooldown = dharma_learning_visit_cooldown_time
+		remove_character_flag = planning_an_activity
+	}
+	option = {# I shall go
+		name = dharma_hinduism.300.go
+		scope:sharada_peeth_location = {
+			title_province = {	
+				spawn_activity = {
+					owner = root
+					type = activity_dharma_visit_sharada_peeth
+				}	
+			}
+		}
+	}
+}
+dharma_hinduism.301 = {# Arriving at Sharada Peeth
+	type = character_event
+	title = dharma_hinduism.301.t
+	desc = dharma_hinduism.301.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_mountain_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	option = {
+		name = dharma_hinduism.301.arival
+		add_piety = miniscule_piety_value
+	}
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+# Random Sharada Peeth Events
+dharma_hinduism.302 = {# Visiting the Library
+	type = character_event
+	title = dharma_hinduism.302.t
+	desc = dharma_hinduism.302.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_temple_interior
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_302
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_302
+				value = yes
+			}
+		}
+	}
+
+	option = {# Buddhist Texts
+		name = dharma_hinduism.302.buddhist
+		if = {# Better Person
+			limit = { religion = religion:buddhism_religion }
+			add_piety = 10
+			add_character_modifier = {
+				modifier = nalanda_learning_books
+				months = 4
+			}
+		}
+		else = {
+			add_character_modifier = {
+				modifier = nalanda_learning_books
+				months = 4
+			}
+		}
+	}
+	option = {# Hindu Texts
+		name = dharma_hinduism.302.hindu
+		if = {# Better Person
+			limit = { religion = religion:hinduism_religion }
+			add_piety = 10
+			add_character_modifier = {
+				modifier = nalanda_learning_books
+				months = 4
+			}
+		}
+		else = {
+			add_character_modifier = {
+				modifier = nalanda_learning_books
+				months = 4
+			}
+		}
+	}
+	option = {# Jain Texts
+		name = dharma_hinduism.302.jain
+		if = {# Better Person
+			limit = { religion = religion:jainism_religion }
+			add_piety = 10
+			add_character_modifier = {
+				modifier = nalanda_learning_books
+				months = 4
+			}
+		}
+		else = {
+			add_character_modifier = {
+				modifier = nalanda_learning_books
+				months = 4
+			}
+		}
+	}
+	option = {# Medical Texts
+		name = dharma_hinduism.302.medical
+		add_character_modifier = {
+			modifier = nalanda_learning_medicine
+			months = 4
+		}
+	}
+	option = {# Astrology Texts
+		name = dharma_hinduism.302.astrology
+		add_character_modifier = {
+			modifier = nalanda_learning_astrology
+			months = 4
+		}
+	}
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+dharma_hinduism.303 = {# Meditating with the Monks
+	type = character_event
+	title = dharma_hinduism.303.t
+	desc = dharma_hinduism.303.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_mountain_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_303
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_303
+				value = yes
+			}
+		}
+	}
+
+	option = {
+		name = dharma_hinduism.303.energy
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+dharma_hinduism.304 = {# Vegetarian v non-vegetiarian
+	type = character_event
+	title = dharma_hinduism.304.t
+	desc = dharma_hinduism.304.desc
+	theme = faith
+	override_background = {
+		event_background = forest_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_304
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_304
+				value = yes
+			}
+		}
+	}
+
+	option = {# Side with the Non Vegetarian Monk
+		name = dharma_hinduism.304.meat
+		add_prestige = minor_prestige_gain
+	}
+	option = {# Side with the Vegetarian Monk
+		name = dharma_hinduism.304.vegetarian
+		add_piety = minor_piety_gain
+	}
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+dharma_hinduism.305 = {# Cosmopolitan Experince
+	type = character_event
+	title = dharma_hinduism.305.t
+	desc = dharma_hinduism.305.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_mountain_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_305
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_305
+				value = yes
+			}
+		}
+	}
+
+	option = {# Side with the Non Vegetarian Monk
+		name = dharma_hinduism.305.people
+		random_list = {
+			33 = {
+				add_learning_lifestyle_xp = medium_lifestyle_xp
+			}
+			33 = {
+				add_trait = gregarious
+			}
+			33 = {
+				add_diplomacy_skill = 1
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			shy = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+dharma_hinduism.306 = {# Theological Debate
+	type = character_event
+	title = dharma_hinduism.306.t
+	desc = dharma_hinduism.306.desc
+	theme = faith
+	override_background = {
+		event_background = india_shrine
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_306
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_306
+				value = yes
+			}
+		}
+	}
+
+	option = {# Vaishnavist
+		name = dharma_hinduism.306.vishnu
+		trigger = {
+			NOT = {
+				has_faith = faith:shaivism
+				has_faith = faith:smartism
+				has_faith = faith:srikula_shaktism
+				has_faith = faith:kalikula_shaktism
+				has_faith = faith:suryaism
+				has_faith = faith:kaumaram
+				has_faith = faith:ganaptism
+			}
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.306.vishnu.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.vishnu.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.306.vishnu.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.vishnu.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = {# Shaivism
+		name = dharma_hinduism.306.shiva
+		trigger = {
+			NOT = {
+				has_faith = faith:vaishnavism
+				has_faith = faith:krishnaism
+				has_faith = faith:smartism
+				has_faith = faith:srikula_shaktism
+				has_faith = faith:kalikula_shaktism
+				has_faith = faith:suryaism
+				has_faith = faith:kaumaram
+				has_faith = faith:ganaptism
+			}
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.306.shiva.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.shiva.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.306.shiva.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.shiva.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}	
+	option = {# Smartism
+		name = dharma_hinduism.306.smarta
+		trigger = {
+			NOT = {
+				has_faith = faith:vaishnavism
+				has_faith = faith:krishnaism
+				has_faith = faith:shaivism
+				has_faith = faith:srikula_shaktism
+				has_faith = faith:kalikula_shaktism
+				has_faith = faith:suryaism
+				has_faith = faith:kaumaram
+				has_faith = faith:ganaptism
+			}
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.306.smarta.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.smarta.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.306.smarta.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.smarta.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = {# Shaktism
+		name = dharma_hinduism.306.shakti
+		trigger = {
+			NOT = {
+				has_faith = faith:vaishnavism
+				has_faith = faith:krishnaism
+				has_faith = faith:shaivism
+				has_faith = faith:smartism
+				has_faith = faith:suryaism
+				has_faith = faith:kaumaram
+				has_faith = faith:ganaptism
+			}
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.306.shakti.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.shakti.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.306.shakti.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.shakti.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	option = {# Ganaptism
+		name = dharma_hinduism.306.ganesh
+		trigger = {
+			NOT = {
+				has_faith = faith:vaishnavism
+				has_faith = faith:krishnaism
+				has_faith = faith:shaivism
+				has_faith = faith:srikula_shaktism
+				has_faith = faith:kalikula_shaktism
+				has_faith = faith:suryaism
+				has_faith = faith:kaumaram
+			}
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.306.ganesh.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.ganesh.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.306.ganesh.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.ganesh.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = {# Saurism
+		name = dharma_hinduism.306.surya
+		trigger = {
+			NOT = {
+				has_faith = faith:vaishnavism
+				has_faith = faith:krishnaism
+				has_faith = faith:shaivism
+				has_faith = faith:srikula_shaktism
+				has_faith = faith:kalikula_shaktism
+				has_faith = faith:ganaptism
+				has_faith = faith:kaumaram
+			}
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.306.surya.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.surya.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.306.surya.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.surya.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = {# Kaumaram
+		name = dharma_hinduism.306.murugan
+		trigger = {
+			NOT = {
+				has_faith = faith:vaishnavism
+				has_faith = faith:krishnaism
+				has_faith = faith:shaivism
+				has_faith = faith:srikula_shaktism
+				has_faith = faith:kalikula_shaktism
+				has_faith = faith:suryaism
+				has_faith = faith:kaumaram
+			}
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.306.murugan.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.murugan.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.306.murugan.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.306.murugan.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = {# Stay
+		name = dharma_hinduism.306.observe
+
+		stress_impact = {
+			scholar = minor_stress_impact_gain
+			theologian = minor_stress_impact_gain
+			mystic_1 = minor_stress_impact_gain
+			mystic_2 = minor_stress_impact_gain
+			mystic_3 = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			shy = minor_stress_impact_loss
+			humble = minor_stress_impact_loss
+		}
+	}
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+dharma_hinduism.307 = {# Mystical learning
+	type = character_event
+	title = dharma_hinduism.307.t
+	desc = dharma_hinduism.307.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_temple_interior
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_307
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_307
+				value = yes
+			}
+		}
+		play_music_cue = "mx_cue_combat_stinger"
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = { has_trait = mystic_3 }
+				}
+				random = {
+					chance = 05
+					save_scope_value_as = {
+						name = increase_mystic
+						value = yes
+					}
+				}
+			}
+		}
+	}
+
+	option = {# hmm, what can I learn. 
+		name = dharma_hinduism.307.mystic
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			10 = {
+				desc = dharma_hinduism.307.mystic.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.307.mystic.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+					if = {
+						limit = { exists = scope:increase_mystic }
+						change_trait_rank = {
+							trait = lifestyle_mystic
+							rank = 1
+						}
+					}
+				}
+			}
+			15 = {
+				desc = dharma_hinduism.307.mystic.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.307.mystic.failure_title
+					left_icon = root
+				}
+			}
+		}
+	}
+	option = {# Stay
+		name = dharma_hinduism.307.study
+		add_character_modifier = {
+			modifier = focused_student
+			months = 4
+		}
+	}	
+
+	after = {
+		if = {
+			limit = { exists = scope:increase_mystic }
+			clear_saved_scope = increase_mystic
+		}
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+dharma_hinduism.310 = {# Medical learning
+	type = character_event
+	title = dharma_hinduism.310.t
+	desc = dharma_hinduism.310.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_temple_interior
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_310
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_310
+				value = yes
+			}
+		}
+		play_music_cue = "mx_cue_combat_stinger"
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = { has_trait = physician_3 }
+				}
+				random = {
+					chance = 05
+					save_scope_value_as = {
+						name = increase_physcian
+						value = yes
+					}
+				}
+			}
+		}
+	}
+
+	option = {# hmm, what can I learn. 
+		name = dharma_hinduism.310.medical
+		duel = {
+			skill = learning
+			value = high_skill_rating
+			15 = {
+				desc = dharma_hinduism.310.medical.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.310.medical.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+					if = {
+						limit = { exists = scope:increase_physcian }
+						change_trait_rank = {
+							trait = lifestyle_physician
+							rank = 1
+						}
+					}
+				}
+			}
+			10 = {
+				desc = dharma_hinduism.310.medical.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.310.medical.failure_title
+					left_icon = root
+				}
+			}
+		}
+	}
+	option = {# Stay
+		name = dharma_hinduism.310.study
+		add_character_modifier = {
+			modifier = focused_student
+			months = 4
+		}
+	}
+
+	after = {
+		if = {
+			limit = { exists = scope:increase_physcian }
+			clear_saved_scope = increase_physcian
+		}
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+
+}
+dharma_hinduism.312 = {# Learning to love to read
+	type = character_event
+	title = dharma_hinduism.312.t
+	desc = dharma_hinduism.312.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_temple_interior
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_312
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_312
+				value = yes
+			}
+		}
+	}
+
+	option = {# I like to be solitary while reading
+		name = dharma_hinduism.312.read
+		random_list = {
+			10 = {
+				add_trait = reclusive
+			}
+			90 = {
+				add_character_modifier = {
+					modifier = nalanda_learning_books
+					months = 4
+				}
+			}
+		}
+	}
+	option = {# I like to write my stuff down
+		name = dharma_hinduism.312.write
+		random_list = {
+			10 = {
+				add_trait = journaller
+			}
+			90 = {
+				add_character_modifier = {
+					modifier = nalanda_learning_books
+					months = 4
+				}
+			}
+		}
+	}
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+dharma_hinduism.315 = {# Recieving an education
+	type = character_event
+	title = dharma_hinduism.315.t
+	desc = dharma_hinduism.315.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_temple_interior
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_315
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_315
+				value = yes
+			}
+		}
+	}
+
+	option = {# Yoga Class
+		name = dharma_hinduism.315.yoga
+		add_character_modifier = {
+			modifier = nalanda_learning_yoga
+			months = 4
+		}
+	}
+	option = {# Class on the Tripitaka
+		name = dharma_hinduism.315.book
+		add_character_modifier = {
+			modifier = nalanda_learning_books
+			months = 4
+		}
+	}
+	option = {# Class on Logic
+		name = dharma_hinduism.315.logic
+		add_character_modifier = {
+			modifier = nalanda_learning_logic
+			months = 4
+		}
+	}
+	option = {# Class on Astrology
+		name = dharma_hinduism.315.astrology
+		add_character_modifier = {
+			modifier = nalanda_learning_astrology
+			months = 4
+		}
+	}
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+# Returning from Nalanda
+dharma_hinduism.316 = {# Returning Home
+	type = character_event
+	title = dharma_hinduism.316.t
+	desc = dharma_hinduism.316.desc
+	theme = faith
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	option = {
+		name = dharma_hinduism.316.home
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+dharma_hinduism.317 = {# Misc cleanup
 	hidden = yes	
 	immediate = {
 		scope:activity = {
