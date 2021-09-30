@@ -1,6 +1,79 @@
 ﻿# Roadmap / Todo list
 Feel free to add suggestions
 
+## Adopt a secondary faith
+
+## Encourage cultural settlement, slowly creates a minority group in that county of your culture. It may be met with resistance.
+
+## Gangga Negara, claiming descent from Rome and/or Alexander the Great
+
+## Conquering someone's last county should imprison their entire court
+
+## Select where to host feast and hunt, how to honor guest
+
+release captives cb
+demand tribute should give prestige, lower opinion upon refusal
+also weighting and better loc
+also pause
+tributary game concept
+call tributaries
+call suzerains
+nonbeliever needs a faith attached to it
+fund mercenary band
+grant city makes it feudal, giving to rando makes it republic
+if you have a dynasty you are feudal/clan ?
+european trade routes
+random courtier events from trade routes
+no primogeniture game rule
+indian primogeniture
+dismiss courtier interaction
+historical succession types game rule
+losing war lets you make someone rival
+new text for recruit courtier
+how did your character die?
+individual peace deal, or interaction to force someone to drop out of war
+comission inscription
+threaten character interaction, makes you either gain or lose dread (only doable occasionally)
+less dread from executions?
+war refugees event on conquest of a county when the new holder is of hostile faith or different culture group
+single county conquest should vassalize
+ask to stop raiding for truce
+send diplomatic envoy, they may die
+deliberately do stressful things
+prestige loss for marrying peasant
+borrow from moneylenders
+appoint regent
+yearly or quarterly check to make rivals
+antagonize
+more stress from wife death, depending on opinion
+you can borrow money notification, if in debt
+killing a parent should make their children your rival
+switch from feudal to clan decision, maybe upon converting faith
+plunder county decision (based on culture innovation?)
+kambuja vassals and popup
+cny event and other events, basis in diwali
+nanzhao gets to declare state religion, maybe exttend to others
+nanzhao bamboo tanks unique unit
+jv2 should be infertile?
+game music, javanese, thai, vietnamese, chinese, gamelan, indian/dravidian
+zheng make coup
+nuosu linked names
+bookmarks plus scrolling bookmarks
+area depopulated, devestated from war, lowered development? change culture takes development from your culture counties
+khmer sailendra rivalry
+769, 936 start dates
+landless adventurers
+where did your slaves come from
+
+## Dynastic Relation Mechanic
+  Increases through marriages and joining wars, friendships between house heads, and between other house members
+  Decreases through wars, rivalries, killing
+
+  Grants a -50 to +50 opinion bonus between all members of the dynasty
+
+  Anything (major) that grants opinion to someone will grant half as much to the entire dynasty
+  Applies to negative opinion as well
+
 ## Add these events
     Burmese Settlers [Event 1.0]
     Fires between 846 and 860
