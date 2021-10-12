@@ -4466,7 +4466,6 @@ dharma_festivals.447 = {# Misc cleanup
 		}
 	}
 }
-
 #######################################
 #									  #
 #        Vietnamese Festivals		  #
@@ -4476,8 +4475,346 @@ dharma_festivals.447 = {# Misc cleanup
 #######################################
 # Tet
 #######################################
+dharma_festivals.500 = {# Prepare for the Tet Festival
+	type = character_event
+	title = dharma_festivals.440.t
+	desc = dharma_festivals.440.desc
+	theme = friendly
+	
+	left_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = {# Time to begin the preparations 
+		name = dharma_festivals.440.thaipusam
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_dharma_tet_festival
+			}	
+		}
+	}
+	option = {# I have better things to do right now
+		name = dharma_festivals.440.no_thaipusam
+		remove_character_flag = planning_an_activity
+	}
+}
+# Starting Tet!
+dharma_festivals.501 = {# Cleaning the palace
+	type = character_event
+	title = dharma_festivals.501.t
+	desc = dharma_festivals.501.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
 
+	option = {# Clean for new year!
+		name = dharma_festivals.501.clean
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
 
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.502
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.502 = {# Honoring my elders and ancestors
+	type = character_event
+	title = dharma_festivals.502.t
+	desc = dharma_festivals.502.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Honoring my ancenstors
+		name = dharma_festivals.502.elders
+		add_prestige = miniscule_prestige_gain
+		every_close_or_extended_family_member = {
+			limit = { 
+				is_alive = yes 
+				OR = {
+					is_grandparent_of = root
+					is_parent_of = root
+					is_great_grandparent_of = root
+				}
+			}			
+			add_opinion = {
+				modifier = pleased_opinion
+				target = root
+				opinion = 15
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			family_first = minor_stress_impact_loss
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.503
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.503 = {# Giving the children lucky money
+	type = character_event
+	title = dharma_festivals.503.t
+	desc = dharma_festivals.503.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Giving the children lucky money
+		name = dharma_festivals.503.lixi
+		remove_short_term_gold = medium_gold_value
+		every_close_or_extended_family_member = {
+			limit = { 
+				is_alive = yes 
+				OR = {
+					is_child_of = root
+					is_grandchild_of = root
+					is_great_grandchild_of = root
+				}
+			}
+			add_gold = minor_gold_value
+			add_opinion = {
+				modifier = pleased_opinion
+				target = root
+				opinion = 15
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			family_first = minor_stress_impact_loss
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.504
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.504 = {# visiting temples
+	type = character_event
+	title = dharma_festivals.504.t
+	desc = dharma_festivals.504.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Time to visit the temples
+		name = dharma_festivals.504.temples
+		add_piety = minor_piety_gain
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.505
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.505 = {# City Parade
+	type = character_event
+	title = dharma_festivals.505.t
+	desc = dharma_festivals.505.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# parades are great
+		name = dharma_festivals.505.parade
+		add_prestige = miniscule_prestige_gain
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.506
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.506 = {# Family Feast
+	type = character_event
+	title = dharma_festivals.506.t
+	desc = dharma_festivals.506.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Sticky rice cakes! Banh Chung!
+		name = dharma_festivals.506.feast
+		add_piety = minor_piety_gain
+		every_close_or_extended_family_member = {
+			limit = { is_alive = yes }
+			add_opinion = {
+				modifier = feast_pleasant_time_opinion
+				target = root
+				opinion = 5
+			}
+		}
+		every_courtier = {
+			custom = yearly.4031.b_every_courtier
+			add_opinion = {
+				modifier = feast_pleasant_time_opinion
+				target = root
+				opinion = 5
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			family_first = minor_stress_impact_loss
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.507
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.507 = {# Charity for the people
+	type = character_event
+	title = dharma_festivals.507.t
+	desc = dharma_festivals.507.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Large Gift to the People 
+		name = dharma_festivals.507.large
+		remove_short_term_gold = major_gold_value
+		scope:capital_province = {
+			add_county_modifier = {
+				modifier = dharma_festival_large_gift_modifier
+				days = 365
+			}
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			improvident = minor_stress_impact_loss
+			just = minor_stress_impact_loss
+			compassionate = minor_stress_impact_loss
+			generous = minor_stress_impact_loss
+		}
+	}
+	option = {# Medium Gift to the People 
+		name = dharma_festivals.507.medium
+		remove_short_term_gold = medium_gold_value
+		scope:capital_province = {
+			add_county_modifier = {
+				modifier = dharma_festival_medium_gift_modifier
+				days = 365
+			}
+		}
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			improvident = miniscule_stress_impact_loss
+			just = miniscule_stress_impact_loss
+			compassionate = miniscule_stress_impact_loss
+			generous = miniscule_stress_impact_loss
+		}
+	}
+	option = {# Small Gift to the People 
+		name = dharma_festivals.507.small
+		remove_short_term_gold = minor_gold_value
+		scope:capital_province = {
+			add_county_modifier = {
+				modifier = dharma_festival_small_gift_modifier
+				days = 365
+			}
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_loss
+			improvident = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.508
+			days = 1
+		}
+	}
+
+}
+# End of Tet
+dharma_festivals.508 = {# Tet concludes
+	type = character_event
+	title = dharma_festivals.508.t
+	desc = dharma_festivals.508.desc
+	theme = throne
+	
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+	
+	option = {# Back Home
+		name = dharma_festivals.508.home
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.509
+			days = 1	
+		}
+	}
+}
+dharma_festivals.509 = {# Misc cleanup
+	hidden = yes	
+	immediate = {
+		remove_character_flag = thaipusam_peirce
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
 #######################################
 #									  #
 #         Cham Festivals		      #

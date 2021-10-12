@@ -1387,3 +1387,74 @@ dharma_attend_gangaur_festival = {# Attend Gangaur festival
 		base = 50
 	}
 }
+#######################################
+# SEA Cultural Festival Decisions
+#######################################
+dharma_attend_tet_festival = {# Attend Tet festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_tet_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:phat_giao 
+			has_culture	 = culture:kinh
+		}			
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:phat_giao 
+			has_culture	 = culture:kinh
+		}
+		custom_description = {
+			text = dharma_decision_tet_month_requirement
+			current_month >= 1
+			current_month <= 2
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_tet_festival_tooltip
+		trigger_event = { id = dharma_festivals.500 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
