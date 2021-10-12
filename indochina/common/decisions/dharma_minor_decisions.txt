@@ -1402,14 +1402,14 @@ dharma_attend_tet_festival = {# Attend Tet festival
 		is_landed = yes
 		OR = {
 			faith = faith:phat_giao 
-			has_culture	 = culture:kinh
+			has_culture = culture:kinh
 		}			
 	}
 	
 	is_valid = {
 		OR = {
 			faith = faith:phat_giao 
-			has_culture	 = culture:kinh
+			has_culture	= culture:kinh
 		}
 		custom_description = {
 			text = dharma_decision_tet_month_requirement
@@ -1439,7 +1439,55 @@ dharma_attend_tet_festival = {# Attend Tet festival
 		base = 50
 	}
 }
+dharma_attend_kate_festival = {# Attend kate festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_kate_festival_desc
 
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:chamic_shaivism 
+			has_culture	= culture:cham
+		}			
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:chamic_shaivism 
+			has_culture	= culture:cham
+		}
+		custom_description = {
+			text = dharma_decision_kate_month_requirement
+			current_month >= 9
+			current_month <= 10
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_kate_festival_tooltip
+		trigger_event = { id = dharma_festivals.520 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
 
 
 
