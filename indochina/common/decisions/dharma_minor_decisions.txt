@@ -1488,7 +1488,54 @@ dharma_attend_kate_festival = {# Attend kate festival
 		base = 50
 	}
 }
+dharma_attend_choul_festival = {# Attend Choul Chnam Themy festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_choul_festival_desc
 
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:kambuja_devaraja 
+			has_culture	= culture:khmer
+		}			
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:kambuja_devaraja 
+			has_culture	= culture:khmer
+		}
+		custom_description = {
+			text = dharma_decision_choul_month_requirement
+			current_month = 4
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_choul_festival_tooltip
+		trigger_event = { id = dharma_festivals.550 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
 
 
 
