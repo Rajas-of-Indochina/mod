@@ -1474,7 +1474,6 @@ dharma_festivals.206 = {# Animal Release
 			compassionate = minor_stress_impact_loss
 			sadistic = minor_stress_impact_gain
 			callous = minor_stress_impact_gain
-			reclusive = minor_stress_impact_gain
 		}
 	}
 
@@ -5491,7 +5490,7 @@ dharma_festivals.558 = {# Family Feast
 		animation = happiness
 	}
 
-	option = {# Clean for new year!
+	option = {# Good food
 		name = dharma_festivals.558.feast
 		every_close_or_extended_family_member = {
 			limit = { is_alive = yes }
@@ -5564,7 +5563,424 @@ dharma_festivals.560 = {# Misc cleanup
 #######################################
 # Songkran
 #######################################
+dharma_festivals.580 = {# Prepare for the Songkran Festival
+	type = character_event
+	title = dharma_festivals.580.t
+	desc = dharma_festivals.580.desc
+	theme = friendly
+	
+	left_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = {# Time to begin the preparations 
+		name = dharma_festivals.580.songkran
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_dharma_songkran_festival
+			}	
+		}
+	}
+	option = {# I have better things to do right now
+		name = dharma_festivals.580.no_songkran
+		remove_character_flag = planning_an_activity
+	}
+}
+# Songkran Events
+dharma_festivals.581 = {# Songkran is here
+	type = character_event
+	title = dharma_festivals.581.t
+	desc = dharma_festivals.581.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
 
+	option = {# Clean for new year!
+		name = dharma_festivals.581.here
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.582
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.582 = {# Visiting Temples
+	type = character_event
+	title = dharma_festivals.582.t
+	desc = dharma_festivals.582.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Visiting temples
+		name = dharma_festivals.582.temples
+		add_piety = miniscule_piety_gain
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+			}
+			trigger_event = { 
+				id = dharma_festivals.583
+				days = 1
+			}
+		}
+		else = {
+			trigger_event = { 
+				id = dharma_festivals.584
+				days = 1
+			}
+		}
+	}
+
+}
+dharma_festivals.583 = {# Life release
+	type = character_event
+	title = dharma_festivals.583.t
+	desc = dharma_festivals.583.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Clean for new year!
+		name = dharma_festivals.583.merit
+		add_piety = minor_piety_gain
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			compassionate = minor_stress_impact_loss
+			sadistic = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.585
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.584 = {# Offerings to the Gods
+	type = character_event
+	title = dharma_festivals.584.t
+	desc = dharma_festivals.584.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# fertility yay!
+		name = dharma_festivals.584.fertility
+		random_list = {
+			70 = { add_piety = minor_piety_gain }
+			30 = {
+				add_character_modifier = {
+					modifier = dharma_fertility_blessing
+					days = 150
+				}
+			}
+		}
+	}
+	option = {# Health!
+		name = dharma_festivals.584.health
+		random_list = {
+			70 = { add_piety = minor_piety_gain }
+			30 = {
+				add_character_modifier = {
+					modifier = dharma_blessing_of_health
+					days = 150
+				}
+			}
+		}
+	}
+	option = {# Victory!
+		name = dharma_festivals.584.victory
+		random_list = {
+			70 = { add_piety = minor_piety_gain }
+			30 = {
+				add_character_modifier = {
+					modifier = dharma_victory_blessing
+					days = 150
+				}
+			}
+		}
+	}
+	option = {# piety
+		name = dharma_festivals.584.piety
+		random_list = {
+			70 = { add_piety = minor_piety_gain }
+			30 = {
+				add_character_modifier = {
+					modifier = dharma_piety_blessing
+					days = 150
+				}
+			}
+		}
+	}
+	option = {# Wisdom!
+		name = dharma_festivals.584.wisdom
+		random_list = {
+			70 = { add_piety = minor_piety_gain }
+			30 = {
+				add_character_modifier = {
+					modifier = dharma_wisdom_blessing
+					days = 150
+				}
+			}
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.585
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.585 = {# Ancestor Worship
+	type = character_event
+	title = dharma_festivals.585.t
+	desc = dharma_festivals.585.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Honoring my ancestors
+		name = dharma_festivals.585.ancestors
+		add_prestige = miniscule_prestige_gain
+		every_close_or_extended_family_member = {
+			limit = { 
+				is_alive = yes 
+				OR = {
+					is_grandparent_of = root
+					is_parent_of = root
+					is_great_grandparent_of = root
+				}
+			}			
+			add_opinion = {
+				modifier = pleased_opinion
+				target = root
+				opinion = 15
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			family_first = minor_stress_impact_loss
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.586
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.586 = {# Songkran procession
+	type = character_event
+	title = dharma_festivals.586.t
+	desc = dharma_festivals.586.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# great times
+		name = dharma_festivals.586.procession
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.587
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.587 = {# Giving Charity to the commoners
+	type = character_event
+	title = dharma_festivals.587.t
+	desc = dharma_festivals.587.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Large Gift to the People 
+		name = dharma_festivals.587.large
+		remove_short_term_gold = major_gold_value
+		scope:capital_province = {
+			add_county_modifier = {
+				modifier = dharma_festival_large_gift_modifier
+				days = 365
+			}
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			improvident = minor_stress_impact_loss
+			just = minor_stress_impact_loss
+			compassionate = minor_stress_impact_loss
+			generous = minor_stress_impact_loss
+		}
+	}
+	option = {# Medium Gift to the People 
+		name = dharma_festivals.587.medium
+		remove_short_term_gold = medium_gold_value
+		scope:capital_province = {
+			add_county_modifier = {
+				modifier = dharma_festival_medium_gift_modifier
+				days = 365
+			}
+		}
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			improvident = miniscule_stress_impact_loss
+			just = miniscule_stress_impact_loss
+			compassionate = miniscule_stress_impact_loss
+			generous = miniscule_stress_impact_loss
+		}
+	}
+	option = {# Small Gift to the People 
+		name = dharma_festivals.587.small
+		remove_short_term_gold = minor_gold_value
+		scope:capital_province = {
+			add_county_modifier = {
+				modifier = dharma_festival_small_gift_modifier
+				days = 365
+			}
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_loss
+			improvident = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.588
+			days = 1
+		}
+	}
+
+}
+dharma_festivals.588 = {# Courtly Feast
+	type = character_event
+	title = dharma_festivals.588.t
+	desc = dharma_festivals.588.desc
+	theme = dharma_india_pyre
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Good Food!
+		name = dharma_festivals.588.feast
+		every_close_or_extended_family_member = {
+			limit = { is_alive = yes }
+			add_opinion = {
+				modifier = feast_pleasant_time_opinion
+				target = root
+				opinion = 5
+			}
+		}
+		every_courtier = {
+			
+			add_opinion = {
+				modifier = feast_pleasant_time_opinion
+				target = root
+				opinion = 5
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			family_first = minor_stress_impact_loss
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.589
+			days = 1
+		}
+	}
+
+}
+# End of Songkran
+dharma_festivals.589 = {# Songkran concludes
+	type = character_event
+	title = dharma_festivals.559.t
+	desc = dharma_festivals.559.desc
+	theme = throne
+	
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+	
+	option = {# Back Home
+		name = dharma_festivals.559.home
+	}
+
+	after = {
+		trigger_event = { 
+			id = dharma_festivals.560
+			days = 1	
+		}
+	}
+}
+dharma_festivals.590 = {# Misc cleanup
+	hidden = yes	
+	immediate = {
+		remove_character_flag = thaipusam_peirce
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
 #######################################
 #									  #
 #         Javanese Festivals		  #

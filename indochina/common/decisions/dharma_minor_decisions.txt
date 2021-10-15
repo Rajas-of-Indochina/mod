@@ -1536,7 +1536,54 @@ dharma_attend_choul_festival = {# Attend Choul Chnam Themy festival
 		base = 50
 	}
 }
+dharma_attend_songkran_festival = {# Attend Songkran festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_songkran_festival_desc
 
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:ban_phi 
+			has_culture	= culture:tai
+		}			
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:ban_phi 
+			has_culture	= culture:tai
+		}
+		custom_description = {
+			text = dharma_decision_songkran_month_requirement
+			current_month = 4
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_songkran_festival_tooltip
+		trigger_event = { id = dharma_festivals.581 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
 
 
 
