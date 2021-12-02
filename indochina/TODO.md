@@ -1,6 +1,38 @@
 ﻿# Roadmap / Todo list
 Feel free to add suggestions
 
+
+#### TODO TODO
+
+    dali and others in 1066 vassals
+    low fertility for jayavarman
+    revert that hardcore shit or make it a game options
+
+########################################################################
+
+## Rename Tribal to Late Antiquity
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2629092890
+
+## Renaissance Innovations
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2616283652&searchtext=renaissance
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2190986644
+
+## More Laws
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2596442947
+
+## Succession Expanded
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2650385452&searchtext=
+
+## More Diplomacy/Decisions
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2631419657&searchtext=
+
+## House Feuds
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2582311390&searchtext=
+
+## Nomad Gov
+  Tribal land (empty holdings) can move capital between these
+  Capital area gets minuses for every year (month?) inhabited until it is no longer useful, then must move
+
 ## Adopt a secondary faith
 
 ## Encourage cultural settlement, slowly creates a minority group in that county of your culture. It may be met with resistance.
