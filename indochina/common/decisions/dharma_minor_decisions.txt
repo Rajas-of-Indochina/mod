@@ -1,55 +1,269 @@
 ﻿#######################################
 # General Decisions
 #######################################
-pet_elephant_decision = {# Pet Elephant decision
-	picture = "gfx/interface/illustrations/decisions/decision_misc.dds"
+go_on_pilgrimage_decision = {# go on a pilgrimage
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	ai_check_interval = 60
 
-	desc = elephant_dog_decision_desc
-	selection_tooltip = elephant_dog_decision_tooltip
+	desc = go_on_pilgrimage_decision_desc
+	selection_tooltip = go_on_pilgrimage_decision_tooltip
 
-	ai_check_interval = 120
-
-	cooldown = { days = 1825 }
+	cooldown = { years = pilgrimage_cooldown_year_amount }
 
 	is_shown = {
-		any_owned_story = {
-			story_type = story_cycle_pet_elephant
-			exists = story_owner.var:story_cycle_elephant_name
+		is_landed = yes
+		NOR = {
+			# These Faiths historically shunned going on pilgrimages, saying they were a waste of time & money.
+			faith = faith:waldensian
+			faith = faith:paulician
+			faith = faith:lollard
+		}
+
+		# Also we must have an actual holy site we can visit.
+		faith = {	
+			any_holy_site = {
+				exists = this
+			}
 		}
 	}
 
 	is_valid_showing_failures_only = {
-		is_available = yes
+		is_available_adult = yes
+		is_at_war = no
 	}
 
 	effect = {
-		custom_tooltip = elephant_decision_effect_tooltip
+		custom_tooltip = pilgrimage_effect_1
+		custom_tooltip = pilgrimage_effect_2
+		if = { #What is the minimum you will have to pay?
+			limit = {
+				faith = {
+					any_holy_site = {
+						squared_distance = {
+							target = root.capital_province
+							value <= short_pilgrimage_max_length
+						}
+					}
+				}
+			}
+			custom_tooltip = pilgrimage_effect_3
+		}
+		else_if = {
+			limit = {
+				faith = {
+					any_holy_site = {
+						squared_distance = {
+							target = root.capital_province
+							value <= medium_pilgrimage_max_length
+						}
+					}
+				}
+			}
+			custom_tooltip = pilgrimage_effect_4
+		}
+		else_if = {
+			limit = {
+				faith = {
+					any_holy_site = {
+						squared_distance = {
+							target = root.capital_province
+							value <= long_pilgrimage_max_length
+						}
+					}
+				}
+			}
+			custom_tooltip = pilgrimage_effect_5
+		}
+		else = {
+			custom_tooltip = pilgrimage_effect_6
+		}
+		if = {
+			limit = { has_trait = ill }
+			custom_tooltip = line_break
+			custom_tooltip = pilgrimage_illness_warning
+		}
+		if = {
+			limit = { is_ai = yes }
+			trigger_event = pilgrimage.0999
+		}
+		if = {# Jain Pilgrimages
+			limit = { religion = religion:jainism_religion }
+			trigger_event = pilgrimage.0004
+		}
+		if = {# Hindu Pilgrimages
+			limit = { religion = religion:hinduism_religion }
+			trigger_event = pilgrimage.0006
+		}
+		if = {# Buddhist Pilgrimages
+			limit = { religion = religion:buddhism_religion }
+			trigger_event = pilgrimage.0030
+		}		
+		else_if = {# Everyone Else
+			limit = { 
+				not = {
+					religion = religion:jainism_religion 
+					religion = religion:hinduism_religion 
+					religion = religion:buddhism_religion 
+				} 
+			}
+			trigger_event = pilgrimage.0001
+		}
 
-		trigger_event = {
-			on_action = story_cycle_dog_elephant_decision_on_actions
+	}
+
+	ai_potential = {
+		is_landed = yes
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = -100
+			NOT = { short_term_gold >= pilgrimage_medium_extra_cost }
+		}
+		modifier = {
+			add = 30
+			short_term_gold >= pilgrimage_long_extra_cost
+		}
+		modifier = {
+			add = 20
+			piety_level <= 2
+		}
+		modifier = {
+			add = 20
+			has_trait = zealous
+		}
+		modifier = {
+			add = 20
+			has_trait = zealous
+			NOT = { has_trait = pilgrim }
+		}
+		modifier = {
+			add = -30
+			has_trait = cynical
+		}
+		modifier = {
+			add = -30
+			has_trait = pilgrim
+		}
+	}
+}
+start_hunt_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_activity.dds"
+	ai_check_interval = 60
+
+	cost = {
+		gold = {
+			add = standard_activity_cost
+			divide = 1.5
+			if = {
+				limit = {
+					has_character_flag = free_hunt
+				}
+				multiply = 0
+			}
+
+		}
+	}
+
+	cooldown = { days = standard_hunting_cooldown_time }
+
+	is_shown = {
+		is_landed = yes
+		highest_held_title_tier > tier_barony
+		NOT = {
+			religion = religion:jainism_religion
+		}
+	}
+	is_valid = {
+		NOT = {
+			religion = religion:jainism_religion
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = start_hunt_decision_go_on_hunt
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_flag = free_hunt
+				}
+				remove_character_flag = free_hunt
+			}
+		}
+
+		#Stress loss
+		if = {
+			limit = {
+				has_trait = lazy
+			}
+			custom_tooltip = start_hunt_decision_stress_lazy
+		}
+		else = {
+			stress_impact = {
+				base = hunt_stress_loss_value
+				craven = activity_stress_gain_impact
+				diligent = activity_stress_loss_impact
+				athletic = activity_stress_loss_impact
+				sadistic = activity_stress_loss_impact
+				brave = activity_stress_loss_impact
+				hunter_1 = activity_stress_loss_impact
+				hunter_2 = activity_stress_loss_impact
+				hunter_3 = activity_stress_loss_impact
+				generous = activity_stress_loss_impact
+			}
+		}
+
+		custom_tooltip = start_hunt_decision_prestige
+		
+		hidden_effect = {
+			random_sub_realm_barony = {
+				title_province = {
+					spawn_activity = {
+						type = activity_hunt
+						owner = root
+					}
+				}
+			}
 		}
 	}
 	
 	ai_potential = {
-		always = yes
+		short_term_gold > standard_activity_cost
 	}
 
 	ai_will_do = {
-		base = 0
+		base = 35
 
-		modifier = {
-			add = 25
-			stress > low_medium_stress
+		ai_value_modifier = {
+			ai_energy = 1
+			ai_greed = -0.5
+			ai_compassion = -0.5
 		}
 
 		modifier = {
-			add = 50
-			stress > medium_stress
+			add = 10
+			has_trait_rank = {
+				trait = education_martial
+				rank > 0
+			}
+		}
+		modifier = {
+			add = 10
+			has_trait_rank = {
+				trait = education_martial
+				rank > 2
+			}
 		}
 
 		modifier = {
-			add = 50
-			stress > high_stress
+			add = 35
+			stress > low_stress
 		}
 	}
 }
@@ -88,20 +302,20 @@ select_personal_deity_tibet_decision = {# Tibetan Gods and Goddesses
 		piety >= minor_piety_value
 		NOR = {
 			# Bon Tibetan Deities
-			has_character_modifier = tibet_deity_sipe_gyalmo # Sipe Gyalmo
-			has_character_modifier = tibet_deity_shenlha_okar # Shenlha Okar
-			has_character_modifier = tibet_deity_tonpa_shenrab # Tonpa Shenrab
-			has_character_modifier = tibet_deity_yeshe_walmo # Yeshe Walmo
-			has_character_modifier = tibet_deity_takla_mebar # Takla Mebar
-			has_character_modifier = tibet_deity_Zhambala # Zhambala
-			has_character_modifier = tibet_deity_sherab_chamma # Sherab Chamma
+			has_character_modifier = buddhist_deity_sipe_gyalmo # Sipe Gyalmo
+			has_character_modifier = buddhist_deity_shenlha_okar # Shenlha Okar
+			has_character_modifier = buddhist_deity_tonpa_shenrab # Tonpa Shenrab
+			has_character_modifier = buddhist_deity_yeshe_walmo # Yeshe Walmo
+			has_character_modifier = buddhist_deity_takla_mebar # Takla Mebar
+			has_character_modifier = buddhist_deity_Zhambala # Zhambala
+			has_character_modifier = buddhist_deity_sherab_chamma # Sherab Chamma
 			# Buddhist Tibetan Deities
-			has_character_modifier = tibet_deity_palden_lhamo # Palden_Lhamo
-			has_character_modifier = tibet_deity_tara # Tara
-			has_character_modifier = tibet_deity_avalokitesvara  # Avalokiteśvara 
-			has_character_modifier = tibet_deity_yamantaka # Yamantaka
-			has_character_modifier = tibet_deity_hevajra # Hevajra
-			has_character_modifier = tibet_deity_vajrayogini # Vajrayogini
+			has_character_modifier = buddhist_deity_palden_lhamo # Palden_Lhamo
+			has_character_modifier = buddhist_deity_tara # Tara
+			has_character_modifier = buddhist_deity_avalokitesvara  # Avalokiteśvara 
+			has_character_modifier = buddhist_deity_yamantaka # Yamantaka
+			has_character_modifier = buddhist_deity_hevajra # Hevajra
+			has_character_modifier = buddhist_deity_vajrayogini # Vajrayogini
 		}
 	}
 
@@ -118,7 +332,6 @@ select_personal_nat_decision = {# Burmese Gods and Goddesses
 	is_shown = {
 		OR = {
 			faith = faith:ari
-			faith = faith:burmic
 			And = {
 				faith = faith:theravada
 				has_culture_group = culture_group:burman_group
@@ -197,20 +410,20 @@ select_personal_deity_buddhist_decision = {# Buddhist Gods and Goddesses
 		piety >= minor_piety_value
 		NOR = {
 			# Bon Tibetan Deities
-			has_character_modifier = tibet_deity_sipe_gyalmo # Sipe Gyalmo
-			has_character_modifier = tibet_deity_shenlha_okar # Shenlha Okar
-			has_character_modifier = tibet_deity_tonpa_shenrab # Tonpa Shenrab
-			has_character_modifier = tibet_deity_yeshe_walmo # Yeshe Walmo
-			has_character_modifier = tibet_deity_takla_mebar # Takla Mebar
-			has_character_modifier = tibet_deity_Zhambala # Zhambala
-			has_character_modifier = tibet_deity_sherab_chamma # Sherab Chamma
+			has_character_modifier = buddhist_deity_sipe_gyalmo # Sipe Gyalmo
+			has_character_modifier = buddhist_deity_shenlha_okar # Shenlha Okar
+			has_character_modifier = buddhist_deity_tonpa_shenrab # Tonpa Shenrab
+			has_character_modifier = buddhist_deity_yeshe_walmo # Yeshe Walmo
+			has_character_modifier = buddhist_deity_takla_mebar # Takla Mebar
+			has_character_modifier = buddhist_deity_Zhambala # Zhambala
+			has_character_modifier = buddhist_deity_sherab_chamma # Sherab Chamma
 			# Buddhist Tibetan Deities
-			has_character_modifier = tibet_deity_palden_lhamo # Palden_Lhamo
-			has_character_modifier = tibet_deity_tara # Tara
-			has_character_modifier = tibet_deity_avalokitesvara  # Avalokiteśvara 
-			has_character_modifier = tibet_deity_yamantaka # Yamantaka
-			has_character_modifier = tibet_deity_hevajra # Hevajra
-			has_character_modifier = tibet_deity_vajrayogini # Vajrayogini
+			has_character_modifier = buddhist_deity_palden_lhamo # Palden_Lhamo
+			has_character_modifier = buddhist_deity_tara # Tara
+			has_character_modifier = buddhist_deity_avalokitesvara  # Avalokiteśvara 
+			has_character_modifier = buddhist_deity_yamantaka # Yamantaka
+			has_character_modifier = buddhist_deity_hevajra # Hevajra
+			has_character_modifier = buddhist_deity_vajrayogini # Vajrayogini
 		}
 	}
 
@@ -221,24 +434,235 @@ select_personal_deity_buddhist_decision = {# Buddhist Gods and Goddesses
 #######################################
 # Hindu Decisions
 #######################################
+dharma_vedic_animal_sacrifice = {# Hindu Animal Sacrifice
+	picture = "gfx/interface/illustrations/decisions/decision_vedic_sacrifice.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 1825 } #3650 1825
+	desc = dharma_vedic_animal_sacrifice_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:shrautism
+			faith = faith:kalikula_shaktism
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:shrautism
+			faith = faith:kalikula_shaktism	
+		}
+		gold >= 50
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
 
+	effect = {
+		custom_tooltip = dharma_vedic_animal_sacrifice_tooltip
+		custom_tooltip = dharma_vedic_animal_sacrifice_costs_tooltip
+		trigger_event = dharma_hinduism.011
+	}
+
+	ai_potential = {
+		short_term_gold > 50
+	}
+
+	ai_will_do = {
+		base = 40
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
+dharma_visit_sharada_peeth = {# Go to Sharada Peeth
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_pilgrimage.dds"
+	desc = dharma_visit_sharada_peeth_desc
+	selection_tooltip = dharma_visit_sharada_peeth_tooltip
+	cooldown = { days = dharma_learning_visit_cooldown_time }
+
+	is_shown = {
+		religion = { is_in_family = rf_eastern }
+		holds_landed_title = yes
+		OR = { 
+			capital_province = { geographical_region = world_india }
+			capital_province = { geographical_region = world_tibet }
+			capital_province = { geographical_region = ghw_region_afghanistan }
+			capital_province = { geographical_region = world_burma }
+		}
+	}
+
+	is_valid = {
+		religion = { is_in_family = rf_eastern }
+		holds_landed_title = yes
+		OR = { 
+			capital_province = { geographical_region = world_india }
+			capital_province = { geographical_region = world_tibet }
+			capital_province = { geographical_region = ghw_region_afghanistan }
+			capital_province = { geographical_region = world_burma }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_visit_sharada_peeth_tooltip
+		trigger_event = dharma_hinduism.300
+	}
+
+	ai_check_interval = 60
+	
+	ai_potential = {
+		is_at_war = no
+		stress >= 75
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+dharma_attend_diwali_festival = {# Attend Diwali festival
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_diwali_festival_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:hinduism_religion
+	}
+	
+	is_valid = {
+		religion = religion:hinduism_religion
+		custom_description = {
+			text = dharma_decision_diwali_month_requirement
+			current_month >= 10
+			current_month <= 11
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_diwali_festival_tooltip
+		trigger_event = { id = dharma_festivals.100 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_navaratri_festival = {# Attend Navaratri festival
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_navaratri_festival_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {# must be a shakti worshiper or your spouse must be a shakti worship
+			faith = faith:kalikula_shaktism
+			faith = faith:srikula_shaktism
+			AND = {
+				religion = { is_in_family = rf_eastern }
+				any_spouse = { 
+					OR = {
+						faith = faith:kalikula_shaktism
+						faith = faith:srikula_shaktism
+					}
+				}
+			}
+		}
+	}
+	
+	is_valid = {
+		OR = {# must be a shakti worshiper or your spouse must be a shakti worship
+			faith = faith:kalikula_shaktism
+			faith = faith:srikula_shaktism
+			AND = {
+				religion = { is_in_family = rf_eastern }
+				any_spouse = { 
+					OR = {
+						faith = faith:kalikula_shaktism
+						faith = faith:srikula_shaktism
+					}
+				}
+			}
+		}
+		custom_description = {
+			text = dharma_decision_navaratri_month_requirement
+			current_month >= 9
+			current_month <= 10
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_navaratri_festival_tooltip
+		trigger_event = { id = dharma_festivals.125 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
 #######################################
 # Buddhist Decisions
 #######################################
 buddhist_retreat_decision = {# Go on a Buddhist Retreat
 	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
-
 	desc = buddhist_retreat_decision_desc
 	selection_tooltip = buddhist_retreat_decision_tooltip
 
 	is_shown = {
 		religion = religion:buddhism_religion
 		holds_landed_title = yes
-		NOT = { has_character_modifier = busy_doing_activities }
 	}
 
 	is_valid = {
-
+		religion = religion:buddhism_religion
+		holds_landed_title = yes
 	}
 
 	is_valid_showing_failures_only = {
@@ -263,9 +687,220 @@ buddhist_retreat_decision = {# Go on a Buddhist Retreat
 		base = 100
 	}
 }
+dharma_visit_nalanda = {# Go to Nalanda
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_pilgrimage.dds"
+	desc = dharma_visit_nalanda_desc
+	selection_tooltip = dharma_visit_nalanda_tooltip
+	cooldown = { days = dharma_learning_visit_cooldown_time }
+
+	is_shown = {
+		religion = { is_in_family = rf_eastern }
+		holds_landed_title = yes
+	}
+
+	is_valid = {
+		religion = { is_in_family = rf_eastern }
+		holds_landed_title = yes
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_visit_nalanda_tooltip
+		trigger_event = dharma_buddhism.300
+	}
+
+	ai_check_interval = 60
+	
+	ai_potential = {
+		is_at_war = no
+		stress >= 75
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+dharma_attend_vesak_festival = {# Attend Vesak festival
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival
+	desc = dharma_attend_vesak_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:buddhism_religion
+	}
+	
+	is_valid = {
+		religion = religion:buddhism_religion
+		custom_description = {
+			text = dharma_decision_vesak_month_requirement
+			current_month >= 4
+			current_month <= 6
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_vesak_festival_tooltip
+		trigger_event = { id = dharma_festivals.200 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
 #######################################
 # Jain Decisions
 #######################################
+initiate_consolamentum_decision = {# Commite Selkhana decision
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:christianity_religion
+				}
+				desc = initiate_consolamentum_decision
+			}
+			triggered_desc = {
+				trigger = {
+					religion = religion:jainism_religion
+				}
+				desc = initiate_consolamentum_decision_sallekhana
+			}
+			desc = initiate_consolamentum_decision_alternate
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:christianity_religion
+				}
+				desc = initiate_consolamentum_decision_desc
+			}
+			triggered_desc = {
+				trigger = {
+					religion = religion:jainism_religion
+				}
+				desc = initiate_consolamentum_decision_desc_sallekhana
+			}
+			desc = initiate_consolamentum_decision_desc_alternate
+		}
+	}
+
+	selection_tooltip = initiate_consolamentum_decision_tooltip
+
+	is_shown = {
+		faith = {
+			has_doctrine_parameter = consolamentum_active
+		}
+	}
+
+	is_valid = {
+		OR = {
+			age >= 60
+			custom_description = {
+				text = decision_consolamentum_health
+				health <= 1
+			}
+			has_trait = incapable
+		}
+	}
+
+	effect = {
+		hidden_effect = {
+			add_piety_level = 1
+		}
+		death = { death_reason = death_suicide }
+		show_as_tooltip = {
+			add_piety_level = 1
+		}
+	}
+
+	ai_check_interval = 60
+	
+	ai_potential = {		
+		exists = primary_heir
+		primary_heir = {
+			dynasty = root.dynasty
+		}
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 0
+
+		# 100% chance at 50 zeal
+		ai_value_modifier = {
+			ai_zeal = 2
+		}
+
+		modifier = {
+			add = 40
+			is_close_family_of = primary_heir
+		}
+	}
+}
+dharma_jain_abdication = {# Abdicate and become a monk
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_holy_day.dds"
+	desc = dharma_jain_abdication_desc
+	selection_tooltip = dharma_jain_abdication_tooltip
+
+	is_shown = {
+		religion = religion:jainism_religion
+		has_trait = zealous
+		holds_landed_title = yes
+		is_at_war = no
+	}
+
+	is_valid = {
+		religion = religion:jainism_religion
+		has_trait = zealous
+		holds_landed_title = yes
+		is_at_war = no
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		trigger_event = dharma_jainism.010
+	}
+
+	ai_check_interval = 96
+
+	ai_potential = {
+		piety >= major_piety_value
+	}
+
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 10
+			age >= 60
+		}
+	}
+}
 dharma_attend_mahamastakabhisheka_festival = {# Jain Mahamastakabhisheka festival
 	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds" 
 	ai_check_interval = 24
@@ -288,8 +923,8 @@ dharma_attend_mahamastakabhisheka_festival = {# Jain Mahamastakabhisheka festiva
 	}
 
 	effect = {
-		custom_tooltip = dharma_attend_mahamastakabhisheka_festival_effect_tooltip
-		trigger_event = { id = pamir.0150 }
+		custom_tooltip = dharma_attend_mahamastakabhisheka_festival_tooltip
+		trigger_event = { id = dharma_jainism.100 }
 	}
 
 	cost = { 
@@ -316,7 +951,7 @@ dharma_attend_paryushana_festival = {# Jain Paryushana festival
 	}
 	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds" 
 	ai_check_interval = 24
-	cooldown = { days = 4380 } # It is a 12 year festival
+	cooldown = { days = 1095 } # It is an annual festival but let this only happen every couple of years
 	desc = {
 		first_valid = {
 			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
@@ -347,8 +982,8 @@ dharma_attend_paryushana_festival = {# Jain Paryushana festival
 	}
 
 	effect = {
-		custom_tooltip = dharma_attend_paryushana_festival_effect_tooltip
-		trigger_event = { id = pamir.0150 }
+		custom_tooltip = dharma_attend_paryushana_festival_tooltip
+		trigger_event = { id = dharma_jainism.107 }
 	}
 
 	cost = { 
@@ -363,3 +998,605 @@ dharma_attend_paryushana_festival = {# Jain Paryushana festival
 		base = 50
 	}
 }
+dharma_attend_mahavir_kalyanak_festival = {# Jain  Mahavir Janma Kalyanak festival
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 1095 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_mahavir_kalyanak_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:jainism_religion
+	}
+	
+	is_valid = {
+		religion = religion:jainism_religion
+		custom_description = {
+			text = dharma_decision_mahavir_kalyanak_month_requirement
+			current_month >= 3
+			current_month <= 4
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_mahavir_kalyanak_festival_tooltip
+		trigger_event = { id = dharma_jainism.117 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to host monks
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+#######################################
+# Cultural Festival Decisions
+#######################################
+dharma_attend_losar_festival = {# Attend Tibetan New Year Losar
+	picture = "gfx/interface/illustrations/decisions/dharma_losar_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_losar_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		custom_description = {
+			text = dharma_decision_losar_culture_requirement
+			OR = {
+				has_culture = culture:bodpa
+				has_culture = culture:zhangzhung
+				has_culture = culture:sumpa
+				has_culture = culture:tsangpa
+			}
+		}
+	}
+	
+	is_valid = {
+		custom_description = {
+			text = dharma_decision_losar_month_requirement
+			current_month >= 2
+			current_month <= 3
+		}
+		custom_description = {
+			text = dharma_decision_losar_culture_requirement
+			OR = {
+				has_culture = culture:bodpa
+				has_culture = culture:zhangzhung
+				has_culture = culture:sumpa
+				has_culture = culture:tsangpa
+			}
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_losar_festival_tooltip
+		trigger_event = { id = dharma_festivals.400 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_pongal_festival = {# Attend Pongal festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_pongal_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_culture	 = culture:tamil
+	}
+	
+	is_valid = {
+		has_culture	 = culture:tamil
+		custom_description = {
+			text = dharma_decision_pongal_month_requirement
+			current_month >= 1
+			current_month <= 2
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_pongal_festival_tooltip
+		trigger_event = { id = dharma_festivals.425 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_thaipusam_festival = {# Attend Thaipusam festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_thaipusam_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:kaumaram # Kaumaram focuses on Lord Murugan so if you follow it, you can participate regardless of culture.
+			AND = {
+				religion = religion:hinduism_religion
+				has_culture	 = culture:tamil
+			}
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:kaumaram # Kaumaram focuses on Lord Murugan so if you follow it, you can participate regardless of culture.
+			AND = {
+				religion = religion:hinduism_religion
+				has_culture	 = culture:tamil
+			}
+		}
+		custom_description = {
+			text = dharma_decision_thaipusam_month_requirement
+			current_month >= 2
+			current_month <= 3
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_thaipusam_festival_tooltip
+		trigger_event = { id = dharma_festivals.440 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_ratha_yatra_festival = {# Attend Ratha Yatra festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_ratha_yatra_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:hinduism_religion
+		has_culture	 = culture:oriya
+	}
+	
+	is_valid = {
+		has_culture	 = culture:oriya
+		religion = religion:hinduism_religion
+		custom_description = {
+			text = dharma_decision_ratha_yatra_month_requirement
+			current_month >= 6
+			current_month <= 7
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_ratha_yatra_festival_tooltip
+		trigger_event = { id = dharma_festivals.300 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_thingyan_festival = {# Attend Thingyan festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_thingyan_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_culture_group = culture_group:burman_group
+	}
+	
+	is_valid = {
+		has_culture_group = culture_group:burman_group
+		custom_description = {
+			text = dharma_decision_thingyan_month_requirement
+			current_month = 5
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_thingyan_festival_tooltip
+		trigger_event = { id = dharma_festivals.315 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_chhath_festival = {# Attend Chhath festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_chhath_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:suryaism 
+			AND = {
+				religion = religion:hinduism_religion
+				has_culture	 = culture:bihari
+			}
+		}			
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:suryaism 
+			AND = {
+				religion = religion:hinduism_religion
+				has_culture	 = culture:bihari
+			}
+		}
+		custom_description = {
+			text = dharma_decision_chhath_month_requirement
+			current_month >= 10
+			current_month <= 11
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_chhath_festival_tooltip
+		trigger_event = { id = dharma_festivals.330 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_gangaur_festival = {# Attend Gangaur festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_gangaur_festival_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:hinduism_religion
+		has_culture	 = culture:rajput		
+	}
+	
+	is_valid = {
+		religion = religion:hinduism_religion
+		has_culture	 = culture:rajput
+		custom_description = {
+			text = dharma_decision_gangaur_month_requirement
+			current_month >= 3
+			current_month <= 4
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_gangaur_festival_tooltip
+		trigger_event = { id = dharma_festivals.350 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+#######################################
+# SEA Cultural Festival Decisions
+#######################################
+dharma_attend_tet_festival = {# Attend Tet festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_tet_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:phat_giao 
+			has_culture = culture:kinh
+		}			
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:phat_giao 
+			has_culture	= culture:kinh
+		}
+		custom_description = {
+			text = dharma_decision_tet_month_requirement
+			current_month >= 1
+			current_month <= 2
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_tet_festival_tooltip
+		trigger_event = { id = dharma_festivals.500 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_kate_festival = {# Attend kate festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_kate_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:chamic_shaivism 
+			has_culture	= culture:cham
+		}			
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:chamic_shaivism 
+			has_culture	= culture:cham
+		}
+		custom_description = {
+			text = dharma_decision_kate_month_requirement
+			current_month >= 9
+			current_month <= 10
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_kate_festival_tooltip
+		trigger_event = { id = dharma_festivals.520 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_choul_festival = {# Attend Choul Chnam Themy festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_choul_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:kambuja_devaraja 
+			has_culture	= culture:khmer
+		}			
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:kambuja_devaraja 
+			has_culture	= culture:khmer
+		}
+		custom_description = {
+			text = dharma_decision_choul_month_requirement
+			current_month = 4
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_choul_festival_tooltip
+		trigger_event = { id = dharma_festivals.550 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_songkran_festival = {# Attend Songkran festival
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_songkran_festival_desc
+
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			faith = faith:ban_phi 
+			has_culture	= culture:tai
+		}			
+	}
+	
+	is_valid = {
+		OR = {
+			faith = faith:ban_phi 
+			has_culture	= culture:tai
+		}
+		custom_description = {
+			text = dharma_decision_songkran_month_requirement
+			current_month = 4
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_songkran_festival_tooltip
+		trigger_event = { id = dharma_festivals.581 }
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -119,8 +119,6 @@ dharma_jainism.004 = {# Fasting with the Monk
 			reveler_1 = minor_stress_gain
 			reveler_2 = minor_stress_gain
 			reveler_3 = minor_stress_gain
-			reveler_4 = minor_stress_gain
-
 		}
 		add_piety = 50
 	}
@@ -143,7 +141,6 @@ dharma_jainism.004 = {# Fasting with the Monk
 			reveler_1 = minor_stress_gain
 			reveler_2 = minor_stress_gain
 			reveler_3 = minor_stress_gain
-			reveler_4 = minor_stress_gain
 		}
 		add_piety = -50
 	}
@@ -157,7 +154,7 @@ dharma_jainism.006 = {# Non-Indian merchants upset about naked Jain ascetics
 	desc = dharma_jainism.006.desc
 	theme = faith
 	override_background = {
-		event_background = india_shrine
+		event_background = dharma_city_evening
 	}
 	left_portrait = {
 		character = root
@@ -174,27 +171,23 @@ dharma_jainism.006 = {# Non-Indian merchants upset about naked Jain ascetics
 
 	immediate = {
 		random_sub_realm_barony = {
-			title_province = {
-				county = {
-					limit = {
+			limit = {
+				title_province = {
+					OR = {
 						geographical_region = world_india
 						is_coastal = yes
 					}
-					save_scope_as = guild_county
 				}
 			}
+			county = { save_scope_as = guild_county }
 		}
 		# Compile list of affected characters for Option B
 		every_vassal = {
-			limit = {
-				religion = religion:jainism_religion
-			}
+			limit = { religion = religion:jainism_religion }
 			add_to_list = jain_characters
 		}
 		every_courtier = {
-			limit = {
-				religion = religion:jainism_religion
-			}
+			limit = { religion = religion:jainism_religion }
 			add_to_list = jain_characters
 		}
 	}
@@ -379,7 +372,7 @@ dharma_jainism.009 = {# New statue of the tirthankaras
 	desc = dharma_jainism.009.desc
 	theme = faith
 	override_background = {
-		event_background = wood_temple
+		event_background = dharma_temple_interior
 	}
 	left_portrait = {
 		character = root
@@ -394,13 +387,872 @@ dharma_jainism.009 = {# New statue of the tirthankaras
 
 	option = {# patronize the statue
 		name = dharma_jainism.009.patronize
-		add_gold = -50
+		remove_short_term_gold = 50
 		add_piety = 40
 	}
 	option = {# Sadly I can't afford it atm
 		name = dharma_jainism.009.no_patronize
 		add_piety = -20
 	}
+}
+dharma_jainism.010 = {# abdication
+	type = character_event
+	title = dharma_jainism.010.t
+	desc = dharma_jainism.010.desc
+	theme = faith
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	option = {# abdication
+		name = dharma_jainism.010.abdicate
+		add_trait = devoted
+		add_piety_level = 1
+		depose = yes
+	}
+	option = {# Sadly I can't afford it atm
+		name = dharma_jainism.010.no_abdicate
+	}
+
+}
+#######################################
+# jain Vegetarianism
+#######################################
+dharma_jainism.011 = {# Non Jains complaining about Vegetarianism
+	type = character_event
+	title = dharma_jainism.011.t
+	desc = dharma_jainism.011.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_market
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+	}
+
+	option = {# patronize the statue
+		name = dharma_jainism.011.meat
+		add_prestige = 20
+		add_piety = -20
+	}
+	option = {# Sadly I can't afford it atm
+		name = dharma_jainism.011.no_meat
+		add_piety = 20
+		add_prestige = -20
+	}
+}
+dharma_jainism.012 = {# strict vegetarianism is hard
+	type = character_event
+	title = dharma_jainism.012.t
+	desc = dharma_jainism.012.desc
+	theme = faith
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+	}
+
+	option = {# patronize the statue
+		name = dharma_jainism.012.vegetarianism
+		stress_impact = {
+			temperate = minor_stress_loss
+			inappetetic = minor_stress_loss
+			zealous = minor_stress_loss
+			gluttonous = minor_stress_gain
+			comfort_eater = minor_stress_gain
+		}
+	}
+	option = {# Sadly I can't afford it atm
+		name = dharma_jainism.012.tempt
+		stress_impact = {
+			temperate = minor_stress_gain
+			gluttonous = minor_stress_loss
+			zealous = minor_stress_gain
+			inappetetic = minor_stress_gain
+			comfort_eater = minor_stress_loss
+		}
+	}
+}
+dharma_jainism.013 = {# Legal Vegetarianism?
+	type = character_event
+	title = dharma_jainism.013.t
+	desc = dharma_jainism.013.desc
+	theme = faith
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+	}
+
+	option = {# Enshrine it into law
+		name = dharma_jainism.013.law
+		add_character_flag = dharma_jain_legal_vegetarianism
+		add_piety = medium_piety_gain
+	}
+	option = {# Not at this point
+		name = dharma_jainism.013.no_law
+		add_piety = minor_piety_loss
+	}
+}
+dharma_jainism.014 = {# Merchants want to sell meat
+	type = character_event
+	title = dharma_jainism.014.t
+	desc = dharma_jainism.014.desc
+	theme = faith
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+	
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+		has_character_flag = dharma_jain_legal_vegetarianism
+		not = { has_character_flag = dharma_jain_merchants_complained }# give it time to complain again
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = dharma_jain_merchants_complained
+			years = 25
+		}
+		random_held_title = {
+			save_scope_as = merchant_county
+		}
+	}
+
+	option = {# The law stays
+		name = dharma_jainism.014.stay
+		add_piety = medium_piety_gain
+		scope:merchant_county = {
+			add_county_modifier = {
+				modifier = upset_peasants
+				years = 5
+			}
+		}
+	}
+	option = {# The law goes
+		name = dharma_jainism.014.go
+		add_piety = medium_piety_loss
+		remove_character_flag = dharma_jain_legal_vegetarianism
+		scope:merchant_county = {
+			add_county_modifier = {
+				modifier = upset_monks
+				years = 5
+			}
+		}
+	}
+}
+dharma_jainism.015 = {# Sharing Vegetarian food with a monk
+	type = character_event
+	title = dharma_jainism.015.t
+	desc = dharma_jainism.015.desc
+	theme = faith
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+	}
+
+	option = {# patronize the statue
+		name = dharma_jainism.015.food
+		stress_impact = {
+			base = minor_stress_loss
+		}	
+	}
+}
+#######################################
+# Jain Flavor Events annual obligations
+#######################################
+dharma_jainism.016 = {# Fundraising for Temples
+	type = character_event
+	title = dharma_jainism.016.t
+	desc = dharma_jainism.016.desc
+	theme = faith
+	override_background = {
+		event_background = wood_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+	}
+
+	option = {# patronize the statue
+		name = dharma_jainism.016.donate
+		remove_short_term_gold = medium_gold_value
+		add_piety = medium_piety_gain
+	}
+	option = {# Sadly I can't afford it atm
+		name = dharma_jainism.016.no_donate
+		add_piety = medium_piety_loss
+	}
+}
+dharma_jainism.017 = {# Mahapuja 
+	type = character_event
+	title = dharma_jainism.017.t
+	desc = dharma_jainism.017.desc
+	theme = faith
+	override_background = {
+		event_background = wood_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+	}
+
+	option = {# patronize the statue
+		name = dharma_jainism.017.mahapuja
+		add_piety = medium_piety_gain
+		stress_impact = {
+			base = minor_stress_loss
+			zealous = medium_stress_loss
+			gregarious = medium_stress_loss
+			shy = minor_stress_gain
+		}
+	}
+}
+dharma_jainism.018 = {# Ratri-jagrana.
+	type = character_event
+	title = dharma_jainism.018.t
+	desc = dharma_jainism.018.desc
+	theme = faith
+	override_background = {
+		event_background = wood_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+	}
+
+	option = {# stay awake
+		name = dharma_jainism.018.wake
+		add_piety = medium_piety_gain
+		add_character_modifier = {
+			modifier = sleep_deprived_modifier
+			days = 5
+		}
+		stress_impact = {
+			base = minor_stress_gain
+			zealous = minor_stress_loss
+			diligent = minor_stress_loss
+			lazy = medium_stress_gain
+		}
+	}
+	option = {# Sadly I can't afford it atm
+		name = dharma_jainism.018.sleep
+		add_piety = medium_piety_loss
+		stress_impact = {
+			base = minor_stress_loss
+			zealous = minor_stress_gain
+			diligent = minor_stress_gain
+			lazy = medium_stress_loss
+		}
+	}
+}
+#######################################
+# Jainism and Ahisma
+#######################################
+dharma_jainism.022 = {# Building animal Shelters
+	type = character_event
+	title = dharma_jainism.022.t
+	desc = dharma_jainism.022.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_outside_shrine
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+		not = { has_character_flag = dharma_jainism_event_022 }
+	}
+	immediate = {
+		add_character_flag = {
+			flag = dharma_jainism_event_022
+			years = 20
+		}
+	}
+	
+	option = {# Help the animals
+		name = dharma_jainism.022.help_animals
+		remove_short_term_gold = medium_gold_value
+		add_piety = medium_piety_gain
+		stress_impact = {
+			zealous = minor_stress_loss 
+			compassionate = minor_stress_loss 
+			greedy = minor_stress_gain 
+			generous = minor_stress_loss 
+			improvident = minor_stress_loss 
+		}
+	}
+	option = {# Sadly I can't afford it atm
+		name = dharma_jainism.022.no_help_animals
+		add_piety = medium_piety_loss
+		stress_impact = {
+			zealous = minor_stress_gain 
+			compassionate = minor_stress_gain 
+			greedy = minor_stress_loss 
+			generous = minor_stress_gain 
+			improvident = minor_stress_gain 
+		}
+	}
+}
+dharma_jainism.024 = {# Dispute over Animal Hunting
+	type = character_event
+	title = dharma_jainism.024.t
+	desc = dharma_jainism.024.desc
+	theme = faith
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+		not = { has_character_flag = dharma_jain_peasants_complained }# give it time to complain again
+
+	}
+	immediate = {
+		add_character_flag = {
+			flag = dharma_jain_peasants_complained
+			years = 25
+		}
+		random_held_title = {
+			save_scope_as = hunting_country
+		}
+	}
+
+	option = {# side with the peasants
+		name = dharma_jainism.024.peasants
+		add_piety = minor_prestige_loss
+		add_prestige = minor_prestige_gain
+		scope:hunting_country = {# the Local monks are upset
+			add_county_modifier = {
+				modifier = upset_monks
+				days = 1825
+			}
+		}
+	}
+	option = {# Side with the monks
+		name = dharma_jainism.024.monk
+		add_piety = minor_prestige_gain
+		add_prestige = minor_prestige_loss
+		scope:hunting_country = {# Peasants are upset
+			add_county_modifier = {
+				modifier = upset_peasants
+				days = 1825
+			}
+		}
+	}
+}
+dharma_jainism.025 = {# Ahmisa and the duties of a king
+	type = character_event
+	title = dharma_jainism.025.t
+	desc = dharma_jainism.025.desc
+	theme = faith
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes
+		# we need a valid imprisoned character	
+	}
+
+	option = {# let the prisoner go free
+		name = dharma_jainism.025.free
+		add_piety = minor_prestige_gain
+		add_prestige = minor_prestige_loss
+		stress_impact = {
+			just = minor_stress_gain 
+			arbitrary = minor_stress_loss 
+			zealous = minor_stress_gain
+			stubborn = minor_stress_loss
+			fickle = minor_stress_loss
+			compassionate = minor_stress_loss 
+			callous = minor_stress_gain 
+			sadistic = minor_stress_gain 
+			forgiving = minor_stress_loss 
+			vengeful = minor_stress_gain 
+		}
+	}
+	option = {# Kill him!
+		name = dharma_jainism.025.kill
+		add_piety = minor_prestige_loss
+		add_prestige = minor_prestige_gain
+		stress_impact = {
+			just = minor_stress_loss 
+			arbitrary = minor_stress_gain 
+			zealous = minor_stress_gain
+			stubborn = minor_stress_loss
+			fickle = minor_stress_gain
+			compassionate = minor_stress_gain 
+			callous = minor_stress_loss 
+			sadistic = minor_stress_loss 
+			forgiving = minor_stress_gain 
+			vengeful = minor_stress_loss 
+		}
+	}
+}
+#######################################
+# Jain Meditation
+#######################################
+dharma_jainism.028 = {# Daily Meditation
+	type = character_event
+	title = dharma_jainism.028.t
+	desc = dharma_jainism.028.desc
+	theme = faith
+	override_background = {
+		event_background = wood_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+	}
+
+	option = {# patronize the statue
+		name = dharma_jainism.028.good
+		stress_impact = {
+			base = minor_stress_loss
+		}
+	}
+}
+dharma_jainism.029 = {# performing Samayika
+	type = character_event
+	title = dharma_jainism.029.t
+	desc = dharma_jainism.029.desc
+	theme = faith
+	override_background = {
+		event_background = wood_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+	}
+
+	immediate = {
+		random_list = {
+			1 = { add_character_flag = dharma_jain_samayika_wander }
+			1 = { add_character_flag = dharma_jain_samayika_compassion }
+		}
+	}
+
+
+	option = {# patronize the statue
+		name = dharma_jainism.029.compassion
+		trigger = {
+			has_character_flag = dharma_jain_samayika_compassion
+		}
+		add_piety = minor_piety_gain
+	}
+	option = {# Sadly I can't afford it atm
+		name = dharma_jainism.029.wander
+		trigger = {
+			has_character_flag = dharma_jain_samayika_wander
+		}
+		add_piety = miniscule_piety_loss
+	}
+}
+dharma_jainism.030 = {# Unable to concentrate in Daily's Meditation
+	type = character_event
+	title = dharma_jainism.030.t
+	desc = dharma_jainism.030.desc
+	theme = faith
+	override_background = {
+		event_background = wood_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_at_war = no
+		religion = religion:jainism_religion
+		is_landed = yes	
+	}
+
+	option = {# patronize the statue
+		name = dharma_jainism.030.stress
+		stress_impact = {
+			base = miniscule_stress_impact_gain
+		}
+	}
+}
+#######################################
+# Asuspicious Dreams
+#######################################
+dharma_jainism.040 = {# Asuspicious Dreams - Mother version
+	type = character_event
+	title = dharma_jainism.040.t
+	desc = {
+		first_valid = {
+			triggered_desc = {# Airavata
+				trigger = { has_character_flag = dharma_jain_dreams_airavata }
+				desc = dharma_jainism.040.desc.airavata
+			}
+			triggered_desc = {# Vrishabha
+				trigger = { has_character_flag = dharma_jain_dreams_vrishabha }
+				desc = dharma_jainism.040.desc.vrishabha
+			}
+			triggered_desc = {# Simha
+				trigger = { has_character_flag = dharma_jain_dreams_simha }
+				desc = dharma_jainism.040.desc.simha
+			}
+			triggered_desc = {# Lakshmi 
+				trigger = { has_character_flag = dharma_jain_dreams_lakshmi }
+				desc = dharma_jainism.040.desc.lakshmi
+			}
+			triggered_desc = {# Phul-mala
+				trigger = { has_character_flag = dharma_jain_dreams_phul_mala }
+				desc = dharma_jainism.040.desc.phul_mala
+			}
+			triggered_desc = {# Chandra
+				trigger = { has_character_flag = dharma_jain_dreams_chandra }
+				desc = dharma_jainism.040.desc.chandra
+			}
+			triggered_desc = {# Surya
+				trigger = { has_character_flag = dharma_jain_dreams_surya }
+				desc = dharma_jainism.040.desc.surya
+			}
+			triggered_desc = {# Dhvaja
+				trigger = { has_character_flag = dharma_jain_dreams_dhvaja }
+				desc = dharma_jainism.040.desc.dhvaja
+			}
+			triggered_desc = {# Meena-yugma	
+				trigger = { 
+					has_character_flag = dharma_jain_dreams_meena_yugma	 
+					faith = faith:digambara 
+				}
+				desc = dharma_jainism.040.desc.meena_yugma
+			}
+			triggered_desc = {# Purna Kalasha	
+				trigger = { has_character_flag = dharma_jain_dreams_purna_kalasha }
+				desc = dharma_jainism.040.desc.purna_kalasha
+			}
+			triggered_desc = {# Padma Sarovar	
+				trigger = { has_character_flag = dharma_jain_dreams_padma_sarovar }
+				desc = dharma_jainism.040.desc.padma_sarovar
+			}
+			triggered_desc = {# Ratnakar	
+				trigger = { has_character_flag = dharma_jain_dreams_ratnakar }
+				desc = dharma_jainism.040.desc.ratnakar
+			}
+			triggered_desc = {# Simhasana
+				trigger = { has_character_flag = dharma_jain_dreams_simhasana }
+				desc = dharma_jainism.040.desc.simhasana
+			}
+			triggered_desc = {# Deva-Vimana	 
+				trigger = { has_character_flag = dharma_jain_dreams_deva_vimana }
+				desc = dharma_jainism.040.desc.deva_vimana
+			}
+			triggered_desc = {# Palace	
+				trigger = { 
+					has_character_flag = dharma_jain_dreams_palace
+					faith = faith:digambara 
+				}
+				desc = dharma_jainism.040.desc.palace
+			}
+			triggered_desc = {# Ratnadhag
+				trigger = { has_character_flag = dharma_jain_dreams_ratnadhag }
+				desc = dharma_jainism.040.desc.ratnadhag
+			}
+			triggered_desc = {# Nirdhumra Agni	
+				trigger = { has_character_flag = dharma_jain_dreams_nirdhumra_agni }
+				desc = dharma_jainism.040.desc.nirdhumra_agni	
+			}
+		}
+	}
+	theme = faith
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		has_trait = pregnant
+		religion = religion:jainism_religion
+		is_landed = yes	
+		not = { has_character_flag = dharma_jain_had_asupicious_dream } # this should only happen once
+	}
+
+	immediate = {
+		add_character_flag = dharma_jain_had_asupicious_dream
+		random_list = {
+			1 = { add_character_flag = dharma_jain_dreams_airavata }
+			1 = { add_character_flag = dharma_jain_dreams_vrishabha }
+			1 = { add_character_flag = dharma_jain_dreams_simha }
+			1 = { add_character_flag = dharma_jain_dreams_lakshmi }
+			1 = { add_character_flag = dharma_jain_dreams_phul_mala }
+			1 = { add_character_flag = dharma_jain_dreams_chandra }
+			1 = { add_character_flag = dharma_jain_dreams_surya }
+			1 = { add_character_flag = dharma_jain_dreams_dhvaja }
+			1 = { add_character_flag = dharma_jain_dreams_meena_yugma }
+			1 = { add_character_flag = dharma_jain_dreams_purna_kalasha }
+			1 = { add_character_flag = dharma_jain_dreams_padma_sarovar }
+			1 = { add_character_flag = dharma_jain_dreams_ratnakar }
+			1 = { add_character_flag = dharma_jain_dreams_simhasana }
+			1 = { add_character_flag = dharma_jain_dreams_deva_vimana }
+			1 = { add_character_flag = dharma_jain_dreams_palace }
+			1 = { add_character_flag = dharma_jain_dreams_ratnadhag }
+			1 = { add_character_flag = dharma_jain_dreams_nirdhumra_agni }
+		}
+	}
+
+	option = {# Wonderful Dreams
+		name = dharma_jainism.040.dream
+		add_piety = major_piety_gain # such dreams are seen as holy!
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+
+}
+dharma_jainism.041 = {# Asuspicious Dreams - father version
+	type = character_event
+	title = dharma_jainism.041.t
+	desc = {
+		first_valid = {
+			triggered_desc = {# Airavata
+				trigger = { has_character_flag = dharma_jain_dreams_airavata }
+				desc = dharma_jainism.041.desc.airavata
+			}
+			triggered_desc = {# Vrishabha
+				trigger = { has_character_flag = dharma_jain_dreams_vrishabha }
+				desc = dharma_jainism.041.desc.vrishabha
+			}
+			triggered_desc = {# Simha
+				trigger = { has_character_flag = dharma_jain_dreams_simha }
+				desc = dharma_jainism.041.desc.simha
+			}
+			triggered_desc = {# Lakshmi 
+				trigger = { has_character_flag = dharma_jain_dreams_lakshmi }
+				desc = dharma_jainism.041.desc.lakshmi
+			}
+			triggered_desc = {# Phul-mala
+				trigger = { has_character_flag = dharma_jain_dreams_phul_mala }
+				desc = dharma_jainism.041.desc.phul_mala
+			}
+			triggered_desc = {# Chandra
+				trigger = { has_character_flag = dharma_jain_dreams_chandra }
+				desc = dharma_jainism.041.desc.chandra
+			}
+			triggered_desc = {# Surya
+				trigger = { has_character_flag = dharma_jain_dreams_surya }
+				desc = dharma_jainism.041.desc.surya
+			}
+			triggered_desc = {# Dhvaja
+				trigger = { has_character_flag = dharma_jain_dreams_dhvaja }
+				desc = dharma_jainism.041.desc.dhvaja
+			}
+			triggered_desc = {# Meena-yugma	
+				trigger = { 
+					has_character_flag = dharma_jain_dreams_meena_yugma	 
+					faith = faith:digambara 
+				}
+				desc = dharma_jainism.041.desc.meena_yugma
+			}
+			triggered_desc = {# Purna Kalasha	
+				trigger = { has_character_flag = dharma_jain_dreams_purna_kalasha }
+				desc = dharma_jainism.041.desc.purna_kalasha
+			}
+			triggered_desc = {# Padma Sarovar	
+				trigger = { has_character_flag = dharma_jain_dreams_padma_sarovar }
+				desc = dharma_jainism.041.desc.padma_sarovar
+			}
+			triggered_desc = {# Ratnakar	
+				trigger = { has_character_flag = dharma_jain_dreams_ratnakar }
+				desc = dharma_jainism.041.desc.ratnakar
+			}
+			triggered_desc = {# Simhasana
+				trigger = { has_character_flag = dharma_jain_dreams_simhasana }
+				desc = dharma_jainism.041.desc.simhasana
+			}
+			triggered_desc = {# Deva-Vimana	 
+				trigger = { has_character_flag = dharma_jain_dreams_deva_vimana }
+				desc = dharma_jainism.041.desc.deva_vimana
+			}
+			triggered_desc = {# Palace	
+				trigger = { 
+					has_character_flag = dharma_jain_dreams_palace
+					faith = faith:digambara 
+				}
+				desc = dharma_jainism.041.desc.palace
+			}
+			triggered_desc = {# Ratnadhag
+				trigger = { has_character_flag = dharma_jain_dreams_ratnadhag }
+				desc = dharma_jainism.041.desc.ratnadhag
+			}
+			triggered_desc = {# Nirdhumra Agni	
+				trigger = { has_character_flag = dharma_jain_dreams_nirdhumra_agni }
+				desc = dharma_jainism.041.desc.nirdhumra_agni	
+			}
+		}
+	}
+	theme = faith
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		scope:spouse = { has_trait = pregnant }
+		AND = {# Both you and your spouse must follow Jainism
+			scope:spouse = { religion = religion:jainism_religion }
+			religion = religion:jainism_religion
+		}
+		is_landed = yes	
+		not = { has_character_flag = dharma_jain_had_asupicious_dream } # this should only happen once
+		NOT = {# If mother is also a ruler she doesn't get two dreams
+			scope:spouse = { has_character_flag = dharma_jain_dreams_airavata }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_vrishabha }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_simha }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_lakshmi }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_phul_mala }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_chandra }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_surya }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_dhvaja }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_meena_yugma }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_purna_kalasha }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_ratnakar }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_simhasana }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_deva_vimana }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_palace }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_ratnadhag }
+			scope:spouse = { has_character_flag = dharma_jain_dreams_nirdhumra_agni }
+		}
+	}
+
+	immediate = {
+		add_character_flag = dharma_jain_had_asupicious_dream
+		if = {
+			limit = {
+				exists = primary_partner
+			}
+			primary_partner = {
+				save_scope_as = spouse
+			}
+		}
+		random_list = {
+			1 = { add_character_flag = dharma_jain_dreams_airavata }
+			1 = { add_character_flag = dharma_jain_dreams_vrishabha }
+			1 = { add_character_flag = dharma_jain_dreams_simha }
+			1 = { add_character_flag = dharma_jain_dreams_lakshmi }
+			1 = { add_character_flag = dharma_jain_dreams_phul_mala }
+			1 = { add_character_flag = dharma_jain_dreams_chandra }
+			1 = { add_character_flag = dharma_jain_dreams_surya }
+			1 = { add_character_flag = dharma_jain_dreams_dhvaja }
+			1 = { add_character_flag = dharma_jain_dreams_meena_yugma }
+			1 = { add_character_flag = dharma_jain_dreams_purna_kalasha }
+			1 = { add_character_flag = dharma_jain_dreams_padma_sarovar }
+			1 = { add_character_flag = dharma_jain_dreams_ratnakar }
+			1 = { add_character_flag = dharma_jain_dreams_simhasana }
+			1 = { add_character_flag = dharma_jain_dreams_deva_vimana }
+			1 = { add_character_flag = dharma_jain_dreams_palace }
+			1 = { add_character_flag = dharma_jain_dreams_ratnadhag }
+			1 = { add_character_flag = dharma_jain_dreams_nirdhumra_agni }
+		}
+	}
+
+	option = {# Wonderful Dreams
+		name = dharma_jainism.041.dream
+		scope:spouse = { add_piety = major_piety_gain } # the mother gains piety if having auspecious dreams
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+
 }
 #######################################
 # Mahamastakabhisheka Festival
@@ -414,21 +1266,25 @@ dharma_jainism.100 = {# Prepare for the Mahamastakabhisheka Festival
 	left_portrait = root
 	
 	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
 		add_character_flag = planning_an_activity
 	}
 	
 	option = {# Time to travel to Shravanabelagola 
 		name = dharma_jainism.100.a
-		trigger_event = {
-			id = dharma_jainism.101
-			days = { 2 20 }
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_dharma_mahamastakabhisheka_festival
+			}	
 		}
 	}
 }
 dharma_jainism.101 = {# arriving in Shravanabelagola 
 	type = character_event
 	title = dharma_jainism.101.t
-	desc = dharma_jainism.0152.desc
+	desc = dharma_jainism.101.desc
 	theme = forest_temple
 	
 	left_portrait = {
@@ -448,8 +1304,7 @@ dharma_jainism.101 = {# arriving in Shravanabelagola
 dharma_jainism.102 = {# Climbing the grand staircase
 	type = character_event
 	title = dharma_jainism.102.t
-	desc = dharma_jainism.0152.desc
-
+	desc = dharma_jainism.102.desc
 	theme = forest_temple
 	
 	left_portrait = {
@@ -533,15 +1388,11 @@ dharma_jainism.104 = {# Meditating on Bahubali's teachings
 		random_list = {
 			30 = {
 				if = {
-					trigger = {
-						has_trait = callous
-					}
+					limit = { has_trait = callous }
 					remove_trait = callous
 				}
 				if = {
-					trigger = {
-						has_trait = sadistic
-					}
+					limit = { has_trait = sadistic }
 					remove_trait = sadistic
 				}
 				add_trait = compassionate
@@ -555,7 +1406,7 @@ dharma_jainism.104 = {# Meditating on Bahubali's teachings
 			days = 150
 		}
 		trigger_event = {
-			id = dharma_jainism.0155
+			id = dharma_jainism.105
 			days = { 2 5 }
 		}
 	}
@@ -564,9 +1415,7 @@ dharma_jainism.104 = {# Meditating on Bahubali's teachings
 		random_list = {
 			30 = {
 				if = {
-					trigger = {
-						has_trait = vengeful
-					}
+					limit = { has_trait = vengeful }
 					remove_trait = vengeful
 				}
 				add_trait = forgiving
@@ -580,7 +1429,7 @@ dharma_jainism.104 = {# Meditating on Bahubali's teachings
 			days = 150
 		}
 		trigger_event = {
-			id = dharma_jainism.0155
+			id = dharma_jainism.105
 			days = { 2 5 }
 		}
 	}
@@ -636,7 +1485,7 @@ dharma_jainism.107 = {# Prepare for the Paryushana Festival
 			desc = dharma_jainism.107.svetembara.desc
 		}
 	}
-	theme = friendly
+	theme = throne_room
 	
 	left_portrait = root
 	
@@ -655,7 +1504,6 @@ dharma_jainism.107 = {# Prepare for the Paryushana Festival
 				type = activity_dharma_paryushana_festival
 			}	
 		}
-		trigger_event = { id = dharma_jainism.108	days = { 2 5 }	}
 	}
 }
 dharma_jainism.108 = {# Inviting the Monks and community for the festival
@@ -678,15 +1526,7 @@ dharma_jainism.108 = {# Inviting the Monks and community for the festival
 }
 dharma_jainism.109 = {# Paryushana begins - Fasting Begins
 	type = character_event
-	title = {
-		first_valid = {
-			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
-				trigger = { faith = faith:digambara }
-				desc = dharma_jainism.109.digambara.title
-			}
-			desc = dharma_jainism.109.svetembara.title
-		}
-	}
+	title =  dharma_jainism.109.t
 	desc = {
 		first_valid = {
 			triggered_desc = {# Digambara's call the festival Das Lakshana instead of Paryushana
@@ -737,7 +1577,7 @@ dharma_jainism.110 = {# Reading from the Holy Texts
 	option = {# holy texts
 		name = dharma_jainism.110.a
 		random_list = {
-			10 = {			add_learning_lifestyle_xp = minor_lifestyle_xp	}
+			10 = {	add_learning_lifestyle_xp = minor_lifestyle_xp	}
 			90 = {	add_piety = 50	}
 		}
 		trigger_event = {
@@ -766,7 +1606,7 @@ dharma_jainism.111 = {# Procession to the main Jain temple
 	}
 	
 	option = {# I shall lead
-		name = dharma_jainism.111.a
+		name = dharma_jainism.111.lead
 		add_prestige = 25
 		stress_impact = {
 			zealous = minor_stress_loss
@@ -778,7 +1618,7 @@ dharma_jainism.111 = {# Procession to the main Jain temple
 		}
 	}
 	option = {# the monks shall lead
-		name = dharma_jainism.111.a
+		name = dharma_jainism.111.nolead
 		add_piety = 25
 		stress_impact = {
 			zealous = minor_stress_loss
@@ -892,46 +1732,6 @@ dharma_jainism.113 = {# Dhoop Dashami/ Sugandh Dashami - burning of the inceses 
 		animation = personality_compassionate
 	}
 	
-	immediate = {
-		if = {
-			limit = {
-				OR = {
-					any_child = {
-						age >= 6
-						age <= 8					
-					}
-					any_child = {
-						age >= 9
-						age <= 13
-						is_female = no
-					}
-				}
-			}
-			add_character_flag = RICE_pamir_chawmos_has_kid
-			every_child = {
-				limit = {
-					age >= 6
-					age <= 8				
-				}
-				add_character_modifier = {
-					modifier = RICE_pamir_chailaksambaik
-					years = 3
-				}
-			}
-			every_child = {
-				limit = {
-					age >= 9
-					age <= 13
-					is_female = no				
-				}
-				add_character_modifier = {
-					modifier = RICE_pamir_butsambaik
-					years = 3
-				}
-			}
-		}
-	}
-	
 	option = {# Ok
 		name = dharma_jainism.113.a
 		add_piety = 10
@@ -965,15 +1765,11 @@ dharma_jainism.114 = {# Paryushana asking for forgiveness
 		random_list = {
 			30 = {
 				if = {
-					trigger = {
-						has_trait = callous
-					}
+					limit = { has_trait = callous }
 					remove_trait = callous
 				}
 				if = {
-					trigger = {
-						has_trait = sadistic
-					}
+					limit = { has_trait = sadistic }
 					remove_trait = sadistic
 				}
 				add_trait = compassionate
@@ -1040,6 +1836,360 @@ dharma_jainism.116 = {# Misc cleanup
 		}
 	}
 }
+#######################################
+# Mahavir Janma Kalyanak
+#######################################
+dharma_jainism.117 = {# Prepare for the Mahavir Janma Kalyanak
+	type = character_event
+	title = dharma_jainism.100.t
+	desc = dharma_jainism.100.desc
+	theme = friendly
+	
+	left_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = dharma_jainism.107.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_dharma_mahavir_kalyanak_festival
+			}	
+		}
+	}
+}
+dharma_jainism.118 = {# Mahavir Janma Kalyanak begins
+	type = character_event
+	title = dharma_jainism.118.t
+	desc = dharma_jainism.118.desc
+	theme = realm
+	
+	right_portrait = root
+	
+	option = { # time to invite the local monks
+		name = dharma_jainism.118.a
+		add_character_modifier = {
+			modifier = fasting_bad_modifier
+		}	
+		trigger_event = { id = dharma_jainism.119	days = { 2 5 }	}
+	}	
+}
+dharma_jainism.119 = {# Visiting the temple
+	type = character_event
+	title = dharma_jainism.119.t
+	desc = dharma_jainism.119.desc
+	theme = india_shrine
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = {# The fast begins
+		name = dharma_jainism.119.a
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			gregarious = minor_stress_impact_loss
+		}
+		trigger_event = {
+			id = dharma_jainism.120
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.120 = {# Meditating on Mahavira's teachings
+	type = character_event
+	title = dharma_jainism.120.t
+	desc = dharma_jainism.120.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+		
+	option = {# Compassion
+		name = dharma_jainism.120.compassion
+		random_list = {
+			30 = {
+				if = {
+					limit = { has_trait = callous }
+					remove_trait = callous
+				}
+				if = {
+					limit = { has_trait = sadistic }
+					remove_trait = sadistic
+				}
+				add_trait = compassionate
+			}
+			70 = {
+				add_piety = 50
+			}
+		}
+		add_character_modifier = {
+			modifier = jain_vow_asteya
+			days = 30
+		}
+		trigger_event = {
+			id = dharma_jainism.121
+			days = { 2 5 }
+		}
+	}
+	option = {# Non-Violence
+		name = dharma_jainism.120.ahimsa
+		random_list = {
+			30 = {
+				if = {
+					limit = { has_trait = vengeful }
+					remove_trait = vengeful
+				}
+				add_trait = forgiving
+			}
+			70 = {
+				add_piety = 50
+			}
+		}
+		add_character_modifier = {
+			modifier = jain_vow_ahimsa
+			days = 30
+		}
+		trigger_event = {
+			id = dharma_jainism.121
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.121 = {# annointing the idol
+	type = character_event
+	title = dharma_jainism.121.t
+	desc = dharma_jainism.121.desc
+	theme = wood_temple
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = {# I shall lead
+		name = dharma_jainism.121.a
+		add_piety = miniscule_piety_gain
+		trigger_event = {
+			id = dharma_jainism.121
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.122 = {# The procession
+	type = character_event
+	title = dharma_jainism.122.t
+	desc = dharma_jainism.122.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = {# Ahimsa
+		name = dharma_jainism.122.a
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			gregarious = minor_stress_impact_loss
+		}
+		trigger_event = {
+			id = dharma_jainism.123
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.123 = {# providing charity to the local community
+	type = character_event
+	title = dharma_jainism.123.t
+	desc = dharma_jainism.123.desc
+	theme = wood_temple
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = {# small
+		name = dharma_jainism.123.small
+		remove_short_term_gold = tiny_gold_value
+		add_piety = miniscule_piety_gain
+		scope:capital = {# Peasants want more!
+			add_county_modifier = {
+				modifier = dharma_sad_peasants_festival
+				years = 2
+			}
+		}
+		stress_impact = {
+			generous = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+			zealous = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+			improvident = miniscule_stress_impact_gain
+			greedy = miniscule_stress_impact_loss
+			avaricious = miniscule_stress_impact_loss
+		}
+		trigger_event = {
+			id = dharma_jainism.124
+			days = { 2 5 }
+		}
+	}
+	option = {# Medium
+		name = dharma_jainism.123.medium
+		remove_short_term_gold = minor_gold_value
+		add_piety = minor_piety_gain
+		stress_impact = {
+			generous = minor_stress_impact_loss
+			compassionate = minor_stress_impact_loss
+			zealous = minor_stress_impact_loss
+			just = minor_stress_impact_loss
+			improvident = minor_stress_impact_loss
+			greedy = minor_stress_impact_gain
+			avaricious = minor_stress_impact_gain
+		}
+		trigger_event = {
+			id = dharma_jainism.124
+			days = { 2 5 }
+		}
+	}
+	option = {# Large
+		name = dharma_jainism.123.large
+		remove_short_term_gold = medium_gold_value
+		add_piety = medium_piety_gain
+		scope:capital = {# Peasants are overjoyed!
+			add_county_modifier = {
+				modifier = dharma_happy_peasants_festival
+				years = 2
+			}
+		}
+		stress_impact = {
+			generous = medium_stress_impact_loss
+			compassionate = medium_stress_impact_loss
+			zealous = medium_stress_impact_loss
+			just = medium_stress_impact_loss
+			improvident = medium_stress_impact_loss
+			greedy = medium_stress_impact_gain
+			avaricious = medium_stress_impact_gain
+		}
+		trigger_event = {
+			id = dharma_jainism.124
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.124 = {# donating to the local monastic community
+	type = character_event
+	title = dharma_jainism.124.t
+	desc = dharma_jainism.124.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = {# small
+		name = dharma_jainism.124.small
+		remove_short_term_gold = tiny_gold_value
+		add_piety = miniscule_piety_gain
+		scope:capital = {# The monks are sad!
+			add_county_modifier = {
+				modifier = dharma_sad_clergy_festival
+				years = 2
+			}
+		}
+		stress_impact = {
+			generous = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+			zealous = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+			improvident = miniscule_stress_impact_gain
+			greedy = miniscule_stress_impact_loss
+			avaricious = miniscule_stress_impact_loss
+		}
+		trigger_event = {
+			id = dharma_jainism.125
+			days = { 2 5 }
+		}
+	}
+	option = {# medium
+		name = dharma_jainism.124.medium
+		remove_short_term_gold = minor_gold_value
+		add_piety = minor_piety_gain
+		stress_impact = {
+			generous = minor_stress_impact_loss
+			compassionate = minor_stress_impact_loss
+			zealous = minor_stress_impact_loss
+			just = minor_stress_impact_loss
+			improvident = minor_stress_impact_loss
+			greedy = minor_stress_impact_gain
+			avaricious = minor_stress_impact_gain
+		}
+		trigger_event = {
+			id = dharma_jainism.125
+			days = { 2 5 }
+		}
+	}	
+	option = {# Large
+		name = dharma_jainism.124.large
+		remove_short_term_gold = medium_gold_value
+		add_piety = medium_piety_gain
+		scope:capital = {# The Monks are overjoyed!
+			add_county_modifier = {
+				modifier = dharma_happy_clergy_festival
+				years = 2
+			}
+		}
+		stress_impact = {
+			generous = medium_stress_impact_loss
+			compassionate = medium_stress_impact_loss
+			zealous = medium_stress_impact_loss
+			just = medium_stress_impact_loss
+			improvident = medium_stress_impact_loss
+			greedy = medium_stress_impact_gain
+			avaricious = medium_stress_impact_gain
+		}
+		trigger_event = {
+			id = dharma_jainism.125
+			days = { 2 5 }
+		}
+	}
+}
+dharma_jainism.125 = {# Mahavir Janma Kalyanak concludes
+	type = character_event
+	title = dharma_jainism.125.t
+	desc = dharma_jainism.125.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # Ok
+		name = dharma_jainism.125.a
+		remove_character_modifier = fasting_bad_modifier
+		add_character_modifier = {
+			modifier = exhausted_modifier
+			days = 7
+		}
+		hidden_effect = { trigger_event = { id = dharma_jainism.116 days = 1 } }
 
-
-
+	}
+}
+dharma_jainism.126 = {# Misc cleanup
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}

@@ -1,0 +1,387 @@
+﻿# On actions for the Pilgrimage activity
+
+#To send an appropriate start event
+pilgrimage_setup = {
+	events = {
+		pilgrimage.1002 # Jain Vow decision
+		pilgrimage.1001 # Start of generic pilgrimage
+	}
+}
+
+# On-action managing possible journey events
+pilgrimage_journey_events = {
+	random_events = {
+		# Generic Pilgrimage Events
+		100 = pilgrimage.2001 # Bandits attack your camp!
+		100 = pilgrimage.2002 # Heathen-hating adherent challenges you
+		100 = pilgrimage.2003 # Companions are running low
+		100 = pilgrimage.2004 # Run into a potential friend
+		100 = pilgrimage.2005 # Peasant insults you
+		100 = pilgrimage.2006 # Lost!
+		100 = pilgrimage.2007 # Personal reflections
+		50 = pilgrimage.2008  # Become Ill
+		100 = pilgrimage.2009 # Travelling while Ill is bad for you
+		25 = pilgrimage.2010 # Meet a Mystic (chain)
+
+		# 'Temptation' Events
+		100 = pilgrimage.2501 # Persistent Beggar
+		100 = pilgrimage.2511 # Cocky Lordling
+
+		# Christian-specific Pilgrimage Events
+		100 = pilgrimage.3001 # Stand in the torrential rain to listen to a priest, or take shelter?
+		50 = pilgrimage.3002  # Naked preacher claims to have recovered Adam & Eve's innocence
+		100 = pilgrimage.3003 # Doomsayer promises the end is night!
+
+		# Muslim-specific Pilgrimage Events
+		100 = pilgrimage.3102 # Why am I taking this pilgrimage?
+
+		# Hindu-specific Pilgrimage Events
+		100 = pilgrimage.3201 # Ritual purification in a river
+		100 = pilgrimage.3202 # Contemplating the universe
+		100 = pilgrimage.3203 # Troublesome Monsoon
+		100 = pilgrimage.3204 # Dry Season Troubles
+
+		# Buddhist-specific Pilgrimage Events
+		100 = pilgrimage.3301 # Critical Wanderer
+	}
+	fallback = pilgrimage_journey_event_fallback
+}
+
+# On-action managing possible journey events
+hajj_journey_events = {
+	random_events = {
+		# Normal Events
+		100 = pilgrimage.2001
+		100 = pilgrimage.2002
+		100 = pilgrimage.2003
+		100 = pilgrimage.2004
+		100 = pilgrimage.2005
+		100 = pilgrimage.2006
+		100 = pilgrimage.2007
+		50 = pilgrimage.2008
+		100 = pilgrimage.2009
+		25 = pilgrimage.2010 # Meet a Mystic (chain)
+		
+		# 'Temptation' Events
+		100 = pilgrimage.2501 # Persistent Beggar
+		100 = pilgrimage.2511 # Cocky Lordling
+
+		# Threshold Event
+		9999 = pilgrimage.3101 # High weight because we want it to be almost guaranteed.
+	}
+	fallback = pilgrimage_journey_event_fallback
+}
+
+# Fallback for the sake of stability
+pilgrimage_journey_event_fallback = {
+	events = {
+		pilgrimage.9999
+	}
+}
+
+# On-action managing possible destination events
+pilgrimage_destination_events = {
+	first_valid_on_action = {
+		hajj_destination_events
+		christian_destination_events
+		jewish_destination_events
+		muslim_destination_events
+		hindu_destination_events
+		buddhist_destination_events
+		jain_destination_events
+		zoroastrian_destination_events
+		norse_destination_events
+		tengri_destination_events
+		pagan_destination_events
+		pilgrimage_generic_destination_events
+	}
+}
+
+hajj_destination_events = {
+	trigger = {
+		exists = scope:activity.var:is_hajj
+	}
+	random_events = {
+		100 = hajj.3001
+		25 = pilgrimage.4001 # Meet the Mystic again
+	}
+}
+
+christian_destination_events = {
+	trigger = {
+		religion = religion:christianity_religion
+		exists = scope:activity.activity_province
+		scope:activity.activity_province = {
+			OR = {
+				county = title:c_roma # Rome
+				county = title:c_jerusalem # Jerusalem
+				county = title:c_byzantion # Constantinople
+				county = title:c_alexandria # Alexandria
+			}
+		}
+	}
+
+	random_events = {
+		100 = pilgrimage.5001 # Rome
+		100 = pilgrimage.5011 # Jerusalem
+		100 = pilgrimage.5021 # Constantinople
+		100 = pilgrimage.5031 # Alexandria
+		100 = pilgrimage.4001 # Meet the Mystic again
+	}
+}
+
+jewish_destination_events = {
+	trigger = {
+		religion = religion:judaism_religion
+		exists = scope:activity.activity_province
+		scope:activity.activity_province = {
+			OR = {
+				county = title:c_sinai # Mt. Sinai
+				county = title:c_jerusalem # Jerusalem
+			}
+		}
+	}
+
+	random_events = {
+		100 = pilgrimage.5011 # Jerusalem
+		100 = pilgrimage.5101 # Mt. Sinai
+		100 = pilgrimage.4001 # Meet the Mystic again
+	}
+}
+
+muslim_destination_events = {
+	trigger = {
+		religion = religion:islam_religion
+		exists = scope:activity.activity_province
+		scope:activity.activity_province = {
+			OR = {
+				county = title:c_medina # Medina
+				county = title:c_sinai # Mt. Sinai
+				county = title:c_jerusalem # Jerusalem
+			}
+		}
+	}
+
+	random_events = {
+		100 = pilgrimage.5011 # Jerusalem
+		100 = pilgrimage.5101 # Mt. Sinai
+		100 = pilgrimage.5201 # Medina
+		# Mecca is handled separately as part of the Hajj
+		100 = pilgrimage.4001 # Meet the Mystic again
+	}
+}
+
+hindu_destination_events = {
+	trigger = {
+		religion = religion:hinduism_religion
+		exists = scope:activity.activity_province
+		scope:activity.activity_province = {
+			OR = {
+				county = title:c_varanasi # Varanasi
+				county = title:c_ayodhya # Ayodhya
+				county = title:c_mathura # Mathura
+				county = title:c_sthanisvara # Haridwar
+				county = title:c_kanchipuram # Kanchipuram
+				county = title:c_ujjayini # Ujjayini
+				county = title:c_dvaraka # Dwarka
+
+				county = title:c_puri # Puri
+				county = title:c_kumaon # Badrinath
+				county = title:c_madurai # Rameswaram
+				county = title:c_tagadur # Srirangam
+				county = title:c_nellore # Tirupati
+				county = title:c_sthanisvara # Jyotisar
+				county = title:c_bhera # Katasraj
+				county = title:c_mataram # Prambanan
+				county = title:c_bali_sea # Pura Besakih
+				county = title:c_madurai # Madurai
+				county = title:c_cumbum # Srisailam
+				county = title:c_somnath # Somnath
+				county = title:c_damin_i_koh # Baidyanath
+				county = title:c_kolhapur # Mahalakshmi
+				county = title:c_uraiyur # Ucchi Pillayar
+				county = title:c_kondana # Mayureshwar
+				county = title:c_trikuta # Girjatmaj
+				county = title:c_multan # Multan
+				county = title:c_kataka # Konark
+				county = title:c_kongu # Dhandayuthapani
+			}
+		}
+	}
+
+	random_events = {
+		100 = pilgrimage.5301 # Varanasi
+		100 = pilgrimage.5302 # Ayodhya
+		100 = pilgrimage.5303 # Mathura
+		100 = pilgrimage.5304 # Haridwar
+		100 = pilgrimage.5305 # Kanchipuram
+		100 = pilgrimage.5306 # Ujjayini
+		100 = pilgrimage.5307 # Dwarka
+		100 = pilgrimage.5308 # Puri
+		100 = pilgrimage.5309 # Badrinath
+		100 = pilgrimage.5310 # Rameswaram
+		100 = pilgrimage.5312 # Srirangam
+		100 = pilgrimage.5313 # Tirupati
+		100 = pilgrimage.5317 # Jyotisar
+		100 = pilgrimage.5318 # Katasraj
+		100 = pilgrimage.5319 # Prambanan
+		100 = pilgrimage.5323 # Pura Besakih
+		100 = pilgrimage.5326 # Madurai
+		100 = pilgrimage.5328 # Srisailam
+		100 = pilgrimage.5331 # Somnath
+		100 = pilgrimage.5334 # Baidyanath
+		100 = pilgrimage.5336 # Mahalakshmi
+		100 = pilgrimage.5338 # Ucchi Pillayar
+		100 = pilgrimage.5344 # Mayureshwar
+		100 = pilgrimage.5346 # Girjatmaj
+		100 = pilgrimage.5347 # Multan
+		100 = pilgrimage.5349 # Konark
+		100 = pilgrimage.5352 # Dhandayuthapani
+		100 = pilgrimage.4001 # Meet the Mystic again
+	}
+}
+
+buddhist_destination_events = {
+	trigger = {
+		religion = religion:buddhism_religion
+		exists = scope:activity.activity_province
+		scope:activity.activity_province = {
+			OR = {
+				county = title:c_gaya # Bodh Gaya
+				county = title:c_kusinagara # Kusinagara
+				county = title:c_varanasi # Sarnath
+				county = title:c_mithila # Vaishali
+				county = title:c_sravasti # Sravasti
+				county = title:c_vodamayutja # Sankassa
+				county = title:c_phiti # Atamasthana
+				county = title:c_dagon # Dagon
+				county = title:c_pagan # Pagan
+				county = title:c_thaton # Kyaikhtiyo
+				county = title:c_mamrati # Borobudur
+				county = title:c_shazhou # Dunhuang
+				county = title:c_bamian # Bamiyan
+				county = title:c_lhasa # Lhasa
+				county = title:c_amdo # Namtso
+			}
+		}
+	}
+
+	random_events = {
+		100 = pilgrimage.5401 # Bodh Gaya
+		100 = pilgrimage.5402 # Kusinagara
+		100 = pilgrimage.5403 # Sarnath
+		100 = pilgrimage.5404 # Vaishali
+		100 = pilgrimage.5405 # Sravasti
+		100 = pilgrimage.5406 # Sankassa
+		100 = pilgrimage.5407 # Atamasthana
+		100 = pilgrimage.5408 # Dagon
+		100 = pilgrimage.5409 # Pagan
+		100 = pilgrimage.5410 # Kyaikhtiyo
+		100 = pilgrimage.5411 # Borobudur
+		100 = pilgrimage.5413 # Dunhuang
+		100 = pilgrimage.5414 # Bamiyan
+		100 = pilgrimage.5424 # Lhasa
+		100 = pilgrimage.5429 # Namtso
+		100 = pilgrimage.4001 # Meet the Mystic again
+	}
+}
+
+jain_destination_events = {
+	trigger = {
+		religion = religion:jainism_religion
+		exists = scope:activity.activity_province
+		scope:activity.activity_province = {
+			OR = {
+				county = title:c_somnath # Palitana
+				county = title:c_radha # Shikharj
+				county = title:c_bhumilka # Girnar
+				county = title:c_hastinapura # Hastinapur
+				county = title:c_magadha # Pawapuri
+				county = title:c_koppam # Kanakagiri
+				county = title:c_vidisa # Sonagiri
+			}
+		}
+	}
+
+	random_events = {
+		100 = pilgrimage.5501 # Palitana
+		100 = pilgrimage.5502 # Shikharj
+		100 = pilgrimage.5503 # Girnar
+		100 = pilgrimage.5504 # Hastinapur
+		100 = pilgrimage.5505 # Pawapuri
+		100 = pilgrimage.5506 # Kanakagiri
+		100 = pilgrimage.5507 # Sonagiri
+		100 = pilgrimage.4001 # Meet the Mystic again
+	}
+}
+
+zoroastrian_destination_events = {
+	trigger = {
+		religion = religion:zoroastrianism_religion
+		exists = scope:activity.activity_province
+		scope:activity.activity_province = {
+			OR = {
+				county = title:c_baduspan # Ushi-darena
+			}
+		}
+	}
+
+	random_events = {
+		100 = pilgrimage.5601 # Ushi-darena
+		100 = pilgrimage.4001 # Meet the Mystic again
+	}
+}
+
+norse_destination_events = {
+	trigger = {
+		religion = religion:germanic_religion
+		exists = scope:activity.activity_province
+		scope:activity.activity_province = {
+			OR = {
+				county = title:c_brunswick # Paderborn
+			}
+		}
+	}
+
+	random_events = {
+		100 = pilgrimage.5901 # Paderborn
+		100 = pilgrimage.4001 # Meet the Mystic again
+	}
+}
+
+tengri_destination_events = {
+	trigger = {
+		religion = religion:tengrism_religion
+	}
+
+	random_events = {
+		100 = pilgrimage.5911 # Blue Open Skies
+		100 = pilgrimage.4001 # Meet the Mystic again
+	}
+}
+
+pagan_destination_events = {
+	trigger = {
+		faith = {
+			has_doctrine = tenet_sanctity_of_nature
+		}
+	}
+
+	random_events = {
+		100 = pilgrimage.5921 # Sacred Grove
+		100 = pilgrimage.4001 # Meet the Mystic again
+	}
+}
+
+pilgrimage_generic_destination_events = {
+	random_events = {
+		100 = pilgrimage.4001
+		100 = pilgrimage.4002
+	}
+}
+
+pilgrimage_return_events = {
+	random_events = {
+		100 = pilgrimage.9001
+	}
+}
