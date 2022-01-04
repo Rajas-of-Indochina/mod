@@ -10,12 +10,14 @@ Feel free to add suggestions
 
 ########################################################################
 
-## Rename Tribal to Late Antiquity
-    https://steamcommunity.com/sharedfiles/filedetails/?id=2629092890
-
 ## Renaissance Innovations
     https://steamcommunity.com/sharedfiles/filedetails/?id=2616283652&searchtext=renaissance
-    https://steamcommunity.com/sharedfiles/filedetails/?id=2190986644
+
+## Houses Traditions
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2590650832
+
+## Lanka
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2664346576
 
 ## More Laws
     https://steamcommunity.com/sharedfiles/filedetails/?id=2596442947
