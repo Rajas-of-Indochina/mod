@@ -639,20 +639,6 @@ ruler_offer_tribute_to_recipient = {
         scope:recipient = {
             if = {
                 limit = {
-                    scope:non_permanent_trib = yes
-                }
-                custom_tooltip = non_permanent_trib_recipient_tooltip
-                make_tributary = {
-                    TYPE = tributary_non_permanent
-                    SUZERAIN = scope:actor
-                    TRIBUTARY = scope:recipient
-                }
-                scope:actor = {
-                    custom_tooltip = non_permanent_trib_tooltip
-                }
-            }
-            else_if = {
-                limit = {
                     scope:permanent_trib = yes
                 }
                 custom_tooltip = permanent_trib_recipient_tooltip
@@ -665,36 +651,21 @@ ruler_offer_tribute_to_recipient = {
                     custom_tooltip = permanent_trib_tooltip
                 }
             }
-            #payment of one time tribute for 5 year truce
-            else_if = {
-                limit = {
-                    scope:one_time_trib = yes
-                }
-                custom_tooltip = one_time_trib_recipient_tooltip
-                pay_short_term_gold = {
-                    gold = 1.5 # 30% income * 5 years
-                    target = scope:actor
-                    yearly_income = yes
-                }
-                scope:actor = {
-                    custom_tooltip = one_time_trib_tooltip
-                }
-            }
             save_scope_as = trib
             scope:actor = {
                 trigger_event = { id = tributaries.9 }
             }
         }
         scope:actor = {
-            add_truce_one_way = { # "Tributary" may still attack the "suzerain"
+            add_truce_both_ways = {
                 character = scope:recipient
                 days = standard_truce_duration_days # 1825
                 name = truce_paid_tribute
             }
-            add_opinion = {
-                modifier = gave_tribute
-                target = scope:recipient
-            }
+            #add_opinion = {
+            #    modifier = gave_tribute
+            #    target = scope:recipient
+            #}
         }
     }
 
@@ -731,15 +702,6 @@ ruler_offer_tribute_to_recipient = {
         #OPINION SCALES
         #Dread
         #Compare Opinion modifier.
-
-        # PERKS
-        modifier = { # Perk boost
-            desc = offer_vassalization_true_ruler_perk_tt
-            trigger = {
-                scope:actor = { has_perk = true_ruler_perk }
-            }
-            add = true_ruler_value
-        }
 
         # MAIN
         modifier = { #I am a King!
@@ -814,7 +776,7 @@ ruler_offer_tribute_to_recipient = {
                     value = scope:recipient.max_military_strength
                     divide = { value = scope:actor.max_military_strength min = 1 }
                 }
-                multiply = 40
+                multiply = 20
             }
         }
 
@@ -905,29 +867,8 @@ ruler_offer_tribute_to_recipient = {
             opinion_target = scope:actor
             multiplier = 0.35
         }
-
-        # CONTRACT OPTIONS
-        modifier = { # Would rather pay if they know they can't fight? Unsure what to do with this
-            add = -20
-            scope:one_time_trib = yes
-            desc = TRIBUTARY_EXTORTION_REASON
-        }
-        modifier = { # Would rather be a temporary than a permanent tributary
-            add = -20
-            scope:permanent_trib = yes
-            desc = CONTRACT_HIGH_TAXES_REASON
-        }
     }
 
-    #Non Permanent trib
-    send_option = {
-        is_shown = {
-            always = yes
-        }
-        flag = non_permanent_trib                       # If selected then scope:flag_name will be set to yes
-        localization = non_permanent_trib               # Loc_key for option label
-        starts_enabled = { always = yes }               # Trigger for whether this should be on when the window opens. If not defined, defaults to off
-    }
     #Permanent trib
     send_option = {
         is_shown = {
@@ -935,14 +876,6 @@ ruler_offer_tribute_to_recipient = {
         }
         flag = permanent_trib
         localization = permanent_trib
-    }
-    #One-time trib
-    send_option = {
-        is_shown = {
-            always = yes
-        }
-        flag = one_time_trib
-        localization = one_time_trib
     }
 
     ai_potential = {
