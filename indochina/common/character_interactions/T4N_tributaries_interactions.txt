@@ -26,9 +26,11 @@ declare_war_interaction = {
         }
         scope:recipient = {
             NOT = {
-                exists = var:my_suzerain
-                var:my_suzerain = {
-                    this = scope:actor
+                AND = {
+                    exists = var:my_suzerain
+                    var:my_suzerain = {
+                        this = scope:actor
+                    }
                 }
             }
         }
@@ -234,6 +236,9 @@ call_suzerain_to_war = {
     popup_on_receive = yes
     pause_on_receive = yes
 
+    greeting = positive
+    notification_text = call_suzerain_notification
+
     is_shown = {
         scope:actor = { #put here every tributary type which should be able to call suzerain
             is_at_war = yes
@@ -273,27 +278,28 @@ call_suzerain_to_war = {
             scope:target = {
                 if = {
                     limit = {
-                        is_attacker = scope:actor
+                        is_defender = scope:actor
                     }
-                    scope:actor = {
-                        add_opinion = {
-                            modifier = rejected_call_to_offensive_war
-                            target = scope:recipient
-                        }
-                    }
-                    scope:recipient = {
-                        add_prestige_experience = major_prestige_loss
-                    }
-                }
-                else = {
                     scope:actor = {
                         add_opinion = {
                             modifier = rejected_call_to_defensive_war
                             target = scope:recipient
                         }
+                        # This needs to go into a function (effect)
+                        scope:actor = {
+                            remove_variable = my_suzerain
+
+                            scope:recipient = {
+                                remove_list_variable = { name = permanent_tributaries target = prev }
+                            }
+                            scope:recipient = {
+                                remove_list_variable = { name = all_tributaries target = prev }
+                            }
+                        }
                     }
                     scope:recipient = {
                         add_prestige_experience = massive_prestige_loss
+                        trigger_event = { id = tributaries.4 }
                     }
                 }
                 hidden_effect = {
@@ -304,9 +310,6 @@ call_suzerain_to_war = {
                         set_called_to = scope:recipient
                     }
                 }
-            }
-            scope:actor = {
-                trigger_event = call_ally.0101
             }
         }
     }
@@ -521,60 +524,6 @@ call_suzerain_to_war = {
     }
 }
 
-#Call Tributaries to war
-call_tributaries_to_war = {
-    category = interaction_category_diplomacy
-    use_diplomatic_range = no
-
-    desc = call_tributary_interaction_desc
-
-    is_shown = {
-        scope:actor = {
-            is_suzerain = yes
-            OR = {
-                is_defender = yes
-                is_attacker = yes
-            }
-        }
-        scope:recipient = {
-            exists = var:my_suzerain
-            var:my_suzerain = {
-                this = scope:actor
-            }
-        }
-    }
-
-    is_valid_showing_failures_only = {
-        scope:actor = {
-            custom_tooltip = tributaries_not_already_called
-            any_in_list = {
-                variable = permanent_tributaries
-                NOT = {
-                    any_war_ally = {
-                        this = prev
-                    }
-                }
-            }
-        }
-    }
-
-    auto_accept = {
-        always = yes
-    }
-
-    on_accept = {
-        custom_description = {
-            text = call_of_arms_is_sent_to_tributaries
-        }
-        scope:actor = {
-            save_scope_as = suzerain_cta_caller
-        }
-        scope:recipient = {
-            trigger_event = { id = tributaries.13 }
-        }
-    }
-}
-
 # Offer tribute to recipient
 offer_tribute = {
     category = interaction_category_diplomacy
@@ -584,6 +533,9 @@ offer_tribute = {
 
     is_shown = {
         scope:actor = { # actor is tributary
+            NOT = {
+                is_tributary = yes
+            }
             is_at_war = no
             NOT = { this = scope:recipient }
             NOR = {
@@ -865,7 +817,7 @@ ruler_offer_tribute_to_recipient = {
             NOT = { this = scope:recipient }
         }
         scope:recipient = { # recipient is tributary
-            NOT = { # Will be removed eventually
+            NOT = {
                 is_tributary = yes
             }
             is_independent_ruler = yes
@@ -1169,20 +1121,9 @@ free_tributary = {
     on_accept = {
         scope:recipient = {
             remove_variable = my_suzerain
-            if = {
-                limit = {
-                    scope:actor = {
-                        is_target_in_variable_list = { name = non_permanent_tributaries target = prev }
-                    }
-                }
-                scope:actor = {
-                    remove_list_variable = { name = non_permanent_tributaries target = prev }
-                }
-            }
-            else = {
-                scope:actor = {
-                    remove_list_variable = { name = permanent_tributaries target = prev }
-                }
+
+            scope:actor = {
+                remove_list_variable = { name = permanent_tributaries target = prev }
             }
             scope:actor = {
                 remove_list_variable = { name = all_tributaries target = prev }
@@ -1244,51 +1185,6 @@ annex_tributary = {
             add = -100
             scope:recipient.var:possible_vasalisation_year.compare_value <= current_year
             desc = trib_annexation_too_early
-        }
-    }
-
-    ai_will_do = {
-        base = 10
-    }
-}
-
-turn_non_perma_tributary_to_perma = {
-    category = interaction_category_diplomacy
-    is_shown = {
-        scope:actor = {
-            is_target_in_variable_list = { name = non_permanent_tributaries target = scope:recipient }
-            NOT = {
-                this = scope:recipient
-            }
-        }
-    }
-
-    desc = make_permanent_tributary_interaction_desc
-
-    is_valid_showing_failures_only = {
-        exists = scope:recipient.var:possible_permafication_year
-        scope:recipient.var:possible_permafication_year.compare_value <= current_year
-    }
-
-    auto_accept = {
-        always = yes
-    }
-
-    on_accept = {
-        scope:recipient = {
-            custom_description = {
-                text = non_permanent_trib_turns_into_perma
-                subject = scope:recipient
-
-                scope:actor = {
-                    remove_list_variable = { name = non_permanent_tributaries target = prev }
-                    add_to_variable_list = { name = permanent_tributaries target = prev }
-                }
-                set_variable = {
-                    name = possible_vasalisation_year
-                    value = { value = current_year add = 30}
-                }
-            }
         }
     }
 
