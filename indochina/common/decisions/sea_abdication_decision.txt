@@ -6,20 +6,22 @@
 	ai_check_interval = 36
 
 	is_shown = {
-		OR = {
-			has_government = feudal_government
-			has_government = clan_government
-		}
+		always = yes
 	}
 
 	is_valid = {
-		always = yes
+		# Must be at least 60 years old or have reigned for 20 years, or infirm
+		OR = {
+			age >= 60
+			has_trait = incapable
+			has_trait = infirm
+
+			# Not sure how to check for length of reign
+		}
 	}
 
 	is_valid_showing_failures_only = {
 		is_at_war = no
-		# Must be at least 60 years old or have reigned for 20 years, or infirm
-
 	}
 
 	effect = {
@@ -30,9 +32,6 @@
 	}
 
 	ai_potential = {
-		always = yes
-	}
-	ai_will_do = {
 		always = no
 	}
 }

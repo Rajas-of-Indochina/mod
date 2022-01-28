@@ -211,42 +211,69 @@ tributaries.5 = {
     immediate = {
         if = {
             limit = {
-                has_non_permanent_tributaries = yes
-            }
-            every_in_list = {
-                variable = non_permanent_tributaries
-                pay_long_term_gold = {
-                    target = prev
-                    gold = {
-                        value = monthly_character_income
-                        multiply = var:tribute_gold_percent
-                    }
-                }
-                add_prestige = var:monthly_prestige_tributary
-                add_piety = var:monthly_piety_tributary
-                prev = {
-                    add_prestige = prev.var:monthly_prestige_suzerain
-                    add_piety = prev.var:monthly_piety_suzerain
-                }
-
-            }
-        }
-        if = {
-            limit = {
                 has_permanent_tributaries = yes
             }
+
+            save_scope_as = suzerain
             every_in_list = {
                 variable = permanent_tributaries
+                trigger_event = { id = tributaries.50 }
+            }
+        }
+    }
+}
 
-                pay_long_term_gold = { target = prev gold = { value = monthly_character_income multiply = var:tribute_gold_percent }}
-                add_prestige = var:monthly_prestige_tributary
-                add_piety = var:monthly_piety_tributary
-                prev = {
-                    add_prestige = prev.var:monthly_prestige_suzerain
-                    add_piety = prev.var:monthly_piety_suzerain
+tributaries.50 = {
+    type = character_event
+    title = tributary_event_send_tribute
+    desc = tributary_event_send_tribute_desc
+    theme = vassal
+
+    right_portrait = {
+        character = root
+    }
+    left_portrait = {
+        character = scope:suzerain
+        animation = personality_honorable
+    }
+
+    option = {
+        name = tributary_send_gold
+        save_scope_as = tributary
+
+        scope:suzerain = {
+            send_interface_message = {
+                title = tributary_send_tribute.sent_gold
+                type = event_tribute_paid
+                desc = tributary_send_tribute.sent_gold_desc
+                left_icon = root
+
+                root = {
+                    pay_long_term_gold = {
+                        target = scope:suzerain
+                        gold = { value = yearly_character_income multiply = var:tribute_gold_percent }
+                    }
                 }
             }
         }
+        ai_chance = { base = 10 }
+    }
+    option = {
+        name = tributary_send_prestige
+        add_prestige = medium_prestige_loss
+        scope:suzerain = { add_prestige = medium_prestige_gain }
+        ai_chance = { base = 0 }
+    }
+    option = {
+        name = tributary_refuse_tribute
+        scope:suzerain = {
+            add_opinion = {
+                modifier = insult_opinion
+                opinion = -50
+                target = root
+            }
+        }
+        ai_chance = { base = 0 }
     }
 }
 
@@ -356,7 +383,7 @@ tributaries.9 = {
     }
 
     option = {
-        name = nice
+        name = EXCELLENT
     }
 }
 
@@ -365,7 +392,7 @@ tributaries.9 = {
 tributaries.901 = {
     type = letter_event
     opening = {
-        desc = tributaries.9_opening
+        desc = tributaries.901_opening
     }
     desc = tributaries.901_desc
     sender = scope:my_suzerain
@@ -375,7 +402,7 @@ tributaries.901 = {
     }
 
     option = {
-        name = nice
+        name = EXCELLENT
     }
 }
 
