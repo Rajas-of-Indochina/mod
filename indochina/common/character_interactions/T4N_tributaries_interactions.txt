@@ -1,5 +1,229 @@
 ﻿#Tributaries Character Interactions
 
+declare_war_interaction = {
+    category = interaction_category_diplomacy
+    common_interaction = yes
+    special_interaction = declare_war_interaction
+    interface = declare_war
+    interface_priority = 70
+    popup_on_receive = yes
+    pause_on_receive = yes
+
+    desc = declare_war_desc
+
+    is_shown = {
+        NOT = {
+            scope:recipient = scope:actor
+        }
+        scope:recipient = {
+            is_landed = yes
+
+        }
+        scope:actor = {
+            NOT = {
+                is_at_war_with = scope:recipient
+            }
+        }
+        scope:recipient = {
+            NOT = {
+                exists = var:my_suzerain
+                var:my_suzerain = {
+                    this = scope:actor
+                }
+            }
+        }
+    }
+
+    is_valid_showing_failures_only = {
+        scope:actor = {
+            NOT = { has_trait = incapable }
+            can_attack_in_hierarchy = scope:recipient
+            NOT = {
+                has_raised_armies = yes
+            }
+            has_any_display_cb_on = scope:recipient
+            NOT = {
+                is_allied_in_war = scope:recipient
+            }
+            custom_description = {
+                text = "is_not_bankrupt"
+                gold > 0
+            }
+            is_imprisoned = no
+            trigger_if = {
+                limit = {
+                    has_variable_list = subjugation_offer_under_consideration
+                }
+                custom_description = {
+                    text = is_not_considering_offer_of_subjugation
+                    NOT = {
+                        is_target_in_variable_list = {
+                            name = subjugation_offer_under_consideration
+                            target = scope:recipient
+                        }
+                    }
+                }
+            }
+        }
+        scope:recipient = { NOT = { has_strong_hook = scope:actor } }
+        scope:recipient = {
+            trigger_if = {
+                limit = { is_imprisoned = yes }
+                NOT = {
+                    imprisoner = scope:actor
+                }
+            }
+        }
+    }
+
+    has_valid_target_showing_failures_only = {
+        custom_description = {
+            text = "declare_war_hook_on_liege"
+            OR = {
+                war_declarer_needs_hook_on_liege = no
+                always = scope:hook
+            }
+        }
+        scope:actor = {
+            NOR = {
+                is_at_war_with = scope:recipient
+                custom_description = { #A vassal cannot go to war against someone their Liege is already at war with
+                    text = liege_is_at_war_with_recipient
+                    object = scope:recipient
+                    liege = {
+                        is_at_war_with = scope:recipient
+                    }
+                }
+            }
+        }
+    }
+
+    send_options_exclusive = no
+    send_option = {
+        is_shown = {
+            war_declarer_needs_hook_on_liege = yes
+        }
+        is_valid = {
+            scope:actor = {
+                has_usable_hook = liege
+            }
+        }
+        flag = hook
+        localization = WAR_LIEGE_HOOK
+        can_invalidate_interaction = yes
+    }
+    should_use_extra_icon = {
+        war_declarer_needs_hook_on_liege = yes
+        scope:actor = { has_usable_hook = liege }
+    }
+    extra_icon = "gfx/interface/icons/character_interactions/hook_icon.dds"
+
+    on_accept = {
+
+        scope:actor = {
+            #Feedback!
+            hidden_effect = {
+                send_interface_toast = {
+                    title = declare_war_interaction_notification
+
+                    left_icon = scope:actor
+                    right_icon = scope:recipient
+
+                    custom_tooltip = declare_war_interaction_notification_tooltip
+
+                    show_as_tooltip = {
+                        if = {
+                            limit = { always = scope:hook }
+                            use_hook = liege
+                        }
+                    }
+                }
+            }
+
+            #Has the instigator promised a vassal a war (vassal.2601)?
+            if = {
+                limit = {
+                    exists = var:promised_war
+                    var:promised_war = {
+                        is_alive = yes
+                        NOT = { this = scope:recipient }
+                    }
+                }
+                trigger_event = {
+                    id = vassal.2610
+                    days = { 7 10 }
+                }
+            }
+
+            if = {
+                limit = { always = scope:hook }
+                use_hook = liege
+            }
+
+            #Send break up event if they are your lover
+            if = {
+                limit = {
+                    has_relation_lover = scope:recipient
+                    NOT = { has_relation_rival = scope:recipient } #To enable really strange love stories
+                    any_character_war = {
+                        casus_belli = {
+                            primary_attacker = scope:actor
+                            primary_defender = scope:recipient
+                            any_target_title = { count >= 1 }
+                        }
+                    }
+                }
+                scope:recipient = {
+                    trigger_event = {
+                        id = lover.0103
+                        days = { 14 30 }
+                    }
+                }
+            }
+
+            #Invalidate any wars your vassals have going against recipient atm
+            scope:recipient = {
+                if = {
+                    limit = {
+                        any_character_war = {
+                            primary_attacker = {
+                                is_vassal_or_below_of = scope:actor
+                                trigger_if = { #Ai should never invalidate a player's war!
+                                    limit = {
+                                        this = { is_ai = no }
+                                    }
+                                    scope:actor = {
+                                        is_ai = no
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    every_character_war = {
+                        limit = {
+                            primary_attacker = {
+                                is_vassal_or_below_of = scope:actor
+                                trigger_if = { #Ai should never invalidate a player's war!
+                                    limit = {
+                                        this = { is_ai = no }
+                                    }
+                                    scope:actor = {
+                                        is_ai = no
+                                    }
+                                }
+                            }
+                        }
+                        show_as_tooltip = { end_war = invalidated } #Actually ended in the event
+                        primary_attacker = { trigger_event = war_event.1001 }
+                    }
+                }
+            }
+        }
+    }
+
+    auto_accept = yes
+}
+
 call_suzerain_to_war = {
     category = interaction_category_diplomacy
     use_diplomatic_range = no
