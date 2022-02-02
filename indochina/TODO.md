@@ -10,8 +10,17 @@ Feel free to add suggestions
 
 ########################################################################
 
+## No Rally Points
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2584232139&searchtext=no+rally+points
+
+## More Interactive Vassals
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2712590542
+
 ## Renaissance Innovations
     https://steamcommunity.com/sharedfiles/filedetails/?id=2616283652&searchtext=renaissance
+
+## The Arquebus
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2264174652&searchtext=gunpowder
 
 ## Houses Traditions
     https://steamcommunity.com/sharedfiles/filedetails/?id=2590650832
