@@ -2,9 +2,9 @@
 # Empty scope
 on_game_start = {
     on_actions = {
-        # set_tributaries_on_game_start
-        # holy_site_buildings_on_game_start
-        # holy_site_descriptions_on_game_start
+        set_tributaries_on_game_start
+        holy_site_buildings_on_game_start
+        holy_site_descriptions_on_game_start
     }
     events = {
         rivers_events.0001
@@ -13,8 +13,47 @@ on_game_start = {
 
 on_game_start_after_lobby = {
     on_actions = {
-        # set_cultural_succession_laws
+        set_cultural_succession_laws
         ruler_popup_events
+    }
+}
+
+######
+
+holy_site_descriptions_on_game_start = {
+    effect = {
+
+        title:b_albay = {
+            set_variable = {
+                name = holy_site_description
+                value = flag:holy_site_mount_mayon_description
+            }
+        }
+    }
+}
+
+######
+
+holy_site_buildings_on_game_start = {
+
+    effect = {
+        every_religion_global = {
+            limit = {
+                is_in_family = rf_animism
+            }
+            every_faith = {
+                every_holy_site = {
+                    limit = {
+                        title_province = {
+                            has_special_building_slot = no
+                        }
+                    }
+                    title_province = {
+                        add_special_building_slot = holy_site_pagan_grand_temple_01 # Should make a unique version of this for animists
+                    }
+                }
+            }
+        }
     }
 }
 
