@@ -118,6 +118,9 @@ types Lists
 				block "button_content"
 				{
 					hbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+
 						vbox = {
 							layoutpolicy_horizontal = expanding
 							layoutpolicy_vertical = expanding
@@ -148,8 +151,7 @@ types Lists
 										text_single = {
 											name = "character_relation"
 											layoutpolicy_horizontal = expanding
-											raw_text = "|  [Character.GetRelationToString( GetPlayer )]"
-											tooltip = "EXTENDED_RELATIONS_TOOLTIP"
+											text = "|  [Character.GetRelationToString( GetPlayer )]"
 											default_format = "#low"
 											autoresize = no
 											align = nobaseline
@@ -350,8 +352,8 @@ types Lists
 										using = tooltip_se
 
 										hbox = {
+											layoutpolicy_horizontal = expanding
 											spacing = 3
-
 											icon = {
 												name = "culture"
 												texture = "gfx/interface/icons/icon_culture.dds"
@@ -385,7 +387,7 @@ types Lists
 			visible = "[CharacterListItem.HasEvenOrderIndex]"
 			using = Background_Area_Dark
 			margin_top = -4
-			margin_bottom = 200
+			margin_bottom = 2
 			alpha = 0.5
 		}
 
@@ -394,7 +396,11 @@ types Lists
 		block "widget" {}
 
 		hbox = {
+			layoutpolicy_horizontal = expanding
+
 			vbox = {
+				layoutpolicy_vertical = expanding
+
 				portrait_head_small_cached = {}
 
 				expand = {}
@@ -452,7 +458,7 @@ types Lists
 									hbox = {
 										visible = "[And(Character.HasRelationTo( GetPlayer ), Not(Character.IsPlayer))]"
 										text_single = {
-											raw_text = "•"
+											text = "•"
 											align = nobaseline
 											margin = { 5 0 }
 										}
@@ -460,7 +466,6 @@ types Lists
 										text_single = {
 											name = "character_relation"
 											text = "[Character.GetRelationToString( GetPlayer )]"
-											tooltip = "EXTENDED_RELATIONS_TOOLTIP"
 											default_format = "#low"
 											align = nobaseline
 											fontsize_min = 14
@@ -533,8 +538,7 @@ types Lists
 
 												block "gridbox_items"
 												{
-													min_width = 210
-													datamodel_wrap = 7
+													datamodel_wrap = 4
 													maxverticalslots = 2
 												}
 
@@ -559,6 +563,8 @@ types Lists
 													}
 												}
 											}
+
+											expand = {}
 										}
 									}
 
@@ -577,9 +583,7 @@ types Lists
 										layoutpolicy_horizontal = expanding
 										layoutpolicy_vertical = expanding
 
-										block "claims" { # for kill list
-											widget_list_claims = {}
-										}
+										widget_list_claims = {}
 
 										# Religion and culture
 										hbox = {
@@ -588,7 +592,6 @@ types Lists
 											margin_left = 8
 											margin_right = 4
 											spacing = 5
-											minimumsize = { 110 0 }
 
 											background = {
 												using = Background_Area_Dark
@@ -664,7 +667,7 @@ types Lists
 					}
 					block "dropdown_active_item_properties"
 					{
-						raw_text = "#D Current Option#!"
+						text = "#D Current Option#!"
 					}
 					button_trigger = none
 
@@ -686,7 +689,7 @@ types Lists
 
 					block "dropdown_item_properties"
 					{
-						raw_text = "#D Option#!"
+						text = "#D Option#!"
 					}
 
 					default_format = "#clickable"
@@ -921,7 +924,6 @@ types Lists
 
 		divider_light = {
 			size = { 3 20 }
-			block "filters_visible" {}
 		}
 
 		text_single = {
@@ -929,9 +931,8 @@ types Lists
 			align = nobaseline
 		}
 
-		block "sort_dropdown" {
-			dropdown_sort_characterlist = {}
-		}
+
+		dropdown_sort_characterlist = {}
 
 		button_standard = {
 			name = "sort_order"
@@ -947,7 +948,6 @@ types Lists
 				size = { 25 25 }
 				texture = "gfx/interface/icons/flat_icons/sort_icon.dds"
 				framesize = { 66 66 }
-
 				frame = "[BoolTo1And2(CharacterSelectionList.GetSortOrder)]"
 
 				blockoverride "button_frames"
@@ -976,7 +976,7 @@ types Lists
 					onclick = "[CharacterSelectionList.SortBySkill('(int32)0')]"
 
 					tooltip = "SORT_BY_DIPLOMACY"
-					using = tooltip_ne
+					using = tooltip_below
 
 					skillitem_sort_icon = {
 						visible = "[CharacterSelectionList.IsSortingBySkill('(int32)0')]"
@@ -997,7 +997,7 @@ types Lists
 					onclick = "[CharacterSelectionList.SortBySkill('(int32)1')]"
 
 					tooltip = "SORT_BY_MARTIAL"
-					using = tooltip_ne
+					using = tooltip_below
 
 					skillitem_sort_icon = {
 						visible = "[CharacterSelectionList.IsSortingBySkill('(int32)1')]"
@@ -1017,7 +1017,7 @@ types Lists
 
 					onclick = "[CharacterSelectionList.SortBySkill('(int32)2')]"
 					tooltip = "SORT_BY_STEWARDSHIP"
-					using = tooltip_ne
+					using = tooltip_below
 
 					skillitem_sort_icon = {
 						visible = "[CharacterSelectionList.IsSortingBySkill('(int32)2')]"
@@ -1037,7 +1037,7 @@ types Lists
 
 					onclick = "[CharacterSelectionList.SortBySkill('(int32)3')]"
 					tooltip = "SORT_BY_INTRIGUE"
-					using = tooltip_ne
+					using = tooltip_below
 
 					skillitem_sort_icon = {
 						visible = "[CharacterSelectionList.IsSortingBySkill('(int32)3')]"
@@ -1057,7 +1057,7 @@ types Lists
 
 					onclick = "[CharacterSelectionList.SortBySkill('(int32)4')]"
 					tooltip = "SORT_BY_LEARNING"
-					using = tooltip_ne
+					using = tooltip_below
 
 					skillitem_sort_icon = {
 						visible = "[CharacterSelectionList.IsSortingBySkill('(int32)4')]"
@@ -1147,10 +1147,11 @@ types Lists
 				widget = {
 					size = { 20 15 }
 
-					warning_icon = {
+					icon = {
 						size = { 20 20 }
 						visible = "[Not( CharacterSelectionList.IsAllDefault )]"
 						tooltip = "CHARACTER_FINDER_FILTER_SET"
+						texture = "gfx/interface/icons/symbols/icon_warning.dds"
 					}
 				}
 
@@ -1165,23 +1166,11 @@ types Lists
 		}
 	}
 
-	type button_recruit_character = button_round
-	{
-		visible = "[Character.IsPlayerInteractionShown('recruit_guest_interaction')]"
-		enabled = "[Character.IsPlayerInteractionValid('recruit_guest_interaction')]"
-		onclick = "[Character.OpenPlayerInteraction('recruit_guest_interaction')]"
-		tooltip = "[Character.GetPlayerInteractionTooltip('recruit_guest_interaction')]"
-
-		button_add_character = {
-			alwaystransparent = yes
-			parentanchor = center
-		}
-	}
-
 	type widget_courtier_item = widget {
 		size = { 0 125 }
 
 		hbox = {
+			layoutpolicy_horizontal = expanding
 			margin_right = 10
 			spacing = 5
 
@@ -1222,16 +1211,17 @@ types Lists
 						layoutpolicy_horizontal = expanding
 						spacing = 3
 
-						warning_icon = {
-							visible = "[And( Character.CourtierWantsToLeaveCourt, Not( Character.IsImprisoned))]"
+						icon = {
+							visible = "[Character.CourtierWantsToLeaveCourt]"
 							size = { 20 20 }
+							texture = "gfx/interface/icons/symbols/icon_warning.dds"
 							tooltip = "[Character.GetCourtierLeaveDescription]"
 						}
 
 						debug_placeholder = {
 							visible = "[InDebugMode]"
 							size = { 20 20 }
-							raw_tooltip = "#D [Character.GetDebugCourtierLeaveReasons]#!"
+							tooltip = "#D [Character.GetDebugCourtierLeaveReasons]#!"
 						}
 
 						text_single = {
@@ -1243,7 +1233,6 @@ types Lists
 
 							block "description_relation_text" {
 								text = "[Character.GetRelationToString( CharacterWindow.GetCourtOwner )]"
-								tooltip = "EXTENDED_RELATIONS_TOOLTIP"
 							}
 
 							background = {
@@ -1268,7 +1257,17 @@ types Lists
 							margin = { 0 3 }
 							spacing = 5
 
-							button_recruit_character = {}
+							button_round = {
+								visible = "[Character.IsPlayerInteractionShown('recruit_guest_interaction')]"
+								enabled = "[Character.IsPlayerInteractionValid('recruit_guest_interaction')]"
+								onclick = "[Character.OpenPlayerInteraction('recruit_guest_interaction')]"
+								tooltip = "[Character.GetPlayerInteractionTooltip('recruit_guest_interaction')]"
+
+								button_add_character = {
+									alwaystransparent = yes
+									parentanchor = center
+								}
+							}
 						}
 					}
 
@@ -1442,6 +1441,8 @@ types Lists
 		size = { 200 180 }
 
 		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
 			margin = { 10 5 }
 
 			hbox = {
@@ -1493,7 +1494,6 @@ types Lists
 								visible = "[Character.GetLiege.IsLocalPlayer]"
 								layoutpolicy_horizontal = expanding
 								text = "[Character.GetRelationToString(GetPlayer)]"
-								tooltip = "EXTENDED_RELATIONS_TOOLTIP"
 								default_format = "#low"
 								autoresize = no
 								fontsize_min = 13
@@ -1995,7 +1995,6 @@ types Scrollbar
 					}
 
 					text_single = {
-						layoutpolicy_vertical = expanding
 						default_format = "#low;italic"
 
 						block "scrollbox_empty"
@@ -2058,7 +2057,6 @@ template Scrollbar_Vertical
 				spriteType = Corneredtiled
 				spriteborder = { 0 3 }
 				framesize = { 12 40 }
-				minimumsize = { -1 40 }
 
 				upframe = 1
 				overframe = 2
@@ -2125,7 +2123,6 @@ template Scrollbar_Horizontal
 				spriteType = Corneredtiled
 				spriteborder = { 3 0 }
 				framesize = { 40 12 }
-				minimumsize = { 15 -1 }
 
 				upframe = 1
 				overframe = 2
