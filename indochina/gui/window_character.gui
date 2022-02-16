@@ -2029,7 +2029,10 @@ window = {
 					layoutpolicy_horizontal = expanding
 
 					onclick = "[CharacterWindow.SetTab('family')]"
-					down = "[CharacterWindow.IsTabShown('family')]"
+					# Clear Custom Tab visbility
+					onclick = "[GetVariableSystem.Clear('char_gui_tabs')]"
+					# Do not show selected if custom tab is selected
+					down = "[And(CharacterWindow.IsTabShown('family'),Not(GetVariableSystem.Exists('char_gui_tabs')))]"
 
 					using = tooltip_above
 
@@ -2059,7 +2062,10 @@ window = {
 					layoutpolicy_horizontal = expanding
 
 					onclick = "[CharacterWindow.SetTab('relations')]"
-					down = "[CharacterWindow.IsTabShown('relations')]"
+					# Clear Custom Tab visbility
+					onclick = "[GetVariableSystem.Clear('char_gui_tabs')]"
+					# Do not show selected if custom tab is selected
+					down = "[And(CharacterWindow.IsTabShown('relations'),Not(GetVariableSystem.Exists('char_gui_tabs')))]"
 
 					using = tooltip_above
 
@@ -2089,8 +2095,16 @@ window = {
 					#	visible = "[Not(Character.IsPlayer)]"
 					layoutpolicy_horizontal = expanding
 
+					# onclick = "[CharacterWindow.SetTab('court')]"
+					# down = "[CharacterWindow.IsTabShown('court')]"
+
+
 					onclick = "[CharacterWindow.SetTab('court')]"
-					down = "[CharacterWindow.IsTabShown('court')]"
+					# Clear Custom Tab visbility
+					onclick = "[GetVariableSystem.Clear('char_gui_tabs')]"
+					# Do not show selected if custom tab is selected
+					down = "[And(CharacterWindow.IsTabShown('court'),Not(GetVariableSystem.Exists('char_gui_tabs')))]"
+
 
 					using = tooltip_above
 
@@ -2121,8 +2135,16 @@ window = {
 					#	visible = "[And(Character.IsRuler, Not(Character.IsPlayer))]"
 					layoutpolicy_horizontal = expanding
 
+					# onclick = "[CharacterWindow.SetTab('vassals')]"
+					# down = "[CharacterWindow.IsTabShown('vassals')]"
+
+
 					onclick = "[CharacterWindow.SetTab('vassals')]"
-					down = "[CharacterWindow.IsTabShown('vassals')]"
+					# Clear Custom Tab visbility
+					onclick = "[GetVariableSystem.Clear('char_gui_tabs')]"
+					# Do not show selected if custom tab is selected
+					down = "[And(CharacterWindow.IsTabShown('vassals'),Not(GetVariableSystem.Exists('char_gui_tabs')))]"
+
 
 					using = tooltip_above
 
@@ -2140,6 +2162,39 @@ window = {
 							default_format = "#low"
 							margin_right = 15
 							min_width = 30
+
+							using = Animation_Character_Window_Refresh
+						}
+					}
+				}
+
+				# Custom tab
+				button_tab = {
+					name = "tribs_button"
+					datacontext = "[CharacterWindow.GetCharacter]"
+					visible = "[Not(IsDataModelEmpty(Character.MakeScope.GetList('all_tributaries')))]"
+					layoutpolicy_horizontal = expanding
+
+					onclick = "[GetVariableSystem.Set('char_gui_tabs','tribs')]"
+					down = "[GetVariableSystem.HasValue('char_gui_tabs','tribs')]"
+
+					using = tooltip_above
+
+					hbox = {
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							align = center
+							text = "CV_TAB_TRIBS"
+							default_format = "#low"
+						}
+
+						text_single = {
+							align = center
+							text = "[GetDataModelSize(Character.MakeScope.GetList('all_tributaries'))]"
+							default_format = "#low"
+							margin_right = 15
+							min_width = 24
 
 							using = Animation_Character_Window_Refresh
 						}
@@ -2164,7 +2219,7 @@ window = {
 
 				widget = {
 					name = "family"
-					visible = "[CharacterWindow.IsTabShown('family')]"
+					visible = "[And(CharacterWindow.IsTabShown('family'),Not(GetVariableSystem.Exists('char_gui_tabs')))]"
 					size = { 100% 100% }
 
 					using = Animation_Tab_Switch
@@ -2529,7 +2584,7 @@ window = {
 
 				widget = {
 					name = "relations"
-					visible = "[CharacterWindow.IsTabShown('relations')]"
+					visible = "[And(CharacterWindow.IsTabShown('relations'),Not(GetVariableSystem.Exists('char_gui_tabs')))]"
 					size = { 100% 100% }
 
 					using = Animation_Tab_Switch
@@ -2999,7 +3054,8 @@ window = {
 
 				vbox_character_list = {
 					datacontext = "[CharacterWindow.GetCourt]"
-					visible = "[CharacterWindow.IsTabShown('court')]"
+					# visible = "[CharacterWindow.IsTabShown('court')]"
+					visible = "[And(CharacterWindow.IsTabShown('court'),Not(GetVariableSystem.Exists('char_gui_tabs')))]"
 
 					blockoverride "sort_dropdown" {
 						dropdown_sort_characterlist = {
@@ -3078,7 +3134,8 @@ window = {
 				####################################
 
 				vbox_character_list = {
-					visible = "[CharacterWindow.IsTabShown('vassals')]"
+					# visible = "[CharacterWindow.IsTabShown('vassals')]"
+					visible = "[And(CharacterWindow.IsTabShown('vassals'),Not(GetVariableSystem.Exists('char_gui_tabs')))]"
 					datacontext = "[CharacterWindow.GetVassals]"
 
 					blockoverride "sort_dropdown" {
