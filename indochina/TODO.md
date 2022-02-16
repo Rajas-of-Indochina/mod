@@ -10,8 +10,27 @@ Feel free to add suggestions
 
 ########################################################################
 
-## Renaissance Innovations
-    https://steamcommunity.com/sharedfiles/filedetails/?id=2616283652&searchtext=renaissance
+## No Rally Points
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2584232139&searchtext=no+rally+points
+
+## Pluribus Casibus Belli
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2243170894
+
+## More Interactive Vassals
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2712590542
+
+## Secret Religions
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2661730834
+
+## Invite Nobles
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2686352443&searchtext=
+    Additionally change recruit courtiers somehow
+
+## Trade Goods
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2689783403
+
+## The Arquebus
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2264174652&searchtext=gunpowder
 
 ## Houses Traditions
     https://steamcommunity.com/sharedfiles/filedetails/?id=2590650832
