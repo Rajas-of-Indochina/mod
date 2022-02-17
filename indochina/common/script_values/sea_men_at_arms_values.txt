@@ -123,6 +123,18 @@ caballero_recruitment_cost = @[light_cavalry_recruitment_cost + 0]
 caballero_low_maint_cost = @[light_cavalry_low_maint_cost * 1.1]
 caballero_high_maint_cost = @[light_cavalry_high_maint_cost * 1.1]
 
+mulaththamun_recruitment_cost = @[light_cavalry_recruitment_cost + 0]
+mulaththamun_low_maint_cost = @[light_cavalry_low_maint_cost * 1.1]
+mulaththamun_high_maint_cost = @[light_cavalry_high_maint_cost * 1.1]
+
+paiks_recruitment_cost = @[archers_recruitment_cost * 1.1]
+paiks_low_maint_cost = @[archers_low_maint_cost * 1.1]
+paiks_high_maint_cost = @[archers_high_maint_cost * 1.1]
+
+archers_of_the_nile_recruitment_cost = @[archers_recruitment_cost * 1.1]
+archers_of_the_nile_low_maint_cost = @[archers_low_maint_cost * 1.1]
+archers_of_the_nile_high_maint_cost = @[archers_high_maint_cost * 1.1]
+
 sahel_rider_recruitment_cost = @[light_cavalry_recruitment_cost + 5]
 sahel_rider_low_maint_cost = @[light_cavalry_low_maint_cost * 1.1]
 sahel_rider_high_maint_cost = @[light_cavalry_high_maint_cost * 1.1]
@@ -130,6 +142,10 @@ sahel_rider_high_maint_cost = @[light_cavalry_high_maint_cost * 1.1]
 cataphract_recruitment_cost = @[heavy_cavalry_recruitment_cost * 1.3]
 cataphract_low_maint_cost = @[heavy_cavalry_low_maint_cost * 1.3]
 cataphract_high_maint_cost = @[heavy_cavalry_high_maint_cost * 1.3]
+
+monaspa_recruitment_cost = @[heavy_cavalry_recruitment_cost * 1.25]
+monaspa_low_maint_cost = @[heavy_cavalry_low_maint_cost * 1.25]
+monaspa_high_maint_cost = @[heavy_cavalry_high_maint_cost * 1.25]
 
 hobelar_recruitment_cost = @[light_cavalry_recruitment_cost * 1.1]
 hobelar_low_maint_cost = @[light_cavalry_low_maint_cost * 1.1]
@@ -178,6 +194,10 @@ shomer_high_maint_cost = @[skirmisher_high_maint_cost + 0]
 khandayat_recruitment_cost = @[heavy_infantry_recruitment_cost * 1.2]
 khandayat_low_maint_cost = @[heavy_infantry_low_maint_cost * 1.2]
 khandayat_high_maint_cost = @[heavy_infantry_high_maint_cost * 1.2]
+
+garudas_recruitment_cost = @[heavy_infantry_recruitment_cost * 1.28]
+garudas_low_maint_cost = @[heavy_infantry_low_maint_cost * 1.28]
+garudas_high_maint_cost = @[heavy_infantry_high_maint_cost * 1.28]
 
 mountaineer_recruitment_cost = @[heavy_infantry_recruitment_cost * 1.2]
 mountaineer_low_maint_cost = @[heavy_infantry_low_maint_cost * 1.2]
@@ -268,22 +288,26 @@ culture_ai_weight_skirmishers = {
 
 	if = { # Cultures that favours skirmishers
 		limit = {
-			OR = {
-				culture_group = culture_group:baltic_group
-				culture_group = culture_group:ugro_permian_group
-				culture_group = culture_group:balto_finnic_group
+			culture = {
+				OR = {
+					has_cultural_pillar = heritage_baltic
+					has_cultural_pillar = heritage_ugro_permian
+					has_cultural_pillar = heritage_balto_finnic
+				}
 			}
 		}
 		add = 20
 	}
 	if = { # Cultures that dislike skirmishers
 		limit = {
-			OR = {
-				culture_group = culture_group:central_germanic_group
-				culture_group = culture_group:frankish_group
-				culture_group = culture_group:iberian_group
-				culture_group = culture_group:latin_group
-				culture_group = culture_group:byzantine_group
+			culture = {
+				OR = {
+					has_cultural_pillar = heritage_central_germanic
+					has_cultural_pillar = heritage_frankish
+					has_cultural_pillar = heritage_iberian
+					has_cultural_pillar = heritage_latin
+					has_cultural_pillar = heritage_byzantine
+				}
 			}
 		}
 		add = -60
@@ -292,13 +316,7 @@ culture_ai_weight_skirmishers = {
 	if = { # Cultures with a special MaA of that type should avoid the base version of the unit
 		limit = {
 			culture = {
-				OR = {
-					has_innovation = innovation_adaptive_militia
-					has_innovation = innovation_mountain_skirmishing
-					has_innovation = innovation_mobile_guards
-					has_innovation = innovation_desert_mountain_herding
-					has_innovation = innovation_upland_skirmishing
-				}
+				culture_has_skirmisher_maa = yes
 			}
 		}
 		add = -100
@@ -310,14 +328,16 @@ culture_ai_weight_archers = {
 
 	if = { # Cultures that favours archers
 		limit = {
-			OR = {
-				culture_group = culture_group:west_germanic_group
-				culture_group = culture_group:brythonic_group
-				culture_group = culture_group:east_african_group
-				culture_group = culture_group:indo_aryan_group
-				culture_group = culture_group:dravidian_group
-				culture_group = culture_group:burman_group
-				culture_group = culture_group:chinese_group
+			culture = {
+				OR = {
+					has_cultural_pillar = heritage_west_germanic
+					has_cultural_pillar = heritage_brythonic
+					has_cultural_pillar = heritage_east_african
+					has_cultural_pillar = heritage_indo_aryan
+					has_cultural_pillar = heritage_dravidian
+					has_cultural_pillar = heritage_burman
+					has_cultural_pillar = heritage_chinese
+				}
 			}
 		}
 		add = 40
@@ -325,8 +345,8 @@ culture_ai_weight_archers = {
 	if = { # Cultures that dislike archers
 		limit = {
 			OR = {
-				culture_group = culture_group:central_germanic_group
-				culture_group = culture_group:frankish_group
+				culture = { has_cultural_pillar = heritage_central_germanic }
+				culture = { has_cultural_pillar = heritage_frankish }
 			}
 		}
 		add = -60
@@ -335,12 +355,7 @@ culture_ai_weight_archers = {
 	if = { # Cultures with a special MaA of that type should avoid the base version of the unit
 		limit = {
 			culture = {
-				OR = {
-					has_innovation = innovation_longbows
-					has_innovation = innovation_forest_wardens
-					has_innovation = innovation_bush_hunting
-					has_innovation = innovation_repeating_crossbow
-				}
+				culture_has_archer_maa = yes
 			}
 		}
 		add = -100
@@ -352,11 +367,13 @@ culture_ai_weight_heavy_infantry = {
 
 	if = { # Cultures that favours heavy infantry
 		limit = {
-			OR = {
-				culture_group = culture_group:central_germanic_group
-				culture_group = culture_group:north_germanic_group
-				culture_group = culture_group:west_germanic_group
-				culture_group = culture_group:east_slavic_group
+			culture = {
+				OR = {
+					has_cultural_pillar = heritage_central_germanic
+					has_cultural_pillar = heritage_north_germanic
+					has_cultural_pillar = heritage_west_germanic
+					has_cultural_pillar = heritage_east_slavic
+				}
 			}
 		}
 		add = 40
@@ -365,18 +382,7 @@ culture_ai_weight_heavy_infantry = {
 	if = { # Cultures with a special MaA of that type should avoid the base version of the unit
 		limit = {
 			culture = {
-				OR = {
-					has_innovation = innovation_hird
-					has_innovation = innovation_legionnaires
-					has_innovation = innovation_khandayats
-					has_innovation = innovation_futuwaa
-					has_innovation = innovation_mubarizuns
-					has_innovation = innovation_druzhina
-					has_innovation = innovation_alpine_supremacy
-					has_innovation = innovation_zbrojnosh
-					has_innovation = innovation_sarawit
-					has_innovation = innovation_royal_army_tradition
-				}
+				culture_has_heavy_infantry_maa = yes
 			}
 		}
 		add = -500
@@ -389,8 +395,8 @@ culture_ai_weight_pikemen = {
 	if = { # Cultures that favours spearmen
 		limit = {
 			OR = {
-				culture_group = culture_group:central_germanic_group
-				culture_group = culture_group:latin_group
+				culture = { has_cultural_pillar = heritage_central_germanic }
+				culture = { has_cultural_pillar = heritage_latin }
 			}
 		}
 		add = 40
@@ -399,11 +405,7 @@ culture_ai_weight_pikemen = {
 	if = { # Cultures with a special MaA of that type should avoid the base version of the unit
 		limit = {
 			culture = {
-				OR = {
-					has_innovation = innovation_zweihanders
-					has_innovation = innovation_pike_columns
-					has_innovation = innovation_rectilinear_schiltron
-				}
+				culture_has_pikemen_maa = yes
 			}
 		}
 		add = -100
@@ -416,24 +418,25 @@ culture_ai_weight_light_cavalry = {
 	if = { # Cultures that REALLY like light cavalry
 		limit = {
 			OR = {
-				culture_group = culture_group:iranian_group
+				culture = { has_cultural_pillar = heritage_iranian }
 
 				# Steppe cultures
-				culture_group = culture_group:turkic_group
-				culture_group = culture_group:mongolic_group
+				culture = { has_cultural_pillar = heritage_turkic }
+				culture = { has_cultural_pillar = heritage_mongolic }
 			}
 		}
 		add = 80
 	}
 	if = { # Cultures that favours light cavalry
 		limit = {
-			OR = {
-				culture_group = culture_group:arabic_group
-				culture_group = culture_group:iranian_group
-				culture_group = culture_group:berber_group
-				culture_group = culture_group:iberian_group
-				culture_group = culture_group:west_slavic_group
-				culture_group = culture_group:indo_aryan_group
+			culture = {
+				OR = {
+					has_cultural_pillar = heritage_arabic
+					has_cultural_pillar = heritage_iranian
+					has_cultural_pillar = heritage_berber
+					has_cultural_pillar = heritage_iberian
+					has_cultural_pillar = heritage_indo_aryan
+				}
 			}
 		}
 		add = 40
@@ -441,11 +444,11 @@ culture_ai_weight_light_cavalry = {
 	if = { # Cultures that dislike light cavalry
 		limit = {
 			OR = {
-				culture_group = culture_group:central_germanic_group
-				culture_group = culture_group:tibetan_group
-				culture_group = culture_group:baltic_group
-				culture_group = culture_group:burman_group
-				culture_group = culture_group:somalian_group
+				culture = { has_cultural_pillar = heritage_central_germanic }
+				culture = { has_cultural_pillar = heritage_tibetan }
+				culture = { has_cultural_pillar = heritage_baltic }
+				culture = { has_cultural_pillar = heritage_burman }
+				culture = { has_cultural_pillar = heritage_somalian }
 			}
 		}
 		add = -60
@@ -454,13 +457,7 @@ culture_ai_weight_light_cavalry = {
 	if = { # Cultures with a special MaA of that type should avoid the base version of the unit
 		limit = {
 			culture = {
-				OR = {
-					has_innovation = innovation_desert_tactics
-					has_innovation = innovation_caballeros
-					has_innovation = innovation_hobbies
-					has_innovation = innovation_hussar_raids
-					has_innovation = innovation_sahel_horsemen
-				}
+				culture_has_light_cavalry_maa = yes
 			}
 		}
 		add = -100
@@ -472,8 +469,8 @@ culture_ai_weight_light_cavalry = {
 				has_innovation = innovation_war_camels
 			}
 			OR = {
-				culture_group = culture_group:arabic_group
-				culture_group = culture_group:berber_group
+				culture = { has_cultural_pillar = heritage_arabic }
+				culture = { has_cultural_pillar = heritage_berber }
 			}
 		}
 		add = -80
@@ -486,11 +483,11 @@ culture_ai_weight_heavy_cavalry = {
 	if = { # Cultures that REALLY like heavy cavalry
 		limit = {
 			OR = {
-				culture_group = culture_group:iranian_group
+				culture = { has_cultural_pillar = heritage_iranian }
 
 				# Steppe cultures
-				culture_group = culture_group:turkic_group
-				culture_group = culture_group:mongolic_group
+				culture = { has_cultural_pillar = heritage_turkic }
+				culture = { has_cultural_pillar = heritage_mongolic }
 			}
 		}
 		add = 80
@@ -498,26 +495,28 @@ culture_ai_weight_heavy_cavalry = {
 	if = { # Cultures that favours heavy cavalry
 		limit = {
 			OR = {
-				culture_group = culture_group:central_germanic_group
-				culture_group = culture_group:frankish_group
-				culture_group = culture_group:indo_aryan_group
+				culture = { has_cultural_pillar = heritage_central_germanic }
+				culture = { has_cultural_pillar = heritage_frankish }
+				culture = { has_cultural_pillar = heritage_indo_aryan }
 			}
 		}
 		add = 40
 	}
 	if = { # Cultures that dislike heavy cavalry
 		limit = {
-			OR = {
-				culture_group = culture_group:tibetan_group
-				culture_group = culture_group:baltic_group
-				culture_group = culture_group:south_slavic_group
-				culture_group = culture_group:sahelian_group
-				culture_group = culture_group:senegambian_group
-				culture_group = culture_group:west_african_group
-				culture_group = culture_group:yoruba_group
-				culture_group = culture_group:somalian_group
-				culture_group = culture_group:east_african_group
-				culture_group = culture_group:burman_group
+			culture = {
+				OR = {
+					has_cultural_pillar = heritage_tibetan
+					has_cultural_pillar = heritage_baltic
+					has_cultural_pillar = heritage_south_slavic
+					has_cultural_pillar = heritage_sahelian
+					has_cultural_pillar = heritage_senegambian
+					has_cultural_pillar = heritage_west_african
+					has_cultural_pillar = heritage_yoruba
+					has_cultural_pillar = heritage_somalian
+					has_cultural_pillar = heritage_east_african
+					has_cultural_pillar = heritage_burman
+				}
 			}
 		}
 		add = -60
@@ -526,10 +525,7 @@ culture_ai_weight_heavy_cavalry = {
 	if = { # Cultures with a special MaA of that type should avoid the base version of the unit
 		limit = {
 			culture = {
-				OR = {
-					has_innovation = innovation_valets
-					has_innovation = innovation_cataphracts
-				}
+				culture_has_heavy_cavalry_maa = yes
 			}
 		}
 		add = -100
@@ -542,8 +538,8 @@ culture_ai_weight_camels = {
 	if = { # Cultures that favours camel riders
 		limit = {
 			OR = {
-				culture_group = culture_group:arabic_group
-				culture_group = culture_group:berber_group
+				culture = { has_cultural_pillar = heritage_arabic }
+				culture = { has_cultural_pillar = heritage_berber }
 			}
 		}
 		add = 80
@@ -556,9 +552,9 @@ culture_ai_weight_elephants = {
 	if = { # Cultures that favours war elephants
 		limit = {
 			OR = {
-				culture_group = culture_group:dravidian_group
-				culture_group = culture_group:indo_aryan_group
-				culture_group = culture_group:burman_group
+				culture = { has_cultural_pillar = heritage_dravidian }
+				culture = { has_cultural_pillar = heritage_indo_aryan }
+				culture = { has_cultural_pillar = heritage_burman }
 			}
 		}
 		add = 60
