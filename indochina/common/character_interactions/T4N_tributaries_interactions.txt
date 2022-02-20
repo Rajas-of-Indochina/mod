@@ -690,6 +690,18 @@ offer_tribute = {
             }
             add = 25
         }
+        modifier = { #Distant Realm.
+            desc = offer_vassalization_interaction_aibehavior_distantrealm_tt
+            trigger = {
+                scope:actor = {
+                    NOT = {
+                        any_neighboring_top_liege_realm_owner = { this = scope:recipient }
+                    }
+                }
+                scope:actor.capital_province = { squared_distance = { target = scope:recipient.capital_province value < 200000 } }
+            }
+            add = -15
+        }
         modifier = { #Remote Realm.
             desc = offer_vassalization_interaction_aibehavior_remoterealm_tt
             trigger = {
@@ -700,7 +712,7 @@ offer_tribute = {
                 }
                 scope:actor.capital_province = { squared_distance = { target = scope:recipient.capital_province value >= 200000 } }
             }
-            add = -15
+            add = -25
         }
 
         #MINOR
@@ -732,23 +744,26 @@ offer_tribute = {
             }
             add = 10
         }
-        modifier = { #Cultural modifiers.
+
+        modifier = { # Cultural Acceptance
             add = -5
-            desc = offer_vassalization_interaction_aibehavior_culture_tt
+            desc = cultural_acceptance_interaction_reason
             trigger = {
                 scope:actor = {
-                    has_same_culture_group_as = scope:recipient
                     NOT = { has_same_culture_as = scope:recipient }
+                    culture = {
+                        cultural_acceptance = { target = scope:recipient.culture value < 50 }
+                    }
                 }
             }
         }
 
-        modifier = { #Cultural Group modifiers.
-            add = -10
-            desc = offer_vassalization_interaction_aibehavior_culture_tt
+        modifier = { # Same language
+            add = 5
+            desc = speaks_same_language_interaction_reason
             trigger = {
                 scope:actor = {
-                    NOT = { has_same_culture_group_as = scope:recipient }
+                    knows_language_of_culture = scope:recipient.culture
                 }
             }
         }

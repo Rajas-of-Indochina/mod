@@ -1,0 +1,52 @@
+﻿
+can_be_court_chaplain_trigger = {
+	save_temporary_scope_as = court_chaplain_check
+	can_be_councillor_basics_trigger = yes
+	NOT = { has_council_position = councillor_spouse }
+
+	OR = {
+		# faith has transgender as virtue and scope:court_chaplain_check is transgender
+		AND = {
+			has_trait = transgender
+			$COURT_OWNER$.faith = {
+				trait_is_virtue = transgender
+			}
+		}
+		$COURT_OWNER$.faith = { has_allowed_gender_for_clergy = scope:court_chaplain_check }
+	}
+
+	faith = $COURT_OWNER$.faith
+	trigger_if = {
+		limit = {
+			faith = { has_doctrine = doctrine_theocracy_temporal }
+		}
+		OR = {
+			is_ruler = no
+			has_government = theocracy_government
+		}
+	}
+	trigger_if = {
+		limit = {
+			exists = var:escaped_imprisonment_from
+		}
+		NOT = { var:escaped_imprisonment_from = $COURT_OWNER$ }
+	}
+}
+
+can_be_clergy_due_to_gender_trigger = {
+	OR = {
+		AND = {
+			faith = { trait_is_virtue = transgender }
+			has_trait = transgender
+		}
+		AND = {
+			faith = { has_doctrine_parameter = clergy_must_be_female }
+			is_female = yes
+		}
+		AND = {
+			faith = { has_doctrine_parameter = clergy_must_be_male }
+			is_male = yes
+		}
+		faith = { has_doctrine_parameter = clergy_can_be_either_gender }
+	}
+}

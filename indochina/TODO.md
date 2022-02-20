@@ -13,6 +13,9 @@ Feel free to add suggestions
 ## No Rally Points
     https://steamcommunity.com/sharedfiles/filedetails/?id=2584232139&searchtext=no+rally+points
 
+## Pluribus Casibus Belli
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2243170894
+
 ## More Interactive Vassals
     https://steamcommunity.com/sharedfiles/filedetails/?id=2712590542
 
