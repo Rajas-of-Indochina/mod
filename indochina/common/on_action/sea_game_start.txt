@@ -13,7 +13,6 @@ on_game_start = {
 
 on_game_start_after_lobby = {
     on_actions = {
-        # set_cultural_succession_laws
         ruler_popup_events
     }
 }
@@ -291,74 +290,6 @@ set_tributaries_on_game_start = {
                 TYPE = tributary_permanent
                 SUZERAIN = title:c_takon.holder
                 TRIBUTARY = title:c_mongyang.holder
-            }
-        }
-    }
-}
-
-set_cultural_succession_laws = {
-
-    effect = {
-
-        every_ruler = {
-            if = { # Barangay
-                limit = {
-                    culture_group = culture_group:filipino_group
-                    highest_held_title_tier >= tier_duchy
-                }
-                every_held_title = {
-                    if = {
-                        limit = {
-                            tier >= tier_duchy
-                        }
-                        add_title_law = barangay_elective_succession_law
-                    }
-                }
-            }
-            else_if = { # Tanistry
-                limit = {
-                    OR = {
-                        culture_group = culture_group:brythonic_group
-                        culture_group = culture_group:goidelic_group
-                    }
-                    highest_held_title_tier >= tier_duchy
-                }
-                every_held_title = {
-                    if = {
-                        limit = {
-                            tier >= tier_duchy
-                        }
-                        add_title_law = gaelic_elective_succession_law
-                    }
-                }
-            }
-            else_if = { # Thing
-                limit = {
-                    culture_group = culture_group:north_germanic_group
-                    highest_held_title_tier >= tier_duchy
-                }
-                every_held_title = {
-                    if = {
-                        limit = {
-                            tier >= tier_duchy
-                        }
-                        add_title_law = scandinavian_elective_succession_law
-                    }
-                }
-            }
-            else_if = { # Witenagemot
-                limit = {
-                    culture = culture:anglo_saxon
-                    highest_held_title_tier >= tier_kingdom
-                }
-                every_held_title = {
-                    if = {
-                        limit = {
-                            tier >= tier_kingdom
-                        }
-                        add_title_law = saxon_elective_succession_law
-                    }
-                }
             }
         }
     }
