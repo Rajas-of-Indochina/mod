@@ -1,45 +1,22 @@
-
-challenge_to_single_combat_headhunting_interaction = {
+﻿
+challenge_to_headhunting_duel_interaction = {
 	icon = icon_combat
 	interface_priority = 30
 	common_interaction = yes
 	category = interaction_category_hostile
-	ai_maybe = yes
-	ai_max_reply_days = 0
 	popup_on_receive = yes
 	pause_on_receive = yes
-	desc = challenge_to_single_combat_interaction_desc
+	desc = challenge_to_headhunting_duel_interaction_desc
+	highlighted_reason = challenge_to_headhunting_duel_interaction_HIGHLIGHTED
 
 	greeting = negative
-	notification_text = REQUEST_TRIAL_BY_COMBAT_TEXT
+	notification_text = REQUEST_HEADHUNTING_DUEL_TEXT
 
 	is_shown = {
-		## Must have proper traditions
-		## Only possible on rival or enemy tribesman
-
-		# First, check for the perk.
-		scope:actor = { can_challenge_rival_to_single_combat_trigger = yes }
-		# Then, look to see if this character is a rival.
-		scope:actor = { has_relation_rival = scope:recipient }
-		# Can't duel yourself.
+		# And obviously never against yourself.
 		NOT = { scope:actor = scope:recipient }
-	}
-
-	is_valid_showing_failures_only = {
-		# Calc some stuff that might invalidate elsewhere before the bout is sorted.
-		rival_single_combat_shown_and_not_invalid_trigger = yes
-		# Scope:recipient must be able to fight personally.
-		scope:recipient = { can_start_single_combat_trigger = yes }
-		# Scope:recipient must not be banned from single combat.
-		scope:recipient = {
-			custom_description = {
-				text = fp1_tbc_recipient_banned_from_combat
-				can_start_single_combat_banned_checks_trigger = no
-			}
-		}
-		# Neither of the characters can be imprisoned.
-		scope:actor = { is_imprisoned = no }
-		scope:recipient = { is_imprisoned = no }
+		## Must be rival or nemesis
+		## can_be_combatant_based_on_gender_trigger
 	}
 
 	can_send = {
@@ -51,9 +28,8 @@ challenge_to_single_combat_headhunting_interaction = {
 		}
 	}
 
-	cost = { prestige = medium_prestige_value }
-	cooldown = { years = 5 }
-	cooldown_against_recipient = { years = 10 }
+	# cooldown = { years = 5 }
+	# cooldown_against_recipient = { years = 10 }
 
 	on_send = {
 		scope:actor = {
@@ -65,44 +41,96 @@ challenge_to_single_combat_headhunting_interaction = {
 	}
 
 	on_accept = {
-		# Set up the bout immediately.
-		## First inform.
-		scope:actor = {
-			custom_tooltip = challenge_to_single_combat_interaction.enter_non_lethal_bout.tt
-			custom_tooltip = challenge_to_single_combat_interaction.victor_gets.tt
-			custom_tooltip = challenge_to_single_combat_interaction.loser_gets.tt
+		# Stopping only briefly to clarify that scope:recipient will be fighting the bout themselves.
+		scope:recipient = { save_scope_as = champion }
+		scope:actor = { trigger_event = sea_headhunting.0001 }
+
+		# Inform of the consequences.
+		## Death - one of you will die.
+		show_as_tooltip = {
+			random_list = {
+				50 = {
+					show_chance = no
+					# desc = fp1_tbc_winner_actor
+					desc = headhunting_duel_winner_actor
+
+					# Check to see if this is a duel to the death between those of equal rank.
+					## We check this here in case an *untimely* death causes either participant to go up a rank.
+					## Equal rank: level playing field, maximum honour.
+					if = {
+						limit = { scope:actor.primary_title.tier = scope:recipient.primary_title.tier }
+						scope:actor = { add_prestige = medium_prestige_gain }
+					}
+					## Unequal rank: challenging your betters but clearly it was merited.
+					else_if = {
+						limit = { scope:actor.primary_title.tier < scope:recipient.primary_title.tier }
+						scope:actor = { add_prestige = major_prestige_gain }
+					}
+					else_if = {
+						limit = { scope:actor.primary_title.tier > scope:recipient.primary_title.tier }
+						scope:actor = { add_prestige = minor_prestige_gain }
+					}
+					scope:recipient = {
+						death = {
+							killer = scope:actor
+							death_reason = death_duel
+						}
+					}
+					scope:actor = {
+						add_kinslayer_trait_or_nothing_effect = { VICTIM = scope:recipient }
+					}
+				}
+				50 = {
+					show_chance = no
+					# desc = fp1_tbc_winner_recipient
+					desc = headhunting_duel_winner_recipient
+
+					# Check to see if this is a duel to the death between those of equal rank.
+					## We check this here in case an *untimely* death causes either participant to go up a rank.
+					## Equal rank: level playing field, maximum honour.
+					if = {
+						limit = { scope:recipient.primary_title.tier = scope:actor.primary_title.tier }
+						scope:recipient = { add_prestige = medium_prestige_gain }
+					}
+					## Unequal rank: challenging your betters but clearly it was merited.
+					else_if = {
+						limit = { scope:recipient.primary_title.tier < scope:actor.primary_title.tier }
+						scope:recipient = { add_prestige = major_prestige_gain }
+					}
+					else_if = {
+						limit = { scope:recipient.primary_title.tier > scope:actor.primary_title.tier }
+						scope:recipient = { add_prestige = minor_prestige_gain }
+					}
+					scope:actor = {
+						death = {
+							killer = scope:recipient
+							death_reason = death_duel
+						}
+					}
+					scope:recipient = {
+						add_kinslayer_trait_or_nothing_effect = { VICTIM = scope:actor }
+					}
+				}
+			}
 		}
-		## Finally, begin.
-		configure_start_single_combat_effect = {
-			SC_INITIATOR = scope:actor
-			SC_ATTACKER = scope:actor
-			SC_DEFENDER = scope:recipient
-			FATALITY = no
-			FIXED = no
-			LOCALE = terrain_scope
-			OUTPUT_EVENT = perk_interaction.0101
-			INVALIDATION_EVENT = perk_interaction.0102
+		# Clear up hostile actions flag.
+		if = {
+			limit = {
+				scope:actor = { has_character_flag = flag_hostile_actions_disabled_delay }
+			}
+			scope:actor = { remove_character_flag = flag_hostile_actions_disabled_delay }
 		}
 	}
 
 	on_decline = {
+		# Scope:recipient loses some prestige.
+		scope:recipient = { add_prestige = major_prestige_loss }
 		# Scope:actor decline processing.
 		scope:actor = {
-			# Inform them of the decline & scope:recipient loses some prestige.
-			send_interface_toast = {
-				title = challenge_to_single_combat_interaction.challenge_rejected.t
-				left_icon = scope:recipient
-				right_icon = scope:actor
-				scope:recipient = { add_prestige = medium_prestige_loss }
-				show_as_tooltip = {
-					add_prestige = medium_prestige_value
-				}
-			}
-			hidden_effect = {
-				add_prestige_no_experience = medium_prestige_value
-			}
+			# Inform them of the declination.
+			trigger_event = sea_headhunting.0031
 			# Cooldown is removed.
-			hidden_effect = { remove_interaction_cooldown = challenge_to_single_combat_interaction }
+			hidden_effect = { remove_interaction_cooldown = challenge_to_headhunting_duel_interaction }
 			# Clear up hostile actions flag.
 			if = {
 				limit = {
@@ -118,24 +146,27 @@ challenge_to_single_combat_headhunting_interaction = {
 	ai_accept = {
 		base = 0 # Try to make it 0 for most interactions
 
-		# Relative fightan ability.
+		# Fightan abilities of both sides.
 		modifier = {
-			desc = CTSC_RELATIVE_PROWESS
-			scope:actor.prowess < scope:recipient.prowess
-			add = {
-				value = scope:recipient.prowess
-				subtract = scope:actor.prowess
-				multiply = 2
-			}
-		}
-		modifier = {
-			desc = CTSC_RELATIVE_PROWESS
-			scope:recipient.prowess < scope:actor.prowess
 			add = {
 				value = scope:actor.prowess
-				subtract = scope:recipient.prowess
-				multiply = -2
+				multiply = -0.5
 			}
+			desc = TBC_PROWESS_ACTOR
+		}
+		modifier = {
+			add = {
+				value = scope:recipient.prowess
+				multiply = 0.5
+			}
+			desc = TBC_PROWESS_RECIPIENT
+		}
+		# Who doesn't like punching a bastard?
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = -1
+			desc = AI_OPINION_REASON
 		}
 		# Weight up for personality values.
 		ai_value_modifier = {
@@ -144,41 +175,66 @@ challenge_to_single_combat_headhunting_interaction = {
 				if = {
 					limit = {
 						scope:recipient = {
-							ai_boldness > 0
-							ai_rationality < 0
-						}
-					}
-					value = 2
-				}
-				else_if = {
-					limit = {
-						scope:recipient = {
 							NOT = { ai_boldness = 0 }
 						}
 					}
-					value = 1
-				}
-			}
-			ai_vengefulness = {
-				if = {
-					limit = {
-						scope:recipient = {
-							NOT = { ai_vengefulness = 0 }
-						}
-					}
-					value = 0.75
+					value = 0.5
 				}
 			}
 			ai_honor = {
 				if = {
 					limit = {
 						scope:recipient = {
-							ai_honor > 0
+							NOT = { ai_honor = 0 }
 						}
 					}
 					value = 0.5
 				}
 			}
+		}
+		# Specific settlement preferences.
+		## Death: disliked by people who feel that disputes can always be settled more amicably.
+		### Craven hates.
+		modifier = {
+			add = -10
+			has_trait = craven
+			desc = TBC_OPINION_DEATH_TRAIT_CRAVEN
+		}
+		### Forgiving hates.
+		modifier = {
+			add = -10
+			has_trait = forgiving
+			desc = TBC_OPINION_DEATH_TRAIT_FORGIVING
+		}
+		### Compassionate dislikes.
+		modifier = {
+			add = -10
+			has_trait = compassionate
+			desc = TBC_OPINION_DEATH_TRAIT_COMPASSIONATE
+		}
+		### Brave loves.
+		modifier = {
+			add = 20
+			has_trait = brave
+			desc = TBC_OPINION_DEATH_TRAIT_BRAVE
+		}
+		### Vengeful loves.
+		modifier = {
+			add = 20
+			has_trait = vengeful
+			desc = TBC_OPINION_DEATH_TRAIT_VENGEFUL
+		}
+		### Callous likes.
+		modifier = {
+			add = 10
+			has_trait = callous
+			desc = TBC_OPINION_DEATH_TRAIT_CALLOUS
+		}
+		### Sadistic loves.
+		modifier = {
+			add = 20
+			has_trait = sadistic
+			desc = TBC_OPINION_DEATH_TRAIT_SADISTIC
 		}
 		# Apply tier differences.
 		## King -> Baron.
@@ -247,6 +303,17 @@ challenge_to_single_combat_headhunting_interaction = {
 			}
 			add = -30
 		}
+		# Rivalry modifier.
+		modifier = {
+			desc = offer_vassalization_interaction_aibehavior_rival_tt
+			trigger = {
+				scope:recipient = {
+					has_relation_rival = scope:actor
+					NOT = { has_relation_nemesis = scope:actor }
+				}
+			}
+			add = 50
+		}
 		# Nemesis modifier.
 		modifier = {
 			desc = offer_vassalization_interaction_aibehavior_nemesis_tt
@@ -255,15 +322,17 @@ challenge_to_single_combat_headhunting_interaction = {
 					has_relation_nemesis = scope:actor
 				}
 			}
-			add = 50
+			add = 100
 		}
 	}
 
 	# AI
+
 	ai_potential = {
-		can_challenge_rival_to_single_combat_trigger = yes
-		NOT = { has_trait = craven }
-		num_of_relation_rival > 0
+		basic_can_have_trial_by_combat_trigger = yes
+		NOT = {
+			has_trait = craven
+		}
 		is_imprisoned = no
 		can_start_single_combat_trigger = yes
 	}
@@ -274,27 +343,59 @@ challenge_to_single_combat_headhunting_interaction = {
 	ai_targets = {
 		ai_recipients = scripted_relations
 	}
+	ai_targets = {
+		ai_recipients = family
+		max = 10
+	}
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		chance = 0.25
+	}
 
-	ai_frequency = 60
+	ai_frequency = 36
 
 	ai_will_do = {
 		base = -50
 
-		# Factor for personality (excluding realism).
+		# Factor for opinion.
 		modifier = {
-			add = {
-				value = ai_boldness
-				multiply = 1
+			add = 100
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value <= very_high_negative_opinion
+				}
 			}
 		}
-		modifier = { add = ai_vengefulness }
 		modifier = {
-			add = {
-				value = ai_energy
-				multiply = -0.25
+			add = 50
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value <= medium_negative_opinion
+				}
 			}
 		}
-		# Don't challenge kinslayer-counting family, unless they're your nemesis.
+		modifier = {
+			add = -50
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value >= medium_positive_opinion
+				}
+			}
+		}
+		modifier = {
+			add = -100
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value >= very_high_positive_opinion
+				}
+			}
+		}
+		# Don't challenge kinslayer-counting family, unless they're a rival or nemesis.
 		modifier = {
 			scope:actor = {
 				murdering_character_is_kinslaying_in_faith_trigger = {
@@ -303,15 +404,21 @@ challenge_to_single_combat_headhunting_interaction = {
 				}
 			}
 			scope:recipient = {
-				NOT = { has_relation_nemesis = scope:actor }
+				NOR = {
+					has_relation_rival = scope:actor
+					has_relation_nemesis = scope:actor
+				}
 			}
 			add = -1000
 		}
-		# Don't challenge your spouse, unless they're your nemesis.
+		# Don't challenge your spouse, unless they're your rival or nemesis.
 		modifier = {
 			scope:recipient = {
 				is_spouse_of = scope:actor
-				NOT = { has_relation_nemesis = scope:actor }
+				NOR = {
+					has_relation_rival = scope:actor
+					has_relation_nemesis = scope:actor
+				}
 			}
 			add = -1000
 		}

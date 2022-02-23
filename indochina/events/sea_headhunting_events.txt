@@ -1,0 +1,608 @@
+﻿namespace = sea_headhunting
+
+##################################################
+# #Scope:actor-side Events
+# 0001 - 0040	Bout Maintenance & Setup
+# 0041 - 0060	Scope:actor Results
+#
+# #Scope:recipient-side Events
+# 0101 - 0110	Champion Selection
+# 0111 - 0130	Scope:recipient Results
+##################################################
+
+
+
+
+
+##################################################
+# SCOPE:ACTOR-SIDE EVENTS
+
+##################################################
+# Bout Maintenance & Setup
+# by Ewan Cowhig Croft
+# 0001 - 0040
+##################################################
+
+#	Everything is set for the bout to begin!
+sea_headhunting.0001 = {
+	type = duel_event
+	title = sea_headhunting.0001.t
+	desc = {
+		desc = sea_headhunting.0001.desc.intro
+		desc = sea_headhunting.0001.desc.recipient_fighting
+		desc = sea_headhunting.0001.desc.outro
+	}
+	theme = martial
+	left_portrait = {
+		character = scope:actor
+		scripted_animation = duel_wield_weapon
+	}
+	right_portrait = {
+		character = scope:recipient
+		scripted_animation = duel_wield_weapon
+	}
+	override_background = { event_background = terrain_scope }
+
+	trigger = {
+		# If, for any reason, scope:recipient has died or been imprisoned, then the bout is cancelled.
+		scope:recipient = {
+			is_alive = yes
+			is_imprisoned = no
+		}
+		# Check that scope:actor is still in a valid state to fight.
+		trial_by_combat_shown_and_not_invalid_trigger = yes
+	}
+
+	on_trigger_fail = {
+		# Inform both parties that the duel has invalidated.
+		scope:actor = {
+			send_interface_toast = {
+				title = sea_headhunting.0001.trigger_failure.actor
+				left_icon = scope:recipient
+			}
+		}
+		scope:recipient = {
+			send_interface_toast = {
+				title = sea_headhunting.0001.trigger_failure.recipient
+				left_icon = scope:actor
+			}
+		}
+		# Reset scope:actor's cooldowns against scope:recipient.
+		scope:actor = {
+			remove_interaction_cooldown = challenge_to_trial_by_combat_interaction
+			remove_interaction_cooldown_against = {
+				interaction = challenge_to_trial_by_combat_interaction
+				target = scope:recipient
+			}
+		}
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_combat_stinger"
+		# Nab scope:recipient's location for terrain.
+		scope:recipient.location = {
+			save_scope_as = background_terrain_scope
+			# And scope:recipient's location name for loc.
+			barony = { save_scope_as = duel_location }
+		}
+	}
+
+	# Almost there.
+
+	## Target is also of headhunting culture
+	# Fight to death. Winner takes skull
+	option = {
+		name = sea_headhunting.0001.a
+
+		# Inform scope:actor that the bout will begin immediately.
+		custom_tooltip = sea_headhunting.0001.a.tt
+
+		# Configure the bout.
+		scope:actor = { add_character_flag = single_combat_stripped_to_waist }
+		scope:recipient = { add_character_flag = single_combat_stripped_to_waist }
+
+		## Deadly fights.
+		configure_start_single_combat_effect = {
+			SC_INITIATOR = scope:actor
+			SC_ATTACKER = scope:actor
+			SC_DEFENDER = scope:recipient
+			FATALITY = always
+			FIXED = no
+			LOCALE = terrain_scope
+			OUTPUT_EVENT = sea_headhunting.0011
+			INVALIDATION_EVENT = sea_headhunting.0021
+		}
+
+		# No stress for single-option events.
+		ai_chance = {
+			# AI will always choose single option.
+			base = 100
+		}
+	}
+
+
+	## Target does not have headhunting culture
+	# If challenger wins, challenged dies, takes skull
+	# If challenged wins, may choose to kill challenger or not, and to take skull or not
+
+	option = {
+		name = sea_headhunting.0001.b
+
+		# Inform scope:actor that the bout will begin immediately.
+		custom_tooltip = sea_headhunting.0001.b.tt
+
+		# Configure the bout.
+		scope:actor = { add_character_flag = single_combat_stripped_to_waist }
+		scope:recipient = { add_character_flag = single_combat_stripped_to_waist }
+
+		## Semi-Deadly fights.
+		configure_start_single_combat_effect = {
+			SC_INITIATOR = scope:actor
+			SC_ATTACKER = scope:actor
+			SC_DEFENDER = scope:recipient
+			FATALITY = no
+			FIXED = no
+			LOCALE = terrain_scope
+			OUTPUT_EVENT = sea_headhunting.0012
+			INVALIDATION_EVENT = sea_headhunting.0021
+		}
+
+		# No stress for single-option events.
+		ai_chance = {
+			# AI will always choose single option.
+			base = 100
+		}
+	}
+}
+
+#	Bout has ended and someone is dead
+sea_headhunting.0011 = {
+	hidden = yes
+
+	immediate = {
+		# If any clothes were stripped, put 'em back on.
+		single_combat_clean_shirtlessness_effect = {
+			ATTACKER = scope:actor
+			DEFENDER = scope:recipient
+		}
+		# Did scope:actor win?
+		if = {
+			limit = { scope:sc_victor = scope:actor }
+			# Apply effects; we do this separately so that there's not a weird day's delay.
+			# And send out the ending events.
+			scope:actor = {
+				trigger_event = {
+					id = sea_headhunting.0041
+					days = 1
+				}
+			}
+		}
+		# Or was it scope:recipient?
+		else_if = {
+			limit = { scope:sc_victor = scope:recipient }
+			# And send out the ending events.
+			scope:recipient = {
+				trigger_event = {
+					id = sea_headhunting.0111
+					days = 1
+				}
+			}
+		}
+	}
+}
+
+#	Bout has ended and no one is dead yet
+sea_headhunting.0012 = {
+	hidden = yes
+
+	immediate = {
+		# If any clothes were stripped, put 'em back on.
+		single_combat_clean_shirtlessness_effect = {
+			ATTACKER = scope:actor
+			DEFENDER = scope:recipient
+		}
+		# Did scope:actor win?
+		if = {
+			limit = { scope:sc_victor = scope:actor }
+			# Apply effects; we do this separately so that there's not a weird day's delay.
+			# If the loser isn't dead yet we have to fix that
+			if = {
+				limit = {
+					scope:recipient = { is_alive = yes }
+				}
+				scope:recipient = {
+					death = {
+						killer = scope:actor
+						death_reason = death_duel
+					}
+				}
+			}
+			# And send out the ending events.
+			scope:actor = {
+				trigger_event = {
+					id = sea_headhunting.0041
+					days = 1
+				}
+			}
+		}
+		# Or was it scope:recipient?
+		else_if = {
+			limit = { scope:sc_victor = scope:recipient }
+			# And send out the ending events.
+			scope:actor = {
+				trigger_event = {
+					id = sea_headhunting.0251
+					days = 1
+				}
+			}
+			scope:recipient = {
+				trigger_event = {
+					id = sea_headhunting.0311
+					days = 1
+				}
+			}
+		}
+
+		## Effects: Skull of loser becomes an artifact, which all dynasts and close family of them get a claim on
+	}
+}
+
+#	Bout has invalidated, inform affected parties.
+sea_headhunting.0021 = {
+	hidden = yes
+
+	immediate = {
+		# Put your shirts back on.
+		single_combat_clean_shirtlessness_effect = {
+			ATTACKER = scope:actor
+			DEFENDER = scope:recipient
+		}
+		# Inform both parties that the duel has invalidated.
+		scope:actor = {
+			send_interface_toast = {
+				title = sea_headhunting.0021.trigger_failure.actor
+				left_icon = scope:recipient
+			}
+		}
+		scope:recipient = {
+			send_interface_toast = {
+				title = sea_headhunting.0021.trigger_failure.recipient
+				left_icon = scope:actor
+			}
+		}
+		# Reset scope:actor's cooldowns against scope:recipient.
+		scope:actor = {
+			remove_interaction_cooldown = challenge_to_trial_by_combat_interaction
+			remove_interaction_cooldown_against = {
+				interaction = challenge_to_trial_by_combat_interaction
+				target = scope:recipient
+			}
+		}
+	}
+}
+
+#	Scope:recipient has declined.
+sea_headhunting.0031 = {
+	type = letter_event
+	opening = sea_headhunting.0031.opening
+	desc = sea_headhunting.0031.desc
+	sender = scope:recipient
+
+	option = { name = sea_headhunting.0031.a }
+}
+
+### When both combatants are headhunters ###
+
+##################################################
+# Scope:actor Results
+# by Ewan Cowhig Croft
+# 0041 - 0060
+##################################################
+
+#	Scope:actor has won the bout.
+sea_headhunting.0041 = {
+	type = character_event
+	title = sea_headhunting.0041.t
+	desc = {
+		desc = sea_headhunting.0041.desc.intro
+		desc = sea_headhunting.0041.desc.outro
+	}
+	theme = martial
+	left_portrait = {
+		character = scope:actor
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:recipient
+		animation = shock
+	}
+	override_background = { event_background = terrain_scope }
+
+	trigger = {
+		# Juuuust need to double-check that they're actually alive.
+		is_alive = yes
+	}
+
+	immediate = {
+		# Show duel results from the player's POV.
+		# Sadly, we have to apply some effects here instead of in the initial output event in order to not break tooltips.
+		single_combat_have_slain_kin_effect = {
+			ATTACKER = scope:actor
+			DEFENDER = scope:recipient
+		}
+	}
+
+	# The bout closes.
+	option = {
+		name = sea_headhunting.0041.a
+
+		## Effects: You take their head as a trophy and gain a rank of the headhunter trait
+
+		scope:recipient = { save_scope_as = killed }
+		scope:actor = { save_scope_as = owner }
+
+		headhunted_opinion_effect = { VICTIM = scope:recipient KILLER = scope:actor }
+
+		create_artifact = {
+			name = artifact_human_head_name
+			description = artifact_human_head_description
+
+			creator = scope:actor
+			visuals = human_head
+			type = miscellaneous
+			modifier = artifact_dread_gain_mult_1_modifier
+			save_scope_as = newly_created_artifact
+			#decaying = no
+			history = {
+				actor = scope:killed
+				recipient = scope:owner
+				type = stolen
+			}
+		}
+
+		change_trait_rank = {
+			trait = lifestyle_headhunter
+			rank = 1
+			max = 3
+		}
+
+		# No stress for single-option events.
+		ai_chance = {
+			# AI will always choose single option.
+			base = 100
+		}
+	}
+}
+
+#	Scope:recipient has won the bout.
+sea_headhunting.0111 = {
+	type = character_event
+	title = sea_headhunting.0111.t
+	desc = {
+		desc = sea_headhunting.0111.desc.intro
+		desc = sea_headhunting.0111.desc.opponent_died.recipient_fighting
+		desc = sea_headhunting.0111.desc.outro
+	}
+	theme = martial
+	left_portrait = {
+		character = scope:recipient
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:actor
+		animation = shock
+	}
+	override_background = { event_background = terrain_scope }
+
+	trigger = {
+		# Juuuust need to double-check that they're actually alive.
+		is_alive = yes
+	}
+
+	immediate = {
+		# Sadly, we have to apply some effects here instead of in the initial output event in order to not break tooltips.
+		single_combat_have_slain_kin_effect = {
+			ATTACKER = scope:actor
+			DEFENDER = scope:recipient
+		}
+		# sea_headhunting_consume_imprisonment_reasons_effect = yes
+	}
+
+	# The bout closes.
+	option = {
+		name = sea_headhunting.0111.a
+
+		## Take scope:actor's head as trophy
+
+		scope:actor = { save_scope_as = killed }
+		scope:recipient = { save_scope_as = owner }
+
+		headhunted_opinion_effect = { VICTIM = scope:actor KILLER = scope:recipient }
+
+		create_artifact = {
+			name = artifact_human_head_name
+			description = artifact_human_head_description
+
+			creator = scope:owner
+			visuals = human_head
+			type = miscellaneous
+			modifier = artifact_dread_gain_mult_1_modifier
+			save_scope_as = newly_created_artifact
+			#decaying = no
+			history = {
+				actor = scope:killed
+				recipient = scope:owner
+				type = stolen
+			}
+		}
+
+		change_trait_rank = {
+			trait = lifestyle_headhunter
+			rank = 1
+			max = 3
+		}
+
+		# No stress for single-option events.
+		ai_chance = {
+			# AI will always choose single option.
+			base = 100
+		}
+	}
+
+	option = {
+		name = sea_headhunting.0111.b
+
+		## Don't take scope:actor's head as trophy
+
+		# No stress for single-option events.
+		ai_chance = {
+			# AI will always choose single option.
+			base = 100
+		}
+	}
+}
+
+### When recipient is not a headhunter (but still tribal) ###
+
+##################################################
+# Scope:actor Results
+# by Ewan Cowhig Croft
+# 0241 - 0260
+##################################################
+
+#	Scope:actor has lost the bout.
+sea_headhunting.0251 = {
+	type = character_event
+	title = sea_headhunting.0251.t
+	desc = {
+		desc = sea_headhunting.0251.desc.intro
+		desc = sea_headhunting.0251.desc.opponent_lives.recipient_fighting
+		desc = sea_headhunting.0251.desc.outro
+	}
+	theme = martial
+	left_portrait = {
+		character = scope:actor
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:recipient
+		animation = personality_bold
+	}
+	override_background = { event_background = terrain_scope }
+
+	trigger = {
+		# Juuuust need to double-check that they're actually alive.
+		is_alive = yes
+	}
+
+	immediate = {
+		# Show duel results from the player's POV.
+		show_as_tooltip = {
+			# sea_headhunting_consume_imprisonment_reasons_effect = yes
+			single_combat_have_slain_kin_effect = {
+				ATTACKER = scope:actor
+				DEFENDER = scope:recipient
+			}
+		}
+	}
+
+	# The bout closes.
+	option = {
+		name = sea_headhunting.0251.a
+
+		## Winner decides what to do with you
+
+		# No stress for single-option events.
+		ai_chance = {
+			# AI will always choose single option.
+			base = 100
+		}
+	}
+}
+
+##################################################
+# Scope:recipient Results
+# by Ewan Cowhig Croft
+# 0311 - 0330
+##################################################
+
+#	Scope:recipient has won the bout.
+sea_headhunting.0311 = {
+	type = character_event
+	title = sea_headhunting.0311.t
+	desc = {
+		desc = sea_headhunting.0311.desc.intro
+		desc = sea_headhunting.0311.desc.opponent_lives.recipient_fighting
+		desc = sea_headhunting.0311.desc.outro
+	}
+	theme = martial
+	left_portrait = {
+		character = scope:recipient
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:actor
+		animation = shock
+	}
+	override_background = { event_background = terrain_scope }
+
+	trigger = {
+		# Juuuust need to double-check that they're actually alive.
+		is_alive = yes
+	}
+
+	immediate = {
+		# Show duel results from the player's POV.
+		if = {
+			limit = {
+				scope:actor = { is_alive = yes }
+			}
+		}
+		# Sadly, we have to apply some effects here instead of in the initial output event in order to not break tooltips.
+		single_combat_have_slain_kin_effect = {
+			ATTACKER = scope:actor
+			DEFENDER = scope:recipient
+		}
+		# sea_headhunting_consume_imprisonment_reasons_effect = yes
+		headhunted_opinion_effect = { VICTIM = scope:actor KILLER = scope:recipient }
+	}
+
+	# The bout closes.
+	## Winner gets to choose what to do
+
+	# fp1_tbc_humiliation_effect = { TBC_LOSER = scope:recipient }
+
+	# $TBC_LOSER$ = { add_stress = massive_stress_gain }
+	# and lose prestige
+
+	#scope:liege = {
+	#	consume_imprisonment_reasons = scope:employee
+	#}
+
+
+	option = { ## Leave the challenger alive, humiliating them
+		name = sea_headhunting.0311.a
+
+		# No stress for single-option events.
+		ai_chance = {
+			base = 100
+		}
+	}
+	option = { ## Kill the challenger
+		name = sea_headhunting.0311.b
+
+
+		# No stress for single-option events.
+		ai_chance = {
+			base = 100
+		}
+	}
+	option = { ## Kill the challenger and take their head as a trophy (Will get headhunter trait)
+		name = sea_headhunting.0311.c
+
+		# No stress for single-option events.
+		ai_chance = {
+			base = 100
+		}
+	}
+}
