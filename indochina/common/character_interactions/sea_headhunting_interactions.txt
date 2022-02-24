@@ -13,10 +13,17 @@ challenge_to_headhunting_duel_interaction = {
 	notification_text = REQUEST_HEADHUNTING_DUEL_TEXT
 
 	is_shown = {
-		# And obviously never against yourself.
 		NOT = { scope:actor = scope:recipient }
-		## Must be rival or nemesis
-		## can_be_combatant_based_on_gender_trigger
+		can_have_headhunting_duel_trigger = yes
+	}
+
+	## Must be rival or nemesis or have committed a crime
+	is_highlighted = {
+		headhunting_duel_is_valid_trigger = yes
+	}
+
+	is_valid_showing_failures_only = {
+		headhunting_duel_is_valid_trigger = yes
 	}
 
 	can_send = {
@@ -28,8 +35,8 @@ challenge_to_headhunting_duel_interaction = {
 		}
 	}
 
-	# cooldown = { years = 5 }
-	# cooldown_against_recipient = { years = 10 }
+	cooldown = { years = 5 }
+	cooldown_against_recipient = { years = 10 }
 
 	on_send = {
 		scope:actor = {
@@ -41,9 +48,17 @@ challenge_to_headhunting_duel_interaction = {
 	}
 
 	on_accept = {
-		# Stopping only briefly to clarify that scope:recipient will be fighting the bout themselves.
+        scope:actor = {
+            trigger_event = { id = sea_headhunting.0002 }
+        }
+
 		scope:recipient = { save_scope_as = champion }
-		scope:actor = { trigger_event = sea_headhunting.0001 }
+		scope:actor = {
+			trigger_event = {
+				id = sea_headhunting.0001
+				days = 1
+			}
+		}
 
 		# Inform of the consequences.
 		## Death - one of you will die.
