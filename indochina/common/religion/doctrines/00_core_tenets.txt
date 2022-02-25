@@ -1,6 +1,6 @@
 ﻿doctrine_core_tenets = {
 	group = "core_tenets"
-	number_of_picks = 4
+	number_of_picks = 3
 
 	############################
 	# Christian Faith Tenets	#
@@ -579,7 +579,7 @@
 			virtues = { calm }
 			sins = { wrathful }
 		}
-		
+
 		character_modifier = {
 			domain_limit = 1
 			ai_war_chance = -0.25
@@ -673,7 +673,7 @@
 			prowess = 4
 			tolerance_advantage_mod = 2
 		}
-		
+
 		parameters = {
 			clergy_can_fight = yes
 		}
@@ -1245,7 +1245,7 @@
 			}
 		}
 
-		
+
 
 		parameters = {
 			meditation_mechanics_active = yes
@@ -1337,7 +1337,7 @@
 				}
 			}
 		}
-		
+
 		parameters = {
 			reincarnation_resistance_to_conversion = yes
 			holy_wars_forbidden = yes
@@ -1349,7 +1349,7 @@
 			virtues = { calm }
 			sins = { wrathful }
 		}
-		
+
 		character_modifier = {
 			domain_limit = 1
 			ai_war_chance = -0.25
@@ -1665,6 +1665,12 @@
 				NOT = { flag:tenet_dharmic_pacifism = { is_in_list = selected_doctrines } }
 			}
 			custom_description = {
+				text = incompatible_tenet_human_sacrifice_trigger
+				NOT = {
+					flag:tenet_headhunting = { is_in_list = selected_doctrines }
+				}
+			}
+			custom_description = {
 				text = incompatible_tenet_gruesome_festivals_trigger
 				NOT = {
 					flag:tenet_gruesome_festivals = { is_in_list = selected_doctrines }
@@ -1673,6 +1679,86 @@
 		}
 
 		parameters = {
+			human_sacrifice_active = yes
+			flower_war_cb_active = yes
+		}
+
+		character_modifier = {
+			ai_war_chance = 1
+			ai_war_cooldown = -0.5
+		}
+	}
+
+	tenet_headhunting = {
+		name = {
+			first_valid = {
+				triggered_desc = {
+					trigger = { religion_tag = dayak_religion }
+					desc = tenet_headhunting_dayak_name
+				}
+				desc = tenet_headhunting_name
+			}
+		}
+
+
+		icon = core_tenet_flagellant
+		piety_cost = {
+			if = {
+				limit = {
+					has_doctrine = pagan_hostility_doctrine
+				}
+				value = faith_tenet_cost_mid
+			}
+			else = {
+				value = faith_tenet_cost_massive
+			}
+
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_headhunting }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+
+		is_shown = {
+			NOR = {
+				religion_tag = christianity_religion
+				religion_tag = judaism_religion
+				religion_tag = islam_religion
+			}
+		}
+
+		can_pick = {
+			custom_description = {
+				text = incompatible_tenet_pacifism_trigger
+				NOT = { flag:tenet_pacifism = { is_in_list = selected_doctrines } }
+			}
+			custom_description = {
+				text = incompatible_tenet_dharmic_pacifism_trigger
+				NOT = { flag:tenet_dharmic_pacifism = { is_in_list = selected_doctrines } }
+			}
+			custom_description = {
+				text = incompatible_tenet_human_sacrifice_trigger
+				NOT = {
+					flag:tenet_human_sacrifice = { is_in_list = selected_doctrines }
+				}
+			}
+			custom_description = {
+				text = incompatible_tenet_gruesome_festivals_trigger
+				NOT = {
+					flag:tenet_gruesome_festivals = { is_in_list = selected_doctrines }
+				}
+			}
+		}
+
+		traits = {
+			virtues = {
+				lifestyle_headhunter
+			}
+		}
+
+		parameters = {
+			headhunting_active = yes
 			human_sacrifice_active = yes
 			flower_war_cb_active = yes
 		}
@@ -1945,7 +2031,7 @@
 			great_holy_wars_active_if_reformed = yes
 			clergy_can_fight = yes
 		}
-		
+
 		character_modifier = {
 			ai_war_chance = 0.5
 			ai_war_cooldown = -0.25
@@ -1968,7 +2054,7 @@
 		piety_cost = {
 			# If you've already got human sacrifice, this is a nice and easy jump.
 			if = {
-				limit = { 
+				limit = {
 					has_doctrine = tenet_human_sacrifice
 				}
 				value = faith_tenet_cost_low
@@ -2023,8 +2109,9 @@
 			}
 			custom_description = {
 				text = incompatible_tenet_human_sacrifice_trigger
-				NOT = {
+				NOR = {
 					flag:tenet_human_sacrifice = { is_in_list = selected_doctrines }
+					flag:tenet_headhunting = { is_in_list = selected_doctrines }
 				}
 			}
 		}

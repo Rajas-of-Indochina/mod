@@ -1,0 +1,452 @@
+﻿
+challenge_to_headhunting_duel_interaction = {
+	icon = icon_combat
+	interface_priority = 30
+	common_interaction = yes
+	category = interaction_category_hostile
+	popup_on_receive = yes
+	pause_on_receive = yes
+	desc = challenge_to_headhunting_duel_interaction_desc
+	highlighted_reason = challenge_to_headhunting_duel_interaction_HIGHLIGHTED
+
+	greeting = negative
+	notification_text = REQUEST_HEADHUNTING_DUEL_TEXT
+
+	is_shown = {
+		NOT = { scope:actor = scope:recipient }
+		can_have_headhunting_duel_trigger = yes
+	}
+
+	## Must be rival or nemesis or have committed a crime
+	is_highlighted = {
+		headhunting_duel_is_valid_trigger = yes
+	}
+
+	is_valid_showing_failures_only = {
+		headhunting_duel_is_valid_trigger = yes
+	}
+
+	can_send = {
+		scope:actor = {
+			custom_description = {
+				text = "character_interactions_hostile_actions_disabled_delay"
+				NOT = { has_character_flag = flag_hostile_actions_disabled_delay }
+			}
+		}
+	}
+
+	cooldown = { years = 5 }
+	cooldown_against_recipient = { years = 10 }
+
+	on_send = {
+		scope:actor = {
+			add_character_flag = {
+				flag = flag_hostile_actions_disabled_delay
+				days = 10
+			}
+		}
+	}
+
+	on_accept = {
+        scope:actor = {
+            trigger_event = { id = sea_headhunting.0002 }
+        }
+
+		scope:recipient = { save_scope_as = champion }
+		scope:actor = {
+			trigger_event = {
+				id = sea_headhunting.0001
+				days = 1
+			}
+		}
+
+		# Inform of the consequences.
+		## Death - one of you will die.
+		show_as_tooltip = {
+			random_list = {
+				50 = {
+					show_chance = no
+					# desc = fp1_tbc_winner_actor
+					desc = headhunting_duel_winner_actor
+
+					# Check to see if this is a duel to the death between those of equal rank.
+					## We check this here in case an *untimely* death causes either participant to go up a rank.
+					## Equal rank: level playing field, maximum honour.
+					if = {
+						limit = { scope:actor.primary_title.tier = scope:recipient.primary_title.tier }
+						scope:actor = { add_prestige = medium_prestige_gain }
+					}
+					## Unequal rank: challenging your betters but clearly it was merited.
+					else_if = {
+						limit = { scope:actor.primary_title.tier < scope:recipient.primary_title.tier }
+						scope:actor = { add_prestige = major_prestige_gain }
+					}
+					else_if = {
+						limit = { scope:actor.primary_title.tier > scope:recipient.primary_title.tier }
+						scope:actor = { add_prestige = minor_prestige_gain }
+					}
+					scope:recipient = {
+						death = {
+							killer = scope:actor
+							death_reason = death_duel
+						}
+					}
+					scope:actor = {
+						add_kinslayer_trait_or_nothing_effect = { VICTIM = scope:recipient }
+					}
+				}
+				50 = {
+					show_chance = no
+					# desc = fp1_tbc_winner_recipient
+					desc = headhunting_duel_winner_recipient
+
+					# Check to see if this is a duel to the death between those of equal rank.
+					## We check this here in case an *untimely* death causes either participant to go up a rank.
+					## Equal rank: level playing field, maximum honour.
+					if = {
+						limit = { scope:recipient.primary_title.tier = scope:actor.primary_title.tier }
+						scope:recipient = { add_prestige = medium_prestige_gain }
+					}
+					## Unequal rank: challenging your betters but clearly it was merited.
+					else_if = {
+						limit = { scope:recipient.primary_title.tier < scope:actor.primary_title.tier }
+						scope:recipient = { add_prestige = major_prestige_gain }
+					}
+					else_if = {
+						limit = { scope:recipient.primary_title.tier > scope:actor.primary_title.tier }
+						scope:recipient = { add_prestige = minor_prestige_gain }
+					}
+					scope:actor = {
+						death = {
+							killer = scope:recipient
+							death_reason = death_duel
+						}
+					}
+					scope:recipient = {
+						add_kinslayer_trait_or_nothing_effect = { VICTIM = scope:actor }
+					}
+				}
+			}
+		}
+		# Clear up hostile actions flag.
+		if = {
+			limit = {
+				scope:actor = { has_character_flag = flag_hostile_actions_disabled_delay }
+			}
+			scope:actor = { remove_character_flag = flag_hostile_actions_disabled_delay }
+		}
+	}
+
+	on_decline = {
+		# Scope:recipient loses some prestige.
+		scope:recipient = { add_prestige = major_prestige_loss }
+		# Scope:actor decline processing.
+		scope:actor = {
+			# Inform them of the declination.
+			trigger_event = sea_headhunting.0031
+			# Cooldown is removed.
+			hidden_effect = { remove_interaction_cooldown = challenge_to_headhunting_duel_interaction }
+			# Clear up hostile actions flag.
+			if = {
+				limit = {
+					has_character_flag = flag_hostile_actions_disabled_delay
+				}
+				remove_character_flag = flag_hostile_actions_disabled_delay
+			}
+		}
+	}
+
+	auto_accept = no
+
+	ai_accept = {
+		base = 0 # Try to make it 0 for most interactions
+
+		# Fightan abilities of both sides.
+		modifier = {
+			add = {
+				value = scope:actor.prowess
+				multiply = -0.5
+			}
+			desc = TBC_PROWESS_ACTOR
+		}
+		modifier = {
+			add = {
+				value = scope:recipient.prowess
+				multiply = 0.5
+			}
+			desc = TBC_PROWESS_RECIPIENT
+		}
+		# Who doesn't like punching a bastard?
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = -1
+			desc = AI_OPINION_REASON
+		}
+		# Weight up for personality values.
+		ai_value_modifier = {
+			who = scope:recipient
+			ai_boldness = {
+				if = {
+					limit = {
+						scope:recipient = {
+							NOT = { ai_boldness = 0 }
+						}
+					}
+					value = 0.5
+				}
+			}
+			ai_honor = {
+				if = {
+					limit = {
+						scope:recipient = {
+							NOT = { ai_honor = 0 }
+						}
+					}
+					value = 0.5
+				}
+			}
+		}
+		# Specific settlement preferences.
+		## Death: disliked by people who feel that disputes can always be settled more amicably.
+		### Craven hates.
+		modifier = {
+			add = -10
+			has_trait = craven
+			desc = TBC_OPINION_DEATH_TRAIT_CRAVEN
+		}
+		### Forgiving hates.
+		modifier = {
+			add = -10
+			has_trait = forgiving
+			desc = TBC_OPINION_DEATH_TRAIT_FORGIVING
+		}
+		### Compassionate dislikes.
+		modifier = {
+			add = -10
+			has_trait = compassionate
+			desc = TBC_OPINION_DEATH_TRAIT_COMPASSIONATE
+		}
+		### Brave loves.
+		modifier = {
+			add = 20
+			has_trait = brave
+			desc = TBC_OPINION_DEATH_TRAIT_BRAVE
+		}
+		### Vengeful loves.
+		modifier = {
+			add = 20
+			has_trait = vengeful
+			desc = TBC_OPINION_DEATH_TRAIT_VENGEFUL
+		}
+		### Callous likes.
+		modifier = {
+			add = 10
+			has_trait = callous
+			desc = TBC_OPINION_DEATH_TRAIT_CALLOUS
+		}
+		### Sadistic loves.
+		modifier = {
+			add = 20
+			has_trait = sadistic
+			desc = TBC_OPINION_DEATH_TRAIT_SADISTIC
+		}
+		# Apply tier differences.
+		## King -> Baron.
+		modifier = {
+			desc = AI_REFUSAL_RANK_DIFFERENCE
+			scope:actor = {
+				tier_difference = {
+					target = scope:recipient
+					value >= 4
+				}
+			}
+			add = 15
+		}
+		## Duke -> Baron.
+		modifier = {
+			desc = AI_REFUSAL_RANK_DIFFERENCE
+			scope:actor = {
+				tier_difference = {
+					target = scope:recipient
+					value = 3
+				}
+			}
+			add = 10
+		}
+		## Count -> Baron.
+		modifier = {
+			desc = AI_REFUSAL_RANK_DIFFERENCE
+			scope:actor = {
+				tier_difference = {
+					target = scope:recipient
+					value = 2
+				}
+			}
+			add = 5
+		}
+		## King <- Baron.
+		modifier = {
+			desc = AI_REFUSAL_RANK_DIFFERENCE
+			scope:actor = {
+				tier_difference = {
+					target = scope:recipient
+					value = -2
+				}
+			}
+			add = -10
+		}
+		## Duke <- Baron.
+		modifier = {
+			desc = AI_REFUSAL_RANK_DIFFERENCE
+			scope:actor = {
+				tier_difference = {
+					target = scope:recipient
+					value = -3
+				}
+			}
+			add = -20
+		}
+		## Count <- Baron.
+		modifier = {
+			desc = AI_REFUSAL_RANK_DIFFERENCE
+			scope:actor = {
+				tier_difference = {
+					target = scope:recipient
+					value <= -4
+				}
+			}
+			add = -30
+		}
+		# Rivalry modifier.
+		modifier = {
+			desc = offer_vassalization_interaction_aibehavior_rival_tt
+			trigger = {
+				scope:recipient = {
+					has_relation_rival = scope:actor
+					NOT = { has_relation_nemesis = scope:actor }
+				}
+			}
+			add = 50
+		}
+		# Nemesis modifier.
+		modifier = {
+			desc = offer_vassalization_interaction_aibehavior_nemesis_tt
+			trigger = {
+				scope:recipient = {
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = 100
+		}
+	}
+
+	# AI
+
+	ai_potential = {
+		basic_can_have_trial_by_combat_trigger = yes
+		NOT = {
+			has_trait = craven
+		}
+		is_imprisoned = no
+		can_start_single_combat_trigger = yes
+	}
+
+	ai_target_quick_trigger = {
+		adult = yes
+	}
+	ai_targets = {
+		ai_recipients = scripted_relations
+	}
+	ai_targets = {
+		ai_recipients = family
+		max = 10
+	}
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		chance = 0.25
+	}
+
+	ai_frequency = 36
+
+	ai_will_do = {
+		base = -50
+
+		# Factor for opinion.
+		modifier = {
+			add = 100
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value <= very_high_negative_opinion
+				}
+			}
+		}
+		modifier = {
+			add = 50
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value <= medium_negative_opinion
+				}
+			}
+		}
+		modifier = {
+			add = -50
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value >= medium_positive_opinion
+				}
+			}
+		}
+		modifier = {
+			add = -100
+			scope:actor = {
+				opinion = {
+					target = scope:recipient
+					value >= very_high_positive_opinion
+				}
+			}
+		}
+		# Don't challenge kinslayer-counting family, unless they're a rival or nemesis.
+		modifier = {
+			scope:actor = {
+				murdering_character_is_kinslaying_in_faith_trigger = {
+					CHARACTER = scope:recipient
+					FAITH = scope:actor.faith
+				}
+			}
+			scope:recipient = {
+				NOR = {
+					has_relation_rival = scope:actor
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = -1000
+		}
+		# Don't challenge your spouse, unless they're your rival or nemesis.
+		modifier = {
+			scope:recipient = {
+				is_spouse_of = scope:actor
+				NOR = {
+					has_relation_rival = scope:actor
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = -1000
+		}
+		# Don't challenge people hopelessly out of your league unless you're really, really not seeing things clearly.
+		modifier = {
+			scope:actor = {
+				prowess_diff = {
+					target = scope:recipient
+					value <= -15
+				}
+				ai_rationality >= high_negative_ai_value
+			}
+			add = -1000
+		}
+	}
+}
