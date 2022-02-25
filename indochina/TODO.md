@@ -8,6 +8,17 @@ Feel free to add suggestions
     low fertility for jayavarman
     revert that hardcore shit or make it a game options
 
+## Reworked Tribals
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2236739620
+
+## Governments+ Nomadic Gov
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2635869016&searchtext=nomadic
+
+## Kurultai Sucession
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2650385452&searchtext=succession
+
+
+
 ########################################################################
 
 ## No Rally Points
