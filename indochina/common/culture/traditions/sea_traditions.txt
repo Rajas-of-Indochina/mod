@@ -9,7 +9,7 @@ tradition_angkorian_architecture = {
 	}
 
 	is_shown = {
-		OR ={
+		OR = {
 			this = culture:khmer
 			any_parent_culture_or_above = {
 				this = culture:khmer
@@ -276,5 +276,59 @@ tradition_warrior_caste = {
 			}
 			multiply = 0.25
 		}
+	}
+}
+
+tradition_migratory = {
+	category = realm
+
+	layers = {
+		0 = steward
+		1 = mediterranean
+		4 = horses.dds
+	}
+
+	can_pick = {
+		scope:character = {
+			has_government = tribal_government
+		}
+	}
+
+	parameters = {
+		enable_migration_cb = yes
+	}
+	county_modifier = {
+		development_growth_factor = -0.10
+	}
+	character_modifier = {
+		levy_size = 0.10
+	}
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_bellicose }
+						any_in_list = { list = traits this = flag:ethos_stoic }
+						any_in_list = { list = traits this = flag:ethos_communal }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 0
 	}
 }
