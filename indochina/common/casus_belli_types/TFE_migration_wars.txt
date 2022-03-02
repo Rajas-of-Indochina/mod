@@ -5,7 +5,6 @@ duchy_migration_cb = {
 	allowed_for_character = {
 		has_government = tribal_government
 		culture = { has_cultural_parameter = enable_migration_cb }
-
 		NOT = {
 			has_character_flag = used_lifetime_migration
 		}
@@ -16,8 +15,7 @@ duchy_migration_cb = {
 		is_independent_ruler = yes
 		trigger_if = {
 			limit = { is_ai = no }
-			# prestige_level >= medium_prestige_level
-			always = yes
+			prestige_level >= medium_prestige_level
 		}
 		trigger_else = { prestige_level >= medium_prestige_level }
 		is_at_war = no
@@ -165,7 +163,10 @@ duchy_migration_cb = {
 			}
 		}
 		prestige = {
-			value = 1000
+			add = {
+				value = 500
+				desc = CB_BASE_COST
+			}
 			# Bellum Justum Perk
 			if = {
 				limit = {
@@ -238,6 +239,7 @@ duchy_migration_cb = {
 			add_character_flag = used_lifetime_migration
 		}
 		on_declared_war = yes
+
 		scope:attacker = {
 			set_variable = {
 				name = culture_province
@@ -277,10 +279,6 @@ duchy_migration_cb = {
 
 	on_victory = {
 		scope:attacker = {
-			every_in_list = {
-				list = target_titles
-				save_scope_as = target_title
-			}
 
 			# Take all titles in the dejure kingdom held by the defender or their vassals
 			create_title_and_vassal_change = {
@@ -288,50 +286,16 @@ duchy_migration_cb = {
 				save_scope_as = change
 				add_claim_on_loss = yes
 			}
-			every_in_list = {
-				list = target_titles
-				# custom_tooltip = CONQUEST_CB_TITLE
-				every_in_de_jure_hierarchy = {
-					continue = {
-						OR = {
-							NOT = {
-								exists = holder
-							}
-							holder = {
-								target_is_liege_or_above = scope:defender
-							}
-						}
-						tier > tier_county
-					}
-					limit = {
-						tier = tier_county
-						exists = holder
-						holder = {
-							OR = {
-								this = scope:defender
-								target_is_liege_or_above = scope:defender
-							}
-						}
-					}
-					add_to_temporary_list = titles_taken
-				}
-			}
-			every_in_list = {
-				list = titles_taken
-				change_title_holder = {
-					holder = scope:attacker
-					change = scope:change
-					take_baronies = yes
-				}
+			setup_invasion_cb = {
+				titles = target_titles
+				attacker = scope:attacker
+				defender = scope:defender
+				change = scope:change
+				take_occupied = yes
 			}
 			resolve_title_and_vassal_change = scope:change
 
 			# Pick a new capital
-			scope:attacker = {
-				capital_county = {
-					save_scope_as = old_capital
-				}
-			}
 			if = {
 				limit = {
 					any_in_list = {
@@ -346,42 +310,12 @@ duchy_migration_cb = {
 					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
 			}
-
-			every_held_title = {
-				limit = {
-					tier = tier_county
-                    NOR = {
-                        duchy = scope:target_title
-                        kingdom = scope:target_title
-                    }
+			else = {
+				random_in_list = {
+					list = titles_taken
+					save_temporary_scope_as = new_capital
+					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
-				save_temporary_scope_as = current_county
-				create_character = {
-					location = scope:current_county.title_province
-					template = old_country_local_warlord_template
-					save_temporary_scope_as = local_warlord
-				}
-				create_title_and_vassal_change = {
-					type = usurped
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				hidden_effect = {
-					scope:current_county = {
-						change_title_holder = {
-							holder = scope:local_warlord
-							change = scope:change
-							take_baronies = yes
-						}
-					}
-				}
-				resolve_title_and_vassal_change = scope:change
-				create_title_and_vassal_change = {
-					type = independency
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				resolve_title_and_vassal_change = scope:change
 			}
 
 			scope:attacker = {
@@ -397,43 +331,25 @@ duchy_migration_cb = {
 				}
 				# custom_tooltip = MIGRATION_TOOLTIP
 				hidden_effect = {
-					while = {
-						count = var:culture_province
-						random_in_list = {
-							list = titles_taken
-							random_in_de_jure_hierarchy = {
-								limit = {
-									tier = tier_county
+					if = {
+						limit = { has_variable = culture_province }
+						while = {
+							count = var:culture_province
+							random_in_list = {
+								list = titles_taken
+								random_in_de_jure_hierarchy = {
+									limit = {
+										tier = tier_county
+										NOT = { culture = scope:attacker.culture }
+									}
+									set_county_culture = scope:attacker.culture
 								}
-								set_county_culture = scope:attacker.culture
 							}
 						}
 					}
-
-					create_title_and_vassal_change = {
-						type = independency
-						save_scope_as = change
-						add_claim_on_loss = no
-					}
-					becomes_independent = { change = scope:change }
-					resolve_title_and_vassal_change = scope:change
 				}
 			}
 		}
-
-		create_title_and_vassal_change = {
-			type = conquest
-			save_scope_as = change
-			add_claim_on_loss = yes
-		}
-		setup_invasion_cb = {
-			titles = target_titles
-			attacker = scope:attacker
-			defender = scope:defender
-			change = scope:change
-			take_occupied = yes
-		}
-		resolve_title_and_vassal_change = scope:change
 
 		# Attacker gets Prestige Experience, Defender loses Prestige, all other participants gain Prestige based on their war contribution.
 		modify_all_participants_fame_values = {
@@ -573,7 +489,6 @@ kingdom_migration_cb = {
 	allowed_for_character = {
 		has_government = tribal_government
 		culture = { has_cultural_parameter = enable_migration_cb }
-
 		NOT = {
 			has_character_flag = used_lifetime_migration
 		}
@@ -584,8 +499,7 @@ kingdom_migration_cb = {
 		is_independent_ruler = yes
 		trigger_if = {
 			limit = { is_ai = no }
-			# prestige_level >= medium_prestige_level
-			always = yes
+			prestige_level >= medium_prestige_level
 		}
 		trigger_else = { prestige_level >= medium_prestige_level }
 		is_at_war = no
@@ -733,7 +647,11 @@ kingdom_migration_cb = {
 			}
 		}
 		prestige = {
-			value = 1000
+			add = {
+				value = 1000
+				desc = CB_BASE_COST
+			}
+
 			# Bellum Justum Perk
 			if = {
 				limit = {
@@ -806,6 +724,7 @@ kingdom_migration_cb = {
 			add_character_flag = used_lifetime_migration
 		}
 		on_declared_war = yes
+
 		scope:attacker = {
 			set_variable = {
 				name = culture_province
@@ -845,6 +764,7 @@ kingdom_migration_cb = {
 
 	on_victory = {
 		scope:attacker = {
+
 			every_in_list = {
 				list = target_titles
 				save_scope_as = target_title
@@ -856,50 +776,16 @@ kingdom_migration_cb = {
 				save_scope_as = change
 				add_claim_on_loss = yes
 			}
-			every_in_list = {
-				list = target_titles
-				# custom_tooltip = CONQUEST_CB_TITLE
-				every_in_de_jure_hierarchy = {
-					continue = {
-						OR = {
-							NOT = {
-								exists = holder
-							}
-							holder = {
-								target_is_liege_or_above = scope:defender
-							}
-						}
-						tier > tier_county
-					}
-					limit = {
-						tier = tier_county
-						exists = holder
-						holder = {
-							OR = {
-								this = scope:defender
-								target_is_liege_or_above = scope:defender
-							}
-						}
-					}
-					add_to_temporary_list = titles_taken
-				}
-			}
-			every_in_list = {
-				list = titles_taken
-				change_title_holder = {
-					holder = scope:attacker
-					change = scope:change
-					take_baronies = yes
-				}
+			setup_invasion_cb = {
+				titles = target_titles
+				attacker = scope:attacker
+				defender = scope:defender
+				change = scope:change
+				take_occupied = yes
 			}
 			resolve_title_and_vassal_change = scope:change
 
 			# Pick a new capital
-			scope:attacker = {
-				capital_county = {
-					save_scope_as = old_capital
-				}
-			}
 			if = {
 				limit = {
 					any_in_list = {
@@ -914,42 +800,12 @@ kingdom_migration_cb = {
 					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
 			}
-
-			every_held_title = {
-				limit = {
-					tier = tier_county
-                    NOR = {
-                        duchy = scope:target_title
-                        kingdom = scope:target_title
-                    }
+			else = {
+				random_in_list = {
+					list = titles_taken
+					save_temporary_scope_as = new_capital
+					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
-				save_temporary_scope_as = current_county
-				create_character = {
-					location = scope:current_county.title_province
-					template = old_country_local_warlord_template
-					save_temporary_scope_as = local_warlord
-				}
-				create_title_and_vassal_change = {
-					type = usurped
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				hidden_effect = {
-					scope:current_county = {
-						change_title_holder = {
-							holder = scope:local_warlord
-							change = scope:change
-							take_baronies = yes
-						}
-					}
-				}
-				resolve_title_and_vassal_change = scope:change
-				create_title_and_vassal_change = {
-					type = independency
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				resolve_title_and_vassal_change = scope:change
 			}
 
 			scope:attacker = {
@@ -965,43 +821,25 @@ kingdom_migration_cb = {
 				}
 				# custom_tooltip = MIGRATION_TOOLTIP
 				hidden_effect = {
-					while = {
-						count = var:culture_province
-						random_in_list = {
-							list = titles_taken
-							random_in_de_jure_hierarchy = {
-								limit = {
-									tier = tier_county
+					if = {
+						limit = { has_variable = culture_province }
+						while = {
+							count = var:culture_province
+							random_in_list = {
+								list = titles_taken
+								random_in_de_jure_hierarchy = {
+									limit = {
+										tier = tier_county
+										NOT = { culture = scope:attacker.culture }
+									}
+									set_county_culture = scope:attacker.culture
 								}
-								set_county_culture = scope:attacker.culture
 							}
 						}
 					}
-
-					create_title_and_vassal_change = {
-						type = independency
-						save_scope_as = change
-						add_claim_on_loss = no
-					}
-					becomes_independent = { change = scope:change }
-					resolve_title_and_vassal_change = scope:change
 				}
 			}
 		}
-
-		create_title_and_vassal_change = {
-			type = conquest
-			save_scope_as = change
-			add_claim_on_loss = yes
-		}
-		setup_invasion_cb = {
-			titles = target_titles
-			attacker = scope:attacker
-			defender = scope:defender
-			change = scope:change
-			take_occupied = yes
-		}
-		resolve_title_and_vassal_change = scope:change
 
 		# Attacker gets Prestige Experience, Defender loses Prestige, all other participants gain Prestige based on their war contribution.
 		modify_all_participants_fame_values = {

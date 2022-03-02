@@ -5,7 +5,7 @@ nomadic_migration_effect = {
         if = {
             limit = {
                 $TITLE_TARGET$ = { is_title_created = no }
-                $TITLE_TARGET$.tier <= $INVADER$.highest_held_title_tier
+                $TITLE_TARGET$.tier = $INVADER$.highest_held_title_tier
             }
             hidden_effect = {
                 create_title_and_vassal_change = {
@@ -44,6 +44,45 @@ nomadic_migration_effect = {
                 }
             }
         }
+
+        # Abandon old titles outside of target
+        every_held_title = {
+            limit = {
+                tier = tier_county
+                NOR = {
+                    duchy = $TITLE_TARGET$
+                    kingdom = $TITLE_TARGET$
+                }
+            }
+            save_temporary_scope_as = current_county
+            create_character = {
+                location = scope:current_county.title_province
+                template = old_country_local_warlord_template
+                save_temporary_scope_as = local_warlord
+            }
+            create_title_and_vassal_change = {
+                type = usurped
+                save_scope_as = change
+                add_claim_on_loss = no
+            }
+            hidden_effect = {
+                scope:current_county = {
+                    change_title_holder = {
+                        holder = scope:local_warlord
+                        change = scope:change
+                        take_baronies = yes
+                    }
+                }
+            }
+            resolve_title_and_vassal_change = scope:change
+            create_title_and_vassal_change = {
+                type = independency
+                save_scope_as = change
+                add_claim_on_loss = no
+            }
+            resolve_title_and_vassal_change = scope:change
+        }
+
         hidden_effect = {
             #All direct vassals are given their independence, unless they hold land within Pannonia.
             every_vassal = {
@@ -84,20 +123,6 @@ nomadic_migration_effect = {
                 }
                 becomes_independent = { change = scope:change }
                 resolve_title_and_vassal_change = scope:change
-            }
-            #Reserve a duchy, preferring the capital, for $INVADER$.
-            if = {
-                limit = { $TITLE_TARGET$.title_capital_county.duchy.holder = $INVADER$ }
-                $TITLE_TARGET$.title_capital_county.duchy = { save_scope_as = reserved_title }
-            }
-            #... Of course, if we can't have the capital for some reason, grab any random duchy in Pannonia.
-            else = {
-                random_held_title = {
-                    limit = {
-                        tier = tier_duchy
-                    }
-                    save_scope_as = reserved_title
-                }
             }
         }
     }
