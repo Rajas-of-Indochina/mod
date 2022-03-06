@@ -802,6 +802,7 @@ offer_tribute = {
     }
 
     #Permanent trib
+    send_options_exclusive = no
     send_option = {
         is_shown = {
             always = yes
@@ -809,13 +810,12 @@ offer_tribute = {
         flag = permanent_trib
         localization = permanent_trib
     }
-
-    # send_options_exclusive = yes
 }
 
 # Demand tribute from recipient
 ruler_offer_tribute_to_recipient = {
     category = interaction_category_diplomacy
+    common_interaction = yes
     use_diplomatic_range = yes
     desc = demand_tribute_interaction_desc
     notification_text = demand_tribute_interaction_notification
@@ -823,12 +823,12 @@ ruler_offer_tribute_to_recipient = {
     popup_on_receive = yes
     pause_on_receive = yes
 
+    can_send_despite_rejection = yes
     ai_min_reply_days = 4
     ai_max_reply_days = 9
 
     is_shown = {
         scope:actor = {
-            is_at_war = no
             NOT = { this = scope:recipient }
         }
         scope:recipient = { # recipient is tributary
@@ -837,6 +837,18 @@ ruler_offer_tribute_to_recipient = {
             }
             is_independent_ruler = yes
             highest_held_title_tier >= tier_county
+        }
+    }
+
+    is_valid_showing_failures_only = {
+        scope:actor = {
+            is_imprisoned = no
+            is_at_war = no
+            NOT = { has_truce = scope:recipient }
+        }
+        scope:recipient = {
+            is_imprisoned = no
+            is_at_war = no
         }
     }
 
@@ -1071,6 +1083,7 @@ ruler_offer_tribute_to_recipient = {
     }
 
     #Permanent trib
+    send_options_exclusive = no
     send_option = {
         is_shown = {
             always = yes
@@ -1095,12 +1108,13 @@ ruler_offer_tribute_to_recipient = {
         base = 100
 
         modifier = { # Will not target a more powerful realm
-            scope:actor.max_military_strength <= scope:recipient.max_military_strength
+            scope:actor.max_military_strength < {
+                value = scope:recipient.max_military_strength
+                multiply = 2
+            }
             add = -1000
         }
     }
-
-    # send_options_exclusive = yes
 }
 
 free_tributary = {
