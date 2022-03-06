@@ -1,36 +1,82 @@
-﻿vassalization_cb = {
-	group = vassalization
+﻿tribal_subjugation_cb = {
+	group = subjugation
 	ai_only_against_neighbors = yes
-	
-	allowed_for_character = {
-		has_perk = forced_vassalage_perk
-		NOT = { has_government = chinese_government }
-	}
 
+	allowed_for_character = {
+		NOT = { has_government = chinese_government }
+		OR = {
+			has_government = tribal_government
+			AND = {
+				faith.religious_head = this
+				faith = { has_doctrine = doctrine_temporal_head }
+			}
+			faith = {
+				has_doctrine = eastern_hostility_doctrine
+			}
+		}
+	}
+	
 	# Root is the title
 	# scope:attacker is the attacker
 	# scope:defender is the defender
-
 	allowed_against_character_display_regardless = {
-		scope:defender = {
-			custom_description = {
-				text = "vassalization_cb_target_too_many_counties"
-				subject = scope:defender
-				NOT = {
-					any_sub_realm_county = {
-						count > vassalization_size_limit
+		scope:attacker = {
+			trigger_if = {
+				limit = {
+					has_government = tribal_government
+					scope:defender = {
+						has_government = tribal_government
 					}
+				}
+				trigger_if = {
+					limit = {
+						culture = {
+							has_cultural_parameter = cb_lower_prestige_level_requirement
+						}
+					}
+					prestige_level >= 1
+				}
+				trigger_else = {
+					prestige_level >= 2
+				}
+			}
+			trigger_else_if = {
+				limit = {
+					faith.religious_head = scope:attacker
+					scope:defender.faith = scope:attacker.faith
+					scope:attacker.faith = { has_doctrine = doctrine_temporal_head }
+				}
+				trigger_if = {
+					limit = {
+						culture = {
+							has_cultural_parameter = cb_lower_piety_level_requirement
+						}
+					}
+					piety_level >= 2
+				}
+				trigger_else = {
+					piety_level >= 3
+				}
+			}
+			trigger_else = {
+				trigger_if = {
+					limit = {
+						culture = {
+							has_cultural_parameter = cb_lower_prestige_level_requirement
+						}
+					}
+					prestige_level >= 3
+				}
+				trigger_else = {
+					prestige_level >= 4
 				}
 			}
 			custom_description = {
-				text = not_a_tributary
-				subject = scope:defender
+				text = has_used_lifetime_subjugation
+				subject = scope:attacker
 				NOT = {
 					scope:attacker = {
-						OR = {
-							is_target_in_variable_list = { name = permanent_tributaries target = scope:defender }
-							is_target_in_variable_list = { name = non_permanent_tributaries target = scope:defender }
-						}
+						has_character_flag = used_lifetime_subjugation
 					}
 				}
 			}
@@ -38,6 +84,32 @@
 	}
 	
 	allowed_against_character = {
+		scope:attacker = {
+			OR = {
+				AND = { # Tribal Subjugation
+					has_government = tribal_government
+					scope:defender = {
+						has_government = tribal_government
+					}
+				}
+				AND = { # Temporal Subjugation
+					faith.religious_head = scope:attacker
+					scope:defender.faith = scope:attacker.faith
+					scope:attacker.faith = { has_doctrine = doctrine_temporal_head }
+				}
+				AND = { # Indian Subjugation
+					faith = {
+						has_doctrine = eastern_hostility_doctrine
+					}
+					scope:defender = {
+						faith = {
+							has_doctrine = eastern_hostility_doctrine
+						}
+					}
+				}
+			}
+		}
+		
 		scope:defender = {
 			is_independent_ruler = yes
 			trigger_if = {
@@ -48,7 +120,7 @@
 					}
 				}
 			}
-			NOR = { # Can't vassalize holy orders or Heads of Faith
+			NOR = { # Can't subjugate holy orders or Heads of Faith
 				any_held_title = {
 					is_holy_order = yes
 				}
@@ -58,9 +130,6 @@
 				}
 			}
 		}
-		
-		scope:attacker.primary_title.tier > scope:defender.primary_title.tier # Must be lower tier
-		
 	}
 	
 	cost = {
@@ -102,85 +171,32 @@
 				}
 			}
 		}
-		prestige = {
+		prestige = tribal_subjugation_cb_prestige_cost
+		piety = {
 			value = 0
-			add = {
-				desc = CB_SIZE_OF_TARGET_REALM_COST
-				scope:defender = {
-					every_sub_realm_county = {
-						add = {
-							value = 125
-						}
-					}
-				}
-			}
 			if = {
 				limit = {
-					scope:defender.primary_title = {
-						tier = tier_kingdom
-					}
+					scope:attacker.faith.religious_head = scope:attacker
+					scope:defender.faith = scope:attacker.faith
 				}
-				multiply = {
-					value = 2
-					desc = CB_VASSALIZING_KING
+				add = {
+					value = 1000
+					desc = CB_BASE_COST
 				}
 			}
 
-			#Innovation Prestige Discounts
+			#Innovation Piety Discounts
 			if = {
 				limit = {
 					scope:attacker = {
 						culture = {
-							has_innovation = innovation_chronicle_writing
-							has_innovation = innovation_land_grants
-							has_innovation = innovation_rightful_ownership
-						}
-					}
-				}
-				multiply = {
-					value = 0.7
-					desc = CB_ATTACKER_INNOVATIONS
-				}
-			}
-			else_if = {
-				limit = {
-					scope:attacker = {
-						culture = {
-							OR = {
-								has_innovation = innovation_chronicle_writing
-								has_innovation = innovation_land_grants
-							}
-							OR = {
-								has_innovation = innovation_land_grants
-								has_innovation = innovation_rightful_ownership
-							}
-							OR = {
-								has_innovation = innovation_chronicle_writing
-								has_innovation = innovation_rightful_ownership
-							}
-						}
-					}
-				}
-				multiply = {
-					value = 0.8
-					desc = CB_ATTACKER_INNOVATIONS
-				}
-			}
-			else_if = {
-				limit = {
-					scope:attacker = {
-						culture = {
-							OR = {
-								has_innovation = innovation_chronicle_writing
-								has_innovation = innovation_land_grants
-								has_innovation = innovation_rightful_ownership
-							}
+							has_innovation = innovation_reconquista
 						}
 					}
 				}
 				multiply = {
 					value = 0.9
-					desc = CB_ATTACKER_INNOVATIONS
+					desc = CB_RECONQUISTA_COST
 				}
 			}
 
@@ -257,33 +273,64 @@
 	}
 	
 	should_invalidate = {
-		OR = {
-			scope:defender = {
-				is_independent_ruler = no
-			}
-			scope:defender.primary_title.tier >= scope:attacker.primary_title.tier
+		scope:defender = {
+			is_independent_ruler = no
 		}
 	}
 	
 	on_declaration = {
 		on_declared_war = yes
+		scope:attacker = {
+			add_character_flag = used_lifetime_subjugation
+		}
 	}	
 	
-	on_invalidated_desc = msg_vassalization_war_invalidated_message
+	on_invalidated_desc = msg_subjugation_war_invalidated_message
 	
-	on_invalidated = {}
+	on_invalidated = {
+		scope:attacker = {
+			if = {
+				limit = {
+					is_alive = yes
+				}
+				remove_character_flag = used_lifetime_subjugation # If the war is invalidated, you should be permitted to try again
+				# Refund their investment.
+				add_prestige_no_experience = tribal_subjugation_cb_prestige_cost
+			}
+		}
+	}
 
 	on_victory_desc = {
 		first_valid = {
 			triggered_desc = {
-				trigger = { scope:attacker = { is_local_player = yes } }
-				desc = vassalization_cb_victory_desc_attacker
+				trigger = { scope:defender.primary_title.tier < scope:attacker.primary_title.tier }
+				desc = {
+					first_valid = {
+						triggered_desc = {
+							trigger = { scope:attacker = { is_local_player = yes } }
+							desc = vassalization_cb_victory_desc_attacker
+						}
+						triggered_desc = {
+							trigger = { scope:defender = { is_local_player = yes } }
+							desc = vassalization_cb_victory_desc_defender
+						}
+						desc = vassalization_cb_victory_desc
+					}
+				}
 			}
-			triggered_desc = {
-				trigger = { scope:defender = { is_local_player = yes } }
-				desc = vassalization_cb_victory_desc_defender
+			desc = {			
+				first_valid = {
+					triggered_desc = {
+						trigger = { scope:attacker = { is_local_player = yes } }
+						desc = tribal_subjugation_cb_victory_desc_equal_tier_attacker
+					}
+					triggered_desc = {
+						trigger = { scope:defender = { is_local_player = yes } }
+						desc = tribal_subjugation_cb_victory_desc_equal_tier_defender
+					}
+					desc = tribal_subjugation_cb_victory_desc_equal_tier
+				}
 			}
-			desc = vassalization_cb_victory_desc
 		}
 	}
 	
@@ -294,26 +341,84 @@
 			save_scope_as = change
 			add_claim_on_loss = no
 		}
-		scope:defender = {
-			change_liege = {
-				liege = scope:attacker
-				change = scope:change
+		
+		if = {
+			limit = {
+				scope:defender.primary_title.tier < scope:attacker.primary_title.tier
 			}
-			resolve_title_and_vassal_change = scope:change
+			scope:defender = {
+				change_liege = {
+					liege = scope:attacker
+					change = scope:change
+				}
+			}
 		}
+		else = {
+			scope:defender = {
+				every_held_title = {
+					if = {
+						limit = {
+							tier = scope:defender.primary_title.tier
+						}
+						change_title_holder = {
+							holder = scope:attacker
+							change = scope:change
+						}
+					}
+					else_if = {
+						limit = {
+							OR = {
+								NOT = { exists = scope:secondary_title }
+								tier > scope:secondary_title.tier
+							}
+						}
+						save_temporary_scope_as = secondary_title
+					}
+				}
+			}
+			
+			scope:defender = {
+				if = {
+					limit = {
+						exists = scope:secondary_title
+					}
+					every_vassal = {
+						limit = {
+							primary_title.tier >= scope:secondary_title.tier
+							NOT = {
+								primary_title.tier = tier_barony
+							}
+						}
+						change_liege = {
+							liege = scope:attacker
+							change = scope:change
+						}
+					}
+				}
+			}
+			
+			scope:defender = {
+				change_liege = {
+					liege = scope:attacker
+					change = scope:change
+				}
+			}
+		}
+		
+		resolve_title_and_vassal_change = scope:change
 		
 		
 		# Prestige level progress for the attacker
 		scope:attacker = {
 			add_prestige_experience = {
-				value = medium_prestige_value
+				value = major_prestige_value
 			}
 		}
 
 		# Prestige loss for the defender
 		scope:defender = {
 			add_prestige = {
-				value = medium_prestige_value
+				value = major_prestige_value
 				multiply = -1.0
 			}
 		}
@@ -340,16 +445,18 @@
 		
 		# Truce
 		add_truce_attacker_victory_effect = yes
-				
+
+		# FP1: note the victory for future memorialisation via stele (if applicable).
+		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
 	}
 
 	on_white_peace_desc = {
 		first_valid = {
 			triggered_desc = {
 				trigger = { scope:defender = { is_local_player = yes } }
-				desc = vassalization_cb_white_peace_desc_defender
+				desc = tribal_subjugation_cb_white_peace_desc_defender
 			}
-			desc = vassalization_cb_white_peace_desc
+			desc = tribal_subjugation_cb_white_peace_desc
 		}
 	}
 	
@@ -358,7 +465,7 @@
 		# Prestige loss for the attacker
 		scope:attacker = {
 			add_prestige = {
-				value = minor_prestige_value
+				value = medium_prestige_value
 				multiply = -1.0
 			}
 			stress_impact = {
@@ -369,7 +476,7 @@
 
 		# Prestige for the attacker's war allies
 		add_from_contribution_attackers = {
-			prestige = minor_prestige_value
+			prestige = medium_prestige_value
 			opinion = {
 				modifier = contributed_in_war
 			}
@@ -377,19 +484,18 @@
 
 		# Prestige for the defender's war allies
 		add_from_contribution_defenders = {
-			prestige = minor_prestige_value
+			prestige = medium_prestige_value
 			opinion = {
 				modifier = contributed_in_war
 			}
 		}
-		
+
 		scope:defender = {
 			stress_impact = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
-
-		# Truce
+		
 		add_truce_white_peace_effect = yes
 	}
 
@@ -397,7 +503,7 @@
 		first_valid = {
 			triggered_desc = {
 				trigger = { scope:defender = { is_local_player = yes } }
-				desc = vassalization_cb_white_peace_desc_defender
+				desc = tribal_subjugation_cb_white_peace_desc_defender
 			}
 			triggered_desc = {
 				trigger = {
@@ -406,9 +512,9 @@
 						has_targeting_faction = yes
 					}
 				}
-				desc = vassalization_cb_defeat_desc_attacker
+				desc = tribal_subjugation_cb_defeat_desc_attacker
 			}
-			desc = vassalization_cb_white_peace_desc
+			desc = tribal_subjugation_cb_white_peace_desc
 		}
 	}
 	
@@ -429,7 +535,7 @@
 		# Prestige for the defender
 		scope:defender = {
 			add_prestige_war_defender_effect = {
-				PRESTIGE_VALUE = medium_prestige_value
+				PRESTIGE_VALUE = major_prestige_value
 			}
 		}
 
@@ -452,11 +558,12 @@
 		scope:attacker = {
 			save_temporary_scope_as = loser
 		}
-
+		
 		# Truce
 		add_truce_attacker_defeat_effect = yes
 		
 		on_lost_aggression_war_discontent_loss = yes
+
 	}
 	
 	on_primary_attacker_death = inherit
@@ -465,9 +572,9 @@
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 	
-	war_name = "VASSALIZATION_WAR_NAME"
-	war_name_base = "VASSALIZATION_WAR_NAME_BASE"
-	cb_name = "VASSALIZATION_CB_NAME"
+	war_name = "SUBJUGATION_WAR_NAME"
+	war_name_base = "SUBJUGATION_WAR_NAME_BASE"
+	cb_name = "SUBJUGATION_CB_NAME"
 	interface_priority = 59
 	
 	ticking_war_score_targets_entire_realm = yes
@@ -477,22 +584,4 @@
 	attacker_wargoal_percentage = 0.8
 	
 	max_ai_diplo_distance_to_title = 500
-
-	ai_score_mult = {
-		value = 1
-		# As a feudal gov never attack tribal for vassalization
-		add = {
-			if = {
-				limit = {
-					scope:attacker = {
-						NOT = { has_government = tribal_government }
-					}
-					scope:defender = {
-							has_government = tribal_government
-					}
-				}
-				add = -1000
-			}
-		}
-	}
 }
