@@ -828,66 +828,6 @@ dharma_attend_vesak_festival = {# Attend Vesak festival
 		base = 50
 	}
 }
-dharma_adopt_mahayana_school = {# Follow a Mahayana Buddhist School
-	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds" 
-	ai_check_interval = 96
-	cooldown = { months = 36 }
-	desc = dharma_adopt_mahayana_school_desc
-	
-	is_shown = {
-		faith = faith:mahayana
-		is_ruler = yes
-		is_landed = yes
-	}
-	
-	is_valid = {
-		has_perk = faithful_perk
-		faith = faith:mahayana
-	}
-	
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_adopt_mahayana_school_tooltip
-		trigger_event = dharma_buddhism.050
-	}
-
-	ai_potential = {
-		piety >= minor_piety_value
-		NOR = {
-			has_character_modifier = buddhist_school_pure_land
-			has_character_modifier = buddhist_school_yogachara
-			has_character_modifier = buddhist_school_madhyamaka
-			has_character_modifier = buddhist_school_chan
-		}
-	}
-
-	ai_will_do = {
-		base = 40
-		modifier = {
-			add = 40
-			has_trait = theologian
-		}
-		modifier = {
-			add = 10
-			has_trait = scholar
-		}
-		modifier = {
-			add = 10
-			has_trait = zealous
-		}
-		modifier = {
-			add = -10
-			has_trait = cynical
-		}
-		modifier = {
-			add = -10
-			has_trait = lazy
-		}
-	}
-}
 #######################################
 # Jain Decisions
 #######################################
@@ -1548,10 +1488,12 @@ dharma_attend_tet_festival = {# Attend Tet festival
 			faith = faith:phat_giao 
 			has_culture	= culture:kinh
 		}
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_tet_month_requirement
-			current_month >= 1
-			current_month <= 2
+			OR = {
+				current_month >= 1
+				current_month <= 2
+			}
 		}
 	}
 	
@@ -1597,10 +1539,12 @@ dharma_attend_kate_festival = {# Attend kate festival
 			faith = faith:chamic_shaivism 
 			has_culture	= culture:cham
 		}
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_kate_month_requirement
-			current_month >= 9
-			current_month <= 10
+			OR = {
+				current_month >= 9
+				current_month <= 10
+			}
 		}
 	}
 	
@@ -1646,10 +1590,11 @@ dharma_attend_choul_festival = {# Attend Choul Chnam Themy festival
 			faith = faith:kambuja_devaraja 
 			has_culture	= culture:khmer
 		}
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_choul_month_requirement
 			current_month = 4
 		}
+
 	}
 	
 	is_valid_showing_failures_only = {
@@ -1694,7 +1639,7 @@ dharma_attend_songkran_festival = {# Attend Songkran festival
 			faith = faith:ban_phi 
 			has_culture	= culture:tai
 		}
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_songkran_month_requirement
 			current_month = 4
 		}
@@ -1706,7 +1651,7 @@ dharma_attend_songkran_festival = {# Attend Songkran festival
 
 	effect = {
 		custom_tooltip = dharma_attend_songkran_festival_tooltip
-		trigger_event = { id = dharma_festivals.581 }
+		trigger_event = { id = dharma_festivals.580 }
 	}
 
 	cost = { 
@@ -1721,19 +1666,4 @@ dharma_attend_songkran_festival = {# Attend Songkran festival
 		base = 50
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
