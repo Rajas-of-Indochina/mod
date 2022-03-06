@@ -332,7 +332,7 @@ select_personal_nat_decision = {# Burmese Gods and Goddesses
 	is_shown = {
 		OR = {
 			faith = faith:ari
-			AND = {
+			And = {
 				faith = faith:theravada
 				culture = { has_cultural_pillar = heritage_burman }
 			}
@@ -527,7 +527,6 @@ dharma_visit_sharada_peeth = {# Go to Sharada Peeth
 		custom_tooltip = dharma_visit_sharada_peeth_tooltip
 		trigger_event = dharma_hinduism.300
 	}
-
 	ai_check_interval = 60
 	
 	ai_potential = {
@@ -553,10 +552,13 @@ dharma_attend_diwali_festival = {# Attend Diwali festival
 	
 	is_valid = {
 		religion = religion:hinduism_religion
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_diwali_month_requirement
-			current_month >= 10
-			current_month <= 11
+			OR = {
+				current_month >= 10
+				current_month <= 11
+			}
+
 		}
 	}
 	
@@ -619,10 +621,13 @@ dharma_attend_navaratri_festival = {# Attend Navaratri festival
 				}
 			}
 		}
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_navaratri_month_requirement
-			current_month >= 9
-			current_month <= 10
+			OR = {
+				current_month >= 9
+				current_month <= 10
+			}
+
 		}
 	}
 	
@@ -645,6 +650,60 @@ dharma_attend_navaratri_festival = {# Attend Navaratri festival
 
 	ai_will_do = {
 		base = 50
+	}
+}
+select_personal_deity_hinduism_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+
+	desc = select_personal_deity_hinduism_decision_desc
+	selection_tooltip = select_personal_deity_hinduism_decision_tooltip
+
+	is_shown = {
+		religion = religion:hinduism_religion
+		faith = {
+			has_doctrine_parameter = select_personal_god_active
+		}
+	}
+
+	is_valid = {
+	}
+
+	is_valid_showing_failures_only = {
+		# Have to at _least_ not be in piety debt.
+		piety >= 0
+	}
+
+	cooldown = { years = 2 }
+
+	effect = {
+		custom_tooltip = select_personal_deity_hinduism_decision_tt
+		trigger_event = dharma_hinduism.500
+	}
+
+	ai_check_interval = 96
+	
+	ai_potential = {
+		piety >= minor_piety_value
+		NOR = {
+			has_character_modifier = bhakti_hinduism_ganga
+			has_character_modifier = bhakti_hinduism_saraswati
+			has_character_modifier = bhakti_hinduism_kali
+			has_character_modifier = bhakti_hinduism_kubera
+			has_character_modifier = bhakti_vaishnavism_lakishmi
+			has_character_modifier = bhakti_vaishnavism_jagganath
+			has_character_modifier = bhakti_vaishnavism_hayagriva
+			has_character_modifier = bhakti_shaivism_parvati
+			has_character_modifier = bhakti_shaivism_virabhadra
+			has_character_modifier = bhakti_shaivism_munishwarar
+			has_character_modifier = bhakti_shaivism_dakshinamoorthy
+			has_character_modifier = bhakti_smartism_ganesha
+			has_character_modifier = bhakti_smartism_vishnu
+			has_character_modifier = bhakti_smartism_shiva
+		}
+	}
+
+	ai_will_do = {
+		base = 100
 	}
 }
 #######################################
@@ -738,10 +797,13 @@ dharma_attend_vesak_festival = {# Attend Vesak festival
 	
 	is_valid = {
 		religion = religion:buddhism_religion
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_vesak_month_requirement
-			current_month >= 4
-			current_month <= 6
+			OR = {
+				current_month >= 4
+				current_month <= 6
+			}
+
 		}
 	}
 	
@@ -764,6 +826,66 @@ dharma_attend_vesak_festival = {# Attend Vesak festival
 
 	ai_will_do = {
 		base = 50
+	}
+}
+dharma_adopt_mahayana_school = {# Follow a Mahayana Buddhist School
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds" 
+	ai_check_interval = 96
+	cooldown = { months = 36 }
+	desc = dharma_adopt_mahayana_school_desc
+	
+	is_shown = {
+		faith = faith:mahayana
+		is_ruler = yes
+		is_landed = yes
+	}
+	
+	is_valid = {
+		has_perk = faithful_perk
+		faith = faith:mahayana
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_adopt_mahayana_school_tooltip
+		trigger_event = dharma_buddhism.050
+	}
+
+	ai_potential = {
+		piety >= minor_piety_value
+		NOR = {
+			has_character_modifier = buddhist_school_pure_land
+			has_character_modifier = buddhist_school_yogachara
+			has_character_modifier = buddhist_school_madhyamaka
+			has_character_modifier = buddhist_school_chan
+		}
+	}
+
+	ai_will_do = {
+		base = 40
+		modifier = {
+			add = 40
+			has_trait = theologian
+		}
+		modifier = {
+			add = 10
+			has_trait = scholar
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
 	}
 }
 #######################################
@@ -802,7 +924,7 @@ initiate_consolamentum_decision = {# Commite Selkhana decision
 					religion = religion:jainism_religion
 				}
 				desc = initiate_consolamentum_decision_desc_sallekhana
-			}
+			}			
 			desc = initiate_consolamentum_decision_desc_alternate
 		}
 	}
@@ -830,7 +952,7 @@ initiate_consolamentum_decision = {# Commite Selkhana decision
 		hidden_effect = {
 			add_piety_level = 1
 		}
-		death = { death_reason = death_suicide }
+		death = { death_reason = death_suicide}
 		show_as_tooltip = {
 			add_piety_level = 1
 		}
@@ -970,10 +1092,12 @@ dharma_attend_paryushana_festival = {# Jain Paryushana festival
 	
 	is_valid = {
 		religion = religion:jainism_religion
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_paryushana_month_requirement
-			current_month >= 8
-			current_month <= 10
+			OR = {
+				current_month >= 8
+				current_month <= 10
+			}
 		}
 	}
 	
@@ -1013,10 +1137,13 @@ dharma_attend_mahavir_kalyanak_festival = {# Jain  Mahavir Janma Kalyanak festiv
 	
 	is_valid = {
 		religion = religion:jainism_religion
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_mahavir_kalyanak_month_requirement
-			current_month >= 3
-			current_month <= 4
+			OR = {
+				current_month >= 3
+				current_month <= 4
+			}
+
 		}
 	}
 	
@@ -1054,7 +1181,7 @@ dharma_attend_losar_festival = {# Attend Tibetan New Year Losar
 	is_shown = {
 		is_ruler = yes
 		is_landed = yes
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_losar_culture_requirement
 			OR = {
 				has_culture = culture:bodpa
@@ -1066,12 +1193,14 @@ dharma_attend_losar_festival = {# Attend Tibetan New Year Losar
 	}
 	
 	is_valid = {
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_losar_month_requirement
-			current_month >= 2
-			current_month <= 3
+			OR = {
+				current_month >= 2
+				current_month <= 3
+			}
 		}
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_losar_culture_requirement
 			OR = {
 				has_culture = culture:bodpa
@@ -1118,10 +1247,12 @@ dharma_attend_pongal_festival = {# Attend Pongal festival
 	
 	is_valid = {
 		has_culture	 = culture:tamil
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_pongal_month_requirement
-			current_month >= 1
-			current_month <= 2
+			OR = {
+				current_month >= 1
+				current_month <= 2
+			}
 		}
 	}
 	
@@ -1173,10 +1304,12 @@ dharma_attend_thaipusam_festival = {# Attend Thaipusam festival
 				has_culture	 = culture:tamil
 			}
 		}
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_thaipusam_month_requirement
-			current_month >= 2
-			current_month <= 3
+			OR = {
+				current_month >= 2
+				current_month <= 3
+			}
 		}
 	}
 	
@@ -1218,10 +1351,13 @@ dharma_attend_ratha_yatra_festival = {# Attend Ratha Yatra festival
 	is_valid = {
 		has_culture	 = culture:oriya
 		religion = religion:hinduism_religion
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_ratha_yatra_month_requirement
-			current_month >= 6
-			current_month <= 7
+			OR = {
+				current_month >= 6
+				current_month <= 7
+			}
+
 		}
 	}
 	
@@ -1260,9 +1396,10 @@ dharma_attend_thingyan_festival = {# Attend Thingyan festival
 	}
 	
 	is_valid = {
-	culture = { has_cultural_pillar = heritage_burman }
-		custom_description = {
+		culture = { has_cultural_pillar = heritage_burman }
+		custom_tooltip = {
 			text = dharma_decision_thingyan_month_requirement
+			
 			current_month = 5
 		}
 	}
@@ -1315,7 +1452,7 @@ dharma_attend_chhath_festival = {# Attend Chhath festival
 				has_culture	 = culture:bihari
 			}
 		}
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_chhath_month_requirement
 			current_month >= 10
 			current_month <= 11
@@ -1359,7 +1496,7 @@ dharma_attend_gangaur_festival = {# Attend Gangaur festival
 	is_valid = {
 		religion = religion:hinduism_religion
 		has_culture	 = culture:rajput
-		custom_description = {
+		custom_tooltip = {
 			text = dharma_decision_gangaur_month_requirement
 			current_month >= 3
 			current_month <= 4
