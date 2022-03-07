@@ -342,7 +342,6 @@ dharma_hinduism.012 = {# Animal sacrifice - How Grand of a ceremony
 	override_background = {
 		event_background = india_shrine
 	}
-	
 	left_portrait = {
 		character = root
 		animation = personality_rational
@@ -409,8 +408,7 @@ dharma_hinduism.013 = {# Sacrifice time
 	override_background = {
 		event_background = india_shrine
 	}
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
-	
+
 	right_portrait = {
 		character = root
 		animation = personality_zealous
@@ -556,7 +554,7 @@ dharma_hinduism.300 = {# Decide to Visit Sharada Peeth
 	option = {# I shall stay
 		name = dharma_hinduism.300.stay
 		hidden_effect = {
-			remove_decision_cooldown = dharma_learning_visit_cooldown_time
+			remove_decision_cooldown = dharma_visit_sharada_peeth
 			remove_character_flag = planning_an_activity
 		}
 	}
@@ -1586,6 +1584,10 @@ dharma_hinduism.316 = {# Returning Home
 			complete_activity = yes
 		}
 	}
+
+	after = {
+		trigger_event = { id = dharma_hinduism.317 days = 10 }
+	}
 }
 dharma_hinduism.317 = {# Misc cleanup
 	hidden = yes	
@@ -1595,6 +1597,272 @@ dharma_hinduism.317 = {# Misc cleanup
 		}
 	}
 }
+#######################################
+# Hindu Bhakti 
+#######################################
+scripted_trigger is_vaguely_tamil_bhakti_trigger = {
+	OR = {
+		has_culture = culture:tamil
+		# We deliberately use the de jure rather than the geographical area to make this at least a *little* more fluid.
+		AND = {
+			is_landed = yes
+			capital_county.kingdom = title:k_tamilakam
+		}
+	}
+}
 
+scripted_trigger is_vaguely_marathi_bhakti_trigger = {
+	OR = {
+		has_culture = culture:marathi
+		# We deliberately use the de jure rather than the geographical area to make this at least a *little* more fluid.
+		AND = {
+			is_landed = yes
+			capital_county.kingdom = title:k_maharastra
+		}
+	}
+}
 
+scripted_trigger is_vaguely_rajput_bhakti_trigger = {
+	OR = {
+		has_culture = culture:rajput
+		# We deliberately use the de jure rather than the geographical area to make this at least a *little* more fluid.
+		AND = {
+			is_landed = yes
+			capital_county.kingdom = title:k_rajputana
+		}
+	}
+}
 
+scripted_trigger is_vaguely_sindhi_bhakti_trigger = {
+	OR = {
+		has_culture = culture:sindhi
+		# We deliberately use the de jure rather than the geographical area to make this at least a *little* more fluid.
+		AND = {
+			is_landed = yes
+			capital_county.kingdom = title:k_sindh
+		}
+	}
+}
+
+dharma_hinduism.500 = {# Hindu Bhakti
+	type = character_event
+	title = dharma_hinduism.500.t
+	desc = {
+		desc = dharma_hinduism.500.desc.start
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					faith = faith:vaishnavism
+				}
+				desc = dharma_hinduism.500.desc.vaishnavism
+			}
+			triggered_desc = {
+				trigger = {
+					faith = faith:shaivism
+				}
+				desc = dharma_hinduism.500.desc.shaivism
+			}
+			triggered_desc = {
+				trigger = {
+					faith = faith:smartism
+				}
+				desc = dharma_hinduism.500.desc.smartism
+			}
+			desc = dharma_hinduism.500.desc.generic
+		}
+		desc = dharma_hinduism.500.desc.end
+	}
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	# 'Generic' Hinduism
+	option = {# Ganga 
+		name = dharma_hinduism.500.ganga
+		trigger = {
+			NOR = {
+				# vaishnavism includes this one
+				faith = faith:shaivism
+				faith = faith:smartism
+				faith = faith:srikula_shaktism
+				faith = faith:kalikula_shaktism
+				has_character_modifier = bhakti_hinduism_ganga
+			}
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_ganga }
+	}
+	option = {# Saraswati
+		name = dharma_hinduism.500.saraswati
+		trigger = {
+			NOR = {
+				faith = faith:vaishnavism
+				faith = faith:shaivism
+				faith = faith:smartism
+				has_character_modifier = bhakti_hinduism_saraswati
+			}
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_saraswati }
+	}
+	option = {# Kali
+		name = dharma_hinduism.500.kali
+		trigger = {
+			NOR = {
+				faith = faith:vaishnavism
+				faith = faith:shaivism
+				faith = faith:smartism
+				faith = faith:srikula_shaktism
+				has_character_modifier = bhakti_hinduism_kali
+			}
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_kali }
+	}
+	option = {# Kubera
+		name = dharma_hinduism.500.kubera
+		trigger = {
+			NOR = {
+				faith = faith:vaishnavism
+				faith = faith:shaivism
+				faith = faith:srikula_shaktism
+				faith = faith:kalikula_shaktism
+				# smartism includes this one
+				has_character_modifier = bhakti_hinduism_kubera
+			}
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_kubera }
+	}
+	# Vaishnavism
+	option = {# Lakishmi
+		name = dharma_hinduism.500.lakishmi
+		trigger = {
+			OR = {
+				faith = faith:srikula_shaktism
+				faith = faith:vaishnavism
+			}
+			NOT = { has_character_modifier = bhakti_vaishnavism_lakishmi }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_vaishnavism_lakishmi }
+	}
+	option = {# Jagganath
+		name = dharma_hinduism.500.jagganath
+		trigger = {
+			faith = faith:vaishnavism
+			NOT = { has_character_modifier = bhakti_vaishnavism_jagganath }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_vaishnavism_jagganath }
+	}
+	option = {# Hayagriva
+		name = dharma_hinduism.500.hayagriva
+		trigger = {
+			faith = faith:vaishnavism
+			NOT = { has_character_modifier = bhakti_vaishnavism_hayagriva }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_vaishnavism_hayagriva }
+	}
+	# Shaivism
+	option = {# Parvati
+		name = dharma_hinduism.500.parvati
+		trigger = {
+			OR = {
+				faith = faith:srikula_shaktism
+				faith = faith:kalikula_shaktism
+				faith = faith:shaivism
+			}
+			NOT = { has_character_modifier = bhakti_shaivism_parvati }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_shaivism_parvati }
+	}
+	option = {# Virabhadra
+		name = dharma_hinduism.500.virabhadra
+		trigger = {
+			faith = faith:shaivism
+			NOT = { has_character_modifier = bhakti_shaivism_virabhadra }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_shaivism_virabhadra }
+	}
+	option = {# Munishwarar
+		name = dharma_hinduism.500.munishwarar
+		trigger = {
+			faith = faith:shaivism
+			NOT = { has_character_modifier = bhakti_shaivism_munishwarar }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_shaivism_munishwarar }
+	}
+	option = {# dakshinamoorthy
+		name = dharma_hinduism.500.dakshinamoorthy
+		trigger = {
+			faith = faith:shaivism
+			NOT = { has_character_modifier = bhakti_shaivism_dakshinamoorthy }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_shaivism_dakshinamoorthy }
+	}
+	# Smartism		
+	option = {# Ganesha
+		name = dharma_hinduism.500.ganesha
+		trigger = {
+			faith = faith:smartism
+			NOT = { has_character_modifier = bhakti_smartism_ganesha }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_smartism_ganesha }
+	}														
+	option = {# Vishnu
+		name = dharma_hinduism.500.vishnu
+		trigger = {
+			faith = faith:smartism
+			NOT = { has_character_modifier = bhakti_smartism_vishnu }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_smartism_vishnu }
+	}
+	option = {# Shiva
+		name = dharma_hinduism.500.shiva
+		trigger = {
+			faith = faith:smartism
+			NOT = { has_character_modifier = bhakti_smartism_shiva }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_smartism_shiva }
+	}
+	# Regional Gods
+	option = {# Murugan - Tamil Deity
+		name = dharma_hinduism.500.murugan
+		trigger = {
+			is_vaguely_tamil_bhakti_trigger = yes
+			NOT = { has_character_modifier = bhakti_hinduism_murugan }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_murugan }
+	}
+	option = {# Varuna - Sindhi Deity
+		name = dharma_hinduism.500.varuna
+		trigger = {
+			is_vaguely_sindhi_bhakti_trigger = yes
+			NOT = { has_character_modifier = bhakti_hinduism_varuna }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_varuna }
+	}
+	option = {# Khandoba - Marathi Deity
+		name = dharma_hinduism.500.khandoba
+		trigger = {
+			is_vaguely_marathi_bhakti_trigger = yes
+			NOT = { has_character_modifier = bhakti_hinduism_khandoba }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_khandoba }
+	}	
+	option = {# Devnarayan - Rajathasni Deity
+		name = dharma_hinduism.500.devnarayan
+		trigger = {
+			is_vaguely_rajput_bhakti_trigger = yes
+			NOT = { has_character_modifier = bhakti_hinduism_devnarayan }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_devnarayan }
+	}					
+	
+	# Opt-Out
+	option = {# Exit decision
+		name = dharma_hinduism.500.optout
+		flavor = dharma_hinduism.500.flavor
+
+		ai_chance = {
+			base = 0
+		}		
+	}
+}
