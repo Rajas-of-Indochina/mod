@@ -1228,6 +1228,30 @@
 			meditation_mechanics_active = yes
 		}
 
+		name = {
+			first_valid = {
+				triggered_desc = {
+					trigger = {
+						religion_tag = zoroastrianism_religion
+					}
+					desc = tenet_zurvanism_name
+				}
+				desc = tenet_asceticism_name
+			}
+		}
+
+		desc = {
+			first_valid = {
+				triggered_desc = {
+					trigger = {
+						religion_tag = zoroastrianism_religion
+					}
+					desc = tenet_zurvanism_desc
+				}
+				desc = tenet_asceticism_desc
+			}
+		}
+
 		traits = {
 			virtues = {
 				temperate
@@ -1417,7 +1441,49 @@
 			monthly_piety_gain_per_happy_powerful_vassal_add = 0.3
 		}
 	}
+	tenet_dhammavicaya = {
+		icon = core_tenet_altar
+			piety_cost = {
+			if = {
+				limit = {
+					OR = {
+						religion_tag = islam_religion
+						religion_tag = judaism_religion
+					}
+				}
+				value = faith_tenet_cost_low
+			}
+			else = {
+				value = faith_tenet_cost_mid
+			}
 
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_literalism }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+
+		is_shown = {
+			religion_tag = buddhism_religion
+		}
+
+		traits = {
+			virtues = {
+				education_learning_3
+				education_learning_4
+				scholar
+			}
+		}
+
+		character_modifier = {
+			monthly_learning_lifestyle_xp_gain_mult = 0.1
+		}
+
+		parameters = {
+			literalist_debate_enabled = yes
+		}
+	}
 	############################
 	# Pagan Faith Tenets  		#
 	############################
@@ -1820,20 +1886,18 @@
 			}
 		}
 
-		is_shown = {
-			OR = {
-				religion_tag = baltic_religion
-				religion_tag = waaqism_religion
-			}
-		}
-
 		parameters = {
 			safer_childbirths_active = yes
 			healthier_children_active = yes
+			piety_from_childbirth_active = yes
 		}
 
 		character_modifier = {
 			fertility = 0.1
+		}
+
+		traits = {
+			virtues = { pregnant }
 		}
 	}
 	tenet_sanctity_of_nature = {
