@@ -1,0 +1,24 @@
+
+fh_start_convert_holding_type_effect = {
+	add_province_modifier = { modifier = fh_government_conversion years = 2 } 
+	#save_scope_as = province
+	trigger_event = {id = fh.10 years = 2}
+}
+
+fh_apply_convert_holding_type_effect = {
+	if = {
+		limit = {has_variable = fh_convert_to_castle}
+		set_holding_type = castle_holding
+	}
+	if = {
+		limit = {has_variable = fh_convert_to_city}
+		set_holding_type = city_holding
+	}
+	if = {
+		limit = {has_variable = fh_convert_to_church}
+		set_holding_type = church_holding
+	}
+	remove_variable = fh_convert_to_castle
+	remove_variable = fh_convert_to_city
+	remove_variable = fh_convert_to_church
+}
