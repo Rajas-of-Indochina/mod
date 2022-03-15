@@ -1,0 +1,142 @@
+﻿title_succession_laws = {
+	tribal_elective_succession_law = {
+		can_have = {
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+			}
+			highest_held_title_tier >= tier_duchy
+		}
+		can_pass = {
+			can_change_title_law_trigger = yes
+		}
+		can_title_have = {
+			can_title_have_law_general_trigger = yes
+		}
+		succession = {
+			order_of_succession = election
+			election_type = tribal_elective
+		}
+		flag = elective_succession_law
+		revoke_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+		pass_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+
+		modifier = {
+			direct_vassal_opinion = 10
+		}
+	}
+
+	#CK2 Eldership Succession
+	eldership_elective_succession_law = {
+		can_have = {
+			OR = {
+				has_government = feudal_government
+				has_government = clan_government
+				has_government = tribal_government
+			}
+			highest_held_title_tier >= tier_duchy
+			faith = {
+				has_doctrine = tenet_ancestor_worship
+			}
+		}
+		can_pass = {
+			can_change_title_law_trigger = yes
+			faith = {
+				has_doctrine = tenet_ancestor_worship
+			}
+		}
+		can_title_have = {
+			can_title_have_law_general_trigger = yes
+		}
+		succession = {
+			order_of_succession = election
+			election_type = eldership_elective
+		}
+		flag = elective_succession_law
+		title_allegiance_opinion = 5
+		revoke_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+		pass_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+	}
+
+	#Ancient Persian/Zoroastrian Elective
+	mahestan_elective_succession_law = {
+		can_have = {
+			OR = {
+				has_government = feudal_government
+				has_government = clan_government
+			}
+			highest_held_title_tier >= tier_kingdom
+			is_independent_ruler = yes
+			any_in_global_list = {
+				variable = unavailable_unique_decisions
+				this = flag:flag_became_saoshyant
+			}
+		}
+		can_pass = {
+			can_change_title_law_trigger = yes
+			has_religion = religion:zoroastrianism_religion
+		}
+		can_title_have = {
+			can_title_have_law_general_trigger = yes
+		}
+		modifier = {
+			vassal_limit = 10
+		}
+		succession = {
+			order_of_succession = election
+			election_type = mahestan_elective
+		}
+		flag = elective_succession_law
+		title_allegiance_opinion = 5
+		revoke_cost = {
+			prestige = change_hre_title_succession_law_prestige_cost
+		}
+		pass_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+	}
+	
+	#Mongol Elective (Kurultai).
+	kurultai_elective_succession_law = {
+		can_have = {
+			highest_held_title_tier >= tier_kingdom
+			culture = {
+				has_innovation = innovation_kurultai
+			}
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+			}
+		}
+		can_pass = {
+			can_change_title_law_trigger = yes
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+			}
+		}
+		can_title_have = {
+			can_title_have_law_general_trigger = yes
+		}
+		succession = {
+			order_of_succession = election
+			election_type = kurultai_elective
+		}
+		flag = elective_succession_law
+		title_allegiance_opinion = 5
+		revoke_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+		pass_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+	}
+}
