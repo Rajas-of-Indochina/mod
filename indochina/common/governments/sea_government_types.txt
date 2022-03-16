@@ -141,6 +141,56 @@ clan_government = {
 	color = hsv{ 0.39 0.93 0.54 }
 }
 
+mandala_government = {
+	primary_holding = castle_holding
+	valid_holdings = { city_holding }
+
+	create_cadet_branches = yes
+	rulers_should_have_dynasty = yes
+	royal_court = yes
+
+	valid_holdings = { castle_holding }
+	required_county_holdings = { castle_holding city_holding church_holding }
+	always_use_patronym = yes
+	dynasty_named_realms = yes
+
+	vassal_contract = { mandala_government_obligations }
+
+	opinion_of_liege = {
+		scope:vassal = {
+			if = {
+				limit = {
+					NOT = {
+						is_allied_to = scope:liege
+					}
+				}
+				if = {
+					limit = {
+						is_powerful_vassal = yes
+					}
+					value = -15
+				}
+			}
+		}
+	}
+	opinion_of_liege_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:vassal = {
+						NOT = {
+							is_allied_to = scope:liege
+						}
+						is_powerful_vassal = yes
+					}
+				}
+				desc = "GOVERNMENT_CLAN_NOT_ALLIED_POWERFUL"
+			}
+		}
+	}
+	color = { 213 217 7 }
+}
+
 tribal_government = {
 	rulers_should_have_dynasty = yes
 	affected_by_development = no
@@ -229,23 +279,22 @@ chinese_government = {
 		domain_limit = -2
 	}
 
-	color = { 244 252 10 }
+	color = { 184 60 7 }
 }
 
 nomadic_government = {
-	primary_holding = tribal_holding
-	affected_by_development = no
 	rulers_should_have_dynasty = yes
-	supply_limit_mult_for_others = -0.8
-	# valid_holdings = { castle_holding city_holding church_holding }
+	affected_by_development = no
 	regiments_prestige_as_gold = yes
-	required_county_holdings = { tribal_holding city_holding church_holding }
+	supply_limit_mult_for_others = -0.8
+	primary_holding = tribal_holding
+	required_county_holdings = { tribal_holding }
 	dynasty_named_realms = yes
+	royal_court = yes
+
 	flag = government_can_raid_rule
 
-	vassal_contract = {
-		nomadic_government_obligations
-	}
+	vassal_contract = { nomadic_government_obligations }
 
 	character_modifier = {
 		development_growth_factor = -0.5
