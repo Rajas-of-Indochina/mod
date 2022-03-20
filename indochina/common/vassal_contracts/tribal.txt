@@ -25,20 +25,91 @@
 	}
 }
 
+nomadic_government_obligations = {
+	obligation_levels = {
+		default = {
+			levies = {
+				value = 0
+				max = 1
+				scope:liege = {
+					add = {
+						value = 0.15
+						multiply = prestige_level
+					}
+				}
+			}
+			tax = {
+				value = 0
+				max = 0.5
+				scope:liege = {
+					add = {
+						value = 0.08
+						multiply = prestige_level
+					}
+				}
+			}
+		}
+	}
+}
+
 chinese_government_obligations = {
 	obligation_levels = {
 		default = {
 			levies = {
-				value = 0.5
+				value = 0.25
 			}
 			tax = {
-				value = 0.25
+				value = 0.5
 			}
 			#contribution_desc = {
 			#	first_valid = {
 			#		desc = "theocracy_government_vassal_contribution_piety_level"
 			#	}
 			#}
+		}
+	}
+}
+
+mandala_government_obligations = {
+	obligation_levels = {
+		default = {
+			levies = 0
+			tax = {
+				scope:liege = {
+					if = {
+						limit = {
+							has_realm_law = crown_authority_0
+						}
+						value = 0.10
+					}
+					else_if = {
+						limit = {
+							has_realm_law = crown_authority_1
+						}
+						value = 0.15
+					}
+					else_if = {
+						limit = {
+							has_realm_law = crown_authority_2
+						}
+						value = 0.20
+					}
+					else_if = {
+						limit = {
+							has_realm_law = crown_authority_3
+						}
+						value = 0.25
+					}
+					else = {
+						value = 0.10
+					}
+				}
+			}
+			tax_contribution_postfix = "clan_government_tax_contribution_postfix"
+			levies_contribution_postfix = "clan_government_levies_contribution_postfix"
+
+			unclamped_contribution_label = "clan_government_unclamped_contribution_label"
+			min_contribution_label = "clan_government_min_contribution_label"
 		}
 	}
 }

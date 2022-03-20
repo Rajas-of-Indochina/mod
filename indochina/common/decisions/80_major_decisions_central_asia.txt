@@ -205,30 +205,30 @@ establish_yamagate_in_samarkand_decision = {
 		is_ruler = yes
 		is_landed = yes
 		faith = faith:manichean
-		faith = { exists = religious_head }
 		NOT = {
 			has_title = title:d_manichean
 		}
-		highest_held_title_tier > 3 #Only Kings and Emperors
+		NOT = { title:c_samarkand.holder = { has_title = title:d_manichean } }
 		NOT = { capital_county = { this = title:c_samarkand } }
 		OR = {
-			title:c_samarkand.holder = { 	
-				any_liege_or_above = { this = root }
+			NOT = {
+				exists = title:d_manichean.holder
 			}
-			title:c_samarkand.holder = { this = root }
-		}
-		NOT = { title:c_samarkand.holder = { has_title = title:d_manichean } }
-		title:d_manichean.holder = {
-			NOT = { 	
-				has_opinion_modifier = { #Not accepting it if you conquered it yourself.
-					target = root
-					modifier = declared_war
-				}
-			}
-			NOT = { 	
-				has_opinion_modifier = { #Not accepting it if you conquered it yourself.
-					target = root
-					modifier = revoked_title
+			AND = {
+				exists = title:d_manichean.holder
+				title:d_manichean.holder = {
+					NOT = { 	
+						has_opinion_modifier = { #Not accepting it if you conquered it yourself.
+							target = root
+							modifier = declared_war
+						}
+					}
+					NOT = { 	
+						has_opinion_modifier = { #Not accepting it if you conquered it yourself.
+							target = root
+							modifier = revoked_title
+						}
+					}
 				}
 			}
 		}
@@ -239,6 +239,20 @@ establish_yamagate_in_samarkand_decision = {
 		is_capable_adult = yes
 		is_imprisoned = no
 		is_independent_ruler = yes
+		highest_held_title_tier > 3 #Only Kings and Emperors
+		custom_tooltip = {
+			text = hof_exists_tt
+			faith = { exists = religious_head }
+		}
+		custom_tooltip = {
+			text = samarkand_held_by_you_or_vassal_tt
+			OR = {
+				title:c_samarkand.holder = { 	
+					any_liege_or_above = { this = root }
+				}
+				title:c_samarkand.holder = { this = root }
+			}
+		}
 	}
 
 	effect = {
