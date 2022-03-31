@@ -156,21 +156,26 @@ tributaries.4 = {
     type = character_event
     hidden = yes
 
-    trigger = {
-        NOR = {
-            is_suzerain = yes
-            has_tributaries = yes
-        }
-    }
-
     immediate = {
         if = {
             limit = {
-                NOT = {
-                    is_suzerain = yes
+                has_permanent_tributaries = yes
+            }
+
+            save_scope_as = suzerain
+            every_in_list = {
+                variable = permanent_tributaries
+
+                limit = { this = scope:suzerain }
+
+                remove_variable = my_suzerain
+                scope:suzerain = {
+                    remove_list_variable = { name = permanent_tributaries target = prev }
+                    remove_list_variable = { name = all_tributaries target = prev }
                 }
             }
         }
+
         if = {
             limit = {
                 NOT = {
@@ -178,24 +183,6 @@ tributaries.4 = {
                 }
             }
             clear_variable_list = permanent_tributaries
-        }
-        else_if = {
-            limit = {
-                NOT = {
-                    has_non_permanent_tributaries = yes
-                }
-            }
-            clear_variable_list = non_permanent_tributaries
-        }
-        else_if = {
-            limit = {
-                NAND = {
-                    has_permanent_tributaries = yes
-                    has_non_permanent_tributaries = yes
-                }
-            }
-            clear_variable_list = permanent_tributaries
-            clear_variable_list = non_permanent_tributaries
         }
     }
 }
