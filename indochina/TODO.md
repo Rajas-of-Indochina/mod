@@ -1,23 +1,23 @@
 ﻿# Roadmap / Todo list
 Feel free to add suggestions
 
+## Music
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2223625878
+
+## Loyalist Faction
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2776145076
+
+## Court Positions
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2754449789
+
+## Community Mods
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2775683808
 
 #### TODO TODO
 
     dali and others in 1066 vassals
     low fertility for jayavarman
     revert that hardcore shit or make it a game options
-
-## Reworked Tribals
-    https://steamcommunity.com/sharedfiles/filedetails/?id=2236739620
-
-## Governments+ Nomadic Gov
-    https://steamcommunity.com/sharedfiles/filedetails/?id=2635869016&searchtext=nomadic
-
-## Kurultai Sucession
-    https://steamcommunity.com/sharedfiles/filedetails/?id=2650385452&searchtext=succession
-
-
 
 ########################################################################
 
