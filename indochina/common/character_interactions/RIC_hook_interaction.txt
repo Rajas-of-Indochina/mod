@@ -1,12 +1,13 @@
 ﻿get_loan_for_hook_interaction = {
     category = interaction_category_diplomacy
 
-    auto_accept = yes # Needs a condition, i.e. characters who want the gold more than the hook should say no
     use_diplomatic_range = yes
 
     desc = get_loan_for_hook_interaction_desc
 
     is_shown = {
+        always = no
+
         scope:recipient = {
             is_ai = yes
         }
@@ -75,12 +76,28 @@
                         #checks if actor has 'golden obligations' perk, get 50 instead.
                         limit = {
                             has_perk = golden_obligations_perk
-                            scope:recipient.gold >= 50
                         }
-                        scope:recipient ={
-                            pay_short_term_gold = {
-                                target = scope:actor
-                                gold = 50
+                        if = {
+                            limit = {
+                                scope:recipient.gold >= 50
+                            }
+                            scope:recipient = {
+                                pay_short_term_gold = {
+                                    target = scope:actor
+                                    gold = 50
+                                }
+                            }
+                        }
+                        else = {
+                            #if not enough money
+                            scope:recipient = {
+                                pay_short_term_gold = {
+                                    target = scope:actor
+                                    gold = {
+                                        value = scope:recipient.gold
+                                        floor = yes
+                                    }
+                                }
                             }
                         }
                     }
@@ -112,6 +129,53 @@
         }
     }
 
+    auto_accept = no
+
+    ai_accept = {
+        base = 0
+
+        modifier = {
+            trigger = {
+                scope:recipient = { has_trait = greedy }
+            }
+            add = -20
+        }
+        modifier = {
+            trigger = {
+                has_trait = generous
+            }
+            add = 20
+        }
+        modifier = {
+            trigger = {
+                is_at_war = yes
+            }
+            add = -20
+        }
+        modifier = {
+            trigger = {
+                exists = scope:recipient.liege
+                scope:recipient.liege = scope:actor
+            }
+            add = 40
+        }
+        modifier = {
+            trigger = {
+                scope:recipient.gold >= 100
+            }
+            desc = get_loan_for_hook_has_more_than_100_gold
+            add = 40
+        }
+        modifier = {
+            trigger = {
+                scope:recipient.gold >= 50
+                scope:recipient.gold < 100
+            }
+            desc = get_loan_for_hook_has_more_than_50_gold
+            add = 20
+        }
+    }
+
     ai_potential = {
         NOT = {
             has_trait = generous
@@ -133,7 +197,7 @@
 
         modifier = { #ai won't use the interaction if they'll get nothing out of it
             factor = 0
-            scope:recipient.gold < 8
+            scope:recipient.gold < 25
         }
 
         modifier = {

@@ -342,7 +342,6 @@ dharma_hinduism.012 = {# Animal sacrifice - How Grand of a ceremony
 	override_background = {
 		event_background = india_shrine
 	}
-	
 	left_portrait = {
 		character = root
 		animation = personality_rational
@@ -409,8 +408,7 @@ dharma_hinduism.013 = {# Sacrifice time
 	override_background = {
 		event_background = india_shrine
 	}
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
-	
+
 	right_portrait = {
 		character = root
 		animation = personality_zealous
@@ -420,7 +418,10 @@ dharma_hinduism.013 = {# Sacrifice time
 		name = dharma_hinduism.013.a
 		if = {
 			limit = {
-				faith = faith:kalikula_shaktism	
+				OR = {
+					faith = faith:kalikula_shaktism	
+					faith = faith:trika_shaivism	
+				}
 			}
 			dharma_vedic_devi_animal_sacrifice_effect = yes
 		}
@@ -439,7 +440,10 @@ dharma_hinduism.013 = {# Sacrifice time
 		name = dharma_hinduism.013.c
 		if = {
 			limit = {
-				faith = faith:kalikula_shaktism	
+				OR = {
+					faith = faith:kalikula_shaktism	
+					faith = faith:trika_shaivism	
+				}
 			}
 			dharma_vedic_lakshmi_animal_sacrifice_effect = yes
 		}
@@ -451,7 +455,10 @@ dharma_hinduism.013 = {# Sacrifice time
 		name = dharma_hinduism.013.d
 		if = {
 			limit = {
-				faith = faith:kalikula_shaktism	
+				OR = {
+					faith = faith:kalikula_shaktism	
+					faith = faith:trika_shaivism	
+				}
 			}
 			dharma_vedic_parvati_animal_sacrifice_effect = yes
 		}
@@ -463,7 +470,10 @@ dharma_hinduism.013 = {# Sacrifice time
 		name = dharma_hinduism.013.e
 		if = {
 			limit = {
-				faith = faith:kalikula_shaktism	
+				OR = {
+					faith = faith:kalikula_shaktism	
+					faith = faith:trika_shaivism	
+				}
 			}
 			dharma_vedic_saraswati_animal_sacrifice_effect = yes
 		}
@@ -532,7 +542,230 @@ dharma_hinduism.014 = {# Misc cleanup
 	}
 }
 #######################################
-# Visiting Sharada Peeth
+#									  #
+#      	  Hindu Philosophy			  #
+#									  #
+#######################################
+dharma_hinduism.050 = {# Picking a Philosophy
+	type = character_event
+	title = dharma_hinduism.050.t
+	desc = dharma_hinduism.050.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	# East Asian Mahayana
+	option = {# Yoga
+		name = dharma_hinduism.050.yoga
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_yoga }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_yoga }
+	}
+	option = {# Samkhya
+		name = dharma_hinduism.050.samkhya
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_samkhya }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_samkhya }
+	}
+	option = {# Vaisheshika
+		name = dharma_hinduism.050.vaisheshika
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_vaisheshika }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_vaisheshika }
+	}
+	option = {# Mimamsa
+		name = dharma_hinduism.050.mimamsa
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_mimamsa }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_mimamsa }
+	}	
+	option = {# Nyaya
+		name = dharma_hinduism.050.nyaya
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_nyaya }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_nyaya }
+	}
+	option = {# Vedanta
+		name = dharma_hinduism.050.vedanta
+		trigger_event = { id = dharma_hinduism.051 }
+	}					
+	# Opt-Out
+	option = {
+		name = dharma_hinduism.050.optout
+		ai_chance = {
+			base = 0
+		}		
+	}
+}
+dharma_hinduism.051 = {# Picking a Philosophy - Vedanta
+	type = character_event
+	title = dharma_hinduism.051.t
+	desc = dharma_hinduism.051.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	option = {# Vishishtadvaita
+		name = dharma_hinduism.051.vishishtadvaita
+		trigger = {
+			faith = { has_doctrine = sampradaya_vaishnavism_doctrine }
+			NOT = { has_trait = hindu_philoosphy_vishishtadvaita }
+			exists = global_var:hindu_philosophy_vishishtadvaita_formed
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_vishishtadvaita }
+	}
+	option = {# Advaita Vedanta
+		name = dharma_hinduism.051.advaita_vedanta
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_advaita_vedanta }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_advaita_vedanta }
+	}
+	option = {# Bhedabheda
+		name = dharma_hinduism.051.bhedabheda
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_bhedabheda }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_bhedabheda }
+	}
+	option = {# Dvaita Vedanta
+		name = dharma_hinduism.051.dvaita_vedanta
+		trigger = {
+			faith = { has_doctrine = sampradaya_vaishnavism_doctrine }
+			NOT = { has_trait = hindu_philoosphy_dvaita_vedanta }
+			exists = global_var:hindu_philosophy_dvaita_vedanta_formed
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_dvaita_vedanta }
+	}	
+	option = {# Another Branch of Philosophy
+		name = dharma_hinduism.051.philosophy
+		trigger_event = { id = dharma_hinduism.050 }
+	}					
+	# Opt-Out
+	option = {
+		name = dharma_hinduism.051.optout
+		ai_chance = {
+			base = 0
+		}		
+	}
+}
+#######################################
+# The Founding of Vedanta branches
+#######################################
+dharma_hinduism.052 = {# Ramanuja creates the Vishishtadvaita 
+	type = character_event
+	title = dharma_hinduism.052.t
+	desc = dharma_hinduism.052.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+	
+	immediate = {
+		set_global_variable = {
+			name = hindu_philosophy_vishishtadvaita_formed
+			value = yes
+		}
+	}
+
+	trigger = {
+		not = {	exists = global_var:hindu_philosophy_vishishtadvaita_formed }
+		current_date > 1050.1.1
+		religion = religion:hinduism_religion
+		is_landed = yes	
+	}
+
+	option = {# Its neat
+		name = dharma_hinduism.052.support
+		add_prestige = miniscule_prestige_gain
+	}
+	option = {# patronize
+		name = dharma_hinduism.052.patronize
+		add_piety = miniscule_piety_value
+	}
+	option = {# Adopt
+		name = dharma_hinduism.052.adopt
+		trigger = {
+			faith = { has_doctrine = sampradaya_vaishnavism_doctrine }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_vishishtadvaita }
+	}
+
+}
+dharma_hinduism.053 = {# Madhvacharya creates the Dvaita Vedanta 
+	type = character_event
+	title = dharma_hinduism.053.t
+	desc = dharma_hinduism.053.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+	
+	immediate = {
+		set_global_variable = {
+			name = hindu_philosophy_dvaita_vedanta_formed
+			value = yes
+		}
+	}
+
+	trigger = {
+		not = {	exists = global_var:hindu_philosophy_dvaita_vedanta_formed }
+		current_date > 1250.1.1
+		religion = religion:hinduism_religion
+		is_landed = yes	
+	}
+
+	option = {# Its neat
+		name = dharma_hinduism.053.support
+		add_prestige = miniscule_prestige_gain
+	}
+	option = {# patronize
+		name = dharma_hinduism.053.patronize
+		add_piety = miniscule_piety_value
+	}
+	option = {# adopt
+		name = dharma_hinduism.053.adopt
+		trigger = {
+			faith = { has_doctrine = sampradaya_vaishnavism_doctrine }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_dvaita_vedanta }
+	}	
+	
+}
+#######################################
+#									  #
+#      Visiting Sharada Peeth		  #
+#									  #
 #######################################
 dharma_hinduism.300 = {# Decide to Visit Sharada Peeth
 	type = character_event
@@ -556,7 +789,7 @@ dharma_hinduism.300 = {# Decide to Visit Sharada Peeth
 	option = {# I shall stay
 		name = dharma_hinduism.300.stay
 		hidden_effect = {
-			remove_decision_cooldown = dharma_learning_visit_cooldown_time
+			remove_decision_cooldown = dharma_visit_sharada_peeth
 			remove_character_flag = planning_an_activity
 		}
 	}
@@ -1344,6 +1577,499 @@ dharma_hinduism.307 = {# Mystical learning
 		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
 	}
 }
+dharma_hinduism.308 = {# Philosophical Debate
+	type = character_event
+	title = dharma_hinduism.308.t
+	desc = dharma_hinduism.308.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_mountain_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_308
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_308
+				value = yes
+			}
+		}
+	}
+
+	option = {# Yoga
+		name = dharma_hinduism.308.yoga
+		trigger = {
+			has_trait = hindu_philoosphy_yoga
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.308.yoga.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.yoga.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.308.yoga.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.yoga.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = {# Samkhya
+		name = dharma_hinduism.308.samkhya
+		trigger = {
+			has_trait = hindu_philoosphy_samkhya
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.308.samkhya.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.samkhya.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.308.samkhya.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.samkhya.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}	
+	option = {# Vaisheshika
+		name = dharma_hinduism.308.vaisheshika
+		trigger = {
+			has_trait = hindu_philoosphy_vaisheshika
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.308.vaisheshika.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.vaisheshika.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.308.vaisheshika.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.vaisheshika.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = {# Mimamsa
+		name = dharma_hinduism.308.mimamsa
+		trigger = {
+			has_trait = hindu_philoosphy_mimamsa
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.308.mimamsa.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.mimamsa.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.308.mimamsa.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.mimamsa.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	option = {# Nyaya
+		name = dharma_hinduism.308.nyaya
+		trigger = {
+			has_trait = hindu_philoosphy_nyaya
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.308.nyaya.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.nyaya.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.308.nyaya.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.nyaya.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	option = {# Vishishtadvaita
+		name = dharma_hinduism.308.vishishtadvaita
+		trigger = {
+			has_trait = hindu_philoosphy_vishishtadvaita
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.308.vishishtadvaita.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.vishishtadvaita.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.308.vishishtadvaita.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.vishishtadvaita.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	option = {# Advaita Vedanta
+		name = dharma_hinduism.308.advaita_vedanta
+		trigger = {
+			has_trait = hindu_philoosphy_advaita_vedanta
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.308.advaita_vedanta.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.advaita_vedanta.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.308.advaita_vedanta.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.advaita_vedanta.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	option = {# Bhedabheda
+		name = dharma_hinduism.308.bhedabheda
+		trigger = {
+			has_trait = hindu_philoosphy_bhedabheda
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.308.bhedabheda.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.bhedabheda.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.308.bhedabheda.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.bhedabheda.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	option = {# Dvaita Vedanta
+		name = dharma_hinduism.308.dvaita_vedanta
+		trigger = {
+			has_trait = hindu_philoosphy_dvaita_vedanta
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_hinduism.308.dvaita_vedanta.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.dvaita_vedanta.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_hinduism.308.dvaita_vedanta.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.308.dvaita_vedanta.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}	
+	option = {# Observe
+		name = dharma_hinduism.308.observe
+		stress_impact = {
+			scholar = minor_stress_impact_gain
+			theologian = minor_stress_impact_gain
+			mystic_1 = minor_stress_impact_gain
+			mystic_2 = minor_stress_impact_gain
+			mystic_3 = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			shy = minor_stress_impact_loss
+			humble = minor_stress_impact_loss
+		}
+	}	
+
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+dharma_hinduism.309 = {# Taking home a book
+	type = character_event
+	title = dharma_hinduism.309.t
+	desc = dharma_hinduism.309.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_mountain_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_309
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_309
+				value = yes
+			}
+		}
+	}
+
+	option = {# Bhagavad-Gita
+		name = dharma_hinduism.309.bhagavad_gita
+		create_artifact_bhagavad_gita_effect = { OWNER = this }
+	}
+	option = {# One of the Vedas
+		name = dharma_hinduism.309.vedas
+		random_list = {
+			25 = {
+				create_artifact_rigveda_effect = { OWNER = this }
+			}
+			25 = {
+				create_artifact_samaveda_effect = { OWNER = this }
+			}
+			25 = {
+				create_artifact_yajurveda_effect = { OWNER = this }
+			}
+			25 = {
+				create_artifact_atharvaeda_effect = { OWNER = this }
+			}						
+		}
+	}
+	option = {# Shiva Purana
+		name = dharma_hinduism.309.shiva_purana
+		create_artifact_shiva_purana_effect = { OWNER = this }
+	}		
+	option = {# Shakti Purana
+		name = dharma_hinduism.309.shakti_purana
+		create_artifact_shakti_purana_effect = { OWNER = this }
+	}
+	option = {# no gift
+		name = dharma_hinduism.309.no_gift
+		add_piety = medium_piety_gain
+	}
+
+
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
 dharma_hinduism.310 = {# Medical learning
 	type = character_event
 	title = dharma_hinduism.310.t
@@ -1444,6 +2170,122 @@ dharma_hinduism.310 = {# Medical learning
 	}
 
 }
+dharma_hinduism.311 = {# Language Learning
+	type = character_event
+	title = dharma_hinduism.311.t
+	desc = dharma_hinduism.311.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_mountain_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_310
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_310
+				value = yes
+			}
+		}
+	}
+
+	option = {# Pali 
+		name = dharma_hinduism.311.pali
+		trigger = { NOT = { knows_language = language_pali } }
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			5 = {
+				desc = dharma_hinduism.311.pali.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.311.pali.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+					learn_language = language_pali
+				}
+			}
+			95 = {
+				desc = dharma_hinduism.311.pali.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.311.pali.failure_title
+					left_icon = root
+					stress_impact = {
+						base = minor_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+	option = {# Sanskrit 
+		trigger = { NOT = { knows_language = language_sanskrit } }
+		name = dharma_hinduism.311.sanskrit
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			5 = {
+				desc = dharma_hinduism.311.sanskrit.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.311.sanskrit.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+					learn_language = language_sanskrit
+				}
+			}
+			95 = {
+				desc = dharma_hinduism.311.sanskrit.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_hinduism.311.sanskrit.failure_title
+					left_icon = root
+					stress_impact = {
+						base = minor_stress_impact_gain
+					}
+				}
+			}
+		}
+	}	
+	option = {# I will study other things
+		name = dharma_hinduism.311.study
+		add_character_modifier = {
+			modifier = focused_student
+			months = 4
+		}
+	}
+
+
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
 dharma_hinduism.312 = {# Learning to love to read
 	type = character_event
 	title = dharma_hinduism.312.t
@@ -1503,6 +2345,153 @@ dharma_hinduism.312 = {# Learning to love to read
 	}
 	after = {
 		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+dharma_hinduism.313 = {# Religious Experince
+	type = character_event
+	title = dharma_hinduism.313.t
+	desc = dharma_hinduism.313.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_mountain_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_hinduism_312
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_hinduism_312
+				value = yes
+			}
+		}
+	}
+
+	option = {
+		name = dharma_hinduism.313.convert
+		set_character_faith_with_conversion = faith:trika_shaivism
+	}
+	option = {
+		name = dharma_hinduism.313.no_convert
+		add_piety = medium_piety_gain
+	}
+
+	after = {
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
+	}
+}
+dharma_hinduism.314 = {# Studying Hindu Philosophy
+	type = character_event
+	title = dharma_hinduism.314.t
+	desc = dharma_hinduism.314.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_temple_interior
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		religion = religion:hinduism_religion
+		NOR = { 
+			has_trait = hindu_philoosphy_yoga 
+			has_trait = hindu_philoosphy_samkhya 
+			has_trait = hindu_philoosphy_vaisheshika 
+			has_trait = hindu_philoosphy_mimamsa 
+			has_trait = hindu_philoosphy_nyaya 
+			has_trait = hindu_philoosphy_vishishtadvaita 
+			has_trait = hindu_philoosphy_advaita_vedanta 
+			has_trait = hindu_philoosphy_bhedabheda 
+			has_trait = hindu_philoosphy_dvaita_vedanta 
+		}
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_buddhism_314
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_buddhism_314
+				value = yes
+			}
+		}
+		play_music_cue = "mx_cue_combat_stinger"
+	}
+
+
+	option = {# Yoga
+		name = dharma_hinduism.314.yoga
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_yoga }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_yoga }
+	}
+	option = {# Samkhya
+		name = dharma_hinduism.314.samkhya
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_samkhya }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_samkhya }
+	}
+	option = {# Vaisheshika
+		name = dharma_hinduism.314.vaisheshika
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_vaisheshika }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_vaisheshika }
+	}
+	option = {# Mimamsa
+		name = dharma_hinduism.314.mimamsa
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_mimamsa }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_mimamsa }
+	}	
+	option = {# Nyaya
+		name = dharma_hinduism.314.nyaya
+		trigger = {
+			faith = { religion_tag = hinduism_religion }
+			NOT = { has_trait = hindu_philoosphy_nyaya }
+		}
+		set_hindu_philosophy_effect = { ASTIKA = hindu_philoosphy_nyaya }
+	}
+	option = {# not for me. 
+		name = dharma_hinduism.314.study
+		stress_impact = {
+			scholar = minor_stress_impact_gain
+			theologian = minor_stress_impact_gain
+			mystic_1 = minor_stress_impact_gain
+			mystic_2 = minor_stress_impact_gain
+			mystic_3 = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			shy = minor_stress_impact_loss
+			humble = minor_stress_impact_loss
+		}
+	}	
+
+	after = {
+		if = {
+			limit = { exists = scope:increase_mystic }
+			clear_saved_scope = increase_mystic
+		}
+		dharma_set_up_next_nalanda_event_effect = { DAYS = 10 }
 	}
 }
 dharma_hinduism.315 = {# Recieving an education
@@ -1586,6 +2575,10 @@ dharma_hinduism.316 = {# Returning Home
 			complete_activity = yes
 		}
 	}
+
+	after = {
+		trigger_event = { id = dharma_hinduism.317 days = 10 }
+	}
 }
 dharma_hinduism.317 = {# Misc cleanup
 	hidden = yes	
@@ -1595,6 +2588,484 @@ dharma_hinduism.317 = {# Misc cleanup
 		}
 	}
 }
+#######################################
+# Hindu Bhakti 
+#######################################
+scripted_trigger is_vaguely_tamil_bhakti_trigger = {
+	OR = {
+		has_culture = culture:tamil
+		# We deliberately use the de jure rather than the geographical area to make this at least a *little* more fluid.
+		AND = {
+			is_landed = yes
+			capital_county.kingdom = title:k_tamilakam
+		}
+	}
+}
+scripted_trigger is_vaguely_marathi_bhakti_trigger = {
+	OR = {
+		has_culture = culture:marathi
+		# We deliberately use the de jure rather than the geographical area to make this at least a *little* more fluid.
+		AND = {
+			is_landed = yes
+			capital_county.kingdom = title:k_maharastra
+		}
+	}
+}
+scripted_trigger is_vaguely_rajput_bhakti_trigger = {
+	OR = {
+		has_culture = culture:rajput
+		# We deliberately use the de jure rather than the geographical area to make this at least a *little* more fluid.
+		AND = {
+			is_landed = yes
+			capital_county.kingdom = title:k_rajputana
+		}
+	}
+}
+scripted_trigger is_vaguely_sindhi_bhakti_trigger = {
+	OR = {
+		has_culture = culture:sindhi
+		# We deliberately use the de jure rather than the geographical area to make this at least a *little* more fluid.
+		AND = {
+			is_landed = yes
+			capital_county.kingdom = title:k_sindh
+		}
+	}
+}
 
+dharma_hinduism.500 = {# Hindu Bhakti part one
+	type = character_event
+	title = dharma_hinduism.500.t
+	desc = {
+		desc = dharma_hinduism.500.desc.start
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					faith = faith:vaishnavism
+				}
+				desc = dharma_hinduism.500.desc.vaishnavism
+			}
+			triggered_desc = {
+				trigger = {
+					faith = faith:shaivism
+				}
+				desc = dharma_hinduism.500.desc.shaivism
+			}
+			triggered_desc = {
+				trigger = {
+					faith = faith:smartism
+				}
+				desc = dharma_hinduism.500.desc.smartism
+			}
+			desc = dharma_hinduism.500.desc.generic
+		}
+		desc = dharma_hinduism.500.desc.end
+	}
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
 
+	# Vaishnavism Deities
+	option = {# Krishna
+		name = dharma_hinduism.500.vaishnavism_krishna
+		trigger = {
+			faith = { has_doctrine = sampradaya_vaishnavism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_krishna }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_krishna }
+	}
+	option = {# Rama
+		name = dharma_hinduism.500.vaishnavism_rama
+		trigger = {
+			faith = { has_doctrine = sampradaya_vaishnavism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_rama }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_rama }
+	}
+	option = {# Varaha
+		name = dharma_hinduism.500.vaishnavism_varaha
+		trigger = {
+			faith = { has_doctrine = sampradaya_vaishnavism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_varaha }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_varaha }
+	}
+	option = {# Narasimha
+		name = dharma_hinduism.500.vaishnavism_narasimha
+		trigger = {
+			faith = { has_doctrine = sampradaya_vaishnavism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_narasimha }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_narasimha }
+	}
+	option = {# Hayagriva
+		name = dharma_hinduism.500.vaishnavism_hayagriva
+		trigger = {
+			faith = { has_doctrine = sampradaya_vaishnavism_doctrine }
+			NOT = { has_character_modifier = bhakti_vaishnavism_hayagriva }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_vaishnavism_hayagriva }
+	}
+	option = {# Jagganath
+		name = dharma_hinduism.500.vaishnavism_jagganath
+		trigger = {
+			faith = { has_doctrine = sampradaya_vaishnavism_doctrine }
+			NOT = { has_character_modifier = bhakti_vaishnavism_jagganath }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_vaishnavism_jagganath }
+	}
+	# Shaivism Deities
+	option = {# Parvati
+		name = dharma_hinduism.500.shaivism_parvati
+		trigger = {
+			faith = { has_doctrine = sampradaya_shaivism_doctrine }
+			NOT = { has_character_modifier = bhakti_shaivism_parvati }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_shaivism_parvati }
+	}
+	option = {# Virabhadra
+		name = dharma_hinduism.500.shaivism_virabhadra
+		trigger = {
+			faith = { has_doctrine = sampradaya_shaivism_doctrine }
+			NOT = { has_character_modifier = bhakti_shaivism_virabhadra }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_shaivism_virabhadra }
+	}
+	option = {# Munishwarar
+		name = dharma_hinduism.500.shaivism_munishwarar
+		trigger = {
+			faith = { has_doctrine = sampradaya_shaivism_doctrine }
+			NOT = { has_character_modifier = bhakti_shaivism_munishwarar }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_shaivism_munishwarar }
+	}
+	option = {# dakshinamoorthy
+		name = dharma_hinduism.500.shaivism_dakshinamoorthy
+		trigger = {
+			faith = { has_doctrine = sampradaya_shaivism_doctrine }
+			NOT = { has_character_modifier = bhakti_shaivism_dakshinamoorthy }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_shaivism_dakshinamoorthy }
+	}
+	# Trika Shaivism Deities
+	option = {# Kali
+		name = dharma_hinduism.500.shaivism_kali
+		trigger = {
+			faith = faith:smartism
+			NOT = { has_character_modifier = bhakti_hinduism_kali }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_kali }
+	}
+	# Shaktism Deities
+	option = {# Durga
+		name = dharma_hinduism.500.shaktism_durga
+		trigger = {
+			faith = { has_doctrine = sampradaya_shaktism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_durga }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_durga }
+	}
+	option = {# Kali
+		name = dharma_hinduism.500.shaktism_kali
+		trigger = {
+			faith = { has_doctrine = sampradaya_shaktism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_kali }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_kali }
+	}
+	option = {# Parvati
+		name = dharma_hinduism.500.shaktism_parvati
+		trigger = {
+			faith = { has_doctrine = sampradaya_shaktism_doctrine }
+			NOT = { has_character_modifier = bhakti_shaivism_parvati }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_shaivism_parvati }
+	}
+	option = {# Lakishmi
+		name = dharma_hinduism.500.shaktism_lakishimi
+		trigger = {
+			faith = { has_doctrine = sampradaya_shaktism_doctrine }
+			NOT = { has_character_modifier = bhakti_vaishnavism_lakishmi }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_vaishnavism_lakishmi }
+	}
+	option = {# Saraswati
+		name = dharma_hinduism.500.shaktism_saraswati
+		trigger = {
+			faith = { has_doctrine = sampradaya_shaktism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_saraswati }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_saraswati }
+	}
+	# Smartism Deities
+	option = {# Ganesha
+		name = dharma_hinduism.500.smartism_ganesha
+		trigger = {
+			faith = { has_doctrine = sampradaya_smartism_doctrine }
+			NOT = { has_character_modifier = bhakti_smartism_ganesha }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_smartism_ganesha }
+	}														
+	option = {# Vishnu
+		name = dharma_hinduism.500.smartism_vishnu
+		trigger = {
+			faith = { has_doctrine = sampradaya_smartism_doctrine }
+			NOT = { has_character_modifier = bhakti_smartism_vishnu }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_smartism_vishnu }
+	}
+	option = {# Shiva
+		name = dharma_hinduism.500.smartism_shiva
+		trigger = {
+			faith = { has_doctrine = sampradaya_smartism_doctrine }
+			NOT = { has_character_modifier = bhakti_smartism_shiva }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_smartism_shiva }
+	}
+	option = {# Shakti
+		name = dharma_hinduism.500.smartism_shakti
+		trigger = {
+			faith = { has_doctrine = sampradaya_smartism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_shakti }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_shakti }
+	}
+	option = {# Surya
+		name = dharma_hinduism.500.smartism_surya
+		trigger = {
+			faith = { has_doctrine = sampradaya_smartism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_surya }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_surya }
+	}		
+	# Ganapatism Deities - Forms of Ganesha
+	option = {# Bala Ganaptai
+		name = dharma_hinduism.500.ganapti_bala
+		trigger = {
+			faith = { has_doctrine = sampradaya_ganapatism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_ganapti_bala }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_ganapti_bala }
+	}
+	option = {# Haridra Ganapati
+		name = dharma_hinduism.500.ganapti_haridra
+		trigger = {
+			faith = { has_doctrine = sampradaya_ganapatism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_ganapti_haridra }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_ganapti_haridra }
+	}
+	option = {# Heramba Ganapati
+		name = dharma_hinduism.500.ganapti_heramba
+		trigger = {
+			faith = { has_doctrine = sampradaya_ganapatism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_ganapti_heramba }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_ganapti_heramba }
+	}
+	option = {# Uchchhishta Ganapati
+		name = dharma_hinduism.500.ganapti_maha
+		trigger = {
+			faith = { has_doctrine = sampradaya_ganapatism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_ganapti_maha }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_ganapti_maha }
+	}	
+	# Kaumaram Deities
+	option = {# Murugan
+		name = dharma_hinduism.500.kaumaram_murugan
+		trigger = {
+			faith = { has_doctrine = sampradaya_kaumaram_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_murugan }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_murugan }
+	}
+	option = {# Shiva
+		name = dharma_hinduism.500.kaumaram_shiva
+		trigger = {
+			faith = { has_doctrine = sampradaya_kaumaram_doctrine }
+			NOT = { has_character_modifier = bhakti_smartism_shiva }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_smartism_shiva }
+	}
+	option = {# Valli
+		name = dharma_hinduism.500.kaumaram_valli
+		trigger = {
+			faith = { has_doctrine = sampradaya_kaumaram_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_valli }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_valli }
+	}
+	option = {# Parvati
+		name = dharma_hinduism.500.kaumaram_parvati
+		trigger = {
+			faith = { has_doctrine = sampradaya_kaumaram_doctrine }
+			NOT = { has_character_modifier = bhakti_shaivism_parvati }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_shaivism_parvati }
+	}
+	# Saura Deities
+	option = {# Surya
+		name = dharma_hinduism.500.saura_surya
+		trigger = {
+			faith = { has_doctrine = sampradaya_saurism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_surya }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_surya }
+	}
+	option = {# Mitra
+		name = dharma_hinduism.500.saura_mitra
+		trigger = {
+			faith = { has_doctrine = sampradaya_saurism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_mitra }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_mitra }
+	}
+	option = {# Sanjna
+		name = dharma_hinduism.500.saura_sanjna
+		trigger = {
+			faith = { has_doctrine = sampradaya_saurism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_sanjna }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_sanjna }
+	}
+	option = {# Ushas
+		name = dharma_hinduism.500.saura_ushas
+		trigger = {
+			faith = { has_doctrine = sampradaya_saurism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_ushas }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_ushas }
+	}
+	# Shrautism / Vedic Deities
+	option = {# Indra
+		name = dharma_hinduism.500.vedic_indra
+		trigger = {
+			faith = { has_doctrine = sampradaya_shrautism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_indra }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_indra }
+	}
+	option = {# Surya
+		name = dharma_hinduism.500.vedic_surya
+		trigger = {
+			faith = { has_doctrine = sampradaya_shrautism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_surya }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_surya }
+	}
+	option = {# Agni
+		name = dharma_hinduism.500.vedic_agni
+		trigger = {
+			faith = { has_doctrine = sampradaya_shrautism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_agni }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_agni }
+	}
+	option = {# Brihaspati
+		name = dharma_hinduism.500.vedic_brihaspati
+		trigger = {
+			faith = { has_doctrine = sampradaya_shrautism_doctrine }
+			NOT = { has_character_modifier = bhakti_hinduism_brihaspati }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_brihaspati }
+	}
+	# Other Gods
+	option = {# Other Gods
+		name = dharma_hinduism.500.other
+		trigger_event = { id = dharma_hinduism.501 }
+	}					
+	# Opt-Out
+	option = {# Exit decision
+		name = dharma_hinduism.500.optout
+		flavor = dharma_hinduism.500.flavor
 
+		ai_chance = {
+			base = 0
+		}		
+	}
+}
+dharma_hinduism.501 = {# Hindu Bhakti part two
+	type = character_event
+	title = dharma_hinduism.501.t
+	desc = dharma_hinduism.501.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	# Regional Gods
+	option = {# Murugan - Tamil Deity
+		name = dharma_hinduism.501.regional_murugan
+		trigger = {
+			is_vaguely_tamil_bhakti_trigger = yes
+			NOT = { has_character_modifier = bhakti_hinduism_murugan }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_murugan }
+	}
+	option = {# Varuna - Sindhi Deity
+		name = dharma_hinduism.501.regional_varuna
+		trigger = {
+			is_vaguely_sindhi_bhakti_trigger = yes
+			NOT = { has_character_modifier = bhakti_hinduism_varuna }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_varuna }
+	}
+	option = {# Khandoba - Marathi Deity
+		name = dharma_hinduism.501.regional_khandoba
+		trigger = {
+			is_vaguely_marathi_bhakti_trigger = yes
+			NOT = { has_character_modifier = bhakti_hinduism_khandoba }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_khandoba }
+	}	
+	option = {# Devnarayan - Rajathasni Deity
+		name = dharma_hinduism.501.regional_devnarayan
+		trigger = {
+			is_vaguely_rajput_bhakti_trigger = yes
+			NOT = { has_character_modifier = bhakti_hinduism_devnarayan }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_hinduism_devnarayan }
+	}					
+	# Other Hindu Deities
+	option = {# Ganga
+		name = dharma_hinduism.501.other_ganga
+		trigger = {
+			faith = faith:smartism
+			NOT = { has_character_modifier = bhakti_smartism_shiva }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_smartism_shiva }
+	}
+	option = {# Kubera
+		name = dharma_hinduism.501.other_kubera
+		trigger = {
+			faith = faith:smartism
+			NOT = { has_character_modifier = bhakti_smartism_shiva }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_smartism_shiva }
+	}	
+	option = {# Buddha
+		name = dharma_hinduism.501.other_buddha
+		trigger = {
+			faith = faith:smartism
+			NOT = { has_character_modifier = bhakti_smartism_shiva }
+		}
+		set_bhakti_effect = { BHAKTI = bhakti_smartism_shiva }
+	}
+	# Opt-Out
+	option = {# Other Gods
+		name = dharma_hinduism.500.other
+		trigger_event = { id = dharma_hinduism.500 }
+	}	
+	# Opt-Out
+	option = {# Exit decision
+		name = dharma_hinduism.500.optout
+		flavor = dharma_hinduism.500.flavor
+
+		ai_chance = {
+			base = 0
+		}		
+	}
+}

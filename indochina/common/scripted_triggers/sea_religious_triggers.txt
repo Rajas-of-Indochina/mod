@@ -1,0 +1,108 @@
+﻿
+can_be_court_chaplain_trigger = {
+	save_temporary_scope_as = court_chaplain_check
+	can_be_councillor_basics_trigger = yes
+	NOT = { has_council_position = councillor_spouse }
+
+	OR = {
+		# faith has transgender as virtue and scope:court_chaplain_check is transgender
+		AND = {
+			has_trait = transgender
+			$COURT_OWNER$.faith = {
+				trait_is_virtue = transgender
+			}
+		}
+		$COURT_OWNER$.faith = { has_allowed_gender_for_clergy = scope:court_chaplain_check }
+	}
+
+	faith = $COURT_OWNER$.faith
+	trigger_if = {
+		limit = {
+			faith = { has_doctrine = doctrine_theocracy_temporal }
+		}
+		OR = {
+			is_ruler = no
+			has_government = theocracy_government
+		}
+	}
+	trigger_if = {
+		limit = {
+			exists = var:escaped_imprisonment_from
+		}
+		NOT = { var:escaped_imprisonment_from = $COURT_OWNER$ }
+	}
+}
+
+can_be_clergy_due_to_gender_trigger = {
+	OR = {
+		AND = {
+			faith = { trait_is_virtue = transgender }
+			has_trait = transgender
+		}
+		AND = {
+			faith = { has_doctrine_parameter = clergy_must_be_female }
+			is_female = yes
+		}
+		AND = {
+			faith = { has_doctrine_parameter = clergy_must_be_male }
+			is_male = yes
+		}
+		faith = { has_doctrine_parameter = clergy_can_be_either_gender }
+	}
+}
+
+headhunting_duel_shown_and_not_invalid_trigger = {
+	# Scope:actor must be able to fight personally.
+	scope:actor = { can_start_single_combat_trigger = yes }
+	# Scope:actor cannot challenge someone they have a ceasefire against.
+	scope:actor = {
+		NOT = { has_truce = scope:recipient }
+	}
+	# Scope:actor *definitely* cannot challenge someone they're at war with.
+	scope:actor = {
+		NOT = { is_at_war_with = scope:recipient }
+	}
+}
+
+headhunting_duel_is_valid_trigger = {
+	# Calc some stuff that might invalidate elsewhere before the bout is sorted.
+	headhunting_duel_shown_and_not_invalid_trigger = yes
+	# Must have an imprisonment reason or be rival
+	OR = {
+		scope:actor = { has_relation_rival = scope:recipient }
+		scope:actor = { has_relation_nemesis = scope:recipient }
+		scope:actor = { has_imprisonment_reason = scope:recipient }
+	}
+	# Scope:recipient must be able to fight
+	scope:recipient = {
+		trigger_if = {
+			limit = {
+				OR = {
+					can_start_single_combat_eligibility_checks_trigger = no
+					NOT = {
+						can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:recipient }
+					}
+				}
+			}
+		}
+	}
+	# Scope:recipient must not be banned from single combat.
+	scope:recipient = {
+		custom_description = {
+			text = "fp1_tbc_recipient_banned_from_combat"
+			can_start_single_combat_banned_checks_trigger = no
+		}
+	}
+	# Neither of the characters can be imprisoned.
+	scope:actor = { is_imprisoned = no }
+	scope:recipient = { is_imprisoned = no }
+}
+
+basic_can_have_headhunting_duel_trigger = {
+	faith = { has_doctrine_parameter = headhunting_active }
+}
+
+can_have_headhunting_duel_trigger = {
+	scope:actor = { basic_can_have_headhunting_duel_trigger = yes }
+	scope:recipient = { basic_can_have_headhunting_duel_trigger = yes }
+}

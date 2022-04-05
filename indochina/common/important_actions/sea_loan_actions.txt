@@ -1,0 +1,125 @@
+﻿
+action_can_get_loan_for_hook = {
+	priority = 1000
+	combine_into_one = yes
+	check_create_action = {
+		# Must be liege, vassal, friend, family, or ally
+		if = {
+			limit = {
+				gold < 0
+			}
+			if = {
+				limit = {
+					exists = liege
+					liege = {
+						root = {
+							is_character_interaction_potentially_accepted = {
+								recipient = prev
+								interaction = get_loan_for_hook_interaction
+							}
+						}
+					}
+				}
+				try_create_important_action = {
+					important_action_type = action_can_get_loan_for_hook
+					actor = root
+					recipient = liege
+				}
+			}
+			every_vassal = {
+				if = {
+					limit = {
+						always = no
+						root = {
+							is_character_interaction_potentially_accepted = {
+								recipient = prev
+								interaction = get_loan_for_hook_interaction
+							}
+						}
+					}
+					try_create_important_action = {
+						important_action_type = action_can_get_loan_for_hook
+						actor = root
+						recipient = this
+					}
+				}
+			}
+			every_close_family_member = {
+				if = {
+					limit = {
+						root = {
+							is_character_interaction_potentially_accepted = {
+								recipient = prev
+								interaction = get_loan_for_hook_interaction
+							}
+						}
+					}
+					try_create_important_action = {
+						important_action_type = action_can_get_loan_for_hook
+						actor = root
+						recipient = this
+					}
+				}
+			}
+			house.every_house_member = {
+				if = {
+					limit = {
+						root = {
+							is_character_interaction_potentially_accepted = {
+								recipient = prev
+								interaction = get_loan_for_hook_interaction
+							}
+						}
+					}
+					try_create_important_action = {
+						important_action_type = action_can_get_loan_for_hook
+						actor = root
+						recipient = this
+					}
+				}
+			}
+			every_councillor = {
+				if = {
+					limit = {
+						root = {
+							is_character_interaction_potentially_accepted = {
+								recipient = prev
+								interaction = get_loan_for_hook_interaction
+							}
+						}
+					}
+					try_create_important_action = {
+						important_action_type = action_can_get_loan_for_hook
+						actor = root
+						recipient = this
+					}
+				}
+			}
+			every_ally = {
+				if = {
+					limit = {
+						root = {
+							is_character_interaction_potentially_accepted = {
+								recipient = prev
+								interaction = get_loan_for_hook_interaction
+							}
+						}
+					}
+					try_create_important_action = {
+						important_action_type = action_can_get_loan_for_hook
+						actor = root
+						recipient = this
+					}
+				}
+			}
+		}
+	}
+
+	effect = {
+		open_interaction_window = {
+			interaction = get_loan_for_hook_interaction
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}

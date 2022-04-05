@@ -73,20 +73,34 @@ tribe_01 = {
 		building_requirement_tribal = yes
 	}
 	can_construct_potential = {
-		always = no	#Tribes are set at game start.
+		always = yes
 	}
 	
 	cost_prestige = expensive_building_tier_3_cost
 	cost_gold = expensive_building_tier_1_cost
 	next_building = tribe_02
 	
-	levy = good_building_levy_tier_2
+	levy = normal_building_levy_tier_3
 	max_garrison = good_building_max_garrison_tier_1
 	garrison_reinforcement_factor = building_garrison_reinforcement_factor_tier_1
 	province_modifier = {
 		monthly_income = poor_building_tax_tier_1
 		fort_level = 1
 	}
+
+	province_terrain_modifier = {
+		parameter = tribal_holding_fort_level_in_jungle_bonus
+		terrain = jungle
+		additional_fort_level = tribal_holding_fort_level_in_jungle_bonus_value
+	}
+
+	province_terrain_modifier = {
+		parameter = coastal_holdings_give_defensive_bonus
+		is_coastal = yes
+		defender_holding_advantage = 2
+	}
+	
+	next_building = tribe_02
 
 	type_icon = "icon_building_longhouses.dds"
 
@@ -169,15 +183,16 @@ tribe_02 = {
 	}
 	can_construct_showing_failures_only = {
 		scope:holder = {
-			culture = { has_innovation = innovation_motte }
+			culture = { has_innovation = innovation_plenary_assemblies }
+			has_government = tribal_government
 		}
 	}
-	
+
 	cost_prestige = expensive_building_tier_3_cost
 	cost_gold = expensive_building_tier_1_cost
 	next_building = tribe_03
 	
-	levy = good_building_levy_tier_4
+	levy = normal_building_levy_tier_5
 	max_garrison = good_building_max_garrison_tier_2
 	garrison_reinforcement_factor = building_garrison_reinforcement_factor_tier_2
 	province_modifier = {
@@ -265,6 +280,7 @@ tribe_03 = {
 	can_construct_showing_failures_only = {
 		scope:holder = {
 			culture = { has_innovation = innovation_battlements }
+			has_government = tribal_government
 		}
 	}
 
@@ -360,6 +376,7 @@ tribe_04 = {
 	can_construct_showing_failures_only = {
 		scope:holder = {
 			culture = { has_innovation = innovation_hoardings }
+			has_government = tribal_government
 		}
 	}
 
@@ -372,6 +389,18 @@ tribe_04 = {
 	province_modifier = {
 		monthly_income = poor_building_tax_tier_7
 		fort_level = 4
+	}
+
+	province_terrain_modifier = {
+		parameter = tribal_holding_fort_level_in_jungle_bonus
+		terrain = jungle
+		additional_fort_level = tribal_holding_fort_level_in_jungle_bonus_value
+	}
+
+	province_terrain_modifier = {
+		parameter = coastal_holdings_give_defensive_bonus
+		is_coastal = yes
+		defender_holding_advantage = 3
 	}
 
 	ai_value = {
@@ -388,7 +417,10 @@ longhouses_01 = {
 	can_construct_potential = {
 		has_building_or_higher = tribe_01
 	}	
-	
+	can_construct_showing_failures_only = {
+		scope:holder = { has_government = tribal_government }
+	}
+
 	cost_prestige = expensive_building_tier_1_cost
 	cost_gold = tribal_building_tier_1_cost
 	
@@ -422,6 +454,7 @@ longhouses_02 = {
 	can_construct_showing_failures_only = {
 		scope:holder = {
 			culture = { has_innovation = innovation_barracks }
+			has_government = tribal_government
 		}
 	}
 	
@@ -453,6 +486,9 @@ war_camps_01 = {
 	can_construct_potential = {
 		has_building_or_higher = tribe_01
 	}
+	can_construct_showing_failures_only = {
+		scope:holder = { has_government = tribal_government }
+	}
 	
 	cost_prestige = expensive_building_tier_1_cost
 	cost_gold = tribal_building_tier_1_cost
@@ -466,6 +502,8 @@ war_camps_01 = {
 		skirmishers_toughness_mult = 0.02
 		heavy_infantry_damage_mult = 0.04
 		heavy_infantry_toughness_mult = 0.02
+		archer_cavalry_damage_mult = 0.04
+		archer_cavalry_toughness_mult = 0.02
 	}
 	
 	next_building = war_camps_02
@@ -489,6 +527,7 @@ war_camps_02 = {
 	can_construct_showing_failures_only = {
 		scope:holder = {
 			culture = { has_innovation = innovation_barracks }
+			has_government = tribal_government
 		}
 	}	
 	
@@ -504,6 +543,8 @@ war_camps_02 = {
 		skirmishers_toughness_mult = 0.04
 		heavy_infantry_damage_mult = 0.08
 		heavy_infantry_toughness_mult = 0.04
+		archer_cavalry_damage_mult = 0.08
+		archer_cavalry_toughness_mult = 0.04
 	}
 	
 	ai_value = {
@@ -521,6 +562,9 @@ palisades_01 = {
 	}
 	can_construct_potential = {
 		has_building_or_higher = tribe_01
+	}
+	can_construct_showing_failures_only = {
+		scope:holder = { has_government = tribal_government }
 	}
 	
 	cost_prestige = expensive_building_tier_1_cost
@@ -561,6 +605,7 @@ palisades_02 = {
 	can_construct_showing_failures_only = {
 		scope:holder = {
 			culture = { has_innovation = innovation_motte }
+			has_government = tribal_government
 		}
 	}	
 	
@@ -597,6 +642,9 @@ market_villages_01 = {
 	can_construct_potential = {
 		has_building_or_higher = tribe_01
 	}	
+	can_construct_showing_failures_only = {
+		scope:holder = { has_government = tribal_government }
+	}
 	
 	cost_prestige = expensive_building_tier_1_cost
 	cost_gold = tribal_building_tier_1_cost
@@ -627,6 +675,7 @@ market_villages_02 = {
 	can_construct_showing_failures_only = {
 		scope:holder = {
 			culture = { has_innovation = innovation_city_planning }
+			has_government = tribal_government
 		}
 	}	
 	

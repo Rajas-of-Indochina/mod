@@ -1,0 +1,334 @@
+﻿
+tradition_angkorian_architecture = {
+	category = realm
+
+	layers = {
+		0 = learning
+		1 = indian
+		4 = angkor.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:khmer
+			any_parent_culture_or_above = {
+				this = culture:khmer
+			}
+		}
+		NOT = { has_cultural_tradition = tradition_parochialism }
+	}
+	can_pick = {
+		OR ={
+			this = culture:khmer
+			any_parent_culture_or_above = {
+				this = culture:khmer
+			}
+		}
+		NOT = { has_cultural_tradition = tradition_parochialism }
+	}
+
+	parameters = {
+		enable_baray_duchy_building = yes
+		more_fervor_on_church_construction = yes
+		prestige_from_temple_construction = yes
+		build_bonuses_on_religious_traits = yes
+	}
+	character_modifier = {
+		ai_zeal = 25
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_communal }
+						any_in_list = { list = traits this = flag:ethos_spiritual }
+						any_in_list = { list = traits this = flag:ethos_stoic }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_spiritual_or_stoic_desc
+				}
+			}
+			if = {
+				limit = {
+					trigger_if = {
+						limit = {
+							scope:character = {
+								is_ai = no
+							}
+						}
+						NOT = {
+							any_ruler = {
+								count >= 5
+								culture = prev
+								primary_title.tier >= tier_county
+								faith = scope:character.faith
+								has_trait = zealous
+							}
+						}
+					}
+					trigger_else = {
+						always = no
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = rulers_with_same_faith_zealous_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				scope:character = {
+					has_government = tribal_government
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
+tradition_tiger_sons = {
+	category = societal
+
+	layers = {
+		0 = martial
+		1 = indian
+		4 = knight.dds
+	}
+
+	is_shown = {
+		has_cultural_pillar = heritage_loloish
+	}
+	can_pick = {
+		culture_not_pacifistic_trigger = yes
+	}
+
+	parameters = {
+		unlock_maa_luojuzi = yes
+		martial_education_more_valued = yes
+		prowess_traits_more_valued = yes
+		blademaster_trait_bonuses = yes
+		craven_and_content_traits_looked_down_upon = yes
+		knights_slightly_more_prone_to_injury = yes
+		can_duel_rivals = yes
+	}
+
+	character_modifier = {
+		knight_limit = 2
+		negate_prowess_penalty_add = 5 # Wounded knights fight better!
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_bellicose }
+						any_in_list = { list = traits this = flag:ethos_stoic }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_or_stoic_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						scope:character = {
+							any_knight = {
+								count >= 6
+								prowess >= 12
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = knights_with_prowess_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					any_in_list = { list = traits this = flag:ethos_bellicose }
+				}
+			}
+			multiply = 0.25
+		}
+	}
+}
+
+tradition_warrior_caste = {
+	category = combat
+
+	layers = {
+		0 = martial
+		1 = indian
+		4 = temple.dds
+	}
+
+	can_pick = {
+
+	}
+
+	parameters = {
+		unlock_maa_khmer = yes
+		prowess_from_religious_traits = yes
+		culture_clergy_can_fight = yes
+	}
+	character_modifier = {
+		prowess_per_piety_level = 1
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_bellicose }
+						any_in_list = { list = traits this = flag:ethos_spiritual }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_or_spiritual_desc
+				}
+			}
+			if = {
+				limit = {
+					trigger_if = {
+						limit = {
+							scope:character = {
+								is_ai = no
+							}
+						}
+						NOT = {
+							scope:character = {
+								save_temporary_scope_as = culture_head_link
+								faith = {
+									any_faith_character = {
+										count >= 15
+										culture = scope:culture_head_link.culture
+										prowess >= 10
+										OR = {
+											is_clergy = yes
+											has_education_learning_trigger = yes
+										}
+									}
+								}
+							}
+						}
+					}
+					trigger_else = {
+						always = no
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = culture_head_faith_clergy_prowess_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOR = {
+					any_in_list = { list = traits this = flag:ethos_bellicose }
+					any_in_list = { list = traits this = flag:ethos_spiritual }
+				}
+			}
+			multiply = 0.25
+		}
+	}
+}
+
+tradition_migratory = {
+	category = realm
+
+	layers = {
+		0 = steward
+		1 = mediterranean
+		4 = horses.dds
+	}
+
+	can_pick = {
+		scope:character = {
+			has_government = tribal_government
+		}
+	}
+
+	parameters = {
+		enable_migration_cb = yes
+	}
+	county_modifier = {
+		development_growth_factor = -0.10
+	}
+	character_modifier = {
+		levy_size = 0.10
+	}
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_bellicose }
+						any_in_list = { list = traits this = flag:ethos_stoic }
+						any_in_list = { list = traits this = flag:ethos_communal }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+	}
+}

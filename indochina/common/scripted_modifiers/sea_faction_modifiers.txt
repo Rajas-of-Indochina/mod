@@ -1,0 +1,105 @@
+﻿
+common_faction_modifiers = {
+	# +/- 40 join weight at -/+100 opinion
+	opinion_modifier = {
+		who = root
+		opinion_target = $FACTION_TARGET$ 
+		multiplier = $OPINION_MULTIPLIER$
+		max = $MAX_OPINION$
+	}
+
+	# for each character.religion != factionTarget.religion add X join-score
+	pluralism_fundamentalism_modifier = {
+		ASTRAY_BASE_VALUE = 25
+		HOSTILE_BASE_VALUE = 50
+		EVIL_BASE_VALUE = 100
+		BASE_FAITH = faith
+		TARGET_FAITH = $FACTION_TARGET$.faith
+	}
+
+	# +25 join chance per sin, -25 join chance per virtue
+	legalism_virtue_and_sin_modifier = {
+		TARGET = $FACTION_TARGET$
+		SCORE_PER_TRAIT = 25
+	}
+
+	# -100 join chance from intimidation, -1000 join chance from terrified. This modifier doesn't apply if a faction is above the power threshold
+	intimidated_from_faction_modifier = {
+		TARGET = $FACTION_TARGET$
+		POWER =  $POWER$
+		THRESHOLD = $THRESHOLD$
+	}
+
+	# Debt: +10 to +60 join chance depending on how far in debt the top liege is
+	liege_debt_modifier = {
+		TARGET = $FACTION_TARGET$
+		SCORE_PER_DEBT_LEVEL = 10
+	}
+
+	# Difficulty Settings
+	modifier = { # Easy
+		add = -50
+		has_game_rule = easy_difficulty
+		$FACTION_TARGET$ = {
+			is_ai = no
+		}
+	}
+	modifier = { # Very Easy
+		add = -150
+		has_game_rule = very_easy_difficulty
+		$FACTION_TARGET$ = {
+			is_ai = no
+		}
+	}
+
+	# Realm Stability Settings
+	modifier = {
+		add = 50
+		has_game_rule = lesser_realm_stability
+	}
+	modifier = {
+		add = -50
+		has_game_rule = higher_realm_stability
+	}
+	modifier = {
+		add = -100
+		has_game_rule = extreme_realm_stability
+	}
+
+	## Modifier for Tibet ##
+	modifier = {
+		add = 50
+		$FACTION_TARGET$ = {
+			any_held_title = { has_variable = tibetan_empire_collapse }
+		}
+	}
+
+	#safe guard to avoid Factions being created when the game starts
+	modifier = {
+		add = -10000
+		years_from_game_start < 1
+		$FACTION_TARGET$.primary_title.tier = tier_duchy
+	}
+
+	modifier = {
+		add = -10000
+		years_from_game_start < 5
+		$FACTION_TARGET$.primary_title.tier = tier_kingdom
+		NOT = {
+			$FACTION_TARGET$ = {
+				any_held_title = { has_variable = tibetan_empire_collapse }
+			}
+		}
+	}
+
+	modifier = {
+		add = -10000
+		years_from_game_start < 10
+		$FACTION_TARGET$.primary_title.tier = tier_empire
+		NOT = {
+			$FACTION_TARGET$ = {
+				any_held_title = { has_variable = tibetan_empire_collapse }
+			}
+		}
+	}
+}

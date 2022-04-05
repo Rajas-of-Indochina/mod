@@ -2,6 +2,7 @@
 	create_cadet_branches = yes
 	rulers_should_have_dynasty = yes
 	dynasty_named_realms = yes
+	royal_court = yes
 
 	fallback = 1
 
@@ -21,8 +22,25 @@
 		council_rights
 		title_revocation_rights
 	}
-	
+
+	flag = government_can_raid_rule
 	color = hsv{ 0.67 1.00 0.78 }
+}
+
+republic_government = {
+	primary_holding = city_holding
+	valid_holdings = { castle_holding }
+	required_county_holdings = { city_holding castle_holding church_holding }
+
+	ai = {
+		arrange_marriage = no
+		use_goals = no
+		use_scripted_guis = no
+		perform_religious_reformation = no
+	}
+
+	vassal_contract = { republic_government_obligations }
+	color = hsv{ 0.00 1.00 0.98 }
 }
 
 # Head of faith will always get this if possible
@@ -59,14 +77,14 @@ theocracy_government = {
 clan_government = {
 	primary_holding = castle_holding
 	valid_holdings = { city_holding }
-	primary_culture_groups = { arabic_group iranian_group }
-	primary_cultures = { turkish }
+	primary_heritages = { heritage_arabic heritage_iranian heritage_turkic }
 
 	fallback = 2
 
 	preferred_religions = { islam_religion }
 	create_cadet_branches = yes
 	rulers_should_have_dynasty = yes
+	royal_court = yes
 
 	valid_holdings = { castle_holding }
 	required_county_holdings = { castle_holding city_holding church_holding }
@@ -121,7 +139,66 @@ clan_government = {
 			}
 		}
 	}
+
+	flag = government_can_raid_rule
 	color = hsv{ 0.39 0.93 0.54 }
+}
+
+mandala_government = {
+	primary_holding = castle_holding
+	valid_holdings = { city_holding }
+
+	create_cadet_branches = yes
+	rulers_should_have_dynasty = yes
+	royal_court = yes
+
+	valid_holdings = { castle_holding }
+	required_county_holdings = { castle_holding city_holding church_holding }
+	always_use_patronym = yes
+	dynasty_named_realms = yes
+
+	vassal_contract = { mandala_government_obligations }
+
+	character_modifier = {
+		domain_limit = -2
+		vassal_limit = 10
+	}
+
+	opinion_of_liege = {
+		scope:vassal = {
+			if = {
+				limit = {
+					NOT = {
+						is_allied_to = scope:liege
+					}
+				}
+				if = {
+					limit = {
+						is_powerful_vassal = yes
+					}
+					value = -15
+				}
+			}
+		}
+	}
+	opinion_of_liege_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:vassal = {
+						NOT = {
+							is_allied_to = scope:liege
+						}
+						is_powerful_vassal = yes
+					}
+				}
+				desc = "GOVERNMENT_CLAN_NOT_ALLIED_POWERFUL"
+			}
+		}
+	}
+
+	flag = government_can_raid_rule
+	color = { 213 217 7 }
 }
 
 tribal_government = {
@@ -131,6 +208,8 @@ tribal_government = {
 	supply_limit_mult_for_others = -0.5
 	primary_holding = tribal_holding
 	required_county_holdings = { tribal_holding }
+	dynasty_named_realms = yes
+	royal_court = yes
 
 	valid_holdings = { castle_holding }
 
@@ -143,12 +222,115 @@ tribal_government = {
 		title_creation_cost_mult = -0.5
 		army_maintenance_mult = -0.5
 
+		feudal_government_vassal_opinion = -10
+		clan_government_vassal_opinion = -10
+		republic_government_vassal_opinion = -10
+
 		ai_war_chance = 0.25
 		monthly_prestige = 0.2
-
-		diplomatic_range_mult = -0.25
 	}
 
 	flag = government_can_raid_rule
 	color = hsv{ 0.02 0.75 0.36 }
+}
+
+# Mercenary will always get this
+mercenary_government = {
+	court_generate_spouses = no
+	court_generate_commanders = 5
+	council = no
+
+	ai = {
+		arrange_marriage = no
+		use_goals = no
+		use_scripted_guis = no
+		perform_religious_reformation = no
+	}
+
+	flag = can_not_be_vassal_or_liege
+	color = hsv{ 0.00 0.00 0.66 }
+}
+
+# Holy order will always get this
+holy_order_government = {
+	court_generate_spouses = no
+	court_generate_commanders = 5
+	council = no
+
+	ai = {
+		arrange_marriage = no
+		use_goals = no
+		use_scripted_guis = no
+		perform_religious_reformation = no
+	}
+
+	flag = can_not_be_vassal_or_liege
+
+	valid_holdings = { castle_holding city_holding }
+	color = hsv{ 0.00 0.00 0.66 }
+}
+
+chinese_government = {
+	rulers_should_have_dynasty = yes
+	royal_court = yes
+
+	primary_holding = castle_holding
+	valid_holdings = { city_holding }
+	required_county_holdings = { castle_holding city_holding church_holding }
+
+	primary_heritages = { heritage_chinese }
+	preferred_religions = { taoism_religion }
+
+	vassal_contract = {
+		chinese_government_obligations
+
+		religious_rights
+		war_declaration_rights
+		council_rights
+		title_revocation_rights
+	}
+
+	character_modifier = {
+		domain_limit = -2
+		vassal_limit = 20
+		monthly_income_mult = -0.1
+	}
+
+	color = { 184 60 7 }
+}
+
+nomadic_government = {
+	rulers_should_have_dynasty = yes
+	affected_by_development = no
+	regiments_prestige_as_gold = yes
+	supply_limit_mult_for_others = -0.8
+	primary_holding = tribal_holding
+	valid_holdings = { castle_holding }
+	required_county_holdings = { tribal_holding }
+	dynasty_named_realms = yes
+	royal_court = yes
+
+	flag = government_can_raid_rule
+
+	vassal_contract = { nomadic_government_obligations }
+
+	character_modifier = {
+		development_growth_factor = -0.5
+		army_maintenance_mult = -0.5
+		title_creation_cost_mult = -0.5
+		ai_war_chance = 0.8
+
+		domain_tax_mult = -0.5
+        vassal_tax_mult = -0.25
+        men_at_arms_maintenance_per_dread_mult = -0.005
+
+        additional_fort_level = -10
+        castle_holding_build_speed = 5
+        city_holding_build_speed = 5
+
+		feudal_government_vassal_opinion = -10
+		clan_government_vassal_opinion = -10
+		republic_government_vassal_opinion = -10
+	}
+	color = { 255 204 51 }
 }

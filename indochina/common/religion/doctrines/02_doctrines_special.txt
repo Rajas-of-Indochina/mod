@@ -49,6 +49,49 @@ is_jewish_faith = {
 	}
 }
 
+is_eastern_faith = {
+	group = "special"
+	
+	is_available_on_create = {
+		has_doctrine = special_doctrine_is_eastern_faith
+	}
+
+	special_doctrine_is_eastern_faith = {
+		parameters = {
+			# Since doctrines cannot modify other faith's views of us, only our view of others, all Eastern faiths are given this special doctrine which makes them friendlier to Faiths with the Eastern Syncretism tenet.
+			hostility_override_tenet_eastern_syncretism = 1
+			eastern_syncretic_recipient_opinion_active = yes
+			opinion_of_eastern_syncretic_actor_opinion_active = 30
+		}
+	}
+}
+
+is_gnostic_faith = {
+	group = "special"
+	
+	is_available_on_create = {
+		has_doctrine = special_doctrine_is_gnostic_faith
+	}
+
+	special_doctrine_is_gnostic_faith = {
+		parameters = {
+			hostility_override_tenet_gnosticism = 0
+			hostility_override_special_doctrine_is_gnostic_faith = 0
+			granting_titles_gives_stress = yes
+		}
+
+		traits = {
+			virtues = { temperate }
+			sins = { gluttonous }
+		}
+
+		character_modifier = {
+			learning = 2
+			stewardship = -2
+		}
+	}
+}
+
 special_tolerance = {
 	group = "main_group"
 	
@@ -102,6 +145,7 @@ unreformed_faith = {
 			unreformed_syncretic_recipient_opinion_active = yes
 			opinion_of_unreformed_syncretic_actor_opinion_active = 30
 			conquest_cb_enabled = yes
+			faith_can_raid = yes
 		}
 
 		character_modifier = {
@@ -124,20 +168,6 @@ divine_destiny = {
 		}
 	}
 }
-divine_destiny_jain = {# Jains do not like war so they get a different Chakravatin doctrine
-	group = "special"
-	is_available_on_create = {
-		has_doctrine = divine_destiny_doctrine
-	}
-	divine_destiny_jain_doctrine = {
-		piety_cost = {
-			value = faith_doctrine_cost_low
-		}
-		parameters = {
-			divine_destiny_jain_resistance = yes
-		}
-	}
-}
 
 #Teaching of the Vedas
 is_hinduism_faith = {
@@ -151,6 +181,7 @@ is_hinduism_faith = {
 		parameters = {
 			reincarnation_resistance_to_conversion = yes
 			reincarnation_events_active = yes
+			select_personal_god_active = yes
 		}
 	}
 }
@@ -183,6 +214,49 @@ is_buddhist_faith = {
 		parameters = {
 			take_vows_active = yes
 			reincarnation_events_active = yes
+		}
+	}
+}
+
+# Tibetan Sky Burials
+doctrine_sky_burials = {
+	group = "special"
+	is_available_on_create = {
+		has_doctrine = tibetan_sky_burials
+	}
+	tibetan_sky_burials = {
+		visible = no
+		parameters = {
+			sky_burials_active = yes
+		}
+	}
+}
+
+# Cultural Religion 
+doctrine_cultural_religion = {
+	group = "special"
+	is_available_on_create = {
+		has_doctrine = cultural_religion
+	}
+	cultural_religion = {
+		visible = no
+		parameters = {
+			other_culture_conversion_penalty_active = yes
+		}
+	}
+}
+
+#Tribal Religion
+doctrine_tribal_religion = {
+	group = "special"
+	is_available_on_create = {
+		has_doctrine = tribal_religion
+	}
+	tribal_religion = {
+		visible = no
+		parameters = {
+			other_culture_conversion_penalty_active = yes
+			tenet_adaptive_conversion_resistance = yes
 		}
 	}
 }

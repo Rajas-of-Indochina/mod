@@ -4,13 +4,14 @@
 	
 	allowed_for_character = {
 		has_perk = forced_vassalage_perk
+		NOT = { has_government = chinese_government }
 	}
 
 	# Root is the title
 	# scope:attacker is the attacker
 	# scope:defender is the defender
 
-	allowed_for_character_display_regardless = {
+	allowed_against_character_display_regardless = {
 		scope:defender = {
 			custom_description = {
 				text = "vassalization_cb_target_too_many_counties"
@@ -213,6 +214,21 @@
 				}
 			}
 
+			# Culture
+			if = {
+				limit = {
+					scope:attacker = {
+						culture = {
+							has_cultural_parameter = cheaper_cbs
+						}
+					}
+				}
+				multiply = {
+					value = 0.8
+					desc = "CB_ATTACKER_CULTURE"
+				}
+			}
+
 			# Vassal contract in-realm cost reduction
 			if = {
 				limit = {
@@ -345,6 +361,10 @@
 				value = minor_prestige_value
 				multiply = -1.0
 			}
+			stress_impact = {
+				ambitious = medium_stress_impact_gain
+				arrogant = medium_stress_impact_gain
+			}
 		}
 
 		# Prestige for the attacker's war allies
@@ -363,6 +383,12 @@
 			}
 		}
 		
+		scope:defender = {
+			stress_impact = {
+				arrogant = medium_stress_impact_gain
+			}
+		}
+
 		# Truce
 		add_truce_white_peace_effect = yes
 	}
@@ -391,10 +417,8 @@
 		
 		# Prestige loss for the attacker
 		scope:attacker = {
-			pay_short_term_gold = {
-				gold = 3
-				target = scope:defender
-				yearly_income = yes
+			pay_short_term_gold_reparations_effect = {
+				GOLD_VALUE = 3
 			}
 			add_prestige = {
 				value = major_prestige_value
@@ -404,8 +428,8 @@
 
 		# Prestige for the defender
 		scope:defender = {
-			add_prestige = {
-				value = medium_prestige_value
+			add_prestige_war_defender_effect = {
+				PRESTIGE_VALUE = medium_prestige_value
 			}
 		}
 
@@ -453,4 +477,22 @@
 	attacker_wargoal_percentage = 0.8
 	
 	max_ai_diplo_distance_to_title = 500
+
+	ai_score_mult = {
+		value = 1
+		# As a feudal gov never attack tribal for vassalization
+		add = {
+			if = {
+				limit = {
+					scope:attacker = {
+						NOT = { has_government = tribal_government }
+					}
+					scope:defender = {
+							has_government = tribal_government
+					}
+				}
+				add = -1000
+			}
+		}
+	}
 }

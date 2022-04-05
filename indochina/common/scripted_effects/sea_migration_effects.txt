@@ -1,0 +1,129 @@
+﻿
+nomadic_migration_effect = {
+    $INVADER$ = {
+        # Take the new title if it doesn't already exist
+        if = {
+            limit = {
+                $TITLE_TARGET$ = { is_title_created = no }
+                $TITLE_TARGET$.tier = $INVADER$.highest_held_title_tier
+            }
+            hidden_effect = {
+                create_title_and_vassal_change = {
+                    type = created
+                    save_scope_as = change
+                    add_claim_on_loss = no
+                }
+                $TITLE_TARGET$ = {
+                    change_title_holder = {
+                        holder = $INVADER$
+                        change = scope:change
+                    }
+                }
+                resolve_title_and_vassal_change = scope:change
+            }
+        }
+        # Destroy any other titles if you took a new one
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_title = $TITLE_TARGET$
+                    any_held_title = {
+                        tier >= $TITLE_TARGET$.tier
+                        tier > tier_county
+                        count >= 2
+                    }
+                }
+                every_held_title = {
+                    limit = {
+                        tier >= $TITLE_TARGET$.tier
+                        tier > tier_county
+                        NOT = { this = $TITLE_TARGET$ }
+                    }
+                    save_temporary_scope_as = excess_title
+                    $INVADER$ = { destroy_title = scope:excess_title }
+                }
+            }
+        }
+
+        # Abandon old titles outside of target
+        every_held_title = {
+            limit = {
+                tier = tier_county
+                NOR = {
+                    duchy = $TITLE_TARGET$
+                    kingdom = $TITLE_TARGET$
+                }
+            }
+            save_temporary_scope_as = current_county
+            create_character = {
+                location = scope:current_county.title_province
+                template = old_country_local_warlord_template
+                save_temporary_scope_as = local_warlord
+            }
+            create_title_and_vassal_change = {
+                type = usurped
+                save_scope_as = change
+                add_claim_on_loss = no
+            }
+            hidden_effect = {
+                scope:current_county = {
+                    change_title_holder = {
+                        holder = scope:local_warlord
+                        change = scope:change
+                        take_baronies = yes
+                    }
+                }
+            }
+            resolve_title_and_vassal_change = scope:change
+            create_title_and_vassal_change = {
+                type = independency
+                save_scope_as = change
+                add_claim_on_loss = no
+            }
+            resolve_title_and_vassal_change = scope:change
+        }
+
+        hidden_effect = {
+            #All direct vassals are given their independence, unless they hold land within Pannonia.
+            every_vassal = {
+                limit = {
+                    highest_held_title_tier >= tier_county
+                    any_held_title = {
+                        count = all
+                        NOR = {
+                            title_capital_county.duchy = $TITLE_TARGET$
+                            title_capital_county.kingdom = $TITLE_TARGET$
+                        }
+                    }
+                }
+                create_title_and_vassal_change = {
+                    type = independency
+                    save_scope_as = change
+                    add_claim_on_loss = no
+                }
+                becomes_independent = { change = scope:change }
+                resolve_title_and_vassal_change = scope:change
+            }
+            #... And catch the stragglers. Has to be a separate effect block, or we'll ruin the de facto structure.
+            every_vassal_or_below = {
+                limit = {
+                    highest_held_title_tier >= tier_county
+                    any_held_title = {
+                        count = all
+                        NOR = {
+                            title_capital_county.duchy = $TITLE_TARGET$
+                            title_capital_county.kingdom = $TITLE_TARGET$
+                        }
+                    }
+                }
+                create_title_and_vassal_change = {
+                    type = independency
+                    save_scope_as = change
+                    add_claim_on_loss = no
+                }
+                becomes_independent = { change = scope:change }
+                resolve_title_and_vassal_change = scope:change
+            }
+        }
+    }
+}
