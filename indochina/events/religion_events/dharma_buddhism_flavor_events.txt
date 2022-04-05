@@ -290,7 +290,1200 @@ dharma_buddhism.023 = {# First Harvest Offerings
 	
 	}
 }
+#######################################
+#									  #
+#      General Buddhist Schools       #
+#									  #
+#######################################
+dharma_buddhism.050 = {# Mahayana Schools
+	type = character_event
+	title = dharma_buddhism.050.t
+	desc = dharma_buddhism.050.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
 
+	# East Asian Mahayana
+	option = {# Chan
+		name = dharma_buddhism.050.chan
+		trigger = {
+			faith = faith:mahayana
+			NOT = { has_trait = buddhist_school_chan }
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_chan }
+	}
+	option = {# Madhyamaka
+		name = dharma_buddhism.050.madhyamaka
+		trigger = {
+			faith = faith:mahayana
+			NOT = { has_trait = buddhist_school_madhyamaka }
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_madhyamaka }
+	}
+	option = {# Yogachara
+		name = dharma_buddhism.050.yogachara
+		trigger = {
+			faith = faith:mahayana
+			NOT = { has_trait = buddhist_school_yogachara }
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_yogachara }
+	}
+	option = {# Pure Land
+		name = dharma_buddhism.050.pure_land
+		trigger = {
+			faith = faith:mahayana
+			NOT = { has_trait = buddhist_school_pure_land }
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_pure_land }
+	}				
+	# Opt-Out
+	option = {
+		name = dharma_buddhism.050.optout
+		ai_chance = {
+			base = 0
+		}		
+	}
+}
+dharma_buddhism.051 = {# Tibetan Schools
+	type = character_event
+	title = dharma_buddhism.051.t
+	desc = dharma_buddhism.051.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	option = {# Nyingma
+		name = dharma_buddhism.051.nyingma
+		trigger = {
+			faith = faith:lamaism
+			NOT = { has_trait = buddhist_school_nyingma }
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_nyingma }
+	}
+	option = {# Kadam
+		name = dharma_buddhism.051.kadam
+		trigger = {
+			faith = faith:lamaism
+			NOT = { has_trait = buddhist_school_kadam }
+			exists = global_var:buddhist_school_kadam_formed
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_kadam }
+	}
+	option = {# Sakya
+		name = dharma_buddhism.051.sakya
+		trigger = {
+			faith = faith:lamaism
+			NOT = { has_trait = buddhist_school_sakya }
+			exists = global_var:buddhist_school_sakya_formed
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_sakya }
+	}
+	option = {# Kagyu
+		name = dharma_buddhism.051.kagyu
+		trigger = {
+			faith = faith:lamaism
+			NOT = { has_trait = buddhist_school_kagyu }
+			exists = global_var:buddhist_school_kagyu_formed
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_kagyu }
+	}				
+	# Opt-Out
+	option = {
+		name = dharma_buddhism.050.optout
+		ai_chance = {
+			base = 0
+		}		
+	}
+}
+dharma_buddhism.052 = {# Your chief monk follows a different school then you do
+	type = character_event
+	title = dharma_buddhism.052.t
+	desc = dharma_buddhism.052.desc
+	theme = faith
+	override_background = {
+		event_background = forest_temple
+	}
+	left_portrait = {
+		character = realm_priest
+		animation = personality_rational
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = {
+			save_scope_as = realm_priest
+		}
+	}
+
+	trigger = {
+		OR = {
+			# Mahayana Schools
+			AND = {
+				scope:realm_priest = { has_trait = buddhist_school_chan }
+				OR = {
+					has_trait = buddhist_school_yogachara
+					has_trait = buddhist_school_madhyamaka
+					has_trait = buddhist_school_pure_land
+				}
+			}
+			AND = {
+				scope:realm_priest = { has_trait = buddhist_school_madhyamaka }
+				OR = {
+					has_trait = buddhist_school_chan
+					has_trait = buddhist_school_yogachara
+					has_trait = buddhist_school_pure_land
+				}
+			}
+			AND = {
+				scope:realm_priest = { has_trait = buddhist_school_yogachara }
+				OR = {
+					has_trait = buddhist_school_pure_land
+					has_trait = buddhist_school_madhyamaka
+					has_trait = buddhist_school_pure_land
+				}
+			}
+			AND = {
+				scope:realm_priest = { has_trait = buddhist_school_pure_land }
+				OR = {
+					has_trait = buddhist_school_yogachara
+					has_trait = buddhist_school_madhyamaka
+					has_trait = buddhist_school_chan
+				}
+			}
+			# Tibetan Schools
+			AND = {
+				scope:realm_priest = { has_trait = buddhist_school_nyingma }
+				OR = {
+					has_trait = buddhist_school_kadam
+					has_trait = buddhist_school_sakya
+					has_trait = buddhist_school_kagyu
+				}
+			}
+			AND = {
+				scope:realm_priest = { has_trait = buddhist_school_kadam }
+				OR = {
+					has_trait = buddhist_school_nyingma
+					has_trait = buddhist_school_sakya
+					has_trait = buddhist_school_kagyu
+				}
+			}
+			AND = {
+				scope:realm_priest = { has_trait = buddhist_school_sakya }
+				OR = {
+					has_trait = buddhist_school_nyingma
+					has_trait = buddhist_school_kadam
+					has_trait = buddhist_school_kagyu
+				}
+			}
+			AND = {
+				scope:realm_priest = { has_trait = buddhist_school_kagyu }
+				OR = {
+					has_trait = buddhist_school_nyingma
+					has_trait = buddhist_school_kadam
+					has_trait = buddhist_school_sakya
+				}
+			}
+		}
+	}
+
+
+	option = {# Follow the Monks advice
+		name = dharma_buddhism.052.switch
+		hidden_effect = {
+			if = {
+				limit = {
+					OR = {# remove the trait if you have it
+						has_trait = buddhist_school_chan
+						has_trait = buddhist_school_madhyamaka
+						has_trait = buddhist_school_yogachara
+						has_trait = buddhist_school_pure_land
+						has_trait = buddhist_school_nyingma
+						has_trait = buddhist_school_kadam
+						has_trait = buddhist_school_sakya
+						has_trait = buddhist_school_kagyu
+					}
+				}
+				remove_trait = buddhist_school_chan
+				remove_trait = buddhist_school_madhyamaka
+				remove_trait = buddhist_school_yogachara
+				remove_trait = buddhist_school_pure_land
+				remove_trait = buddhist_school_nyingma
+				remove_trait = buddhist_school_kadam
+				remove_trait = buddhist_school_sakya
+				remove_trait = buddhist_school_kagyu
+			}
+			# Assign the Mahayana School
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_chan } }
+				add_trait = buddhist_school_chan
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_madhyamaka } }
+				add_trait = buddhist_school_madhyamaka
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_yogachara } }
+				add_trait = buddhist_school_yogachara
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_pure_land } }
+				add_trait = buddhist_school_pure_land
+			}
+			# Assign the Tibetan School
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_nyingma } }
+				add_trait = buddhist_school_nyingma
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_kadam } }
+				add_trait = buddhist_school_kadam
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_sakya } }
+				add_trait = buddhist_school_sakya
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_kagyu } }
+				add_trait = buddhist_school_kagyu
+			}
+		}
+		scope:realm_priest = {
+			add_opinion = {
+				modifier = pleased_opinion
+				target = root
+				opinion = 20
+			}
+		}
+	}
+	option = {# Stick with your current school
+		name = dharma_buddhism.052.stick
+		scope:realm_priest = {
+			add_opinion = {
+				target = root
+				modifier = disappointed_opinion
+				opinion = -10
+			}
+		}
+		add_prestige = minor_prestige_gain
+	}
+	option = {# Try and convince the monk
+		trigger = { has_trait = theologian }
+		name = dharma_buddhism.052.convince
+		duel = {
+			skill = learning
+			target = scope:realm_priest
+
+			40 = {# You successfully succed in convincing 
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				add_piety = minor_piety_gain
+				scope:realm_priest = {
+					hidden_effect = {
+						if = {
+							limit = {
+								OR = {# remove the trait if you have it
+									has_trait = buddhist_school_chan
+									has_trait = buddhist_school_madhyamaka
+									has_trait = buddhist_school_yogachara
+									has_trait = buddhist_school_pure_land
+									has_trait = buddhist_school_nyingma
+									has_trait = buddhist_school_kadam
+									has_trait = buddhist_school_sakya
+									has_trait = buddhist_school_kagyu
+								}
+							}
+							remove_trait = buddhist_school_chan
+							remove_trait = buddhist_school_madhyamaka
+							remove_trait = buddhist_school_yogachara
+							remove_trait = buddhist_school_pure_land
+							remove_trait = buddhist_school_nyingma
+							remove_trait = buddhist_school_kadam
+							remove_trait = buddhist_school_sakya
+							remove_trait = buddhist_school_kagyu
+						}
+					}
+					# Mahayana Schools
+					if = {
+						limit = { root = { has_trait = buddhist_school_chan } }
+						add_trait = buddhist_school_chan
+					}
+					if = {
+						limit = { root = { has_trait = buddhist_school_madhyamaka } }
+						add_trait = buddhist_school_madhyamaka
+					}
+					if = {
+						limit = { root = { has_trait = buddhist_school_yogachara } }
+						add_trait = buddhist_school_yogachara
+					}
+					if = {
+						limit = { root = { has_trait = buddhist_school_pure_land } }
+						add_trait = buddhist_school_pure_land
+					}
+					# Mahayana Schools
+					if = {
+						limit = { root = { has_trait = buddhist_school_nyingma } }
+						add_trait = buddhist_school_nyingma
+					}
+					if = {
+						limit = { root = { has_trait = buddhist_school_kadam } }
+						add_trait = buddhist_school_kadam
+					}
+					if = {
+						limit = { root = { has_trait = buddhist_school_sakya } }
+						add_trait = buddhist_school_sakya
+					}
+					if = {
+						limit = { root = { has_trait = buddhist_school_kagyu } }
+						add_trait = buddhist_school_kagyu
+					}
+				}
+				custom_tooltip = dharma_buddhism.052.convince.success
+			}
+			60 = {# You fail to convince the Monk
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.25
+					min = -19
+				}
+				scope:realm_priest = {
+					add_opinion = {
+						target = scope:realm_priest
+						modifier = angry_opinion
+						opinion = -10
+					}
+				}
+				custom_tooltip = dharma_buddhism.052.convince.failure
+			}
+		}
+	}
+
+}
+dharma_buddhism.053 = {# Your chief monk encourges you to follow the teachings of his/her school
+	type = character_event
+	title = dharma_buddhism.053.t
+	desc = dharma_buddhism.053.desc
+	theme = faith
+	override_background = {
+		event_background = forest_temple
+	}
+	left_portrait = {
+		character = scope:realm_priest
+		animation = personality_zealous
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = {
+			save_scope_as = realm_priest
+		}
+	}
+	
+	trigger = {
+		has_perk = faithful_perk
+		OR = {
+			faith = faith:mahayana
+			faith = faith:lamaism
+		}
+		OR = {
+			# Mahayana Schools
+			scope:realm_priest = { has_trait = buddhist_school_chan }
+			scope:realm_priest = { has_trait = buddhist_school_yogachara }
+			scope:realm_priest = { has_trait = buddhist_school_madhyamaka }
+			scope:realm_priest = { has_trait = buddhist_school_pure_land }
+			# Tibetan Schools
+			scope:realm_priest = { has_trait = buddhist_school_nyingma }
+			scope:realm_priest = { has_trait = buddhist_school_kadam }
+			scope:realm_priest = { has_trait = buddhist_school_sakya }
+			scope:realm_priest = { has_trait = buddhist_school_kagyu }
+		}
+		NOR = {
+			# Mahayana Schools
+			has_trait = buddhist_school_chan
+			has_trait = buddhist_school_yogachara
+			has_trait = buddhist_school_madhyamaka
+			has_trait = buddhist_school_pure_land
+			# Tibetan Schools
+			has_trait = buddhist_school_nyingma
+			has_trait = buddhist_school_kadam
+			has_trait = buddhist_school_sakya
+			has_trait = buddhist_school_kagyu
+		}
+	}
+
+	option = {# I will follow the teachings
+		name = dharma_buddhism.053.follow
+		hidden_effect = {	
+			# Mahayana Schools
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_chan } }
+				add_trait = buddhist_school_chan
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_madhyamaka } }
+				add_trait = buddhist_school_madhyamaka
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_yogachara } }
+				add_trait = buddhist_school_yogachara
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_pure_land } }
+				add_trait = buddhist_school_pure_land
+			}
+			# Tibetan Schools
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_nyingma } }
+				add_trait = buddhist_school_nyingma
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_kadam } }
+				add_trait = buddhist_school_kadam
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_sakya } }
+				add_trait = buddhist_school_sakya
+			}
+			if = {
+				limit = { scope:realm_priest = { has_trait = buddhist_school_kagyu } }
+				add_trait = buddhist_school_kagyu
+			}			
+		}
+		scope:realm_priest = {
+			add_opinion = {
+				modifier = pleased_opinion
+				target = root
+				opinion = 20
+			}
+		}
+	}
+	option = {# No need to right now.
+		name = dharma_buddhism.053.not_follow
+		scope:realm_priest = {
+			add_opinion = {
+				target = root
+				modifier = disappointed_opinion
+				opinion = -10
+			}
+		}
+		add_prestige = minor_prestige_gain
+	}
+
+}
+# Events about the important people who founded the various schools
+scripted_trigger dharma_trigger_valid_tibetan_kingdom = {
+	# The title must be created first off.
+	holder = {
+		religion = religion:buddhism_religion
+		capital_province = { geographical_region = world_tibet }
+		OR = {
+			culture = culture:bodpa
+			culture = culture:zhangzhung
+			culture = culture:sumpa
+			culture = culture:tsangpa
+		}
+	}
+}
+dharma_buddhism.054 = {# The Mahasiddha Naropa
+	type = character_event
+	title = dharma_buddhism.054.t
+	desc = dharma_buddhism.054.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	immediate = {
+		set_global_variable = {
+			name = dharma_buddhism_naropa_arrived
+			value = yes
+		}
+		if = {
+			limit = {
+				title:c_mudgagiri.holder = {
+					religion = { is_in_family = rf_eastern }
+				}			
+			}
+			title:c_mudgagiri = {
+				save_scope_as = mahasiddha_naropa_county
+			}
+			title:c_mudgagiri.holder = {
+				save_scope_as = mahasiddha_naropa_buddy
+				dharma_spawn_mahasiddha_naropa_effect = yes
+			}
+		}
+	}
+	
+	trigger = {
+		current_date > 1000.1.1
+		not = {	exists = global_var:dharma_buddhism_naropa_arrived } # Fire Only Once
+		has_title = title:c_mudgagiri
+		is_ruler = yes
+		is_landed = yes
+	}
+
+	option = {# An interesting mystic. 
+		name = dharma_buddhism.054.naropa		
+	}
+}
+dharma_buddhism.055 = {# Atisa Arrives in a Tibetan Buddhist Kingdom
+	type = character_event
+	title = dharma_buddhism.055.t
+	desc = dharma_buddhism.055.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+	
+	immediate = {
+		set_global_variable = {
+			name = dharma_buddhism_atisa_arrived
+			value = yes
+		}
+		
+		if = {
+			limit = {
+				title:k_guge.holder = {
+					religion = religion:buddhism_religion
+				}			
+			}
+			title:k_guge = {
+				save_scope_as = mahasiddha_atisa_county
+			}
+			title:k_guge.holder = {
+				save_scope_as = atisa_buddy
+				dharma_spawn_atisa_effect = yes
+			}
+		}
+	}
+
+	trigger = {
+		exists = global_var:dharma_buddhism_naropa_arrived
+		not = {	exists = global_var:dharma_buddhism_atisa_arrived }
+		not = {	exists = global_var:buddhist_school_kadam_formed }
+		current_date > 1000.1.1
+		has_title = title:k_guge
+	}
+
+	option = {# Welcome to my kingdom
+		name = dharma_buddhism.055.atisa
+		
+	}
+
+	after = {
+		trigger_event = {
+			id = dharma_buddhism.056
+			months = { 10 100 }
+		}
+	}
+
+}
+dharma_buddhism.056 = {# Atisa founds the Kadam School of Buddhism
+	type = character_event
+	title = dharma_buddhism.056.t
+	desc = dharma_buddhism.056.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+	
+	immediate = {
+		set_global_variable = {
+			name = buddhist_school_kadam_formed
+			value = yes
+		}
+	}
+
+	option = {# new school with new book
+		name = dharma_buddhism.056.kadam
+	}
+	option = {# Patronize the new School
+		name = dharma_buddhism.056.kadam_adopt
+		trigger = {
+			faith = faith:lamaism
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_kadam }
+	}
+}
+dharma_buddhism.057 = {# Drogmi returns from India
+	type = character_event
+	title = dharma_buddhism.057.t
+	desc = dharma_buddhism.057.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	immediate = {
+		set_global_variable = {
+			name = dharma_buddhism_drogmi_arrived
+			value = yes
+		}
+		if = {
+			limit = {
+				title:d_sagya.holder = {
+					religion = religion:buddhism_religion
+				}			
+			}
+			title:d_sagya = {
+				save_scope_as = drogmi_county
+			}
+			title:d_sagya.holder = {
+				save_scope_as = drogmi_buddy
+				dharma_spawn_drogmi_effect = yes
+			}
+		}	
+	}
+
+	trigger = {
+		exists = global_var:dharma_buddhism_naropa_arrived
+		not = {	exists = global_var:dharma_buddhism_drogmi_arrived }
+		not = {	exists = global_var:buddhist_school_sakya_formed }
+		current_date > 1000.1.1
+		has_title = title:d_sagya
+	}	
+
+	option = {# welcome to my court
+		name = dharma_buddhism.057.drogmi
+	}
+
+	after = {
+		trigger_event = {
+			id = dharma_buddhism.058
+			months = { 10 100 }
+		}
+	}
+
+}
+dharma_buddhism.058 = {# Buddhist Prince in Sa'gya follows Drogmi's advice
+	type = character_event
+	title = dharma_buddhism.058.t
+	desc = dharma_buddhism.058.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}		
+
+	option = {# Interesting developments
+		name = dharma_buddhism.058.prince
+	
+	}
+
+	after = {
+		trigger_event = {
+			id = dharma_buddhism.059
+			months = { 10 100 }
+		}
+	}
+
+}
+dharma_buddhism.059 = {# The Sakya school is founded
+	type = character_event
+	title = dharma_buddhism.059.t
+	desc = dharma_buddhism.059.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+	
+	immediate = {
+		set_global_variable = {
+			name = buddhist_school_sakya_formed
+			value = yes
+		}
+	}
+
+	option = {# A new School
+		name = dharma_buddhism.059.sakya		
+	}
+	option = {# Patronize the new School
+		name = dharma_buddhism.059.sakya_adopt
+		trigger = {
+			faith = faith:lamaism
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_sakya }
+	}
+
+
+}
+dharma_buddhism.060 = {# Marpa sets up his seat in a Tibetan Monastary
+	type = character_event
+	title = dharma_buddhism.060.t
+	desc = dharma_buddhism.060.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	immediate = {
+		set_global_variable = {
+			name = dharma_buddhism_marpa_arrived
+			value = yes
+		}
+		if = {
+			limit = {
+				title:d_lhatok.holder = {
+					religion = religion:buddhism_religion
+				}			
+			}
+			title:d_lhatok = {
+				save_scope_as = marpa_county
+			}
+			title:d_lhatok.holder = {
+				save_scope_as = marpa_buddy
+				dharma_spawn_marpa_effect = yes
+			}
+		}
+	}
+	
+	trigger = {
+		exists = global_var:dharma_buddhism_naropa_arrived
+		not = {	exists = global_var:dharma_buddhism_marpa_arrived }
+		not = {	exists = global_var:buddhist_school_kagyu_formed }
+
+		current_date > 1000.1.1
+		has_title = title:d_lhatok
+
+	}
+
+	option = {# Welcome
+		name = dharma_buddhism.060.marpa
+		
+	}
+
+	after = {
+		trigger_event = {
+			id = dharma_buddhism.061
+			months = { 10 100 }
+		}
+	}
+
+}
+dharma_buddhism.061 = {# Marpa's Four Great Pillars(students)
+	type = character_event
+	title = dharma_buddhism.061.t
+	desc = dharma_buddhism.061.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	immediate = {
+		if = {# Milarepa
+			limit = {
+				title:d_lhatok.holder = {
+					religion = religion:buddhism_religion
+				}			
+			}
+			title:d_lhatok = {
+				save_scope_as = mahasiddha_atisa_county
+			}
+			title:d_lhatok.holder = {
+				save_scope_as = milarepa_buddy
+				dharma_spawn_milarepa_effect = yes
+			}
+		}
+		if = {# Tshurton Wangi
+			limit = {
+				title:d_lhatok.holder = {
+					religion = religion:buddhism_religion
+				}			
+			}
+			title:d_lhatok = {
+				save_scope_as = mahasiddha_atisa_county
+			}
+			title:d_lhatok.holder = {
+				save_scope_as = tshurton_wangi_buddy
+				dharma_spawn_tshurton_wangi_effect = yes
+			}
+		}
+		if = {# Ngok Choku
+			limit = {
+				title:d_lhatok.holder = {
+					religion = religion:buddhism_religion
+				}			
+			}
+			title:d_lhatok = {
+				save_scope_as = mahasiddha_atisa_county
+			}
+			title:d_lhatok.holder = {
+				save_scope_as = ngok_choku_buddy
+				dharma_spawn_ngok_choku_effect = yes
+			}
+		}
+		if = {# Meton Tsonpo
+			limit = {
+				title:d_lhatok.holder = {
+					religion = religion:buddhism_religion
+				}			
+			}
+			title:d_lhatok = {
+				save_scope_as = mahasiddha_atisa_county
+			}
+			title:d_lhatok.holder = {
+				save_scope_as = meton_tsonpo_buddy
+				dharma_spawn_meton_tsonpo_effect = yes
+			}
+		}
+	}
+	
+	option = {# Interesting. 
+		name = dharma_buddhism.061.students
+		
+	}
+
+	after = {
+		trigger_event = {
+			id = dharma_buddhism.062
+			months = { 10 100 }
+		}
+	}
+
+}
+dharma_buddhism.062 = {# Marpa founds the Kagyu School
+	type = character_event
+	title = dharma_buddhism.062.t
+	desc = dharma_buddhism.062.desc
+	theme = faith
+	override_background = {
+		event_background = tibetan_temple
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	immediate = {
+		set_global_variable = {
+			name = buddhist_school_kagyu_formed
+			value = yes
+		}
+	}
+	
+	option = {# a new school interesting
+		name = dharma_buddhism.062.kagyu		
+	}
+	option = {# Patronize the new School
+		name = dharma_buddhism.062.kagyu_adopt
+		trigger = {
+			faith = faith:lamaism
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_kagyu }
+	}
+}
+dharma_buddhism.063 = {# Maintence to insure the high learning monks are picking a buddhist school
+	hidden = yes
+
+	trigger = {
+		OR = {
+			faith = faith:mahayana
+			faith = faith:lamaism
+		}
+		has_trait = devoted
+		learning >= decent_skill_rating
+		NOR = {
+			# Mahayana School
+			has_trait = buddhist_school_chan
+			has_trait = buddhist_school_madhyamaka
+			has_trait = buddhist_school_yogachara
+			has_trait = buddhist_school_pure_land
+			# Tibetan School
+			has_trait = buddhist_school_nyingma
+			has_trait = buddhist_school_kadam
+			has_trait = buddhist_school_sakya
+			has_trait = buddhist_school_kagyu
+		}
+	}
+
+	immediate = {
+		if = {# Mahayana Schools
+			limit = {
+				has_trait = devoted
+				learning >= decent_skill_rating
+				faith = faith:mahayana
+				NOR = {
+					has_trait = buddhist_school_chan
+					has_trait = buddhist_school_madhyamaka
+					has_trait = buddhist_school_yogachara
+					has_trait = buddhist_school_pure_land
+				}
+			}
+			random_list = {
+				25 = {
+					add_trait = buddhist_school_chan
+				}
+				25 = {
+					add_trait = buddhist_school_madhyamaka
+				}
+				25 = {
+					add_trait = buddhist_school_yogachara
+				}
+				25 = {
+					add_trait = buddhist_school_pure_land
+				}
+			}
+		}
+		if = {# Tibetan Schools Schools - All Schools Exist
+			limit = {
+				AND = {
+					exists = global_var:buddhist_school_kadam_formed
+					exists = global_var:buddhist_school_sakya_formed
+					exists = global_var:buddhist_school_kagyu_formed
+				}
+				has_trait = devoted
+				learning >= decent_skill_rating
+				faith = faith:lamaism
+				NOR = {
+					has_trait = buddhist_school_nyingma
+					has_trait = buddhist_school_kadam
+					has_trait = buddhist_school_sakya
+					has_trait = buddhist_school_kagyu
+				}
+			}
+			random_list = {
+				25 = {
+					add_trait = buddhist_school_nyingma
+				}
+				25 = {
+					add_trait = buddhist_school_kadam
+				}
+				25 = {
+					add_trait = buddhist_school_sakya
+				}
+				25 = {
+					add_trait = buddhist_school_kagyu
+				}
+			}
+		}
+		if = {# Tibetan Schools Schools - nyingma, Kadam and Sakya exist
+			limit = {
+				NOT = { exists = global_var:buddhist_school_kagyu_formed }
+				AND = {
+					exists = global_var:buddhist_school_kadam_formed
+					exists = global_var:buddhist_school_sakya_formed
+					exists = global_var:buddhist_school_kagyu_formed
+				}
+				has_trait = devoted
+				learning >= decent_skill_rating
+				faith = faith:lamaism
+				NOR = {
+					has_trait = buddhist_school_nyingma
+					has_trait = buddhist_school_kadam
+					has_trait = buddhist_school_sakya
+					has_trait = buddhist_school_kagyu
+				}
+			}
+			random_list = {
+				50 = {
+					add_trait = buddhist_school_nyingma
+				}
+				25 = {
+					add_trait = buddhist_school_kadam
+				}
+				25 = {
+					add_trait = buddhist_school_sakya
+				}
+			}
+		}
+		if = {# Tibetan Schools Schools - nyingma, Kadam and Kagyu exist
+			limit = {
+				NOT = {	exists = global_var:buddhist_school_sakya_formed }
+				AND = {
+					exists = global_var:buddhist_school_kadam_formed
+					exists = global_var:buddhist_school_kagyu_formed
+				}
+				has_trait = devoted
+				learning >= decent_skill_rating
+				faith = faith:lamaism
+				NOR = {
+					has_trait = buddhist_school_nyingma
+					has_trait = buddhist_school_kadam
+					has_trait = buddhist_school_sakya
+					has_trait = buddhist_school_kagyu
+				}
+			}
+			random_list = {
+				50 = {
+					add_trait = buddhist_school_nyingma
+				}
+				25 = {
+					add_trait = buddhist_school_kadam
+				}
+				25 = {
+					add_trait = buddhist_school_kagyu
+				}
+			}
+		}
+		if = {# Tibetan Schools Schools - nyingma, Kagyu and Sakya exist
+			limit = {
+				NOT = {	exists = global_var:buddhist_school_kagyu_formed }
+				AND = {
+					exists = global_var:buddhist_school_kadam_formed
+					exists = global_var:buddhist_school_sakya_formed
+				}
+				has_trait = devoted
+				learning >= decent_skill_rating
+				faith = faith:lamaism
+				NOR = {
+					has_trait = buddhist_school_nyingma
+					has_trait = buddhist_school_kadam
+					has_trait = buddhist_school_sakya
+					has_trait = buddhist_school_kagyu
+				}
+			}
+			random_list = {
+				50 = {
+					add_trait = buddhist_school_nyingma
+				}
+				25 = {
+					add_trait = buddhist_school_sakya
+				}
+				25 = {
+					add_trait = buddhist_school_kagyu
+				}
+			}
+		}		
+		if = {# Tibetan Schools Schools - Niyingma and Kadam
+			limit = {
+				NOT = {
+					exists = global_var:buddhist_school_sakya_formed
+					exists = global_var:buddhist_school_kagyu_formed
+				}
+				exists = global_var:buddhist_school_kadam_formed
+				has_trait = devoted
+				learning >= decent_skill_rating
+				faith = faith:lamaism
+				NOR = {
+					has_trait = buddhist_school_nyingma
+					has_trait = buddhist_school_kadam
+					has_trait = buddhist_school_sakya
+					has_trait = buddhist_school_kagyu
+				}
+			}
+			random_list = {
+				75 = {
+					add_trait = buddhist_school_nyingma
+				}
+				25 = {
+					add_trait = buddhist_school_kadam
+				}
+			}
+		}		
+		if = {# Tibetan Schools Schools - Niyingma and Sakya
+			limit = {
+				NOT = {
+					exists = global_var:buddhist_school_kadam_formed
+					exists = global_var:buddhist_school_kagyu_formed
+				}
+				exists = global_var:buddhist_school_sakya_formed
+				has_trait = devoted
+				learning >= decent_skill_rating
+				faith = faith:lamaism
+				NOR = {
+					has_trait = buddhist_school_nyingma
+					has_trait = buddhist_school_kadam
+					has_trait = buddhist_school_sakya
+					has_trait = buddhist_school_kagyu
+				}
+			}
+			random_list = {
+				75 = {
+					add_trait = buddhist_school_nyingma
+				}
+				25 = {
+					add_trait = buddhist_school_sakya
+				}
+			}
+		}
+		if = {# Tibetan Schools Schools - Niyingma and Kagyu
+			limit = {
+				NOT = {
+					exists = global_var:buddhist_school_kadam_formed
+					exists = global_var:buddhist_school_sakya_formed
+				}
+				exists = global_var:buddhist_school_kagyu_formed
+				has_trait = devoted
+				learning >= decent_skill_rating
+				faith = faith:lamaism
+				NOR = {
+					has_trait = buddhist_school_nyingma
+					has_trait = buddhist_school_kadam
+					has_trait = buddhist_school_sakya
+					has_trait = buddhist_school_kagyu
+				}
+			}
+			random_list = {
+				75 = {
+					add_trait = buddhist_school_nyingma
+				}
+				25 = {
+					add_trait = buddhist_school_kagyu
+				}
+			}
+		}		
+		if = {# Tibetan Schools Schools - Niyingma
+			limit = {
+				NOT = {
+					exists = global_var:buddhist_school_kadam_formed
+					exists = global_var:buddhist_school_sakya_formed
+					exists = global_var:buddhist_school_kagyu_formed
+				}
+				has_trait = devoted
+				learning >= decent_skill_rating
+				faith = faith:lamaism
+				NOR = {
+					has_trait = buddhist_school_nyingma
+					has_trait = buddhist_school_kadam
+					has_trait = buddhist_school_sakya
+					has_trait = buddhist_school_kagyu
+				}
+			}
+			add_trait = buddhist_school_nyingma
+		}
+	}
+}
 #######################################
 #									  #
 # 	  MEDITATION RETREAT EVENTS       #
@@ -1517,7 +2710,7 @@ dharma_buddhism.121 = {# Gardening
 			skill = learning
 			value = very_high_skill_rating
 			10 = {
-				desc = dharma_buddhism.307.plants.success
+				desc = dharma_buddhism.121.plants.success
 				compare_modifier = {
 					value = scope:duel_value
 					multiplier = 0.5
@@ -2581,7 +3774,9 @@ dharma_buddhism.202 = {# Mahayana Boddhisattvas
 	}
 }
 #######################################
-# Visiting Nalanda
+#									  #
+#     	   Visiting Nalanda		      #
+#									  #
 #######################################
 dharma_buddhism.300 = {# Decide to Visit Nalanda
 	type = character_event
@@ -3325,6 +4520,186 @@ dharma_buddhism.307 = {# Mystical learning
 		dharma_set_up_next_nalanda_event_effect = { DAYS = 10 }
 	}
 }
+dharma_buddhism.308 = {# Language Learning
+	type = character_event
+	title = dharma_buddhism.308.t
+	desc = dharma_buddhism.308.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_temple_interior
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_buddhism_308
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_buddhism_308
+				value = yes
+			}
+		}
+		play_music_cue = "mx_cue_combat_stinger"
+	}
+
+	option = {# Pali 
+		name = dharma_buddhism.308.pali
+		trigger = { NOT = { knows_language = language_pali } }
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			5 = {
+				desc = dharma_buddhism.308.pali.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.308.pali.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+					learn_language = language_pali
+				}
+			}
+			95 = {
+				desc = dharma_buddhism.308.pali.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.308.pali.failure_title
+					left_icon = root
+					stress_impact = {
+						base = minor_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+	option = {# Sanskrit 
+		trigger = { NOT = { knows_language = language_sanskrit } }
+		name = dharma_buddhism.308.sanskrit
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			5 = {
+				desc = dharma_buddhism.308.sanskrit.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.308.sanskrit.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+					learn_language = language_sanskrit
+				}
+			}
+			95 = {
+				desc = dharma_buddhism.308.sanskrit.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.308.sanskrit.failure_title
+					left_icon = root
+					stress_impact = {
+						base = minor_stress_impact_gain
+					}
+				}
+			}
+		}
+	}	
+	option = {# I will study other things
+		name = dharma_buddhism.308.study
+		add_character_modifier = {
+			modifier = focused_student
+			months = 4
+		}
+	}	
+
+	after = {
+		if = {
+			limit = { exists = scope:increase_mystic }
+			clear_saved_scope = increase_mystic
+		}
+		dharma_set_up_next_nalanda_event_effect = { DAYS = 10 }
+	}
+}
+dharma_buddhism.309 = {# Studying while at Nalanda
+	type = character_event
+	title = dharma_buddhism.309.t
+	desc = dharma_buddhism.309.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_temple_interior
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_buddhism_309
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_buddhism_309
+				value = yes
+			}
+		}
+		play_music_cue = "mx_cue_combat_stinger"
+	}
+
+	option = {# Stay
+		name = dharma_buddhism.309.study
+		random_list = {
+			10 = {
+				set_variable = {
+					name = dharma_nalanda_learning_languages_variable
+					value = yes
+				}
+			}
+			90 = {
+				add_learning_lifestyle_xp = medium_lifestyle_xp
+			}
+		}
+	}
+	option = {# Stay
+		name = dharma_buddhism.309.study
+		add_character_modifier = {
+			modifier = focused_student
+			months = 4
+		}
+	}	
+
+	after = {
+		if = {
+			limit = { exists = scope:increase_mystic }
+			clear_saved_scope = increase_mystic
+		}
+		dharma_set_up_next_nalanda_event_effect = { DAYS = 10 }
+	}
+}
 dharma_buddhism.310 = {# Medical learning
 	type = character_event
 	title = dharma_buddhism.310.t
@@ -3425,6 +4800,65 @@ dharma_buddhism.310 = {# Medical learning
 	}
 
 }
+dharma_buddhism.311 = {# Taking home a book
+	type = character_event
+	title = dharma_buddhism.311.t
+	desc = dharma_buddhism.311.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_temple_interior
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_buddhism_311
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_buddhism_311
+				value = yes
+			}
+		}
+		play_music_cue = "mx_cue_combat_stinger"
+	}
+
+	option = {# sutta
+		name = dharma_buddhism.311.sutta
+		create_artifact_sutta_pitaka_effect = { OWNER = this }
+	}
+	option = {# heart_sutra
+		name = dharma_buddhism.311.heart_sutra
+		create_artifact_heart_sutra_effect = { OWNER = this }
+	}
+	option = {# dhammapada
+		name = dharma_buddhism.311.dhammapada
+		create_artifact_dhammapada_effect = { OWNER = this }
+	}		
+	option = {# lankavatara
+		name = dharma_buddhism.311.lankavatara
+		create_artifact_lankavatara_effect = { OWNER = this }
+	}
+	option = {# no gift
+		name = dharma_buddhism.311.no_gift
+		add_piety = medium_piety_gain
+	}	
+
+	after = {
+		if = {
+			limit = { exists = scope:increase_mystic }
+			clear_saved_scope = increase_mystic
+		}
+		dharma_set_up_next_nalanda_event_effect = { DAYS = 10 }
+	}
+}
 dharma_buddhism.312 = {# Learning to love to read
 	type = character_event
 	title = dharma_buddhism.312.t
@@ -3480,6 +4914,339 @@ dharma_buddhism.312 = {# Learning to love to read
 					months = 4
 				}
 			}
+		}
+	}
+	after = {
+		dharma_set_up_next_nalanda_event_effect = { DAYS = 10 }
+	}
+}
+dharma_buddhism.313 = {# Adopting a Buddhist School
+	type = character_event
+	title = dharma_buddhism.313.t
+	desc = dharma_buddhism.313.desc
+	theme = faith
+	override_background = {
+		event_background = dharma_temple_interior
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		faith = faith:mahayana
+		NOR = { 
+			has_trait = buddhist_school_chan 
+			has_trait = buddhist_school_madhyamaka 
+			has_trait = buddhist_school_yogachara 
+			has_trait = buddhist_school_pure_land 
+		}
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_buddhism_313
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_buddhism_313
+				value = yes
+			}
+		}
+		play_music_cue = "mx_cue_combat_stinger"
+	}
+
+	option = {# Chan
+		name = dharma_buddhism.313.chan
+		trigger = {
+			faith = faith:mahayana
+			NOT = { has_trait = buddhist_school_chan }
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_chan }
+	}
+	option = {# Madhyamaka
+		name = dharma_buddhism.313.madhyamaka
+		trigger = {
+			faith = faith:mahayana
+			NOT = { has_trait = buddhist_school_madhyamaka }
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_madhyamaka }
+	}
+	option = {# Yogachara
+		name = dharma_buddhism.313.yogachara
+		trigger = {
+			faith = faith:mahayana
+			NOT = { has_trait = buddhist_school_yogachara }
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_yogachara }
+	}
+	option = {# Pure Land
+		name = dharma_buddhism.313.pure_land
+		trigger = {
+			OR = { 
+				faith = faith:mahayana
+			}
+			NOT = { has_trait = buddhist_school_pure_land }
+		}
+		set_buddhist_school_effect = { YANA = buddhist_school_pure_land }
+	}
+	option = {# not for me. 
+		name = dharma_buddhism.313.study
+		stress_impact = {
+			scholar = minor_stress_impact_gain
+			theologian = minor_stress_impact_gain
+			mystic_1 = minor_stress_impact_gain
+			mystic_2 = minor_stress_impact_gain
+			mystic_3 = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			shy = minor_stress_impact_loss
+			humble = minor_stress_impact_loss
+		}
+	}	
+
+	after = {
+		if = {
+			limit = { exists = scope:increase_mystic }
+			clear_saved_scope = increase_mystic
+		}
+		dharma_set_up_next_nalanda_event_effect = { DAYS = 10 }
+	}
+}
+dharma_buddhism.314 = {# Buddhist School Debate
+	type = character_event
+	title = dharma_buddhism.314.t
+	desc = dharma_buddhism.314.desc
+	theme = faith
+	override_background = {
+		event_background = india_shrine
+	}
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		exists = scope:activity
+		NOT = {
+			exists = scope:activity.var:had_dharma_buddhism_314
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			set_variable = {
+				name = had_dharma_buddhism_314
+				value = yes
+			}
+		}
+	}
+
+	option = {# Chan
+		name = dharma_buddhism.314.chan
+		trigger = {
+			NOT = {
+				has_trait = buddhist_school_madhyamaka
+				has_trait = buddhist_school_yogachara
+				has_trait = buddhist_school_pure_land
+			}
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_buddhism.314.chan.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.314.chan.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_buddhism.314.chan.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.314.chan.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = {# Madhyamaka
+		name = dharma_buddhism.314.madhyamaka
+		trigger = {
+			NOT = {
+				has_trait = buddhist_school_chan
+				has_trait = buddhist_school_yogachara
+				has_trait = buddhist_school_pure_land
+			}
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_buddhism.314.madhyamaka.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.314.madhyamaka.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_buddhism.314.madhyamaka.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.314.madhyamaka.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}	
+	option = {# Yogachara
+		name = dharma_buddhism.314.yogachara
+		trigger = {
+			NOT = {
+				has_trait = buddhist_school_chan
+				has_trait = buddhist_school_madhyamaka
+				has_trait = buddhist_school_pure_land
+			}
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_buddhism.314.yogachara.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.314.yogachara.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_buddhism.314.yogachara.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.314.yogachara.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			scholar = minor_stress_impact_loss
+			theologian = minor_stress_impact_loss
+			mystic_1 = minor_stress_impact_loss
+			mystic_2 = minor_stress_impact_loss
+			mystic_3 = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = {# Pure Land
+		name = dharma_buddhism.314.pure_land
+		trigger = {
+			NOT = {
+				has_trait = buddhist_school_chan
+				has_trait = buddhist_school_madhyamaka
+				has_trait = buddhist_school_yogachara
+			}
+		}
+		duel = {
+			skill = learning
+			value = very_high_skill_rating
+			15 = {
+				desc = dharma_buddhism.314.pure_land.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+					min = -14
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.314.pure_land.success_title
+					left_icon = root
+					add_prestige = minor_prestige_gain
+				}
+			}
+			25 = {
+				desc = dharma_buddhism.314.pure_land.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.5
+					min = -9
+				}
+				send_interface_toast = {
+					title = dharma_buddhism.314.pure_land.failure_title
+					left_icon = root
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	option = {# Observe
+		name = dharma_buddhism.314.observe
+		stress_impact = {
+			scholar = minor_stress_impact_gain
+			theologian = minor_stress_impact_gain
+			mystic_1 = minor_stress_impact_gain
+			mystic_2 = minor_stress_impact_gain
+			mystic_3 = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			shy = minor_stress_impact_loss
+			humble = minor_stress_impact_loss
 		}
 	}
 	after = {

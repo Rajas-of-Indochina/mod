@@ -1,0 +1,115 @@
+﻿on_game_start = {
+	on_actions = {
+		succexpstart
+	}
+}
+succexpstart = {
+    effect = {
+        set_global_variable = {
+            name = SE_is_loaded
+            value = yes
+        }
+        every_culture_global = {
+            limit = { 
+                has_cultural_tradition = tradition_horse_lords
+                NOT = {
+                    this = culture:tuyuhun
+                }
+            }
+            add_innovation = innovation_kurultai
+        }
+        every_independent_ruler = {
+            limit = {
+                OR = {
+                    has_culture = culture:irish
+                    AND = {
+                        has_culture = culture:gaelic
+                        game_start_date < 1005.1.1
+                    }
+                }
+                OR = {
+                    has_government = feudal_government
+                    has_government = tribal_government
+                }
+                highest_held_title_tier >= tier_kingdom
+            }
+            this.primary_title = {
+                add_title_law = gaelic_elective_succession_law
+            }
+        }
+        every_independent_ruler = {
+            limit = {
+                culture = { has_cultural_parameter = witenagemot_succession_enabled }
+                highest_held_title_tier >= tier_kingdom
+                OR = {
+                    has_government = feudal_government
+                    has_government = tribal_government
+                }
+            }
+            this.primary_title = {
+                add_title_law = saxon_elective_succession_law
+            }
+        }
+        every_independent_ruler = {
+            limit = {
+                culture = { has_cultural_parameter = scandinavian_elective_enabled }
+                highest_held_title_tier >= tier_kingdom
+                OR = {
+                    has_government = feudal_government
+                    has_government = tribal_government
+                }
+            }
+            this.primary_title = {
+                add_title_law = scandinavian_elective_succession_law
+            }
+        }
+        every_independent_ruler = {
+            limit = {
+                OR = {
+                    this.religion = religion:baltic_religion
+                    this.religion = religion:west_african_religion
+                    this.religion = religion:akom_religion
+                    this.religion = religion:west_african_roog_religion
+                    this.religion = religion:west_african_orisha_religion
+                }
+                highest_held_title_tier >= tier_duchy
+            }
+            this.primary_title = {
+                add_title_law = eldership_elective_succession_law
+            }
+        }
+        every_independent_ruler = {
+            limit = {
+                OR = {
+                    culture = { has_cultural_pillar = heritage_mongolic }
+                    culture = { has_cultural_pillar = heritage_turkic }
+                }
+                OR = {
+                    has_government = tribal_government
+                    has_government = nomadic_government
+                }
+                NOT = { this.primary_title = title:e_cumania }
+                highest_held_title_tier >= tier_kingdom
+            }
+            this.primary_title = {
+                add_title_law = kurultai_elective_succession_law
+            }
+        }
+    }
+}
+
+dummy = { #error destroyer 2000
+    trigger = {
+        exists = global_var:SE_is_loaded
+    }
+    effect = {
+        set_global_variable = {
+            name = StA_is_loaded
+            value = flag:none
+        }
+        set_global_variable = {
+            name = StA_title_realm_law
+            value = flag:none
+        }
+    }
+}

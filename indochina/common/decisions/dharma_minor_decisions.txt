@@ -706,6 +706,75 @@ select_personal_deity_hinduism_decision = {
 		base = 100
 	}
 }
+dharma_pick_hindu_philosophy = {# Follow a Mahayana Buddhist School
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds" 
+	ai_check_interval = 96
+	cooldown = { months = 36 }
+	desc = dharma_pick_hindu_philosophy_desc
+	
+	is_shown = {
+		religion = religion:hinduism_religion
+		is_ruler = yes
+		is_landed = yes
+	}
+	
+	is_valid = {
+		OR = {
+			has_perk = faithful_perk
+			has_perk = pedagogy_perk
+			learning >= 12
+		}
+		religion = religion:hinduism_religion
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_pick_hindu_philosophy_tooltip
+		trigger_event = dharma_hinduism.050
+	}
+
+	ai_potential = {
+		piety >= minor_piety_value
+		NOR = {
+			has_trait = hindu_philoosphy_yoga
+			has_trait = hindu_philoosphy_samkhya
+			has_trait = hindu_philoosphy_vaisheshika
+			has_trait = hindu_philoosphy_mimamsa
+			has_trait = hindu_philoosphy_nyaya
+			has_trait = hindu_philoosphy_vishishtadvaita
+			has_trait = hindu_philoosphy_advaita_vedanta
+			has_trait = hindu_philoosphy_bhedabheda
+			has_trait = hindu_philoosphy_dvaita_vedanta
+		}
+	}
+
+	ai_will_do = {
+		base = 40
+		modifier = {
+			add = 40
+			has_trait = theologian
+		}
+		modifier = {
+			add = 10
+			has_trait = scholar
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
 #######################################
 # Buddhist Decisions
 #######################################
@@ -826,6 +895,126 @@ dharma_attend_vesak_festival = {# Attend Vesak festival
 
 	ai_will_do = {
 		base = 50
+	}
+}
+dharma_adopt_mahayana_school = {# Follow a Mahayana Buddhist School
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds" 
+	ai_check_interval = 96
+	cooldown = { months = 36 }
+	desc = dharma_adopt_mahayana_school_desc
+	
+	is_shown = {
+		faith = faith:mahayana
+		is_ruler = yes
+		is_landed = yes
+	}
+	
+	is_valid = {
+		has_perk = faithful_perk
+		faith = faith:mahayana
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_adopt_mahayana_school_tooltip
+		trigger_event = dharma_buddhism.050
+	}
+
+	ai_potential = {
+		piety >= minor_piety_value
+		NOR = {
+			has_trait = buddhist_school_pure_land
+			has_trait = buddhist_school_yogachara
+			has_trait = buddhist_school_madhyamaka
+			has_trait = buddhist_school_chan
+		}
+	}
+
+	ai_will_do = {
+		base = 40
+		modifier = {
+			add = 40
+			has_trait = theologian
+		}
+		modifier = {
+			add = 10
+			has_trait = scholar
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
+dharma_adopt_tibetan_school = {# Follow a Tibetan Buddhist School
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds" 
+	ai_check_interval = 96
+	cooldown = { months = 36 }
+	desc = dharma_adopt_tibetan_school_desc
+	
+	is_shown = {
+		faith = faith:lamaism
+		is_ruler = yes
+		is_landed = yes
+	}
+	
+	is_valid = {
+		has_perk = faithful_perk
+		faith = faith:mahayana
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_adopt_tibetan_school_tooltip
+		trigger_event = dharma_buddhism.051
+	}
+
+	ai_potential = {
+		piety >= minor_piety_value
+		NOR = {
+			has_trait = buddhist_school_nyingma
+			has_trait = buddhist_school_kadam
+			has_trait = buddhist_school_sakya
+			has_trait = buddhist_school_kagyu
+		}
+	}
+
+	ai_will_do = {
+		base = 40
+		modifier = {
+			add = 40
+			has_trait = theologian
+		}
+		modifier = {
+			add = 10
+			has_trait = scholar
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
 	}
 }
 #######################################

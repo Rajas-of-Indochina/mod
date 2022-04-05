@@ -1,0 +1,284 @@
+﻿saxon_elective_ai = {
+	ai_goal = yes
+	is_shown = {
+		is_ai = yes
+	}
+	is_valid = {
+		is_ai = yes
+		OR = {
+			has_government = feudal_government
+			has_government = tribal_government
+		}
+		OR = {
+			highest_held_title_tier >= tier_kingdom
+			AND = {
+				highest_held_title_tier = 3
+				is_independent_ruler = yes
+			}
+		}
+		can_change_title_law_trigger = yes
+		culture = { has_cultural_parameter = witenagemot_succession_enabled }
+		NOT = {
+			primary_title = {
+				has_title_law = saxon_elective_succession_law
+			}
+		}
+		any_held_title = {
+			NOR = {
+				has_title_law = gaelic_elective_succession_law
+				has_title_law = scandinavian_elective_succession_law
+				has_title_law = eldership_elective_succession_law
+				has_title_law = princely_elective_succession_law
+				has_title_law = feudal_elective_succession_law
+				has_title_law = mahestan_elective_succession_law
+				has_title_law = kurultai_elective_succession_law
+			}
+		}
+	}
+	effect = {
+		every_held_title = {
+			limit = { has_title_law = saxon_elective_succession_law }
+			remove_title_law = saxon_elective_succession_law
+		}
+		primary_title = {
+			add_title_law = saxon_elective_succession_law
+		}
+	}
+	ai_will_do = 100
+}
+scandinavian_elective_ai = {
+	ai_goal = yes
+	is_shown = {
+		is_ai = yes
+	}
+	is_valid = {
+		is_ai = yes
+		OR = {
+			has_government = feudal_government
+			has_government = tribal_government
+		}
+		OR = {
+			highest_held_title_tier >= tier_kingdom
+			AND = {
+				highest_held_title_tier = 3
+				is_independent_ruler = yes
+			}
+		}
+		can_change_title_law_trigger = yes
+		culture = { has_cultural_parameter = scandinavian_elective_enabled }
+		NOT = {
+			primary_title = {
+				has_title_law = scandinavian_elective_succession_law
+			}
+		}
+		any_held_title = {
+			NOR = {
+				has_title_law = saxon_elective_succession_law
+				has_title_law = gaelic_elective_succession_law
+				has_title_law = eldership_elective_succession_law
+				has_title_law = princely_elective_succession_law
+				has_title_law = feudal_elective_succession_law
+				has_title_law = mahestan_elective_succession_law
+				has_title_law = kurultai_elective_succession_law
+			}
+		}
+	}
+	effect = {
+		every_held_title = {
+			limit = {
+				has_title_law = scandinavian_elective_succession_law 
+			}
+			remove_title_law = scandinavian_elective_succession_law
+		}
+		primary_title = {
+			add_title_law = scandinavian_elective_succession_law
+		}
+	}
+	ai_will_do = 100
+}
+gaelic_elective_ai = {
+	ai_goal = yes
+	is_shown = {
+		is_ai = yes
+	}
+	is_valid = {
+		is_ai = yes
+		OR = {
+			has_government = feudal_government
+			has_government = tribal_government
+		}
+		highest_held_title_tier >= tier_duchy
+		can_change_title_law_trigger = yes
+		OR = {
+			has_culture = culture:irish
+			AND = {
+				has_culture = culture:gaelic
+				current_date < 1050.1.1
+			}
+		}
+		NOT = {
+			primary_title = {
+				has_title_law = gaelic_elective_succession_law
+			}
+		}
+		any_held_title = {
+			NOR = {
+				has_title_law = saxon_elective_succession_law
+				has_title_law = scandinavian_elective_succession_law
+				has_title_law = eldership_elective_succession_law
+				has_title_law = princely_elective_succession_law
+				has_title_law = feudal_elective_succession_law
+				has_title_law = mahestan_elective_succession_law
+				has_title_law = kurultai_elective_succession_law
+			}
+		}
+	}
+	effect = {
+		every_held_title = {
+			limit = { has_title_law = gaelic_elective_succession_law }
+			remove_title_law = gaelic_elective_succession_law
+		}
+		primary_title = {
+			add_title_law = gaelic_elective_succession_law
+		}
+	}
+	ai_will_do = 100
+}
+eldership_elective_ai = {
+	ai_goal = yes
+	is_shown = {
+		is_ai = yes
+	}
+	is_valid = {
+		is_ai = yes
+		OR = {
+			has_government = feudal_government
+			has_government = tribal_government
+		}
+		OR = {
+			this.religion = religion:baltic_religion
+			this.religion = religion:west_african_religion
+			this.religion = religion:akom_religion
+			this.religion = religion:west_african_roog_religion
+			this.religion = religion:west_african_orisha_religion
+		}
+		highest_held_title_tier >= tier_duchy
+		can_change_title_law_trigger = yes
+		faith = {
+			has_doctrine = tenet_ancestor_worship
+		}
+		NOT = {
+			primary_title = {
+				has_title_law = eldership_elective_succession_law
+			}
+		}
+		any_held_title = {
+			NOR = {
+				has_title_law = saxon_elective_succession_law
+				has_title_law = gaelic_elective_succession_law
+				has_title_law = scandinavian_elective_succession_law
+				has_title_law = princely_elective_succession_law
+				has_title_law = feudal_elective_succession_law
+				has_title_law = mahestan_elective_succession_law
+				has_title_law = kurultai_elective_succession_law
+			}
+		}
+	}
+	effect = {
+		every_held_title = {
+			limit = { has_title_law = eldership_elective_succession_law }
+			remove_title_law = eldership_elective_succession_law
+		}
+		primary_title = {
+			add_title_law = eldership_elective_succession_law
+		}
+	}
+	ai_will_do = 100
+}
+mahestan_elective_ai = {
+	ai_goal = yes
+	is_shown = {
+		is_ai = yes
+	}
+	is_valid = {
+		is_ai = yes
+		OR = {
+			has_government = feudal_government
+		}
+		highest_held_title_tier >= tier_kingdom
+		is_independent_ruler = yes
+		can_change_title_law_trigger = yes
+		has_religion = religion:zoroastrianism_religion
+		any_in_global_list = {
+			variable = unavailable_unique_decisions
+			this = flag:flag_became_saoshyant
+		}
+		NOT = {
+			primary_title = {
+				has_title_law = mahestan_elective_succession_law
+			}
+		}
+		any_held_title = {
+			NOR = {
+				has_title_law = gaelic_elective_succession_law
+				has_title_law = scandinavian_elective_succession_law
+				has_title_law = eldership_elective_succession_law
+				has_title_law = princely_elective_succession_law
+				has_title_law = feudal_elective_succession_law
+				has_title_law = saxon_elective_succession_law
+				has_title_law = kurultai_elective_succession_law
+			}
+		}
+	}
+	effect = {
+		every_held_title = {
+			limit = { has_title_law = mahestan_elective_succession_law }
+			remove_title_law = mahestan_elective_succession_law
+		}
+		primary_title = {
+			add_title_law = mahestan_elective_succession_law
+		}
+	}
+	ai_will_do = 100
+}
+kurultai_elective_ai = {
+	ai_goal = yes
+	is_shown = {
+		is_ai = yes
+	}
+	is_valid = {
+		is_ai = yes
+		highest_held_title_tier >= tier_kingdom
+		can_change_title_law_trigger = yes
+		culture = {
+			has_innovation = innovation_kurultai
+		}
+        has_government = tribal_government
+		NOT = {
+			primary_title = {
+				has_title_law = kurultai_elective_succession_law
+			}
+		}
+		any_held_title = {
+			NOR = {
+				has_title_law = gaelic_elective_succession_law
+				has_title_law = scandinavian_elective_succession_law
+				has_title_law = eldership_elective_succession_law
+				has_title_law = princely_elective_succession_law
+				has_title_law = feudal_elective_succession_law
+				has_title_law = saxon_elective_succession_law
+				has_title_law = mahestan_elective_succession_law
+			}
+		}
+	}
+	effect = {
+		every_held_title = {
+			limit = { has_title_law = kurultai_elective_succession_law }
+			remove_title_law = kurultai_elective_succession_law
+		}
+		primary_title = {
+			add_title_law = kurultai_elective_succession_law
+		}
+	}
+	ai_will_do = 100
+}
