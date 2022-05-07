@@ -1067,7 +1067,7 @@ sea_title_event.0001 = {
 	}
 }
 
-# Change city holders from republics to whatever because fuck you
+# Change city holders from republics to whatever
 sea_title_event.1000 = {
 	hidden = yes
 
@@ -1114,5 +1114,19 @@ sea_title_event.1000 = {
 			}
 			change_government = chinese_government
 		}
+	}
+}
+
+# Convert from Chinese gov to vassal gov
+sea_title_event.1001 = {
+	hidden = yes
+
+	trigger = {
+		has_government = chinese_government
+		exists = liege
+		NOT = { liege = this }
+	}
+	immediate = {
+		change_government = chinese_vassal_government
 	}
 }
