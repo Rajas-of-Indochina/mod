@@ -1,0 +1,65 @@
+﻿CTPHousePatCheck = {
+    type = character
+	text = {
+		trigger = {
+			exists = father
+            father = {
+                OR = {
+                    has_character_flag = name_pack_support
+                    AND = {
+                        exists = dynasty
+                        dynasty = {
+                            any_in_list = {
+                                variable = name_pack_support_dynasty
+                                this = root.father
+                            }
+                        }
+                    }
+                    any_in_global_list = {
+                        variable = name_pack_support_global
+                        this = root.father
+                    }
+                }
+            }
+		}
+		localization_key = CTP_Patronym
+	}
+    text = {
+        trigger = {
+            exists = father
+        }
+        localization_key = CTP_nonsupported_Patronym
+    }
+	text = {
+		trigger = {
+			exists = dynasty
+		}
+        localization_key = CTP_House
+	}
+	text = {
+		fallback = yes
+		localization_key = Gui_blank
+	}
+}
+CTPHouseCheck = {
+    type = character
+    text = {
+        trigger = {
+            exists = dynasty
+            NOT = {
+                exists = father
+            }
+        }
+        localization_key = Gui_blank
+    }
+	text = {
+		trigger = {
+			exists = dynasty
+		}
+        localization_key = CTP_House
+	}
+	text = {
+		fallback = yes
+		localization_key = Gui_blank
+	}
+}

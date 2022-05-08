@@ -1,0 +1,297 @@
+﻿assign_caliph_laqab = {
+    common_interaction = yes
+    category = interaction_category_friendly
+    popup_on_receive = no
+    needs_recipient_to_open = yes
+    ai_max_reply_days = 1
+
+    desc = assign_caliph_laqab_desc
+
+    is_shown = {
+        scope:actor = {
+            has_religion = religion:islam_religion
+            this.faith.religious_head = this
+        }
+        scope:recipient = {
+            has_religion = religion:islam_religion
+            this.faith.religious_head = scope:actor
+            culture = {
+                is_cnp_supported_culture = yes
+            }
+            NOT = {
+                has_character_flag = has_reg_laqab
+                has_character_flag = has_regnal_laqab
+                has_character_flag = has_caliph_laqab
+                AND = {
+                    is_landed = no
+                    OR = {
+                        father = scope:actor
+                        mother = scope:actor
+                    }
+                }
+            }
+        }
+    }
+    is_valid = {
+        scope:actor = {
+            has_religion = religion:islam_religion
+            this.faith.religious_head = this
+            trigger_if = {
+                limit = { is_ai = yes }
+                opinion = {
+                    target = scope:recipient
+                    value >= 30
+                }
+            }
+        }
+        scope:recipient = {
+            has_religion = religion:islam_religion
+            this.faith.religious_head = scope:actor
+            culture = {
+                is_cnp_supported_culture = yes
+            }
+            NOT = {
+                has_character_flag = has_reg_laqab
+                has_character_flag = has_regnal_laqab
+                has_character_flag = has_caliph_laqab
+                AND = {
+                    is_landed = no
+                    OR = {
+                        father = scope:actor
+                        mother = scope:actor
+                    }
+                }
+            }
+        }
+    }
+    auto_accept = yes
+    send_option = {
+        is_shown = {
+            scope:actor = {
+                has_religion = religion:islam_religion
+                this.faith.religious_head = this
+            }
+            scope:recipient = {
+                has_religion = religion:islam_religion
+                this.faith.religious_head = scope:actor
+                culture = {
+                    is_cnp_supported_culture = yes
+                }
+            }
+        }
+        is_valid = {
+            scope:actor = {
+                has_religion = religion:islam_religion
+                this.faith.religious_head = this
+                trigger_if = {
+                    limit = { is_ai = yes }
+                    opinion = {
+                        target = scope:recipient
+                        value >= 30
+                    }
+                }
+            }
+            scope:recipient = {
+                has_religion = religion:islam_religion
+                this.faith.religious_head = scope:actor
+                culture = {
+                    is_cnp_supported_culture = yes
+                }
+            }
+        }
+        current_description = assign_caliph_laqab_get_event_desc
+        localization = assign_caliph_laqab_get_event
+    }
+    on_send = {
+        if = {
+            limit = { scope:actor = { is_ai = no } }
+            scope:actor = {
+                trigger_event = {
+                    id = arabicnamepack.004
+                    days = -1
+                }
+            }
+        }
+        else_if = {
+            limit = { scope:recipient = { is_ai = no } }
+            scope:recipient = {
+                trigger_event = {
+                    id = arabicnamepack.005
+                    days = -1
+                }
+            }
+        }
+        else = {
+            scope:recipient = {
+                trigger_event = {
+                    id = arabicnamepack.006
+                    days = -1
+                }
+            }
+        }
+    }
+    ai_targets = {
+        ai_recipients = peer_vassals
+        ai_recipients = sub_realm_characters
+        ai_recipients = realm_characters
+        ai_recipients = vassals
+        ai_recipients = liege
+        ai_recipients = war_allies
+        ai_recipients = neighboring_rulers
+        ai_recipients = guests
+        ai_recipients = dynasty
+        ai_recipients = courtiers
+        ai_recipients = spouses
+        ai_recipients = family
+        ai_recipients = children
+        ai_recipients = scripted_relations
+        chance = 0.25
+    }
+    ai_frequency = 36
+    ai_potential = {
+        always = yes
+    }
+    ai_will_do = 75
+}
+
+assign_faith_laqab = {
+    common_interaction = yes
+    category = interaction_category_friendly
+    popup_on_receive = no
+    needs_recipient_to_open = yes
+    ai_max_reply_days = 1
+
+    desc = assign_faith_laqab_desc
+
+    is_shown = {
+        scope:actor = {
+            has_religion = religion:islam_religion
+            is_independent_ruler = yes
+            highest_held_title_tier >= tier_kingdom
+            current_year >= 1050
+        }
+        scope:recipient = {
+            has_religion = religion:islam_religion
+            culture = {
+                is_cnp_supported_culture = yes
+            }
+            top_liege = scope:actor
+            NOT = {
+                has_character_flag = has_reg_laqab
+                has_character_flag = has_regnal_laqab
+                has_character_flag = has_caliph_laqab
+            }
+        }
+    }
+    is_valid = {
+        scope:actor = {
+            has_religion = religion:islam_religion
+            is_independent_ruler = yes
+            highest_held_title_tier >= tier_kingdom
+            trigger_if = {
+                limit = { is_ai = yes }
+                opinion = {
+                    target = scope:recipient
+                    value >= 30
+                }
+            }
+            current_year >= 1050
+        }
+        scope:recipient = {
+            has_religion = religion:islam_religion
+            culture = {
+                is_cnp_supported_culture = yes
+            }
+            top_liege = scope:actor
+            NOT = {
+                has_character_flag = has_reg_laqab
+                has_character_flag = has_regnal_laqab
+                has_character_flag = has_caliph_laqab
+            }
+        }
+    }
+    auto_accept = yes
+    send_option = {
+        is_shown = {
+            scope:actor = {
+                has_religion = religion:islam_religion
+                is_independent_ruler = yes
+                highest_held_title_tier >= tier_kingdom
+            }
+            scope:recipient = {
+                has_religion = religion:islam_religion
+                culture = {
+                    is_cnp_supported_culture = yes
+                }
+                top_liege = scope:actor
+            }
+        }
+        is_valid = {
+            scope:actor = {
+                has_religion = religion:islam_religion
+                is_independent_ruler = yes
+                highest_held_title_tier >= tier_kingdom
+                trigger_if = {
+                    limit = { is_ai = yes }
+                    opinion = {
+                        target = scope:recipient
+                        value >= 30
+                    }
+                }
+            }
+            scope:recipient = {
+                has_religion = religion:islam_religion
+                culture = {
+                    is_cnp_supported_culture = yes
+                }
+                top_liege = scope:actor
+            }
+        }
+        current_description = assign_faith_laqab_get_event_desc
+        localization = assign_faith_laqab_get_event
+    }
+    on_send = {
+        if = {
+            limit = { scope:actor = { is_ai = no } }
+            scope:actor = {
+                trigger_event = {
+                    id = arabicnamepack.007
+                    days = -1
+                }
+            }
+        }
+        else_if = {
+            limit = { scope:recipient = { is_ai = no } }
+            scope:recipient = {
+                trigger_event = {
+                    id = arabicnamepack.008
+                    days = -1
+                }
+            }
+        }
+        else = {
+            scope:recipient = {
+                trigger_event = {
+                    id = arabicnamepack.009
+                    days = -1
+                }
+            }
+        }
+    }
+    ai_targets = {
+        ai_recipients = realm_characters
+        ai_recipients = vassals
+        ai_recipients = courtiers
+        ai_recipients = guests
+        ai_recipients = sub_realm_characters
+        ai_recipients = spouses
+        ai_recipients = family
+        ai_recipients = children
+        chance = 0.25
+    }
+    ai_frequency = 36
+    ai_potential = {
+        always = yes
+    }
+    ai_will_do = 75
+}

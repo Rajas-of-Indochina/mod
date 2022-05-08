@@ -1,0 +1,119 @@
+﻿ctp_is_loaded = {
+	always = yes
+}
+
+is_cnp_supported_culture = {
+    OR = {
+	    AND = {
+            OR = {
+                has_cultural_pillar = heritage_arabic
+                has_cultural_pillar = heritage_north_germanic
+                has_cultural_pillar = heritage_iranian
+                has_cultural_pillar = heritage_goidelic
+            }
+            OR = {
+                has_cultural_pillar = language_arabic
+                has_cultural_pillar = language_norse
+                has_cultural_pillar = language_iranian
+                has_cultural_pillar = language_goidelic
+            }
+        }
+        AND = {
+            has_cultural_pillar = heritage_iberian
+            has_cultural_pillar = language_arabic
+        }
+    }
+    NAND = { #AntioutremerAktion
+        has_cultural_pillar = heritage_north_germanic
+        OR = {
+            has_cultural_pillar = language_arabic
+            has_cultural_pillar = language_iranian
+        }
+    }
+}
+
+KoH_loaded_checker = { 
+    exists = global_var:KoH_is_loaded
+}
+persian_muslim_check = {
+    culture = {
+        has_cultural_pillar = heritage_iranian
+    }
+    OR = {
+        AND = {
+            has_religion = religion:islam_religion
+            culture = {
+                has_cultural_pillar = language_iranian
+            }
+        }
+        culture = {
+            has_cultural_pillar = language_arabic
+        }
+    }
+}
+persian_standard_check = {
+    culture = {
+        is_cnp_supported_culture = yes
+        has_cultural_pillar = heritage_iranian
+    }
+}
+gall_goid_standard_check = {
+    culture = {
+        is_cnp_supported_culture = yes
+        OR = {
+            AND = {
+                has_cultural_pillar = heritage_goidelic
+                has_cultural_pillar = language_norse
+            }
+            AND = {
+                has_cultural_pillar = heritage_north_germanic
+                has_cultural_pillar = language_goidelic
+            }
+        }
+    }
+}
+goidelic_standard_check = {
+    culture = {
+        is_cnp_supported_culture = yes
+        has_cultural_pillar = heritage_goidelic
+    }
+}
+norse_standard_check = {
+    culture = {
+        is_cnp_supported_culture = yes
+        has_cultural_pillar = heritage_north_germanic
+    }
+}
+arabic_check = {
+    culture = {
+        is_cnp_supported_culture = yes
+    }
+    OR = {
+        culture = {
+            OR = {
+                has_cultural_pillar = heritage_arabic
+                AND = {
+                    has_cultural_pillar = language_arabic
+                    has_cultural_pillar = heritage_iberian
+                }
+            }
+        }
+        has_religion = religion:islam_religion
+    }
+}
+north_check = {
+    culture = {
+        is_cnp_supported_culture = yes
+        has_cultural_pillar = heritage_north_germanic
+    }
+}
+gall_goid_title_check = {
+    gall_goid_standard_check = yes
+    OR = {
+        has_government = feudal_government
+        has_government = tribal_government
+    }
+    NOT = {
+        has_religion = religion:islam_religion
+    }
+}

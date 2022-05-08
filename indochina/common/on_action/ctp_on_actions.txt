@@ -1,0 +1,180 @@
+﻿on_game_start = {
+	on_actions = {
+		on_867_start
+		on_867_start_sons
+		on_1066_start
+		on_1066_start_sons
+	}
+}
+on_1066_start_sons = {
+	trigger = {
+		game_start_date = 1066.9.15
+	}
+	effect = {
+		1066_persian_sons_start_up_effect = yes
+		1066_ancetor_storage_norse = yes
+		1066_arabic_son_start_up_effect = yes
+	}
+}
+on_867_start_sons = {
+	trigger = {
+		game_start_date = 867.1.1
+	}
+	effect = {
+		867_persian_sons_start_up_effect = yes
+		867_arabic_son_start_up_effect = yes
+		867_ancetor_storage_norse = yes
+	}
+}
+on_867_start = {
+	effect = {
+		867_persian_start_up_effect = yes
+		867_arabic_start_up_effect = yes
+		867_norse_start_up_effect = yes
+		867_irish_start_up_effect = yes
+	}
+}
+on_1066_start = {
+	trigger = {
+		current_date > 1066.9.14
+	}
+	effect = {
+		1066_persian_start_up_effect = yes
+		1066_norse_start_up_effect = yes
+		1066_arabic_start_up_effect = yes
+		1066_irish_start_up_effect = yes
+	}
+}
+on_game_start_after_lobby = {
+	on_actions = {
+		ctp_courtiers_2
+	}
+}
+ctp_courtiers_2 = {
+	effect = {
+		every_living_character = {
+			limit = {
+				culture = {
+					is_cnp_supported_culture = yes
+				}
+				save_temporary_scope_as = to_be_checked
+				OR = {
+					is_courtier = yes
+					highest_held_title_tier = tier_barony
+				}
+				NOT = {
+					has_character_flag = name_pack_support
+					AND = {
+						exists = dynasty
+						dynasty = {
+							any_in_list = {
+								variable = name_pack_support_dynasty
+								this = scope:to_be_checked
+							}
+						}
+					}
+					any_in_global_list = {
+						variable = name_pack_support_global
+						this = scope:to_be_checked
+					}
+					any_close_family_member = {
+						is_landed = yes
+					}
+				}
+				NAND = {
+					exists = primary_spouse
+					primary_spouse = {
+						is_landed = yes
+					}
+				}
+			}
+			courtier_effect_cnp = yes
+		}
+	}
+}
+ctp_courtiers = {
+	trigger = {
+		culture = {
+			is_cnp_supported_culture = yes
+		}
+		save_temporary_scope_as = to_be_checked
+		OR = {
+			is_courtier = yes
+			highest_held_title_tier = tier_barony
+		}
+		NOT = {
+			has_character_flag = name_pack_support
+			AND = {
+				exists = dynasty
+				dynasty = {
+					any_in_list = {
+						variable = name_pack_support_dynasty
+						this = scope:to_be_checked
+					}
+				}
+			}
+			any_in_global_list = {
+				variable = name_pack_support_global
+				this = scope:to_be_checked
+			}
+			any_close_family_member = {
+				is_landed = yes
+			}
+		}
+		NAND = {
+			exists = primary_spouse
+			primary_spouse = {
+				is_landed = yes
+			}
+		}
+	}
+	effect = {
+		courtier_effect_cnp = yes
+	}
+}
+random_yearly_everyone_pulse = {
+	on_actions = {
+		ctp_courtiers
+		north_nick
+		north_nick_courtiers
+	}
+}
+north_nick_courtiers = {
+	trigger = {
+		is_landed = yes
+		culture = {
+			has_cultural_pillar = heritage_north_germanic
+			has_cultural_pillar = language_norse
+		}
+	}
+	effect = {
+		every_courtier = {
+			limit = {
+				is_adult = yes
+				culture = {
+					has_cultural_pillar = heritage_north_germanic
+					has_cultural_pillar = language_norse
+				}
+				NOT = {
+					has_character_flag = got_north_nickname
+				}
+			}
+			North_Give_NickName_effect = yes
+		}
+	}
+}
+north_nick = {
+	trigger = {
+		is_adult = yes
+		culture = {
+			has_cultural_pillar = heritage_north_germanic
+			has_cultural_pillar = language_norse
+		}
+		NOT = {
+			has_character_flag = got_north_nickname
+		}
+	}
+	effect = {
+		North_Give_NickName_effect = yes
+	}
+}

@@ -1,0 +1,109 @@
+﻿on_birth_child = {
+	on_actions = {
+		on_birth_child_cnp
+        on_Umm_daughter_birth
+        on_Abu_daughter_birth
+        on_Umm_son_birth
+        on_Abu_son_birth
+	}
+}
+on_Abu_son_birth = {
+    trigger = {
+        NOT = {
+			has_trait = bastard
+		}
+		is_male = yes
+		exists = father
+		father = {
+			is_alive = yes
+			NOT = {
+				has_character_flag = had_eldest_son
+			}
+		}
+    }
+    effect = {
+        save_scope_as = ctp_eldest_son
+		father = {
+			add_character_flag = had_eldest_son
+			set_variable = { name = var_dad_eldest_son value = scope:ctp_eldest_son }
+		}
+    }
+}
+on_Umm_son_birth = {
+    trigger = {
+        NOT = {
+			has_trait = bastard
+		}
+		is_male = yes
+		exists = mother
+		mother = {
+			is_alive = yes
+			NOT = {
+				has_character_flag = had_eldest_son
+			}
+		}
+    }
+    effect = {
+        save_scope_as = ctp_eldest_son
+		mother = {
+			add_character_flag = had_eldest_son
+			set_variable = { name = var_mom_eldest_son value = scope:ctp_eldest_son }
+		}
+    }
+}
+on_Abu_daughter_birth = {
+    trigger = {
+        NOT = {
+			has_trait = bastard
+		}
+		is_male = no
+		exists = father
+		father = {
+			is_alive = yes
+			NOT = {
+				has_character_flag = had_eldest_son
+				has_character_flag = had_eldest_daughter 
+			}
+		}
+    }
+    effect = {
+        save_scope_as = ctp_eldest_daughter
+		father = {
+			add_character_flag = had_eldest_daughter
+			set_variable = { name = var_dad_eldest_daughter value = scope:ctp_eldest_daughter }
+		}
+    }
+}
+on_Umm_daughter_birth = {
+    trigger = {
+        NOT = {
+			has_trait = bastard
+		}
+		is_male = no
+		exists = mother
+		mother = {
+			is_alive = yes
+			NOT = {
+				has_character_flag = had_eldest_son
+				has_character_flag = had_eldest_daughter 
+			}
+		}
+    }
+    effect = {
+        save_scope_as = ctp_eldest_daughter
+		mother = {
+			add_character_flag = had_eldest_daughter
+			set_variable = { name = var_mom_eldest_daughter value = scope:ctp_eldest_daughter }
+		}
+    }
+}
+on_birth_child_cnp = {
+    trigger = {
+        culture = {
+            is_cnp_supported_culture = yes
+        }
+    }
+	effect = {
+		courtier_effect_cnp = yes
+	}
+}
