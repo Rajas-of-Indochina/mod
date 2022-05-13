@@ -1,0 +1,535 @@
+﻿on_game_start = {
+	on_actions = {
+		on_laws_start
+	}
+}
+
+on_laws_start = {
+	effect = {
+		every_ruler = {
+			limit = {
+				has_imperial_laws = yes
+			}
+			set_variable = {
+				name = mil_comp
+				value = 1500
+			}
+			set_variable = {
+				name = civic_comp
+				value = 1500
+			}
+			set_variable = {
+				name = diplo_comp
+				value = 1500
+			}
+		}
+	}
+	on_actions = {
+		delay = { years = 1 }
+		on_yearly_mil_laws
+		on_yearly_civic_laws
+		on_yearly_diplo_laws
+	}
+}
+
+on_yearly_mil_laws = {
+	effect = {
+		every_ruler = {
+			if = {
+				limit = {
+					AND = {
+						has_imperial_laws = yes
+						NOT = {exists = var:mil_comp}
+					}
+				}
+				set_variable = {
+					name = mil_comp
+					value = 1500
+				}
+			}
+			if = {
+				limit = {
+					AND = {
+						has_imperial_laws = yes
+						var:mil_comp.compare_value = 0
+						var:civic_comp.compare_value = 0
+						var:diplo_comp.compare_value = 0
+						OR = {
+							has_title = title:e_byzantium
+							has_title = title:e_roman_empire
+						}
+					}
+				}
+				trigger_event = collapse.0001
+			}
+
+			if = {
+				limit = {
+					exists = var:mil_comp
+					NOT = {
+						var:mil_comp.compare_value = 0
+					}
+					has_imperial_laws = yes
+				}
+				every_ally = {
+					PREV = {
+						change_variable = {
+							name = mil_comp
+							add = 10
+						}
+					}
+				}
+
+				if = {
+					limit = {
+						OR = {
+							has_title = title:e_byzantium
+							has_title = title:e_roman_empire
+						}
+						max_military_strength < 3000
+					}
+					set_variable = {
+						name = temp_max_mil
+						value = max_military_strength
+					}
+					change_variable = {
+						name = temp_max_mil
+						subtract = 3000
+					}
+					change_variable = {
+						name = temp_max_mil
+						multiply = 50
+					}
+					change_variable = {
+						name = mil_comp
+						add = var:temp_max_mil
+					}
+				}
+
+				if = {
+					limit = {
+						has_variable_list = legion_counties
+					}
+					every_in_list = {
+						variable = legion_counties
+						PREV = {
+							change_variable = {
+								name = mil_comp
+								add = 15
+							}
+						}
+					}
+				}
+	
+				
+				set_variable = {
+					name = temp_mil
+					value = number_of_maa_regiments
+				}
+				set_variable = {
+					name = temp_mil_2
+					value = max_military_strength
+				}
+				change_variable = {
+					name = temp_mil_2
+					divide = 1000
+				}
+				change_variable = {
+					name = temp_mil
+					divide = var:temp_mil_2
+				}
+				change_variable = {
+					name = temp_mil
+					subtract = 0.6
+				}
+				if = {
+					limit = {
+						AND = {
+							var:temp_mil.compare_value < 0
+							number_of_maa_regiments < 5
+						}
+					}
+					change_variable = {
+						name = temp_mil
+						multiply = 700
+					}
+				}
+				else_if = {
+					limit = {
+						OR = {
+							var:temp_mil.compare_value > 0
+							number_of_maa_regiments = 5
+						}
+					}
+					change_variable = {
+						name = temp_mil
+						multiply = 100
+					}
+				}
+				else_if = {
+					limit = {
+						OR = {
+							number_of_maa_regiments > 5
+						}
+					}
+					change_variable = {
+						name = temp_mil
+						multiply = 50
+					}
+				}
+				change_variable = {
+					name = mil_comp
+					add = var:temp_mil
+				}
+				clamp_variable = {
+					name = mil_comp
+					max = 5000
+					min = 0
+				}
+				if = {
+					limit = {
+						AND = {
+							var:mil_comp.compare_value = 0
+						}
+					}
+					trigger_event = collapse.0002
+				}
+				if = {
+					limit = {
+						AND = {
+							var:civic_comp.compare_value = 0
+							var:mil_comp.compare_value = 0
+							var:diplo_comp.compare_value = 0
+						}
+					}
+					trigger_event = collapse.0001
+				}
+			}
+
+			
+
+			
+		}
+	}
+	on_actions = {
+		delay = { years = 1 }
+		on_yearly_mil_laws
+	}
+}
+
+on_yearly_civic_laws = {
+	effect = {
+		every_ruler = {
+			if = {
+				limit = {
+					AND = {
+						has_imperial_laws = yes
+						NOT = {exists = var:civic_comp}
+					}
+				}
+				set_variable = {
+					name = civic_comp
+					value = 1500
+				}
+			}
+
+			if = {
+				limit = {
+					exists = var:civic_comp
+					NOT = {
+						var:civic_comp.compare_value = 0
+					}
+					has_imperial_laws = yes
+				}
+				every_realm_county = {
+					limit = {
+						development_level > 20
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							add = 15
+						}
+					}
+				}
+				every_realm_county = {
+					limit = {
+						development_level <= 5
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							subtract = 1
+						}
+					}
+				}
+				every_vassal = {
+					limit = {
+						has_realm_law = centeral_law_policy_4
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							add = 15
+						}
+					}
+				}
+				every_vassal = {
+					limit = {
+						has_realm_law = centeral_law_policy_3
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							add = 10
+						}
+					}
+				}
+				every_vassal = {
+					limit = {
+						has_realm_law = centeral_law_policy_2
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							add = 5
+						}
+					}
+				}
+				every_vassal = {
+					limit = {
+						has_realm_law = centeral_law_policy_1
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							add = 1
+						}
+					}
+				}
+
+				every_vassal = {
+					limit = {
+						has_realm_law = de_centeral_law_policy_4
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							subtract = 20
+						}
+					}
+				}
+				every_vassal = {
+					limit = {
+						has_realm_law = de_centeral_law_policy_3
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							subtract = 15
+						}
+					}
+				}
+				every_vassal = {
+					limit = {
+						has_realm_law = de_centeral_law_policy_2
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							subtract = 5
+						}
+					}
+				}
+				every_vassal = {
+					limit = {
+						has_realm_law = de_centeral_law_policy_1
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							subtract = 1
+						}
+					}
+				}
+				every_realm_county = {
+					limit = {
+						county_control < 10
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							subtract = 2
+						}
+					}
+				}
+	
+				every_realm_province = {
+					limit = {
+						num_buildings >= 3
+					}
+					PREV = {
+						change_variable = {
+							name = civic_comp
+							add = 10
+						}
+					}
+				}
+	
+	
+				clamp_variable = {
+					name = civic_comp
+					max = 5000
+					min = 0
+				}
+				if = {
+					limit = {
+						AND = {
+							var:civic_comp.compare_value = 0
+						}
+					}
+					trigger_event = collapse.0003
+				}
+				if = {
+					limit = {
+						AND = {
+							var:civic_comp.compare_value = 0
+							var:mil_comp.compare_value = 0
+							var:diplo_comp.compare_value = 0
+						}
+					}
+					trigger_event = collapse.0001
+				}
+			}
+
+			
+
+			
+		}
+	}
+	on_actions = {
+		delay = { years = 1 }
+		on_yearly_civic_laws
+	}
+}
+
+on_yearly_diplo_laws = {
+	effect = {
+		every_ruler = {
+			if = {
+				limit = {
+					AND = {
+						has_imperial_laws = yes
+						NOT = {exists = var:diplo_comp}
+					}
+				}
+				set_variable = {
+					name = diplo_comp
+					value = 1500
+				}
+			}
+
+			if = {
+				limit = {
+					exists = var:diplo_comp
+					NOT = {
+						var:diplo_comp.compare_value = 0
+					}
+					has_imperial_laws = yes
+				}
+				every_realm_county = {
+					limit = {
+						county_opinion > 70
+					}
+					PREV = {
+						change_variable = {
+							name = diplo_comp
+							add = 20
+						}
+					}
+				}
+				every_realm_county = {
+					limit = {
+						county_opinion <= -30
+					}
+					PREV = {
+						change_variable = {
+							name = diplo_comp
+							subtract = 5
+						}
+					}
+				}
+				every_ally = {
+					PREV = {
+						change_variable = {
+							name = diplo_comp
+							add = 10
+						}
+					}
+				}
+				every_vassal = {
+					limit = {
+						opinion = {
+							target = PREV
+							value > 60
+						}
+					}
+					PREV = {
+						change_variable = {
+							name = diplo_comp
+							add = 10
+						}
+					}
+				}
+				every_vassal = {
+					limit = {
+						opinion = {
+							target = PREV
+							value < -30
+						}
+					}
+					PREV = {
+						change_variable = {
+							name = diplo_comp
+							subtract = 5
+						}
+					}
+				}
+	
+	
+	
+				clamp_variable = {
+					name = diplo_comp
+					max = 5000
+					min = 0
+				}
+				if = {
+					limit = {
+						AND = {
+							var:diplo_comp.compare_value = 0
+						}
+					}
+					trigger_event = collapse.0004
+				}
+				if = {
+					limit = {
+						AND = {
+							var:civic_comp.compare_value = 0
+							var:mil_comp.compare_value = 0
+							var:diplo_comp.compare_value = 0
+						}
+					}
+					trigger_event = collapse.0001
+				}
+			}
+
+			
+
+			
+		}
+	}
+	on_actions = {
+		delay = { years = 1 }
+		on_yearly_diplo_laws
+	}
+}

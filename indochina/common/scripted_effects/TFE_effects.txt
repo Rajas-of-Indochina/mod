@@ -1,0 +1,383 @@
+﻿nomadic_migration_effect = {
+	$INVADER$ = {
+			
+		every_liege_or_above = {
+			limit = {
+				any_held_title = {
+						tier >= tier_empire
+				}
+			}
+			save_scope_as = byzantine_emperor
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_title = $TITLE_TARGET$
+					any_held_title = {
+						tier >= tier_kingdom
+						count >= 2
+					}
+				}
+				every_held_title = {
+					limit = {
+						tier >= tier_kingdom
+						NOT = { this = $TITLE_TARGET$ }
+					}
+					save_temporary_scope_as = excess_kingdom
+					$INVADER$ = { destroy_title = scope:excess_kingdom }
+				}
+			}
+		}
+		hidden_effect = {
+			#All direct vassal non-Mogyers are given their independence, unless they hold land within Pannonia.
+			every_vassal = {
+				limit = {
+					highest_held_title_tier >= tier_county
+					any_held_title = {
+						count = all
+					}
+				}
+				create_title_and_vassal_change = {
+					type = independency
+					save_scope_as = change
+					add_claim_on_loss = no
+				}
+				becomes_independent = { change = scope:change }
+				resolve_title_and_vassal_change = scope:change
+			}
+			#... And catch the stragglers. Has to be a separate effect block, or we'll ruin the de facto structure.
+			every_vassal_or_below = {
+				limit = {
+					highest_held_title_tier >= tier_county
+				}
+				create_title_and_vassal_change = {
+					type = independency
+					save_scope_as = change
+					add_claim_on_loss = no
+				}
+				becomes_independent = { change = scope:change }
+				resolve_title_and_vassal_change = scope:change
+			}
+			#Reserve a duchy, preferring the capital, for $INVADER$.
+			if = {
+				limit = { $TITLE_TARGET$.title_capital_county.duchy.holder = $INVADER$ }
+				$TITLE_TARGET$.title_capital_county.duchy = { save_scope_as = reserved_title }
+			}
+			#... Of course, if we can't have the capital for some reason, grab any random duchy in Pannonia.
+			else = {
+				random_held_title = {
+					limit = {
+						tier = tier_duchy
+					}
+					save_scope_as = reserved_title
+				}
+			}
+			#Find all Mogyer vassals outside of Pannonia.
+			every_vassal_or_below = {
+				limit = {
+					highest_held_title_tier >= tier_county
+				}
+				add_to_list = german_vassals_list
+			}
+			#Find all Pannonian titles held by $INVADER$ that aren't reserved.
+			every_held_title = {
+				limit = {
+					#Technically we could use any_this_title_or_de_jure_above for the following two checks, but it was being problematic and this does the same thing (just more cumbersomely).
+					OR = {
+						tier = tier_county
+						tier = tier_duchy
+					}
+					NOT = { this = scope:reserved_title }
+				}
+				add_to_list = spare_illyirian_titles_list
+			}
+			#Attempt to give out Pannonian holdings to the vassals who are about to lose land, prioritising players by tier, then NPCs by tier.
+			##Now, process duchy title assignment.
+			every_in_list = {
+				list = german_vassals_list
+				#Players first.
+				limit = {
+					is_ai = no
+					launch_hungarian_migration_ducal_processing_trigger = yes
+				}
+				#NPCs after that.
+				alternative_limit = {
+					is_ai = yes
+					launch_hungarian_migration_ducal_processing_trigger = yes
+				}
+				#Grab the appropriate vassal.
+				save_temporary_scope_as = receiving_vassal
+				#If $INVADER$ has a suitable spare ducal title, hand it over.
+				if = {
+					limit = {
+						any_in_list = {
+							list = spare_illyirian_titles_list
+							tier = tier_duchy
+							holder = $INVADER$
+						}
+					}
+					#Save the suitable title.
+					random_in_list = {
+						list = spare_illyirian_titles_list
+						limit = {
+							tier = tier_duchy
+							holder = $INVADER$
+						}
+						every_in_de_jure_hierarchy = {
+							limit = {
+								holder = $INVADER$
+								tier >= tier_county
+							}
+							add_to_list = multiple_donated_titles
+						}
+					}
+					#Hand it to the receiving vassal.
+					create_title_and_vassal_change = {
+						type = granted
+						save_scope_as = change
+						add_claim_on_loss = no
+					}
+					every_in_list = {
+						list = multiple_donated_titles
+						save_temporary_scope_as = donated_title
+						scope:donated_title = {
+							change_title_holder = {
+								holder = scope:receiving_vassal
+								change = scope:change
+							}
+						}
+						remove_from_list = multiple_donated_titles
+					}
+					resolve_title_and_vassal_change = scope:change
+				}
+			}
+			##Finally, process county title assignment.
+			###First, attempt to pair de facto sub-vassals to their lieges.
+			every_in_list = {
+				list = german_vassals_list
+				#Players first.
+				limit = {
+					is_ai = no
+					launch_hungarian_migration_count_processing_trigger = yes
+				}
+				#NPCs after that.
+				alternative_limit = {
+					is_ai = yes
+					launch_hungarian_migration_count_processing_trigger = yes
+				}
+				#Grab the appropriate vassal.
+				save_temporary_scope_as = receiving_vassal
+				#If $INVADER$ has a suitable spare county title, hand it over.
+				if = {
+					#Try to pair vassals with their lieges first.
+					limit = {
+						#Direct vassals shouldn't bother to try pairing.
+						NOT = { liege = $INVADER$ }
+						any_in_list = {
+							list = spare_illyirian_titles_list
+							launch_hungarian_migration_sub_vassal_liege_pairing_trigger = yes
+						}
+					}
+					#Save the suitable title.
+					random_in_list = {
+						list = spare_illyirian_titles_list
+						limit = {
+							#Direct vassals shouldn't bother to try pairing.
+							NOT = { scope:receiving_vassal.liege = $INVADER$ }
+							#Run the stock trigger.
+							launch_hungarian_migration_sub_vassal_liege_pairing_trigger = yes
+							#Don't give away the new liege's primary title's capital county.
+							NOT = {	this = holder.primary_title.title_capital_county }
+						}
+						save_temporary_scope_as = donated_title
+					}
+					#Hand it to the receiving vassal.
+					create_title_and_vassal_change = {
+						type = granted
+						save_scope_as = change
+						add_claim_on_loss = no
+					}
+					scope:donated_title = {
+						change_title_holder = {
+							holder = scope:receiving_vassal
+							change = scope:change
+						}
+					}
+					resolve_title_and_vassal_change = scope:change
+				}
+			}
+			###Then, filter through any remaining direct vassals.
+			every_in_list = {
+				list = german_vassals_list
+				#Players first.
+				limit = {
+					is_ai = no
+					launch_hungarian_migration_count_processing_trigger = yes
+				}
+				#NPCs after that.
+				alternative_limit = {
+					is_ai = yes
+					launch_hungarian_migration_count_processing_trigger = yes
+				}
+				#Grab the appropriate vassal.
+				save_temporary_scope_as = receiving_vassal
+				#If $INVADER$ has a suitable spare county title, hand it over.
+				if = {
+					#Otherwise, grab any spare valid title that $INVADER$ has lying around.
+					limit = {
+						any_in_list = {
+							list = spare_illyirian_titles_list
+							launch_hungarian_migration_direct_vassal_requirements_trigger = { INVADER = $INVADER$ }
+						}
+					}
+					#Save the suitable title.
+					random_in_list = {
+						list = spare_illyirian_titles_list
+						limit = {
+							launch_hungarian_migration_direct_vassal_requirements_trigger = { INVADER = $INVADER$ }
+						}
+						save_temporary_scope_as = donated_title
+					}
+					#Hand it to the receiving vassal.
+					create_title_and_vassal_change = {
+						type = granted
+						save_scope_as = change
+						add_claim_on_loss = no
+					}
+					scope:donated_title = {
+						change_title_holder = {
+							holder = scope:receiving_vassal
+							change = scope:change
+						}
+					}
+					resolve_title_and_vassal_change = scope:change
+				}
+			}
+			##Clean-up: any landless characters should move to $INVADER$'s court.
+			every_in_list = {
+				list = german_vassals_list
+				limit = { is_ruler = no}
+				save_temporary_scope_as = landless_german_vassal
+				$INVADER$ = { add_courtier = scope:landless_german_vassal }
+			}
+			#Sum all remaining territory outside of Pannonia & give that territory to created local characters.
+			##Start by trying to group duchies.
+			every_sub_realm_title = {
+				#First we try to make duchy power blocks.
+				if = {
+					#Grab duchies outside of Pannonia.
+					limit = {
+						NOT = {
+							title_province = { geographical_region = custom_roman_illyricum }
+						}
+						tier = tier_duchy
+					}
+					save_temporary_scope_as = seceding_duchy
+					#Now grab the duchy & any sub-realm counties beneath it outside of Pannonia, and filter them to a list for processing.
+					scope:seceding_duchy = {
+						every_in_de_jure_hierarchy = {
+							limit = {
+								tier >= tier_county
+								OR = {
+									holder = $INVADER$
+									holder = {
+										any_liege_or_above = { this = $INVADER$ }
+									}
+								}
+							}
+							add_to_temporary_list = seceding_duchy_list
+						}
+					}
+					#Create a local peasant warlord for the duchy & counties.
+					create_character = {
+						location = scope:seceding_duchy.title_capital_county.title_province
+						template = post_migration_local_warlord_template
+						save_scope_as = local_warlord
+					}
+					#Assign the seceding titles to the new peasant warlord.
+					create_title_and_vassal_change = {
+						type = usurped
+						save_scope_as = change
+						add_claim_on_loss = no
+					}
+					every_in_list = {
+						list = seceding_duchy_list
+						limit = {
+							NAND = {
+								tier = tier_county
+								title_province = { geographical_region = custom_hungary }
+							}
+						}
+						change_title_holder = {
+							holder = scope:local_warlord
+							change = scope:change
+							take_baronies = yes
+						}
+						remove_from_list = seceding_duchy_list
+					}
+					resolve_title_and_vassal_change = scope:change
+					#And give the warlord their independence.
+					create_title_and_vassal_change = {
+						type = usurped
+						save_scope_as = change
+						add_claim_on_loss = no
+					}
+					scope:local_warlord = {
+						change_liege = { 
+						liege = scope:byzantine_emperor
+						change = scope:change }
+					}
+					resolve_title_and_vassal_change = scope:change
+				}	
+			}		
+		}
+		
+	}
+}
+
+restore_the_west_effect = { # Restore Western Rome - Hróðvitnir
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:e_roman_empire = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+	hidden_effect = { set_primary_title_to = title:e_roman_empire }
+	hidden_effect = { add_character_flag = flag_restorer_of_rome }
+}
+
+restore_the_east_effect = { # Restore Eastern Rome - Hróðvitnir
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:e_byzantium = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+	hidden_effect = { set_primary_title_to = title:e_byzantium }
+	hidden_effect = { add_character_flag = flag_restorer_of_rome }
+}
+
+set_obligation_if_changed_effect = {
+	if = {
+		limit = {
+			exists = local_var:$OBLIGATION_TYPE$
+			local_var:$OBLIGATION_TYPE$ != vassal_contract_obligation_level:$OBLIGATION_TYPE$
+		}
+		vassal_contract_set_obligation_level = {
+			type = $OBLIGATION_TYPE$
+			level = local_var:$OBLIGATION_TYPE$
+		}
+	}
+}

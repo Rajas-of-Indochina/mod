@@ -1,0 +1,266 @@
+﻿#A decision to feudalize the entire realm (wow!)
+convert_whole_realm_to_feudalism_decision = { #by Linnéa Thimrén
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	desc = convert_whole_realm_to_feudalism_decision_desc
+
+	ai_check_interval = 36
+
+	is_shown = {
+		OR = {
+			has_government = tribal_government
+			has_government = nomadic_government
+		}
+		OR = {
+			is_independent_ruler = yes
+			AND = {
+				is_independent_ruler = no
+				liege = {
+					NOR = {
+						has_government = feudal_government
+						has_government = autocratic_government
+						has_government = eranshar_government
+						has_government = imperial_government
+						has_government = gupta_government
+						has_government = clan_government
+						has_government = muslim_government
+						has_government = caliphate_government
+					}
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		OR = {
+			has_realm_law = tribal_authority_3
+			has_realm_law = nomadic_authority_3
+		}
+		custom_description = {
+			text = faith_is_reformed
+			subject = root
+			faith = { NOT = { has_doctrine_parameter = unreformed } }
+		}
+		prestige_level >= 2
+		capital_province.county = {
+			development_level >= convert_to_feudalism_development_requirement
+		}
+
+		custom_description = { #You need to have 70% of all (non-regional/unique) tribal innovations!
+			text = has_all_tribal_innovations
+			subject = root.culture
+			culture = {
+				calc_true_if = {
+					amount >= 9
+					has_innovation = innovation_motte
+					has_innovation = innovation_catapult
+					has_innovation = innovation_barracks
+					has_innovation = innovation_mustering_grounds
+					has_innovation = innovation_bannus
+					has_innovation = innovation_quilted_armor
+					has_innovation = innovation_gavelkind
+					has_innovation = innovation_crop_rotation
+					has_innovation = innovation_city_planning
+					has_innovation = innovation_casus_belli
+					has_innovation = innovation_plenary_assemblies
+					has_innovation = innovation_ledger
+					has_innovation = innovation_development_01
+					has_innovation = innovation_currency_01
+				}
+			}
+		}
+	}
+
+	cost = {
+		prestige = 200
+	}
+
+	effect = {
+		trigger_event = major_decisions.0001
+		save_scope_as = actor
+		convert_whole_realm_to_feudalism_effect = yes
+		hidden_effect = {
+			every_vassal = {
+				trigger_event = {
+					id = major_decisions.0002
+					days = 3
+				}
+			}
+		}
+	}
+
+	ai_potential = {
+		NOT = { has_title = title:e_mongol_empire } #Stop the Mongols from slowing their conquest.
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+convert_to_feudalism_liege_converted_decision = { #by Linnéa Thimrén
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	desc = convert_to_feudalism_liege_converted_decision_desc
+
+	ai_check_interval = 36
+
+	is_shown = {
+		OR = {
+			has_government = tribal_government
+			has_government = nomadic_government
+		}
+		liege = {
+			OR = {
+				has_government = feudal_government
+				has_government = autocratic_government
+				has_government = eranshar_government
+				has_government = imperial_government
+				has_government = gupta_government
+				has_government = clan_government
+				has_government = muslim_government
+				has_government = caliphate_government
+			}
+		}
+	}
+
+	is_valid = {
+		OR = {
+			has_realm_law = tribal_authority_1
+			has_realm_law = tribal_authority_2
+			has_realm_law = tribal_authority_3
+			has_realm_law = nomadic_authority_1
+			has_realm_law = nomadic_authority_2
+			has_realm_law = nomadic_authority_3
+		}
+		custom_description = {
+			text = faith_is_reformed
+			subject = root
+			faith = { NOT = { has_doctrine_parameter = unreformed } }
+		}
+		custom_description = {
+			text = recent_conversion_to_tribalism
+			NOT = { has_character_flag = just_converted_to_tribalism }
+		}
+	}
+
+	cost = {
+		prestige = 150
+	}
+
+	effect = {
+		trigger_event = major_decisions.0001
+		save_scope_as = actor
+		convert_whole_realm_to_feudalism_effect = yes
+		hidden_effect = {
+			every_vassal = {
+				trigger_event = {
+					id = major_decisions.0002
+					days = 3
+				}
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+launch_hungarian_migration_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	major = yes
+
+	ai_check_interval = 60
+
+	desc = launch_hungarian_migration_decision_desc
+	selection_tooltip = launch_hungarian_migration_decision_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		exists = dynasty
+		#Either be independent, or else not beneath another Mogyer.
+		OR = {
+			is_independent_ruler = yes
+			NOT = { liege = { culture = culture:mogyer } }
+		}
+		#Must be a steppe Hungarian.
+		culture = culture:mogyer
+		#Must not already control a large chunk of Pannonia.
+		NOT = {
+			any_county_in_region = {
+				region = custom_hungary
+				count >= 12
+				OR = {
+					holder = root
+					holder = {
+						any_liege_or_above = { this = root }
+					}
+				}
+			}
+		}
+		#You can only do it once.
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_launched_hungarian_migration
+			}
+		}
+		#And the moment for the migration must not have passed.
+		current_date <= 911.1.1
+	}
+
+	is_valid = {
+		#An emperor does not voluntarily lose a tier.
+		highest_held_title_tier <= tier_kingdom
+		#Cannot be a settled people.
+		OR = {
+			has_government = tribal_government
+			has_government = nomadic_government
+		}
+		#Reshow this here so that players realise they're on a timer.
+		custom_description = {
+			text = launch_hungarian_migration_decision_before_last_date
+			current_date <= 911.1.1
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		#Can't be fighting elsewhere.
+		is_at_war = no
+	}
+
+	effect = {
+		save_scope_as = invader
+		custom_tooltip = launch_hungarian_migration_decision_flavour_effect
+		add_character_flag = undertaking_hungarian_migration
+		trigger_event = east_europe.0141
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_launched_hungarian_migration
+			}
+		}
+	}
+
+	cost = {
+		#Charge a reasonable lump of prestige.
+		prestige = 1000
+	}
+
+	ai_potential = {
+		#AI decision making is governed via event.
+		always = no
+	}
+
+	ai_will_do = {
+		#AI decision making is governed via event.
+		base = 0
+	}
+}

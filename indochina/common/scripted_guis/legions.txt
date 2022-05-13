@@ -1,0 +1,76 @@
+﻿create_legion = { 
+	scope = character 
+	saved_scopes = {
+		county
+	}
+
+	effect = {
+		create_character = {
+			culture = root.culture
+			gender = male
+			dynasty = generate
+			faith = root.faith
+			location = root.capital_province
+			save_scope_as = legion_holder
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = title_change
+			add_claim_on_loss = no
+		}
+		scope:county = {
+			change_title_holder = {
+				holder = scope:legion_holder
+				change = scope:title_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:title_change
+		remove_short_term_gold = 2000
+
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:legion_holder = {
+			change_liege = {
+				liege = root
+				change = scope:change
+			}
+			change_government = legion_government
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		scope:county = {
+			save_temporary_scope_as = new_legion_tmp
+			PREV = {
+				add_to_variable_list = {
+					name = legion_counties
+					target = scope:new_legion_tmp
+				}
+				every_vassal = {
+					add_to_variable_list = {
+						name = legion_counties
+						target = scope:new_legion_tmp
+					}
+				}
+				if = {
+					limit = {
+						is_independent_ruler = no
+					}
+					every_liege_or_above = {
+						add_to_variable_list = {
+							name = legion_counties
+							target = scope:new_legion_tmp
+						}
+					}
+				}
+				remove_list_variable = {
+					name = legion_county_available
+					target = scope:new_legion_tmp
+				}
+
+			}
+		}
+	}	 			
+}

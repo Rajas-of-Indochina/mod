@@ -1,0 +1,133 @@
+﻿namespace = economy
+
+economy.0001 = {
+	title = economy.0001.t
+	desc = economy.0001.desc
+	scope = character
+	theme = stewardship
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	option = {
+		name = economy.0001.a
+		add_stress = -30
+	}
+}
+
+economy.0002 = {
+	title = economy.0002.t
+	desc = economy.0002.desc
+	scope = character
+	theme = stewardship
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = economy.0002.a
+		add_stress = 30
+	}
+}
+
+economy.0003 = {
+	title = economy.0003.t
+	desc = economy.0003.desc
+	scope = character
+	theme = stewardship
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	option = {
+		name = economy.0003.a
+		add_character_modifier = {
+			modifier = traders_attracted_modifier
+			years = 5
+		}
+	}
+	option = {
+		name = economy.0003.b
+		add_gold = 500
+	}
+	option = {
+		name = economy.0003.c
+		add_prestige = 1000
+		capital_county = {
+			add_county_modifier = {
+				modifier = gave_back_gift
+				years = 5
+			}
+		}
+	}
+}
+
+economy.0004 = {
+	title = economy.0004.t
+	desc = economy.0004.desc
+	scope = character
+	theme = stewardship
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = economy.0004.a
+		trigger = {
+			any_vassal = {
+				count > 0
+
+				highest_held_title_tier > tier_barony
+			}
+		}
+		random_vassal = {
+			limit = {
+				highest_held_title_tier > tier_barony
+			}
+			create_title_and_vassal_change = {
+				type = independency
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			becomes_independent = { change = scope:change }
+			resolve_title_and_vassal_change = scope:change
+		}
+		add_gold = 500
+	}
+	option = {
+		name = economy.0004.b
+		add_prestige = -1500
+		add_character_modifier = {
+			modifier = gave_out_titles
+			years = 2
+		}
+	}
+	option = {
+		name = economy.0004.c
+		custom_tooltip = economy.0004.c.tt
+		hidden_effect = {
+			every_realm_county = {
+				add_county_modifier = {
+					modifier = ignored_unstable_economy
+					years = 6
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,129 @@
+﻿on_game_start = {
+	on_actions = {
+		on_economic_start
+	}
+}
+
+on_economic_start = {
+	effect = {
+		every_ruler = {
+			limit = { 
+				NOT = {exists = var:ecostability}
+				has_government = city_state_government
+			}
+			set_variable = {
+				name = ecostability
+				value = 0
+			}
+		}
+	}
+	on_actions = {
+		delay = { months = 1 }
+		on_monthly_economic
+	}
+}
+
+
+on_monthly_economic = {
+	effect = {
+		every_ruler = {
+			if = {
+				limit = { 
+					NOT = {exists = var:ecostability}
+					has_government = city_state_government
+				}
+				set_variable = {
+					name = ecostability
+					value = 0
+				}
+			}
+
+			if = {
+				limit = { 
+					exists = var:ecostability
+					NOT = {has_government = city_state_government}
+				}
+				remove_variable = ecostability
+			}
+			
+			if = {
+				limit = {
+					has_government = city_state_government
+				}
+				change_variable = {
+					name = ecostability
+					add = monthly_character_income
+				}
+				change_variable = {
+					name = ecostability
+					subtract = monthly_character_expenses
+				}
+				clamp_variable = {
+					name = ecostability
+					max = 150
+					min = -150
+				}
+				if = {
+					limit = {
+						var:ecostability.compare_value >= 50
+						NOT = { has_character_flag = recent_economy_event}
+					}
+					add_character_flag = {
+						flag = recent_economy_event
+						years = 10
+					}
+					if = {
+						limit = {
+							var:ecostability.compare_value > 100
+						}
+						trigger_event = {
+							id = economy.0003
+							days = 1
+						}
+					}
+					if = {
+						limit = {
+							var:ecostability.compare_value < 100
+						}
+						trigger_event = {
+							id = economy.0001
+							days = 1
+						}
+					}
+				}
+				if = {
+					limit = {
+						var:ecostability.compare_value <= -50
+						NOT = { has_character_flag = recent_economy_event}
+					}
+					add_character_flag = {
+						flag = recent_economy_event
+						years = 10
+					}
+					if = {
+						limit = {
+							var:ecostability.compare_value < -100
+						}
+						trigger_event = {
+							id = economy.0004
+							days = 1
+						}
+					}
+					if = {
+						limit = {
+							var:ecostability.compare_value > -100
+						}
+						trigger_event = {
+							id = economy.0002
+							days = 1
+						}
+					}
+				}
+			}
+			}
+	}
+	on_actions = {
+		delay = { months = 1 }
+		on_monthly_economic
+	}
+}

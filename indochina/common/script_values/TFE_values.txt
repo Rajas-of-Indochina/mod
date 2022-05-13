@@ -1,0 +1,304 @@
+﻿cal_authority_target = {
+	value = 10
+
+	every_realm_province = {
+		limit = {
+			barony = { is_holy_site_of = faith }
+		}
+		add = 2
+
+	}
+
+	if = {
+		limit = {
+			NOT = { any_realm_province = { barony = { is_holy_site_of = faith } } } 
+		}
+		subtract = 2
+		
+	}
+
+	if = {
+		limit = {
+			piety_level = max_piety_level
+		}
+		add = 10
+		
+	}
+	if = {
+		limit = {
+			piety_level = very_high_piety_level
+		}
+		add = 5
+		
+	}
+	if = {
+		limit = {
+			piety_level = high_piety_level
+		}
+		add = 3
+		
+	}
+	if = {
+		limit = {
+			piety_level = low_piety_level
+		}
+		subtract = 2
+		
+	}
+
+	if = {
+		limit = {
+			has_character_flag = islam_prophet
+			
+		}
+		add = 200
+	}
+
+	max = 100
+	min = 0
+}
+
+
+mil_competence_net = {
+	value = 0
+
+	every_ally = {
+		add = 10
+	}
+
+	add = mil_competence_empire
+  	add = mil_competence_legions
+
+	
+	add = mil_competence_sub_value_3
+}
+
+mil_competence_empire = {
+	value = 0
+	if = {
+		limit = {
+			OR = {
+				has_title = title:e_byzantium
+				has_title = title:e_western_roman_empire
+				has_title = title:e_roman_empire
+			}
+			max_military_strength < 3000
+		}
+		add = max_military_strength
+		subtract = 3000
+
+		multiply = 50
+	}
+
+}
+
+mil_competence_legions = {
+	value = 0
+	if = {
+		limit = {
+			has_variable_list = legion_counties
+		}
+		every_in_list = {
+			variable = legion_counties
+			add = 15
+		}
+	}
+}
+
+mil_competence_sub_value_2 = {
+	value = max_military_strength
+
+	divide = 1000
+}
+
+mil_competence_sub_value_3 = {
+	value = number_of_maa_regiments
+
+	divide = mil_competence_sub_value_2
+
+	if = {
+		limit = {
+			has_government = autocratic_government
+		}
+		subtract = 0.4
+	}
+	else = {
+		subtract = 0.6
+	}
+
+	if = {
+		limit = {
+			AND = {
+				mil_competence_sub_value_4 < 0
+				number_of_maa_regiments < 5
+			}
+		}
+		multiply = 700
+	}
+	else_if = {
+		limit = {
+			OR = {
+				mil_competence_sub_value_4 > 0
+				number_of_maa_regiments = 5
+			}
+		}
+		multiply = 100
+	}
+	else_if = {
+		limit = {
+			OR = {
+				number_of_maa_regiments > 5
+			}
+		}
+		multiply = 50
+	}
+}
+
+mil_competence_sub_value_4 = {
+	value = number_of_maa_regiments
+
+	divide = mil_competence_sub_value_2
+
+	if = {
+		limit = {
+			has_government = autocratic_government
+		}
+		subtract = 0.4
+	}
+	else = {
+		subtract = 0.6
+	}
+}
+
+civic_competence_net = {
+	value = 0
+
+	every_realm_county = {
+		limit = {
+			development_level > 20
+		}
+		add = 15
+	}
+
+	every_realm_county = {
+		limit = {
+			development_level <= 5
+		}
+		subtract = 1
+	}
+	every_vassal = {
+		limit = {
+			has_realm_law = centeral_law_policy_4
+		}
+		add = 15
+	}
+	every_vassal = {
+		limit = {
+			has_realm_law = centeral_law_policy_3
+		}
+		add = 10
+	}
+	every_vassal = {
+		limit = {
+			has_realm_law = centeral_law_policy_2
+		}
+		add = 5
+	}
+	every_vassal = {
+		limit = {
+			has_realm_law = centeral_law_policy_1
+		}
+		add = 1
+	}
+
+	every_vassal = {
+		limit = {
+			has_realm_law = de_centeral_law_policy_4
+		}
+		subtract = 20
+	}
+	every_vassal = {
+		limit = {
+			has_realm_law = de_centeral_law_policy_3
+		}
+		subtract = 15
+	}
+	every_vassal = {
+		limit = {
+			has_realm_law = de_centeral_law_policy_2
+		}
+		subtract = 5
+	}
+	every_vassal = {
+		limit = {
+			has_realm_law = de_centeral_law_policy_1
+		}
+		subtract = 1
+	}
+	every_realm_county = {
+		limit = {
+			county_control < 10
+		}
+		subtract = 2
+	}
+
+	every_realm_province = {
+		limit = {
+			num_buildings >= 3
+		}
+		add = 10
+	}
+}
+
+diplo_competence_net = {
+	value = 0
+
+	every_realm_county = {
+		limit = {
+			county_opinion > 70
+		}
+		add = 20
+	}
+	every_realm_county = {
+		limit = {
+			county_opinion <= -30
+		}
+		subtract = 5
+	}
+	every_ally = {
+		add = 10
+	}
+	every_vassal = {
+		limit = {
+			opinion = {
+				target = PREV
+				value > 60
+			}
+		}
+		add = 10
+	}
+	every_vassal = {
+		limit = {
+			opinion = {
+				target = PREV
+				value < -30
+			}
+		}
+		subtract = 5
+	}
+}
+
+nomadic_migration_ai_value = {
+	value = 100
+	scope:attacker = {
+		if = {
+			limit = {
+				any_in_list = {
+					list = target_titles
+					count <= 1
+				}
+			}
+			add = -1000
+		}
+	}
+}

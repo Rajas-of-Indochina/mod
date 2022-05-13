@@ -1,0 +1,208 @@
+﻿#something epic will happen below this, i'm sure
+
+#something epic is indeed happening
+#Restore the Praetorian Guard - Hróðvitnir + Wrench
+restore_praetorian_guard_decision = {
+	picture = "gfx/interface/illustrations/legion_bg_thin.dds"
+	desc = restore_praetorian_guard_decision_desc
+	ai_check_interval = 60
+	selection_tooltip = restore_praetorian_guard_decision_tooltip
+	major = yes
+	
+	is_shown = {
+		is_landed = yes
+		exists = dynasty
+		any_held_title = {
+			tier = tier_county
+			title_province = {
+				OR = {
+					geographical_region = custom_roman_full_borders
+				}
+			}
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_praetorian_guard
+			}
+		}
+		title:c_viterbo = {
+			NOT = {
+				has_variable = prae_guard
+			}
+		}
+		completely_controls = title:c_viterbo
+		OR = {
+			has_title = title:e_byzantium
+			has_title = title:e_roman_empire
+		}
+	}
+	
+	is_valid = {
+		is_independent_ruler = yes
+		prestige_level >= high_prestige_level
+	}
+
+	is_valid_showing_failures_only = {
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+	
+	effect = {
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_praetorian_guard
+			}
+		}
+		create_character = {
+			culture = root.culture
+			gender = male
+			dynasty = generate
+			faith = root.faith
+			location = root.capital_province
+			save_scope_as = legion_holder
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = title_change
+			add_claim_on_loss = no
+		}
+		title:c_viterbo = {
+			change_title_holder = {
+				holder = scope:legion_holder
+				change = scope:title_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:title_change
+
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		hidden_effect = {
+			scope:legion_holder = {
+				change_liege = {
+					liege = root
+					change = scope:change
+				}
+				change_government = legion_government
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		title:c_viterbo = {
+			save_temporary_scope_as = new_legion_tmp
+			PREV = {
+				add_to_variable_list = {
+					name = legion_counties
+					target = scope:new_legion_tmp
+				}
+				remove_list_variable = {
+					name = legion_county_available
+					target = scope:new_legion_tmp
+				}
+
+			}
+			set_variable = {
+				name = prae_guard
+				value = yes
+			}
+		}
+		trigger_event = {
+			id = province_events.0007
+		}
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+	
+	cost = {
+		gold = 2500
+	}
+}
+
+overthrow_the_emperor = {
+	picture = "gfx/interface/illustrations/decisions/decision_invite_knights.dds"
+
+	desc = overthrow_the_emperor_desc
+	selection_tooltip = overthrow_the_emperor_tooltip
+	major = yes
+
+	ai_check_interval = 300
+
+	cooldown = { years = 50 }
+
+	is_shown = {
+		has_government = legion_government
+		has_title = title:c_viterbo
+		title:c_viterbo = {
+			has_variable = prae_guard
+		}
+		top_liege = {
+			OR = {
+				has_title = title:e_byzantium
+				has_title = title:e_roman_empire
+			}
+		}
+	}
+
+	is_valid = {
+		prestige_level >= high_prestige_level
+
+		
+	}
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+	}
+	
+	cost = {
+		gold = 500
+		prestige = 600
+	}
+	
+	effect = {
+		custom_tooltip = overthrow_the_emperor_effect_tooltip
+		trigger_event = {
+			id = province_events.0008
+		}
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = 10
+			opinion = {
+				target = top_liege
+				value <= -40
+			}
+		}
+		modifier = {
+			add = 10
+			opinion = {
+				target = top_liege
+				value <= -60
+			}
+		}
+		modifier = {
+			add = 10
+			opinion = {
+				target = top_liege
+				value <= -80
+			}
+		}
+
+	}
+}
+
