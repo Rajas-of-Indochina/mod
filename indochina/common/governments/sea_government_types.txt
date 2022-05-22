@@ -7,7 +7,7 @@
 	fallback = 1
 
 	primary_holding = castle_holding
-	valid_holdings = { city_holding }
+	valid_holdings = { city_holding cow_metropolis_holding }
 	required_county_holdings = { castle_holding city_holding church_holding }
 
 	vassal_contract = {
@@ -27,10 +27,26 @@
 	color = hsv{ 0.67 1.00 0.78 }
 }
 
+republic_government = {
+	primary_holding = city_holding
+	valid_holdings = { castle_holding cow_metropolis_holding }
+	required_county_holdings = { city_holding castle_holding church_holding }
+
+	ai = {
+		arrange_marriage = no
+		use_goals = no
+		use_scripted_guis = no
+		perform_religious_reformation = no
+	}
+
+	vassal_contract = { republic_government_obligations }
+	color = hsv{ 0.00 1.00 0.98 }
+}
+
 # Head of faith will always get this if possible
 theocracy_government = {
 	primary_holding = church_holding
-	valid_holdings = { castle_holding }
+	valid_holdings = { castle_holding cow_metropolis_holding }
 	religious = yes
 	required_county_holdings = { church_holding castle_holding city_holding }
 
@@ -60,7 +76,6 @@ theocracy_government = {
 
 clan_government = {
 	primary_holding = castle_holding
-	valid_holdings = { city_holding }
 	primary_heritages = { heritage_arabic heritage_iranian heritage_turkic }
 
 	fallback = 2
@@ -70,7 +85,7 @@ clan_government = {
 	rulers_should_have_dynasty = yes
 	royal_court = yes
 
-	valid_holdings = { castle_holding }
+	valid_holdings = { castle_holding cow_metropolis_holding }
 	required_county_holdings = { castle_holding city_holding church_holding }
 	always_use_patronym = yes
 	dynasty_named_realms = yes
@@ -130,13 +145,12 @@ clan_government = {
 
 mandala_government = {
 	primary_holding = castle_holding
-	valid_holdings = { city_holding }
+	valid_holdings = { city_holding cow_metropolis_holding }
 
 	create_cadet_branches = yes
 	rulers_should_have_dynasty = yes
 	royal_court = yes
 
-	valid_holdings = { castle_holding }
 	required_county_holdings = { castle_holding city_holding church_holding }
 	always_use_patronym = yes
 	dynasty_named_realms = yes
@@ -218,11 +232,40 @@ tribal_government = {
 	color = hsv{ 0.02 0.75 0.36 }
 }
 
+# Mercenary will always get this
+mercenary_government = {
+	court_generate_spouses = no
+	court_generate_commanders = 5
+	council = no
 
-
+	ai = {
+		arrange_marriage = no
+		use_goals = no
+		use_scripted_guis = no
+		perform_religious_reformation = no
 	}
 
 	flag = can_not_be_vassal_or_liege
+	color = hsv{ 0.00 0.00 0.66 }
+}
+
+# Holy order will always get this
+holy_order_government = {
+	court_generate_spouses = no
+	court_generate_commanders = 5
+	council = no
+
+	ai = {
+		arrange_marriage = no
+		use_goals = no
+		use_scripted_guis = no
+		perform_religious_reformation = no
+	}
+
+	flag = can_not_be_vassal_or_liege
+
+	valid_holdings = { castle_holding city_holding }
+	color = hsv{ 0.00 0.00 0.66 }
 }
 
 chinese_government = {
@@ -230,7 +273,7 @@ chinese_government = {
 	royal_court = yes
 
 	primary_holding = castle_holding
-	valid_holdings = { city_holding }
+	valid_holdings = { city_holding cow_metropolis_holding }
 	required_county_holdings = { castle_holding city_holding church_holding }
 
 	primary_heritages = { heritage_chinese }
@@ -258,7 +301,7 @@ chinese_vassal_government = {
 	royal_court = no
 
 	primary_holding = castle_holding
-	valid_holdings = { city_holding }
+	valid_holdings = { city_holding cow_metropolis_holding }
 	required_county_holdings = { castle_holding city_holding church_holding }
 
 	primary_heritages = { heritage_chinese }
