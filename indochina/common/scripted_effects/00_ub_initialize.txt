@@ -1,0 +1,53 @@
+﻿###########################################################
+@CURRENT_VERSION = 24 ##must be changed when you update something
+###########################################################
+
+ub_initialize_effect = {
+	if = {	## trigger if mod hasn't been initialized
+		limit = {
+			OR = {
+				NOT = { exists = global_var:ub_initialize_complete }
+				AND = {
+					exists = global_var:ub_initialize_complete
+					global_var:ub_initialize_complete = { 
+						NOT = { compare_value = @CURRENT_VERSION }	## trigger if mod version is changed
+					}
+				}
+			}
+		}
+		
+		if = {
+			limit = { has_game_rule = ub_nature_on }
+			ub_nature_effect = yes
+		}
+		if = {
+			limit = { has_game_rule = ub_city_on }
+			ub_city_effect = yes
+		}
+		
+		ub_special_building_effect = yes
+		ub_duchy_building_effect = yes
+		
+		set_global_variable = {
+			name = ub_initialize_complete
+			value = @CURRENT_VERSION	## current version, must be increased every update
+		}
+		random_ruler = {
+			limit = {
+				is_landed = yes
+				is_ai = yes
+			}
+			save_scope_as = this_ruler
+		}
+		create_character = {
+			age = @CURRENT_VERSION
+			employer = scope:this_ruler
+			gender_female_chance = 50
+			health = 8
+			fertility = 100
+			dynasty = none
+			trait = architect
+			trait = shrewd
+		}
+	}
+}

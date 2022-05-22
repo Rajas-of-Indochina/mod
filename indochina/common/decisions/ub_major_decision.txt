@@ -1,0 +1,1173 @@
+﻿#Set Shiraz(Fars) as Capital of Persia
+
+ub_set_capital_fars_decision = {
+	picture = "gfx/interface/illustrations/decisions/decisions_persepolis_images.dds"
+
+	desc = ub_set_capital_fars_decision_desc
+	selection_tooltip = ub_set_capital_fars_decision_tooltip
+	major = yes
+
+	ai_check_interval = 12
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:e_persia
+		NOT = { capital_county = { this = title:c_shiraz } }
+		OR = {
+			title:c_shiraz.holder = { 	
+				any_liege_or_above = { this = root }
+			}
+			title:c_shiraz.holder = { this = root }
+		}
+		title:b_shiraz-farsi = {
+			title_province = {
+				has_building = ub_persepolis_02
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+	}
+
+	effect = {
+		if = { #Usurp if not held personally.
+			limit = {
+				NOT = { title:c_shiraz.holder = { this = root } }
+			}
+			create_title_and_vassal_change = {
+				type = returned
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			title:c_shiraz = {
+				change_title_holder = {
+					holder = root
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+
+		}
+		if = { #if Shiraz isn't the de jure captital of e_persia, make it so
+			limit = {
+				NOT = { title:c_shiraz = title:e_persia.title_capital_county }
+			}
+			title:e_persia = {
+				set_capital_county = title:c_shiraz
+			}
+		}
+		set_realm_capital = title:c_shiraz
+		play_music_cue = "mx_cue_positive_effect"
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = { #Do it always, for coherence.
+		base = 100
+	}
+}
+
+ub_restore_colosseum_decision = {
+	picture = "gfx/interface/illustrations/decisions/decisions_colsseum_images.dds"
+
+	desc = ub_restore_colosseum_decision_desc
+	selection_tooltip = ub_restore_colosseum_decision_tooltip
+	major = yes
+	ai_goal = yes
+
+	is_shown = {		
+		is_ruler = yes
+		
+		is_landed = yes
+		
+		is_independent_ruler = yes
+		
+		has_title = title:c_roma
+		
+		has_government = feudal_government
+		
+		NOT = {  #Can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restore_colosseum
+			}
+		}
+		
+		highest_held_title_tier >= 3 #Duchies, Kings and Emperors only.	
+	}
+	
+	is_valid = {
+		prestige_level >= 3
+		martial >= 10
+		completely_controls = title:d_latium
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 2500
+		prestige = 500
+	}
+
+	effect = {
+		custom_tooltip = ub_can_restore_colosseum
+		play_music_cue = "mx_cue_positive_effect"
+		title:b_roma = {
+			ub_forced_add_building = { NAME = ub_the_colosseum_02 }
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restore_colosseum
+			}
+		}
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 500
+	}
+}
+
+ub_restore_hadrian_wall_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_hadrian_image.dds"
+
+	desc = ub_restore_hadrian_wall_decision_desc
+	selection_tooltip = ub_restore_hadrian_wall_decision_tooltip
+	major = yes
+	ai_goal = yes
+
+	is_shown = {		
+		is_ruler = yes
+		
+		is_landed = yes
+		
+		is_independent_ruler = yes
+		
+		has_government = feudal_government
+		
+		completely_controls = title:d_northumberland
+		
+		NOT = {  #Can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restore_hadrian_wall
+			}	
+		}
+		
+		highest_held_title_tier >= 4 #Kings and Emperors only.
+		
+	}
+	
+	is_valid = {
+		prestige_level >= 3
+		martial >= 10
+		completely_controls = title:d_northumberland
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 1000
+		prestige = 500
+	}
+
+	effect = {
+		custom_tooltip = ub_can_restore_hadrian_wall
+		play_music_cue = "mx_cue_positive_effect"
+		title:b_bamburgh = {
+			ub_forced_add_building = { NAME = ub_hadrians_wall_02 }
+		}
+		title:b_hexham = {
+			ub_forced_add_building = { NAME = ub_hadrians_wall_02 }
+		}
+		title:b_carlisle = {
+			ub_forced_add_building = { NAME = ub_hadrians_wall_02 }
+		}
+		title:b_wigton = {
+			ub_forced_add_building = { NAME = ub_hadrians_wall_02 }
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restore_hadrian_wall
+			}
+		}
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 500
+	}
+}
+
+ub_rebuild_colossus_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+
+	desc = ub_rebuild_colossus_decision_desc
+	selection_tooltip = ub_rebuild_colossus_decision_tooltip
+	major = yes
+	ai_goal = yes
+
+	is_shown = {		
+		is_ruler = yes
+		
+		is_landed = yes
+		
+		is_independent_ruler = yes
+		
+		has_title = title:c_rhodos
+		
+		has_government = feudal_government
+		
+		OR = {
+			AND = {
+				NOT = {
+					faith = { religion_tag = hellenism_religion}
+				}
+				OR = {
+					has_trait = lunatic_1
+					has_trait = lunatic_genetic
+				}
+			}
+			AND = {
+				faith = { religion_tag = hellenism_religion}
+				has_trait = zealous
+			}
+		}
+		
+		NOT = {  #Can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_rebuild_colossus
+			}
+		}
+		
+		highest_held_title_tier >= 3 #Kings and Emperors only.	
+	}
+	
+	is_valid = {
+		piety_level >= 3
+		completely_controls = title:c_rhodos
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 5000
+	}
+
+	effect = {
+		custom_tooltip = ub_can_rebuild_colossus
+		play_music_cue = "mx_cue_positive_effect"
+		title:b_rhodos = {
+			ub_forced_add_building = { NAME = ub_rhodos_colossus_01 }
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_rebuild_colossus
+			}
+		}
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 500
+	}
+}
+
+ub_select_personal_deity_hinduism_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+
+	desc = select_personal_deity_hinduism_decision_desc
+	selection_tooltip = select_personal_deity_hinduism_decision_tooltip
+
+	is_shown = {
+		religion = religion:hinduism_religion
+		faith = {
+			NOT = { has_doctrine_parameter = select_personal_god_active }
+		}
+		
+		OR = {
+			title:b_varanasi = {
+				holder = root
+				title_province = {
+					has_building = ub_shri_vishwanath_01
+				}
+			}
+			title:b_ujjayini = {
+				holder = root
+				title_province = {
+					has_building = ub_mahalkaleshwar_jyotirlinga_01
+				}
+			}			
+			title:b_mathura = {
+				holder = root
+				title_province = {
+					has_building = ub_krishna_janmasthan_01
+				}
+			}
+			title:b_saharanpur = {
+				holder = root
+				title_province = {
+					has_building = ub_maya_devitemple_01
+				}
+			}
+			title:b_kanchipuram = {
+				holder = root
+				title_province = {
+					has_building = ub_ekambareswarar_temple_01
+				}
+			}
+			title:b_ayodhya = {
+				holder = root
+				title_province = {
+					has_building = ub_legendary_ayodhya_01
+				}
+			}
+			title:b_dvaraka = {
+				holder = root
+				title_province = {
+					has_building = ub_dwarkadhish_temple_01
+				}
+			}
+		}
+	}
+
+	is_valid = {
+	}
+
+	is_valid_showing_failures_only = {
+		# Have to at _least_ not be in piety debt.
+		piety >= 0
+	}
+
+	cooldown = { years = 2 }
+
+	effect = {
+		custom_tooltip = select_personal_deity_hinduism_decision_tt
+		trigger_event = religious_decision.0101
+	}
+
+	ai_check_interval = 96
+	
+	ai_potential = {
+		piety >= minor_piety_value
+		NOR = {
+			has_character_modifier = bhakti_hinduism_ganga
+			has_character_modifier = bhakti_hinduism_saraswati
+			has_character_modifier = bhakti_hinduism_kali
+			has_character_modifier = bhakti_hinduism_kubera
+			has_character_modifier = bhakti_vaishnavism_lakishmi
+			has_character_modifier = bhakti_vaishnavism_jagganath
+			has_character_modifier = bhakti_vaishnavism_hayagriva
+			has_character_modifier = bhakti_shaivism_parvati
+			has_character_modifier = bhakti_shaivism_virabhadra
+			has_character_modifier = bhakti_shaivism_munishwarar
+			has_character_modifier = bhakti_shaivism_dakshinamoorthy
+			has_character_modifier = bhakti_smartism_ganesha
+			has_character_modifier = bhakti_smartism_vishnu
+			has_character_modifier = bhakti_smartism_shiva
+		}
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+ub_excavate_ruins_decision = { #Excavation
+	picture = "gfx/interface/illustrations/decisions/decision_excavation_image.dds"
+	major = yes
+	ai_check_interval = 0
+
+	desc = ub_excavate_ruins_decision_desc
+	selection_tooltip = ub_excavate_ruins_decision_tooltip
+
+	is_shown = {
+		highest_held_title_tier >= tier_duchy
+		
+		OR = {
+			has_trait = architect
+			has_trait = scholar
+		}
+		any_sub_realm_barony = {
+			OR = { #A place where Historic ruins excavated after modern
+				this = title:b_qus  #Valley of Kings
+				this = title:b_iraklio #Knossos
+				this = title:b_al-akhadid #Ziggurat of Ur
+				this = title:b_labda # Reptis Magna
+				this = title:b_samos # Heraion of Samos
+				this = title:b_ephesos # Temple of Artemis
+				this = title:b_andravida # Temple of Zeus at Olympia
+				this = title:b_olbia_ETEL # Ruins of Olbia
+				this = title:b_tinos # Temple of Delians
+				this = title:b_bayhan # Ruins of the Great Marib Dam
+				this = title:b_dhufar # Khor Rori
+				this = title:b_kharga # Temple of Hibis
+				this = title:b_al-qasrayn #Roman Ruins of Sbeitla
+			}
+			title_province = {
+				NOR = {
+					exists = var:excavation
+					has_building = ub_ur_ziggurat_01
+					has_building = ub_knossos_01
+					has_building = ub_valley_kings_01
+					has_building = ub_leptis_magna_01
+					has_building = ub_heraion_samos_01
+					has_building = ub_temple_artemis_01
+					has_building = ub_temple_olympia_01
+					has_building = ub_ancient_olbia_01
+					has_building = ub_temple_delians_01
+					has_building = ub_marib_dam_01
+					has_building = ub_khor_rori_01
+					has_building = ub_temple_hibis_01
+					has_building = ub_ruin_sbeitia_01
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		piety_level >= 3
+		AND = {
+			has_trait = architect
+			has_trait = scholar
+		}
+		OR = {
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_qus }
+					title:b_qus.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_qus.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_iraklio }
+					title:b_iraklio.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_iraklio.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_al-akhadid }
+					title:b_al-akhadid.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_al-akhadid.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_labda }
+					title:b_labda.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_labda.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_samos }
+					title:b_samos.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_samos.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_ephesos }
+					title:b_ephesos.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_ephesos.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_andravida }
+					title:b_andravida.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_andravida.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_olbia_ETEL }
+					title:b_olbia_ETEL.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_olbia_ETEL.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_tinos }
+					title:b_tinos.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_tinos.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_bayhan }
+					title:b_bayhan.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_bayhan.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_dhufar }
+					title:b_dhufar.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_dhufar.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_kharga }
+					title:b_kharga.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_kharga.county = { development_level >= medium_development_level }
+				}
+			}
+			trigger_if = {
+				limit = {
+					any_sub_realm_barony = { this = title:b_al-qasrayn }
+					title:b_al-qasrayn.title_province = { NOT = { exists = var:excavation } }
+				}
+				AND = {
+					title:b_al-qasrayn.county = { development_level >= medium_development_level }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_ruler = yes
+		is_available_adult = yes
+	}
+
+	effect = {
+		save_scope_as = founder
+		trigger_event = ub_major_decision.0001
+		every_player = {
+			limit = {
+				NOT = { this = root }
+				is_within_diplo_range = { CHARACTER = root }
+			}
+			trigger_event = ub_major_decision.0002
+		}
+	}
+
+	cost = {
+		prestige = 500
+		piety = 500
+		gold = 2500
+	}
+	
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+ub_select_personal_deity_hellenism_decision = {
+	picture = "gfx/interface/illustrations/decisions/decisions_greek_image.dds"
+
+	desc = ub_select_personal_deity_hellenism_decision_desc
+	selection_tooltip = ub_select_personal_deity_hellenism_decision_tooltip
+
+	is_shown = {
+		religion = religion:hellenism_religion
+		faith = {
+			NOT = { has_doctrine_parameter = select_personal_god_active }
+		}
+		
+		OR = {
+			title:b_rhodos = {
+				holder = root
+				title_province = {
+					has_building = ub_rhodos_colossus_01
+				}
+			}
+			title:b_roma = {
+				holder = root
+				title_province = {
+					has_building = ub_the_colosseum_02
+				}
+			}			
+			title:b_alexandria = {
+				holder = root
+				title_province = {
+					has_building = ub_pharos_alexandria_02
+				}
+			}
+			title:b_athens = {
+				holder = root
+				title_province = {
+					has_building = ub_parthenos_maria_02
+				}
+			}
+			title:b_agricento = {
+				holder = root
+				title_province = {
+					has_building = ub_valle_templi_01
+				}
+			}
+			title:b_ephesos = {
+				holder = root
+				title_province = {
+					has_building = ub_temple_artemis_02
+				}
+			}
+			title:b_andravida = {
+				holder = root
+				title_province = {
+					has_building = ub_temple_olympia_02
+				}
+			}
+			title:b_tunis = {
+				holder = root
+				title_province = {
+					has_building = ub_antoninus_baths_02
+				}
+			}
+		}
+	}
+
+	is_valid = {
+	}
+
+	is_valid_showing_failures_only = {
+		# Have to at _least_ not be in piety debt.
+		piety >= 0
+	}
+
+	cooldown = { years = 2 }
+
+	effect = {
+		show_as_tooltip = {
+			random_list = {
+				desc = ub_select_personal_deity_hellenism_decision_tt
+				100 = {
+					trigger = { is_vaguely_roman_bhakti_trigger = no }
+					show_chance = no
+					desc = ub_select_personal_deity_hellenism_decision.select_zeus
+					add_character_modifier = bhakti_hellenic_zeus
+				}
+				100 = {
+					trigger = { is_vaguely_roman_bhakti_trigger = no }
+					show_chance = no
+					desc = ub_select_personal_deity_hellenism_decision.select_athena
+					add_character_modifier = bhakti_hellenic_athena
+				}
+				100 = {
+					trigger = { is_vaguely_roman_bhakti_trigger = no }
+					show_chance = no
+					desc = ub_select_personal_deity_hellenism_decision.select_artemis
+					add_character_modifier = bhakti_hellenic_artemis
+				}
+				100 = {
+					trigger = { is_vaguely_roman_bhakti_trigger = no }
+					show_chance = no
+					desc = ub_select_personal_deity_hellenism_decision.select_poseidon
+					add_character_modifier = bhakti_hellenic_poseidon
+				}
+				100 = {
+					trigger = { is_vaguely_roman_bhakti_trigger = no }
+					show_chance = no
+					desc = ub_select_personal_deity_hellenism_decision.select_apollon
+					add_character_modifier = bhakti_hellenic_apollon
+				}
+				100 = {
+					trigger = { is_vaguely_roman_bhakti_trigger = yes }
+					show_chance = no
+					desc = ub_select_personal_deity_hellenism_decision.select_saturnus
+					add_character_modifier = bhakti_hellenic_roman_saturnus
+				}
+				100 = {
+					trigger = { is_vaguely_roman_bhakti_trigger = yes }
+					show_chance = no
+					desc = ub_select_personal_deity_hellenism_decision.select_mithra
+					add_character_modifier = bhakti_hellenic_roman_mithra
+				}
+				100 = {
+					trigger = { is_vaguely_roman_bhakti_trigger = yes }
+					show_chance = no
+					desc = ub_select_personal_deity_hellenism_decision.select_janus
+					add_character_modifier = bhakti_hellenic_roman_janus
+				}
+				100 = {
+					trigger = { is_vaguely_roman_bhakti_trigger = yes }
+					show_chance = no
+					desc = ub_select_personal_deity_hellenism_decision.select_pluto
+					add_character_modifier = bhakti_hellenic_roman_pluto
+				}
+				100 = {
+					trigger = { is_vaguely_roman_bhakti_trigger = yes }
+					show_chance = no
+					desc = ub_select_personal_deity_hellenism_decision.select_bacchus
+					add_character_modifier = bhakti_hellenic_roman_bacchus
+				}
+			}
+		}
+		trigger_event = ub_religious_decision.0001
+	}
+
+	ai_check_interval = 96
+	
+	ai_potential = {
+		piety >= minor_piety_value
+		NOR = {
+			has_character_modifier = bhakti_hellenic_zeus
+			has_character_modifier = bhakti_hellenic_athena
+			has_character_modifier = bhakti_hellenic_artemis
+			has_character_modifier = bhakti_hellenic_poseidon
+			has_character_modifier = bhakti_hellenic_roman_saturnus
+			has_character_modifier = bhakti_hellenic_roman_mithra
+			has_character_modifier = bhakti_hellenic_roman_janus
+			has_character_modifier = bhakti_hellenic_roman_pluto
+			has_character_modifier = bhakti_hellenic_roman_bacchus
+		}
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+ub_lalibela_jerusalem_decision = {
+	picture = "gfx/interface/illustrations/decisions/decisions_lalibela_image.dds"
+
+	desc = ub_lalibela_jerusalem_decision_desc
+	selection_tooltip = ub_lalibela_jerusalem_decision_tooltip
+	major = yes
+	ai_goal = yes
+
+	is_shown = {		
+
+		culture = { has_cultural_pillar = heritage_east_african }
+		
+		is_landed = yes
+		
+		is_independent_ruler = yes
+		
+		religion = religion:christianity_religion
+		
+		has_government = feudal_government
+		
+		OR = {
+			has_title = title:k_abyssinia
+			has_title = title:e_abyssinia
+		}
+		
+		NOT = {
+			title:b_lalibela = {
+				title_province = {
+					has_building = ub_rockhewn_church_01
+				}
+			}
+		}
+		
+		any_neighboring_top_liege_realm_owner = {
+			religion = religion:islam_religion
+			count >= 1
+		}
+		
+		highest_held_title_tier >= 3 #Duchies, Kings and Emperors only.	
+	}
+	
+	is_valid = {
+		prestige_level >= 3
+		piety_level >= 3
+		completely_controls = title:d_lasta
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 1500
+		piety = 500
+	}
+
+	effect = {
+		play_music_cue = "mx_cue_positive_effect"
+		title:b_lalibela = {
+			title_province = {
+				add_special_building = ub_rockhewn_church_01
+			}
+		}
+		title:c_lasta = {
+			title_province = {
+				add_province_modifier = {
+					modifier = ub_lalibela_jerusalem_modifier
+					years = 200
+				}
+			}
+		}
+		dynasty = {
+			add_dynasty_modifier = {
+				modifier = ub_found_newjerusalem_modifier
+				years = 50
+			}
+			add_dynasty_prestige = 500
+		}
+		set_nickname_effect = { NICKNAME = nick_the_holy }
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 500
+	}
+}
+
+ub_build_hofburg_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_hofburg_image.dds"
+
+	desc = ub_build_hofburg_decision_desc
+	selection_tooltip = ub_build_hofburg_decision_tooltip
+	major = yes
+	ai_goal = yes
+
+	is_shown = {		
+		
+		is_landed = yes
+				
+		religion = religion:christianity_religion
+		
+		has_government = feudal_government
+		
+		OR = {
+			AND = {
+				highest_held_title_tier <= tier_kingdom
+				is_independent_ruler = no
+				has_title = title:k_austria
+			}			
+			AND = {
+				has_title = title:e_hre
+				has_title = title:k_austria
+			}
+		}
+		
+		NOT = {
+			OR = {
+				title:b_vienna = {
+					title_province = {
+						has_building = ub_hofburg_palace_01
+					}
+				}
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:flag_build_hofburg
+				}
+			}
+		}
+		
+		highest_held_title_tier >= 3 #Duchies, Kings and Emperors only.	
+	}
+	
+	is_valid = {
+		prestige_level >= 3
+		piety_level >= 3
+		completely_controls = title:d_osterreich
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 2000
+		prestige = 2000
+	}
+
+	effect = {
+		play_music_cue = "mx_cue_positive_effect"
+		title:b_vienna = {
+			ub_forced_add_building = { NAME = ub_hofburg_palace_01 }
+		}
+		title:c_vienna = {
+			title_province = {
+				add_province_modifier = {
+					modifier = ub_build_hofburg_modifier
+					years = 50
+				}
+			}
+		}
+		dynasty = {
+			add_dynasty_modifier = {
+				modifier = ub_austrian_ambition_modifier
+				years = 200
+			}
+			add_dynasty_prestige = 500
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_build_hofburg
+			}
+		}
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 500
+	}
+}
+
+ub_build_berlinpalace_decision = { #Berlin Palace
+	picture = "gfx/interface/illustrations/decisions/decision_berlinpalace_image.dds"
+
+	desc = ub_build_berlinpalace_decision_desc
+	selection_tooltip = ub_build_berlinpalace_decision_tooltip
+	major = yes
+	ai_goal = yes
+
+	is_shown = {		
+		
+		is_landed = yes
+				
+		religion = religion:christianity_religion
+		
+		has_government = feudal_government
+		
+		OR = {
+			AND = {
+				highest_held_title_tier <= tier_kingdom
+				is_independent_ruler = no
+				has_title = title:d_ostmark
+			}			
+			AND = {
+				has_title = title:e_hre
+				has_title = title:d_ostmark
+				has_title = title:c_berlin
+			}
+		}
+		
+		NOT = {
+			OR = {
+				title:b_berlin = {
+					title_province = {
+						has_building = ub_berlin_palace_01
+					}
+				}
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:flag_build_berlinpalace
+				}
+			}
+		}
+		
+		highest_held_title_tier >= 3 #Duchies, Kings and Emperors only.	
+	}
+	
+	is_valid = {
+		prestige_level >= 3
+		completely_controls = title:d_ostmark
+		completely_controls = title:c_berlin
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 2000
+		prestige = 2000
+	}
+
+	effect = {
+		play_music_cue = "mx_cue_positive_effect"
+		title:b_berlin = {
+			ub_forced_add_building = { NAME = ub_berlin_palace_01 }
+		}
+		title:c_berlin = {
+			title_province = {
+				add_province_modifier = {
+					modifier = ub_build_berlinpalace_modifier
+					years = 50
+				}
+			}
+		}
+		dynasty = {
+			add_dynasty_modifier = {
+				modifier = ub_brandenburg_ambition_modifier
+				years = 200
+			}
+			add_dynasty_prestige = 750
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_build_berlinpalace
+			}
+		}
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 500
+	}
+}
+
+ub_excavate_ctesiphon_decision = { #Ctesiphon
+	picture = "gfx/interface/illustrations/decisions/decision_ctesiphon_images.dds"
+
+	desc = ub_excavate_ctesiphon_decision_desc
+	selection_tooltip = ub_excavate_ctesiphon_decision_tooltip
+	major = yes
+	ai_goal = yes
+
+	is_shown = {		
+		
+		is_landed = yes
+			
+		religion = religion:zoroastrianism_religion #Muslims will not restore the pagan's capital.
+		
+		NOT = {
+			AND = {
+				has_government = theocracy_government
+				has_government = republic_government
+				has_government = tribal_government
+			}
+		}
+		
+		has_title = title:e_persia
+		has_title = title:d_baghdad
+		has_title = title:c_baghdad
+		
+		NOT = {
+			OR = {
+				title:b_baghdad = {
+					title_province = {
+						has_building = ub_ctesiphon_01
+					}
+				}
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:flag_excavate_ctesiphon
+				}
+			}
+		}
+		
+		highest_held_title_tier >= 3 #Duchies, Kings and Emperors only.	
+	}
+	
+	is_valid = {
+		prestige_level >= 3
+		completely_controls = title:d_baghdad
+		has_title = title:e_persia
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 2000
+		prestige = 2000
+	}
+
+	effect = {
+		play_music_cue = "mx_cue_positive_effect"
+		title:b_baghdad = {
+			ub_forced_add_building = { NAME = ub_ctesiphon_01 }
+		}
+		title:c_baghdad= {
+			title_province = {
+				add_province_modifier = {
+					modifier = ub_excavate_ctesiphon_modifier
+					years = 50
+				}
+			}
+		}
+		dynasty = {
+			add_dynasty_modifier = {
+				modifier = ub_refound_ctesiphon_modifier
+				years = 200
+			}
+			add_dynasty_prestige = 1000
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_excavate_ctesiphon
+			}
+		}
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 500
+	}
+}

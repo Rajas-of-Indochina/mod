@@ -1,0 +1,156 @@
+﻿
+form_nanyue_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	desc = form_nanyue_decision_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		capital_province = {
+			geographical_region = world_maritime_southeast_asia
+		}
+
+		OR = {
+			culture = { has_cultural_pillar = heritage_filipino }
+			culture = { has_cultural_pillar = heritage_malayic }
+			culture = { has_cultural_pillar = heritage_moluccan }
+			culture = { has_cultural_pillar = heritage_dayak }
+			culture = { has_cultural_pillar = heritage_sulawesi }
+			culture = { has_cultural_pillar = heritage_papuan }
+		}
+
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:form_nanyue_decision
+			}
+		}
+	}
+
+	is_valid = {
+		OR = {
+			AND = {
+				culture = { has_cultural_pillar = heritage_filipino }
+				completely_controls_region = world_maritime_southeast_asia
+				capital_province = { geographical_region = world_maritime_southeast_asia }
+			}
+			AND = {
+				NOT = { culture = { has_cultural_pillar = heritage_filipino } }
+				completely_controls_region = world_nusantara
+				capital_province = { geographical_region = world_nusantara }
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+		is_independent_ruler = yes
+	}
+
+	cost = {
+		piety = {
+			value = massive_piety_value
+		}
+		gold = {
+			value = massive_gold_value
+		}
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:form_nanyue_decision
+		}
+
+		custom_tooltip = form_nanyue_decision_nusantara_empires_unite_effect
+		custom_tooltip = form_nanyue_decision_new_primary_title_effect
+		show_as_tooltip = {
+			add_prestige = massive_prestige_value
+		}
+
+		trigger_event = maritime_southeast_asia.0001
+		add_to_temporary_list = received_notification
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+form_dian_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	desc = form_dian_decision_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		capital_province = {
+			geographical_region = world_china
+		}
+
+		OR = {
+			culture = { has_cultural_pillar = heritage_loloish }
+		}
+
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:form_dian_decision
+			}
+		}
+	}
+
+	is_valid = {
+		completely_controls = title:k_nanzhao
+		completely_controls = title:k_luodian
+		completely_controls = title:k_jiannan_china
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+		is_independent_ruler = yes
+	}
+
+	cost = {
+		piety = {
+			value = massive_piety_value
+		}
+		gold = {
+			value = massive_gold_value
+		}
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:form_dian_decision
+		}
+
+		custom_tooltip = form_dian_decision_nusantara_empires_unite_effect
+		custom_tooltip = form_dian_decision_new_primary_title_effect
+		show_as_tooltip = {
+			add_prestige = massive_prestige_value
+		}
+
+		trigger_event = maritime_southeast_asia.0001
+		add_to_temporary_list = received_notification
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

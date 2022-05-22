@@ -1,0 +1,89 @@
+﻿ub_change_duchy_capital = {
+	create_dynamic_title = {
+		tier = duchy
+		name = NEW_CREATED_TITLE_NAME
+	}
+	county = {
+		save_temporary_scope_as = de_jure_liege_county
+		duchy = { save_temporary_scope_as = de_jure_liege_duchy	}
+		set_de_jure_liege_title = scope:new_title
+	}
+	scope:de_jure_liege_duchy = {
+		every_in_de_jure_hierarchy = {
+			limit = {
+				tier = tier_county
+				NOT = { this = scope:de_jure_liege_county }
+			}
+			set_de_jure_liege_title = scope:new_title
+			add_to_temporary_list = de_jure_county_list
+		}
+	}
+	scope:de_jure_liege_county = {
+		set_de_jure_liege_title = scope:de_jure_liege_duchy
+	}			
+	every_in_list = {
+		list = de_jure_county_list
+		set_de_jure_liege_title = scope:de_jure_liege_duchy
+		remove_from_list = de_jure_county_list
+	}
+}
+
+ub_forced_add_building = {
+if = {
+	limit = { is_in_ucsbe_list = no }
+	title_province = {
+		if = {
+			limit = { NOT = { has_building_or_higher = $NAME$ } }
+			if = {
+				limit = { has_free_building_slot = no }
+				add_building_slot = 1
+				add_building = $NAME$
+				add_building_slot = -1
+			}
+			else = {
+				add_building = $NAME$
+			}
+		}
+	}
+	if = {
+		limit = { debug_only = yes }
+		add_to_global_variable_list = {
+			name = ub_debug_decision_list
+			target = this.county
+		}
+	}
+}
+}
+
+ub_forced_add_special_slot = {
+if = {
+	limit = { is_in_ucsbe_list = no }
+	title_province = {
+		if = {
+			limit = { 
+				NAND = { 
+					has_building_or_higher = $NAME$
+					has_special_building_slot = yes
+				}
+			}
+			add_special_building = no	## destroy building slot
+		}
+		add_special_building_slot = $NAME$
+	}
+	if = {
+		limit = { debug_only = yes }
+		add_to_global_variable_list = {
+			name = ub_debug_decision_list
+			target = this.county
+		}
+	}
+}
+}
+excavate_ruins_decision_event_effect = {
+	if = {
+		limit = {
+			NOT = { has_nickname = nick_the_scholar }
+		}
+		give_nickname = nick_the_scholar
+	}
+}
