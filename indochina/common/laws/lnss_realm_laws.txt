@@ -1,0 +1,1131 @@
+### HEIR DESIGNATION ####
+lnss_law_heir_designation = {
+	default = lnss_law_heir_designation_forbidden
+	cumulative = no
+	flag = designation_law	
+
+	lnss_law_heir_designation_forbidden = {
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = { 
+			hidden_effect = { 
+				or = {
+					has_realm_law = lnss_law_heir_designation_allowed 
+					not = {
+						has_realm_law =	lnss_law_heir_designation_allowed
+						has_realm_law = lnss_law_heir_designation_forbidden
+					}
+				}
+			}
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+		
+	}
+
+	lnss_law_heir_designation_allowed = {
+		
+		flag = can_designate_heirs # Hardcoded flag
+
+		can_keep = { 
+			realm_law_use_crown_authority = yes 
+		}
+
+		can_pass = {
+			custom_tooltip = { 
+				subject = root
+				text = "requires_crown_3" 
+				has_realm_law = crown_authority_3 
+				
+			}
+			hidden_effect = { has_realm_law = lnss_law_heir_designation_forbidden }
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}	
+		
+		pass_cost = {
+			prestige = {
+				add = 500
+			}
+		}
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { 
+					has_realm_law = lnss_law_heir_designation_forbidden 
+					has_realm_law = crown_authority_3 
+				}
+				value = 1
+			}
+		}				
+	}		
+		
+}
+
+### EXTERNAL INHERITANCE ###
+lnss_law_external_inheritance = {
+	default = lnss_law_external_inheritance_allowed
+	cumulative = no
+	flag = inheritance_law	
+
+	lnss_law_external_inheritance_allowed = {
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = { 
+			hidden_effect = { 
+				or = {
+					has_realm_law = lnss_law_external_inheritance_forbidden 
+					not = {
+						has_realm_law =	lnss_law_external_inheritance_allowed
+						has_realm_law = lnss_law_external_inheritance_forbidden
+					}
+				}
+			}
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		 }
+		 on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+		
+	}
+
+	lnss_law_external_inheritance_forbidden = {
+		
+		flag = titles_cannot_leave_realm_on_succession # Hardcoded flag
+
+		can_keep = { 
+			realm_law_use_crown_authority = yes 
+		}
+
+		can_pass = {
+			custom_tooltip = { 
+				subject = root
+				text = "requires_crown_1" 
+				or = {
+					has_realm_law = crown_authority_1
+					has_realm_law = crown_authority_2
+					has_realm_law = crown_authority_3 
+				}
+			}
+
+			hidden_effect = { has_realm_law = lnss_law_external_inheritance_allowed }
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}	
+		
+		pass_cost = {
+			prestige = {
+				add = 500
+			}
+		}
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = {
+					has_realm_law = lnss_law_external_inheritance_allowed  
+					or = {
+						has_realm_law = crown_authority_2
+						has_realm_law = crown_authority_3 
+					}
+				}
+				value = 1
+			}
+		}				
+	}		
+		
+}
+
+### VASSAL WAR DECLARATION ###
+lnss_law_vassal_war_declaration = {
+	default = lnss_law_vassal_war_declaration_allowed
+	cumulative = no
+	flag = kingspeace_law	
+
+	lnss_law_vassal_war_declaration_allowed = {
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = { 
+			hidden_effect = { 
+				or = {
+					has_realm_law = lnss_law_vassal_war_declaration_external_forbidden
+					not = {
+						has_realm_law = lnss_law_vassal_war_declaration_allowed
+						has_realm_law = lnss_law_vassal_war_declaration_external_forbidden
+						has_realm_law = lnss_law_vassal_war_declaration_internal_forbidden	 	
+					}
+				}	
+			}
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+		
+	}
+
+	lnss_law_vassal_war_declaration_external_forbidden = {
+		flag = vassal_external_wars_banned
+
+		can_keep = { 
+			realm_law_use_crown_authority = yes 
+		}
+
+		can_pass = {
+			custom_tooltip = { 
+				subject = root
+				text = "requires_crown_1" 
+				or = {
+					has_realm_law = crown_authority_1
+					has_realm_law = crown_authority_2
+					has_realm_law = crown_authority_3 
+				}
+			}
+			hidden_effect = {
+				or = {
+				has_realm_law = lnss_law_vassal_war_declaration_allowed
+				has_realm_law = lnss_law_vassal_war_declaration_internal_forbidden
+				}
+			}	
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+		
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOR = {
+							has_realm_law = lnss_law_vassal_war_declaration_internal_forbidden
+						}
+					}
+					add = 500
+				}
+			}
+		}
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { 
+						or = {
+							has_realm_law = crown_authority_1
+							has_realm_law = crown_authority_2
+							has_realm_law = crown_authority_3 
+						}
+						has_realm_law = lnss_law_vassal_war_declaration_allowed
+				}
+				value = 1
+			}
+		}		
+		
+	}
+
+	lnss_law_vassal_war_declaration_internal_forbidden = {
+		flag = vassal_all_wars_banned
+
+		can_keep = { 
+				realm_law_use_crown_authority = yes 
+		}
+
+		can_pass = {
+			custom_tooltip = { 
+				subject = root
+				text = "requires_crown_2" 
+				or = {
+					has_realm_law = crown_authority_2
+					has_realm_law = crown_authority_3 
+				}
+			}
+			hidden_effect = { has_realm_law = lnss_law_vassal_war_declaration_external_forbidden }
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+		
+		pass_cost = {
+			prestige = {
+				add = 500
+			}
+		}
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { 
+						or = {
+							has_realm_law = crown_authority_2
+							has_realm_law = crown_authority_3 
+						}
+						has_realm_law = lnss_law_vassal_war_declaration_external_forbidden
+				}
+				value = 1
+			}
+		}					
+	}				
+}
+
+### TITLE REVOCATION ###
+lnss_law_title_revocation = {
+	default = lnss_law_title_revocation_forbidden
+	cumulative = no
+	flag = revokation_law	
+
+	lnss_law_title_revocation_forbidden = {
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = { 
+			hidden_effect = { 
+				or = {
+					has_realm_law = lnss_law_title_revocation_allowed
+					not = {
+						has_realm_law = lnss_law_title_revocation_forbidden
+						has_realm_law = lnss_law_title_revocation_allowed
+						has_realm_law = lnss_law_title_revocation_free	 	 	
+					}
+				}	
+			}
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+		
+	}
+
+	lnss_law_title_revocation_allowed = {
+		
+		flag = title_revocation_allowed
+		flag = vassal_retraction_allowed
+		flag = vassal_refusal_is_treason
+
+		can_keep = { 
+				realm_law_use_crown_authority = yes
+		}
+
+		can_pass = {
+			can_change_other_laws_trigger = yes
+			custom_tooltip = { 
+				subject = root
+				text = "requires_crown_1" 
+				or = {
+					has_realm_law = crown_authority_1
+					has_realm_law = crown_authority_2
+					has_realm_law = crown_authority_3 
+				}
+				hidden_effect = {
+					or = {
+						has_realm_law = lnss_law_title_revocation_forbidden
+						has_realm_law = lnss_law_title_revocation_free
+					}	
+				}			
+			}
+
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+		
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOT = {
+							has_realm_law = lnss_law_title_revocation_free
+						}
+					}
+					add = 500
+				}
+			}
+		}
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { 
+					or = {
+						has_realm_law = crown_authority_1
+						has_realm_law = crown_authority_2
+						has_realm_law = crown_authority_3 
+					}
+					has_realm_law = lnss_law_title_revocation_forbidden
+				}
+				value = 1
+			}
+		}				
+	}
+	
+	lnss_law_title_revocation_free = {
+		
+		flag = title_revocation_allowed
+		flag = title_revocation_free
+		flag = vassal_retraction_allowed
+		flag = vassal_retraction_free
+		flag = vassal_refusal_is_treason
+
+		can_keep = { 
+			realm_law_use_crown_authority = yes 
+			hidden_tooltip = { has_realm_law = crown_authority_3 }
+		}
+
+		can_pass = {
+			custom_tooltip = { 
+				subject = root
+				text = "requires_crown_3" 
+				has_realm_law = crown_authority_3 
+			}
+			hidden_effect = { has_realm_law = lnss_law_title_revocation_allowed }
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+		
+		pass_cost = {
+			prestige = {
+				add = 500
+			}
+		}
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { 
+					has_realm_law = crown_authority_3
+					has_realm_law = lnss_law_title_revocation_forbidden
+					}
+				value = 1
+			}
+		}				
+	}		
+		
+}
+
+### CENTRALIZATION ###
+lnss_law_centralization = {
+	default = lnss_law_centralization_1
+	cumulative = no
+	flag = centralization_law	
+
+	lnss_law_centralization_1 = {
+		modifier = {	
+			vassal_limit = 10
+			development_growth_factor = 0.10
+		}
+
+		can_keep = { realm_law_use_crown_authority = yes }
+
+		can_pass = {
+				hidden_effect = { 
+					or = {
+						has_realm_law = lnss_law_centralization_2 
+						not = {
+							has_realm_law = lnss_law_centralization_1
+							has_realm_law = lnss_law_centralization_2
+							has_realm_law = lnss_law_centralization_3
+							has_realm_law = lnss_law_centralization_4
+							has_realm_law = lnss_law_centralization_5  	 	 	
+						}
+					}	
+				}
+				can_change_other_laws_trigger = yes
+				not = { 
+					has_character_modifier = has_recently_changed_laws_modifier
+				} 
+		}
+
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+
+		
+	}
+	lnss_law_centralization_2 = {
+		modifier = {	
+			domain_limit = 1
+			vassal_limit = 5	
+			development_growth_factor = 0.20		
+		}
+
+		can_keep = { realm_law_use_crown_authority = yes }
+
+		can_pass = {
+			hidden_effect = {
+				or = {
+					has_realm_law = lnss_law_centralization_1
+					has_realm_law = lnss_law_centralization_3	
+				}
+			}	
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+		
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOR = {
+							has_realm_law = lnss_law_centralization_3
+							has_realm_law = lnss_law_centralization_4
+							has_realm_law = lnss_law_centralization_5
+						}
+					}
+					add = 500
+				}
+			}
+		}
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = lnss_law_centralization_1 }
+				value = 1
+			}
+		}		
+	}
+	lnss_law_centralization_3 = {
+		#modifiers go here\
+		modifier = {	
+			domain_limit = 2
+			vassal_limit = 0	
+			development_growth_factor = 0.30		
+		}
+
+
+		can_keep = { 
+			realm_law_use_crown_authority = yes
+		 }
+
+		can_pass = {
+				can_change_other_laws_trigger = yes
+				custom_tooltip = { 
+					subject = root
+					text = "requires_crown_1" 
+					or = {
+						has_realm_law = crown_authority_1
+						has_realm_law = crown_authority_2
+						has_realm_law = crown_authority_3 
+					}
+				}
+				hidden_effect = {
+					or = {
+						has_realm_law = lnss_law_centralization_2
+						has_realm_law = lnss_law_centralization_4
+					}
+				}	
+				not = { 
+					has_character_modifier = has_recently_changed_laws_modifier
+				} 
+		}
+		
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOR = {
+							has_realm_law = lnss_law_centralization_4
+							has_realm_law = lnss_law_centralization_5
+						}
+					}
+					add = 500
+				}
+			}
+		}
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { 
+					or = {
+						has_realm_law = crown_authority_1
+						has_realm_law = crown_authority_2
+						has_realm_law = crown_authority_3
+					}
+					has_realm_law = lnss_law_centralization_2 
+				}
+				value = 1
+			}
+		}	
+	}
+	lnss_law_centralization_4 = {
+		modifier = {	
+			domain_limit = 3
+			vassal_limit = -5
+			development_growth_factor = 0.40		
+		}
+
+		can_keep = { 
+				realm_law_use_crown_authority = yes
+		 }
+
+		can_pass = {
+			custom_tooltip = { 
+				subject = root
+				text = "requires_crown_2" 
+				or = {
+					has_realm_law = crown_authority_2
+					has_realm_law = crown_authority_3 
+				}
+			}
+				can_change_other_laws_trigger = yes
+				hidden_effect = {
+					or = {
+						has_realm_law = lnss_law_centralization_3
+						has_realm_law = lnss_law_centralization_5
+					}
+				}	
+				not = { 
+					has_character_modifier = has_recently_changed_laws_modifier
+				} 
+		}
+
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOT = {
+							has_realm_law = lnss_law_centralization_5
+						}
+					}
+					add = 500
+				}
+			}
+		}		
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { 
+					or = {
+						has_realm_law = crown_authority_2
+						has_realm_law = crown_authority_3
+					}
+					has_realm_law = lnss_law_centralization_3
+				}
+				value = 1
+			}
+		}			
+	}	
+	lnss_law_centralization_5 = {
+		modifier = {	
+			domain_limit = 4
+			vassal_limit = -10
+			development_growth_factor = 0.50		
+		}
+
+		can_keep = { 
+			realm_law_use_crown_authority = yes
+		 }
+
+		can_pass = {
+			custom_tooltip = { 
+				subject = root
+				text = "requires_crown_3" 
+				has_realm_law = crown_authority_3 
+			}
+			hidden_effect = { has_realm_law = lnss_law_centralization_4 }
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+		
+		pass_cost = {
+			prestige = {
+				add = 500
+			}
+		}
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+
+
+		ai_will_do = {
+			if = {
+				limit = { 
+					has_realm_law = crown_authority_3
+					has_realm_law = lnss_law_centralization_4
+				}
+				value = 1
+			}
+		}	
+	}
+}
+
+### ADMINISTRATION ###
+lnss_law_administration = {
+	default = lnss_law_administration_unreformed
+	cumulative = no
+	flag = administration_law	
+
+	lnss_law_administration_unreformed = {
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = { 
+			hidden_effect = {
+				or = { 
+					has_realm_law = lnss_law_administration_reformed
+					not = {
+						has_realm_law = lnss_law_administration_reformed
+						has_realm_law = lnss_law_administration_unreformed	
+					}
+				} 
+			}
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+	}			
+}
+
+lnss_law_military = {
+	default = lnss_law_military_1
+	cumulative = no
+	flag = military_law	
+
+	lnss_law_military_1 = {
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = { 
+			hidden_effect = { 
+				or = {
+					has_realm_law = lnss_law_military_2 
+					not = {
+						has_realm_law = lnss_law_military_1
+						has_realm_law = lnss_law_military_2
+						has_realm_law = lnss_law_military_3
+						has_realm_law = lnss_law_military_4
+						has_realm_law = lnss_law_military_5  	 	 	
+					}
+				}	
+			} 
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+
+		pass_cost = {
+			prestige = {
+				add = 500
+			}
+		}
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}		
+		
+	}	
+	
+	lnss_law_military_2 = {
+
+		modifier = {
+			vassal_levy_contribution_mult = -0.15
+			men_at_arms_cap = 1
+		}
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = {
+			custom_tooltip = { 
+				subject = root
+				text = "requires_centralization_2" 
+				or = {
+					has_realm_law = lnss_law_centralization_2
+					has_realm_law = lnss_law_centralization_3
+					has_realm_law = lnss_law_centralization_4
+					has_realm_law = lnss_law_centralization_5
+				}
+			}
+			hidden_effect = {
+				or = {
+					has_realm_law = lnss_law_military_1
+					has_realm_law = lnss_law_military_3
+				}	
+			}
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOR = {
+							has_realm_law = lnss_law_military_3
+						}
+					add = 500
+					}
+				}
+			}
+		} 	
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+		
+		ai_will_do = {
+			if = {
+				limit = { 
+					or = {
+						has_realm_law = lnss_law_centralization_2
+						has_realm_law = lnss_law_centralization_3
+						has_realm_law = lnss_law_centralization_4
+						has_realm_law = lnss_law_centralization_5
+					}
+
+					has_realm_law = lnss_law_military_1
+				}
+				value = 1
+			}
+		}			
+	}	
+
+	lnss_law_military_3 = {
+		modifier = {
+			vassal_levy_contribution_mult = -0.30
+			men_at_arms_cap = 2
+		}
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = {
+			custom_tooltip = { 
+				subject = root
+				text = "requires_centralization_3" 
+				or = {
+					has_realm_law = lnss_law_centralization_3
+					has_realm_law = lnss_law_centralization_4
+					has_realm_law = lnss_law_centralization_5
+				}
+			}
+			hidden_effect = {
+				or = {
+					has_realm_law = lnss_law_military_2
+					has_realm_law = lnss_law_military_4
+				}	
+			}
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOR = {
+							has_realm_law = lnss_law_military_4
+						}
+					add = 500
+					}
+				}
+			}
+		} 	
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+		
+		ai_will_do = {
+			if = {
+				limit = { 
+					or = {
+						has_realm_law = lnss_law_centralization_3
+						has_realm_law = lnss_law_centralization_4
+						has_realm_law = lnss_law_centralization_5
+					}
+
+					has_realm_law = lnss_law_military_2
+				}
+				value = 1
+			}
+		}			
+	}
+	lnss_law_military_4 = {
+
+		modifier = {
+			vassal_levy_contribution_mult = -0.45
+			men_at_arms_cap = 3
+		}
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = {
+			custom_tooltip = { 
+				subject = root
+				text = "requires_centralization_4" 
+				or = {
+					has_realm_law = lnss_law_centralization_4
+					has_realm_law = lnss_law_centralization_5
+				}
+			}
+			hidden_effect = {
+				or = {
+					has_realm_law = lnss_law_military_3
+					has_realm_law = lnss_law_military_5
+				}	
+			}
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOR = {
+							has_realm_law = lnss_law_military_5
+						}
+					add = 500
+					}
+				}
+			}
+		} 	
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+		
+		ai_will_do = {
+			if = {
+				limit = { 
+					or = {
+						has_realm_law = lnss_law_centralization_4
+						has_realm_law = lnss_law_centralization_5
+					}
+
+					has_realm_law = lnss_law_military_3
+				}
+				value = 1
+			}
+		}			
+	}
+	
+	lnss_law_military_5 = {
+
+		modifier = {
+			vassal_levy_contribution_mult = -0.60
+			men_at_arms_cap = 4
+		}
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = {
+			custom_tooltip = { 
+				subject = root
+				text = "requires_centralization_5" 
+				or = {
+					has_realm_law = lnss_law_centralization_5
+				}
+			}
+			hidden_tooltip = { has_realm_law = lnss_law_military_4 }
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+
+		pass_cost = {
+			prestige = {
+				add = 500
+			}
+		} 	
+		
+		on_pass = {
+			add_character_modifier = { 
+				modifier = has_recently_changed_laws_modifier
+				years = 5 
+			}
+		}
+		
+		ai_will_do = {
+			if = {
+				limit = { 
+					has_realm_law = lnss_law_centralization_5
+					has_realm_law = lnss_law_military_4
+				}
+				value = 1
+			}
+		}			
+	}		
+}
+
+lnss_law_religion = {
+	default = lnss_law_religion_2
+	cumulative = no
+	flag = religion_law	
+
+	lnss_law_religion_2 = {
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = { 
+			hidden_effect = {
+				or = {
+					has_realm_law = lnss_law_religion_1 
+					has_realm_law = lnss_law_religion_3 
+					not = {
+						has_realm_law = lnss_law_religion_1 
+						has_realm_law = lnss_law_religion_2
+						has_realm_law = lnss_law_religion_3
+						has_realm_law = lnss_law_religion_4 	 	 	
+					}
+				}
+			}	
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+		
+	}			
+}
+
+lnss_law_culture = {
+	default = lnss_law_culture_2
+	cumulative = no
+	flag = religion_law	
+
+	lnss_law_culture_2 = {
+
+		can_keep = { realm_law_use_crown_authority = yes }
+		can_pass = { 
+			hidden_effect = {
+				or = {
+					has_realm_law = lnss_law_culture_1 
+					has_realm_law = lnss_law_culture_3 
+					not = {
+						has_realm_law = lnss_law_culture_1 
+						has_realm_law = lnss_law_culture_2
+						has_realm_law = lnss_law_culture_3
+						has_realm_law = lnss_law_culture_4 	 	 	
+					}
+				}
+			}
+			can_change_other_laws_trigger = yes
+			not = { 
+				has_character_modifier = has_recently_changed_laws_modifier
+			} 
+		}
+		
+	}			
+}
+
+
+
+
+	
+	
