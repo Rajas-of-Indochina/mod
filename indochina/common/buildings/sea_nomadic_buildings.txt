@@ -71,20 +71,21 @@ nomadic_01 = {
 		building_requirement_nomadic = yes
 	}
 	can_construct_potential = {
-		building_requirement_nomadic = yes
+		# building_requirement_nomadic = yes
+		always = no
+	}
+	can_construct_showing_failures_only = {
+		building_requirement_can_build_nomadic_holding = yes
 	}
 
-	levy = normal_building_levy_tier_3
 	max_garrison = good_building_max_garrison_tier_1
 	garrison_reinforcement_factor = building_garrison_reinforcement_factor_tier_1
+
 	province_modifier = {
 		monthly_income = poor_building_tax_tier_1
 		fort_level = 1
 	}
-
-	province_modifier = {
-		monthly_income = poor_building_tax_tier_1
-	}
+	levy = normal_building_levy_tier_3
 
 	province_terrain_modifier = {
 		terrain = desert_mountains
@@ -177,9 +178,6 @@ nomadic_empty = {
 	can_construct_potential = {
 		always = no
 	}
-
-	cost_prestige = expensive_building_tier_3_cost
-	cost_gold = expensive_building_tier_1_cost
 
 	max_garrison = 0
 	garrison_reinforcement_factor = 0
@@ -279,10 +277,19 @@ nomadic_pasture_01 = {
 	type_icon = "icon_building_pastures.dds"
 
 	next_building = nomadic_pasture_02
+
 	ai_value = {
-		base = 5
-		ai_general_building_modifier = yes
-		ai_economical_building_preference_modifier = yes
+		base = 1
+		modifier = {
+			factor = 0
+			scope:holder = {
+				# has less than X prestige
+				prestige < {
+					value = expensive_building_tier_1_cost
+					multiply = 3
+				}
+			}
+		}
 	}
 }
 
@@ -332,7 +339,7 @@ nomadic_pasture_04 = {
 }
 
 nomadic_pasture_05 = {
-	construction_time = slow_construction_time
+	construction_time = very_quick_construction_time
 
 	can_construct_potential = {
 		always = no

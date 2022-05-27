@@ -42,3 +42,44 @@ check_nomadic_capital_buildings_pulse = {
 		}
 	}
 }
+
+# root: The province in which the building was completed
+on_building_completed = {
+	on_actions = {
+		check_nomadic_capital_moved_in_county
+	}
+}
+
+check_nomadic_capital_moved_in_county = {
+	trigger = {
+		county_controller = {
+			has_government = nomadic_government
+		}
+		has_holding_type = nomadic_holding
+	}
+
+	effect = {
+		# Make this the title province
+		barony = { set_capital_barony = yes }
+
+		# Remove the old capital
+		county = {
+			every_county_province = {
+				limit = {
+					has_holding_type = nomadic_holding
+					NOT = { this = root }
+				}
+				county_controller = { destroy_title = prev }
+				# remove_holding = yes
+				# remove_building = nomadic_01
+			}
+		}
+
+		# Flag character as having moved their capital
+		county_controller = {
+			set_variable = {
+				name = has_moved_capital value = yes days = 3650 # 10 years
+			}
+		}
+	}
+}
