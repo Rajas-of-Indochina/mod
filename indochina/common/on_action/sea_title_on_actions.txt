@@ -13,3 +13,32 @@ on_title_gain = {
 		sea_title_event.1001 # Convert Chinese vassals to appropriate vassal gov
 	}
 }
+
+# A title is lost by a character
+# root = the old holder
+# scope:title = the title that changes hands
+# scope:new_holder = new holder.
+on_title_lost = {
+	events = {
+		sea_nomad_title_event.0001 # If losing your capital, convert it to an empty holding, and establish a new capital
+	}
+}
+
+# This is a completely normal use of this function
+on_faith_monthly = {
+	on_actions = {
+		check_nomadic_capital_buildings_pulse
+	}
+}
+
+check_nomadic_capital_buildings_pulse = {
+	effect = {
+		every_faith_ruler = {
+			limit = {
+				has_government = nomadic_government
+				highest_held_title_tier > tier_barony
+			}
+			trigger_event = sea_nomad_title_event.0002 # Check nomad has a capital building. Build it if not.
+		}
+	}
+}
