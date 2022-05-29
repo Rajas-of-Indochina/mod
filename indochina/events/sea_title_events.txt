@@ -1130,3 +1130,66 @@ sea_title_event.1001 = {
 		change_government = chinese_vassal_government
 	}
 }
+
+sea_title_event.2000 = {
+	hidden = yes
+
+	trigger = {
+		has_government = anarchist_government
+		scope:title.tier = tier_county
+		domain_size > 1
+	}
+	immediate = {
+		scope:title.holder = {
+			trigger_event = {
+				id = sea_title_event.2001
+				days = { 1 7 }
+			}
+		}
+	}
+}
+
+sea_title_event.2001 = {
+	type = character_event
+	title = sea_title_event.2001.t
+	desc = sea_title_event.2001.desc
+	theme = realm
+	right_portrait = scope:new_count
+
+	immediate = {
+		# Create a new ruler of the same culture and faith of the county and make them your vassal
+		create_character = {
+			location = scope:title.title_province
+			template = generic_peasant_character
+			faith = scope:title.faith
+			culture = scope:title.culture
+			save_scope_as = new_count
+		}
+	}
+
+	option = {
+		# County goes to the new character
+		name = sea_title_event.2001.a
+
+		create_title_and_vassal_change = {
+			type = granted
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:title = {
+			change_title_holder = {
+				holder = scope:new_count
+				change = scope:change
+				take_baronies = yes
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		scope:new_count = {
+			change_government = anarchist_government
+		}
+	}
+	option = {
+		# Keep it for yourself. People will be mad.
+		name = sea_title_event.2001.b
+	}
+}
