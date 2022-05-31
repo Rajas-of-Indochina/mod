@@ -605,6 +605,11 @@ sea_title_event.0001 = {
 	left_portrait = root
 
     trigger = {
+    	OR = {
+    		has_government = mandala_government
+    		has_government = feudal_government
+    		has_government = clan_government
+    	}
     	primary_title = scope:title
 		highest_held_title_tier >= tier_duchy
     	NOT = { has_character_flag = has_regnal_name }
@@ -1156,6 +1161,10 @@ sea_title_event.2001 = {
 	theme = realm
 	right_portrait = scope:new_count
 
+	trigger = {
+		NOT = { scope:title = scope:ruler.capital_county }
+	}
+
 	immediate = {
 		# Create a new ruler of the same culture and faith of the county and make them your vassal
 		create_character = {
@@ -1187,9 +1196,17 @@ sea_title_event.2001 = {
 		scope:new_count = {
 			change_government = anarchist_government
 		}
+
+		ai_chance = {
+			base = 100
+		}
 	}
 	option = {
 		# Keep it for yourself. People will be mad.
 		name = sea_title_event.2001.b
+
+		ai_chance = {
+			base = 0
+		}
 	}
 }
