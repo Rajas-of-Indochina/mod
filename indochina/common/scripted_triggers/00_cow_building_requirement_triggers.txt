@@ -1,4 +1,63 @@
-﻿building_requirement_cow_metropolis = {
+﻿######################################################################
+# Holding Level
+######################################################################
+
+# is_a_special_cow_mine_province = {
+	# has_special_building_slot = yes
+		# OR = {
+			# has_special_building = no
+			# has_building_or_higher = rammelsberg_mines_01
+			# has_building_or_higher = kutna_hora_mines_01
+			# has_building_or_higher = kremnica_mines_01
+			# has_building_or_higher = falun_mines_01
+			# has_building_or_higher = schwaz_mines_01
+			# has_building_or_higher = argentiera_mines_01
+			# has_building_or_higher = kollur_mines_01
+			# has_building_or_higher = siderokausia_mines_01
+			# has_building_or_higher = mali_mines_01
+		# }
+	# barony = { is_holy_site = no }
+	# OR = {
+		# barony = { title:b_goslar }
+		# barony = { title:b_caslav }
+		# barony = { title:b_turoc }
+		# barony = { title:b_falene }
+		# barony = { title:b_innsbruck }
+		# barony = { title:b_iglesias }
+		# barony = { title:b_ellur }
+		# barony = { title:b_ierrisos }
+		# barony = { title:b_wasulu }
+		# barony = { title:b_diakha }
+		# barony = { title:b_goundafa }
+	# }
+# }
+
+building_requirement_castle_city_church = {
+	trigger_if = {
+		limit = { has_holding_type = castle_holding }
+		has_building_or_higher = castle_$LEVEL$
+	}
+	trigger_else_if = {
+		limit = { has_holding_type = city_holding }
+		has_building_or_higher = city_$LEVEL$
+	}
+	trigger_else_if = {
+		limit = { has_holding_type = church_holding }
+		has_building_or_higher = temple_$LEVEL$
+	}
+	trigger_else_if = {
+		limit = { has_holding_type = cow_metropolis_holding }
+		has_building_or_higher = cow_metropolis_$LEVEL$
+	}
+	trigger_else = {
+		custom_description = {
+			text = "building_requirement_castle_city_church_failed"
+			always = no
+		}
+	}
+}
+
+building_requirement_cow_metropolis = {
 	trigger_if = {
 		limit = { has_holding_type = cow_metropolis_holding }
 		has_building_or_higher = cow_metropolis_$LEVEL$
