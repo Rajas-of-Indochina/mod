@@ -8,11 +8,18 @@ walls_00 = {
 		type = pdxmesh
 		name = "western_walls_00_mesh"
 	}
-	
+
 	is_enabled = {
-		is_county_capital = no
-		fort_level < 1
-		has_holding_type = nomadic_holding_empty
+		OR = {
+			AND = {
+				is_county_capital = no
+				fort_level < 1
+				has_holding_type = nomadic_holding_empty
+			}
+			# Using the no_wall holding graphics for cities with special walls so that they don't have double walls
+			has_building_or_higher = "city_wall_of_toledo_01"
+			has_building_or_higher = "roman_wall_of_lugo_01"
+		}
 	}
 }
 
@@ -26,7 +33,7 @@ walls_01_tribal = {
 			"tribal_walls_01_a_mesh"
 		}
 	}
-	
+
 	is_enabled = {
 		OR = {
 			is_county_capital = yes
@@ -34,6 +41,7 @@ walls_01_tribal = {
 		}
 		NOR = {
 			has_holding_type = nomadic_holding_empty
+			# disabling this level of walled graphics for holdings with special walls and other fortifications so that they always look appropriately fortified. Note: If any of these buildings are given unique 3D assets, this should be looked at again.
 			has_building_or_higher = "palisades_01"
 			has_building_or_higher = "curtain_walls_01"
 			has_building_or_higher = "hill_forts_01"
@@ -43,6 +51,8 @@ walls_01_tribal = {
 			has_building_or_higher = "walls_of_benin_01"
 			has_building_or_higher = "walls_of_genoa_01"
 			has_building_or_higher = "aurelian_walls_01"
+			has_building_or_higher = "city_wall_of_toledo_01"
+			has_building_or_higher = "roman_wall_of_lugo_01"
 		}
 	}
 }
@@ -56,7 +66,7 @@ walls_01 = {
 			"western_walls_01_a_mesh"
 			"western_walls_01_b_mesh"
 		}
-	}	
+	}
 	asset = {
 		type = pdxmesh
 		names = {
@@ -75,7 +85,7 @@ walls_01 = {
 			"fp1_norse_walls_01_mesh"
 		}
 	}
-	
+
 	asset = {
 		type = pdxmesh
 		requires_dlc_flag = the_northern_lords
@@ -88,6 +98,16 @@ walls_01 = {
 
 	asset = {
 		type = pdxmesh
+		requires_dlc_flag = the_fate_of_iberia
+		graphical_cultures = { iberian_building_gfx }
+		graphical_regions = { graphical_mena graphical_india graphical_mediterranean graphical_western graphical_steppe }
+		names = {
+			"fp2_building_iberian_wall_01_mesh"
+		}
+	}
+
+	asset = {
+		type = pdxmesh
 		names = {
 			"chinese_walls_01_a_mesh"
 			"chinese_walls_01_a_mesh"
@@ -95,9 +115,10 @@ walls_01 = {
 		}
 		graphical_regions = { graphical_china }
 	}
-	
+
 	is_enabled = {
 		OR = {
+			# These buildings will trigger the visual "upgrade" to this wall asset
 			has_building_or_higher = "palisades_01"
 			has_building_or_higher = "curtain_walls_01"
 			has_building_or_higher = "hill_forts_01"
@@ -105,6 +126,7 @@ walls_01 = {
 			has_building_or_higher = "watchtowers_01"
 		}
 		NOR = {
+			# Disabling this level of walled graphics for holdings with special walls and other fortifications so that they always look appropriately fortified. Note: If any of these buildings are given unique 3D assets, this should be looked at again.
 			has_building_or_higher = "palisades_02"
 			has_building_or_higher = "curtain_walls_02"
 			has_building_or_higher = "hill_forts_02"
@@ -114,6 +136,8 @@ walls_01 = {
 			has_building_or_higher = "walls_of_benin_01"
 			has_building_or_higher = "walls_of_genoa_01"
 			has_building_or_higher = "aurelian_walls_01"
+			has_building_or_higher = "city_wall_of_toledo_01"
+			has_building_or_higher = "roman_wall_of_lugo_01"
 		}
 	}
 }
@@ -128,7 +152,7 @@ walls_02 = {
 			"western_walls_02_a_mesh"
 		}
 	}
-	
+
 	asset = {
 		type = pdxmesh
 		graphical_regions = { graphical_mena }
@@ -144,15 +168,25 @@ walls_02 = {
 		names = {
 			"fp1_norse_walls_02_mesh"
 		}
-	}	
-	
-		asset = {
+	}
+
+	asset = {
 		type = pdxmesh
 		requires_dlc_flag = the_northern_lords
 		graphical_cultures = { norse_building_gfx }
 		graphical_regions = { graphical_mena }
 		names = {
 			"fp1_norse_walls_02_mena_mesh"
+		}
+	}
+
+	asset = {
+		type = pdxmesh
+		requires_dlc_flag = the_fate_of_iberia
+		graphical_cultures = { iberian_building_gfx }
+		graphical_regions = { graphical_mena graphical_india graphical_mediterranean graphical_western graphical_steppe }
+		names = {
+			"fp2_building_iberian_wall_02_mesh"
 		}
 	}
 
@@ -168,6 +202,7 @@ walls_02 = {
 
 	is_enabled = {
 		OR = {
+			# These buildings will trigger the visual "upgrade" to this wall asset
 			has_building_or_higher = "palisades_02"
 			has_building_or_higher = "curtain_walls_02"
 			has_building_or_higher = "hill_forts_02"
@@ -175,6 +210,7 @@ walls_02 = {
 			has_building_or_higher = "watchtowers_02"
 		}
 		NOR = {
+			# Disabling this level of walled graphics for holdings with special walls and other fortifications so that they always look appropriately fortified. Note: If any of these buildings are given unique 3D assets, this should be looked at again.
 			has_building_or_higher = "curtain_walls_03"
 			has_building_or_higher = "hill_forts_03"
 			has_building_or_higher = "ramparts_03"
@@ -183,6 +219,8 @@ walls_02 = {
 			has_building_or_higher = "walls_of_benin_01"
 			has_building_or_higher = "walls_of_genoa_01"
 			has_building_or_higher = "aurelian_walls_01"
+			has_building_or_higher = "city_wall_of_toledo_01"
+			has_building_or_higher = "roman_wall_of_lugo_01"
 		}
 	}
 }
@@ -197,7 +235,7 @@ walls_03 = {
 			"western_walls_03_a_mesh"
 		}
 	}
-	
+
 	asset = {
 		type = pdxmesh
 		graphical_regions = { graphical_mena graphical_india graphical_sea }
@@ -206,7 +244,17 @@ walls_03 = {
 			"mena_walls_04_a_mesh"
 		}
 	}
-	
+
+	asset = {
+		type = pdxmesh
+		requires_dlc_flag = the_fate_of_iberia
+		graphical_cultures = { iberian_building_gfx }
+		graphical_regions = { graphical_mena graphical_india graphical_mediterranean graphical_western graphical_steppe }
+		names = {
+			"fp2_building_iberian_wall_03_mesh"
+		}
+	}
+
 	asset = {
 		type = pdxmesh
 		names = {
@@ -216,12 +264,13 @@ walls_03 = {
 		}
 		graphical_regions = { graphical_china }
 	}
-	
+
 	is_enabled = {
 		scope:holder = {
 			NOT = { has_government = tribal_government }
 		}
 		OR = {
+			# These buildings will trigger the visual "upgrade" to this wall asset
 			has_building_or_higher = "curtain_walls_03"
 			has_building_or_higher = "hill_forts_03"
 			has_building_or_higher = "ramparts_03"
@@ -229,6 +278,16 @@ walls_03 = {
 			has_building_or_higher = "walls_of_benin_01"
 			has_building_or_higher = "walls_of_genoa_01"
 			has_building_or_higher = "aurelian_walls_01"
+		}
+		NOR = {
+			# Disabling this level of walled graphics for holdings with special walls and other fortifications so that they always look appropriately fortified. Note: If any of these buildings are given unique 3D assets, this should be looked at again.
+			has_building_or_higher = "curtain_walls_06"
+			has_building_or_higher = "hill_forts_06"
+			has_building_or_higher = "ramparts_06"
+			has_building_or_higher = "watchtowers_06"
+			has_building_or_higher = "theodosian_walls_01"
+			has_building_or_higher = "city_wall_of_toledo_01"
+			has_building_or_higher = "roman_wall_of_lugo_01"
 		}
 	}
 }
@@ -243,7 +302,7 @@ walls_04 = {
 			"western_walls_04_a_mesh"
 		}
 	}
-	
+
 	asset = {
 		type = pdxmesh
 		graphical_regions = { graphical_mena graphical_india graphical_sea }
@@ -252,7 +311,17 @@ walls_04 = {
 			"mena_walls_04_a_mesh"
 		}
 	}
-	
+
+	asset = {
+		type = pdxmesh
+		requires_dlc_flag = the_fate_of_iberia
+		graphical_cultures = { iberian_building_gfx }
+		graphical_regions = { graphical_mena graphical_india graphical_mediterranean graphical_western graphical_steppe }
+		names = {
+			"fp2_building_iberian_wall_04_mesh"
+		}
+	}
+
 	asset = {
 		type = pdxmesh
 		names = {
@@ -262,12 +331,13 @@ walls_04 = {
 		}
 		graphical_regions = { graphical_china }
 	}
-	
+
 	is_enabled = {
 		scope:holder = {
 			NOT = { has_government = tribal_government }
 		}
 		OR = {
+			# These buildings will trigger the visual "upgrade" to this wall asset
 			has_building_or_higher = "curtain_walls_06"
 			has_building_or_higher = "hill_forts_06"
 			has_building_or_higher = "ramparts_06"
