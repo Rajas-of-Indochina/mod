@@ -426,37 +426,3 @@ tributaries.12 = {
         name = tribute_denied
     }
 }
-
-#Call to arms recived from suzerain
-#Root is tributary
-tributaries.13 = {
-    type = letter_event
-    opening = {
-        desc = tributaries.13_opening
-    }
-    desc = tributaries.13_opening
-    sender = scope:suzerain_cta_caller
-
-    option = {
-        name = join_suzerain_war
-        scope:suzerain_cta_caller = {
-            if = {
-                limit = {
-                    is_attacker_in_war = yes
-                }
-                add_attacker = prev
-            }
-            if = {
-                limit = {
-                    is_defender_in_war = yes
-                }
-                add_defender = prev
-
-            }
-        }
-    }
-
-    option = {
-        name = do_not_join_suzerain_war
-    }
-}
