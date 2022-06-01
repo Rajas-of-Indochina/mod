@@ -56,8 +56,9 @@ widget = {
 			}
 
 			widget = {
+				name = "background_map"
 				parentanchor = center
-				size = { 100% 100% }
+				size = { 1920 1080 }
 
 				state = {
 					name = "bookmarks_game_start"
@@ -131,6 +132,7 @@ widget = {
 			}
 
 			widget = {
+				name = "map_characters"
 				size = { 100% 100% }
 				datamodel = "[GameSetup.GetSelectedBookmarkCharacters]"
 
@@ -480,7 +482,6 @@ widget = {
 							glow_radius = 20
 
 							glow_generation_rules= {
-								glow_max_radius = 40
 								glow_alpha_mask = 0
 								glow_blur_passes = 10
 								glow_texture_downscale = 5.5f
@@ -1462,8 +1463,9 @@ widget = {
 							}
 						}
 
-						coat_of_arms_icon = {
+						coat_of_arms_icon = { #Dynasty
 							datacontext = "[BookmarkCharacterGUI.GetCharacter]"
+							visible = "[Not( BookmarkCharacter.HasDynastyHouse )]"
 							parentanchor = bottom|hcenter
 							size = { 360 360 }
 							coat_of_arms = "[BookmarkCharacter.GetDynastyTemplate.GetCoA.GetTexture('(int32)256','(int32)256')]"
@@ -1476,6 +1478,24 @@ widget = {
 								spritetype = corneredTiled
 							}
 						}
+
+						coat_of_arms_icon = { #Dynasty House
+							datacontext = "[BookmarkCharacterGUI.GetCharacter]"
+							visible = "[BookmarkCharacter.HasDynastyHouse]"
+							parentanchor = bottom|hcenter
+							size = { 360 360 }
+							coat_of_arms = "[BookmarkCharacter.GetDynastyHouseTemplate.GetCoA.GetTexture('(int32)256','(int32)256')]"
+							coat_of_arms_slot = "[BookmarkCharacter.GetDynastyHouseTemplate.GetCoA.GetSlot('(int32)256','(int32)256')]"
+							coat_of_arms_mask = "gfx/interface/frontend/mask_coa_flag.dds"
+
+							modify_texture = {
+								texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
+								blend_mode = overlay
+								spritetype = corneredTiled
+							}
+						}
+
+
 
 						bm_portrait = {
 							parentanchor = bottom|hcenter
@@ -1633,8 +1653,9 @@ widget = {
 							margin_top = -360
 
 							modify_texture = {
-								texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
+								texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
 								blend_mode = alphamultiply
+								mirror = vertical
 							}
 
 							using = Mask_Rough_Edges
@@ -1717,7 +1738,19 @@ widget = {
 									coa_dynasty_bookmark = {}
 
 									text_multi = {
+										visible = "[Not( BookmarkCharacter.HasDynastyHouse )]"
 										text = "[BookmarkCharacter.GetDynastyTemplate.GetName]"
+										default_format = "#high"
+										tooltip = "BOOKMARK_DYNASTY_TOOLTIP"
+										autoresize = yes
+										max_width = 120
+										align = nobaseline
+										margin = { 2 0 }
+									}
+
+									text_multi = {
+										visible = "[BookmarkCharacter.HasDynastyHouse]"
+										text = "[BookmarkCharacter.GetDynastyHouseTemplate.GetName]"
 										default_format = "#high"
 										tooltip = "BOOKMARK_DYNASTY_TOOLTIP"
 										autoresize = yes
@@ -1975,6 +2008,8 @@ widget = {
 
 							state = {
 								name = start_game_audio
+								duration = 0.1
+
 								start_sound = {
 									soundeffect = "event:/SFX/UI/Generic/sfx_ui_generic_start_game"
 								}
@@ -2101,6 +2136,14 @@ types BookmarkPortraits
 					texture = "gfx/interface/buttons/button_stone_glass_glow.dds"
 					blend_mode = colordodge
 					alpha = 0
+				}
+
+				modify_texture = {
+					name = "shimmer"
+					visible = "[BookmarkItem.GetBookmark.IsRecommended]"
+					texture = "gfx/interface/component_effects/effect_shimmer.dds"
+					blend_mode = colordodge
+					translate_uv = { 0.2 0.2 }
 				}
 
 				modify_texture = {
@@ -2237,6 +2280,14 @@ types BookmarkPortraits
 					texture_density = 2
 
 					modify_texture = {
+						name = "shimmer"
+						visible = "[BookmarkItem.GetBookmark.IsRecommended]"
+						texture = "gfx/interface/component_effects/effect_shimmer.dds"
+						blend_mode = colordodge
+						translate_uv = { 0.2 0.2 }
+					}
+
+					modify_texture = {
 						name = "shimmer_2"
 						texture = "gfx/interface/component_effects/effect_shimmer.dds"
 						blend_mode = colordodge
@@ -2283,7 +2334,6 @@ types BookmarkPortraits
 							translate_uv = { 1 -1 }
 							alpha = 0.6
 						}
-						# on_finish = "[PdxGuiTriggerAllAnimations('shimmer')]"
 					}
 
 					# Shimmer on appear
@@ -2312,8 +2362,6 @@ types BookmarkPortraits
 				}
 
 				vbox = {
-					layoutpolicy_horizontal = expanding
-
 					vbox = {
 						visible = "[Not(BookmarkItem.IsSelected)]"
 						layoutpolicy_horizontal = expanding
@@ -2741,7 +2789,7 @@ types BookmarkPortraits
 				icon = {
 					parentanchor = top|hcenter
 					widgetanchor = bottom|hcenter
-					position = { 0 20}
+					position = { 0 50 }
 					size = { 80% 100% }
 					texture = "gfx/interface/component_masks/mask_fade_halfcircle.dds"
 					color = { 0.58 0.55 0.5 0.8 }
@@ -2769,6 +2817,7 @@ types BookmarkPortraits
 
 					icon = {
 						size = { 100% 100% }
+						parentanchor = center
 						texture = "gfx/interface/component_masks/mask_fade_halfcircle.dds"
 						color = { 0.58 0.55 0.5 1 }
 					}
@@ -2838,8 +2887,7 @@ types BookmarkPortraits
 							color = { 0.1 0.1 0.1 0.2 }
 							glow_radius = 10
 
-							glow_generation_rules= {
-								glow_max_radius = 30
+							glow_generation_rules = {
 								glow_alpha_mask = 0
 								glow_blur_passes = 10
 								glow_texture_downscale = 5.5f
@@ -2910,6 +2958,7 @@ types BookmarkPortraits
 							parentanchor = bottom|hcenter
 							widgetanchor = center
 							direction = vertical
+							margin_bottom = 6
 
 							text_single = {
 								parentanchor = hcenter
@@ -2935,6 +2984,7 @@ types BookmarkPortraits
 							margin_bottom = 35
 							spacing = -6
 							resizeparent = yes
+							ignoreinvisible = yes
 
 							text_single = {
 								text = "[BookmarkCharacter.GetName]"
@@ -2943,7 +2993,15 @@ types BookmarkPortraits
 							}
 
 							text_single = {
+								visible = "[Not( BookmarkCharacter.HasDynastyHouse )]"
 								text = "[BookmarkCharacter.GetDynastyTemplate.GetName]"
+								fontsize = 16
+								default_format = "#high;glow_color:{0,0,0,1}"
+							}
+
+							text_single = {
+							visible = "[BookmarkCharacter.HasDynastyHouse]"
+								text = "[BookmarkCharacter.GetDynastyHouseTemplate.GetName]"
 								fontsize = 16
 								default_format = "#high;glow_color:{0,0,0,1}"
 							}
@@ -3033,8 +3091,9 @@ types GameSetupTypes
 					alpha = 0.8
 
 					modify_texture = {
-						texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
+						texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
 						blend_mode = alphamultiply
+						mirror = vertical
 					}
 				}
 
