@@ -1,5 +1,5 @@
 ﻿
-mandala_call_vassal_interaction = {
+call_ally_interaction = {
 	category = interaction_category_diplomacy
 	desc = call_ally_interaction_desc
 	interface_priority = 60
@@ -13,12 +13,29 @@ mandala_call_vassal_interaction = {
 
 	is_shown = {
 		scope:actor = {
-			has_government = mandala_government
 			is_at_war = yes
 		}
-		scope:recipient = {
-			exists = liege
-			liege = scope:actor
+
+		scope:actor = { #If you can call them as a House Member then do that
+			NOT = {
+				is_character_interaction_valid = {
+					recipient = scope:recipient
+					interaction = call_house_member_to_war_interaction
+				}
+			}
+		}
+
+		OR = {
+			AND = {
+				scope:actor = { has_government = mandala_government }
+				scope:recipient = {
+					exists = liege
+					liege = scope:actor
+				}
+			}
+			scope:recipient = {
+				is_allied_to = scope:actor
+			}
 		}
 	}
 
@@ -125,7 +142,7 @@ mandala_call_vassal_interaction = {
 	}
 
 	can_be_picked = {
-		can_join_war_liege_vassal_check_trigger = { WARRIOR = scope:actor JOINER = scope:recipient }
+		# can_join_war_liege_vassal_check_trigger = { WARRIOR = scope:actor JOINER = scope:recipient }
 
 		scope:target = {
 			is_war_leader = scope:actor
@@ -148,7 +165,7 @@ mandala_call_vassal_interaction = {
 	}
 
 	on_accept = {
-		mandala_call_vassal_interaction_effect = yes
+		call_ally_interaction_effect = yes
 
 		save_scope_value_as = {
 			name = call_ally_interaction
@@ -156,6 +173,17 @@ mandala_call_vassal_interaction = {
 		}
 
 		scope:actor = {
+			hidden_effect = { #To nudge friendship
+				if = {
+					limit = {
+						NOR = {
+							has_relation_friend = scope:recipient
+							has_relation_potential_friend = scope:recipient
+						}
+					}
+					set_relation_potential_friend = scope:recipient
+				}
+			}
 			trigger_event = call_ally.0100
 		}
 	}
@@ -249,16 +277,6 @@ mandala_call_vassal_interaction = {
 			}
 		}
 	}
-
-	ai_potential = {
-		is_at_war = yes
-	}
-
-	ai_targets = {
-		ai_recipients = vassals
-	}
-
-	ai_frequency = 1
 
 	ai_accept = {
 		base = 1
@@ -572,5 +590,67 @@ mandala_call_vassal_interaction = {
 	# Score above 0 means the AI will call this ally. Note that DESIRED_WAR_SIDE_STRENGTH still applies and can prevent calling the ally
 	ai_will_do = {
 		base = 100
+
+		modifier = { # If the player is at war, do not bother them with offensive calls
+			scope:target.casus_belli.primary_attacker = scope:actor
+			scope:recipient = {
+				is_ai = no
+				any_character_war = {
+					primary_defender = scope:recipient
+				}
+			}
+			factor = 0
+		}
+
+		modifier = { # Don't call players in against their heirs (they wouldn't accept the reverse situation... don't be a hypocrite)
+			exists = scope:recipient.player_heir
+			scope:recipient = {
+				is_ai = no
+			}
+			trigger_if = {
+				limit = { scope:target.casus_belli.primary_defender = scope:actor }
+				scope:target.casus_belli.primary_attacker = scope:recipient.player_heir
+			}
+			trigger_else = {
+				scope:target.casus_belli.primary_defender = scope:recipient.player_heir
+			}
+			factor = 0
+		}
+
+		modifier = { # Same with spouses
+			scope:recipient = {
+				is_ai = no
+			}
+			trigger_if = {
+				limit = { scope:target.casus_belli.primary_defender = scope:actor }
+				any_spouse = {
+					this = scope:target.casus_belli.primary_attacker
+				}
+			}
+			trigger_else = {
+				any_spouse = {
+					this = scope:target.casus_belli.primary_defender
+				}
+			}
+			factor = 0
+		}
+
+		modifier = { # Don't call brand-new allies into old wars, at least until some time has elapsed.
+			has_variable = delay_calling_recent_ally
+			var:delay_calling_recent_ally = scope:recipient
+			scope:target = {
+				war_days >= 30
+			}
+			factor = 0
+
+		}
+
+		modifier = { # If the recipient is allied to both the attacker and the defender, the attacker shouldn't call
+			scope:target.casus_belli.primary_attacker = scope:actor
+			scope:target.casus_belli.primary_defender = {
+				is_allied_to = scope:recipient
+			}
+			factor = 0
+		}
 	}
 }
