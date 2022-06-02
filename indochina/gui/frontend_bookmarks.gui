@@ -56,6 +56,7 @@ widget = {
 			}
 
 			widget = {
+				name = "background_map"
 				parentanchor = center
 				size = { 1920 1080 }
 
@@ -131,6 +132,7 @@ widget = {
 			}
 
 			widget = {
+				name = "map_characters"
 				size = { 100% 100% }
 				datamodel = "[GameSetup.GetSelectedBookmarkCharacters]"
 
@@ -625,6 +627,242 @@ widget = {
 		size = "[GetResolutionWithAspectRatio]"
 		scale = "[ScaleToFitElementInside('(int32)1920', '(int32)1080')]"
 
+		widget = {
+			size = { 100% 50 }
+			allow_outside = yes
+			position = { 0 37 }
+
+			state = {
+				name = "bookmarks_game_start"
+				using = Animation_Curve_Default
+				duration = 0.2
+
+				alpha = 0
+				position_y = -50 #15 #-50
+			}
+
+			state = {
+				name = "bookmarks_reset"
+				using = Animation_Curve_Default
+				duration = 0.2
+
+				alpha = 1
+				position_y = 0 #65 #0
+			}
+
+			state = {
+				name = "bookmarks_bars_appear"
+				next = b
+
+				alpha = 0
+				position_y = -50 #15 #-50
+			}
+
+			state = {
+				name = b
+				using = Animation_Curve_Default
+
+				alpha = 1
+				delay = 0.6
+				position_y = 37 #65 #0
+				duration = 0.15
+			}
+
+			state = {
+				name = "bookmark_change_lower"
+				next = "fadein"
+
+				alpha = 0
+				position_y = -50 #15 #-50
+			}
+
+			state = {
+				name = "fadein"
+				using = Animation_Curve_Default
+
+				alpha = 1
+				delay = 0.2
+				position_y = 37 #65 #0
+				duration = 0.2
+			}
+
+			hbox = {
+				allow_outside = yes
+
+				widget = {
+					background = {
+						using = Background_Area_Solid
+						color = { 0.125 0.125 0.125 9 }
+						margin = { -5 -10 }
+						margin_top = 30
+					}
+
+					background = {
+						texture = "gfx/interface/component_masks/patterns/mask_pattern_01.dds"
+						spriteType = corneredtiled
+						color = { 0.1 0.1 0.12 1 }
+						texture_density = 0.7
+						margin_bottom = -10
+						margin_top = 10
+
+						modify_texture = {
+							texture = "gfx/interface/component_masks/mask_clouds.dds"
+							blend_mode = alphamultiply
+							spriteType = corneredTiled
+							alpha = 0.5
+						}
+
+						modify_texture = {
+							texture = "gfx/interface/component_masks/mask_scratches.dds"
+							blend_mode = alphamultiply
+							spriteType = corneredTiled
+						}
+					}
+
+					icon = {
+						name = "tile_frame_top"
+						parentanchor = bottom|hcenter
+						size = { 100% 22 }
+						position = { 0 0 }
+
+						texture = "gfx/interface/component_decoration/decoration_frame_top_clean.dds"
+						spriteType = Corneredtiled
+						spriteborder = { 100 0 }
+						mirror = vertical
+						texture_density = 2
+					}
+
+					widget = {
+						parentanchor = bottom|left
+						widgetanchor = vcenter|right
+						position = { 35 -30 }
+						size = { 173 130 }
+						scissor = yes
+
+						icon = {
+							parentanchor = top|left
+							texture = "gfx/interface/skinned/hud_bg_gamespeed.dds"
+							size = { 1298 130 }
+							scale = 0.8
+
+							mirror = vertical
+						}
+					}
+					widget = {
+						parentanchor = bottom|right
+						widgetanchor = vcenter|left
+						position = { -35 -30 }
+						size = { 173 130 }
+						scissor = yes
+
+						icon = {
+							parentanchor = top|right
+							texture = "gfx/interface/skinned/hud_bg_gamespeed.dds"
+							size = { 1298 130 }
+							scale = 0.8
+
+							mirror = vertical|horizontal
+						}
+					}
+					hbox = {
+						name = "bookmark_grid"
+						datamodel = "[GameSetup.GetBookmarks]"
+						layoutpolicy_vertical = expanding
+						allow_outside = yes
+						set_parent_size_to_minimum = yes
+
+						item = {
+							widget_bookmark_button = {
+								name = "bookmark_tab"
+								visible = "[EqualTo_string( GameSetup.GetSelectedBookmark.GetDate.GetString, BookmarkItem.GetDate.GetString )]"
+
+								state = {
+									name = _show
+									on_start = "[PdxGuiWidget.TriggerAnimation(Select_CString( BookmarkItem.GetBookmark.IsRecommended, 'recommended_down', '' ))]"
+								}
+								state = {
+									name = "recommended_down"
+									on_start = "[PdxGuiWidget.FindChild('bookmark_button_actual').TriggerAnimation('button_selection')]"
+									#on_start = "[PdxGuiWidget.FindChild('bookmarks_button').TriggerAnimation('shimmer')]"
+									on_start = "[PdxGuiWidget.FindChild('bookmarks_button').TriggerAnimation('selected_glow')]"
+								}
+							}
+						}
+					}
+
+					widget = {
+						size = { 100% 22 }
+						position = { 0 -18 }
+
+						# icon = {
+						# 	name = "tile_frame_bottom"
+						# 	parentanchor = top|hcenter
+						# 	size = { 100% 22 }
+						# 	#position = { 0 -22 }
+
+						# 	texture = "gfx/interface/component_decoration/decoration_frame_top_clean.dds"
+						# 	spriteType = Corneredtiled
+						# 	spriteborder = { 100 0 }
+						# 	mirror = vertical
+						# 	texture_density = 2
+						# }
+
+						widget = {
+							parentanchor = bottom|hcenter
+							widgetanchor = bottom|hcenter
+							size = { 100% 22 }
+							scissor = yes
+							icon = {
+								name = "tile_frame_bottom"
+								parentanchor = top|hcenter
+								size = { 133% 22 }
+								#position = { 0 -22 }
+
+								texture = "gfx/interface/component_decoration/decoration_frame_top_clean.dds"
+								spriteType = Corneredtiled
+								spriteborder = { 100 0 }
+								mirror = vertical
+								texture_density = 2
+							}
+						}
+
+						widget = {
+							parentanchor = bottom|left
+							widgetanchor = bottom|left
+							position = { -71 0 }
+							size = { 101 22 }
+							scissor = yes
+
+							icon = {
+								parentanchor = top|left
+								texture = "gfx/interface/component_decoration/decoration_frame_top_clean.dds"
+								size = { 613 22 }
+								position = { -25 0 }
+
+								mirror = vertical
+							}
+						}
+						widget = {
+							parentanchor = bottom|right
+							widgetanchor = bottom|right
+							position = { 71 0 }
+							size = { 101 22 }
+							scissor = yes
+
+							icon = {
+								parentanchor = top|right
+								texture = "gfx/interface/component_decoration/decoration_frame_top_clean.dds"
+								size = { 613 22 }
+								position = { 25 0 }
+
+								mirror = vertical
+							}
+						}
+					}
+				}
+			}
+		}
+
 		### Top Bar
 		widget = {
 			size = { 100% 50 }
@@ -668,7 +906,7 @@ widget = {
 
 			background = {
 				using = Background_Area_Solid
-				margin = { 20 20 }
+				margin = { 20 0 }
 				margin_top = 10
 			}
 
@@ -691,14 +929,13 @@ widget = {
 					spriteType = corneredTiled
 				}
 			}
-			#The 'select bookmark' text. Made really big so it's hard to miss
+
 			text_single = {
-				parentanchor = top|hcenter
-				using = Font_Size_Medium
-				position = { 495 85 }
+				parentanchor = vcenter
+				position = { 10 -5 }
 				text = "BOOKMARK_SELECT_BOOKMARK"
-				default_format = "#strong"
-				align = center
+				default_format = "#weak"
+				align = nobaseline
 
 				background = {
 					using = Background_Area_Solid
@@ -719,104 +956,66 @@ widget = {
 				name = "tile_frame_top"
 				parentanchor = bottom|hcenter
 				size = { 1970 22 }
-				position = { 0 28 }
+				position = { 0 5 }
 
 				texture = "gfx/interface/component_decoration/decoration_frame_top_clean.dds"
 				spriteType = Corneredtiled
 				spriteborder = { 100 0 }
 				mirror = vertical
-				texture_density = 2	   
+				texture_density = 2
 			}
 
+			hbox = {
+				allow_outside = yes
 
-		   
-					   
+				hbox = {
+					widget = {
+						layoutpolicy_vertical = expanding
 
-			
-			   
-									   
+						icon = {
+							parentanchor = bottom|right
+							position = { 3 -14 }
+							texture = "gfx/interface/component_decoration/decoration_stone_corner.dds"
+							size = { 16 16 }
+						}
+					}
 
-			# #SCROLLBAR-------------------------------------------------------------------------------------------
-			widget = {
-				layoutpolicy_vertical = expanding
-																				 
-					   
-	   
-	  
+					hbox = {
+						name = "bookmark_grid"
+						datamodel = "[GameSetup.GetBookmarks]"
+						layoutpolicy_vertical = expanding
+						allow_outside = yes
 
-				icon = {
-					parentanchor = bottom|right
-					position = { 3 -14 }
-					texture = "gfx/interface/component_decoration/decoration_stone_corner.dds"
-					size = { 16 16 }
-				}
-			}
-			
-					
-			# The bookmark grid -------------------------------------------------------------------------------------------------
-			margin_widget = {
-				size = { 100% 80 } # For 1920x1080 monitor
-				parentanchor = hcenter|top
-				
-				
-				margin_widget = {
-					size = { 100% 100% }
-					margin = { 70 0 }
-					scrollarea = {
-						size = { 100% 100% }
-						parentanchor = hcenter|top
-						scrollbar_horizontal = { using = Scrollbar_Horizontal }
-						scrollbarpolicy_vertical = always_off
-						scrollwidget = {
-							hbox = {
-
-								name = "bookmark_grid"
-								datamodel = "[GameSetup.GetBookmarks]"
-								layoutpolicy_vertical = expanding
-								allow_outside = yes
-					
-								item = {
-									widget_bookmark_button = {
-										name = "bookmark_tab"
-									}
-								}
+						item = {
+							widget_bookmark_button_recommended = {
+								name = "bookmark_tab"
+								visible = "[BookmarkItem.GetBookmark.IsRecommended]"
 							}
 						}
 					}
-				}
-				
-				icon = {
-						parentanchor = left
-						size = { 85 85 }
-						texture = "gfx/interface/component_decoration/bookmark_end.dds"
-					}
-					
-				icon = {
-						parentanchor = right
-						size = { 85 85 }
-						texture = "gfx/interface/component_decoration/bookmark_end.dds"
-						mirror = horizontal
-					}
-			}
-			 #End of the bookmark grid ------------------------------------------------------------------------------------------
-			
-			widget = {
-				layoutpolicy_vertical = expanding
 
-				icon = {
-					parentanchor = bottom|left
-					position = { -3 -14 }
-					texture = "gfx/interface/component_decoration/decoration_stone_corner.dds"
-					size = { 16 16 }
+					widget = {
+						layoutpolicy_vertical = expanding
 
-					mirror = horizontal
-	   
-	  
+						icon = {
+							parentanchor = bottom|left
+							position = { -3 -14 }
+							texture = "gfx/interface/component_decoration/decoration_stone_corner.dds"
+							size = { 16 16 }
+
+							mirror = horizontal
+						}
+					}
 				}
 			}
-			# END SCROLLBAR ----------------------------------------------------------------------------------------------						  
 
-			
+			button_tertiary = {
+				name = "play_tutorial"
+				parentanchor = vcenter|right
+				position = { -15 -5}
+				onclick = "[GameSetup.OnShowTutorialPrompt]"
+				text = "GAMESETUP_PLAY_TUTORIAL"
+			}
 		}
 
 		### Left Info Box
@@ -858,7 +1057,7 @@ widget = {
 			}
 
 			vbox = {
-				margin_top = 85
+				margin_top = 135 #55
 				margin_bottom = 55
 				margin_left = 5
 
@@ -906,22 +1105,6 @@ widget = {
 						autoresize = yes
 						max_width = 300
 						align = center
-					}
-
-					hbox = {
-						visible = "[GameSetup.GetSelectedBookmark.IsRecommended]"
-						spacing = 5
-
-						icon = {
-							texture = "gfx/interface/icons/portraits/me_small.dds"
-							size = { 18 18 }
-						}
-
-						text_single = {
-							text = "RECOMMEND_START_BOOKMARK"
-							default_format = "#positive_value;bold"
-							align = nobaseline
-						}
 					}
 				}
 
@@ -1177,54 +1360,11 @@ widget = {
 
 					}
 				}
-				
-				# ------------------------------------------------------------------------------- NEW TUTORIAL BUTTON LOCATION
-				hbox = {
+
+				expand = {
 					layoutpolicy_horizontal = expanding
 					layoutstretchfactor_horizontal = 1
-					
-					expand = {}
-					
-					hbox = {
-						#visible = "[GameSetup.GetSelectedBookmark.IsRecommended]"
-						spacing = 5
-						margin = { 45 10 }
-						icon = {
-							texture = "gfx/interface/icons/portraits/me_small.dds"
-							size = { 18 18 }
-						}
-
-						text_single = {
-							text = "RECOMMEND_START_BOOKMARK"
-							default_format = "#positive_value;bold"
-							align = nobaseline
-						}
-					}
-					hbox = {
-						background = {
-							using = Background_Area_Solid
-							margin = { 60 10 }
-							alpha = 0.7
-
-							modify_texture = {
-								name = "mask"
-								texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_thick.dds"
-								spriteType = Corneredstretched
-								spriteborder = { 40 0 }
-								blend_mode = alphamultiply
-							}
-						}
-						
-						button_tertiary = {
-							name = "play_tutorial"
-							#parentanchor = vcenter|right
-							#position = { -15 -5}
-							onclick = "[GameSetup.OnShowTutorialPrompt]"
-							text = "GAMESETUP_PLAY_TUTORIAL"
-						}
-					}
 				}
-				# ------------------------------------------------------------------------------- NEW TUTORIAL BUTTON LOCATION END
 			}
 		}
 	}
@@ -1274,7 +1414,7 @@ widget = {
 		}
 
 		vbox = {
-			margin_top = 85
+			margin_top = 55
 			margin_bottom = 65
 			margin_right = 5
 
@@ -1323,8 +1463,9 @@ widget = {
 							}
 						}
 
-						coat_of_arms_icon = {
+						coat_of_arms_icon = { #Dynasty
 							datacontext = "[BookmarkCharacterGUI.GetCharacter]"
+							visible = "[Not( BookmarkCharacter.HasDynastyHouse )]"
 							parentanchor = bottom|hcenter
 							size = { 360 360 }
 							coat_of_arms = "[BookmarkCharacter.GetDynastyTemplate.GetCoA.GetTexture('(int32)256','(int32)256')]"
@@ -1337,6 +1478,24 @@ widget = {
 								spritetype = corneredTiled
 							}
 						}
+
+						coat_of_arms_icon = { #Dynasty House
+							datacontext = "[BookmarkCharacterGUI.GetCharacter]"
+							visible = "[BookmarkCharacter.HasDynastyHouse]"
+							parentanchor = bottom|hcenter
+							size = { 360 360 }
+							coat_of_arms = "[BookmarkCharacter.GetDynastyHouseTemplate.GetCoA.GetTexture('(int32)256','(int32)256')]"
+							coat_of_arms_slot = "[BookmarkCharacter.GetDynastyHouseTemplate.GetCoA.GetSlot('(int32)256','(int32)256')]"
+							coat_of_arms_mask = "gfx/interface/frontend/mask_coa_flag.dds"
+
+							modify_texture = {
+								texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
+								blend_mode = overlay
+								spritetype = corneredTiled
+							}
+						}
+
+
 
 						bm_portrait = {
 							parentanchor = bottom|hcenter
@@ -1579,7 +1738,19 @@ widget = {
 									coa_dynasty_bookmark = {}
 
 									text_multi = {
+										visible = "[Not( BookmarkCharacter.HasDynastyHouse )]"
 										text = "[BookmarkCharacter.GetDynastyTemplate.GetName]"
+										default_format = "#high"
+										tooltip = "BOOKMARK_DYNASTY_TOOLTIP"
+										autoresize = yes
+										max_width = 120
+										align = nobaseline
+										margin = { 2 0 }
+									}
+
+									text_multi = {
+										visible = "[BookmarkCharacter.HasDynastyHouse]"
+										text = "[BookmarkCharacter.GetDynastyHouseTemplate.GetName]"
 										default_format = "#high"
 										tooltip = "BOOKMARK_DYNASTY_TOOLTIP"
 										autoresize = yes
@@ -1885,47 +2056,49 @@ widget = {
 
 types BookmarkPortraits
 {
-	# ------------------------------------------------------------------------------------------------------- BOOKMARK WIDGET
 	type widget_bookmark_button = widget {
-		size = { 200 55 } #########Makes the buttons larger/smaller. Making them smaller makes it harder to see the artwork but I'd wager people care more about the bookmark existing than whatever pretty picture is there############
+		size = { 205 55 }
 		allow_outside = yes
 
-		button_normal = { ################how bookmarks look by default
+		button_normal = {
+			name = "bookmark_button_actual"
 			parentanchor = top|hcenter
-			position = { 0 -1 }
+			position = { 0 5 }
 			size = { 100% 100% }
 			onclick = "[BookmarkItem.Select]"
 			onclick = "[PdxGuiTriggerAllAnimations('bookmark_tabs_reset')]"
 			onclick = "[PdxGuiInterruptThenTriggerAllAnimations('bookmark_change','bookmark_change')]"
 			onclick = "[PdxGuiInterruptThenTriggerAllAnimations('map_characters_appear','map_characters_appear')]"
+			onclick = "[PdxGuiTriggerAllAnimations('bookmark_year_glow')]"
+
 			down = "[BookmarkItem.IsSelected]"
 			alwaystransparent = "[BookmarkItem.IsSelected]"
 
-			state = { #the pretty glowy effect
+			state = {
 				name = "_mouse_enter"
 				on_start = "[PdxGuiWidget.FindChild('bookmarks_button').TriggerAnimation('mouse_enter')]"
 			}
 
-			state = { #the pretty glowy effect
+			state = {
 				on_start = "[PdxGuiWidget.FindChild('bookmarks_button').TriggerAnimation('mouse_leave')]"
 				name = "_mouse_leave"
 			}
 
-			state = { #how they look when clicked
+			state = {
 				name = "button_selection"
 				trigger_when = "[BookmarkItem.IsSelected]"
 				on_start = "[PdxGuiWidget.InterruptAnimation('bookmark_tabs_reset')]"
 				delay = 0.05
 				duration = 0.1
 				using = Animation_Curve_Default
-				position_y = 6
+				position_y = 15
 			}
 
-			state = { #What the bookmarks go back to after being unclicked
+			state = {
 				name = "bookmark_tabs_reset"
 				duration = 0.3
 				using = Animation_Curve_Default
-				position_y = -1 #has to be the same as what's in button_normal
+				position_y = 5
 			}
 
 			icon = {
@@ -2231,11 +2404,363 @@ types BookmarkPortraits
 						hbox = {
 							spacing = 3
 
-							icon = {
-								visible = "[BookmarkItem.GetBookmark.IsRecommended]"
-								texture = "gfx/interface/icons/portraits/me_small.dds"
-								size = { 18 18 }
+							text_single = {
+								name = "bookmark_name"
+								align = nobaseline
+								max_width = 140
+
+								text = "[BookmarkItem.GetName]"
+								default_format = "#high;glow_color:{0,0,0,1}"
 							}
+						}
+					}
+				}
+			}
+		}
+	}
+	type widget_bookmark_button_recommended = widget {
+		size = { 205 55 }
+		allow_outside = yes
+
+		button_normal = {
+			parentanchor = top|hcenter
+			position = { 0 5 }
+			size = { 100% 100% }
+			onclick = "[BookmarkItem.Select]"
+			onclick = "[PdxGuiTriggerAllAnimations('bookmark_tabs_reset')]"
+			onclick = "[PdxGuiTriggerAllAnimations('bookmark_change_lower')]"
+			onclick = "[PdxGuiInterruptThenTriggerAllAnimations('bookmark_change','bookmark_change')]"
+			onclick = "[PdxGuiInterruptThenTriggerAllAnimations('map_characters_appear','map_characters_appear')]"
+
+			down = "[EqualTo_string( GameSetup.GetSelectedBookmark.GetDate.GetString, BookmarkItem.GetDate.GetString )]"
+			alwaystransparent = "[EqualTo_string( GameSetup.GetSelectedBookmark.GetDate.GetString, BookmarkItem.GetDate.GetString )]"
+
+			state = {
+				name = "_mouse_enter"
+				on_start = "[PdxGuiWidget.FindChild('bookmarks_button').TriggerAnimation('mouse_enter')]"
+			}
+
+			state = {
+				on_start = "[PdxGuiWidget.FindChild('bookmarks_button').TriggerAnimation('mouse_leave')]"
+				name = "_mouse_leave"
+			}
+
+			state = {
+				name = "button_selection"
+				trigger_when = "[EqualTo_string( GameSetup.GetSelectedBookmark.GetDate.GetString, BookmarkItem.GetDate.GetString )]"
+				on_start = "[PdxGuiWidget.InterruptAnimation('bookmark_tabs_reset')]"
+				delay = 0.05
+				duration = 0.1
+				using = Animation_Curve_Default
+				position_y = 15
+			}
+
+			state = {
+				name = "bookmark_tabs_reset"
+				on_start = "[PdxGuiWidget.TriggerAnimation(Select_CString( EqualTo_string( GameSetup.GetSelectedBookmark.GetDate.GetString, BookmarkItem.GetDate.GetString ), '', 'bookmark_tabs_reset_yes' ))]"
+			}
+
+			state = {
+				name = "bookmark_tabs_reset_yes"
+				duration = 0.3
+				using = Animation_Curve_Default
+				position_y = 5
+			}
+
+			icon = {
+				name = "bookmarks_button"
+				parentanchor = bottom|hcenter
+				size = { 100% 75 }
+				alwaystransparent = yes
+				texture = "[BookmarkItem.GetBookmark.GetButtonIcon]"
+
+				using = tooltip_ne
+
+				modify_texture = {
+					texture = "gfx/interface/buttons/button_stone_glass_mask.dds"
+					blend_mode = alphamultiply
+					spritetype = corneredTiled
+					spriteborder = { 40 40 }
+					texture_density = 2
+				}
+
+				modify_texture = {
+					texture = "gfx/interface/buttons/button_stone_glass_overlay.dds"
+					blend_mode = overlay
+					texture_density = 2
+				}
+
+				modify_texture = {
+					name = "glow"
+					texture = "gfx/interface/buttons/button_stone_glass_glow.dds"
+					blend_mode = colordodge
+					alpha = 0
+				}
+
+				modify_texture = {
+					name = "glow_selected"
+					texture = "gfx/interface/buttons/button_stone_glass_glow.dds"
+					blend_mode = colordodge
+					alpha = 0
+				}
+
+				modify_texture = {
+					name = "shimmer_2"
+					texture = "gfx/interface/component_effects/effect_shimmer.dds"
+					blend_mode = colordodge
+					translate_uv = { 1 -1 }
+				}
+
+				state = {
+					name = "bookmark_year_glow"
+					on_start = "[PdxGuiWidget.TriggerAnimation(Select_CString( EqualTo_string( GameSetup.GetSelectedBookmark.GetDate.GetString, BookmarkItem.GetDate.GetString ), 'selected_glow', '' ))]"
+				}
+
+				state = {
+					name = "selected_glow"
+					trigger_when = "[EqualTo_string( GameSetup.GetSelectedBookmark.GetDate.GetString, BookmarkItem.GetDate.GetString )]"
+					on_start = "[PdxGuiWidget.InterruptAnimation('bookmark_tabs_reset')]"
+					duration = 0.25
+
+					modify_texture = {
+						name = "glow_selected"
+						alpha = 1
+					}
+				}
+
+				state = {
+					name = "bookmark_tabs_reset"
+					duration = 0.5
+					using = Animation_Curve_Default
+
+					modify_texture = {
+						name = "glow_selected"
+						alpha = 0
+					}
+				}
+
+				state = {
+					name = "mouse_enter"
+
+					modify_texture = {
+						name = "glow"
+						alpha = 1
+					}
+				}
+
+				state = {
+					name = "mouse_leave"
+					duration = 0.25
+					using = Animation_Curve_Default
+
+					modify_texture = {
+						name = "glow"
+						alpha = 0
+					}
+				}
+
+				#	Recommended shimmer
+				state = {
+					trigger_on_create = yes
+					name = _show
+					next = shimmer
+					duration = 0.2
+					delay = 5
+
+					modify_texture = {
+						name = "shimmer"
+						translate_uv = { 1 -1 }
+						alpha = 0.6
+					}
+				}
+
+				state = {
+					name = shimmer
+					next = pause
+					duration = 2
+
+					bezier = { 0 0.9 1 0.4 }
+
+					modify_texture = {
+						name = "shimmer"
+						translate_uv = { -1 1 }
+						alpha = 0.6
+					}
+					start_sound = {
+						soundeffect = "event:/SFX/UI/Frontend/sfx_ui_frontend_topbar_tab_shimmer_on_loop"
+					}
+				}
+
+				state = {
+					name = "pause"
+					next = shimmer
+					duration = 0
+					delay = 5
+
+					modify_texture = {
+						name = "shimmer"
+						translate_uv = { 1 -1 }
+						alpha = 0.6
+					}
+				}
+
+				# Shimmer on appear
+				state = {
+					name = "bookmarks_buttons_shimmer"
+					next = "bookmarks_buttons_shimmer_2"
+					duration = 2
+					delay = 0.5
+
+					modify_texture = {
+						name = "shimmer_2"
+						translate_uv = { -1 1 }
+						alpha = 1
+					}
+				}
+
+				state = {
+					name = "bookmarks_buttons_shimmer_2"
+
+					modify_texture = {
+						name = "shimmer_2"
+						translate_uv = { 1 -1 }
+						alpha = 1
+					}
+				}
+
+				icon = {
+					parentanchor = bottom|hcenter
+					size = { 100% 100% }
+					texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+					color = { 0.1 0.1 0.1 0.5 }
+				}
+
+				icon = {
+					size = { 100% 100% }
+					spriteborder = { 30 30 }
+					spriteType = corneredStretched
+					texture = "gfx/interface/buttons/button_stone_glass_frame.dds"
+					texture_density = 2
+
+					modify_texture = {
+						name = "shimmer_2"
+						texture = "gfx/interface/component_effects/effect_shimmer.dds"
+						blend_mode = colordodge
+						translate_uv = { 1 -1 }
+					}
+
+					# Recommended Shimmer
+					state = {
+						trigger_on_create = yes
+						name = _show
+						next = shimmer
+						duration = 0.2
+						delay = 5.15
+
+						modify_texture = {
+							name = "shimmer"
+							translate_uv = { 1 -1 }
+							alpha = 0.6
+						}
+					}
+
+					state = {
+						name = "shimmer"
+						next = pause
+						duration = 2
+
+						bezier = { 0 0.9 1 0.4 }
+
+						modify_texture = {
+							name = "shimmer"
+							translate_uv = { -1 1 }
+							alpha = 0.6
+						}
+					}
+
+					state = {
+						name = "pause"
+						next = shimmer
+						duration = 0
+						delay = 5
+
+						modify_texture = {
+							name = "shimmer"
+							translate_uv = { 1 -1 }
+							alpha = 0.6
+						}
+						on_finish = "[PdxGuiTriggerAllAnimations('shimmer')]"
+					}
+
+					# Shimmer on appear
+					state = {
+						name = "bookmarks_buttons_shimmer"
+						next = "bookmarks_buttons_shimmer_2"
+						duration = 2
+						delay = 0.65
+
+						modify_texture = {
+							name = "shimmer_2"
+							translate_uv = { -1 1 }
+							alpha = 1
+						}
+					}
+
+					state = {
+						name = "bookmarks_buttons_shimmer_2"
+
+						modify_texture = {
+							name = "shimmer_2"
+							translate_uv = { 1 -1 }
+							alpha = 1
+						}
+					}
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+
+					vbox = {
+						visible = "[Not(EqualTo_string( GameSetup.GetSelectedBookmark.GetDate.GetString, BookmarkItem.GetDate.GetString ))]"
+						layoutpolicy_horizontal = expanding
+						margin_bottom = 5
+
+						state = {
+							name = _show
+							using = Animation_Curve_Default
+							duration = 0.3
+
+							alpha = 1
+							start_sound = {
+								soundeffect = "event:/SFX/UI/Frontend/sfx_ui_frontend_topbar_tab_slide_out"
+							}
+						}
+
+						state = {
+							name = _hide
+							duration = 0.2
+
+							alpha = 0
+						}
+
+						text_single = {
+							name = "year"
+							text = "[BookmarkItem.GetYear]"
+							default_format = "#clickable;bold;glow_color:{0,0,0,1}"
+							using = Font_Size_Medium
+							using = Font_Type_Flavor
+							max_width = 155
+
+							background = {
+								texture = "gfx/interface/component_masks/mask_fade_circle.dds"
+								color = { 0.2 0.2 0.2 0.8 }
+								margin = { 25 0 }
+								margin_bottom = 7
+							}
+						}
+
+						hbox = {
+							spacing = 3
 
 							text_single = {
 								name = "bookmark_name"
@@ -2433,6 +2958,7 @@ types BookmarkPortraits
 							parentanchor = bottom|hcenter
 							widgetanchor = center
 							direction = vertical
+							margin_bottom = 6
 
 							text_single = {
 								parentanchor = hcenter
@@ -2458,6 +2984,7 @@ types BookmarkPortraits
 							margin_bottom = 35
 							spacing = -6
 							resizeparent = yes
+							ignoreinvisible = yes
 
 							text_single = {
 								text = "[BookmarkCharacter.GetName]"
@@ -2466,7 +2993,15 @@ types BookmarkPortraits
 							}
 
 							text_single = {
+								visible = "[Not( BookmarkCharacter.HasDynastyHouse )]"
 								text = "[BookmarkCharacter.GetDynastyTemplate.GetName]"
+								fontsize = 16
+								default_format = "#high;glow_color:{0,0,0,1}"
+							}
+
+							text_single = {
+							visible = "[BookmarkCharacter.HasDynastyHouse]"
+								text = "[BookmarkCharacter.GetDynastyHouseTemplate.GetName]"
 								fontsize = 16
 								default_format = "#high;glow_color:{0,0,0,1}"
 							}

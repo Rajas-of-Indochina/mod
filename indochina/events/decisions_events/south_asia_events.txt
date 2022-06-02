@@ -1,25 +1,25 @@
 ﻿
 namespace = south_asia
 
-#######################################
-# Uniting India
-#######################################
-south_asia.0001 = {# I united India
+### Become Chakravarti
+# by Petter Vilberg
+# south_asia.0001 # I became Chakravarti
+# south_asia.0002 # My liege became Chakravarti
+# south_asia.0003 # My liege became Chakravarti - convert?
+# south_asia.0004 # Someone became Chakravarti
+###
+
+
+################
+# Become Chakravarti events
+# south_asia.0001 - 0004
+#
+
+#I united India
+south_asia.0001 = {
 	type = character_event
 	title = south_asia.0001.t
-	desc = {
-		first_valid = {
-			triggered_desc = {# Dharmic view of the Event
-				trigger = { religion = { is_in_family = rf_eastern } }
-				desc = south_asia.0001.desc.dharmic
-			}
-			triggered_desc = {# Muslim View of the Event
-				trigger = { faith = faith:digambara }
-				desc = south_asia.0001.desc.muslim
-			}
-			desc = south_asia.0001.desc.other # Everyone Else
-		}
-	}
+	desc = south_asia.0001.desc
 	theme = realm
 	left_portrait = {
 		character = root
@@ -37,6 +37,12 @@ south_asia.0001 = {# I united India
 		add_prestige = massive_prestige_value
 		add_prestige_level = 2
 		faith = {
+			if = {
+				limit = {
+					NOT = { has_doctrine = divine_destiny_doctrine }
+				}
+				add_doctrine = divine_destiny_doctrine
+			}
 			change_fervor = {
 				value = major_fervor_gain
 				desc = fervor_gain_chakravarti
@@ -44,22 +50,15 @@ south_asia.0001 = {# I united India
 		}
 	}
 }
-south_asia.0002 = {# My ruler became Chakravarti - Same Religon
+
+
+#My ruler became Chakravarti
+south_asia.0002 = {
 	type = character_event
 	title = south_asia.0002.t
 	desc = {
 		desc = south_asia.0002.intro
-		first_valid = {
-			triggered_desc = {# Dharmic view of the Event
-				trigger = { religion = { is_in_family = rf_eastern } }
-				desc = south_asia.0002.text.dharmic
-			}
-			triggered_desc = {# Muslim View of the Event
-				trigger = { faith = faith:digambara }
-				desc = south_asia.0002.text.muslim
-			}
-			desc = south_asia.0002.text.other # Everyone Else
-		}
+		desc = south_asia.0002.text
 	}
 	theme = realm
 	left_portrait = {
@@ -74,6 +73,7 @@ south_asia.0002 = {# My ruler became Chakravarti - Same Religon
 				add_trait_force_tooltip = chakravarti
 				hidden_effect = { set_primary_title_to = title:e_india }
 				faith = {
+					add_doctrine = divine_destiny_doctrine
 					change_fervor = {
 						value = major_fervor_gain
 						desc = fervor_gain_chakravarti
@@ -86,7 +86,9 @@ south_asia.0002 = {# My ruler became Chakravarti - Same Religon
 	option = {
 		name = south_asia.0002.a
 		if = {
-			limit = { faith = scope:chakravarti.faith }
+			limit = {
+				faith = scope:chakravarti.faith
+			}
 			scope:chakravarti = {
 				add_opinion = {
 					target = root
@@ -97,28 +99,27 @@ south_asia.0002 = {# My ruler became Chakravarti - Same Religon
 	}
 
 	option = {
-		name = south_asia.0002.a
+		name = south_asia.0002.b
 		trigger = {
 			NOT = { faith = scope:chakravarti.faith }
 		}
+		set_character_faith_with_conversion = scope:chakravarti.faith
+		scope:chakravarti = {
+			add_opinion = {
+				target = root
+				modifier = followed_the_chakravarti_opinion
+			}
+		}
 	}
 }
-south_asia.0003 = {# My ruler became Chakravarti - Different Religion
+
+#My ruler became Chakravarti - non-Indian religion
+south_asia.0003 = {
 	type = character_event
 	title = south_asia.0002.t
 	desc = {
 		desc = south_asia.0002.intro
-		first_valid = {
-			triggered_desc = {# Dharmic view of the Event
-				trigger = { religion = { is_in_family = rf_eastern } }
-				desc = south_asia.0003.text.dharmic
-			}
-			triggered_desc = {# Muslim View of the Event
-				trigger = { faith = faith:digambara }
-				desc = south_asia.0003.text.muslim
-			}
-			desc = south_asia.0003.text.other # Everyone Else
-		}
+		desc = south_asia.0003.text
 	}
 	theme = realm
 	left_portrait = {
@@ -133,6 +134,7 @@ south_asia.0003 = {# My ruler became Chakravarti - Different Religion
 				add_trait_force_tooltip = chakravarti
 				hidden_effect = { set_primary_title_to = title:e_india }
 				faith = {
+					add_doctrine = divine_destiny_doctrine
 					change_fervor = {
 						value = major_fervor_gain
 						desc = fervor_gain_chakravarti
@@ -152,7 +154,7 @@ south_asia.0003 = {# My ruler became Chakravarti - Different Religion
 			}
 		}
 		ai_chance = {
-			base = 25
+			base = 100
 			opinion_modifier = {
 				opinion_target = scope:chakravarti
 			}
@@ -169,7 +171,10 @@ south_asia.0003 = {# My ruler became Chakravarti - Different Religion
 		}
 	}
 }
-south_asia.0004 = {# Someone United India - Dharmic
+
+
+#Someone became Chakravarti
+south_asia.0004 = {
 	type = character_event
 	title = south_asia.0002.t
 	desc = {
@@ -177,9 +182,9 @@ south_asia.0004 = {# Someone United India - Dharmic
 			triggered_desc = {
 				trigger = {
 					OR = {
-						religion = faith:vaishnavism.religion
-						religion = faith:theravada.religion
-						religion = faith:digambara.religion		
+						faith.religion = faith:vaishnavism.religion
+						faith.religion = faith:theravada.religion
+						faith.religion = faith:digambara.religion		
 					}
 				}
 				desc = south_asia.0004.relevant_religion
@@ -213,6 +218,7 @@ south_asia.0004 = {# Someone United India - Dharmic
 				add_trait_force_tooltip = chakravarti
 				hidden_effect = { set_primary_title_to = title:e_india }
 				faith = {
+					add_doctrine = divine_destiny_doctrine
 					change_fervor = {
 						value = major_fervor_gain
 						desc = fervor_gain_chakravarti
@@ -226,9 +232,9 @@ south_asia.0004 = {# Someone United India - Dharmic
 		name = south_asia.0004.a
 		trigger = {
 			OR = {
-				religion = faith:vaishnavism.religion
-				religion = faith:theravada.religion
-				religion = faith:digambara.religion		
+				faith.religion = faith:vaishnavism.religion
+				faith.religion = faith:theravada.religion
+				faith.religion = faith:digambara.religion		
 			}
 		}
 	}
@@ -238,102 +244,19 @@ south_asia.0004 = {# Someone United India - Dharmic
 		fallback = yes
 	}
 }
-south_asia.0005 = {# Someone United India - Muslim
-	type = character_event
-	title = south_asia.0002.t
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					faith = { religion_tag = islam_religion }
-				}
-				desc = south_asia.0005.relevant_religion
-			}
-			desc = south_asia.0005.desc
-		}
-		desc = south_asia.0005.text
-	}
-	theme = realm
-	left_portrait = {
-		character = scope:chakravarti
-		animation = personality_bold
-	}
-	
-	immediate = {
-		# Muslim faith coreligionists get a positive music cue.
-		if = {
-			limit = {
-				faith = { religion_tag = islam_religion }
-			}
-			play_music_cue = "mx_cue_epic_sacral_moment"
-		}
-		#Everyone else sees a terrifying empire.
-		else = { play_music_cue = "mx_cue_combat_2" }
-		show_as_tooltip = {
-			scope:chakravarti = {
-				add_trait_force_tooltip = chakravarti
-				hidden_effect = { set_primary_title_to = title:e_india }
-				faith = {
-					change_fervor = {
-						value = major_fervor_gain
-						desc = fervor_gain_chakravarti
-					}
-				}
-			}
-		}
-	}
 
-	option = {
-		name = south_asia.0004.a
-		trigger = {
-			faith = { religion_tag = islam_religion }
-		}
-	}
+#
+# END Become Chakravarti events
+#################
 
-	option = {
-		name = south_asia.0004.b
-		fallback = yes
-	}
-}
-south_asia.0006 = {# Someone United India - Other
-	type = character_event
-	title = south_asia.0002.t
-	desc = {
-		desc = south_asia.0006.desc
-		desc = south_asia.0006.text
-	}
-	theme = realm
-	left_portrait = {
-		character = scope:chakravarti
-		animation = personality_bold
-	}
-	
-	immediate = {
-		#Everyone sees a terrifying empire.
-		play_music_cue = "mx_cue_combat_2"
-		show_as_tooltip = {
-			scope:chakravarti = {
-				add_trait_force_tooltip = chakravarti
-				hidden_effect = { set_primary_title_to = title:e_india }
-				faith = {
-					change_fervor = {
-						value = major_fervor_gain
-						desc = fervor_gain_chakravarti
-					}
-				}
-			}
-		}
-	}
 
-	option = {
-		name = south_asia.0004.a
-		fallback = yes
-	}
-}
-#######################################
-# Take Stewardship of the Sacred River
-#######################################
-south_asia.0011 = {# I have become the Lady/Lord of the Ganges
+##############
+#Take Stewardship of the Sacred River
+# south_asia.0011-0013
+# by Petter Vilberg
+
+#I have become the Lady/Lord of the Ganges
+south_asia.0011 = {
 	type = character_event
 	title = south_asia.0011.t
 	desc = south_asia.0011.desc
@@ -351,8 +274,10 @@ south_asia.0011 = {# I have become the Lady/Lord of the Ganges
 		take_stewardship_of_the_sacred_river_effect = yes
 	}
 }
-south_asia.0012 = {# Someone has claimed stewardship of the Ganges
 
+
+#Someone has claimed stewardship of the Ganges
+south_asia.0012 = {
 	type = character_event
 	title = south_asia.0011.t
 	desc = south_asia.0012.desc
@@ -386,7 +311,10 @@ south_asia.0012 = {# Someone has claimed stewardship of the Ganges
 		}
 	}
 }
-south_asia.0013 = {# Someone has claimed my title as steward of the Ganges
+
+
+#Someone has claimed my title as steward of the Ganges
+south_asia.0013 = {
 	type = character_event
 	title = south_asia.0013.t
 	desc = south_asia.0013.desc
@@ -427,10 +355,10 @@ south_asia.0013 = {# Someone has claimed my title as steward of the Ganges
 		}
 	}
 }
-#######################################
-# Bene Israel
-#######################################
-south_asia.0021 = {# I have become King of Bene Israel
+
+
+#I have become King of Bene Israel
+south_asia.0021 = {
 	type = character_event
 	title = south_asia.0021.t
 	desc = south_asia.0021.desc
@@ -450,7 +378,9 @@ south_asia.0021 = {# I have become King of Bene Israel
 		show_as_tooltip = { unite_bene_israel_effect = yes }
 	}
 }
-south_asia.0022 = {# Someone else became King of Bene Israel
+
+#Someone else became King of Bene Israel
+south_asia.0022 = {
 	type = character_event
 	title = south_asia.0021.t
 	desc = south_asia.0021.desc
@@ -489,11 +419,17 @@ south_asia.0022 = {# Someone else became King of Bene Israel
 		}
 	}
 }
-#######################################
-# Spread the Theravada Faith
-#######################################
-south_asia.0030 = {# Holding event for preliminary path choices
 
+
+######################################
+##    Spread the Theravada Faith    ##
+##								    ##
+##			by Nick Meredith        ##
+##			in memory of RDH        ##
+######################################
+
+#Holding event for preliminary path choices
+south_asia.0030 = {
 	type = character_event
 	title = south_asia.0030.t
 	desc = south_asia.0030.desc
@@ -505,6 +441,14 @@ south_asia.0030 = {# Holding event for preliminary path choices
 		play_music_cue = "mx_cue_sacredrite" 
 		faith:theravada = {
 			save_scope_as = theravada_faith
+		}
+
+		random_vassal = {
+			limit = {
+				faith = faith:ari
+				is_powerful_vassal = yes
+			}
+		save_scope_as = ari_vassal
 		}
 
 		add_character_flag = proselytiser
@@ -538,9 +482,7 @@ south_asia.0030 = {# Holding event for preliminary path choices
 			compassionate = miniscule_stress_impact_gain
 		}
 
-		custom_tooltip = south_asia.0030.a.ari.tt
-
-		every_county_in_region = {
+				every_county_in_region = {
 			region = world_burma
 			custom = south_asia.0030.a.tt
 			limit = {
@@ -569,6 +511,7 @@ south_asia.0030 = {# Holding event for preliminary path choices
 				NOT = { faith = faith:theravada }
 			}
 
+			custom = south_asia.0030.a.ari.tt
 			random = {
 				chance = 80
 				set_character_faith = faith:theravada
@@ -617,8 +560,7 @@ south_asia.0030 = {# Holding event for preliminary path choices
 			compassionate = minor_stress_loss
 		}
 	
-		custom_tooltip = south_asia.0030.a.ari.tt
-
+		
 		every_county_in_region = {
 			region = world_burma
 			custom = south_asia.0030.a.tt
@@ -694,8 +636,9 @@ south_asia.0030 = {# Holding event for preliminary path choices
 		}
 	}
 }
-south_asia.0031 = {# Situation Escalates
 
+#Situation Escalates
+south_asia.0031 = {
 	type = character_event
 	title = south_asia.0031.t
 	desc = south_asia.0031.desc
@@ -722,9 +665,9 @@ south_asia.0031 = {# Situation Escalates
 				faith = faith:ari
 				is_powerful_vassal = yes
 				}
-			save_scope_as = ari_vassal
-			}
+		save_scope_as = ari_vassal
 		}
+	}
 	
 	#Crush Insurrectionists
 	option = {
@@ -772,7 +715,7 @@ south_asia.0031 = {# Situation Escalates
 		}
 		
 		every_vassal = {
-			custom = "All vassals"
+			custom = south_asia.0034.vassals
 			add_opinion = {
 				target = root
 				opinion = -20
@@ -836,7 +779,7 @@ south_asia.0031 = {# Situation Escalates
 		}
 	}	
 
-	# String them up
+#String them up
 	option = {
 		name = south_asia.0031.c
 
@@ -934,8 +877,9 @@ south_asia.0031 = {# Situation Escalates
 		}
 	}
 }
-south_asia.0032 = {# Tensions Ease
 
+#Tensions Ease
+south_asia.0032 = {
 	type = character_event
 	title = south_asia.0032.t
 	desc = south_asia.0032.desc
@@ -1080,7 +1024,9 @@ south_asia.0032 = {# Tensions Ease
 		}
 	}
 }
-south_asia.0033 = {# Religious Will Imposed
+
+#Religious Will Imposed
+south_asia.0033 = {
 	type = character_event
 	title = south_asia.0033.t
 	desc = south_asia.0033.desc
@@ -1115,7 +1061,7 @@ south_asia.0033 = {# Religious Will Imposed
 				faith = faith:ari
 			}		
 
-			custom = "All Ari vassals"
+			custom = south_asia.0030.a.ari.tt
 			set_character_faith_with_conversion = faith:theravada
 			add_opinion = {
 				target = root
@@ -1145,7 +1091,7 @@ south_asia.0033 = {# Religious Will Imposed
 			limit = {
 				faith = faith:theravada 
 			}
-			custom = "All Ari vassals"
+			custom = south_asia.0034.vassals
 			add_opinion = {
 				target = root
 				opinion = 10
@@ -1208,8 +1154,9 @@ south_asia.0033 = {# Religious Will Imposed
 		}	
 	}
 }
-south_asia.0034 = {# Religious Conflict Averted
 
+#Religious Conflict Averted
+south_asia.0034 = {
 	type = character_event
 	title = south_asia.0034.t
 	desc = south_asia.0034.desc
@@ -1237,7 +1184,7 @@ south_asia.0034 = {# Religious Conflict Averted
 	
 		every_county_in_region = {
 		region = world_burma
-		custom = "All counties"
+		custom = south_asia.0034.tt
 		limit = {
 			target_is_de_facto_liege_or_above = root.primary_title
 		}
@@ -1245,7 +1192,7 @@ south_asia.0034 = {# Religious Conflict Averted
 		}		
 	
 		every_vassal = {
-		custom = "All vassals"
+		custom_tooltip = south_asia.0034.vassals
 			add_opinion = {
 				target = root
 				modifier = impressed_opinion
@@ -1272,7 +1219,7 @@ south_asia.0034 = {# Religious Conflict Averted
 		
 		every_county_in_region = {
 			region = world_burma
-			custom = "All Ari counties"
+			custom_tooltip = south_asia.0034.aricounties
 			limit = {
 				target_is_de_facto_liege_or_above = root.primary_title
 				faith = faith:ari
@@ -1288,7 +1235,9 @@ south_asia.0034 = {# Religious Conflict Averted
 		}
 	}
 }
-south_asia.0035 = {# Preserving Theravadan Homelands
+
+#Preserving Theravadan Homelands
+south_asia.0035 = {
 	type = character_event
 	title = south_asia.0035.t
 	desc = south_asia.0035.desc
@@ -1327,14 +1276,14 @@ south_asia.0035 = {# Preserving Theravadan Homelands
 
 
 		every_county_in_region = {
-		region = custom_lanka
-			limit = {
-				holder = {
-					faith = faith:theravada
-					is_ai = yes
+			region = custom_lanka
+				limit = {
+					holder = {
+						faith = faith:theravada
+						is_ai = yes
+					}
 				}
-			}
-		custom = "All counties in Lanka"
+			custom = south_asia.0035.a.lanka
 			set_county_faith = faith:theravada
 		}
 
@@ -1422,7 +1371,9 @@ south_asia.0035 = {# Preserving Theravadan Homelands
 		}
 	}
 }
-south_asia.0036 = {# Deal with the Ari
+
+#Deal with the Ari
+south_asia.0036 = {
 	type = character_event
 	title = south_asia.0036.t
 	desc = south_asia.0036.desc
@@ -1547,8 +1498,10 @@ south_asia.0036 = {# Deal with the Ari
 		}
 	}
 }
-south_asia.0037 = {# The Faith Secured
 
+
+#The Faith Secured
+south_asia.0037 = {
 	type = character_event
 	title = south_asia.0037.t
 	desc = south_asia.0037.desc
@@ -1596,8 +1549,9 @@ south_asia.0037 = {# The Faith Secured
 		}
 	}
 }
-south_asia.0038 = {# Inform any vassal players of the chain beginning
 
+#Inform any vassal players of the chain beginning
+south_asia.0038 = {
 	type = character_event
 	title = south_asia.0038.t
 	desc = south_asia.0038.desc
@@ -1669,8 +1623,9 @@ south_asia.0038 = {# Inform any vassal players of the chain beginning
 		}
 	}
 }
-south_asia.0039 = {# Inform any vassal players of the chain ending violently
 
+#Inform any vassal players of the chain ending violently
+south_asia.0039 = {
 	type = character_event
 	title = south_asia.0039.t
 	desc = south_asia.0039.desc
@@ -1731,7 +1686,10 @@ south_asia.0039 = {# Inform any vassal players of the chain ending violently
 		}
 	}
 }
-south_asia.0040 = {# Inform any vassal players of the chain ending peacefully
+
+
+#Inform any vassal players of the chain ending peacefully
+south_asia.0040 = {
 	type = character_event
 	title = south_asia.0040.t
 	desc = south_asia.0040.desc
@@ -1791,8 +1749,9 @@ south_asia.0040 = {# Inform any vassal players of the chain ending peacefully
 		}
 	}
 }
-south_asia.0041 = {# Inform Lankan players of the monks arriving
 
+#Inform Lankan players of the monks arriving
+south_asia.0041 = {
 	type = character_event
 	title = south_asia.0041.t
 	desc = south_asia.0041.desc
@@ -1812,4 +1771,3 @@ south_asia.0041 = {# Inform Lankan players of the monks arriving
 		}
 	}
 }
-

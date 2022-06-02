@@ -472,19 +472,19 @@
 					size = { 38 38 }
 					visible = "[CanChangeMapMode]"
 
+					blockoverride 'mm_datacontext'
+					{
+						datacontext = "[GetMapMode('realms')]"
+					}
+
 					blockoverride "mm_button"
 					{
-						onclick = "[SetMapMode('realms')]"
 						onclick = "[ClearExploringRealms]"
-						down = "[IsMapMode('realms')]"
 						shortcut = "map_mode_1"
-						tooltip = "MAPMODE_REALMS"
 					}
 					blockoverride "mm_icon"
 					{
 						size = { 38 38 }
-						down = "[IsMapMode('realms')]"
-						texture = "gfx/interface/icons/flat_icons/mapmode_realm.dds"
 					}
 
 					blockoverride "mm_glow"
@@ -498,27 +498,18 @@
 					}
 				}
 
-				## De Jure
 				icon_button_mapmode = {
 					name = "map_mode_duchies_button"
 					size = { 38 38 }
 
-					blockoverride "mm_button"
+					blockoverride 'mm_datacontext'
 					{
-						onclick = "[SetMapMode('dejure_duchies')]"
-						down = "[IsMapMode('dejure_duchies')]"
-						shortcut = "map_mode_9"
-						tooltip = "MAPMODE_DJ_DUCHIES"
-					}
-					blockoverride "mm_icon"
-					{
-						down = "[IsMapMode('dejure_duchies')]"
-						texture = "gfx/interface/icons/flat_icons/mapmode_duchy.dds"
+						datacontext = "[GetMapMode('dejure_duchies')]"
 					}
 
-					blockoverride "mm_glow"
+					blockoverride "mm_button"
 					{
-						visible = "[IsMapMode('dejure_duchies')]"
+						shortcut = "map_mode_9"
 					}
 
 					blockoverride "button_bg_color"
@@ -531,22 +522,14 @@
 					name = "map_mode_kingdoms_button"
 					size = { 38 38 }
 
-					blockoverride "mm_button"
+					blockoverride 'mm_datacontext'
 					{
-						onclick = "[SetMapMode('dejure_kingdoms')]"
-						down = "[IsMapMode('dejure_kingdoms')]"
-						shortcut = "map_mode_10"
-						tooltip = "MAPMODE_DJ_KINGDOMS"
-					}
-					blockoverride "mm_icon"
-					{
-						down = "[IsMapMode('dejure_kingdoms')]"
-						texture = "gfx/interface/icons/flat_icons/mapmode_kingdom.dds"
+						datacontext = "[GetMapMode('dejure_kingdoms')]"
 					}
 
-					blockoverride "mm_glow"
+					blockoverride "mm_button"
 					{
-						visible = "[IsMapMode('dejure_kingdoms')]"
+						shortcut = "map_mode_10"
 					}
 
 					blockoverride "button_bg_color"
@@ -559,22 +542,14 @@
 					name = "map_mode_empires_button"
 					size = { 38 38 }
 
-					blockoverride "mm_button"
+					blockoverride 'mm_datacontext'
 					{
-						onclick = "[SetMapMode('dejure_empires')]"
-						down = "[IsMapMode('dejure_empires')]"
-						shortcut = "map_mode_11"
-						tooltip = "MAPMODE_DJ_EMPIRES"
-					}
-					blockoverride "mm_icon"
-					{
-						down = "[IsMapMode('dejure_empires')]"
-						texture = "gfx/interface/icons/flat_icons/mapmode_empire.dds"
+						datacontext = "[GetMapMode('dejure_empires')]"
 					}
 
-					blockoverride "mm_glow"
+					blockoverride "mm_button"
 					{
-						visible = "[IsMapMode('dejure_empires')]"
+						shortcut = "map_mode_11"
 					}
 
 					blockoverride "button_bg_color"
@@ -604,7 +579,7 @@
 						onclick = "[SetMapMode('debug_character_pools')]"
 						onclick = "[GetScriptedGui('sea_tributary_map').Execute(GuiScope.End)]"
 						down = "[And( GetScriptedGui('sea_tributary_map').IsShown(GuiScope.End), IsMapMode('debug_character_pools') )]"
-						tooltip = "SIRO_TRADE_MAP_TOOLTIP"
+						tooltip = "SEA_TRIBUTARY_MAP_TOOLTIP"
 					}
 					blockoverride "mm_icon"
 					{
@@ -623,22 +598,14 @@
 					size = { 32 32 }
 					parentanchor = vcenter
 
-					blockoverride "mm_button"
+					blockoverride 'mm_datacontext'
 					{
-						onclick = "[SetMapMode('religions')]"
-						down = "[IsMapMode('religions')]"
-						shortcut = "map_mode_3"
-						tooltip = "MAPMODE_RELIGIONS"
-					}
-					blockoverride "mm_icon"
-					{
-						down = "[IsMapMode('religions')]"
-						texture = "gfx/interface/icons/flat_icons/mapmode_religion.dds"
+						datacontext = "[GetMapMode('religions')]"
 					}
 
-					blockoverride "mm_glow"
+					blockoverride "mm_button"
 					{
-						visible = "[IsMapMode('religions')]"
+						shortcut = "map_mode_3"
 					}
 				}
 
@@ -647,22 +614,14 @@
 					size = { 32 32 }
 					parentanchor = vcenter
 
-					blockoverride "mm_button"
+					blockoverride 'mm_datacontext'
 					{
-						onclick = "[SetMapMode('cultures')]"
-						down = "[IsMapMode('cultures')]"
-						shortcut = "map_mode_2"
-						tooltip = "MAPMODE_CULTURES"
-					}
-					blockoverride "mm_icon"
-					{
-						down = "[IsMapMode('cultures')]"
-						texture = "gfx/interface/icons/flat_icons/mapmode_culture.dds"
+						datacontext = "[GetMapMode('cultures')]"
 					}
 
-					blockoverride "mm_glow"
+					blockoverride "mm_button"
 					{
-						visible = "[IsMapMode('cultures')]"
+						shortcut = "map_mode_2"
 					}
 				}
 
@@ -864,8 +823,6 @@
 					using = tooltip_ws
 				}
 
-
-
 				button_tertiary = {
 					name = "simple_terrain"
 					visible = "[CanChangeMapMode]"
@@ -922,6 +879,232 @@
 
 					tooltip = "MAPMODE_PLAYERS"
 					using = tooltip_ws
+				}
+			}
+		}
+	}
+
+	type mm_text_button = button_tertiary {
+		name = "players"
+		block 'datacontext'
+		{
+			datacontext = "[GetMapMode( 'realms' )]"
+		}
+		block 'visible'
+		{
+			visible = "[CanChangeMapMode]"
+		}
+
+		parentanchor = hcenter
+		size = { 110 25 }
+
+		onclick = "[SetMapMode( MapMode.GetKey )]"
+		text = "[MapMode.GetName]"
+		tooltip = "[MapMode.GetDesc]"
+
+		using = tooltip_ws
+	}
+
+	type mini_map_mode = widget {
+		allow_outside = yes
+		filter_mouse = all
+		alwaystransparent = yes
+
+		size = { 320 60 }
+
+		background = {
+			using = Background_Area_Dark
+			margin = { 10 0 }
+			color = { 0.15 0.15 0.15 0.75 }
+		}
+
+		hbox = {
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				text_single = {
+					raw_text = "Map Mode"
+				}
+				text_single = {
+					text = "[GetCurrentMapMode.GetName]"
+				}
+			}
+
+			expand = {}
+
+			icon_button_mapmode = {
+				blockoverride 'mm_datacontext'
+				{
+					datacontext = "[GetMapMode( 'struggle' )]"
+				}
+			}
+
+			icon_button_mapmode = {
+				blockoverride 'mm_datacontext'
+				{
+					datacontext = "[GetMapMode( 'realms' )]"
+				}
+			}
+
+			icon_button_mapmode = {
+				blockoverride 'mm_datacontext'
+				{
+					datacontext = "[GetMapMode( 'religions' )]"
+				}
+			}
+
+			icon_button_mapmode = {
+				blockoverride 'mm_datacontext'
+				{
+					datacontext = "[GetMapMode( 'cultures' )]"
+				}
+			}
+
+			widget = {
+				size = {32 32}
+
+				button_round = {
+					size = { 30 30 }
+					parentanchor = top|hcenter
+					widgetanchor = center
+					position = { 0 10 }
+
+					onclick = "[GetVariableSystem.Toggle( 'mapmodes_expand' )]"
+
+					button_plus_small = {
+						parentanchor = center
+						alwaystransparent = yes
+					}
+				}
+			}
+		}
+
+		flowcontainer = {
+			visible = "[GetVariableSystem.Exists( 'mapmodes_expand' )]"
+			parentanchor = top|right
+			widgetanchor = bottom|right
+			position = { 10 0 }
+			alwaystransparent = no
+			filter_mouse = all
+
+			state = {
+				name = _mouse_hierarchy_leave
+				on_finish = "[GetVariableSystem.Toggle( 'mapmodes_expand' )]"
+			}
+
+			state = {
+				name = _show
+				using = Animation_FadeIn_Quick
+			}
+
+			state = {
+				name = _hide
+				using = Animation_FadeOut_Standard
+			}
+
+			flowcontainer = {
+				direction = vertical
+				margin = { 10 5 }
+				ignoreinvisible = yes
+
+				background = {
+					using = Background_Area_Dark
+				}
+
+				text_single = {
+					parentanchor = hcenter
+					text = "ADDITIONAL_MAPMODES"
+					default_format = "#medium;italic"
+					margin_bottom = 5
+					max_width = 110
+				}
+
+				mm_text_button = {
+					name = "map_mode_dejure_duchies_button"
+					blockoverride 'datacontext'
+					{
+						datacontext = "[GetMapMode( 'dejure_duchies' )]"
+					}
+					shortcut = "map_mode_9"
+				}
+
+				mm_text_button = {
+					name = "map_mode_dejure_kingdoms_button"
+					blockoverride 'datacontext'
+					{
+						datacontext = "[GetMapMode( 'dejure_kingdoms' )]"
+					}
+					shortcut = "map_mode_10"
+				}
+
+				mm_text_button = {
+					name = "map_mode_dejure_empires_button"
+					blockoverride 'datacontext'
+					{
+						datacontext = "[GetMapMode( 'dejure_empires' )]"
+					}
+					shortcut = "map_mode_11"
+				}
+
+				mm_text_button = {
+					name = "map_mode_government_button"
+					blockoverride 'datacontext'
+					{
+						datacontext = "[GetMapMode( 'government' )]"
+					}
+					shortcut = "map_mode_5"
+				}
+
+				mm_text_button = {
+					name = "county_development"
+					blockoverride 'datacontext'
+					{
+						datacontext = "[GetMapMode( 'county_development' )]"
+					}
+					shortcut = "map_mode_13"
+				}
+
+				mm_text_button = {
+					name = "simple_terrain"
+					blockoverride 'datacontext'
+					{
+						datacontext = "[GetMapMode( 'simple_terrain' )]"
+					}
+					shortcut = "map_mode_12"
+				}
+
+				mm_text_button = {
+					name = "map_mode_counties_button"
+					blockoverride 'datacontext'
+					{
+						datacontext = "[GetMapMode( 'dejure_counties' )]"
+					}
+					shortcut = "map_mode_6"
+				}
+
+				mm_text_button = {
+					name = "map_mode_court_languages_button"
+					blockoverride 'datacontext'
+					{
+						datacontext = "[GetMapMode('court_languages')]"
+					}
+					blockoverride 'visible'
+					{
+						visible = "[And( HasDlcFeature( 'royal_court' ), CanChangeMapMode )]"
+					}
+					shortcut = "map_mode_7"
+				}
+
+				mm_text_button = {
+					name = "players"
+					blockoverride 'datacontext'
+					{
+						datacontext = "[GetMapMode( 'players' )]"
+					}
+					blockoverride 'visible'
+					{
+						visible = "[And( Or(GameHasMultiplePlayers, InDebugMode), CanChangeMapMode)]"
+					}
+					shortcut = "map_mode_8"
 				}
 			}
 		}
