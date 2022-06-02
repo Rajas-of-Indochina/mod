@@ -48,15 +48,21 @@ paktai = { # Pak Tai - Tai-Malay Hybrid; in Tambralinga OTL
 	hybrid = yes
 }
 
-ahom = { # Ahom - Tai-Tibetan Hybrid; in Assam OTL
+ahom = { # Ahom - Tai-Tibetan/IndoAryan Hybrid; in Assam OTL
 	trigger = {
 		OR = {
 			AND = {
 				scope:culture = { has_cultural_pillar = heritage_tai }
-				scope:other_culture = { has_cultural_pillar = heritage_tibetan }
+				OR = {
+					scope:other_culture = { has_cultural_pillar = heritage_tibetan }
+					scope:other_culture = { has_cultural_pillar = heritage_indo_aryan }
+				}
 			}
 			AND = {
-				scope:culture = { has_cultural_pillar = heritage_tibetan }
+				OR = {
+					scope:culture = { has_cultural_pillar = heritage_tibetan }
+					scope:culture = { has_cultural_pillar = heritage_indo_aryan }
+				}
 				scope:other_culture = { has_cultural_pillar = heritage_tai }
 			}
 		}
