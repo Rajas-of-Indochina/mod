@@ -89,6 +89,60 @@ tribal_elective = {
 		add = {
 			type = holder_direct_vassals
 			limit = {
+				tribal_elective_potential_landed_candidate_trigger = yes
+			}
+		}
+		add = {
+			type = holder_close_or_extended_family
+			limit = {
+				is_close_family_of = scope:holder
+				feudal_elective_potential_landless_dynastic_candidate_trigger = yes
+			}
+		}
+	}
+}
+
+anarchist_elective = {
+	elector_vote_strength = {
+		base = 1
+	}
+
+	electors = {
+		add = holder
+		add = {
+			type = holder_direct_vassals
+			limit = {
+				anarchist_elective_potential_landed_candidate_trigger = yes
+			}
+		}
+	}
+
+	candidate_score = {
+		base = 0
+		######################	Elector self-voting pattern	##########################
+		elector_self_voting_pattern_feudal_elective_modifier = yes
+
+		##########################	Holder voting pattern	##########################
+		holder_voting_pattern_feudal_elective_modifier = yes
+
+		##########################	Elector voting patterns (circumstances)	##########################
+		elector_voting_pattern_circumstances_feudal_elective_modifier = yes
+
+		##########################	Elector voting patterns (prestige/piety)	##########################
+		elector_voting_pattern_prestige_piety_feudal_elective_modifier = yes
+
+		##########################	Elector voting patterns (traits)	##########################
+		elector_voting_pattern_traits_feudal_elective_modifier = yes
+
+		##########################	Elector voting patterns (opinion)	##########################
+		elector_voting_pattern_opinion_feudal_elective_modifier = yes
+	}
+
+	#scope:candidate = Candidate, scope:title = Title, scope:holder_candidate = Candidate currently selected by ruler.
+	candidates = {
+		add = {
+			type = holder_direct_vassals
+			limit = {
 				feudal_elective_potential_landed_candidate_trigger = yes
 			}
 		}
