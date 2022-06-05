@@ -148,11 +148,13 @@ on_government_assign_start = {
 				resolve_title_and_vassal_change = scope:change
 				# Generate a new CoA
 				## We do this in a separate block so that the effect has time to see that the title has a holder, since it'll error otherwise.
-				scope:new_title = {
-					generate_coa = yes
-					set_color_from_title = scope:ruler.capital_county
+				if = {
+					limit = { exists = scope:new_title }
+					scope:new_title = {
+						generate_coa = yes
+						set_color_from_title = scope:ruler.capital_county
+					}
 				}
-				# Add elective succession title law
 
 				every_held_title = {
 					limit = { tier = tier_county }
