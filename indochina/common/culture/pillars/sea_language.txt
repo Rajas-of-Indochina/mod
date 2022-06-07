@@ -1770,7 +1770,37 @@ language_min_chinese = {
 		}
 	}
 
-	color = { 130 250 185 }
+	color = min
+}
+language_wu_chinese = {
+	type = language
+	is_shown = {
+		language_is_shown_trigger = {
+			LANGUAGE = language_wu_chinese
+		}
+	}
+	parameters = {
+		language_group_sinitic = yes
+		language_family_sino_tibetan = yes
+	}
+
+	ai_will_do = {
+		value = 10
+		if = {
+			limit = { has_cultural_pillar = language_wu_chinese }
+			multiply = 10
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_group_sinitic }
+			multiply = 5
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_family_sino_tibetan }
+			multiply = 2.5
+		}
+	}
+
+	color = wu
 }
 language_japonic = {
 	type = language
