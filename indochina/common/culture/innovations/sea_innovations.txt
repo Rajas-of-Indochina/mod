@@ -31,6 +31,9 @@
 @special_maa_01 = "gfx/interface/icons/culture_innovations/innovation_special_maa_01.dds"
 @special_maa_02 = "gfx/interface/icons/culture_innovations/innovation_special_maa_02.dds"
 
+
+## Regional ##
+
 innovation_outrigger_boats = {
 	group = culture_group_regional
 	culture_era = culture_era_tribal
@@ -59,4 +62,70 @@ innovation_indian_primogeniture = {
 
 	flag = global_regional
 	flag = tribal_era_regional
+}
+
+
+## High Medieval ##
+
+innovation_fire_lances = {
+	group = culture_group_military
+	culture_era = culture_era_high_medieval
+	icon = @raised_banner
+
+	unlock_maa = fire_lances
+
+	can_progress = { #Unlocked by event.
+		custom_description = {
+			text = "innovation_unlocked_by_decision_trigger"
+			OR = {
+				has_cultural_pillar = heritage_chinese
+				has_variable = exposed_to_fire_lances
+			}
+		}
+	}
+
+	flag = global_regular
+	flag = high_medieval_era_regular
+}
+
+
+## Late Medieval ##
+
+innovation_advanced_fire_lances = {
+	group = culture_group_military
+	culture_era = culture_era_late_medieval
+	icon = @raised_banner
+
+	can_progress = {
+		has_innovation = innovation_fire_lances
+	}
+
+	maa_upgrade = {
+		type = fire_lances
+		damage = 8
+	}
+
+	flag = global_regular
+	flag = late_medieval_era_regular
+}
+
+innovation_hand_cannons = {
+	group = culture_group_military
+	culture_era = culture_era_late_medieval
+	icon = @misc_inventions
+
+	unlock_maa = hand_cannons
+
+	can_progress = { #Unlocked by event.
+		custom_description = {
+			text = "innovation_unlocked_by_decision_trigger"
+			OR = {
+				has_cultural_pillar = heritage_chinese
+				has_variable = exposed_to_hand_cannons
+			}
+		}
+	}
+
+	flag = global_regular
+	flag = late_medieval_era_regular
 }
