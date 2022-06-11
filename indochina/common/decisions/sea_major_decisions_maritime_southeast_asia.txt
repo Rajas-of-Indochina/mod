@@ -169,8 +169,9 @@ embrace_tagalog_culture_decision = {
 	desc = embrace_tagalog_culture_decision_desc
 	
 	is_shown = {
+		always = yes
 		culture = culture:tawo
-		game_start_date < 1000.0.0
+		game_start_date < 1035.10.18 # Copied this date from the vanilla Aragon decision, using another date was buggy for some reason
 	
 		NOT = {
 			is_target_in_global_variable_list = {
@@ -178,54 +179,95 @@ embrace_tagalog_culture_decision = {
 				target = flag:embrace_tagalog_culture_decision
 			}
 		}
-		highest_held_title_tier <= tier_duchy
+		highest_held_title_tier < tier_kingdom
 	}
 	
 	is_valid = {
 		culture = culture:tawo
-		highest_held_title_tier <= tier_duchy
-		title:k_luzon = { is_title_created = no } # Lusong shouldn't be created
-		#OR = { # Independent or Top liege is Tawo
-			#top_liege.culture = culture:tawo
-			#is_independent_ruler = yes
-		#}
-		is_independent_ruler = yes
-		
-		OR = { # Fully control at least ONE Central Luzon speaking duchy
-			AND = {
-				completely_controls = title:d_bicol
-				has_title = title:d_bicol
+		highest_held_title_tier < tier_kingdom
+		prestige_level >= 2
+
+		custom_description = {
+			text = embrace_tagalog_culture_decision_kingdom_requirement
+			title:k_luzon = { is_title_created = no } # Lusong shouldn't exist to create Tagalog
+		}
+
+		custom_description = {
+			text = embrace_tagalog_culture_decision_liege_requirement
+			OR = { # Independent or Top liege is Tawo
+				top_liege.culture = culture:tawo
+				is_independent_ruler = yes
 			}
-			AND = {
-				completely_controls = title:d_tayabas
-				has_title = title:d_tayabas
-			}
-			AND = {
-				completely_controls = title:d_kumintang
-				has_title = title:d_kumintang
-			}
-			AND = {
-				completely_controls = title:d_maynila
-				has_title = title:d_maynila
-			}
-			AND = {
-				completely_controls = title:d_kasiguran
-				has_title = title:d_kasiguran
-			}
-			AND = {
-				completely_controls = title:d_tondo
-				has_title = title:d_tondo
-			}
-			AND = {
-				completely_controls = title:d_pangpang
-				has_title = title:d_pangpang
-			}
-			AND = {
-				completely_controls = title:d_sambal
-				has_title = title:d_sambal
+		}
+
+		custom_description = {
+			text = embrace_tagalog_culture_decision_territorial_requirements_desc
+			OR = {
+				AND = {
+					completely_controls = title:d_bicol
+					has_title = title:d_bicol
+				}
+				AND = {
+					completely_controls = title:d_tayabas
+					has_title = title:d_tayabas
+				}
+				AND = {
+					completely_controls = title:d_kumintang
+					has_title = title:d_kumintang
+				}
+				AND = {
+					completely_controls = title:d_maynila
+					has_title = title:d_maynila
+				}
+				AND = {
+					completely_controls = title:d_kasiguran
+					has_title = title:d_kasiguran
+				}
+				AND = {
+					completely_controls = title:d_tondo
+					has_title = title:d_tondo
+				}
+				AND = {
+					completely_controls = title:d_pangpang
+					has_title = title:d_pangpang
+				}
+				AND = {
+					completely_controls = title:d_sambal
+					has_title = title:d_sambal
+				}
 			}
 		}
 
 	}
-	# TO DO LATER: finish requirements, effects, "the Tagalog people" event, testing
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	cost = {
+		prestige = {
+			value = major_prestige_value
+		}
+	}
+
+	effect = {
+
+		trigger_event = maritime_southeast_asia.0004
+
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = embrace_tagalog_culture_decision
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+
+	# TO DO LATER: effects, "the Tagalog people" event, testing, localization
 }
