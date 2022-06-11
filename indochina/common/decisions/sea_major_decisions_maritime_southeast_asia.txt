@@ -87,7 +87,7 @@ unite_nusantara_decision = {
 unite_the_javanese_thrones_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
 	major = yes
-	ai_check_interval = 60
+	ai_check_interval = 48
 	desc = unite_the_javanese_thrones_decision_desc
 
 	is_shown = {
@@ -160,4 +160,71 @@ unite_the_javanese_thrones_decision = {
 	ai_will_do = {
 		base = 100
 	}
+}
+
+embrace_tagalog_culture_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	ai_check_interval = 36
+	desc = embrace_tagalog_culture_decision
+	
+	is_shown = {
+		culture = culture:tawo
+		game_start_date < 1000.0.0
+	
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:embrace_tagalog_culture_decision
+			}
+		}
+		highest_held_title_tier <= tier_duchy
+	}
+	
+	is_valid = {
+		culture = culture:tawo
+		highest_held_title_tier <= tier_duchy
+		title:k_luzon = { is_title_created = no } # Lusong shouldn't be created
+		OR = { # Independent or Top liege is Tawo
+			top_liege.culture = culture:tawo
+			is_independent_ruler = yes
+		}
+		
+		OR = { # Fully control at least ONE Central Luzon speaking duchy
+			AND = {
+				completely_controls = title:d_bicol
+				has_title = title:d_bicol
+			}
+			AND = {
+				completely_controls = title:d_tayabas
+				has_title = title:d_tayabas
+			}
+			AND = {
+				completely_controls = title:d_kumintang
+				has_title = title:d_kumintang
+			}
+			AND = {
+				completely_controls = title:d_maynila
+				has_title = title:d_maynila
+			}
+			AND = {
+				completely_controls = title:d_kasiguran
+				has_title = title:d_kasiguran
+			}
+			AND = {
+				completely_controls = title:d_tondo
+				has_title = title:d_tondo
+			}
+			AND = {
+				completely_controls = title:d_pangpang
+				has_title = title:d_pangpang
+			}
+			AND = {
+				completely_controls = title:d_sambal
+				has_title = title:d_sambal
+			}
+		}
+
+	}
+	# TO DO LATER: finish requirements, effects, "the Tagalog people" event, testing
 }
