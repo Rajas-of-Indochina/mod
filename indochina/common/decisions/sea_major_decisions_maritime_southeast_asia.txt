@@ -255,6 +255,139 @@ embrace_tagalog_culture_decision = {
 
 		trigger_event = maritime_southeast_asia.0004
 
+		custom_tooltip = embrace_tagalog_culture_decision_effect_one
+		custom_tooltip = embrace_tagalog_culture_decision_effect_two
+		
+		# Copied from the Norman culture decision
+		hidden_effect = {
+			# Generate a list of counties we want to flip to the new culture.
+			# All counties in Bicol, Tayabas, Kumintang, and Maynila convert unconditionally.
+
+			title:d_bicol = {
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_county }
+					add_to_list = tagalog_counties
+				}
+
+			title:d_tayabas = {
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_county }
+					add_to_list = tagalog_counties
+				}
+
+			title:d_kumintang = {
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_county }
+					add_to_list = tagalog_counties
+				}
+			}
+
+			title:d_maynila = {
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_county}
+					add_to_list = tagalog_counties
+				}
+			}
+
+			any_county_in_region = { # Doesn't work, will fix later
+				region = world_central_and_southern_luzon
+				add_to_list = tagalog_counties
+			}
+
+			# Perform the culture flip.
+			every_in_list = {
+				list = tagalog_counties
+				set_county_culture = culture:tagalog
+				}
+			}
+
+			# Send all players in the game a notification event about the flip.
+			save_scope_as = tagalog_founder
+			culture:tawo = {save_scope_as = old_culture_1}
+			culture:sinauna = {save_scope_as = old_culture_2}
+			culture:tagalog = {
+				reset_culture_creation_date = yes
+				get_all_innovations_from = scope:old_culture_1
+				get_all_innovations_from = scope:old_culture_2
+				save_scope_as = new_culture
+			}
+			every_player = { # Will work on these events later
+				if = { # If you are Filipino, not Central Luzon speaking culture, and did not embrace Tagalog culture
+					limit = {
+						NOT = { 
+							OR = {
+								this = root 
+								culture = { has_cultural_pillar = language_central_luzon }
+								
+							}
+						}
+						OR = {
+							culture = { has_cultural_pillar = heritage_lumad }
+							culture = { has_cultural_pillar = heritage_filipino }
+						}
+						#exists = capital_province
+						#NOT = { capital_province = { geographical_region = world_central_and_southern_luzon } }
+					}
+					trigger_event = maritime_southeast_asia.0004
+				}
+				else_if = { # If you embraced Tagalog culture
+					limit = { this = root }
+					trigger_event = maritime_southeast_asia.0005
+				}
+				else_if = { # If you are Central Luzon speaking culture
+					limit = {
+						culture = { has_cultural_pillar = language_central_luzon }
+					}
+					trigger_event = maritime_southeast_asia.0006
+				}
+			}
+		}
+
+		# Player changes culture
+		set_culture = culture:tagalog
+		add_character_flag = converted_culture_this_lifetime
+		hidden_effect = {
+			every_in_list = {
+				list = tagalog_counties
+				limit = {
+					AND = {
+						holder.capital_county = { is_in_list = tagalog_counties }
+						holder.liege = root
+					}
+				}
+				holder = {
+					add_to_list = mass_melting_pot_list
+					every_courtier = { add_to_list = mass_melting_pot_list }
+					every_courtier_away = { add_to_list = mass_melting_pot_list }
+				}
+				every_in_list = {
+					list = mass_melting_pot_list
+					limit = {
+						OR = {
+							culture = culture:sinauna
+							culture = culture:tawo
+						}
+					}
+					set_culture = culture:tagalog
+				}
+			}
+		}
+		
+
+		# Summary of above hidden effects to inform players of the decision's impact.
+		show_as_tooltip = {
+			custom_tooltip = embrace_tagalog_culture_decision_effect_tt
+			culture:norman = {
+				get_all_innovations_from = scope:old_culture_1
+				get_all_innovations_from = scope:old_culture_2
+			}
+		}
+		
+		# Tagalog gets a random available innovation (I hope it does anyway, haven't checked)
+		tagalog = { add_random_innovation = culture_group_military/culture_group_civic/culture_group_regional/yes }
+		############
+
+
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
 			target = embrace_tagalog_culture_decision
@@ -268,6 +401,4 @@ embrace_tagalog_culture_decision = {
 	ai_will_do = {
 		base = 100
 	}
-
-	# TO DO LATER: effects, "the Tagalog people" event, testing, localization
 }
