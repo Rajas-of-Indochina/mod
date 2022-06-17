@@ -77,3 +77,98 @@ maritime_southeast_asia.0003 = {
 		add_prestige_level = 2
 	}
 }
+
+# I embraced Tagalog
+maritime_southeast_asia.0004 = {
+	type = character_event
+	title = maritime_southeast_asia.0004.t
+	desc = maritime_southeast_asia.0004.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+
+	option = {
+		name = maritime_southeast_asia.0004.a
+		custom_tooltip = maritime_southeast_asia.0004.tooltip
+	}
+}
+
+# Choose a tradition for Tagalog
+maritime_southeast_asia.0005 = {
+	type = character_event
+	title = maritime_southeast_asia.0005.t
+	desc = maritime_southeast_asia.0005.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	option = {
+		name = maritime_southeast_asia.0005.a
+		culture:tagalog = { add_culture_tradition = tradition_seafaring }
+		custom_tooltip = maritime_southeast_asia.0005.tooltipa
+	}
+	option = {
+		name = maritime_southeast_asia.0005.b
+		culture:tagalog = { add_culture_tradition = tradition_artisans }
+		custom_tooltip = maritime_southeast_asia.0005.tooltipb
+	}
+	option = {
+		name = maritime_southeast_asia.0005.c
+		culture:tagalog = { add_culture_tradition = tradition_xenophilic }
+		custom_tooltip = maritime_southeast_asia.0005.tooltipc
+	}
+	option = {
+		name = maritime_southeast_asia.0005.d
+		culture:tagalog = { add_culture_tradition = tradition_mystical_ancestors }
+		custom_tooltip = maritime_southeast_asia.0005.tooltipd
+	}
+`	option = {
+		name = maritime_southeast_asia.0005.e
+		custom_tooltip = maritime_southeast_asia.0005.tooltipe
+	}
+	option = {
+		name = maritime_southeast_asia.0005.e
+		custom_tooltip = maritime_southeast_asia.0005.tooltipe
+	}
+}
+
+# If your capital county got settled by Tagalogs, choose what to do with them
+maritime_southeast_asia.0006 = {
+	type = character_event
+	title = maritime_southeast_asia.0006.t
+	desc = maritime_southeast_asia.0006.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	option = { # Leave the Tagalogs be
+		name = maritime_southeast_asia.0006.a
+		custom_tooltip = maritime_southeast_asia.0006.tooltipa
+	}
+	option = { # No Tagalogs allowed
+		name = maritime_southeast_asia.0006.b
+		capital_county = {
+			set_county_culture = root.culture
+			remove_county_modifier = tagalog_migration_modifier
+			add_county_modifier = {
+				modifier = tagalog_migrants_denied_entry_modifier
+				years = 20
+				desc = tagalog_migrants_denied_entry_modifier_desc
+			}
+		}
+	}
+	option = { # Convert to Tagalog culture
+		name = maritime_southeast_asia.0006.c
+		set_culture = culture:tagalog
+	}
+}
