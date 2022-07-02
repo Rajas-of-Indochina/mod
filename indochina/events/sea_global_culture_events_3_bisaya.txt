@@ -6,7 +6,7 @@
 # Bisaya and Tagalog culture split #
 # 0009, 0008, then 0007
 # Notification event, no gameplay effects
-sea_global_culture.0009 = {
+sea_global_culture.0009= {
 	type = character_event
 	title = sea_global_culture.0009.t
 	desc = sea_global_culture.0009.desc
@@ -35,8 +35,7 @@ sea_global_culture.0008 = {
 			}
 			culture:bisaya = { save_scope_as = my_new_culture }
 		}
-
-		if = {
+		else_if = {
 			limit = {
 				capital_province = {
 					geographical_region = custom_tagalog
@@ -44,11 +43,13 @@ sea_global_culture.0008 = {
 			}
 			culture:tagalog = { save_scope_as = my_new_culture }
 		}
+
+		culture = { save_scope_as = old_culture }
 	}
 
 	# Option 1 (Almost always the only option): Accept the culture conversion.
 	option = {
-		name = sea_global_culture.0008.a
+		name = sea_global_culture.0002.a
 		convert_player_realm_from_old_culture_to_new_effect = {
 			OLD_CULTURE = culture:tawo
 			NEW_CULTURE = scope:my_new_culture
@@ -57,7 +58,7 @@ sea_global_culture.0008 = {
 
 	# Option 2: I am strong enough to keep our old culture intact!
 	option = {
-		name = sea_global_culture.0008.b
+		name = sea_global_culture.0002.b
 
 		trigger = {
 			custom_description = {
@@ -101,7 +102,6 @@ sea_global_culture.0008 = {
 	}
 }
 
-
 sea_global_culture.0007 = { 
 	type = empty
 	hidden = yes
@@ -117,7 +117,6 @@ sea_global_culture.0007 = {
 			# Save scope for player notification events.
 			save_scope_as = bisaya
 		}
-
 		culture:tagalog = {
 			# 'Diverge' this culture by copying innovations. Leave traditions as defined in the database.
 			reset_culture_creation_date = yes
@@ -129,7 +128,7 @@ sea_global_culture.0007 = {
 
 		every_county = {
 			limit = {
-				# All tawo counties in the Philippines will convert to the appropriate culture.
+				# All Idaya counties in the Philippines will convert to the appropriate culture.
 				culture = culture:tawo
 				title_province = {	
 					OR = {					
@@ -140,7 +139,7 @@ sea_global_culture.0007 = {
 			add_to_list = tawo_counties
 		}
 
-		# Convert the tawo counties to the new culture.
+		# Convert the Idaya counties to the new culture.
 		every_in_list = {
 			list = tawo_counties
 			limit = {
@@ -161,19 +160,21 @@ sea_global_culture.0007 = {
 				}
 			}
 				
-			# All Tawo counties/rulers in Visayas, Mindanao, and Sorsogon become Bisaya
+			# All Bisaya counties/rulers in Visayas become Bisaya
 			convert_county_and_holder_if_in_region_effect = {
 				OLD_CULTURE = culture:tawo
 				NEW_CULTURE = culture:bisaya
 				REGION = custom_bisaya
 			}
-			
-			# All Tawo counties/rulers in the Katagalugan become Tagalog
+
+			# All Tawo counties/rulers in Katagalugan become Tagalog
 			convert_county_and_holder_if_in_region_effect = {
 				OLD_CULTURE = culture:tawo
 				NEW_CULTURE = culture:tagalog
 				REGION = custom_tagalog
 			}
+
+		}
 
 		# Send the appropraite notification event to each player.
 		every_player = {
