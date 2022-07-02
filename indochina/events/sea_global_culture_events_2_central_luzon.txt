@@ -1,0 +1,220 @@
+# Philippine culture splits
+# 0001 - 0003: North Luzon
+# 0004 - 0006: Central Luzon
+# 0007 - 0009: Bisaya
+
+# Central Luzon culture split #
+# 0006, 0005, then 0004
+# Notification event, no gameplay effects
+sea_global_culture.0006 = {
+	type = character_event
+	title = sea_global_culture.0006.t
+	desc = sea_global_culture.0006.desc
+	theme = culture_change
+
+	option = {
+		name = sea_global_culture.0006.a
+	}
+}
+
+# If a player is strong enough, they can resist the culture flip for their sub-realm only.
+sea_global_culture.0005 = {
+	type = character_event
+	title = sea_global_culture.0005.t
+	desc = sea_global_culture.0005.desc
+	theme = culture_change
+	left_portrait = root
+
+	immediate = {
+		# Determine what the player's target culture is (based off of religion and capital region)
+		if = {
+			limit = {
+				capital_province = {
+					geographical_region = custom_pampangan
+				}
+			}
+			culture:pampangan = { save_scope_as = my_new_culture }
+		}
+		else_if = {
+			limit = {
+				capital_province = {
+					geographical_region = custom_sambal
+				}
+			}
+			culture:sambal = { save_scope_as = my_new_culture }
+		}
+
+		culture = { save_scope_as = old_culture }
+	}
+
+	# Option 1 (Almost always the only option): Accept the culture conversion.
+	option = {
+		name = sea_global_culture.0005.a
+		convert_player_realm_from_old_culture_to_new_effect = {
+			OLD_CULTURE = culture:sinauna
+			NEW_CULTURE = scope:my_new_culture
+		}
+	}
+
+	# Option 2: I am strong enough to keep our old culture intact!
+	option = {
+		name = sea_global_culture.0005.b
+
+		trigger = {
+			custom_description = {
+				text = controls_enough_culture_counties
+				any_in_list = {
+					list = sinauna_counties
+					percent >= 0.8
+
+					OR = {
+						holder = root
+						holder = {
+							any_liege_or_above = {
+								this = root
+							}
+						}
+					}
+				}
+			}
+		}
+
+		show_as_unavailable = {
+			custom_description = {
+				text = controls_enough_culture_counties	
+				any_in_list = {
+					list = sinauna_counties
+					percent < 0.8
+
+					OR = {
+						holder = root
+						holder = {
+							any_liege_or_above = {
+								this = root
+							}
+						}
+					}
+				}
+			}
+		}
+
+		custom_tooltip = global_culture.custom.keep_culture
+	}
+}
+
+
+sea_global_culture.0004 = { 
+	type = empty
+	hidden = yes
+	
+	immediate = {
+		# Save scopes for player notification events.
+		culture:sinauna = { save_scope_as = sinauna }
+		culture:pampangan = {
+			# 'Diverge' this culture by copying innovations. Leave traditions as defined in the database.
+			reset_culture_creation_date = yes
+			get_all_innovations_from = culture:sinauna
+
+			# Save scope for player notification events.
+			save_scope_as = pampangan
+		}
+		culture:sambal = {
+			# 'Diverge' this culture by copying innovations. Leave traditions as defined in the database.
+			reset_culture_creation_date = yes
+			get_all_innovations_from = culture:sinauna
+
+			# Save scope for player notification events.
+			save_scope_as = sambal
+		}
+
+		every_county = {
+			limit = {
+				# All Sinauna counties in the Philippines will convert to the appropriate culture.
+				culture = culture:sinauna
+				title_province = {	
+					OR = {					
+						geographical_region = world_philippines
+					}		
+				}
+			}
+			add_to_list = sinauna_counties
+		}
+
+		# Convert the Sinauna counties to the new culture.
+		every_in_list = {
+			list = sinauna_counties
+			limit = {
+				# Same-culture players get an event informing them of their county's conversion *before* it happens (for their provinces only).
+				NOT = {
+					holder = {
+						OR = {
+							AND = {
+								is_ai = no
+								culture = culture:sinauna
+							}
+							any_liege_or_above = {
+								is_ai = no
+								culture = culture:sinauna
+							}
+						}
+					}
+				}
+			}
+				
+			# All Sinauna counties/rulers in Pampanga (and some other places) become Kapampangan
+			convert_county_and_holder_if_in_region_effect = {
+				OLD_CULTURE = culture:sinauna
+				NEW_CULTURE = culture:pampangan
+				REGION = custom_pampangan
+			}
+
+			# All Sinauna counties/rulers in Zambales, Bataan and Bolinao become Sambal
+			convert_county_and_holder_if_in_region_effect = {
+				OLD_CULTURE = culture:sinauna
+				NEW_CULTURE = culture:sambal
+				REGION = custom_sambal
+			}
+
+		}
+
+		# Send the appropraite notification event to each player.
+		every_player = {
+			if = {
+				limit = {
+					culture = culture:sinauna
+					any_sub_realm_county = {
+						culture = culture:sinauna
+						title_province = {
+							geographical_region = world_philippines
+						}
+					}
+				}
+				if = {
+					limit = {
+						NOT = {
+							any_liege_or_above = {
+								is_ai = no
+							}
+						}
+					}
+					trigger_event = sea_global_culture.0005
+				}
+			}
+			else = {
+				if = {
+					limit = {
+						is_ai = no
+						save_temporary_scope_as = player
+						any_in_list = {
+							list = sinauna_counties
+							holder = {
+								is_within_diplo_range = { CHARACTER = scope:player }
+							}
+						}
+					}
+					trigger_event = sea_global_culture.0006
+				}
+			}
+		}
+	}
+}

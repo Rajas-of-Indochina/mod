@@ -169,7 +169,6 @@ embrace_tagalog_culture_decision = {
 	desc = embrace_tagalog_culture_decision_desc
 	
 	is_shown = {
-		always = yes
 		culture = culture:tawo
 		game_start_date < 1035.10.18
 
@@ -186,6 +185,11 @@ embrace_tagalog_culture_decision = {
 		culture = culture:tawo
 		highest_held_title_tier < tier_kingdom
 		prestige_level >= 2
+		
+		custom_description = {
+			text = embrace_tagalog_culture_decision_current_date_requirement
+			current_date < 1000.1.1
+		}
 		
 		custom_description = {
 			text = embrace_tagalog_culture_decision_realm_capital_requirement
@@ -242,6 +246,10 @@ embrace_tagalog_culture_decision = {
 					completely_controls = title:d_sambal
 					has_title = title:d_sambal
 				}
+				AND = {
+					completely_controls = title:d_mait
+					has_title = title:d_mait
+				}
 			}
 		}
 
@@ -267,26 +275,11 @@ embrace_tagalog_culture_decision = {
 		# Copied from the Norman culture decision
 		hidden_effect = {
 			# Generate a list of counties we want to flip to the new culture.
-			# All counties in Tayabas, Kumintang, and Maynila convert unconditionally.
+			# All counties in Tagalog region convert unconditionally
 
-			title:d_tayabas = {
-				every_in_de_jure_hierarchy = {
-					limit = { tier = tier_county }
-					add_to_list = tagalog_counties
-				}
-
-			title:d_kumintang = {
-				every_in_de_jure_hierarchy = {
-					limit = { tier = tier_county }
-					add_to_list = tagalog_counties
-				}
-			}
-
-			title:d_maynila = {
-				every_in_de_jure_hierarchy = {
-					limit = { tier = tier_county}
-					add_to_list = tagalog_counties
-				}
+			every_county_in_region = {
+				region = custom_tagalog
+				add_to_list = tagalog_counties
 			}
 
 			every_county_in_region = { # Any other Tawo and Sinauna county in Central and South Luzon under your control will convert to Tagalog
@@ -367,7 +360,7 @@ embrace_tagalog_culture_decision = {
 			}
 		}
 
-		every_ruler = { # Will work on these events later
+		every_ruler = {
 				if = {
 					limit = { 
 						AND = {
@@ -414,7 +407,7 @@ embrace_tagalog_culture_decision = {
 		# Tagalog gets a random available innovation
 		culture:tagalog = { add_random_innovation = culture_group_military/culture_group_civic/culture_group_regional/yes }
 
-		add_to_global_variable_list = {
+		add_to_global_variable_list = { 
 			name = unavailable_unique_decisions
 			target = embrace_tagalog_culture_decision
 		}
