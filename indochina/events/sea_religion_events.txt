@@ -1,0 +1,85 @@
+﻿namespace = sea_religion
+
+sea_religion.0001 = {
+	type = character_event
+	title = sea_religion.0001.t
+	desc = sea_religion.0001.desc
+	theme = learning
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+
+	option = {
+		name = sea_religion.0001.zhengyi
+		set_character_faith = faith:zhengyi
+
+		trigger = {
+			NOT = { faith = faith:zhengyi }
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+	option = {
+		name = sea_religion.0001.shangqing
+		set_character_faith = faith:shangqing
+
+		trigger = {
+			NOT = { faith = faith:shangqing }
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+	option = {
+		name = sea_religion.0001.quanzhen
+		set_character_faith = faith:quanzhen
+
+		trigger = {
+			NOT = { faith = faith:quanzhen }
+			current_year >= 1170
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+	option = {
+		name = sea_religion.0001.fojiao
+		set_character_faith = faith:zenzong
+
+		trigger = {
+			NOT = { faith = faith:zenzong }
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+	option = {
+		name = sea_religion.0001.lixue
+		set_character_faith = faith:lixue
+
+		trigger = {
+			NOT = { faith = faith:lixue }
+			always = no
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+	option = {
+		name = sea_religion.0001.cancel
+		# Nope
+		add_piety = 100
+
+		if = {
+			limit = { is_ai = no }
+			remove_decision_cooldown = three_teachings_convert_decision
+		}
+
+
+		ai_chance = {
+			base = 50
+		}
+	}
+}
