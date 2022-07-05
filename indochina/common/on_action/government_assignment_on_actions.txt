@@ -42,7 +42,12 @@ on_government_assign_start = {
 			if = {
 				limit = {
 					exists = capital_county
-					capital_county.title_province = { geographical_region = world_southeast_asia }
+					capital_county.title_province = {
+						OR = {
+							geographical_region = world_southeast_asia
+							geographical_region = world_burma
+						}
+					}
 					has_government = feudal_government
 					OR = {
 						religion = religion:hinduism_religion
@@ -97,10 +102,17 @@ on_government_assign_start = {
 			if = {
 				limit = {
 					has_government = chinese_government
-					exists = liege
-					NOT = { liege = this }
+					is_independent_ruler = yes
 				}
-				change_government = chinese_vassal_government
+				every_vassal_or_below = {
+					limit = {
+						OR = {
+							has_government = chinese_government
+							has_government = feudal_government
+						}
+					}
+					change_government = chinese_vassal_government
+				}
 			}
 			if = {
 				limit = {
