@@ -116,6 +116,7 @@ on_government_assign_start = {
 					}
 				}
 
+				capital_county = { save_scope_as = commune_capital }
 				change_government = anarchist_government
 				# Create a titular duchy
 				# scope:new_title
@@ -140,32 +141,29 @@ on_government_assign_start = {
 							holder = scope:ruler
 							change = scope:change
 						}
-						save_scope_as = new_duchy
 					}
-				}
+					resolve_title_and_vassal_change = scope:change
 
-				capital_county = { save_scope_as = capital }
-				resolve_title_and_vassal_change = scope:change
-				# Generate a new CoA
-				## We do this in a separate block so that the effect has time to see that the title has a holder, since it'll error otherwise.
-				if = {
-					limit = { exists = scope:new_title }
+					# Generate a new CoA
+					## We do this in a separate block so that the effect has time to see that the title has a holder, since it'll error otherwise.
 					scope:new_title = {
 						generate_coa = yes
-						set_color_from_title = scope:capital
+						set_color_from_title = scope:commune_capital
 					}
 				}
 
+				primary_title = {
+					add_title_law = anarchist_elective_succession_law
+				}
 				every_held_title = {
 					limit = { tier = tier_county }
 					save_scope_as = title
 					scope:ruler = { trigger_event = sea_title_event.2001 }
 				}
-				primary_title = {
-					add_title_law = anarchist_elective_succession_law
-				}
 			}
 		}
+
+		# Fix authority laws
 		every_ruler = {
 			if = {
 				limit = {
@@ -211,6 +209,29 @@ on_government_assign_start = {
 				if = {
 					limit = { has_realm_law = crown_authority_3 }
 					remove_realm_law = crown_authority_3
+				}
+			}
+			else_if = {
+				limit = {
+					has_government = anarchist_government
+					NOT = { has_realm_law = stateless_authority_0 }
+				}
+
+				if = {
+					limit = { has_realm_law = tribal_authority_0 }
+					remove_realm_law = tribal_authority_0
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_1 }
+					remove_realm_law = tribal_authority_1
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_2 }
+					remove_realm_law = tribal_authority_2
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_3 }
+					remove_realm_law = tribal_authority_3
 				}
 			}
 		}
