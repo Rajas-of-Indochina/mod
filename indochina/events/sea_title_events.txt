@@ -1162,7 +1162,7 @@ sea_title_event.2001 = {
 	right_portrait = scope:new_count
 
 	trigger = {
-		NOT = { scope:title = scope:ruler.capital_county }
+		NOT = { scope:title = root.capital_county }
 	}
 
 	immediate = {
@@ -1223,6 +1223,54 @@ sea_title_event.2001 = {
 
 		ai_chance = {
 			base = 0
+		}
+	}
+}
+
+
+sea_title_event.3000 = {
+	hidden = yes
+
+	trigger = {
+		scope:title = { has_title_law = anarchist_elective_succession_law }
+		scope:title.tier = tier_duchy
+	}
+
+	immediate = {
+		primary_title = { save_scope_as = commune_title }
+		if = {
+			limit = {
+				exists = scope:commune_title.previous_holder
+				dynasty = scope:commune_title.previous_holder.dynasty
+			}
+			# Raise authority
+			if = {
+				limit = { has_realm_law = stateless_authority_0 }
+				add_realm_law = stateless_authority_1
+			}
+			else_if = {
+				limit = { has_realm_law = stateless_authority_1 }
+				add_realm_law = stateless_authority_2
+			}
+			else_if = {
+				limit = { has_realm_law = stateless_authority_2 }
+				add_realm_law = stateless_authority_3
+			}
+		}
+		else = {
+			# Reduce authority
+			if = {
+				limit = { has_realm_law = stateless_authority_1 }
+				add_realm_law = stateless_authority_0
+			}
+			else_if = {
+				limit = { has_realm_law = stateless_authority_2 }
+				add_realm_law = stateless_authority_1
+			}
+			else_if = {
+				limit = { has_realm_law = stateless_authority_3 }
+				add_realm_law = stateless_authority_2
+			}
 		}
 	}
 }

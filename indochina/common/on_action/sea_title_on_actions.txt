@@ -7,12 +7,27 @@ on_title_gain = {
 	}
 }
 
+# A title is transferred to a new character
+# root = the new holder
+# scope:title = the title that changes hands
+# scope:previous_holder = previous holder. Might be dead
 on_title_gain = {
 	events = {
 		sea_title_event.1000 # Convert baronies from republic to liege gov
 		sea_title_event.1001 # Convert Chinese vassals to appropriate vassal gov
 
 		sea_title_event.2000 # Create a new vassal when an anarchist gets a new title
+	}
+}
+
+# A title is inherited by a character
+# root = the new holder
+# scope:title = the title that changes hands
+# scope:previous_holder = previous holder. Should be dead
+on_title_gain_inheritance = {
+	events = {
+		delay = { days = 1 }
+		sea_title_event.3000 # Raise or lower authority
 	}
 }
 
