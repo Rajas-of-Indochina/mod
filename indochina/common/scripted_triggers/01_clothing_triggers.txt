@@ -46,3 +46,26 @@
 
 }
 
+portrait_can_use_noble_headgear_trigger = {
+	NOR = {
+		has_government = anarchist_government
+		AND = {
+			exists = primary_spouse
+			primary_spouse = { has_government = anarchist_government }
+		}
+	}
+	NAND = {
+		portrait_has_trait_trigger = { TRAIT = peasant_leader }
+		OR = {
+			is_ruler = no
+			is_leading_faction_type = peasant_faction
+			AND = {
+				is_landed = no
+				OR = {
+					has_government = feudal_government
+					has_government = clan_government
+				}
+			}
+		}
+	}
+}
