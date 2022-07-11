@@ -10,7 +10,12 @@
 	always_use_patronym = yes
 	dynasty_named_realms = yes
 
-	vassal_contract = { mandala_government_obligations }
+	vassal_contract = {
+		mandala_government_obligations
+		council_rights
+		title_revocation_rights
+		marriage_favor_rights
+	}
 
 	character_modifier = {
 		domain_limit = -2
@@ -29,6 +34,9 @@
 					limit = {
 						is_powerful_vassal = yes
 					}
+					value = -30
+				}
+				else = {
 					value = -15
 				}
 			}
@@ -45,12 +53,22 @@
 						is_powerful_vassal = yes
 					}
 				}
-				desc = "GOVERNMENT_CLAN_NOT_ALLIED_POWERFUL"
+				desc = "GOVERNMENT_MANDALA_NOT_ALLIED_POWERFUL"
+			}
+			triggered_desc = {
+				trigger = {
+					scope:vassal = {
+						NOT = {
+							is_allied_to = scope:liege
+						}
+						is_powerful_vassal = no
+					}
+				}
+				desc = "GOVERNMENT_MANDALA_NOT_ALLIED"
 			}
 		}
 	}
 
-	flag = government_can_raid_rule
 	color = { 213 217 7 }
 }
 
