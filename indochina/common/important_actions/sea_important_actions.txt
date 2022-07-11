@@ -1,3 +1,32 @@
+﻿
+action_can_call_suzerain = {
+	priority = 1000
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				has_variable = my_suzerain
+				is_character_interaction_valid = {
+					recipient = var:my_suzerain
+					interaction = call_suzerain_to_war
+				}
+			}
+			try_create_important_action = {
+				important_action_type = action_can_call_suzerain
+				actor = root
+				recipient = var:my_suzerain
+			}
+		}
+	}
+
+	effect = {
+		open_interaction_window = {
+			interaction = call_suzerain_to_war
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}
 
 action_can_propose_alliance_mandala_vassal = {
 	priority = 300
