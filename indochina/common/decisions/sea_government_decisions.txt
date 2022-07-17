@@ -51,6 +51,7 @@ embrace_anarchy_decision = {
 	desc = embrace_anarchy_decision_desc
 
 	is_shown = {
+		always = no
 		has_government = tribal_government
 	}
 
@@ -107,5 +108,62 @@ embrace_anarchy_decision = {
 
 	ai_will_do = {
 		base = -1000
+	}
+}
+
+reform_anarchy_to_tribalism_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	desc = reform_anarchy_to_tribalism_decision_desc
+
+	is_shown = {
+		is_independent_ruler = yes
+		has_government = anarchist_government
+	}
+
+	is_valid = {
+		is_adult = yes
+		has_realm_law = stateless_authority_3
+		prestige_level >= 2
+		custom_description = {
+			text = "no_powerful_vassal_with_negative_opinion"
+			NOT = {
+				any_vassal = {
+					is_powerful_vassal = yes
+					opposes_succession_law_change_trigger = yes
+				}
+			}
+		}
+		custom_description = {
+			text = "no_active_factions"
+			NOT = {
+				any_targeting_faction = {
+					limit = {
+						OR = {
+							faction_is_type = populist_faction
+							faction_is_type = independence_faction
+						}
+					}
+					exists = yes
+				}
+			}
+		}
+
+		# Alternate decision if you are a vassal
+	}
+
+	effect = {
+		# Trigger a populist faction war
+		# May choose to back down or fight
+
+		trigger_event = sea_gov_event.1000
+		show_as_tooltip = {
+			change_government = tribal_government
+			add_prestige = major_prestige_value
+		}
+	}
+
+	ai_potential = {
+		always = no
 	}
 }

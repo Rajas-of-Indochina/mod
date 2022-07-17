@@ -23,6 +23,40 @@ realm_law_use_crown_authority = {
 	}
 }
 
+can_have_single_heir_dynasty_house_trigger = {
+	exists = house
+	trigger_if = {
+		limit = { has_government = anarchist_government }
+		always = yes
+	}
+	trigger_else_if = {
+		limit = {
+			culture = {
+				OR = {
+					has_cultural_pillar = heritage_west_slavic
+					NOT = {	has_innovation = innovation_heraldry }
+				}
+			}
+		}
+		culture = {
+			has_innovation = innovation_table_of_princes
+		}
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_heraldry
+		}
+	}
+	custom_description = {
+		text = succession_laws_must_have_organised_government_tooltip
+		OR = {
+			has_government = feudal_government
+			has_government = clan_government
+			has_government = anarchist_government
+		}
+	}
+}
+
 realm_law_use_nomadic_authority = {
 	has_government = nomadic_government
 }
