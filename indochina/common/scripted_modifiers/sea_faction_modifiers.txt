@@ -1,105 +1,197 @@
 ﻿
-common_faction_modifiers = {
-	# +/- 40 join weight at -/+100 opinion
-	opinion_modifier = {
-		who = root
-		opinion_target = $FACTION_TARGET$ 
-		multiplier = $OPINION_MULTIPLIER$
-		max = $MAX_OPINION$
-	}
-
-	# for each character.religion != factionTarget.religion add X join-score
-	pluralism_fundamentalism_modifier = {
-		ASTRAY_BASE_VALUE = 25
-		HOSTILE_BASE_VALUE = 50
-		EVIL_BASE_VALUE = 100
-		BASE_FAITH = faith
-		TARGET_FAITH = $FACTION_TARGET$.faith
-	}
-
-	# +25 join chance per sin, -25 join chance per virtue
-	legalism_virtue_and_sin_modifier = {
-		TARGET = $FACTION_TARGET$
-		SCORE_PER_TRAIT = 25
-	}
-
-	# -100 join chance from intimidation, -1000 join chance from terrified. This modifier doesn't apply if a faction is above the power threshold
-	intimidated_from_faction_modifier = {
-		TARGET = $FACTION_TARGET$
-		POWER =  $POWER$
-		THRESHOLD = $THRESHOLD$
-	}
-
-	# Debt: +10 to +60 join chance depending on how far in debt the top liege is
-	liege_debt_modifier = {
-		TARGET = $FACTION_TARGET$
-		SCORE_PER_DEBT_LEVEL = 10
-	}
-
-	# Difficulty Settings
-	modifier = { # Easy
-		add = -50
-		has_game_rule = easy_difficulty
-		$FACTION_TARGET$ = {
-			is_ai = no
-		}
-	}
-	modifier = { # Very Easy
+independence_faction_modifiers = {
+	modifier = { # Electors are less likely to join independence factions, if they're the same faith
 		add = -150
-		has_game_rule = very_easy_difficulty
-		$FACTION_TARGET$ = {
-			is_ai = no
+		$FACTION_TARGET$.primary_title = {
+			has_order_of_succession = election
+			any_elector = {
+				this = root
+			}
+		}
+		$FACTION_TARGET$.faith = root.faith
+	}
+
+	# Liege is not my Rightful Liege or a consequent par of my Realm is outside of their De Jure
+	modifier = {
+		add = {
+			value = 125
+			# Larger realms are inherently more rebellious.
+			add = {
+				value = sub_realm_size
+				multiply = 2
+			}
+		}
+		OR = {
+	 		NOT = {
+				is_rightful_liege_of_trigger = {
+					VASSAL = root
+					LIEGE = $FACTION_TARGET$
+				}
+			}
+			any_sub_realm_county = {
+				percent <= 0.5
+				save_temporary_scope_as = current_county
+				$FACTION_TARGET$.primary_title = {
+					any_in_de_jure_hierarchy = {
+						this = scope:current_county
+					}
+				}
+			}
 		}
 	}
 
-	# Realm Stability Settings
+	# Kingdoms gain an additional boost to independence, as they don't like being under the thumb of others.
 	modifier = {
-		add = 50
-		has_game_rule = lesser_realm_stability
+		add = { # High-grandeur Kings will want independence even more
+			value =	50
+			if = {
+				limit = {
+					has_royal_court = yes
+					$FACTION_TARGET$ = {
+						has_royal_court = yes
+					}
+					court_grandeur_current_level > $FACTION_TARGET$.court_grandeur_current_level
+				}
+				add = {
+					add = court_grandeur_current_level
+					subtract = $FACTION_TARGET$.court_grandeur_current_level
+					multiply = 15
+				}
+			}
+		}
+		highest_held_title_tier = tier_kingdom
 	}
+
+	# Lowers independence wishes from Counts.
+	modifier = {
+		add = -25
+		highest_held_title_tier = tier_county
+	}
+
+	# Toe the Line Perk
 	modifier = {
 		add = -50
-		has_game_rule = higher_realm_stability
-	}
-	modifier = {
-		add = -100
-		has_game_rule = extreme_realm_stability
+		$FACTION_TARGET$ = {
+			has_perk = toe_the_line_perk
+		}
 	}
 
-	## Modifier for Tibet ##
+	# Stem Duchies innovation
+	modifier = {
+		add = -25
+		$FACTION_TARGET$ = { culture = { has_innovation = innovation_stem_duchies }	}
+		culture = { has_same_culture_heritage = $FACTION_TARGET$.culture }
+	}
+
+	# Characters are less likely to join if cultural acceptance is high
+	modifier = {
+		culture = {
+			NOR = {
+				this = $FACTION_TARGET$.culture
+				cultural_acceptance = { target = $FACTION_TARGET$.culture value >= 90 } # Essentially the same culture
+				has_cultural_parameter = doesnt_care_about_culture_faith_in_factions
+			}
+		}
+		add = {
+			value = 20
+			if = {
+				limit = {
+					culture = {
+						cultural_acceptance = { target = $FACTION_TARGET$.culture value <= 20 }
+					}
+				}
+				add = 20
+			}
+			if = {
+				limit = {
+					culture = {
+						cultural_acceptance = { target = $FACTION_TARGET$.culture value <= 35 }
+					}
+				}
+				add = 15
+			}
+			if = {
+				limit = {
+					culture = {
+						cultural_acceptance = { target = $FACTION_TARGET$.culture value <= 50 }
+					}
+				}
+				add = 10
+			}
+			if = {
+				limit = {
+					culture = {
+						cultural_acceptance = { target = $FACTION_TARGET$.culture value <= 70 }
+					}
+				}
+				add = 5
+			}
+			if = {
+				limit = {
+					culture = {
+						cultural_acceptance = { target = $FACTION_TARGET$.culture value <= 80 }
+					}
+				}
+				add = 5
+			}
+			if = { # The liege knowing your language cuts this penalty in half
+				limit = {
+					$FACTION_TARGET$ = {
+						knows_language_of_culture = prev.culture
+					}
+				}
+				multiply = 0.5
+			}
+		}
+	}
+
+	# If in struggle, rather go for Dissolution faction
+	modifier = {
+		add = {
+			value = 0
+			# Some phases give a low chance...
+			if = {
+				limit = {
+					$FACTION_TARGET$ = {
+						any_character_struggle = {
+							involvement = involved
+							OR = {
+								is_struggle_phase = struggle_iberia_phase_hostility
+								is_struggle_phase = struggle_iberia_phase_opportunity
+							}
+						}
+					}
+				}
+				add = -100
+			}
+		}
+		$FACTION_TARGET$ = {
+			any_character_struggle = { involvement = involved }
+		}
+		OR = {
+			is_powerful_vassal_of = $FACTION_TARGET$
+			$FACTION_TARGET$ = {
+				any_targeting_faction = {
+					faction_is_type = nation_fracturing_faction
+				}
+			}
+		}
+	}
+
+	## SEA Stuff ##
+	# Mandalas and Stateless are incentivized to make life difficult for their liege
+	modifier = {
+		add = 25
+		AND = {
+			has_government = mandala_government
+			$FACTION_TARGET$ = {
+				has_government = mandala_government
+			}
+		}
+	}
+
 	modifier = {
 		add = 50
-		$FACTION_TARGET$ = {
-			any_held_title = { has_variable = tibetan_empire_collapse }
-		}
-	}
-
-	#safe guard to avoid Factions being created when the game starts
-	modifier = {
-		add = -10000
-		years_from_game_start < 1
-		$FACTION_TARGET$.primary_title.tier = tier_duchy
-	}
-
-	modifier = {
-		add = -10000
-		years_from_game_start < 5
-		$FACTION_TARGET$.primary_title.tier = tier_kingdom
-		NOT = {
-			$FACTION_TARGET$ = {
-				any_held_title = { has_variable = tibetan_empire_collapse }
-			}
-		}
-	}
-
-	modifier = {
-		add = -10000
-		years_from_game_start < 10
-		$FACTION_TARGET$.primary_title.tier = tier_empire
-		NOT = {
-			$FACTION_TARGET$ = {
-				any_held_title = { has_variable = tibetan_empire_collapse }
-			}
-		}
+		has_government = anarchist_government
 	}
 }
