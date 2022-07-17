@@ -13,11 +13,13 @@ unite_nusantara_decision = {
 
 		OR = {
 			culture = { has_cultural_pillar = heritage_filipino }
+			culture = { has_cultural_pillar = heritage_lumad }
 			culture = { has_cultural_pillar = heritage_malayic }
 			culture = { has_cultural_pillar = heritage_moluccan }
 			culture = { has_cultural_pillar = heritage_dayak }
 			culture = { has_cultural_pillar = heritage_sulawesi }
 			culture = { has_cultural_pillar = heritage_papuan }
+			culture = { has_cultural_pillar = heritage_aslianic }
 		}
 
 		NOT = {
@@ -31,12 +33,22 @@ unite_nusantara_decision = {
 	is_valid = {
 		OR = {
 			AND = {
-				culture = { has_cultural_pillar = heritage_filipino }
+				culture = {
+					OR = {
+						has_cultural_pillar = heritage_filipino
+						has_cultural_pillar = heritage_lumad
+					}
+				}
 				completely_controls_region = world_maritime_southeast_asia
 				capital_province = { geographical_region = world_maritime_southeast_asia }
 			}
 			AND = {
-				NOT = { culture = { has_cultural_pillar = heritage_filipino } }
+				culture = {
+					NOR = {
+						has_cultural_pillar = heritage_filipino
+						has_cultural_pillar = heritage_lumad
+					}
+				}
 				completely_controls_region = world_nusantara
 				capital_province = { geographical_region = world_nusantara }
 			}
