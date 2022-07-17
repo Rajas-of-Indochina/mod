@@ -1,0 +1,125 @@
+﻿
+namespace = sea_gov_event
+
+# Mandala vassal declares independence on succession
+sea_gov_event.0001 = {
+	hidden = yes
+
+	trigger = {
+		has_government = mandala_government
+		any_targeting_faction = {
+			faction_is_type = independence_faction
+		}
+	}
+
+	immediate = {
+		save_scope_as = previous_holder
+
+		every_targeting_faction = {
+			limit = { faction_is_type = independence_faction }
+			every_faction_member = {
+				# After a few days, declare independence via event
+				save_scope_as = sender
+
+				root.primary_heir = {
+					trigger_event = {
+						id = sea_gov_event.0002
+						days = { 5 21 }
+					}
+				}
+			}
+		}
+	}
+}
+
+# Actual notification and declaration of independence
+sea_gov_event.0002 = {
+    type = letter_event
+    opening = {
+        desc = sea_gov_event.0002.opening
+    }
+    desc = sea_gov_event.0002.desc
+    sender = scope:sender
+
+    option = {
+        name = sea_gov_event.0002.a
+
+		create_title_and_vassal_change = {
+			type = independency
+			save_scope_as = change
+		}
+		change_liege_or_become_independent = {
+			CHANGE = scope:change
+			VASSAL = scope:sender
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		scope:sender = {
+	        add_opinion = {
+	        	modifier = gained_mandala_independence_bad_opinion
+	        	target = root
+	        }
+		}
+		custom_tooltip = {
+			text = gain_mandala_subjugation_cb
+		}
+
+		ai_chance = {
+			base = 100
+		}
+    }
+    option = {
+        name = sea_gov_event.0002.b
+
+		create_title_and_vassal_change = {
+			type = independency
+			save_scope_as = change
+		}
+		change_liege_or_become_independent = {
+			CHANGE = scope:change
+			VASSAL = scope:sender
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		scope:sender = {
+	        add_opinion = {
+	        	modifier = gained_mandala_independence_good_opinion
+	        	target = root
+	        }
+		}
+
+		add_truce_both_ways = {
+			character = scope:sender
+			days = 1825
+			name = truce_mandala_independent
+		}
+
+		ai_chance = {
+			base = 0
+		}
+    }
+    option = {
+        name = sea_gov_event.0002.c
+
+		add_truce_both_ways = {
+			character = scope:sender
+			days = 1825
+			name = truce_mandala_hook
+		}
+		scope:sender = {
+			add_hook = {
+				type = loyalty_hook
+				target = root
+			}
+			add_opinion = {
+				modifier = respect_opinion
+				target = root
+				opinion = 20
+			}
+		}
+
+		ai_chance = {
+			base = 0
+		}
+    }
+}
