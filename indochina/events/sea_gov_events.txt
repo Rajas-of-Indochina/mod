@@ -42,6 +42,7 @@ sea_gov_event.0002 = {
     sender = scope:sender
 
     option = {
+    	# Vassal becomes independent and you intend to subjugate them later
         name = sea_gov_event.0002.a
 
 		create_title_and_vassal_change = {
@@ -65,10 +66,17 @@ sea_gov_event.0002 = {
 		}
 
 		ai_chance = {
-			base = 100
+			base = 50
+			modifier = {
+				add = ai_vengefulness
+			}
+			modifier = {
+				add = ai_boldness
+			}
 		}
     }
     option = {
+    	# Vassal becomes independent with your blessing
         name = sea_gov_event.0002.b
 
 		create_title_and_vassal_change = {
@@ -95,10 +103,20 @@ sea_gov_event.0002 = {
 		}
 
 		ai_chance = {
-			base = 0
+			base = 50
+			modifier = {
+				add = ai_compassion
+			}
+			modifier = {
+				add = {
+					value = 0
+					subtract = ai_greed
+				}
+			}
 		}
     }
     option = {
+    	# Keep the vassal but they get a strong hook
         name = sea_gov_event.0002.c
 
 		add_truce_both_ways = {
@@ -119,7 +137,16 @@ sea_gov_event.0002 = {
 		}
 
 		ai_chance = {
-			base = 0
+			base = 50
+			modifier = {
+				add = ai_honor
+			}
+			modifier = {
+				add = {
+					value = 0
+					subtract = ai_boldness
+				}
+			}
 		}
     }
 }
