@@ -1,50 +1,4 @@
 ﻿
-call_mandala_vassals_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	major = yes
-	desc = call_mandala_vassals_decision_desc
-
-	ai_check_interval = 0
-
-	is_shown = {
-		has_government = mandala_government
-		is_at_war = yes
-	}
-
-	effect = {
-		every_vassal = {
-			save_temporary_scope_as = vassal
-
-			limit = {
-				root = {
-					is_character_interaction_potentially_accepted = {
-						recipient = prev
-						interaction = mandala_call_vassal_interaction
-					}
-				}
-			}
-
-			run_interaction = {
-				interaction = mandala_call_vassal_interaction
-				actor = root
-				recipient = scope:vassal
-				execute_threshold = accept
-			}
-			custom_tooltip = {
-				text = call_this_mandala_vassal_desc
-			}
-		}
-	}
-
-	ai_potential = {
-		always = yes
-	}
-
-	ai_will_do = {
-		base = 100
-	}
-}
-
 embrace_anarchy_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
 	major = yes
@@ -138,13 +92,11 @@ reform_anarchy_to_tribalism_decision = {
 			text = "no_active_factions"
 			NOT = {
 				any_targeting_faction = {
-					limit = {
-						OR = {
-							faction_is_type = populist_faction
-							faction_is_type = independence_faction
-						}
-					}
 					exists = yes
+					OR = {
+						faction_is_type = populist_faction
+						faction_is_type = independence_faction
+					}
 				}
 			}
 		}
