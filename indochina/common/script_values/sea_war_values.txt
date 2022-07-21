@@ -1,0 +1,28 @@
+﻿
+######################
+# AI Decision Making #
+######################
+
+target_military_strength_root_value = { # One above calcs player strength (plus multiplier), this one is enemy strenth
+	value = 0
+	add = scope:target_military.max_military_strength # this should be a character, probably a top liege
+	if = {
+		limit = {
+			any_ally = {
+				NOT = { has_truce = root }
+			}
+		}
+		every_ally = {
+			limit =	{
+				NOT = { has_truce = root }
+			}
+			add = max_military_strength
+		}
+	}
+	if = {
+		limit = {
+			exists = var:my_suzerain
+		}
+		add = var:my_suzerain.max_military_strength
+	}
+}
