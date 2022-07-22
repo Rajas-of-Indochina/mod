@@ -166,7 +166,12 @@ tributaries.4 = {
             every_in_list = {
                 variable = permanent_tributaries
 
-                limit = { this = scope:suzerain }
+                limit = {
+                    OR = {
+                        this = scope:suzerain
+                        is_alive = no
+                    }
+                }
 
                 remove_variable = my_suzerain
                 scope:suzerain = {
@@ -247,7 +252,7 @@ tributaries.50 = {
                 }
             }
         }
-        ai_chance = { base = 0 }
+        ai_chance = { base = 100 }
     }
     option = {
         name = tributary_send_prestige
@@ -268,7 +273,7 @@ tributaries.50 = {
             trigger_event = { id = tributaries.51 } # Suzerain may declare war
         }
         custom_tooltip = tributary_refuse_tribute.tt
-        ai_chance = { base = 100 }
+        ai_chance = { base = 0 }
     }
 }
 
@@ -291,10 +296,21 @@ tributaries.51 = {
             casus_belli = tributary_punitive_war_cb
             target = scope:tributary
         }
+
+        hidden_effect = {
+            send_interface_toast = {
+                title = declare_war_interaction_notification
+
+                left_icon = scope:actor
+                right_icon = scope:not_trib
+
+                custom_tooltip = declare_war_interaction_notification_tooltip
+            }
+        }
     }
 }
 
-#Suzerain is called to permanent tributary war
+#Suzerain is called to tributary war
 #on_war_started
 #Root is suzerain
 #call_to_arms_tribute is defender
@@ -314,6 +330,12 @@ tributaries.6 = {
 
     trigger = {
         NOT = { scope:attacker = root }
+        NOT = {
+            is_target_in_global_variable_list = {
+                name = permanent_tributaries
+                target = scope:attacker
+            }
+        }
     }
 
     option = {
@@ -438,9 +460,27 @@ tributaries.101 = {
 
     option = {
         name = tributaries.101.a
+        ai_chance = { base = 66 }
     }
     option = {
         name = tributaries.101.b
+        ai_chance = { base = 33 }
+
+        start_war = {
+            cb = one_time_tributary_war_cb
+            target = scope:not_trib
+        }
+
+        hidden_effect = {
+            send_interface_toast = {
+                title = declare_war_interaction_notification
+
+                left_icon = scope:actor
+                right_icon = scope:not_trib
+
+                custom_tooltip = declare_war_interaction_notification_tooltip
+            }
+        }
     }
 }
 
@@ -475,13 +515,26 @@ tributaries.11 = {
 
     option = {
         name = no_trib_sad
+        ai_chance = { base = 66 }
     }
     option = {
         name = no_trib_declare_war
+        ai_chance = { base = 33 }
 
         start_war = {
             cb = permanent_tributary_war_cb
             target = scope:not_trib
+        }
+
+        hidden_effect = {
+            send_interface_toast = {
+                title = declare_war_interaction_notification
+
+                left_icon = scope:actor
+                right_icon = scope:not_trib
+
+                custom_tooltip = declare_war_interaction_notification_tooltip
+            }
         }
     }
 }

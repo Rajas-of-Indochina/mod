@@ -1,7 +1,13 @@
 ﻿on_game_start_after_lobby = {
     on_actions = {
-        delay = { months = 3 }
+        delay = { months = 1 }
         T4N_on_yearly_tribute
+    }
+}
+
+quarterly_playable_pulse = {
+    on_actions = {
+        quarterly_trib_housekeeping_pulse
     }
 }
 
@@ -183,11 +189,58 @@ T4N_tributaries_on_death = {
         }
         if = {
             limit = {
-                root = {
-                    exists = var:my_suzerain
-                }
+                exists = var:my_suzerain
             }
             trigger_event = { id = tributaries.2 }
+        }
+    }
+}
+
+quarterly_trib_housekeeping_pulse = {
+    trigger = {
+        OR = {
+            exists = var:my_suzerain
+            has_variable_list = permanent_tributaries
+        }
+    }
+    effect = {
+        if = { # Reassign tribs to their suzerain if they got detached somehow
+            limit = {
+                exists = var:my_suzerain
+                NOT = {
+                    var:my_suzerain = {
+                        is_target_in_variable_list = { name = permanent_tributaries target = prev }
+                    }
+                }
+            }
+            var:my_suzerain = {
+                add_to_variable_list = { name = permanent_tributaries target = prev }
+            }
+        }
+        if = {
+            limit = { # Suzerains
+                has_variable_list = permanent_tributaries
+            }
+            save_scope_as = suzerain
+            every_in_list = {
+                variable = permanent_tributaries
+
+                if = { # Remove trib relationship if the target is dead
+                    limit = {
+                        is_alive = no
+                    }
+                    scope:suzerain = {
+                        remove_list_variable = { name = permanent_tributaries target = prev }
+                        remove_list_variable = { name = all_tributaries target = prev }
+                    }
+                }
+                else_if = { # Reassign suzerain to their trib if they were detached somehow
+                    limit = {
+                        NOT = { exists = var:my_suzerain }
+                    }
+                    set_variable = { name = my_suzerain value = scope:suzerain }
+                }
+            }
         }
     }
 }

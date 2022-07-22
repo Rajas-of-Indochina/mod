@@ -23,9 +23,25 @@ tribal_subjugation_cb = {
 		scope:attacker = {
 			trigger_if = {
 				limit = {
-					has_government = tribal_government
-					scope:defender = {
-						has_government = tribal_government
+					OR = {
+						AND = {
+							OR = {
+								has_government = tribal_government
+								has_government = nomadic_government
+							}
+							scope:defender = {
+								OR = {
+									has_government = tribal_government
+									has_government = nomadic_government
+								}
+							}
+						}
+						AND = {
+							has_government = mandala_government
+							scope:defender = {
+								has_government = mandala_government
+							}
+						}
 					}
 				}
 				trigger_if = {
@@ -794,9 +810,9 @@ mandala_subjugation_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 	
-	war_name = "SUBJUGATION_WAR_NAME"
-	war_name_base = "SUBJUGATION_WAR_NAME_BASE"
-	cb_name = "SUBJUGATION_CB_NAME"
+	war_name = "MANDALA_SUBJUGATION_WAR_NAME"
+	war_name_base = "MANDALA_SUBJUGATION_WAR_NAME_BASE"
+	cb_name = "MANDALA_SUBJUGATION_CB_NAME"
 	interface_priority = 59
 	
 	ticking_war_score_targets_entire_realm = yes

@@ -542,9 +542,8 @@ ruler_offer_tribute_to_recipient = {
             }
         }
         scope:recipient = { # recipient is tributary
-            NOT = {
-                is_tributary = yes
-            }
+            NOT = { is_tributary = yes }
+            NOT = { is_allied_to = scope:actor }
             is_independent_ruler = yes
             highest_held_title_tier >= tier_county
             highest_held_title_tier <= scope:actor.highest_held_title_tier
@@ -604,9 +603,10 @@ ruler_offer_tribute_to_recipient = {
                     target = scope:actor
                 }
                 scope:recipient = {
-                    pay_short_term_income = {
-                        months = 9 # 25% of 3 years income
+                    pay_short_term_gold = {
+                        gold = 2
                         target = scope:actor
+                        yearly_income = yes
                     }
                 }
                 save_scope_as = trib
@@ -867,7 +867,7 @@ ruler_offer_tribute_to_recipient = {
         ai_recipients = neighboring_rulers
     }
 
-    ai_frequency = 12
+    ai_frequency = 60
 
     ai_will_do = {
         base = 100
@@ -879,6 +879,11 @@ ruler_offer_tribute_to_recipient = {
         modifier = {
             add = 3
             scope:permanent_trib = yes
+        }
+
+        modifier = { # Less likely to target someone they can just invade
+            add = -50
+            has_any_cb_on = scope:recipient
         }
 
         modifier = { # Will not target a more powerful realm

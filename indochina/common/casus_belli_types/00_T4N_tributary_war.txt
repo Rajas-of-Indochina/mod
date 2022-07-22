@@ -1,6 +1,6 @@
 ﻿
 permanent_tributary_war_cb = {
-    group = tributary
+    group = event
     icon = trib_cb
 
     interface_priority = 50
@@ -256,7 +256,7 @@ permanent_tributary_war_cb = {
 }
 
 one_time_tributary_war_cb = {
-    group = tributary
+    group = event
     icon = trib_cb
 
     interface_priority = 50
@@ -336,20 +336,22 @@ one_time_tributary_war_cb = {
         first_valid = {
             triggered_desc = {
                 trigger = { scope:attacker = { is_local_player = yes } }
-                desc = perma_trib_on_victory_desc_attacker
+                desc = one_time_trib_on_victory_desc_attacker
             }
             triggered_desc = {
                 trigger = { scope:defender = { is_local_player = yes } }
-                desc = perma_trib_on_victory_desc_defender
+                desc = one_time_trib_on_victory_desc_defender
             }
-            desc = perma_trib_on_victory_desc
+            desc = one_time_trib_on_victory_desc
         }
     }
     on_victory = {
-        make_tributary = {
-            TYPE = tributary_permanent
-            SUZERAIN = scope:attacker
-            TRIBUTARY = scope:defender
+        scope:defender = {
+            pay_short_term_gold = {
+                gold = 2
+                target = scope:attacker
+                yearly_income = yes
+            }
         }
 
         # Prestige level progress for the attacker
@@ -395,13 +397,13 @@ one_time_tributary_war_cb = {
         first_valid = {
             triggered_desc = {
                 trigger = { scope:attacker = { is_local_player = yes } }
-                desc = perma_trib_on_white_peace_desc_attacker
+                desc = one_time_trib_on_white_peace_desc_attacker
             }
             triggered_desc = {
                 trigger = { scope:defender = { is_local_player = yes } }
-                desc = perma_trib_on_white_peace_desc_defender
+                desc = one_time_trib_on_white_peace_desc_defender
             }
-            desc = perma_trib_on_white_peace_desc
+            desc = one_time_trib_on_white_peace_desc
         }
     }
     on_white_peace = {
@@ -446,13 +448,13 @@ one_time_tributary_war_cb = {
         first_valid = {
             triggered_desc = {
                 trigger = { scope:attacker = { is_local_player = yes } }
-                desc = perma_trib_on_defeat_desc_attacker
+                desc = one_time_trib_on_defeat_desc_attacker
             }
             triggered_desc = {
                 trigger = { scope:defender = { is_local_player = yes } }
-                desc = perma_trib_on_defeat_desc_defender
+                desc = one_time_trib_on_defeat_desc_defender
             }
-            desc = perma_trib_on_defeat_desc
+            desc = one_time_trib_on_defeat_desc
         }
     }
     on_defeat = {
@@ -500,7 +502,7 @@ one_time_tributary_war_cb = {
     }
 
     on_invalidated_desc = {
-        desc = perma_trib_on_invalidated_desc
+        desc = one_time_trib_on_invalidated_desc
     }
 
     on_primary_attacker_death = invalidate
