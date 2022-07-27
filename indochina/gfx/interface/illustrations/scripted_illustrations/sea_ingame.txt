@@ -1,0 +1,924 @@
+### Character interior background
+character_view_bg = {
+
+	######################################
+
+	# Dead
+	texture = {
+		reference = "event_scenes/temple.dds"
+		trigger = {
+			is_alive = no
+		}
+	}
+
+	environment = {
+		reference = "environment_event_temple"
+
+		trigger = {
+			is_alive = no
+		}
+	}
+
+	##########################################
+
+	# Wandering
+	texture = {
+		reference = "event_scenes/tavern.dds"
+
+		trigger = {
+			NOR = {
+				exists = liege
+				exists = host
+			}
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_tavern"
+
+		trigger = {
+			NOR = {
+				exists = liege
+				exists = host
+			}
+			is_character_window_main_character = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_tavern_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						NOR = {
+							exists = liege
+							exists = host
+						}
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						NOR = {
+							exists = liege
+							exists = host
+						}
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+
+	# Chinese Throneroom
+	texture = {
+		reference = "character_view/throneroom_china.dds"
+
+		trigger = {
+			exists = primary_title
+			primary_title.tier >= tier_empire
+			has_graphical_china_region_trigger = yes
+		}
+	}
+
+	##########################################
+
+	# 'Feudal'/High-tier Norse, or non-Tribals in Scandinavia
+	texture = { # FP1 Norse
+		reference = "character_view/fp1_throneroom_nontribal.dds"
+
+		trigger = {
+			has_fp1_dlc_trigger = yes
+			OR = {
+				AND = {
+					is_ruler = no
+					OR = {
+						AND = {
+							exists = liege
+							liege = {
+								OR = {
+									NOT = {
+										has_government = tribal_government
+									}
+									primary_title.tier >= tier_kingdom
+								}
+								OR = {
+									culture = culture:norse
+									religion = religion:germanic_religion
+									has_graphical_scandinavia_region_trigger = yes
+								}
+							}
+						}
+						AND = {
+							exists = host
+							host = {
+								OR = {
+									NOT = {
+										has_government = tribal_government
+									}
+									primary_title.tier >= tier_kingdom
+								}
+								OR = {
+									culture = culture:norse
+									religion = religion:germanic_religion
+									has_graphical_scandinavia_region_trigger = yes
+								}
+							}
+						}
+					}
+				}
+				AND = {
+					is_ruler = yes
+					OR = {
+						NOT = {
+							has_government = tribal_government
+						}
+						primary_title.tier >= tier_kingdom
+					}
+					OR = {
+						culture = culture:norse
+						religion = religion:germanic_religion
+						has_graphical_scandinavia_region_trigger = yes
+					}
+				}
+			}
+		}
+	}
+
+	environment = {
+		reference = "environment_fp1_cw_nontribal_main"
+
+		trigger = {
+			has_fp1_dlc_trigger = yes
+			OR = {
+				AND = {
+					is_ruler = no
+					OR = {
+						AND = {
+							exists = liege
+							liege = {
+								OR = {
+									NOT = {
+										has_government = tribal_government
+									}
+									primary_title.tier >= tier_kingdom
+								}
+								OR = {
+									culture = culture:norse
+									religion = religion:germanic_religion
+									has_graphical_scandinavia_region_trigger = yes
+								}
+							}
+						}
+						AND = {
+							exists = host
+							host = {
+								OR = {
+									NOT = {
+										has_government = tribal_government
+									}
+									primary_title.tier >= tier_kingdom
+								}
+								OR = {
+									culture = culture:norse
+									religion = religion:germanic_religion
+									has_graphical_scandinavia_region_trigger = yes
+								}
+							}
+						}
+					}
+				}
+				AND = {
+					is_ruler = yes
+					OR = {
+						NOT = {
+							has_government = tribal_government
+						}
+						primary_title.tier >= tier_kingdom
+					}
+					OR = {
+						culture = culture:norse
+						religion = religion:germanic_religion
+						has_graphical_scandinavia_region_trigger = yes
+					}
+				}
+			}
+			is_character_window_main_character = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_fp1_cw_nontribal_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						has_fp1_dlc_trigger = yes
+						OR = {
+							NOT = {
+								has_government = tribal_government
+							}
+							primary_title.tier >= tier_kingdom
+						}
+						OR = {
+							culture = culture:norse
+							religion = religion:germanic_religion
+							has_graphical_scandinavia_region_trigger = yes
+						}
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						has_fp1_dlc_trigger = yes
+						OR = {
+							NOT = {
+								has_government = tribal_government
+							}
+							primary_title.tier >= tier_kingdom
+						}
+						OR = {
+							culture = culture:norse
+							religion = religion:germanic_religion
+							has_graphical_scandinavia_region_trigger = yes
+						}
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+
+	# Tribal Norse
+	texture = { # FP1 Norse
+		reference = "character_view/fp1_throneroom_tribal.dds"
+
+		trigger = {
+			has_fp1_dlc_trigger = yes
+			OR = {
+				AND = {
+					is_ruler = no
+					OR = {
+						AND = {
+							exists = liege
+							liege = {
+								has_government = tribal_government
+								OR = {
+									culture = culture:norse
+									religion = religion:germanic_religion
+									has_graphical_scandinavia_region_trigger = yes
+								}
+							}
+						}
+						AND = {
+							exists = host
+							host = {
+								has_government = tribal_government
+								OR = {
+									culture = culture:norse
+									religion = religion:germanic_religion
+									has_graphical_scandinavia_region_trigger = yes
+								}
+							}
+						}
+					}
+				}
+				AND = {
+					is_ruler = yes
+					has_government = tribal_government
+					OR = {
+						culture = culture:norse
+						religion = religion:germanic_religion
+					}
+				}
+			}
+		}
+	}
+
+	environment = {
+		reference = "environment_fp1_cw_tribal_main"
+
+		trigger = {
+			has_fp1_dlc_trigger = yes
+			OR = {
+				AND = {
+					is_ruler = no
+					OR = {
+						AND = {
+							exists = liege
+							liege = {
+								has_government = tribal_government
+								OR = {
+									culture = culture:norse
+									religion = religion:germanic_religion
+									has_graphical_scandinavia_region_trigger = yes
+								}
+							}
+						}
+						AND = {
+							exists = host
+							host = {
+								has_government = tribal_government
+								OR = {
+									culture = culture:norse
+									religion = religion:germanic_religion
+									has_graphical_scandinavia_region_trigger = yes
+								}
+							}
+						}
+					}
+				}
+				AND = {
+					is_ruler = yes
+					has_government = tribal_government
+					OR = {
+						culture = culture:norse
+						religion = religion:germanic_religion
+					}
+				}
+			}
+			is_character_window_main_character = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_fp1_cw_tribal_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						has_government = tribal_government
+						has_fp1_dlc_trigger = yes
+						OR = {
+							culture = culture:norse
+							religion = religion:germanic_religion
+						}
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						has_government = tribal_government
+						has_fp1_dlc_trigger = yes
+						OR = {
+							culture = culture:norse
+							religion = religion:germanic_religion
+						}
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+
+	# Tribal
+	texture = {
+		reference = "character_view/throneroom_tribal.dds"
+
+		trigger = {
+			has_government = tribal_government
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_tribal_main"
+
+		trigger = {
+			has_government = tribal_government
+			is_character_window_main_character = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_tribal_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						has_government = tribal_government
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						has_government = tribal_government
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+
+	# Iberian, high rank
+	texture = {
+		reference = "character_view/fp2_throneroom_iberian.dds"
+
+		trigger = {
+			has_fp2_dlc_trigger = yes
+			exists = primary_title
+			primary_title.tier >= tier_empire
+			has_graphical_iberia_region_trigger = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_fp2_iberian_throneroom_main"
+
+		trigger = {
+			exists = primary_title
+			primary_title.tier >= tier_empire
+			has_graphical_iberia_region_trigger = yes
+			is_character_window_main_character = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_fp2_iberian_throneroom_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						exists = primary_title
+						primary_title.tier >= tier_empire
+						has_graphical_iberia_region_trigger = yes
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						exists = primary_title
+						primary_title.tier >= tier_empire
+						has_graphical_iberia_region_trigger = yes
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+	# Iberian, regular
+	texture = {
+		reference = "character_view/fp2_iberian.dds"
+
+		trigger = {
+			has_fp2_dlc_trigger = yes
+			has_graphical_iberia_region_trigger = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_fp2_iberian"
+
+		trigger = {
+			has_graphical_iberia_region_trigger = yes
+			is_character_window_main_character = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_fp2_iberian_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = { has_graphical_iberia_region_trigger = yes }
+				}
+				AND = {
+					exists = betrothed
+					betrothed = { has_graphical_iberia_region_trigger = yes	}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	############################################
+
+	# Mediterranean, high rank
+	texture = {
+		reference = "character_view/throneroom_mediterranean.dds"
+
+		trigger = {
+			exists = primary_title
+			primary_title.tier >= tier_empire
+			has_graphical_mediterranean_region_trigger = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_mediterranean_throneroom_main"
+
+		trigger = {
+			exists = primary_title
+			primary_title.tier >= tier_empire
+			has_graphical_mediterranean_region_trigger = yes
+			is_character_window_main_character = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_mediterranean_throneroom_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						exists = primary_title
+						primary_title.tier >= tier_empire
+						has_graphical_mediterranean_region_trigger = yes
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						exists = primary_title
+						primary_title.tier >= tier_empire
+						has_graphical_mediterranean_region_trigger = yes
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+	# Mediterranean, regular
+	texture = {
+		reference = "character_view/mediterranean.dds"
+
+		trigger = {
+			has_graphical_mediterranean_region_trigger = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_mediterranean_main"
+
+		trigger = {
+			has_graphical_mediterranean_region_trigger = yes
+			is_character_window_main_character = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_mediterranean_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						has_graphical_mediterranean_region_trigger = yes
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						has_graphical_mediterranean_region_trigger = yes
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+
+	# Eastern, high rank
+	texture = {
+		reference = "character_view/throneroom_east.dds"
+
+		trigger = {
+			exists = primary_title
+			primary_title.tier >= tier_empire
+			has_graphical_mena_region_trigger = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_east_throneroom_main"
+
+		trigger = {
+			exists = primary_title
+			primary_title.tier >= tier_empire
+			is_character_window_main_character = yes
+			has_graphical_mena_region_trigger = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_east_throneroom_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						exists = primary_title
+						primary_title.tier >= tier_empire
+						has_graphical_mena_region_trigger = yes
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						exists = primary_title
+						primary_title.tier >= tier_empire
+						has_graphical_mena_region_trigger = yes
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+
+	# Eastern, regular
+	texture = {
+		reference = "character_view/mena.dds"
+
+		trigger = {
+			has_graphical_mena_region_trigger = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_east_main"
+
+		trigger = {
+			is_character_window_main_character = yes
+			has_graphical_mena_region_trigger = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_east_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						has_graphical_mena_region_trigger = yes
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						has_graphical_mena_region_trigger = yes
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+
+	# India, high rank
+	texture = {
+		reference = "character_view/throneroom_india.dds"
+
+		trigger = {
+			exists = primary_title
+			primary_title.tier >= tier_empire
+			OR = {
+				has_graphical_india_region_trigger = yes
+				has_graphical_burma_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
+			}
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_india_throneroom_main"
+
+		trigger = {
+			exists = primary_title
+			primary_title.tier >= tier_empire
+			OR = {
+				has_graphical_india_region_trigger = yes
+				has_graphical_burma_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
+			}
+			is_character_window_main_character = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_india_throneroom_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						exists = primary_title
+						primary_title.tier >= tier_empire
+						OR = {
+							has_graphical_india_region_trigger = yes
+							has_graphical_burma_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
+						}
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						exists = primary_title
+						primary_title.tier >= tier_empire
+						OR = {
+							has_graphical_india_region_trigger = yes
+							has_graphical_burma_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
+						}
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+
+	# India, regular
+	texture = {
+		reference = "character_view/india.dds"
+
+		trigger = {
+			OR = {
+				has_graphical_india_region_trigger = yes
+				has_graphical_burma_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
+			}
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_india_main"
+
+		trigger = {
+			is_character_window_main_character = yes
+			OR = {
+				has_graphical_india_region_trigger = yes
+				has_graphical_burma_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
+			}
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_india_spouse"
+
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						OR = {
+							has_graphical_india_region_trigger = yes
+							has_graphical_burma_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
+						}
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						OR = {
+							has_graphical_india_region_trigger = yes
+							has_graphical_burma_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
+						}
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+
+	# Western, high rank
+	texture = {
+		reference = "character_view/throneroom_west.dds"
+
+		trigger = {
+			exists = primary_title
+			primary_title.tier >= tier_empire
+			has_graphical_western_region_trigger = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_west"
+
+		trigger = {
+			exists = primary_title
+			primary_title.tier >= tier_empire
+			has_graphical_western_region_trigger = yes
+			is_character_window_main_character = yes
+
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_west_spouse"
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						exists = primary_title
+						primary_title.tier >= tier_empire
+						has_graphical_western_region_trigger = yes
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						exists = primary_title
+						primary_title.tier >= tier_empire
+						has_graphical_western_region_trigger = yes
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+
+	# Western, regular
+	texture = {
+		reference = "character_view/west.dds"
+
+		trigger = {
+			has_graphical_western_region_trigger = yes
+		}
+	}
+
+	texture = {
+		reference = "character_view/west.dds"
+	}
+
+	environment = {
+		reference = "environment_cw_west"
+
+		trigger = {
+			has_graphical_western_region_trigger = yes
+			is_character_window_main_character = yes
+		}
+	}
+
+	environment = {
+		reference = "environment_cw_west_spouse"
+		trigger = {
+			OR = {
+				AND = {
+					exists = primary_spouse
+					primary_spouse = {
+						has_graphical_western_region_trigger = yes
+					}
+				}
+				AND = {
+					exists = betrothed
+					betrothed = {
+						has_graphical_western_region_trigger = yes
+					}
+				}
+			}
+			is_character_window_main_character = no
+		}
+	}
+
+	##########################################
+
+	# Fallback Environment
+	environment = {
+		reference = "environment_event_temple"
+	}
+}
