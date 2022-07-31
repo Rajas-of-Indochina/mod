@@ -3,7 +3,10 @@
 }
 
 on_game_start_after_lobby = {
-	on_actions = { ccu_startup_debug }
+	on_actions = { 
+		delay = { days = 1 }
+		ccu_startup_debug 
+	}
 }
 
 ccu_startup = {	
@@ -16,11 +19,13 @@ on_culture_created = {
 
 ccu_culture_created = {	
 	effect = { 
+		# Primary option. Faster to get the variable from the parent culture than to run the full initialization.
 		every_parent_culture = {
 			limit = { has_same_culture_language = prev }
 			prev = { 
 				set_variable = { name = language_group value = prev.var:language_group } 
 				set_variable = { name = language_family value = prev.var:language_family }
+				set_variable = { name = language_union value = prev.var:language_union }
 			}			
 		}
 		every_parent_culture = {
@@ -42,6 +47,7 @@ ccu_culture_created = {
 			limit = { NOT = { has_variable = language_group } }
 			ccu_initialize_language_group = yes
 			ccu_initialize_language_family = yes
+			ccu_initialize_language_union = yes
 		}
 	}
 }
@@ -60,7 +66,7 @@ ccu_startup_debug = {
 					}
 				}
 			}
-			if = {
+			else_if = {
 				limit = { NOT = { has_variable = heritage_family } }
 				save_scope_as = problem_culture
 				every_player = {
@@ -82,7 +88,7 @@ ccu_startup_debug = {
 					}
 				}
 			}
-			if = {
+			else_if = {
 				limit = { NOT = { has_variable = language_family } }
 				save_scope_as = problem_culture
 				every_player = {
@@ -90,6 +96,17 @@ ccu_startup_debug = {
 						type = event_steward_task_bad
 						title = ccu_debug_culture_language_family
 						desc = ccu_debug_culture_language_family_desc
+					}
+				}
+			}
+			else_if = {
+				limit = { NOT = { has_variable = language_union } }
+				save_scope_as = problem_culture
+				every_player = {
+					send_interface_message = {
+						type = event_steward_task_bad
+						title = ccu_debug_culture_language_union
+						desc = ccu_debug_culture_language_union_desc
 					}
 				}
 			}
