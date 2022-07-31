@@ -7,22 +7,23 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 )
 
-func writeEffects(modDir string) {
+func writeCCUFiles(configInfo configData) {
 	fmt.Println("Reading heritage groups...")
-	heritageGroups := getKeys(filepath.Join(modDir, "common", "culture", "pillars"), "heritage_group")
+	heritageGroups := getCCUKeys(configInfo.pillarsFolder, "heritage_group")
 	fmt.Println("Reading heritage families...")
-	heritageFamilies := getKeys(filepath.Join(modDir, "common", "culture", "pillars"), "heritage_family")
+	heritageFamilies := getCCUKeys(configInfo.pillarsFolder, "heritage_family")
 	fmt.Println("Reading language groups...")
-	languageGroups := getKeys(filepath.Join(modDir, "common", "culture", "pillars"), "language_group")
+	languageGroups := getCCUKeys(configInfo.pillarsFolder, "language_group")
 	fmt.Println("Reading language families...")
-	languageFamilies := getKeys(filepath.Join(modDir, "common", "culture", "pillars"), "language_family")
+	languageFamilies := getCCUKeys(configInfo.pillarsFolder, "language_family")
+	fmt.Println("Reading language unions...")
+	languageUnions := getCCUKeys(configInfo.pillarsFolder, "language_union")
 
 	fmt.Println("Creating scripted effect file...")
-	outFile, err := os.Create(filepath.Join(modDir, "common", "scripted_effects", "ccu_scripted_effects.txt"))
+	outFile, err := os.Create(filepath.Join(configInfo.scriptedEffectsOutFolder, "ccu_scripted_effects.txt"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,25 +33,32 @@ func writeEffects(modDir string) {
 	_, err = outFile.WriteString("\tccu_initialize_heritage_family = yes\n")
 	_, err = outFile.WriteString("\tccu_initialize_language_group = yes\n")
 	_, err = outFile.WriteString("\tccu_initialize_language_family = yes\n")
+	_, err = outFile.WriteString("\tccu_initialize_language_union = yes\n")
 	_, err = outFile.WriteString("}\n\n")
-	writeEffect(heritageGroups, "heritage_group", outFile)
+	writeCCUEffects(heritageGroups, "heritage_group", false, outFile)
 	_, err = outFile.WriteString("\n\n")
-	writeEffect(heritageFamilies, "heritage_family", outFile)
+	writeCCUEffects(heritageFamilies, "heritage_family", false, outFile)
 	_, err = outFile.WriteString("\n\n")
-	writeEffect(languageGroups, "language_group", outFile)
+	writeCCUEffects(languageGroups, "language_group", false, outFile)
 	_, err = outFile.WriteString("\n\n")
-	writeEffect(languageFamilies, "language_family", outFile)
+	writeCCUEffects(languageFamilies, "language_family", false,outFile)
+	_, err = outFile.WriteString("\n\n")
+	writeCCUEffects(languageUnions, "language_union", true, outFile)
+
 
 	fmt.Println("Creating localization files...")
-	writeLocalization(modDir, heritageGroups, "heritage_group", "-")
-	writeLocalization(modDir, heritageFamilies, "heritage_family", " ")
-	writeLocalization(modDir, languageGroups, "language_group", "-")
-	writeLocalization(modDir, languageFamilies, "language_family", "-")
+	writeCCULocalization(configInfo.localizationOutFolder, heritageGroups, "heritage_group", "-")
+	writeCCULocalization(configInfo.localizationOutFolder, heritageFamilies, "heritage_family", " ")
+	writeCCULocalization(configInfo.localizationOutFolder, languageGroups, "language_group", "-")
+	writeCCULocalization(configInfo.localizationOutFolder, languageFamilies, "language_family", "-")
+	writeCCULocalization(configInfo.localizationOutFolder, languageUnions, "language_union", "-")
+	allKeys := [][]string{heritageFamilies, heritageGroups, languageFamilies, languageGroups, languageUnions}
+	writeCCUGUI(allKeys, configInfo.scriptedGUIOutFolder)
 
 }
 
-func writeLocalization(modDir string, keys []string, varName string, delimiter string) {
-	outFile, err := os.Create(filepath.Join(modDir, "localization", "english", "ccu_"+varName+"_l_english.yml"))
+func writeCCULocalization(locDir string, keys []string, varName string, delimiter string) {
+	outFile, err := os.Create(filepath.Join(locDir, "ccu_" +varName+ "_l_english.yml"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -62,26 +70,60 @@ func writeLocalization(modDir string, keys []string, varName string, delimiter s
 		for _, field := range fields {
 			newKey += field + delimiter
 		}
-		newKey = newKey[0 : len(newKey)-1]
+		newKey = newKey[0:len(newKey)-1]
 		newKey = strings.Title(newKey)
 		gameConcept := "[" + varName + "|E]"
 		_, err = outFile.WriteString("culture_parameter_" + key + ":0 \"#P +[EmptyScope.ScriptValue('same_" + varName + "_cultural_acceptance')|0]#! [cultural_acceptance_baseline|E] with Cultures sharing the " + newKey + " " + gameConcept + "\"\n")
 	}
 }
 
-func writeEffect(keys []string, varName string, outFile *os.File) {
-	_, _ = outFile.WriteString("ccu_initialize_" + varName + " = {\n")
-	for i, key := range keys {
-		if i == 0 {
-			_, _ = outFile.WriteString("\tif = { limit = { has_cultural_parameter = " + key + " } set_variable = { name = " + varName + " value = " + strconv.Itoa(i) + " } }\n")
-		} else {
-			_, _ = outFile.WriteString("\telse_if = { limit = { has_cultural_parameter = " + key + " } set_variable = { name = " + varName + " value = " + strconv.Itoa(i) + " } }\n")
+func writeCCUGUI(keys [][]string, guiDir string) {
+	_, err := os.Stat(guiDir)
+	if err != nil {
+		_ = os.Mkdir(guiDir, 755)
+	}
+	outFile, err := os.Create(filepath.Join(guiDir, "ccu_dummy.txt"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	writeHeader(outFile)
+	_, err = outFile.WriteString("ccu_dummy = {\n\tscope = province\n\teffect = {\n")
+	for _, keySlice := range keys {
+		for _, key := range keySlice {
+			_, err = outFile.WriteString("\t\tif = { limit = { var:temp = flag:" + key2flag(key) + " } set_variable = { name = temp value = flag:" + key2flag(key) + " } }\n")
 		}
+	}
+	_, err = outFile.WriteString("\t}\n}")
+}
+
+func writeCCUEffects(keys []string, varName string, defaultNone bool, outFile *os.File) {
+	_, _ = outFile.WriteString("ccu_initialize_" + varName + " = {\n")
+	if len(keys) > 0 {
+		for i, key := range keys {
+			flagName := key2flag(key)
+			if i == 0 {
+				_, _ = outFile.WriteString("\tif = { limit = { has_cultural_parameter = " + key + " } set_variable = { name = " + varName + " value = flag:" + flagName + " } }\n")
+			} else {
+				_, _ = outFile.WriteString("\telse_if = { limit = { has_cultural_parameter = " + key + " } set_variable = { name = " + varName + " value = flag:" + flagName + " } }\n")
+			}
+		}
+		if defaultNone { _, _ = outFile.WriteString("\telse = { set_variable = { name = " + varName + " value = flag:none } }\n") }
+	} else {
+		_, _ = outFile.WriteString("\tset_variable = { name = " + varName + " value = flag:none }\n")
 	}
 	_, _ = outFile.WriteString("}\n\n")
 }
 
-func getKeys(inDir string, searchString string) []string {
+func key2flag(key string) string {
+	keyFields := strings.Split(key, "_")[2:]
+	flagName := keyFields[0]
+	for i := 1; i < len(keyFields); i++ {
+		flagName += "_" + keyFields[i]
+	}
+	return flagName
+}
+
+func getCCUKeys(inDir string, searchString string) []string {
 
 	keys := make(map[string]int)
 
@@ -100,14 +142,15 @@ func getKeys(inDir string, searchString string) []string {
 		scanner := bufio.NewScanner(thisFile)
 		for scanner.Scan() {
 			line := cleanLine(scanner.Text())
-
-			fields := strings.Fields(line)
-			for _, field := range fields {
-				if strings.Contains(field, searchString) {
-					if _, ok := keys[field]; ok {
-						keys[field]++
-					} else {
-						keys[field] = 1
+			if strings.Contains(line, "= yes") {
+				fields := strings.Fields(line)
+				for _, field := range fields {
+					if strings.Contains(field, searchString) {
+						if _, ok := keys[field]; ok {
+							keys[field]++
+						} else {
+							keys[field] = 1
+						}
 					}
 				}
 			}
@@ -123,21 +166,30 @@ func getKeys(inDir string, searchString string) []string {
 	return keySlice
 }
 
-// removes comment blocks from a line (string)
-func cleanLine(line string) string {
-	// Look out for following byte signifying a comment
-	commentByte := []byte("#")[0]
-	// iterate through all bytes in line
-	for i := 0; i < len(line); i++ {
-		// if byte = comment byte, return line up until that byte
-		if line[i] == commentByte {
-			if i > 1 {
-				return line[0:i]
-			} else {
-				return ""
+func writeLocHeader(outFile *os.File) {
+	_, _ = outFile.WriteString("\ufeff")
+	_, _ = outFile.WriteString("l_english:\n\n")
+	_, _ = outFile.WriteString("#############################################\n")
+	_, _ = outFile.WriteString("# CCU Patcher\n")
+	_, _ = outFile.WriteString("# by Vertimnus\n")
+	_, _ = outFile.WriteString("# This file was compiled by a machine.\n")
+	_, _ = outFile.WriteString("# It should never be manually edited.\n")
+	_, _ = outFile.WriteString("#############################################\n\n")
+}
+
+func bakEliminator(path string) {
+	_ = filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			log.Fatalf(err.Error())
+		}
+		if !info.IsDir() && len(strings.Split(info.Name(), ".")) > 1 && strings.Split(info.Name(), ".")[len(strings.Split(info.Name(), "."))-1] == "bak" {
+			fmt.Printf("Deleting: %s\n", info.Name())
+			err = os.Remove(path)
+			if err != nil {
+				log.Fatal(err)
 			}
 		}
-	}
-	// if no comments found, return whole line
-	return line
+
+		return nil
+	})
 }
