@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 ##################### MY REALM #######################
 ######################################################
 
@@ -41,7 +41,7 @@ window = {
 	margin_widget = {
 		size = { 100% 100% }
 		margin = { 0 26 }
-		margin_right = 20
+		margin_right = 13
 
 		widget = {
 			size = { 100% 100% }
@@ -116,6 +116,7 @@ window = {
 								name = "crown_authority"
 								datamodel = "[MyRealmWindow.GetRealmLaws]"
 								ignoreinvisible = yes
+								margin_left = 10
 
 								item = {
 									vbox = {
@@ -123,6 +124,7 @@ window = {
 										datacontext = "[GuiLawGroup.GetLawGroup]"
 										visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'realm_law' ), GuiLawGroup.IsAvailable )]"
 										ignoreinvisible = yes
+										spacing = 3
 
 										text_label_center = {
 											visible = "[Not(GetPlayer.HasLiege)]"
@@ -137,16 +139,18 @@ window = {
 												visible = "[GetPlayer.HasLiege]"
 												layoutpolicy_horizontal = expanding
 												text = "[LawGroup.GetName]"
+												margin_left = 10
 											}
 										}
 
-										spacer = {
-											visible = "[GetPlayer.HasLiege]"
-											size = { 5 8 }
-										}
+										# spacer = {
+										# 	visible = "[GetPlayer.HasLiege]"
+										# 	size = { 5 8 }
+										# }
 
 										hbox = {
 											datamodel = "[GuiLawGroup.GetLaws]"
+											visible = "[Not(GetPlayer.HasLiege)]"
 
 											background = {
 												texture = "gfx/lines/line_lifestyles_unavailable.dds"
@@ -155,6 +159,7 @@ window = {
 											}
 
 											item = {
+
 												icon_button_decorative = {
 													datacontext = "[GuiLaw.GetLaw]"
 													size = { 60 60 }
@@ -176,6 +181,59 @@ window = {
 														texture = "[Law.GetIcon]"
 														parentanchor = center
 														size = { 42 42 }
+														alwaystransparent = yes
+													}
+
+													icon = {
+														visible = "[And( GuiLaw.IsEnacted , Not( GuiLaw.CanEnact ) )]"
+														texture = "[Law.GetIcon]"
+														parentanchor = center
+														size = { 42 42 }
+														alwaystransparent = yes
+
+														using = Master_Button_Modify_Texture
+
+														blockoverride "master_color_frame" {
+															frame = 2
+														}
+													}
+												}
+											}
+										}
+
+										hbox = {
+											datamodel = "[GuiLawGroup.GetLaws]"
+											visible = "[GetPlayer.HasLiege]"
+											margin_left = 10
+
+											background = {
+												texture = "gfx/lines/line_lifestyles_unavailable.dds"
+												margin = { -16 -12 }
+												tintcolor = { 0.7 0.5 0.25 1 }
+											}
+
+											item = {
+												icon_button_decorative = {
+													datacontext = "[GuiLaw.GetLaw]"
+													size = { 50 50 }
+													enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
+													down = "[GuiLaw.IsEnacted]"
+													alwaystransparent = "[GuiLaw.IsEnacted]"
+													onclick = "[GuiLaw.Enact]"
+													tooltipwidget = { pass_law_tooltip = {} }
+													using = tooltip_below
+
+													icon_button_decorative = {
+														size = { 44 44 }
+														parentanchor = center
+														alwaystransparent = yes
+													}
+
+													button_icon = {
+														visible = "[Not(GuiLaw.IsEnacted)]"
+														texture = "[Law.GetIcon]"
+														parentanchor = center
+														size = { 32 32 }
 														alwaystransparent = yes
 													}
 
@@ -233,6 +291,8 @@ window = {
 										layoutpolicy_horizontal = expanding
 										text = "[Character.GetUIName]"
 										autoresize = no
+										align = left
+										max_width = 330
 									}
 
 									hbox = {
@@ -256,7 +316,6 @@ window = {
 										}
 
 										expand = {}
-
 									}
 								}
 
@@ -287,6 +346,7 @@ window = {
 						}
 					}
 				}
+
 				hbox = {
 					name = "vassals_succession_tabs"
 					layoutpolicy_horizontal = expanding
@@ -353,7 +413,7 @@ window = {
 							vbox = {
 								datamodel = "[MyRealmWindow.GetDomainItems]"
 								layoutpolicy_horizontal = expanding
-								spacing = 25
+								spacing = 20
 
 								item = {
 									vbox = {
@@ -363,19 +423,15 @@ window = {
 										hbox = {
 											layoutpolicy_horizontal = expanding
 
-											background = {
-												using = Background_Area_Light
-											}
-
 											hbox = {
-												spacing = 10
+												spacing = 5
 
 												coa_title_tiny_crown = {
 													datacontext = "[DuchyGroup.GetDuchy]"
 													using = tooltip_ws
 												}
 
-												text_single = {
+												text_label_center = {
 													text = "[DuchyGroup.GetDuchy.GetNameNoTooltip]"
 													using = Font_Size_Medium
 													default_format = "#low"
@@ -383,30 +439,33 @@ window = {
 											}
 										}
 
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											margin = { 10 0 }
+
+											divider_light = {
+												layoutpolicy_horizontal = expanding
+												alpha = 0.6
+											}
+										}
+
 										vbox = {
 											name = "county_group"
 											datamodel = "[DuchyGroup.GetCounties]"
 											layoutpolicy_horizontal = expanding
-											margin = { 0 5 }
 											spacing = 20
 
 											item = {
 												vbox = {
 													layoutpolicy_horizontal = expanding
-													spacing = 5
 													datacontext = "[CountyGroup.GetCounty]"
 													datacontext = "[CountyGroup.GetCapitalProvince.GetCounty]"
 
 													hbox = {
 														layoutpolicy_horizontal = expanding
-														margin = { 5 0 }
+														margin_left = 5
+														margin_right = 10
 														spacing = 7
-
-														background = {
-															using = Background_Area
-															margin_right = 3
-															margin_left = 3
-														}
 
 														coa_title_tiny = {}
 
@@ -431,7 +490,8 @@ window = {
 													vbox = {
 														datamodel = "[CountyGroup.GetHoldings]"
 														layoutpolicy_horizontal = expanding
-														margin_left = 25
+														margin_left = 10
+														margin_right = 10
 														margin_bottom = 5
 														spacing = 3
 
@@ -446,9 +506,8 @@ window = {
 																	texture = "[HoldingItem.GetHolding.GetIllustration]"
 
 																	modify_texture = {
-																		texture = "gfx/interface/component_masks/mask_fade_horizontal_right.dds"
+																		texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
 																		blend_mode = alphamultiply
-																		rotate_uv = 180
 																	}
 
 																	modify_texture = {
@@ -497,8 +556,9 @@ window = {
 
 																					modify_texture = {
 																						name = "mask"
-																						texture = "gfx/interface/component_masks/mask_fade_horizontal_right.dds"
+																						texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
 																						blend_mode = alphamultiply
+																						mirror = horizontal
 																					}
 																				}
 
@@ -592,7 +652,8 @@ window = {
 														layoutpolicy_horizontal = expanding
 														visible = "[DataModelHasItems(CountyGroup.GetEmptyHoldings)]"
 														spacing = 5
-														margin_left = 25
+														margin_left = 10
+														margin_right = 10
 
 														button_group = {
 															onclick = "[CountyGroup.ToggleExpanded]"
@@ -643,7 +704,11 @@ window = {
 																		down = "[Holding.IsSelected]"
 
 																		using = Holding_Mouse_Entry
-																		tooltipwidget = { holding_tooltip_click = {} }
+																		using = Background_Vignette_Button
+
+																		tooltipwidget = {
+																			holding_tooltip_click = {}
+																		}
 																		using = tooltip_ne
 
 																		widget = {
@@ -668,13 +733,13 @@ window = {
 																		}
 
 																		hbox = {
-																			margin = { 10 2 }
+																			margin = { 10 0 }
 
 																			vbox = {
 																				layoutpolicy_vertical = expanding
 																				margin_top = 2
 
-																				text_label_left = {
+																				text_single = {
 																					text = "[HoldingItem.GetBarony.GetNameNoTierNoTooltip]"
 																				}
 
@@ -688,7 +753,7 @@ window = {
 																				visible = "[HoldingItem.GetHolding.IsConstructionInProgress]"
 																				margin = { 0 4 }
 
-																				text_label_right = {
+																				text_single = {
 																					layoutpolicy_horizontal = expanding
 																					text = "[HoldingItem.GetStatusText]"
 
@@ -699,14 +764,12 @@ window = {
 
 																				hbox = {
 																					layoutpolicy_horizontal = expanding
-																					margin_right = -1
-																					expand = {}
+																					margin_bottom = 3
 
 																					progressbar_standard = {
 																						name = "building_progressbar"
-
 																						alwaystransparent = yes
-																						size = { 180 15 }
+																						size = { 180 12 }
 																						value = "[HoldingItem.GetHolding.GetConstructionProgress]"
 																						direction = horizontal
 																					}
@@ -911,7 +974,9 @@ window = {
 
 					vbox = {
 						layoutpolicy_horizontal = expanding
-						margin = { 15 5 }
+						margin = { 15 0 }
+						margin_top = 15
+						margin_bottom = 15
 
 						vbox = {
 							layoutpolicy_horizontal = expanding
@@ -999,9 +1064,9 @@ window = {
 					}
 
 					vbox = {
-						margin = { 30 15 }
+						margin = { 20 15 }
 						margin_bottom = 10
-						spacing = 8
+						spacing = 4
 						layoutpolicy_horizontal = expanding
 
 						text_label_center = {
@@ -1248,7 +1313,7 @@ window = {
 
 						blockoverride "scrollbox_content"
 						{
-							margin = { 17 10 }
+							margin = { 20 10 }
 							spacing = 10
 
 							hbox = {
@@ -1256,7 +1321,14 @@ window = {
 								layoutpolicy_horizontal = expanding
 
 								background = {
-									using =  Background_Area
+									using =  Background_Area_Dark
+									alpha = 0.8
+
+									modify_texture = {
+										texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+										blend_mode = alphamultiply
+										mirror = horizontal
+									}
 								}
 
 								portrait_head = {
@@ -1270,20 +1342,11 @@ window = {
 								vbox = {
 									layoutpolicy_vertical = expanding
 									layoutpolicy_horizontal = expanding
-									margin = { 10 8 }
+									margin = { 5 0 }
+									margin_top = 5
 
 									vbox = {
 										layoutpolicy_horizontal = expanding
-
-										text_single = {
-											visible = "[MyRealmWindow.HasHeir]"
-											layoutpolicy_horizontal = expanding
-											layoutpolicy_vertical = expanding
-											autoresize = no
-
-											text = "MRW_YOUR_PLAYER_HEIR"
-											default_format = "#weak"
-										}
 
 										text_single = {
 											visible = "[MyRealmWindow.HasHeir]"
@@ -1294,6 +1357,16 @@ window = {
 
 											text = "[MyRealmWindow.GetCharacter.GetPlayerHeir.GetUINameNoTooltip]"
 											default_format = "#low"
+										}
+
+										text_single = {
+											visible = "[MyRealmWindow.HasHeir]"
+											layoutpolicy_horizontal = expanding
+											layoutpolicy_vertical = expanding
+											autoresize = no
+
+											text = "MRW_YOUR_PLAYER_HEIR"
+											default_format = "#weak"
 										}
 									}
 
@@ -1314,11 +1387,9 @@ window = {
 											text = "MY_REALM_WINDOW_NOT_PRIMARY_HEIR"
 										}
 									}
-								}
-							}
 
-							divider = {
-								layoutpolicy_horizontal = expanding
+									expand = {}
+								}
 							}
 
 							##### FROM REALM'S PARTITION #####
@@ -1329,11 +1400,13 @@ window = {
 									name = "their_partition_share"
 									visible = "[And(MyRealmWindow.HasPartition, DataModelHasItems(MyRealmWindow.GetMyPartitionShare))]"
 									layoutpolicy_horizontal = expanding
+									margin_left = 5
 
 									hbox = {
 										layoutpolicy_horizontal = expanding
 
-										text_label_center = {
+										text_label_left = {
+											layoutpolicy_horizontal = expanding
 											text = "MY_REALM_WINDOW_PARTITION_SHARE"
 										}
 
@@ -1538,13 +1611,15 @@ window = {
 								name = "exceptions"
 								layoutpolicy_horizontal = expanding
 								layoutpolicy_vertical = growing
+								margin_left = 5
 
 								visible = "[DataModelHasItems(MyRealmWindow.GetSuccessionExceptions)]"
 
 								hbox = {
 									layoutpolicy_horizontal = expanding
 
-									text_label_center = {
+									text_label_left = {
+										layoutpolicy_horizontal = expanding
 										text = "MY_REALM_WINDOW_EXCEPTIONS"
 									}
 
@@ -1582,7 +1657,7 @@ window = {
 
 									text_label_left = {
 										name = "line_of_succession_label"
-
+										layoutpolicy_horizontal = expanding
 										text = "MY_REALM_WINDOW_LINE_OF_SUCCESSION"
 									}
 
@@ -1605,19 +1680,17 @@ window = {
 								}
 							}
 
-							divider = {
-								layoutpolicy_horizontal = expanding
-							}
-
 							#### ELECTIONS ####
 							vbox = {
 								layoutpolicy_horizontal = expanding
 								visible = "[MyRealmWindow.CanVote]"
+								margin_left = 5
 
 								hbox = {
 									layoutpolicy_horizontal = expanding
 
-									text_label_center = {
+									text_label_left = {
+										layoutpolicy_horizontal = expanding
 										text = "MY_REALM_WINDOW_ELECTIONS"
 									}
 
@@ -1630,14 +1703,14 @@ window = {
 
 									fixedgridbox = {
 										name = "exceptions_box"
-										addcolumn = 480
+										addcolumn = 510
 										addrow = 90
 										datamodel = "[MyRealmWindow.GetTitlesCanVote]"
 
 										item = {
 											widget = {
 												name = "election_title"
-												size = { 480 90 }
+												size = { 510 90 }
 												datacontext = "[TitleItem.GetTitle]"
 
 												hbox = {
@@ -1722,7 +1795,7 @@ window = {
 						background = {
 							using = Background_Area
 							margin = { -65 0 }
-							margin_bottom = 10
+							margin_bottom = 8
 							margin_top = 3
 						}
 
@@ -1762,16 +1835,23 @@ window = {
 								using = Status_Highlight
 							}
 
-							warning_icon = {
-								visible = "[MyRealmWindow.IsOverDomainLimit]"
-								size = { 25 25 }
-								tooltip = "[Character.GetDomainLimitTooltip]"
+							flowcontainer = {
+								spacing = 5
+
+								text_single = {
+									layoutpolicy_horizontal = expanding
+									text = "MY_REALM_WINDOW_FROM_HOLDINGS"
+									align = bottom
+								}
+
+								warning_icon = {
+									visible = "[MyRealmWindow.IsOverDomainLimit]"
+									size = { 25 25 }
+									tooltip = "[Character.GetDomainLimitTooltip]"
+								}
 							}
 
-							text_single = {
-								layoutpolicy_horizontal = expanding
-								text = "MY_REALM_WINDOW_FROM_HOLDINGS"
-							}
+							expand = {}
 
 							text_single = {
 								datacontext = "[MyRealmWindow.GetDomainIncome]"
@@ -1815,16 +1895,23 @@ window = {
 								using = Status_Highlight
 							}
 
-							warning_icon = {
-								visible = "[GreaterThan_int32( Character.GetNumVassalsTowardsLimit, Character.GetVassalLimit )]"
-								size = { 25 25 }
-								tooltip = "[Character.GetVassalLimitTooltip]"
+							flowcontainer = {
+								spacing = 5
+
+								text_single = {
+									layoutpolicy_horizontal = expanding
+									text = "MY_REALM_WINDOW_FROM_VASSALS"
+									align = bottom
+								}
+
+								warning_icon = {
+									visible = "[GreaterThan_int32( Character.GetNumVassalsTowardsLimit, Character.GetVassalLimit )]"
+									size = { 25 25 }
+									tooltip = "[Character.GetVassalLimitTooltip]"
+								}
 							}
 
-							text_single = {
-								layoutpolicy_horizontal = expanding
-								text = "MY_REALM_WINDOW_FROM_VASSALS"
-							}
+							expand = {}
 
 							text_single = {
 								datacontext = "[MyRealmWindow.GetVassalsIncome]"
