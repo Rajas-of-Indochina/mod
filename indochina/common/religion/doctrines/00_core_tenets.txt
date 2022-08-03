@@ -1691,6 +1691,13 @@
 			has_doctrine = pagan_hostility_doctrine
 		}
 
+		can_pick = {
+			custom_description = {
+				text = incompatible_tenet_spirit_guides_trigger
+				NOT = { flag:tenet_spirit_guides = { is_in_list = selected_doctrines } }
+			}
+		}
+
 		parameters = {
 			spirit_possession_active = yes
 		}
@@ -1940,59 +1947,6 @@
 
 		traits = {
 			virtues = { pregnant }
-		}
-	}
-
-	tenet_sanctity_of_nature = {
-		icon = core_tenet_holytree
-
-		piety_cost = {
-			if = {
-				limit = {
-					OR = {
-						religion_tag = hinduism_religion
-					}
-				}
-				value = faith_tenet_cost_high
-			}
-			else_if = {
-				limit = {
-					OR = {
-						has_doctrine = pagan_hostility_doctrine
-					}
-				}
-				value = faith_tenet_cost_low
-			}
-			else_if = {
-				limit = {
-					has_doctrine = abrahamic_hostility_doctrine
-				}
-				value = faith_tenet_cost_massive
-			}
-			else = {
-				value = faith_tenet_cost_mid
-			}
-
-			# Multiplier for keeping same tenet
-			if = {
-				limit = { has_doctrine = tenet_sanctity_of_nature }
-				multiply = faith_unchanged_doctrine_cost_mult
-			}
-		}
-
-		parameters = {
-			believes_in_harmony_with_nature_invisible = yes
-		}
-
-		character_modifier = {
-			forest_advantage = 5
-			forest_attrition_mult = -0.25
-			taiga_advantage = 5
-			taiga_attrition_mult = -0.25
-			jungle_advantage = 5
-			jungle_attrition_mult = -0.25
-			build_gold_cost = 0.1
-			county_opinion_add = 5
 		}
 	}
 
@@ -3097,6 +3051,10 @@
 					trigger = { religion_tag = dayak_religion }
 					desc = tenet_headhunting_dayak_name
 				}
+				triggered_desc = {
+					trigger = { religion_tag = filipino_religion }
+					desc = tenet_headhunting_filipino_name
+				}
 				desc = tenet_headhunting_name
 			}
 		}
@@ -3207,6 +3165,110 @@
 
 		parameters = {
 			literalist_debate_enabled = yes
+		}
+	}
+
+	tenet_sanctity_of_nature = { # Renamed to "Sacred Forests"
+		icon = core_tenet_holytree
+
+		piety_cost = {
+			if = {
+				limit = {
+					OR = {
+						religion_tag = hinduism_religion
+					}
+				}
+				value = faith_tenet_cost_high
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_doctrine = pagan_hostility_doctrine
+					}
+				}
+				value = faith_tenet_cost_low
+			}
+			else_if = {
+				limit = {
+					has_doctrine = abrahamic_hostility_doctrine
+				}
+				value = faith_tenet_cost_massive
+			}
+			else = {
+				value = faith_tenet_cost_mid
+			}
+
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_sanctity_of_nature }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+
+		parameters = {
+			believes_in_harmony_with_nature_invisible = yes
+		}
+
+		character_modifier = {
+			forest_attrition_mult = -0.25
+			forest_advantage = 5
+			forest_levy_size = 0.20
+			forest_tax_mult = 0.05
+
+			jungle_attrition_mult = -0.25
+			jungle_advantage = 5
+			jungle_levy_size = 0.20
+			jungle_tax_mult = 0.05
+
+			taiga_attrition_mult = -0.25
+			taiga_advantage = 5
+			taiga_levy_size = 0.20
+			taiga_tax_mult = 0.05
+		}
+	}
+
+	tenet_spirit_guides = {
+		icon = core_tenet_adorcism
+
+		piety_cost = {
+			value = faith_tenet_cost_low
+
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_spirit_guides }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+
+		is_shown = {
+			has_doctrine = pagan_hostility_doctrine
+		}
+
+		can_pick = {
+			custom_description = {
+				text = doctrine_clerical_gender_women_can_be_priests
+				OR = {
+					flag:doctrine_clerical_gender_female_only = { is_in_list = selected_doctrines }
+					flag:doctrine_clerical_gender_either = { is_in_list = selected_doctrines }
+				}
+			}
+			custom_description = {
+				text = incompatible_tenet_adorcism_trigger
+				NOT = { flag:tenet_adorcism = { is_in_list = selected_doctrines } }
+			}
+		}
+
+		parameters = {
+			spirit_possession_active = yes
+		}
+
+		character_modifier = {
+			negate_health_penalty_add = 0.1
+		}
+
+		traits = {
+			virtues = { transgender = 4 }
+			virtues = { possessed = 2 }
 		}
 	}
 
