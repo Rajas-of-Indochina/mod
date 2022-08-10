@@ -1,0 +1,128 @@
+﻿
+# scope:county
+# $CULTURE$
+promote_culture_minority_effect = {
+	if = {
+		limit = {
+			has_variable_list = culture_minorities_small
+			is_target_in_variable_list = {
+				name = culture_minorities_small
+				target = $CULTURE$
+			}
+		}
+		add_to_variable_list = {
+			name = culture_minorities_medium
+			target = $CULTURE$
+		}
+		remove_list_variable = {
+			name = culture_minorities_small
+			target = $CULTURE$
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable_list = culture_minorities_medium
+			is_target_in_variable_list = {
+				name = culture_minorities_medium
+				target = $CULTURE$
+			}
+		}
+		add_to_variable_list = {
+			name = culture_minorities_large
+			target = $CULTURE$
+		}
+		remove_list_variable = {
+			name = culture_minorities_medium
+			target = $CULTURE$
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable_list = culture_minorities_large
+			is_target_in_variable_list = {
+				name = culture_minorities_large
+				target = $CULTURE$
+			}
+		}
+		remove_list_variable = {
+			name = culture_minorities_large
+			target = $CULTURE$
+		}
+		add_to_variable_list = {
+			name = culture_minorities_large
+			target = scope:county.culture
+		}
+
+		set_county_culture = $CULTURE$
+	}
+	else = {
+		add_to_variable_list = {
+			name = culture_minorities_small
+			target = $CULTURE$
+		}
+	}
+}
+
+# scope:county
+# $FAITH$
+promote_faith_minority_effect = {
+	if = {
+		limit = {
+			has_variable_list = faith_minorities_small
+			is_target_in_variable_list = {
+				name = faith_minorities_small
+				target = $FAITH$
+			}
+		}
+		add_to_variable_list = {
+			name = faith_minorities_medium
+			target = $FAITH$
+		}
+		remove_list_variable = {
+			name = faith_minorities_small
+			target = $FAITH$
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable_list = faith_minorities_medium
+			is_target_in_variable_list = {
+				name = faith_minorities_medium
+				target = $FAITH$
+			}
+		}
+		add_to_variable_list = {
+			name = faith_minorities_large
+			target = $FAITH$
+		}
+		remove_list_variable = {
+			name = faith_minorities_medium
+			target = $FAITH$
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable_list = faith_minorities_large
+			is_target_in_variable_list = {
+				name = faith_minorities_large
+				target = $FAITH$
+			}
+		}
+		remove_list_variable = {
+			name = faith_minorities_large
+			target = $FAITH$
+		}
+		add_to_variable_list = {
+			name = faith_minorities_large
+			target = scope:county.faith
+		}
+
+		set_county_faith = $FAITH$
+	}
+	else = {
+		add_to_variable_list = {
+			name = faith_minorities_small
+			target = $FAITH$
+		}
+	}
+}

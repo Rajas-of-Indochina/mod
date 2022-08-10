@@ -37,6 +37,87 @@ siro_trade_map = {
     }
 }
 
+minorities_map = {
+    effect = {
+        if = {
+            limit = { NOT = { global_var:custom_map_mode = flag:holding_type_map } }
+            set_global_variable = {
+                name = custom_map_mode_changing
+                value = 1
+            }
+            set_global_variable = {
+                name = custom_map_mode
+                value = flag:holding_type_map
+            }
+            every_barony = {
+                if = {
+                    limit = {
+                        county = {
+                            OR = {
+                                AND = {
+                                    has_variable_list = faith_minorities_large
+                                    variable_list_size = {
+                                        name = faith_minorities_large
+                                        value > 0
+                                    }
+                                }
+                                AND = {
+                                    has_variable_list = faith_minorities_medium
+                                    variable_list_size = {
+                                        name = faith_minorities_medium
+                                        value > 0
+                                    }
+                                }
+                                AND = {
+                                    has_variable_list = faith_minorities_small
+                                    variable_list_size = {
+                                        name = faith_minorities_small
+                                        value > 0
+                                    }
+                                }
+                                AND = {
+                                    has_variable_list = culture_minorities_large
+                                    variable_list_size = {
+                                        name = culture_minorities_large
+                                        value > 0
+                                    }
+                                }
+                                AND = {
+                                    has_variable_list = culture_minorities_medium
+                                    variable_list_size = {
+                                        name = culture_minorities_medium
+                                        value > 0
+                                    }
+                                }
+                                AND = {
+                                    has_variable_list = culture_minorities_small
+                                    variable_list_size = {
+                                        name = culture_minorities_small
+                                        value > 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    set_color_from_title = title:d_holding_map_metropolis
+                }
+                else = {
+                    set_color_from_title = title:d_siro_map_base
+                }
+            }
+            remove_global_variable = custom_map_mode_changing
+        }
+    }
+    is_shown = {
+        exists = global_var:siro_g_initialize_complete
+        global_var:custom_map_mode = flag:holding_type_map
+    }
+    is_valid = {
+        NOT = { exists = global_var:custom_map_mode_changing }
+        exists = global_var:siro_g_initialize_complete
+    }
+}
+
 siro_special_slot_map = {
     effect = {
         if = {
