@@ -1,0 +1,48 @@
+﻿on_game_start = {
+	on_actions = {
+		sea_update_syncretic_faiths_on_start
+	}
+}
+
+sea_update_syncretic_faiths_on_start = {
+	effect = {
+		every_religion_global = {
+			every_faith = {
+				if = {
+					limit = {
+						OR = {
+							has_doctrine = tenet_eastern_syncretism
+							has_doctrine = tenet_unreformed_syncretism
+							has_doctrine = tenet_christian_syncretism
+							has_doctrine = tenet_islamic_syncretism
+							has_doctrine = tenet_jewish_syncretism
+						}
+						NOT = {
+							this = faith:azhaliism
+						}
+					}
+
+					if = {
+						limit = { this = faith:yazidi }
+						add_doctrine = tenet_ritual_celebrations
+					}
+					else_if = {
+						limit = { this = faith:meshefaresism }
+						add_doctrine = tenet_literalism
+					}
+					else_if = {
+						limit = { NOT = { has_doctrine = tenet_adaptive } }
+						add_doctrine = tenet_adaptive
+					}
+					else_if = {
+						limit = { NOT = { has_doctrine = tenet_communal_identity } }
+						add_doctrine = tenet_communal_identity
+					}
+				}
+				else = {
+					add_doctrine = doctrine_no_syncretism
+				}
+			}
+		}
+	}
+}
