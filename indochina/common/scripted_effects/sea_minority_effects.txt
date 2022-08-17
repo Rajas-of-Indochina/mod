@@ -3,6 +3,10 @@
 # $CULTURE$
 promote_culture_minority_effect = {
 	if = {
+		limit = { scope:county.culture = $CULTURE$ }
+		# failsafe because this should never happen
+	}
+	else_if = {
 		limit = {
 			has_variable_list = culture_minorities_small
 			is_target_in_variable_list = {
@@ -50,6 +54,10 @@ promote_culture_minority_effect = {
 # $FAITH$
 promote_faith_minority_effect = {
 	if = {
+		limit = { scope:county.faith = $FAITH$ }
+		# failsafe because this should never happen
+	}
+	else_if = {
 		limit = {
 			has_variable_list = faith_minorities_small
 			is_target_in_variable_list = {
@@ -89,6 +97,74 @@ promote_faith_minority_effect = {
 		add_to_variable_list = {
 			name = faith_minorities_small
 			target = $FAITH$
+		}
+	}
+}
+
+spawn_minority_in_bordering_county_effect = {
+	save_scope_as = this_culture
+
+	debug_log = "spawn_minority_in_bordering_county_effect"
+
+	random_culture_county = {
+		limit = {
+			# Must border a culture which is not root culture
+			any_title_to_title_neighboring_county = { NOT = { this.culture = scope:this_culture } }
+		}
+		save_scope_as = source_county
+
+		random_neighboring_county = {
+			limit = { NOT = { this.culture = scope:this_culture } }
+			save_scope_as = county
+
+
+			# promote faith and culture minority
+			promote_culture_minority_effect = { CULTURE = scope:source_county.culture }
+			if = {
+				limit = { NOT = { this.faith = scope:source_county.faith } }
+				promote_faith_minority_effect = { FAITH = scope:source_county.faith }
+			}
+
+			scope:source_county.holder = {
+				add_to_temporary_list = characters_to_notify
+				top_liege = {
+					add_to_temporary_list = characters_to_notify
+					every_vassal_or_below = {
+						limit = {
+							any_sub_realm_county = {
+								this = scope:source_county
+							}
+						}
+						add_to_temporary_list = characters_to_notify
+					}
+				}
+			}
+
+			scope:county.holder = {
+				add_to_temporary_list = characters_to_notify
+				top_liege = {
+					add_to_temporary_list = characters_to_notify
+					every_vassal_or_below = {
+						limit = {
+							any_sub_realm_county = {
+								this = scope:county
+							}
+						}
+						add_to_temporary_list = characters_to_notify
+					}
+				}
+			}
+
+			every_in_local_list = {
+				list = characters_to_notify
+
+				send_interface_toast = {
+					type = event_generic_neutral
+					title = minority_spread_title
+					custom_tooltip = minority_spread_tt
+					right_icon = scope:county
+				}
+			}
 		}
 	}
 }
