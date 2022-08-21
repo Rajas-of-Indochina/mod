@@ -5,8 +5,14 @@ embrace_anarchy_decision = {
 	desc = embrace_anarchy_decision_desc
 
 	is_shown = {
-		always = no
+		culture = { has_cultural_parameter = allow_adopting_anarchism }
+		highest_held_title_tier <= tier_duchy
 		has_government = tribal_government
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		is_at_war = no
 	}
 
 	effect = {
@@ -49,10 +55,16 @@ embrace_anarchy_decision = {
 				set_color_from_title = root.capital_county
 			}
 		}
+
 		# Add elective succession title law
 		add_realm_law_skip_effects = single_heir_dynasty_house
 		primary_title = {
 			add_title_law = anarchist_elective_succession_law
+		}
+		every_held_title = {
+			limit = { tier = tier_county }
+			save_scope_as = title
+			root = { trigger_event = sea_title_event.2001 }
 		}
 	}
 
