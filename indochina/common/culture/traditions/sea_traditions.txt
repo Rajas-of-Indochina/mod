@@ -742,3 +742,64 @@ tradition_thalassocratic = {
 		}
 	}
 }
+
+tradition_disloyal_subjects = {
+	category = societal
+
+	layers = {
+		0 = diplo
+		1 = mena
+		4 = speech.dds
+	}
+
+	can_pick = {
+		NOT = { has_cultural_tradition = tradition_loyal_soldiers }
+	}
+
+	parameters = {
+		harder_to_convert_county_culture_without_heritage = yes
+		can_end_defensive_wars_earlier = yes
+		more_fame_for_successful_defensive_wars = yes
+		allow_adopting_anarchism = yes
+	}
+	character_modifier = {
+		anarchist_government_opinion = 30
+		opinion_of_liege = -20
+
+		county_opinion_add = -10
+		defender_advantage = 5
+	}
+	province_modifier = {
+		garrison_size = 0.25
+	}
+	county_modifier = {
+		monthly_county_control_change_factor = -0.15
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_bellicose }
+						any_in_list = { list = traits this = flag:ethos_stoic }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_or_stoic_desc
+				}
+			}
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+	}
+}
