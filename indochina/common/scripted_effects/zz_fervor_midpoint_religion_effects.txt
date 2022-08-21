@@ -1,0 +1,114 @@
+﻿#From 00_religion_effects.txt
+create_head_of_faith_title_effect = {
+	# Pay costs
+	if = {
+		limit = {
+			faith = {
+				has_doctrine_parameter = temporal_head_of_faith
+				OR = {
+					has_doctrine = muhammad_succession_sunni_doctrine
+					has_doctrine = muhammad_succession_shia_doctrine
+				}
+			}	
+		}
+		if = {
+			limit = {
+				NOT = { has_trait = sayyid }
+			}
+			# Very expensive for non-sayyid to become a Caliph.
+			add_piety = massive_piety_loss
+		}
+		# Free otherwise
+	}
+	else_if = {
+		limit = {
+			faith = {
+				has_doctrine_parameter = temporal_head_of_faith
+			}
+		}
+		add_piety = major_piety_loss
+	}
+	else_if = {
+		remove_short_term_gold = medium_gold_max_value
+	}
+
+	# (Re)create the HoF title
+	custom_description_no_bullet = {
+		text = create_temporal_head_of_faith
+		subject = root
+		object = scope:faith
+		# Temporal HoF
+		if = {
+			limit = {
+				faith = {
+					has_doctrine_parameter = temporal_head_of_faith
+				}
+			}
+			if = {
+				limit = {
+					faith = {
+						NOT = { exists = religious_head_title }
+					}
+				}
+				trigger_event = faith_creation.0001 # Creates new dynamic title
+			}
+			else = {
+				trigger_event = faith_creation.0011	# Re-uses existing title.
+			}
+		}
+		# Spiritual HoF
+		else_if = {
+			limit = {
+				faith = {
+					has_doctrine_parameter = spiritual_head_of_faith
+				}
+			}
+			if = {
+				limit = {
+					faith = {
+						NOT = { exists = religious_head_title }
+					}
+				}
+				trigger_event = faith_creation.0002 # Creates new dynamic title
+			}
+			else = {
+				trigger_event = faith_creation.0012 # Re-uses existing title.
+			}
+		}
+	}
+
+	# Send an informative message to all players about the new HoF
+	hidden_effect = {
+		save_scope_as = reformer
+		faith = {
+			save_scope_as = faith
+			change_fervor = {
+				value = major_fervor_gain
+				desc = fervor_gain_recreated_hof			  
+			}
+			#Modded to prevent instant heresy overflow
+			set_variable = {
+			name = major_fervor_gain_flag
+				value = yes
+				years = 10
+			}			
+		}
+		every_ruler = {
+			if = {
+				limit = {
+					faith = scope:faith
+				}
+				trigger_event = {
+					id = faith_creation.1010
+					days = 1
+				}
+			}
+			else = {
+				trigger_event = {
+					id = faith_creation.1011
+					days = 1
+				}
+			}
+		}
+	}
+}

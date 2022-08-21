@@ -1,0 +1,637 @@
+﻿#On actions related to religion
+
+# Code on-action: character creates a faith
+# Root is the creator
+# scope:old_faith is the faith they used to have
+on_faith_created = {
+	effect = {
+		scope:old_faith = {
+			if = {
+				limit = { has_doctrine_parameter = unreformed }
+				set_variable = { name = has_been_reformed }
+			}
+		
+			root = { play_music_cue = "mx_cue_faith_conversion" }
+		}
+		set_variable = {
+			name = has_created_a_faith
+		}
+		# Set original faith this one was based on
+		if = {
+			limit = {
+				exists = scope:old_faith.founder
+				scope:old_faith.founder = { has_variable = foundational_faith }
+			}
+			set_variable = {
+				name = foundational_faith
+				value = scope:old_faith.founder.var:foundational_faith
+			}
+		}
+		else = {
+			set_variable = {
+				name = foundational_faith
+				value = scope:old_faith
+			}
+		}
+		check_for_equal_doctrine_effect = yes
+		# Set up diff-faith HoFs.
+		faith = {
+			# If we have a diff-faith HoF, we want to account for that.
+			## Islamic use-case: we want same-Mohammad's Succession faiths to keep following their appropriate caliphs.
+			if = {
+				limit = {
+					# Are we in the correct religion?
+					religion = religion:islam_religion
+					# Faiths with no HoF or a spiritual head aren't relevant for these calculations.
+					has_doctrine = doctrine_temporal_head
+				}
+				# Grab a scope for tooltip loc, since they complain about root.
+				root = { save_scope_as = reformer }
+				# Sunni path.
+				if = {
+					limit = { has_doctrine = muhammad_succession_sunni_doctrine }
+					root = { trigger_event = head_of_faith.0001 }
+				}
+				# Shia path.
+				else_if = {
+					limit = { has_doctrine = muhammad_succession_shia_doctrine }
+					root = { trigger_event = head_of_faith.0011 }
+				}
+				# Muhakkima path.
+				else_if = {
+					limit = { has_doctrine = muhammad_succession_muhakkima_doctrine }
+					root = { trigger_event = head_of_faith.0021 }
+				}
+				# Zandaqa path.
+				else_if = {
+					limit = { has_doctrine = muhammad_succession_zandaqa_doctrine }
+					root = { trigger_event = head_of_faith.0031 }
+				}
+			}
+			## Faiths with the Rite tenet get to keep their old HoF.
+			else_if = {
+				limit = {
+					# Assuming they exist.
+					NOT = { faith = scope:old_faith.religious_head.faith }
+					# & have the appropriate doctrine parameter.
+					has_doctrine_parameter = maintains_head_of_faith_on_creation
+				}
+				set_religious_head_title = scope:old_faith.religious_head_title
+				# Christian faiths also get to keep ecumenism.
+				if = {
+					limit = {
+						scope:old_faith = { has_doctrine = special_doctrine_ecumenical_christian }
+					}
+					add_doctrine = special_doctrine_ecumenical_christian
+				}
+			}
+			## Otherwise, everyone else should lose their HoF, so we don't need to do anything.
+		}
+		# Achievements.
+		root = {
+			add_achievement_flag_effect = { FLAG = achievement_its_not_a_cult_flag }
+		}
+		if = {
+			limit = {
+				scope:old_faith = {
+					religion_tag = west_african_religion
+					has_doctrine_parameter = unreformed
+				}
+			}
+			add_achievement_global_variable_effect = {
+				VARIABLE = achievement_mother_of_us_all_siguic
+				VALUE = yes
+			}
+		}
+		if = {
+			limit = {
+				scope:old_faith = {
+					religion_tag = west_african_orisha_religion
+					has_doctrine_parameter = unreformed
+				}
+			}
+			add_achievement_global_variable_effect = {
+				VARIABLE = achievement_mother_of_us_all_orisha
+				VALUE = yes
+			}
+		}
+		if = {
+			limit = {
+				scope:old_faith = {
+					religion_tag = west_african_bori_religion
+					has_doctrine_parameter = unreformed
+				}
+			}
+			add_achievement_global_variable_effect = {
+				VARIABLE = achievement_mother_of_us_all_bori
+				VALUE = yes
+			}
+		}
+		if = {
+			limit = {
+				scope:old_faith = {
+					religion_tag = west_african_roog_religion
+					has_doctrine_parameter = unreformed
+				}
+			}
+			add_achievement_global_variable_effect = {
+				VARIABLE = achievement_mother_of_us_all_roog_sene
+				VALUE = yes
+			}
+		}
+		if = {
+			limit = {
+				scope:old_faith = {
+					religion_tag = akom_religion
+					has_doctrine_parameter = unreformed
+				}
+			}
+			add_achievement_global_variable_effect = {
+				VARIABLE = achievement_mother_of_us_all_akom
+				VALUE = yes
+			}
+		}
+		if = {
+			limit = {
+				scope:old_faith = {
+					religion_tag = kushitism_religion
+					has_doctrine_parameter = unreformed
+				}
+			}
+			add_achievement_global_variable_effect = {
+				VARIABLE = achievement_mother_of_us_all_kushitism
+				VALUE = yes
+			}
+		}
+		if = {
+			limit = {
+				scope:old_faith = {
+					religion_tag = waaqism_religion
+					has_doctrine_parameter = unreformed
+				}
+			}
+			add_achievement_global_variable_effect = {
+				VARIABLE = achievement_mother_of_us_all_waaqism
+				VALUE = yes
+			}
+		}
+	}
+
+	events = {
+		faith_conversion.0001 # Convert capital county
+		faith_conversion.0003 # Convert close family
+		faith_creation.0001 # Temporal rel head setup
+		faith_creation.0002 # Spiritual rel head setup
+		faith_creation.0003 # Faith flags
+		faith_creation.1000 # Notification event
+	}
+}
+
+# Code on-action: character converts faith. Only fired when using the convert window, or the script effect that uses the same logic
+# Root is the converter
+# scope:old_faith is the faith they used to have
+on_faith_conversion = {
+	events = {
+		faith_conversion.0001	# Convert capital county
+		faith_conversion.0003	# Convert close family
+		faith_conversion.1002	# Player-only narrative-notification event
+		faith_conversion.1101   # Notify vassals of conversion
+	}
+}
+
+# Code on-action: character changes faith. Not called when a character gets a faith on birth, creation, and similar
+# Root is the character
+# scope:old_faith is the faith they used to have
+on_character_faith_change = {
+	effect = {
+		check_for_equal_doctrine_effect = yes
+		every_held_title = {
+			update_dynamic_coa = yes
+		}
+
+		# Struggle Catalyst: heir changes culture while under age
+		if = {
+			limit = {
+				catalyst_very_important_child_change_culture_or_faith_preliminary_trigger = yes
+			}
+			random_parent = {
+				limit = {
+					any_character_struggle = {
+						involvement = involved
+					}
+				}
+				every_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst = {
+						catalyst = catalyst_very_important_child_change_culture_or_faith
+						character = root
+					}
+				}
+			}
+		}
+
+		# Local conversion
+		if = {
+			limit = {
+				exists = root.capital_province
+				root.capital_province.faith = root.faith
+				any_character_struggle = {
+					involvement = involved
+					phase_has_catalyst = catalyst_convert_local_culture_faith
+					is_faith_involved_in_struggle = root.faith
+				}
+			}
+			every_character_struggle = {
+				involvement = involved
+				activate_struggle_catalyst = {
+					catalyst = catalyst_convert_local_culture_faith
+					character = root
+				}
+			}
+		}
+		else_if = { # Forced conversion
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_faith_involved_in_struggle = root.faith
+					phase_has_catalyst = catalyst_forced_conversion
+				}
+			}
+			every_character_struggle = {
+				involvement = involved
+				activate_struggle_catalyst = {
+					catalyst = catalyst_forced_conversion
+					character = root
+				}
+			}
+		}
+
+
+		# Achievements
+		if = {
+			limit = { is_ai = no }
+
+			if = { # FP2 - Basque In My Glory
+				limit = { faith = faith:basque_pagan }
+				add_achievement_global_variable_effect = {
+					VARIABLE = fp2_basque_in_my_glory_achievement_unlocked
+					VALUE = yes
+				}
+			}
+		}
+	}
+	events = {
+		faith_conversion.0002 # Remove obsolete modifiers
+		faith_conversion.0004 # Convert Theocracies
+		faith_conversion.0005 # Update marriage opinions
+		great_holy_war.0025 # Replace Recipient for ongoing GHW
+		great_holy_war.0029 # Beneficiary converted, remove and replace.
+		great_holy_war.0059 # Clear Crusader traits on conversion.
+		great_holy_war.0084 # Replace fallback ghw recipient
+		great_holy_war.0085 # Remove pledged vassals upon conversion of their liege.
+		false_conversion.0001	# Flag possible false conversions.
+		war_event.3100		# Handles invalidation of religious wars
+	}
+}
+
+# Code on-action: once a month for each faith
+# Root is the faith
+on_faith_monthly = {
+	on_actions = {
+		faith_holy_order_land_acquisition_pulse
+		delay = { days = { 5 10 }}
+		faith_heresy_events_pulse
+		delay = { days = { 15 20 }}
+		faith_fervor_events_pulse
+	}
+	events = {
+		great_holy_war.0010 #Great Holy Wars are unlocked for a Faith.
+		great_holy_war.0001
+		great_holy_war.0022 #Pope harasses players for not pledging support to Crusade yet.
+		great_holy_war.0030 #Monthly cleanup for Beneficiaries becoming unfit for various reasons.
+	}
+}
+
+faith_holy_order_land_acquisition_pulse = {
+	trigger = {
+		any_faith_holy_order = {
+			always = yes
+		}
+	}
+
+	random_events = {
+		chance_to_happen = 17 # ~1 every six months
+		chance_of_no_event = {
+			value = 100
+			every_faith_holy_order = {
+				subtract = 5
+			}
+			every_ruler = {
+				limit = {
+					holy_order_1000_request_target_trigger = yes
+				}
+				subtract = 5
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_faith_holy_order = {
+							num_leased_titles < holy_order_barony_number_soft_threshold
+						}
+					}
+				}
+				add = 80
+			}
+			min = 30
+		}
+		100 = 0
+		500 = holy_order.1000
+	}
+}
+
+#Modded
+faith_heresy_events_pulse = {
+	trigger = {
+		OR = {
+			fervor <= 40
+			#Heresey overflow mechanic
+			AND = {
+				num_county_followers > 150
+				OR = {
+					AND = {
+						fervor >= 85
+						NOT = { has_variable = variable_ghw_victor }
+						NOT = { has_variable = major_fervor_gain_flag }
+					}
+					fervor < 50
+				}
+				#current_date >= 10_year_grace_from_game_start_date
+				OR = {
+					#Give a 10 years grace period to the overflow mechanic after game start
+					#Could be done with an on_game_start on_action 10 year flag?
+					AND = {
+						game_start_date = 867.1.1
+						current_date >= 877.1.1
+					}
+					AND = {
+						game_start_date = 1066.9.15
+						current_date >= 1076.9.15
+					}
+					#More Bookmarks+ by Leviathonlx dates
+					AND = {
+						game_start_date = 1066.12.26
+						current_date >= 1076.12.26
+					}
+					AND = {
+						game_start_date = 936.8.7
+						current_date >= 946.8.7
+					}
+					AND = {
+						game_start_date = 1081.4.1
+						current_date >= 1091.4.1
+					}
+					AND = {
+						game_start_date = 1124.7.7
+						current_date >= 1134.7.7
+					}
+					AND = {
+						game_start_date = 1166.4.1
+						current_date >= 1176.4.1
+					}
+					AND = {
+						game_start_date = 1187.1.1
+						current_date >= 1197.1.1
+					}
+					AND = {
+						game_start_date = 1204.5.16
+						current_date >= 1214.5.16
+					}
+					AND = {
+						game_start_date = 1220.5.16
+						current_date >= 1230.5.16
+					}
+					AND = {
+						game_start_date = 1246.6.13
+						current_date >= 1256.6.13
+					}
+					AND = {
+						game_start_date = 1267.6.1
+						current_date >= 1277.6.1
+					}
+					AND = {
+						game_start_date = 1018.8.1
+						current_date >= 1028.8.1
+					}
+					AND = {
+						game_start_date = 1285.11.15
+						current_date >= 1295.11.15
+					}
+					AND = {
+						game_start_date = 1310.6.1
+						current_date >= 1320.6.1
+					}
+					AND = {
+						game_start_date = 1337.5.24
+						current_date >= 1347.5.24
+					}
+					AND = {
+						game_start_date = 1099.7.15
+						current_date >= 1109.7.15
+					}
+					AND = {
+						game_start_date = 993.1.1
+						current_date >= 1003.1.1
+					}
+					AND = {
+						game_start_date = 1258.2.15
+						current_date >= 1268.2.15
+					}						
+					AND = {
+						game_start_date = 1194.10.1
+						current_date >= 1204.10.1
+					}
+					AND = {
+						game_start_date = 1144.10.1
+						current_date >= 1154.10.1
+					}
+					AND = {
+						game_start_date = 1234.4.6
+						current_date >= 1244.4.6
+					}
+					AND = {
+						game_start_date = 1230.1.1 
+						current_date >= 1240.1.1 
+					}
+					AND = {
+						game_start_date = 1297.9.10
+						current_date >= 1307.9.10
+					}
+					AND = {
+						game_start_date = 769.1.1
+						current_date >= 779.1.1
+					}
+					AND = {
+						game_start_date = 867.1.2
+						current_date >= 877.1.2
+					}
+					#Oriental Empires by Chillshadow et al dates
+					AND = {
+						game_start_date = 882.4.4
+						current_date >= 892.4.4
+					}
+					AND = {
+						game_start_date = 907.6.2
+						current_date >= 917.6.2
+					}
+					AND = {
+						game_start_date = 936.9.15
+						current_date >= 946.9.15
+					}
+					AND = {
+						game_start_date = 956.11.30
+						current_date >= 966.11.30
+					}
+					AND = {
+						game_start_date = 979.1.1
+						current_date >= 989.1.1
+					}
+					AND = {
+						game_start_date = 626.1.1
+						current_date >= 636.1.1
+					}
+					AND = {
+						game_start_date = 751.1.1
+						current_date >= 761.1.1
+					}
+					AND = {
+						game_start_date = 1121.1.1
+						current_date >= 1131.1.1
+					}
+					AND = {
+						game_start_date = 1032.10.26
+						current_date >= 1042.10.26
+					}					
+				}
+			}
+		}
+		NOR = {
+			has_doctrine_parameter = unreformed
+			has_variable = current_heresy
+			#No heresy during a crusade/GWH
+			exists = great_holy_war
+			any_defensive_great_holy_wars = {
+				count >= 1
+			}
+		}
+	}
+
+	random_events = {
+		chance_to_happen = 25
+		chance_of_no_event = {
+			if = {
+				limit = { fervor > 30 }
+				value = 90
+			}
+			else_if = {
+				limit = { fervor > 20 }
+				value = 70
+			}
+			else_if = {
+				limit = { fervor > 10 }
+				value = 40
+			}
+		}
+		100 = heresy.0001
+		100 = heresy.0005
+	}
+}
+
+faith_fervor_events_pulse = {
+	trigger = {
+		NOR = {
+			has_doctrine_parameter = unreformed
+			has_variable = recent_fervor_event
+		}
+	}
+
+	random_events = {
+		chance_to_happen = 6 # ~53% chance of occuring within a given year. 90% chance within 3 years, 99.8% chance within 5.
+		100 = fervor.1001
+		100 = fervor.2001
+	}
+}
+
+pagan_conversion_pulse = {
+	trigger = { #Is the character ready to convert?
+		is_ai = yes
+		is_independent_ruler = yes
+		has_government = tribal_government
+		has_realm_law = tribal_authority_3
+		faith = { has_doctrine_parameter = unreformed }
+		prestige_level >= 2 #lower than the regular requirement to make sure some rulers can convert
+		capital_province.county = {
+			development_level >= 8 #lower than the regular requirement to make sure some rulers can convert
+		}
+
+		custom_description = { #You need to have ALL (non-regional/unique) tribal innovations!
+			text = has_all_tribal_innovations
+			subject = root.culture
+			culture = {
+				has_innovation = innovation_motte
+				has_innovation = innovation_catapult
+				has_innovation = innovation_barracks
+				has_innovation = innovation_mustering_grounds
+				has_innovation = innovation_bannus
+				has_innovation = innovation_quilted_armor
+				has_innovation = innovation_gavelkind
+				has_innovation = innovation_crop_rotation
+				has_innovation = innovation_city_planning
+				has_innovation = innovation_casus_belli
+				has_innovation = innovation_plenary_assemblies
+				has_innovation = innovation_ledger
+			}
+		}
+	}
+
+	events = {
+		global_religion.0001 #Pagan reformed by neighbor, spouse, soulmate, friend, or geographic location
+	}
+}
+
+# Code on-action: when a great holy war no longer has a valid target, and there was no one left in the target kingdom to replace them. The target scopes will still point to the last target at this point
+# If a new target is not picked in script, the GHW will be invalidated
+# Root is the great holy war
+on_potential_great_holy_war_invalidation = {
+	events = {
+		great_holy_war.0004
+	}
+}
+
+# Code on-action: when on_potential_great_holy_war_invalidation did not find a new target, and the GHW is about to be destroyed. no way out at this point
+# Root is the great holy war
+on_great_holy_war_invalidation = {
+	events = {
+		great_holy_war.0055 #Send notifications to players.
+	}
+}
+
+# Code on-action: when the GHW's war launch countdown hits zero. If a war is not started at this point, the GHW will invalidate, bypassing on_potential_great_holy_war_invalidation but not on_great_holy_war_invalidation
+# Root is the great holy war
+on_great_holy_war_countdown_end = {
+	trigger = { #Only launch the holy war if attacker strength is above one third of defender. 
+		ghw_attackers_strength >= third_of_defenders_strength
+	}
+	events = {
+		great_holy_war.0005
+	}
+}
+
+# Code on-action: when a character in a GHW is replaced. This can only happen when the war has begun, and a participant dies; if they get replaced in the war by someone of the right faith, then this will get called. Can be used to validate their benficiary, for instance
+# Root is character being replaced
+# scope:great_holy_war is the GHW
+# scope:replacement is the replacement character
+on_great_holy_war_participant_replaced = {
+	events = {
+		great_holy_war.0027 #Refresh Beneficiary for AI.
+	}
+}
