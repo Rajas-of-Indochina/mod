@@ -968,7 +968,19 @@ widget = {
 			hbox = {
 				allow_outside = yes
 
-				hbox = {
+				
+				scrollarea = {
+					# layoutpolicy_horizontal = expanding
+					# layoutpolicy_vertical = expanding
+					maximumsize = { 1437 75 }
+					autoresizescrollarea = yes
+					position = { 0 -50 }
+					scrollbarpolicy_vertical = always_off
+
+					scrollbar_horizontal = {
+						using = Scrollbar_Horizontal
+					}
+					scrollbarpolicy_vertical = always_off
 					widget = {
 						layoutpolicy_vertical = expanding
 
@@ -980,16 +992,18 @@ widget = {
 						}
 					}
 
-					hbox = {
-						name = "bookmark_grid"
-						datamodel = "[GameSetup.GetBookmarks]"
-						layoutpolicy_vertical = expanding
-						allow_outside = yes
+					scrollwidget = {
+							hbox = {
+							name = "bookmark_grid"
+							datamodel = "[GameSetup.GetBookmarks]"
+							layoutpolicy_vertical = expanding
+							allow_outside = no
 
-						item = {
-							widget_bookmark_button_recommended = {
-								name = "bookmark_tab"
-								visible = "[BookmarkItem.GetBookmark.IsRecommended]"
+							item = {
+								widget_bookmark_button_recommended = {
+									name = "bookmark_tab"
+									visible = "[BookmarkItem.GetBookmark.IsRecommended]"
+								}
 							}
 						}
 					}
