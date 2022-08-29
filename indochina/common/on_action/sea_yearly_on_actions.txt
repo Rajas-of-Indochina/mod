@@ -7,6 +7,9 @@
 		on_yearly_sea_minority_maintainance
 		###
 		on_yearly_assign_culture_faith
+		###
+		delay = { days = { 30 330 } }
+		start_nanzhao_collapse
 	}
 }
 
@@ -132,6 +135,32 @@ on_yearly_assign_culture_faith = {
 					}
 				}
 			}
+		}
+	}
+}
+
+#####
+
+start_nanzhao_collapse = {
+	trigger = {
+		current_date > 895.1.1
+	}
+	effect = {
+		if = {
+			limit = { title:k_nanzhao = { has_variable = nanzhao } }
+			trigger_event = nanzhao_collapse.0001
+		}
+		else_if = {
+			limit = { title:k_nanzhao = { has_variable = dachanghe } }
+			trigger_event = nanzhao_collapse.1001
+		}
+		else_if = {
+			limit = { title:k_nanzhao = { has_variable = datianxing } }
+			trigger_event = nanzhao_collapse.2001
+		}
+		else_if = {
+			limit = { title:k_nanzhao = { has_variable = dayining } }
+			trigger_event = nanzhao_collapse.3001
 		}
 	}
 }
