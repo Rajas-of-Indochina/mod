@@ -5,6 +5,11 @@
 		on_yearly_sea_culture_bisaya
 		###
 		on_yearly_sea_minority_maintainance
+		###
+		on_yearly_assign_culture_faith
+		###
+		delay = { days = { 30 330 } }
+		start_nanzhao_collapse
 	}
 }
 
@@ -94,6 +99,68 @@ on_yearly_sea_culture_bisaya = {
 				name = bisaya_culture_split
 				value = yes
 			}
+		}
+	}
+}
+
+#####
+
+on_yearly_assign_culture_faith = {
+	effect = {
+		every_culture_global = {
+			if = {
+				limit = { has_variable = majority_faith }
+				remove_variable = majority_faith
+			}
+
+			save_scope_as = current_culture
+
+			every_culture_county = {
+				faith = { save_scope_as = county_faith }
+
+				if = {
+					limit = {
+						scope:current_culture = {
+							any_culture_county = {
+								percent >= 0.5
+								faith = scope:county_faith
+							}
+						}
+					}
+					scope:current_culture = {
+						set_variable = {
+							name = majority_faith
+							value = scope:county_faith
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+#####
+
+start_nanzhao_collapse = {
+	trigger = {
+		current_date > 895.1.1
+	}
+	effect = {
+		if = {
+			limit = { title:k_nanzhao = { has_variable = nanzhao } }
+			trigger_event = nanzhao_collapse.0001
+		}
+		else_if = {
+			limit = { title:k_nanzhao = { has_variable = dachanghe } }
+			trigger_event = nanzhao_collapse.1001
+		}
+		else_if = {
+			limit = { title:k_nanzhao = { has_variable = datianxing } }
+			trigger_event = nanzhao_collapse.2001
+		}
+		else_if = {
+			limit = { title:k_nanzhao = { has_variable = dayining } }
+			trigger_event = nanzhao_collapse.3001
 		}
 	}
 }

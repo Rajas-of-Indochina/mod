@@ -1,4 +1,4 @@
-### Character interior background
+﻿### Character interior background
 character_view_bg = {
 
 	######################################
@@ -389,7 +389,11 @@ character_view_bg = {
 		reference = "character_view/throneroom_tribal.dds"
 
 		trigger = {
-			has_government = tribal_government
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
 		}
 	}
 
@@ -397,7 +401,11 @@ character_view_bg = {
 		reference = "environment_cw_tribal_main"
 
 		trigger = {
-			has_government = tribal_government
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
 			is_character_window_main_character = yes
 		}
 	}
@@ -410,13 +418,21 @@ character_view_bg = {
 				AND = {
 					exists = primary_spouse
 					primary_spouse = {
-						has_government = tribal_government
+						OR = {
+							has_government = tribal_government
+							has_government = nomadic_government
+							has_government = anarchist_government
+						}
 					}
 				}
 				AND = {
 					exists = betrothed
 					betrothed = {
-						has_government = tribal_government
+						OR = {
+							has_government = tribal_government
+							has_government = nomadic_government
+							has_government = anarchist_government
+						}
 					}
 				}
 			}
@@ -920,5 +936,311 @@ character_view_bg = {
 	# Fallback Environment
 	environment = {
 		reference = "environment_event_temple"
+	}
+}
+
+
+character_location_exterior = {
+	texture = {
+		reference = "terrain_types/plains.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = plains
+			}
+		}
+	}
+
+	texture = {
+		reference = "terrain_types/hills.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = hills
+			}
+		}
+	}
+
+	texture = {
+		reference = "terrain_types/desert_mountains.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = desert_mountains
+			}
+		}
+	}
+
+	texture = {
+		reference = "terrain_types/oasis.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = oasis
+			}
+		}
+	}
+
+	texture = {
+		reference = "terrain_types/jungle.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = jungle
+			}
+		}
+	}
+
+	texture = {
+		reference = "terrain_types/floodplains.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = floodplains
+			}
+		}
+	}
+
+	texture = {
+		reference = "terrain_types/drylands.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = drylands
+			}
+		}
+	}
+
+	texture = {
+		reference = "terrain_types/wetlands.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = wetlands
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/farms.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = farmlands
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/desert.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = desert
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/steppe.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = steppe
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/forest.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = forest
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/forest_pine.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = taiga
+			}
+		}
+	}
+
+	texture = {
+		reference = "terrain_types/mountains.dds"
+
+		trigger = {
+			NOT = {
+				exists = liege
+			}
+			exists = location
+			location = {
+				terrain = mountains
+			}
+		}
+	}
+
+	texture = {
+		reference = "holding_types/tribe_arid.dds"
+
+		trigger = {
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
+			exists = capital_province
+			capital_province = {
+				geographical_region = world_africa
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/steppe.dds"
+
+		trigger = {
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
+			exists = capital_province
+			capital_province = {
+				geographical_region = world_steppe
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/desert.dds"
+
+		trigger = {
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
+			exists = capital_province
+			capital_province = {
+				geographical_region = world_middle_east_arabia
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/market_east.dds"
+
+		trigger = {
+			exists = capital_province
+			capital_province = {
+				OR = {
+					geographical_region = world_tibet
+					geographical_region = world_china
+				}
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/market_east.dds"
+
+		trigger = {
+			exists = capital_province
+			capital_province = {
+				geographical_region = world_steppe
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/market_tribal.dds"
+
+		trigger = {
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/market_west.dds"
+
+		trigger = {
+			has_graphical_western_region_trigger = yes
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/market_east.dds"
+
+		trigger = {
+			OR = {
+				has_graphical_india_region_trigger = yes
+				has_graphical_mena_region_trigger = yes
+				has_graphical_mediterranean_region_trigger = yes
+				has_graphical_burma_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
+			}
+		}
 	}
 }
