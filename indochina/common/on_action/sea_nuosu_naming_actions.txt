@@ -1,0 +1,35 @@
+﻿
+# called for the mother
+# scope:child is the new born character
+# scope:mother is the pregnant mother
+# scope:real_father is the biological father
+# scope:father is the family father (not the biological)
+on_birth_mother = {
+	trigger = {
+		scope:child = {
+			culture = { has_name_list = name_list_yi }
+		}
+		scope:father = {
+			culture = { has_name_list = name_list_yi }
+		}
+	}
+	effect = {
+		scope:child = {
+			assign_random_yi_name_effect = yes
+			name_yi_character_with_fathers_name_effect = yes
+		}
+	}
+}
+
+on_game_start = {
+	effect = {
+		every_living_character = {
+			limit = {
+				exists = father
+				is_male = yes
+				culture = { has_name_list = name_list_yi }
+			}
+			name_yi_character_with_fathers_name_effect = yes
+		}
+	}
+}
