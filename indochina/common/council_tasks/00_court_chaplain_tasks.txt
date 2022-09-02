@@ -656,71 +656,8 @@ task_conversion = {
 	monthly_on_action = task_convert_side_effects
 
 	ai_will_do = {
-		value = 0
+		value = 1000 # Always convert if possible
 
-		# If unreformed, only convert other unreformed, unless zealous
-		if = {
-			limit = {
-				OR = {
-					scope:councillor_liege = { ai_zeal >= 50 }
-					scope:councillor_liege.faith = { NOT = { has_doctrine_parameter = unreformed } }
-				}
-				any_sub_realm_county = {
-					faith = { has_doctrine_parameter = unreformed }
-				}
-			}
-			add = 1000
-		}
-
-		# Extremely zealous rulers will always convert
-		if = {
-			limit = {
-				scope:councillor_liege = { ai_zeal >= 100 }
-			}
-			add = 1000
-		}
-
-		if = {
-			limit = {
-				any_sub_realm_county = {
-					save_temporary_scope_as = this_county
-
-					OR = {
-						# A county has hostile faith or worse
-						scope:councillor_liege.faith = {
-							faith_hostility_level = {
-								target = scope:this_county.faith
-								value < faith_astray_level
-							}
-						}
-						# A county is unconverted and has a holy site
-						AND = {
-							NOT = { scope:councillor_liege.faith = scope:this_county.faith }
-							any_county_province = { barony = { is_holy_site_of = scope:councillor_liege.faith } }
-						}
-						# A county is unconverted and the liege has a fundamentalist faith
-						AND = {
-							NOT = { scope:councillor_liege.faith = scope:this_county.faith }
-							scope:councillor_liege = { faith = { has_doctrine = doctrine_pluralism_fundamentalist } }
-						}
-						# An unconverted county is astray or worse and the liege is not tolerant, or has high zeal
-						AND = {
-							scope:councillor_liege.faith = {
-								faith_hostility_level = {
-									target = scope:this_county.faith
-									value <= faith_astray_level
-								}
-							}
-							OR = {
-								scope:councillor_liege = { has_tolerant_faith_or_culture_trigger = no }
-								scope:councillor_liege = { ai_zeal >= 50 }
-							}
-						}
-					}
-				}
-			}
-			add = 1000
-		}
 		if = {	#Unless you're a crypto-religionist.
 			limit = {
 				scope:councillor_liege = { has_variable = false_convert }
