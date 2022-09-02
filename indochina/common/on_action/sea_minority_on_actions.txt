@@ -15,17 +15,31 @@ on_yearly_sea_minority_maintainance = {
 				chance = 3
 				trigger_event = {
 					days = { 1 360 }
-					on_action = yearly_minority_migrations
+					on_action = do_culture_migration
+				}
+			}
+		}
+		every_religion_global = {
+			every_faith = {
+				limit = { NOT = { has_doctrine = tenet_communal_identity } }
+
+				random = {
+					chance = 3
+					trigger_event = {
+						days = { 1 360 }
+						on_action = do_faith_migration
+					}
 				}
 			}
 		}
 	}
 }
 
-yearly_minority_migrations = {
-	effect = {
-		spawn_minority_in_bordering_county_effect = yes
-	}
+do_culture_migration = {
+	effect = { spawn_minority_culture_in_bordering_county_effect = yes }
+}
+do_faith_migration = {
+	effect = { spawn_minority_faith_in_bordering_county_effect = yes }
 }
 
 # Root is a count+ character
