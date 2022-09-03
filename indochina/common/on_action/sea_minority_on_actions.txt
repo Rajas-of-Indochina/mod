@@ -8,38 +8,118 @@ three_year_playable_pulse = {
 
 on_yearly_sea_minority_maintainance = {
 	effect = {
-		every_culture_global = {
-			limit = { NOT = { has_cultural_tradition = tradition_isolationist } }
-
+		# Normal culture/faith spread
+		every_county = {
+			save_scope_as = source_county
 			random = {
 				chance = 3
 				trigger_event = {
 					days = { 1 360 }
-					on_action = do_culture_migration
+					on_action = do_culture_faith_migration
 				}
 			}
 		}
-		every_religion_global = {
-			every_faith = {
-				limit = { NOT = { has_doctrine = tenet_communal_identity } }
 
-				random = {
-					chance = 3
-					trigger_event = {
-						days = { 1 360 }
-						on_action = do_faith_migration
-					}
+		# Minority culture/faith spread/growth
+		every_county = {
+			limit = {
+				OR = {
+					county_has_minority_culture_trigger = yes
+					county_has_minority_faith_trigger = yes
+					# Holder should not have a policy against minorities
+				}
+			}
+
+			save_scope_as = source_county
+
+			# Culture
+			random = {
+				chance = 1
+				trigger_event = {
+					days = { 1 360 }
+					on_action = do_minority_culture_growth
+				}
+			}
+
+			# Faith
+			random = {
+				chance = 2
+				trigger_event = {
+					days = { 1 360 }
+					on_action = do_minority_faith_growth
 				}
 			}
 		}
 	}
 }
-
-do_culture_migration = {
-	effect = { spawn_minority_culture_in_bordering_county_effect = yes }
+do_culture_faith_migration = {
+	effect = {
+		if = {
+			limit = {
+				scope:source_county = {
+					culture = { NOT = { has_cultural_tradition = tradition_isolationist } }
+					faith = { NOT = { has_doctrine = tenet_communal_identity } }
+				}
+			}
+			county_to_county_culture_faith_migration_effect = yes
+		}
+	}
 }
-do_faith_migration = {
-	effect = { spawn_minority_faith_in_bordering_county_effect = yes }
+do_minority_culture_growth = {
+	effect = {
+		scope:source_county = {
+
+			every_in_list = {
+				variable = culture_minorities_small
+				add_to_temporary_list = potential_cultures
+			}
+			every_in_list = {
+				variable = culture_minorities_large
+				add_to_temporary_list = potential_cultures
+			}
+			every_in_list = {
+				variable = culture_minorities_large
+				add_to_temporary_list = potential_cultures
+			}
+
+			random_in_list = {
+				list = potential_cultures
+				save_scope_as = minority_culture
+				random_list = {
+					50 = { minority_culture_growth_effect = yes }
+					50 = { minority_culture_spread_effect = yes }
+				}
+			}
+		}
+	}
+}
+do_minority_faith_growth = {
+	effect = {
+		scope:source_county = {
+
+			every_in_list = {
+				variable = faith_minorities_small
+				add_to_temporary_list = potential_faiths
+			}
+			every_in_list = {
+				variable = faith_minorities_large
+				add_to_temporary_list = potential_faiths
+			}
+			every_in_list = {
+				variable = faith_minorities_large
+				add_to_temporary_list = potential_faiths
+			}
+
+			random_in_list = {
+				list = potential_faiths
+				save_scope_as = minority_faith
+				random_list = {
+					50 = { minority_faith_growth_effect = yes }
+					50 = { minority_faith_spread_effect = yes }
+				}
+			}
+		}
+	}
 }
 
 # Root is a count+ character
@@ -62,9 +142,7 @@ spawn_minority_characters = {
 			}
 
 			if = {
-				limit = {
-					county_has_minority_faith_trigger = yes
-				}
+				limit = { county_has_minority_faith_trigger = yes }
 				# get a random minority faith
 				every_in_list = {
 					variable = faith_minorities_small
@@ -144,6 +222,7 @@ spawn_minority_characters = {
 			clear_variable_list = potential_faiths
 
 			create_character = {
+				location = root.location
 				employer = root
 				age = { 18 50 }
 				gender_female_chance = 50

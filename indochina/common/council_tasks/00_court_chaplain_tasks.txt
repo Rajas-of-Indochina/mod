@@ -401,7 +401,25 @@ task_conversion = {
 
 	potential_county = {
 		scope:county = {
-			NOT = { faith = scope:councillor.faith }
+			### Minority stuff ###
+			OR = {
+				custom_description = {
+					text = "is_allowed_to_convert_counties"
+					AND = {
+						NOT = { faith = scope:councillor.faith }
+						scope:councillor_liege = { has_realm_law_flag = may_convert_faith }
+					}
+				}
+				custom_description = {
+					text = "is_allowed_to_expel_minorities"
+					AND = {
+						faith = scope:councillor.faith
+						county_has_astray_or_worse_minority_faith_trigger = { FAITH = scope:councillor.faith }
+						scope:councillor_liege = { has_realm_law_flag = unlock_expel_religious_minorities }
+					}
+				}
+			}
+			### End Minority stuff ###
 			trigger_if = {
 				limit = {
 					scope:councillor_liege = { has_variable = hold_court_8120_religion_block }
@@ -647,8 +665,18 @@ task_conversion = {
 
 	on_finish_task_county = {
 		scope:county = {
-			promote_faith_minority_effect = {
-				FAITH = scope:councillor.faith
+			if = {
+				limit = { scope:county.faith = scope:councillor.faith }
+				demote_random_faith_minority_effect = yes
+			}
+			else = {
+				promote_faith_minority_effect = {
+					FAITH = scope:councillor.faith
+				}
+				if = {
+					limit = { scope:county.faith = scope:councillor.faith }
+					scope:councillor = { start_default_task = yes }
+				}
 			}
 		}
 	}
