@@ -133,6 +133,11 @@ spawn_minority_characters = {
 		}
 	}
 	effect = {
+		every_courtier = {
+			culture = { add_to_temporary_list = represented_cultures }
+			faith = { add_to_temporary_list = represented_faiths }
+		}
+
 		every_sub_realm_county = {
 			limit = {
 				OR = {
@@ -218,18 +223,33 @@ spawn_minority_characters = {
 				faith = { save_temporary_scope_as = faith_to_spawn }
 			}
 
+			if = {
+				limit = {
+					exists = scope:faith_to_spawn
+					exists = scope:culture_to_spawn
+					NAND = {
+						scope:faith_to_spawn = { is_in_list = represented_faiths }
+						scope:culture_to_spawn = { is_in_list = represented_cultures }
+					}
+				}
+
+				create_character = {
+					employer = root
+					age = { 18 50 }
+					gender_female_chance = 50
+					random_traits = yes
+					faith = scope:faith_to_spawn
+					culture = scope:culture_to_spawn
+				}
+
+				scope:faith_to_spawn = { add_to_temporary_list = represented_faiths }
+				scope:culture_to_spawn = { add_to_temporary_list = represented_cultures }
+			}
+
 			clear_variable_list = potential_cultures
 			clear_variable_list = potential_faiths
-
-			create_character = {
-				location = root.location
-				employer = root
-				age = { 18 50 }
-				gender_female_chance = 50
-				random_traits = yes
-				faith = scope:faith_to_spawn
-				culture = scope:culture_to_spawn
-			}
+			clear_saved_scope = faith_to_spawn
+			clear_saved_scope = culture_to_spawn
 		}
 	}
 }
