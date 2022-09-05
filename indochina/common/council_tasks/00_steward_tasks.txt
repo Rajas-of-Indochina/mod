@@ -755,7 +755,24 @@ task_promote_culture = {
 
 	potential_county = {
 		scope:county = {
-			NOT = { culture = scope:councillor_liege.culture }
+			### Minority stuff ###
+			scope:councillor_liege = { has_realm_law_flag = may_convert_culture }
+			trigger_if = {
+				limit = { culture = scope:councillor_liege.culture }
+				trigger_if = {
+					limit = {
+						county_has_different_heritage_minority_culture_trigger = { CULTURE = scope:councillor.culture }
+					}
+					custom_tooltip = {
+						text = "not_has_expel_minorities_unlocked"
+						scope:councillor_liege = { has_realm_law_flag = unlock_expel_cultural_minorities }
+					}
+				}
+				trigger_else = {
+					NOT = { culture = scope:councillor_liege.culture }
+				}
+			}
+			### End Minority stuff ###
 			trigger_if = {
 				limit = {
 					scope:councillor_liege = { has_variable = hold_court_8130_culture_block }

@@ -402,24 +402,24 @@ task_conversion = {
 	potential_county = {
 		scope:county = {
 			### Minority stuff ###
-			OR = {
-				custom_description = {
-					text = "is_allowed_to_convert_counties"
-					AND = {
-						NOT = { faith = scope:councillor.faith }
-						scope:councillor_liege = { has_realm_law_flag = may_convert_faith }
-					}
-				}
-				custom_description = {
-					text = "is_allowed_to_expel_minorities"
-					AND = {
-						faith = scope:councillor.faith
+			scope:councillor_liege = { has_realm_law_flag = may_convert_faith }
+			trigger_if = {
+				limit = { faith = scope:councillor_liege.faith }
+				trigger_if = {
+					limit = {
 						county_has_astray_or_worse_minority_faith_trigger = { FAITH = scope:councillor.faith }
+					}
+					custom_tooltip = {
+						text = "not_has_expel_minorities_unlocked"
 						scope:councillor_liege = { has_realm_law_flag = unlock_expel_religious_minorities }
 					}
 				}
+				trigger_else = {
+					NOT = { faith = scope:councillor_liege.faith }
+				}
 			}
 			### End Minority stuff ###
+
 			trigger_if = {
 				limit = {
 					scope:councillor_liege = { has_variable = hold_court_8120_religion_block }
