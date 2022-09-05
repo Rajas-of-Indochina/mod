@@ -1,7 +1,6 @@
 ﻿
 namespace = minorities
 
-
 scripted_effect expel_religious_minorities_effect = {
 	# Lose or gain piety
 	if = {
@@ -79,7 +78,7 @@ scripted_effect expel_religious_minorities_effect = {
 							save_scope_as = county
 							promote_faith_minority_effect = { FAITH = scope:expelled_faith }
 							scope:expelled_faith = { save_scope_as = minority_faith }
-							notify_characters_of_faith_migration_effect = yes
+							notify_recipient_of_faith_migration_effect = yes
 						}
 					}
 				}
@@ -113,14 +112,14 @@ scripted_effect expel_religious_minorities_effect = {
 						random_realm_county = {
 							save_scope_as = county
 							promote_faith_minority_effect = { FAITH = scope:expelled_faith }
-							notify_characters_of_faith_migration_effect = yes
+							notify_recipient_of_faith_migration_effect = yes
 						}
 					}
 					random_neighboring_and_across_water_top_liege_realm_owner = {
 						random_realm_county = {
 							save_scope_as = county
 							promote_faith_minority_effect = { FAITH = scope:expelled_faith }
-							notify_characters_of_faith_migration_effect = yes
+							notify_recipient_of_faith_migration_effect = yes
 						}
 					}
 				}
@@ -151,7 +150,7 @@ scripted_effect expel_cultural_minorities_effect = {
 	scope:expelled_culture = {
 		change_cultural_acceptance = {
 			target = root.culture
-			value = -15
+			value = -10
 			desc = cultural_acceptance_loss_expulsion
 		}
 	}
@@ -221,7 +220,7 @@ scripted_effect expel_cultural_minorities_effect = {
 							save_scope_as = county
 							promote_culture_minority_effect = { CULTURE = scope:expelled_culture }
 							scope:expelled_culture = { save_scope_as = minority_culture }
-							notify_characters_of_culture_migration_effect = yes
+							notify_recipient_of_culture_migration_effect = yes
 						}
 					}
 				}
@@ -255,14 +254,14 @@ scripted_effect expel_cultural_minorities_effect = {
 						random_realm_county = {
 							save_scope_as = county
 							promote_culture_minority_effect = { CULTURE = scope:expelled_culture }
-							notify_characters_of_culture_migration_effect = yes
+							notify_recipient_of_culture_migration_effect = yes
 						}
 					}
 					random_neighboring_and_across_water_top_liege_realm_owner = {
 						random_realm_county = {
 							save_scope_as = county
 							promote_culture_minority_effect = { CULTURE = scope:expelled_culture }
-							notify_characters_of_culture_migration_effect = yes
+							notify_recipient_of_culture_migration_effect = yes
 						}
 					}
 				}
@@ -326,12 +325,12 @@ scripted_effect setup_expel_religious_minorities_effect = {
 			}
 
 			if = {
-				limit = { NOR = { exists = scope:minority_1 } }
+				limit = { NOT = { exists = scope:minority_1 } }
 				save_scope_as = minority_1
 				add_to_temporary_list = listed_minorities
 			}
 			else_if = {
-				limit = { NOR = { exists = scope:minority_2 } }
+				limit = { NOT = { exists = scope:minority_2 } }
 				save_scope_as = minority_2
 				add_to_temporary_list = listed_minorities
 			}
@@ -408,12 +407,12 @@ scripted_effect setup_expel_cultural_minorities_effect = {
 			}
 
 			if = {
-				limit = { NOR = { exists = scope:minority_1 } }
+				limit = { NOT = { exists = scope:minority_1 } }
 				save_scope_as = minority_1
 				add_to_temporary_list = listed_minorities
 			}
 			else_if = {
-				limit = { NOR = { exists = scope:minority_2 } }
+				limit = { NOT = { exists = scope:minority_2 } }
 				save_scope_as = minority_2
 				add_to_temporary_list = listed_minorities
 			}
