@@ -9,10 +9,6 @@ religious_minority_status_law = {
 	# Laws only apply to astray and lower faiths
 
 	religious_minority_status_1 = {
-		## Accepted
-		# Bonus opinion
-		# Minorities may grow
-		# May not promote faith
 
 		modifier = {
 			different_faith_opinion = 10
@@ -22,9 +18,7 @@ religious_minority_status_law = {
 		can_keep = { NOT = { has_government = anarchist_government } }
 
 		can_pass = {
-			OR = {
-				has_realm_law = religious_minority_status_2
-			}
+			has_realm_law = religious_minority_status_2
 			custom_description = {
 				subject = root
 				text = "has_minority_law_cooldown"
@@ -33,7 +27,7 @@ religious_minority_status_law = {
 		}
 
 		pass_cost = {
-			prestige = increase_crown_authority_prestige_cost
+			prestige = medium_prestige_value
 		}
 
 		on_pass = {
@@ -42,12 +36,25 @@ religious_minority_status_law = {
 				years = @minority_law_cooldown_years
 			}
 		}
+
+		ai_will_do = {
+			value = 0
+			# Factor for personality
+			add = ai_honor
+			add = ai_compassion
+
+			add = {
+				value = ai_zeal
+				multiply = -1
+			}
+			add = {
+				value = ai_vengefulness
+				multiply = -1
+			}
+		}
 	}
 
 	religious_minority_status_2 = {
-		## Tolerated
-		# Default
-		# May convert counties
 
 		flag = may_convert_faith
 
@@ -73,7 +80,7 @@ religious_minority_status_law = {
 		}
 
 		pass_cost = {
-			prestige = increase_crown_authority_prestige_cost
+			prestige = medium_prestige_value
 		}
 
 		on_pass = {
@@ -82,13 +89,25 @@ religious_minority_status_law = {
 				years = @minority_law_cooldown_years
 			}
 		}
+
+		ai_will_do = {
+			value = 0
+			# Factor for personality
+			add = ai_zeal
+			add = ai_vengefulness
+
+			add = {
+				value = ai_honor
+				multiply = -1
+			}
+			add = {
+				value = ai_compassion
+				multiply = -1
+			}
+		}
 	}
 
 	religious_minority_status_3 = {
-		## Suspicious (?)
-		# Minorities can be removed
-		# Less opinion
-		# Unlocks expel decision
 
 		modifier = {
 			different_faith_opinion = -10
@@ -100,10 +119,7 @@ religious_minority_status_law = {
 		can_keep = { NOT = { has_government = anarchist_government } }
 
 		can_pass = {
-			OR = {
-				has_realm_law = religious_minority_status_2
-				has_realm_law = religious_minority_status_4
-			}
+			has_realm_law = religious_minority_status_2
 			custom_description = {
 				subject = root
 				text = "has_minority_law_cooldown"
@@ -112,7 +128,7 @@ religious_minority_status_law = {
 		}
 
 		pass_cost = {
-			prestige = increase_crown_authority_prestige_cost
+			prestige = medium_prestige_value
 		}
 
 		on_pass = {
@@ -120,6 +136,11 @@ religious_minority_status_law = {
 				name = minority_law_cooldown
 				years = @minority_law_cooldown_years
 			}
+		}
+
+		ai_will_do = {
+			# AI shouldn't do this
+			value = -1000
 		}
 	}
 }
@@ -133,9 +154,6 @@ cultural_minority_status_law = {
 	# Laws only apply to other heritage cultures
 
 	cultural_minority_status_1 = {
-		## Welcomed
-		# Bonus acceptance
-		# Can't be removed
 
 		modifier = {
 			different_culture_opinion = 10
@@ -145,9 +163,7 @@ cultural_minority_status_law = {
 		can_keep = { NOT = { has_government = anarchist_government } }
 
 		can_pass = {
-			OR = {
-				has_realm_law = cultural_minority_status_2
-			}
+			has_realm_law = cultural_minority_status_2
 			custom_description = {
 				subject = root
 				text = "has_minority_law_cooldown"
@@ -156,7 +172,7 @@ cultural_minority_status_law = {
 		}
 
 		pass_cost = {
-			prestige = increase_crown_authority_prestige_cost
+			prestige = medium_prestige_value
 		}
 
 		on_pass = {
@@ -165,12 +181,25 @@ cultural_minority_status_law = {
 				years = @minority_law_cooldown_years
 			}
 		}
+
+		ai_will_do = {
+			value = 0
+			# Factor for personality
+			add = ai_honor
+			add = ai_compassion
+
+			add = {
+				value = ai_zeal
+				multiply = -1
+			}
+			add = {
+				value = ai_vengefulness
+				multiply = -1
+			}
+		}
 	}
 
 	cultural_minority_status_2 = {
-		## Accepted
-		# Smaller bonus acceptance
-		# May be removed
 
 		flag = may_convert_culture
 
@@ -196,7 +225,7 @@ cultural_minority_status_law = {
 		}
 
 		pass_cost = {
-			prestige = increase_crown_authority_prestige_cost
+			prestige = medium_prestige_value
 		}
 
 		on_pass = {
@@ -205,12 +234,25 @@ cultural_minority_status_law = {
 				years = @minority_law_cooldown_years
 			}
 		}
+
+		ai_will_do = {
+			value = 0
+			# Factor for personality
+			add = ai_honor
+			add = ai_compassion
+
+			add = {
+				value = ai_zeal
+				multiply = -1
+			}
+			add = {
+				value = ai_vengefulness
+				multiply = -1
+			}
+		}
 	}
 
 	cultural_minority_status_3 = {
-		## Suspicious
-		# No bonus acceptance
-		# Unlocks expel
 
 		flag = unlock_expel_cultural_minorities
 
@@ -222,10 +264,7 @@ cultural_minority_status_law = {
 		can_keep = { NOT = { has_government = anarchist_government } }
 
 		can_pass = {
-			OR = {
-				has_realm_law = cultural_minority_status_2
-				has_realm_law = cultural_minority_status_4
-			}
+			has_realm_law = cultural_minority_status_2
 			custom_description = {
 				subject = root
 				text = "has_minority_law_cooldown"
@@ -234,7 +273,7 @@ cultural_minority_status_law = {
 		}
 
 		pass_cost = {
-			prestige = increase_crown_authority_prestige_cost
+			prestige = medium_prestige_value
 		}
 
 		on_pass = {
@@ -242,6 +281,11 @@ cultural_minority_status_law = {
 				name = minority_law_cooldown
 				years = @minority_law_cooldown_years
 			}
+		}
+
+		ai_will_do = {
+			# AI Shouldn't do this
+			value = -1000
 		}
 	}
 }
