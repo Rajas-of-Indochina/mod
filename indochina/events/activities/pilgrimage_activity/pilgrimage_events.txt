@@ -8265,7 +8265,7 @@ pilgrimage.5921 = {# Sacred Groves
 # 9001-9999
 # by Petter Vilberg
 ################################
-pilgrimage.9001 = {# The Return
+pilgrimage.9001 = {
 	type = character_event
 	title = pilgrimage.9001.t
 	desc = pilgrimage.9001.desc
@@ -8281,7 +8281,30 @@ pilgrimage.9001 = {# The Return
 	trigger = {
 		exists = scope:activity
 	}
-	
+
+	immediate = {
+		# Creates a character memory of the completed pilgrimage
+		if = {
+			limit = { exists = scope:activity.var:friend_companion }
+			create_character_memory = {
+				type = completed_pilgrimage_friend
+				participants = { friend = scope:activity.var:friend_companion }
+			}
+		}
+		else = {
+			create_character_memory = {
+				type = completed_pilgrimage
+			}
+		}
+
+		scope:new_memory = {
+			set_variable = {
+				name = destination
+				value = scope:activity.activity_province
+			}
+		}
+	}
+
 	option = {
 		name = pilgrimage.9001.a
 		scope:activity = {
