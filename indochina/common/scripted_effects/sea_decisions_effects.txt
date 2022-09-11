@@ -383,3 +383,51 @@ form_lanxang_decision_effect = {
 	set_primary_title_to = title:k_laos
 	set_realm_capital = title:c_luang_prabang
 }
+
+unite_the_javanese_thrones_decision_effects = {
+	if = {
+		limit = {
+			has_title = title:k_panjalu
+		}
+		if = {
+			limit = {
+				NOT = { title:k_janggala.holder = ROOT }
+				exists = title:k_janggala.holder
+			}
+			title:k_janggala.holder = {
+				add_opinion = {
+					modifier = usurped_title
+					target = ROOT
+				}
+			}
+		}
+		destroy_title = title:k_janggala
+		title:k_janggala = {
+			every_in_de_jure_hierarchy = {
+				limit = { tier = tier_duchy }
+				set_de_jure_liege_title = title:k_panjalu
+			}
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				NOT = { title:k_panjalu.holder = ROOT }
+				exists = title:k_panjalu.holder
+			}
+			title:k_panjalu.holder = {
+				add_opinion = {
+					modifier = usurped_title
+					target = ROOT
+				}
+			}
+		}
+		destroy_title = title:k_panjalu
+		title:k_panjalu = {
+			every_in_de_jure_hierarchy = {
+				limit = { tier = tier_duchy }
+				set_de_jure_liege_title = title:k_janggala
+			}
+		}
+	}
+}
