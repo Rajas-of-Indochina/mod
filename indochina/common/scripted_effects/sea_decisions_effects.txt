@@ -262,6 +262,7 @@ unite_nusantara_decision_effect = {
 	title:e_sulawesi = { add_to_list = nusantara_empire }
 	title:e_maluku = { add_to_list = nusantara_empire }
 	title:e_java = { add_to_list = nusantara_empire }
+	title:e_majapahit = { add_to_list = nusantara_empire }
 
 	every_in_list = {
 		list = nusantara_empire
@@ -439,13 +440,16 @@ unite_the_javanese_thrones_decision_effects = {
 }
 
 form_majapahit_empire_effect = {
-	every_held_title = {
+	every_kingdom = {
 		limit = {
-			tier = tier_kingdom
 			OR = {
 				empire = title:e_srivijaya
 				empire = title:e_java
 				empire = title:e_kalimantan
+			}
+			OR = {
+				holder = ROOT
+				ROOT = { completely_controls = PREV }
 			}
 		}
 		add_to_list = majapahit_kingdoms
@@ -466,4 +470,18 @@ form_majapahit_empire_effect = {
 		}
 	}
 	resolve_title_and_vassal_change = scope:title_change
+}
+
+incorporate_majapahit_kingdom_effect = {
+	every_kingdom = {
+		limit = {
+			OR = {
+				empire = title:e_srivijaya
+				empire = title:e_java
+				empire = title:e_kalimantan
+			}
+			ROOT = { completely_controls = PREV }
+		}
+		set_de_jure_liege_title = title:e_majapahit
+	}
 }

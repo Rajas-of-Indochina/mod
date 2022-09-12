@@ -465,6 +465,18 @@ form_majapahit_empire = {
 			has_religion = religion:hinduism_religion
 			has_religion = religion:javanese_religion
 		}
+		prestige_level >= 4
+	}
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = 1000
+		piety = 1000
 	}
 
 	effect = {
@@ -485,6 +497,70 @@ form_majapahit_empire = {
 		
 	}
 
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+incorporate_majapahit_kingdom = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	ai_check_interval = 48
+	desc = incorporate_majapahit_kingdom_desc
+
+	is_shown = {
+		has_title = title:e_majapahit
+		# Only for incorporating West Nusantaran kingdoms
+		# If you want to unify all Nusantara
+		# There's a different decision for that.
+		AND = {
+			NOT = { title:e_srivijaya = { is_titular = yes } }
+			NOT = { title:e_java = { is_titular = yes } }
+			NOT = { title:e_kalimantan = { is_titular = yes } }
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = incorporate_majapahit_kingdom_trigger_tt
+			any_kingdom = {
+				OR = {
+					empire = title:e_srivijaya
+					empire = title:e_java
+					empire = title:e_kalimantan
+				}
+				ROOT = { completely_controls = PREV }
+			}
+		}
+		OR = {
+			has_religion = religion:buddhism_religion
+			has_religion = religion:hinduism_religion
+			has_religion = religion:javanese_religion
+		}
+		prestige_level >= 3
+	}
+
+	cost = {
+		prestige = 500
+		piety = 500
+	}
+
+	cooldown = { years = 10 }
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	effect = {
+		incorporate_majapahit_kingdom_effect = yes
+	}
+	
 	ai_potential = {
 		always = yes
 	}
