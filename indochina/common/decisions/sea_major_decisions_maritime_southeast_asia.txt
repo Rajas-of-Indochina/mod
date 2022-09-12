@@ -427,3 +427,69 @@ embrace_tagalog_culture_decision = {
 		base = 100
 	}
 }
+
+form_majapahit_empire = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	ai_check_interval = 48
+	desc = form_majapahit_empire_desc
+
+	is_shown = {
+		culture = { has_cultural_pillar = heritage_malayic } # Needs to be a culture from around the area.
+		any_held_title = {
+			tier = tier_county
+			title_province = { geographical_region = world_west_nusantara }
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:form_majapahit_empire_decision
+			}
+		}
+	}
+
+	is_valid = {
+		culture = { has_cultural_pillar = heritage_malayic }
+		highest_held_title_tier = tier_kingdom
+		AND = {
+			has_title = title:k_jawa #Java must be unified
+			completely_controls = title:k_jawa
+		}
+		OR = {
+			has_title = title:k_palembang
+			completely_controls = title:k_palembang
+		}
+		realm_size >= 50
+		OR = {
+			has_religion = religion:buddhism_religion
+			has_religion = religion:hinduism_religion
+			has_religion = religion:javanese_religion
+		}
+	}
+
+	effect = {
+		save_scope_as = majapahit_emperor
+
+		custom_tooltip = { text = form_majapahit_empire_de_jure_tt }
+
+		show_as_tooltip = { form_majapahit_empire_effect = yes } #Actually applied in iberia_north_africa.0005 - prestige, laws, title changes
+
+		#Events
+		trigger_event = maritime_southeast_asia.0007
+
+		#Can only be done once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:form_majapahit_empire_decision
+		}
+		
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
