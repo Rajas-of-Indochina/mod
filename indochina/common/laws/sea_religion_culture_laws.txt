@@ -1,4 +1,4 @@
-﻿@minority_law_cooldown_years = 10
+﻿@minority_law_cooldown_years = 5
 
 religious_minority_status_law = {
 	default = religious_minority_status_2
@@ -92,17 +92,40 @@ religious_minority_status_law = {
 
 		ai_will_do = {
 			value = 0
-			# Factor for personality
-			add = ai_zeal
-			add = ai_vengefulness
 
-			add = {
-				value = ai_honor
-				multiply = -1
+			if = {
+				# Chance to be intolerant
+				limit = { has_realm_law = religious_minority_status_1 }
+
+				# Factor for personality
+				add = ai_zeal
+				add = ai_vengefulness
+
+				add = {
+					value = ai_honor
+					multiply = -1
+				}
+				add = {
+					value = ai_compassion
+					multiply = -1
+				}
 			}
-			add = {
-				value = ai_compassion
-				multiply = -1
+			else_if = {
+				# Chance to be tolerant
+				limit = { has_realm_law = religious_minority_status_3 }
+
+				# Factor for personality
+				add = ai_honor
+				add = ai_compassion
+
+				add = {
+					value = ai_zeal
+					multiply = -1
+				}
+				add = {
+					value = ai_vengefulness
+					multiply = -1
+				}
 			}
 		}
 	}
@@ -139,8 +162,20 @@ religious_minority_status_law = {
 		}
 
 		ai_will_do = {
-			# AI shouldn't do this
-			value = -1000
+			value = 0
+
+			# Factor for personality
+			add = ai_zeal
+			add = ai_vengefulness
+
+			add = {
+				value = ai_honor
+				multiply = -1
+			}
+			add = {
+				value = ai_compassion
+				multiply = -1
+			}
 		}
 	}
 }
@@ -237,17 +272,40 @@ cultural_minority_status_law = {
 
 		ai_will_do = {
 			value = 0
-			# Factor for personality
-			add = ai_honor
-			add = ai_compassion
 
-			add = {
-				value = ai_zeal
-				multiply = -1
+			if = {
+				# Chance to be intolerant
+				limit = { has_realm_law = cultural_minority_status_1 }
+
+				# Factor for personality
+				add = ai_zeal
+				add = ai_vengefulness
+
+				add = {
+					value = ai_honor
+					multiply = -1
+				}
+				add = {
+					value = ai_compassion
+					multiply = -1
+				}
 			}
-			add = {
-				value = ai_vengefulness
-				multiply = -1
+			else_if = {
+				# Chance to be tolerant
+				limit = { has_realm_law = cultural_minority_status_3 }
+
+				# Factor for personality
+				add = ai_honor
+				add = ai_compassion
+
+				add = {
+					value = ai_zeal
+					multiply = -1
+				}
+				add = {
+					value = ai_vengefulness
+					multiply = -1
+				}
 			}
 		}
 	}
@@ -284,8 +342,19 @@ cultural_minority_status_law = {
 		}
 
 		ai_will_do = {
-			# AI Shouldn't do this
-			value = -1000
+			value = 0
+			# Factor for personality
+			add = ai_zeal
+			add = ai_vengefulness
+
+			add = {
+				value = ai_honor
+				multiply = -1
+			}
+			add = {
+				value = ai_compassion
+				multiply = -1
+			}
 		}
 	}
 }
