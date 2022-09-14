@@ -2,6 +2,9 @@
 usurp_nanzhao_action = {
 	trigger = {
 		scope:title = title:k_nanzhao
+		any_owned_story = {
+			story_type = nanzhao_collapse_story
+		}
 	}
 	effect = {
 		scope:previous_holder = {
@@ -32,14 +35,13 @@ usurp_nanzhao_action = {
 				change = scope:change
 			}
 		}
-		every_in_list = {
-			list = target_vassals
-			change_liege = {
-				liege = root
-				change = scope:change
-			}
-		}
 		resolve_title_and_vassal_change = scope:change
+
+		# End the story
+		every_owned_story = {
+			limit = { story_type = nanzhao_collapse_story }
+			end_story = yes
+		}
 
 		if = {
 			limit = { title:k_nanzhao = { has_variable = nanzhao } }
