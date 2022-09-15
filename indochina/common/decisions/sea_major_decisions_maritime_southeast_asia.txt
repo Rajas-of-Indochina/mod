@@ -505,3 +505,53 @@ form_majapahit_empire = {
 		base = 100
 	}
 }
+
+found_gowa_kingdom_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	ai_check_interval = 48
+	desc = 	found_gowa_kingdom_decision_desc
+
+	is_shown = {
+		OR = {
+			capital_county.geographical_region = world_sulawesi
+			culture = { has_cultural_pillar = language_makassar }
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:found_gowa_kingdom_decision
+			}
+		}
+	}
+
+	is_valid = {
+		culture = { has_cultural_pillar = language_makassar }
+		capital_province.county = {
+			development_level >= convert_to_feudalism_development_requirement
+		}
+		prestige_level >= 3
+		AND = {
+			has_title = title:d_makassar
+			completely_controls = title:d_makassar
+		}
+		has_title = title:c_makassar
+	}
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	effect = {
+		save_scope_as = gowa_founder
+		show_as_tooltip = {found_gowa_kingdom_decision_effect = yes}
+		trigger_event = maritime_southeast_asia.0008
+		#Can only be done once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:found_gowa_kingdom_decision
+		}
+	}
+}
