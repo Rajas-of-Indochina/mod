@@ -1,0 +1,372 @@
+﻿
+#############################################
+# Hostility Ending					    	#
+# by Joe Parkin								#
+#############################################
+
+struggle_tibet_ending_hostility_decision = {
+	major = yes
+	title = struggle_iberia_ending_hostility_decision
+	picture = "gfx/interface/illustrations/decisions/decision_struggle_tibet_hostility.dds"
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/decision_hostility_tibet.dds"
+	desc = struggle_iberia_ending_hostility_decision_desc
+	selection_tooltip = struggle_iberia_ending_hostility_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+	sort_order = 80
+
+	is_shown = {
+		has_fp2_dlc_trigger = yes
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+
+		custom_tooltip = {
+			text = struggle_iberia_ending_hostility_decision_correct_phase_tt
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = tibetan_struggle
+				is_struggle_phase = struggle_iberia_phase_hostility
+			}
+		}
+
+		custom_tooltip = {
+			text = struggle_ending_decision_correct_involvement_tt
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = tibetan_struggle
+			}
+		}
+
+		# Hold and completely control two de jure kingdoms of Hispania
+		OR = {
+			custom_tooltip = { #
+				text = struggle_iberia_ending_hostility_decision_kingdom_tt
+				any_held_title = { # 1st kingdom
+					tier = tier_kingdom
+					de_jure_liege = title:e_spain
+					root = { completely_controls = prev }
+					save_temporary_scope_as = spanish_kingdom
+				}
+				any_held_title = { # 2nd kingdom
+					tier = tier_kingdom
+					de_jure_liege = title:e_spain
+					trigger_if = {
+						limit = { exists = scope:spanish_kingdom }
+						NOT = { this = scope:spanish_kingdom }
+					}
+					root = { completely_controls = prev }
+					save_temporary_scope_as = spanish_kingdom_2
+				}
+			}
+			custom_tooltip = {
+				text = struggle_iberia_ending_hostility_decision_united_spanish_throne_tt
+				AND = {
+					exists = global_var:unite_the_spanish_thrones_decision_title
+					primary_title = global_var:unite_the_spanish_thrones_decision_title
+				}
+			}
+		}
+
+
+		# All your capital kingdom's de jure counties are of your culture and faith
+		trigger_if = {
+			limit = {
+				exists = global_var:unite_the_spanish_thrones_decision_title
+				primary_title = global_var:unite_the_spanish_thrones_decision_title
+			}
+			custom_tooltip = {
+				text = struggle_iberia_ending_hostility_decision_county_tt
+				capital_county.de_jure_liege.de_jure_liege = {
+					any_de_jure_county = {
+						percent = 0.75
+						culture = root.culture
+						faith = root.faith
+					}
+				}
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = struggle_iberia_ending_hostility_decision_county_tt
+				capital_county.de_jure_liege.de_jure_liege = {
+					any_de_jure_county = {
+						count = all
+						culture = root.culture
+						faith = root.faith
+					}
+				}
+			}
+		}
+
+		# No other realm controls more than 20% of the Iberia region
+		custom_tooltip = {
+			text = struggle_iberia_ending_hostility_decision_region_tt
+			NOT = {
+				struggle:tibetan_struggle = {
+					any_involved_ruler = {
+						NOT = { this = root }
+						is_independent_ruler = yes
+						exists = primary_title
+						primary_title = { is_mercenary_company = no }
+						save_temporary_scope_as = iberian_realm
+						any_county_in_region = {
+							region = world_europe_west_iberia
+							percent > fp2_struggle_hostility_region_percent_decimal_value
+							holder.top_liege = scope:iberian_realm
+						}
+					}
+				}
+			}
+		}
+
+		# Completely control at least 2 of the important Iberian duchies
+		calc_true_if = {
+			amount >= 2
+			completely_controls = title:d_galicia
+			completely_controls = title:d_toledo
+			completely_controls = title:d_cordoba
+			completely_controls = title:d_valencia
+			completely_controls = title:d_barcelona
+		}
+	}
+
+	effect = {
+		##### Major Effects #####
+		show_as_tooltip = {
+			dynasty = { add_dynasty_prestige = 10000 }
+			fp2_struggle_hostility_ender_effect = yes
+		}
+		# Hispania is available!
+		custom_tooltip = fp2_struggle_can_create_empire_of_hispania_tt
+		custom_description_no_bullet = { text = fp2_struggle_house_tt }
+		# Keep the Struggle Clash for your House
+		custom_tooltip = fp2_struggle_can_keep_using_struggle_clash_tt
+		# Boost to culture and faith conversion
+		custom_tooltip = fp2_struggle_hostility_conversion_tt
+		# Damage opinion with other culture/faiths
+		custom_tooltip = fp2_struggle_hostility_opinion_tt
+		custom_tooltip = fp2_struggle_hostility_opinion_negative_tt
+		# Choose Holy War boost, Culture War boost, or both
+		custom_description_no_bullet = { text = fp2_struggle_hostility_list_tt }
+		#custom_tooltip = fp2_struggle_hostility_holy_cb_joint_tt
+		#custom_tooltip = fp2_struggle_hostility_culture_cb_tt
+
+
+
+		show_as_tooltip = {
+			stress_impact = {
+				humble = medium_stress_impact_gain
+				cynical = medium_stress_impact_gain
+			}
+		}
+
+
+		# Achievements
+		add_achievement_global_variable_effect = {
+			VARIABLE = fp2_iberian_hostilities_achievement_unlocked
+			VALUE = yes
+		}
+		fp2_holiday_in_iberia_check = yes
+
+		# Trigger a player facing event as a coda
+		trigger_event = fp2_struggle.0900
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+#############################################
+# Compromise Ending					    	#
+# by Joe Parkin								#
+#############################################
+
+struggle_tibet_ending_compromise_decision = {
+	major = yes
+	title = struggle_iberia_ending_compromise_decision
+	picture = "gfx/interface/illustrations/decisions/decision_struggle_tibet_compromise.dds"
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/decision_compromise_tibet.dds"
+	desc = struggle_iberia_ending_compromise_decision_desc
+	selection_tooltip = struggle_iberia_ending_compromise_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+
+	sort_order = 80
+
+	is_shown = {
+		has_fp2_dlc_trigger = yes
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+
+		custom_tooltip = {
+			text = struggle_iberia_ending_compromise_decision_correct_phase_tt
+			any_character_struggle = {
+				is_struggle_type = tibetan_struggle
+				is_struggle_phase = struggle_iberia_phase_compromise
+			}
+		}
+
+		custom_tooltip = {
+			text = struggle_ending_decision_correct_involvement_tt
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = tibetan_struggle
+			}
+		}
+
+		OR = {
+			# Exalted among Men or higher
+			prestige_level >= very_high_prestige_level
+			# Hold and completely control a de jure kingdom of Hispania
+			custom_tooltip = {
+				text = struggle_iberia_ending_compromise_decision_kingdom_tt
+				fp2_struggle_ending_hold_de_jure_kingdom_trigger = yes
+			}
+		}
+
+		# Control less than 50% of Iberia
+		custom_tooltip = {
+			text = struggle_iberia_ending_compromise_decision_region_tt
+			fp2_struggle_ending_percent_iberia_trigger = yes
+		}
+
+		# No one else controls more than 50% of Iberia
+		custom_tooltip = {
+			text = struggle_iberia_ending_compromise_decision_other_region_tt
+			fp2_struggle_ending_other_percent_iberia_trigger = yes
+		}
+
+		# No Independent Involved rulers are at war with each other
+		custom_tooltip = {
+			text = struggle_iberia_ending_compromise_truce_tt
+			NOT = {
+				struggle:tibetan_struggle = {
+					any_involved_ruler = {
+						is_independent_ruler = yes
+						primary_title = { is_mercenary_company = no }
+						any_primary_war_enemy = {
+							is_independent_ruler = yes
+							any_character_struggle = {
+								involvement = involved
+								is_struggle_type = tibetan_struggle
+							}
+							primary_title = { is_mercenary_company = no }
+						}
+					}
+				}
+			}
+		}
+
+		OR = {
+			# Every other involved independent ruler in Iberia has at least 60 opinion of you or is strong hooked
+			custom_tooltip = {
+				text = struggle_iberia_ending_compromise_decision_opinion_tt
+				struggle:tibetan_struggle = {
+					NOT = {
+						any_involved_ruler = {
+							NOT = { this = root }
+							is_independent_ruler = yes
+							primary_title = { is_holy_order = no }
+							primary_title = { is_mercenary_company = no }
+							save_temporary_scope_as = this_character
+							NOR = {
+								root = { has_strong_hook = scope:this_character }
+								opinion = {
+									target = root
+									value >= struggle_iberia_ending_compromise_decision_opinion_value
+								}
+							}
+						}
+					}
+				}
+			}
+			# No other independent ruler in Iberia is a king or above
+			custom_tooltip = {
+				text = struggle_iberia_ending_compromise_decision_independent_tt
+				struggle:tibetan_struggle = {
+					NOT = {
+						any_involved_ruler = {
+							NOT = { this = root }
+							is_independent_ruler = yes
+							primary_title = { is_mercenary_company = no }
+							primary_title.tier >= tier_kingdom
+						}
+					}
+				}
+			}
+			# More than 25% of Iberia is controlled by Interloper or Uninvolved rulers
+			custom_tooltip = {
+				text = struggle_iberia_ending_compromise_decision_interloper_tt
+				any_county_in_region = {
+					region = world_europe_west_iberia
+					percent > fp2_struggle_compromise_uninvolved_percent_decimal_value
+					holder.top_liege = { fp2_character_interloper_in_struggle_trigger = yes }
+				}
+			}
+		}
+
+		# Completely control any of the important Iberian duchies
+		calc_true_if = {
+			amount >= 1
+			completely_controls = title:d_galicia
+			completely_controls = title:d_toledo
+			completely_controls = title:d_cordoba
+			completely_controls = title:d_valencia
+			completely_controls = title:d_barcelona
+		}
+	}
+
+	effect = {
+		##### Major Effects #####
+		# Personal effects for ruler
+		show_as_tooltip = { fp2_struggle_compromise_ender_effect = yes }
+		# Independent/Split De Jure Duchies will become De Jure Kingdoms
+		if = {
+			limit = {
+				title:e_spain = {
+					any_in_de_jure_hierarchy = { fp2_struggle_ending_compromise_independent_duchy_trigger = yes }
+				}
+			}
+			custom_tooltip = fp2_struggle_compromise_create_new_kingdoms_tt
+		}
+		# Other Tooltips!
+		fp2_struggle_compromise_tooltip_effect = yes
+
+		##### Minor Effects #####
+		# Self-sufficiency/defensive modifiers for each independent realm
+		show_as_tooltip = { fp2_struggle_compromise_modifier_rewards_effect = yes }
+
+		show_as_tooltip = {
+			stress_impact = {
+				arrogant = medium_stress_impact_gain
+			}
+		}
+
+		# Achievements
+		add_achievement_global_variable_effect = {
+			VARIABLE = fp2_iberian_compromise_achievement_unlocked
+			VALUE = yes
+		}
+		fp2_holiday_in_iberia_check = yes
+
+		# Trigger a player facing event as a coda
+		trigger_event = fp2_struggle.0901
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
