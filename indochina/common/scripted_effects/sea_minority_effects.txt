@@ -225,6 +225,12 @@ county_to_county_culture_faith_migration_effect = {
 						NOT = { faith = scope:source_county.faith }
 						NOT = { culture = scope:source_county.culture }
 					}
+					holder = {
+						NOR = {
+							has_realm_law_flag = unlock_expel_cultural_minorities
+							has_realm_law_flag = unlock_expel_religious_minorities
+						}
+					}
 				}
 			}
 			random_neighboring_county = {
@@ -232,6 +238,12 @@ county_to_county_culture_faith_migration_effect = {
 					OR = {
 						NOT = { faith = scope:source_county.faith }
 						NOT = { culture = scope:source_county.culture }
+					}
+					holder = {
+						NOR = {
+							has_realm_law_flag = unlock_expel_cultural_minorities
+							has_realm_law_flag = unlock_expel_religious_minorities
+						}
 					}
 				}
 				save_scope_as = county
@@ -249,62 +261,27 @@ county_to_county_culture_faith_migration_effect = {
 	}
 }
 
-spawn_minority_culture_in_bordering_county_effect = {
-	save_scope_as = this_culture
-
-	random_culture_county = {
-		limit = {
-			# Must border a culture which is not this_culture
-			any_title_to_title_neighboring_county = { NOT = { this.culture = scope:this_culture } }
-		}
-		save_scope_as = source_county
-
-		random_neighboring_county = {
-			limit = { NOT = { this.culture = scope:this_culture } }
-			save_scope_as = county
-
-			# promote culture minority
-			promote_culture_minority_effect = { CULTURE = scope:source_county.culture }
-			notify_characters_of_culture_migration_effect = yes
-		}
-	}
-}
-
-spawn_minority_faith_in_bordering_county_effect = {
-	save_scope_as = this_faith
-
-	random_county = {
-		limit = {
-			faith = scope:this_faith
-			# Must border a faith which is not this_faith
-			any_title_to_title_neighboring_county = { NOT = { this.faith = scope:this_faith } }
-		}
-		save_scope_as = source_county
-
-		random_neighboring_county = {
-			limit = { NOT = { this.faith = scope:this_faith } }
-			save_scope_as = county
-
-			# promote faith minority
-			promote_faith_minority_effect = { FAITH = scope:source_county.faith }
-			notify_characters_of_faith_migration_effect = yes
-		}
-	}
-}
-
 # scope:minority_culture
 # scope:source_county
 minority_culture_growth_effect = {
 	scope:source_county = {
-		save_scope_as = county
-		promote_culture_minority_effect = { CULTURE = scope:minority_culture }
+		if = {
+			limit = { NOT = { holder = { has_realm_law_flag = may_convert_culture } } }
+			save_scope_as = county
+			promote_culture_minority_effect = { CULTURE = scope:minority_culture }
+		}
 	}
 }
 
 minority_culture_spread_effect = {
 	scope:source_county = {
 		random_neighboring_county = {
-			limit = { NOT = { culture = scope:minority_culture } }
+			limit = {
+				NOR = {
+					holder = { has_realm_law_flag = unlock_expel_cultural_minorities }
+					culture = scope:minority_culture
+				}
+			}
 			save_scope_as = county
 			promote_culture_minority_effect = { CULTURE = scope:minority_culture }
 			notify_characters_of_culture_migration_effect = yes
@@ -316,15 +293,23 @@ minority_culture_spread_effect = {
 # scope:source_county
 minority_faith_growth_effect = {
 	scope:source_county = {
-		save_scope_as = county
-		promote_faith_minority_effect = { FAITH = scope:minority_faith }
+		if = {
+			limit = { NOT = { holder = { has_realm_law_flag = may_convert_faith } } }
+			save_scope_as = county
+			promote_faith_minority_effect = { FAITH = scope:minority_faith }
+		}
 	}
 }
 
 minority_faith_spread_effect = {
 	scope:source_county = {
 		random_neighboring_county = {
-			limit = { NOT = { faith = scope:minority_faith } }
+			limit = {
+				NOR = {
+					holder = { has_realm_law_flag = unlock_expel_religious_minorities }
+					faith = scope:minority_faith
+				}
+			}
 			save_scope_as = county
 			promote_faith_minority_effect = { FAITH = scope:minority_faith }
 			notify_characters_of_faith_migration_effect = yes

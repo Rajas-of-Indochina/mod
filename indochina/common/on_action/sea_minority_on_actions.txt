@@ -26,19 +26,11 @@ on_yearly_sea_minority_maintainance = {
 			}
 		}
 
-		# Minority culture/faith spread/growth
+		# Minority culture spread/growth
 		every_county = {
-			limit = {
-				OR = {
-					county_has_minority_culture_trigger = yes
-					county_has_minority_faith_trigger = yes
-					# Holder should not have a policy against minorities
-				}
-			}
+			limit = { county_has_minority_culture_trigger = yes }
 
 			save_scope_as = source_county
-
-			# Culture
 			random = {
 				chance = 1
 				trigger_event = {
@@ -46,10 +38,15 @@ on_yearly_sea_minority_maintainance = {
 					on_action = do_minority_culture_growth
 				}
 			}
+		}
 
-			# Faith
+		# Minority faith spread/growth
+		every_county = {
+			limit = { county_has_minority_faith_trigger = yes }
+
+			save_scope_as = source_county
 			random = {
-				chance = 2
+				chance = 1
 				trigger_event = {
 					days = { 1 360 }
 					on_action = do_minority_faith_growth
@@ -63,8 +60,10 @@ do_culture_faith_migration = {
 		if = {
 			limit = {
 				scope:source_county = {
-					culture = { NOT = { has_cultural_tradition = tradition_isolationist } }
-					faith = { NOT = { has_doctrine = tenet_communal_identity } }
+					NOR = {
+						culture = { has_cultural_tradition = tradition_isolationist }
+						faith = { has_doctrine = tenet_communal_identity }
+					}
 				}
 			}
 			county_to_county_culture_faith_migration_effect = yes
@@ -131,6 +130,8 @@ do_minority_faith_growth = {
 # Root is a count+ character
 spawn_minority_characters = {
 	trigger = {
+		exists = root
+		exists = root.capital_province
 		any_sub_realm_county = {
 			OR = {
 				county_has_minority_culture_trigger = yes
