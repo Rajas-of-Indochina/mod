@@ -1,0 +1,439 @@
+﻿namespace = indian_struggle
+
+### SYSTEM EVENTS #################################################################
+## # Parameter Events
+## 0001 - 0010	VIP spontaneous relationship management.
+## 0011 - 0040	Struggle VIPs spontaneously develop negative relationships with each other.
+## 0041 - 0070	Struggle VIPs spontaneously develop postive relationships with each other.
+## # Other Events
+## 0501 - 0510	Struggle Intro Events
+## 0900 - 0999	Struggle ending decision events
+### EVENT LIST ####################################################################
+## XXXX	- XXXX	YYY by ZZZ
+## 1000	- 1000	Stoking the Fire by Ola Jentzsch
+## 1001	- 1001	War Widows by Ola Jentzsch
+## 1002	- 1002	Andalusian Advancements by Ola Jentzsch
+## 1010	- 1012	Soul of Iron by Ola Jentzsch
+## 1020	- 1020	Death of a Councilman by Ola Jentzsch
+## 1050	- 1050	The Vision by Ola Jentzsch
+## 2000 - 2000	Disorderly Market by Hugo Cortell
+## 2001 - 2002	Desperate Villagers Seek New Lord by Hugo Cortell
+## 2003 - 2003	Lost Migratory Birds by Hugo Cortell
+## 2004	- 2005	Ship building event by Hugo Cortell
+## 2006	- 2006	The Borders of Faith by Hugo Cortell
+## 2007 - 2007	Castle Worthy of Iberia by Hugo Cortell
+## 2008 - 2008	Misdeeds of The Chaplain by Hugo Cortell
+## 2009 - 2012	Catching Thieves of Myth by Hugo Cortell
+## 2013	- 2014	The Secret to Freedom by Hugo Cortell
+## 2015	- 2016	Letter on The Back by Hugo Cortell
+## 2021	- 2022	RETURN OF THE THIEF KING by Hugo Cortell
+## 3001	- 3010	The Price of War by Veronica Pazos
+## 3011	- 3020	Order of the Hatchet by Veronica Pazos
+## 3021	- 3030	The Wrath of Heaven by Veronica Pazos
+###################################################################################
+
+# Setting AI Intent
+indian_struggle.0003 = {
+	hidden = yes
+	type = empty
+	scope = struggle
+
+	trigger = { # Should not need this, but, redundancy check! -h
+		exists = struggle:iberian_struggle
+		struggle:iberian_struggle = { any_involved_ruler = { count > 0 } } # For when the conflict is ongoing but nobody is left to fight it
+	}
+
+	immediate = {
+		# prepare needed variables; they will be destroyed at the end of the immediate
+		set_variable = {
+			name = agents_for_escalation
+			value = 0
+		}
+		set_variable = {
+			name = agents_for_deescalation
+			value = 0
+		}
+
+		# Go through the characters to distribute them between the potential transitions
+		struggle:iberian_struggle = {
+			every_involved_ruler = {
+				limit = { is_alive = yes }
+				#######################
+				# Play cue track
+				######################
+				if = {
+					limit = { is_ai = no }
+					play_music_cue = "mx_Struggle_Opening"
+				}
+
+				#######################
+				# Check existing flags
+				######################
+				if = {
+					limit = { has_character_flag = agenda_towards_escalation }
+					root = {
+						change_variable = {
+							name = agents_for_escalation
+							add = 1
+						}
+					}
+				}
+				else_if = {
+					limit = { has_character_flag = agenda_towards_deescalation }
+					root = {
+						change_variable = {
+							name = agents_for_deescalation
+							add = 1
+						}
+					}
+				}
+				else = { # Set a flag
+					#############################
+					# Current Phase: Opportunity
+					#############################
+					if = {
+						limit = { root = { is_struggle_phase = struggle_iberia_phase_opportunity } }
+						random_list = {
+							# Working towards Hostility
+							# It should be for characters looking for direct conflicts and domination, with the will and ability to expand their realms
+							100 = {
+								# Odds modifiers
+								fp2_struggle_set_ai_agenda_common_modifiers = {
+									PHASE = hostility
+									INTENT = escalation
+								}
+
+								# Apply effects
+								fp2_struggle_apply_ai_agenda_effect = {
+									INTENT = escalation
+								}
+							}
+							# Working towards Conciliation
+							100 = {
+								# Odds modifiers
+								fp2_struggle_set_ai_agenda_common_modifiers = {
+									PHASE = conciliation
+									INTENT = deescalation
+								}
+
+								# Apply effects
+								fp2_struggle_apply_ai_agenda_effect = {
+									INTENT = deescalation
+								}
+							}
+						}
+					}
+
+					#############################
+					# Current Phase: Hostility
+					#############################
+					if = {
+						limit = { root = { is_struggle_phase = struggle_iberia_phase_hostility } }
+						random_list = {
+							# Working towards Hostility: it means that the character wants to stay in
+							100 = {
+								# Odds modifiers
+								fp2_struggle_set_ai_agenda_common_modifiers = {
+									PHASE = hostility
+									INTENT = escalation
+								}
+
+								# Apply effects
+								fp2_struggle_apply_ai_agenda_effect = {
+									INTENT = escalation
+								}
+							}
+							# Working towards Compromise
+							100 = {
+								# Odds modifiers
+								fp2_struggle_set_ai_agenda_common_modifiers = {
+									PHASE = compromise
+									INTENT = deescalation
+								}
+
+								# Apply effects
+								fp2_struggle_apply_ai_agenda_effect = {
+									INTENT = deescalation
+								}
+							}
+						}
+					}
+
+					#############################
+					# Current Phase: Compromise
+					#############################
+					if = {
+						limit = { root = { is_struggle_phase = struggle_iberia_phase_compromise } }
+						random_list = {
+
+							# Working towards Opportunity
+							100 = {
+								# Odds modifiers
+								fp2_struggle_set_ai_agenda_common_modifiers = {
+									PHASE = opportunity
+									INTENT = escalation
+								}
+
+								# Apply effects
+								fp2_struggle_apply_ai_agenda_effect = {
+									INTENT = escalation
+								}
+							}
+							# Working towards Compromise: they want to stay in the same phase
+							100 = {
+								# Odds modifiers
+								fp2_struggle_set_ai_agenda_common_modifiers = {
+									PHASE = compromise
+									INTENT = deescalation
+								}
+
+								# Apply effects
+								fp2_struggle_apply_ai_agenda_effect = {
+									INTENT = deescalation
+								}
+							}
+						}
+					}
+
+					#############################
+					# Current Phase: Conciliation
+					#############################
+					if = {
+						limit = { root = { is_struggle_phase = struggle_iberia_phase_conciliation } }
+						random_list = {
+							# Working towards Compromise
+							100 = {
+								# Odds modifiers
+								fp2_struggle_set_ai_agenda_common_modifiers = {
+									PHASE = compromise
+									INTENT = escalation
+								}
+
+								# Apply effects
+								fp2_struggle_apply_ai_agenda_effect = {
+									INTENT = escalation
+								}
+							}
+							# Working towards Conciliation: they want to stay in the same phase
+							100 = {
+								# Odds modifiers
+								fp2_struggle_set_ai_agenda_common_modifiers = {
+									PHASE = conciliation
+									INTENT = deescalation
+								}
+
+								# Apply effects
+								fp2_struggle_apply_ai_agenda_effect = {
+									INTENT = deescalation
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		# Clean variables
+		remove_variable = agents_for_escalation
+		remove_variable = agents_for_deescalation
+	}
+}
+
+# Set AI Intent on join
+indian_struggle.004 = {
+	hidden = yes
+	type = empty
+
+	immediate = {
+		set_variable = {
+			name = agents_for_escalation
+			value = 0
+		}
+		set_variable = {
+			name = agents_for_deescalation
+			value = 0
+		}
+
+		############################
+		# Update the variables
+		############################
+		every_character_struggle = {
+			every_involved_ruler = {
+				limit = { is_alive = yes }
+				if = {
+					limit = { has_character_flag = agenda_towards_escalation }
+					root = {
+						change_variable = {
+							name = agents_for_escalation
+							add = 1
+						}
+					}
+				}
+				else_if = {
+					limit = { has_character_flag = agenda_towards_deescalation }
+					root = {
+						change_variable = {
+							name = agents_for_deescalation
+							add = 1
+						}
+					}
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				NOR = {
+					has_character_flag = agenda_towards_escalation
+					has_character_flag = agenda_towards_deescalation
+				}
+			}
+
+			#############################
+			# Current Phase: Opportunity
+			#############################
+			if = {
+				limit = { any_character_struggle = { is_struggle_phase = struggle_iberia_phase_opportunity } }
+				random_list = {
+					# Working towards Hostility
+					# It should be for characters looking for direct conflicts and domination, with the will and ability to expand their realms
+					100 = {
+						# Odds modifiers
+						fp2_struggle_set_ai_agenda_common_modifiers = {
+							PHASE = hostility
+							INTENT = escalation
+						}
+
+						# Apply effects
+						fp2_struggle_apply_ai_agenda_effect = {
+							INTENT = escalation
+						}
+					}
+					# Working towards Conciliation
+					100 = {
+						# Odds modifiers
+						fp2_struggle_set_ai_agenda_common_modifiers = {
+							PHASE = conciliation
+							INTENT = deescalation
+						}
+
+						# Apply effects
+						fp2_struggle_apply_ai_agenda_effect = {
+							INTENT = deescalation
+						}
+					}
+				}
+			}
+
+			#############################
+			# Current Phase: Hostility
+			#############################
+			if = {
+				limit = { any_character_struggle = { is_struggle_phase = struggle_iberia_phase_hostility } }
+				random_list = {
+					# Working towards Hostility: it means that the character wants to stay in
+					100 = {
+						# Odds modifiers
+						fp2_struggle_set_ai_agenda_common_modifiers = {
+							PHASE = hostility
+							INTENT = escalation
+						}
+
+						# Apply effects
+						fp2_struggle_apply_ai_agenda_effect = {
+							INTENT = escalation
+						}
+					}
+					# Working towards Compromise
+					100 = {
+						# Odds modifiers
+						fp2_struggle_set_ai_agenda_common_modifiers = {
+							PHASE = compromise
+							INTENT = deescalation
+						}
+
+						# Apply effects
+						fp2_struggle_apply_ai_agenda_effect = {
+							INTENT = deescalation
+						}
+					}
+				}
+			}
+
+			#############################
+			# Current Phase: Compromise
+			#############################
+			if = {
+				limit = { any_character_struggle = { is_struggle_phase = struggle_iberia_phase_compromise } }
+				random_list = {
+
+					# Working towards Opportunity
+					100 = {
+						# Odds modifiers
+						fp2_struggle_set_ai_agenda_common_modifiers = {
+							PHASE = opportunity
+							INTENT = escalation
+						}
+
+						# Apply effects
+						fp2_struggle_apply_ai_agenda_effect = {
+							INTENT = escalation
+						}
+					}
+					# Working towards Compromise: they want to stay in the same phase
+					100 = {
+						# Odds modifiers
+						fp2_struggle_set_ai_agenda_common_modifiers = {
+							PHASE = compromise
+							INTENT = deescalation
+						}
+
+						# Apply effects
+						fp2_struggle_apply_ai_agenda_effect = {
+							INTENT = deescalation
+						}
+					}
+				}
+			}
+
+			#############################
+			# Current Phase: Conciliation
+			#############################
+			if = {
+				limit = { any_character_struggle = { is_struggle_phase = struggle_iberia_phase_conciliation } }
+				random_list = {
+					# Working towards Compromise
+					100 = {
+						# Odds modifiers
+						fp2_struggle_set_ai_agenda_common_modifiers = {
+							PHASE = compromise
+							INTENT = escalation
+						}
+
+						# Apply effects
+						fp2_struggle_apply_ai_agenda_effect = {
+							INTENT = escalation
+						}
+					}
+					# Working towards Conciliation: they want to stay in the same phase
+					100 = {
+						# Odds modifiers
+						fp2_struggle_set_ai_agenda_common_modifiers = {
+							PHASE = conciliation
+							INTENT = deescalation
+						}
+
+						# Apply effects
+						fp2_struggle_apply_ai_agenda_effect = {
+							INTENT = deescalation
+						}
+					}
+				}
+			}
+		}
+
+		# Clean variables
+		remove_variable = agents_for_escalation
+		remove_variable = agents_for_deescalation
+	}
+}
