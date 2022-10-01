@@ -513,10 +513,7 @@ found_gowa_kingdom_decision = {
 	desc = 	found_gowa_kingdom_decision_desc
 
 	is_shown = {
-		OR = {
-			capital_county.geographical_region = world_sulawesi
-			culture = { has_cultural_pillar = language_makassar }
-		}
+		culture = { has_cultural_pillar = language_makassar }
 		NOT = {
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -552,6 +549,56 @@ found_gowa_kingdom_decision = {
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
 			target = flag:found_gowa_kingdom_decision
+		}
+	}
+}
+
+establish_malayan_sultanate = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	major = yes
+	ai_check_interval = 48
+	desc = establish_malayan_sultanate_desc
+
+	is_shown = {
+		capital_province = { geographical_region = world_maritime_southeast_asia }
+		NAND = {
+			faith = { religion = religion:islam_religion }
+			has_government = clan_government
+		}
+	}
+
+	is_valid = {
+		any_realm_county = {
+			percent > 0.6
+			OR = {
+				custom_tooltip = {
+					text = muslim_minority_large_tt
+					any_in_list = {
+						variable = faith_minorities_large
+						religion = religion:islam_religion
+					}
+				}
+				this.faith.religion = religion:islam_religion
+			}
+		}
+		highest_held_title_tier >= tier_duchy
+		trigger_if = {
+			limit = { is_independent_ruler = yes }
+			is_independent_ruler = yes
+		}
+		trigger_else = {
+			top_liege = { faith = {religion = religion:islam_religion} }
+		}
+		
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = choose_muslim_faith_tt
+			trigger_event = sea_religion.0002
+		}
+		custom_tooltip = {
+			text = muslim_community_growth_tt
 		}
 	}
 }

@@ -557,3 +557,51 @@ found_gowa_kingdom_decision_effect = {
 		}
 	}
 }
+
+get_islamic_realm_faith_options = {#Creates a list of possible islamic faiths for a Malayan Sultanate
+	every_realm_county = {
+		every_in_list = {
+			limit = { religion = religion:islam_religion }
+			variable = faith_minorities_large
+			add_to_list = faith_options
+		}
+		# if = {
+		# 	limit = { faith = { religion = religion:islam_religion } }
+		# 	faith = { add_to_list = faith_options }
+		# }
+	}
+}
+
+add_islamic_minorities_test = {
+	every_realm_county = {
+		save_scope_as = county
+		promote_faith_minority_effect = { FAITH = faith:ashari }
+		promote_faith_minority_effect = { FAITH = faith:druze }
+		promote_faith_minority_effect = { FAITH = faith:muwalladi }
+		promote_faith_minority_effect = { FAITH = faith:ashari }
+		promote_faith_minority_effect = { FAITH = faith:druze }
+		promote_faith_minority_effect = { FAITH = faith:muwalladi }
+	}
+}
+
+establish_malayan_sultanate_effect = {
+	set_character_faith_conversion = scope:sultanate_faith
+	every_realm_county = {
+		custom_tooltip = {
+			text = PROMOTE_SULTANATE_FAITH_TT
+			promote_faith_minority_effect = { FAITH = sultanate_faith }
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+			}
+		}
+		convert_whole_realm_to_feudalism_effect = yes
+	}
+	else = {
+		change_government = clan_government
+	}
+}

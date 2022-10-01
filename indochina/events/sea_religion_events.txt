@@ -81,3 +81,116 @@ sea_religion.0001 = {
 		}
 	}
 }
+
+sea_religion.0002 = {
+	type = character_event
+	title = sea_religion.0002.t
+	desc = sea_religion.0002.desc
+	theme = learning
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+
+	immediate = {
+		get_islamic_realm_faith_options = yes
+		
+	}
+
+	option = { #First option in list
+		name = sea_religion.0002.a
+
+		ordered_in_list = {
+			list = faith_options
+			order_by = estimated_faith_strength
+			position = 0
+			save_scope_as = sultanate_faith
+		}
+		show_as_tooltip = {
+			set_character_faith = scope:sultanate_faith
+		}
+		establish_malayan_sultanate_effect = yes
+	}
+
+	option = { #Second option in list
+		name = sea_religion.0002.b
+		trigger = {
+			list_size = {
+				name = faith_options
+				value >= 2
+			}
+		}
+
+		ordered_in_list = {
+			list = faith_options
+			order_by = estimated_faith_strength
+			position = 1
+			save_scope_as = sultanate_faith
+		}
+		show_as_tooltip = {
+			set_character_faith = scope:sultanate_faith
+		}
+		establish_malayan_sultanate_effect = yes
+	}
+
+	option = { #Third option in list
+		name = sea_religion.0002.c
+		trigger = {
+			list_size = {
+				name = faith_options
+				value >= 3
+			}
+		}
+
+		ordered_in_list = {
+			list = faith_options
+			order_by = estimated_faith_strength
+			position = 2
+			save_scope_as = sultanate_faith
+		}
+		show_as_tooltip = {
+			set_character_faith = scope:sultanate_faith
+		}
+		establish_malayan_sultanate_effect = yes
+	}
+
+	option = { #Fourth option in list
+		name = sea_religion.0002.d
+		trigger = {
+			list_size = {
+				name = faith_options
+				value >= 4
+			}
+		}
+
+		ordered_in_list = {
+			list = faith_options
+			order_by = estimated_faith_strength
+			position = 3
+			save_scope_as = sultanate_faith
+		}
+		show_as_tooltip = {
+			set_character_faith = scope:sultanate_faith
+		}
+		establish_malayan_sultanate_effect = yes
+	}
+
+	option = { #Chicken out
+		name = sea_religion.0002.e
+		add_character_flag = sultanate_chickened_out
+	}
+
+	after = {
+		if = {
+			limit = { not = {has_character_flag = flag:sultanate_chickened_out} }
+		}
+		every_realm_county = {
+			limit = { religion = religion:islam_religion }
+			add_county_modifier = {
+				modifier = recently_islamized_sultanate_modifier
+				years = 5
+			}
+		}
+	}
+
+}
