@@ -7,7 +7,7 @@ declare_war_interaction = {
     interface = declare_war
     interface_priority = 70
     popup_on_receive = yes
-    pause_on_receive = yes
+    pause_on_receive = no # this is handled by the interface instead
 
     desc = declare_war_desc
 
@@ -50,6 +50,22 @@ declare_war_interaction = {
             custom_description = {
                 text = "is_not_bankrupt"
                 gold > 0
+            }
+            trigger_if = {
+                limit = {
+                    culture = { has_cultural_parameter = cannot_attack_allies }
+                }
+                NOT = {
+                    is_allied_to = scope:recipient
+                }
+            }
+            trigger_if = {
+                limit = {
+                    culture = { has_cultural_parameter = cannot_attack_truces }
+                }
+                NOT = {
+                    has_truce = scope:recipient
+                }
             }
             is_imprisoned = no
             trigger_if = {
@@ -217,6 +233,57 @@ declare_war_interaction = {
                         }
                         show_as_tooltip = { end_war = invalidated } #Actually ended in the event
                         primary_attacker = { trigger_event = war_event.1001 }
+                    }
+                }
+            }
+            #Notify defender's vassals if the war is targeting one or more of their titles
+            scope:recipient = {
+                if = {
+                    limit = {
+                        any_vassal = {
+                            save_temporary_scope_as = attacked_vassal
+                            any_character_war = {
+                                casus_belli = {
+                                    primary_attacker = scope:actor
+                                    primary_defender = scope:recipient
+                                    any_target_title = {
+                                        holder = {
+                                            OR = {
+                                                this = scope:attacked_vassal
+                                                is_vassal_or_below_of = scope:attacked_vassal
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    every_vassal = {
+                        save_temporary_scope_as = attacked_vassal
+                        limit = {
+                            any_character_war = {
+                                casus_belli = {
+                                    primary_attacker = scope:actor
+                                    primary_defender = scope:recipient
+                                    any_target_title = {
+                                        holder = {
+                                            OR = {
+                                                this = scope:attacked_vassal
+                                                is_vassal_or_below_of = scope:attacked_vassal
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        send_interface_toast = {
+                            title = declare_war_interaction_notification
+
+                            left_icon = scope:actor
+                            right_icon = scope:recipient
+
+                            custom_tooltip = declare_war_interaction_notification_tooltip
+                        }
                     }
                 }
             }
