@@ -19,6 +19,7 @@ on_game_start_after_lobby = {
         # chinese_struggle_on_game_start
         sea_set_cultural_acceptance
         on_yearly_assign_culture_faith
+        sea_historical_artifacts
     }
 }
 
@@ -314,6 +315,29 @@ assign_nanzhao_state = {
             }
             title:k_nanzhao = {
                 set_variable = dayining
+            }
+        }
+    }
+}
+
+#####
+
+sea_historical_artifacts = {
+    effect = {
+        if = {
+            limit = {
+                has_dlc_feature = royal_court
+                exists = title:e_kambujadesa.holder
+            }
+            title:e_kambujadesa.holder = {
+                create_artifact_emerald_buddha = { OWNER = this }
+            }
+
+            if = {
+                limit = { current_date >= 900.1.1 }
+                title:c_tondo.holder = {
+                    create_artifact_laguna_copperplate = { OWNER = this }
+                }
             }
         }
     }
