@@ -1,0 +1,49 @@
+﻿
+create_artifact_emerald_buddha = {
+	# Get the character the artifact is being made for.
+	$OWNER$ = { save_scope_as = owner }
+	# Not really used, but if we don't set the scopes we get errors in the feature selection
+	set_artifact_rarity_illustrious = yes
+
+	# Create the artifact
+	create_artifact = {
+		name = emerald_buddha_name
+		description = emerald_buddha_description
+		type = pedestal
+		visuals = pedestal_emerald_buddha
+		wealth = scope:wealth
+		quality = scope:quality
+		template = general_unique_template
+		history = {
+			type = created_before_history
+		}
+		modifier = emerald_buddha_modifier
+		save_scope_as = newly_created_artifact
+		decaying = no
+	}
+
+	scope:newly_created_artifact = {
+		set_variable = { name = historical_unique_artifact value = yes }
+		set_variable = emerald_buddha
+		save_scope_as = epic
+	}
+}
+
+create_artifact_laguna_copperplate = {
+	# Get the character the artifact is being made for.
+	$OWNER$ = { save_scope_as = owner }
+
+	# Create the artifact
+	create_artifact = {
+		name = laguna_copperplate_name
+		description = laguna_copperplate_description
+		type = miscellaneous
+		visuals = laguna_copperplate_book
+		modifier = artifact_monthly_stewardship_lifestyle_xp_1_modifier
+		save_scope_as = laguna_copperplate
+	}
+
+	scope:laguna_copperplate = {
+		flag_as_trash_artifact = yes
+	}
+}
