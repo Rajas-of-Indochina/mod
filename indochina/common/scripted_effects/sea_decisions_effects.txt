@@ -1,4 +1,4 @@
-﻿
+
 # Override Vanilla
 
 #####
@@ -474,5 +474,54 @@ form_majapahit_empire_effect = {
 
 	dynasty = {
 		add_dynasty_modifier = majapahit_founder_dynn_modifier
+	}
+}
+
+settle_nomadic_realm_effect = {
+	#Sort out new laws
+	change_government = tribal_government
+	hidden_effect = {
+		if = {
+			limit = { has_realm_law = nomad_authority_0 }
+			remove_realm_law = nomad_authority_0
+		}
+		if = {
+			limit = { has_realm_law = nomad_authority_1 }
+			remove_realm_law = nomad_authority_1
+		}
+		if = {
+			limit = { has_realm_law = nomad_authority_2 }
+			remove_realm_law = nomad_authority_2
+		}
+		if = {
+			limit = { has_realm_law = nomad_authority_3 }
+			remove_realm_law = nomad_authority_3
+		}
+		add_realm_law_skip_effects = tribal_authority_0
+	}
+
+	#VASSAL EFFECTS
+	#Also convert every vassal.
+	hidden_effect = {
+		every_vassal = {
+			change_government = tribal_government
+			if = {
+				limit = { has_realm_law = nomad_authority_0 }
+				remove_realm_law = nomad_authority_0
+			}
+			if = {
+				limit = { has_realm_law = nomad_authority_1 }
+				remove_realm_law = nomad_authority_1
+			}
+			if = {
+				limit = { has_realm_law = nomad_authority_2 }
+				remove_realm_law = nomad_authority_2
+			}
+			if = {
+				limit = { has_realm_law = nomad_authority_3 }
+				remove_realm_law = nomad_authority_3
+			}
+			add_realm_law_skip_effects = tribal_authority_0
+		}
 	}
 }

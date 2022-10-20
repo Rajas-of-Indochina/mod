@@ -262,3 +262,63 @@ reform_government_decision = {
 		base = 0
 	}
 }
+
+settle_nomadic_realm_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	desc = settle_nomadic_realm_decision_desc
+	ai_check_interval = 36
+
+	is_shown = {
+		has_government = nomadic_government
+		OR = {
+			is_independent_ruler = yes
+			liege = {
+				NOT = {
+					has_government = nomadic_government
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		is_at_war = no
+		culture = {
+			OR = {
+				has_innovation = innovation_crop_rotation
+				has_innovation = innovation_city_planning
+			}
+		}
+		trigger_if = {
+			limit = { is_independent_ruler = yes }
+			has_realm_law = nomadic_authority_3
+		}
+		trigger_else = {
+			OR = {
+				has_realm_law = nomadic_authority_2
+				has_realm_law = nomadic_authority_3
+			}
+		}
+		highest_held_title_tier >= tier_duchy
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		prestige = massive_prestige_value
+		gold = massive_gold_value
+	}
+
+	effect = {
+		# TODO: Add flavor event
+		settle_nomadic_realm_effect = yes
+		every_vassal = {
+			add_opinion = {
+				modifier = settled_tribe_opinion
+				target = ROOT
+			}
+		}
+	}
+}
