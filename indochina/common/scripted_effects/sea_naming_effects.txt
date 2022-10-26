@@ -20,39 +20,17 @@ name_yi_character_with_fathers_name_effect = {
 			value = father
 		}
 
-		create_character = {
-			location = scope:this_character.location
-			gender = male
-			faith = scope:this_character.faith
-			culture = scope:this_character.culture
-			random_traits = no
-			save_scope_as = original_namesake
-		}
-		scope:original_namesake = {
-			change_first_name = { template_character = scope:this_character }
-		}
-
-		set_variable = {
-			name = original_yi_namesake
-			value = scope:original_namesake
-		}
-
 		if = {
 			limit = {
 				father = {
 					is_alive = yes
-					has_variable = original_yi_namesake
+					has_variable = yi_name
 				}
 			}
-			change_first_name = "[Localize(GetGlobalVariable('yi_named_son').Var('yi_naming_father').Var('original_yi_namesake').Char.GetFirstNameBase)] [Localize(GetGlobalVariable('yi_named_son').Char.GetFirstNameBase)]"
+			change_first_name = "[Localize(GetGlobalVariable('yi_named_son').Var('yi_naming_father').Var('yi_name').GetFlagName)] [Localize(GetGlobalVariable('yi_named_son').Char.GetFirstNameBase)]"
 		}
 		else = {
 			change_first_name = "[Localize( Concatenate( GetGlobalVariable('yi_named_son').Var('yi_naming_father').Char.GetFirstNameBase, '_suffix') )] [Localize(GetGlobalVariable('yi_named_son').Char.GetFirstNameBase)]"
-		}
-
-		scope:original_namesake = {
-			death = { death_reason = death_vanished }
-			make_unprunable = yes
 		}
 	}
 }
@@ -458,6 +436,10 @@ assign_random_yi_name_effect = {
 			}
 		}
 		change_first_name = scope:new_name
+		set_variable = {
+			name = yi_name
+			value = scope:new_name
+		}
 	}
 }
 
