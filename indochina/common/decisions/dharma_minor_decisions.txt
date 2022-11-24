@@ -1,9 +1,12 @@
 ﻿#######################################
 # General Decisions
 #######################################
-go_on_pilgrimage_decision = {# go on a pilgrimage
+
+go_on_pilgrimage_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
 	ai_check_interval = 60
+
+	sort_order = 64
 
 	desc = go_on_pilgrimage_decision_desc
 	selection_tooltip = go_on_pilgrimage_decision_tooltip
@@ -12,19 +15,7 @@ go_on_pilgrimage_decision = {# go on a pilgrimage
 
 	is_shown = {
 		is_landed = yes
-		NOR = {
-			# These Faiths historically shunned going on pilgrimages, saying they were a waste of time & money.
-			faith = faith:waldensian
-			faith = faith:paulician
-			faith = faith:lollard
-		}
-
-		# Also we must have an actual holy site we can visit.
-		faith = {	
-			any_holy_site = {
-				exists = this
-			}
-		}
+		believes_in_pilgrimage_trigger = yes
 	}
 
 	is_valid_showing_failures_only = {
@@ -108,11 +99,12 @@ go_on_pilgrimage_decision = {# go on a pilgrimage
 			}
 			trigger_event = pilgrimage.0001
 		}
-
 	}
 
 	ai_potential = {
 		is_landed = yes
+		is_available_adult = yes
+		short_term_gold > pilgrimage_minimum_cost
 	}
 
 	ai_will_do = {
@@ -148,6 +140,7 @@ go_on_pilgrimage_decision = {# go on a pilgrimage
 		}
 	}
 }
+
 start_hunt_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_activity.dds"
 	ai_check_interval = 60
