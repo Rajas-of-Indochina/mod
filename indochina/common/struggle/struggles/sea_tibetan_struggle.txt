@@ -52,11 +52,11 @@ tibetan_struggle = {
 	##################################################
 	# Phases
 	##################################################
-	start_phase = struggle_tibet_phase_hostility
+	start_phase = struggle_tibet_phase_opportunity
 
 	phase_list = {
 
-		# Opportunity Phase represents complacency after a long period of coexistence during Conciliation; people are comfortable that things are good and so actors with ill-intent can get away with things once again.
+		# Uncertainty
 		struggle_tibet_phase_opportunity = {
 			##################################################
 			# General Set-Up
@@ -66,36 +66,29 @@ tibetan_struggle = {
 			future_phases = {
 				struggle_tibet_phase_hostility = {
 					catalysts = {
-						catalyst_passing_of_time = minimal_struggle_catalyst_gain
 						catalyst_gain_claim_on_title = minor_struggle_catalyst_gain
 						catalyst_win_any_war_within_the_region = minor_struggle_catalyst_gain # Good
-						catalyst_new_building_in_castle = minor_struggle_catalyst_gain # How to do AI?
+						catalyst_new_building_in_castle = minimal_struggle_catalyst_gain # How to do AI?
 						catalyst_becomes_rival_with_involved = major_struggle_catalyst_gain # Good
 						catalyst_using_a_hook_on_very_important_character = medium_struggle_catalyst_gain # good
 						catalyst_unnatural_death_important_character = medium_struggle_catalyst_gain
 						catalyst_usurp_title = major_struggle_catalyst_gain # good
-						catalyst_forced_conversion = medium_struggle_catalyst_gain
 						catalyst_reveal_secret_important = major_struggle_catalyst_gain
 						catalyst_broke_truce_against_important_character = massive_struggle_catalyst_gain # Cannot motivate the AI to do that without code support
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
 					}
 				}
 				struggle_tibet_phase_conciliation = {
 					catalysts = {
-						catalyst_improve_development_vassal_diff_faith_culture = minimal_struggle_catalyst_gain # How to do AI?
-						catalyst_gift_independent_ruler = minor_struggle_catalyst_gain # AI done
-						catalyst_became_friend_lover_with_character = minor_struggle_catalyst_gain
 						catalyst_learned_new_language_important = minor_struggle_catalyst_gain # AI done
-						catalyst_new_building_in_city = minor_struggle_catalyst_gain # How to do AI?
+						catalyst_new_building_in_temple = minimal_struggle_catalyst_gain # How to do AI?
 						catalyst_sign_truce_outside_war = minor_struggle_catalyst_gain # will need update when addding truce through wards
-						catalyst_formed_interreligious_alliance_with_important_character = minor_struggle_catalyst_gain
-						catalyst_ransom_important = medium_struggle_catalyst_gain
-						catalyst_grant_privilege_to_diff_faith_culture_vassal = medium_struggle_catalyst_gain
+						catalyst_ransom_important = minor_struggle_catalyst_gain
 						catalyst_invite_diff_faith_culture_to_feast = medium_struggle_catalyst_gain
 						catalyst_independence_from_non_dejure_vassal = major_struggle_catalyst_gain
-						catalyst_grant_land_local_noble = major_struggle_catalyst_gain
-						catalyst_became_best_friend_soulmate_with_very_important_character = major_struggle_catalyst_gain # AI done
+						catalyst_forced_conversion = minor_struggle_catalyst_gain
 						catalyst_convert_local_culture_faith = major_struggle_catalyst_gain
-						catalyst_release_important = massive_struggle_catalyst_gain
+						catalyst_go_on_pilgrimage = medium_struggle_catalyst_gain
 					}
 				}
 			}
@@ -134,13 +127,16 @@ tibetan_struggle = {
 				###### Common
 				common_parameters = {
 					cheaper_to_convert_to_struggle_faith = yes
-					county_faith_conversion_in_region_proceeds_faster = yes
+					county_faith_conversion_in_region_proceeds_slower = yes
 					holy_wars_in_region_cannot_be_declared = yes
 				}
 
 				###### Involved
 				involved_parameters = {
-					interfaith_marriages_available_between_involved_characters = yes
+				}
+
+				involved_character_modifier = {
+					opinion_of_different_faith = -10
 				}
 
 				###### Interlopers
@@ -166,6 +162,10 @@ tibetan_struggle = {
 					gain_acceptance_when_developing_other_culture_county = yes
 				}
 
+				involved_character_modifier = {
+					opinion_of_different_culture = -10
+				}
+
 				###### Interlopers
 
 				# Nothing
@@ -183,6 +183,7 @@ tibetan_struggle = {
 
 				###### Involved
 				involved_parameters = {
+					factions_more_common = yes
 					unlocks_buy_claim_for_all = yes
 					unlocks_demand_payments_for_all = yes
 					unlocks_abduct_for_all = yes
@@ -221,6 +222,7 @@ tibetan_struggle = {
 			ending_decisions = {
 				struggle_tibet_ending_hostility_decision
 				struggle_tibet_ending_compromise_decision
+				struggle_tibet_ending_conciliation_decision
 			 }
 		}
 
@@ -235,22 +237,16 @@ tibetan_struggle = {
 			future_phases = {
 				struggle_tibet_phase_compromise = {
 					catalysts = {
-						catalyst_passing_of_time = minimal_struggle_catalyst_gain
-						catalyst_improve_development_vassal_diff_faith_culture = minimal_struggle_catalyst_gain
-						catalyst_gift_independent_ruler = minor_struggle_catalyst_gain
-						catalyst_became_friend_lover_with_character = minor_struggle_catalyst_gain
-						catalyst_learned_new_language_important = minor_struggle_catalyst_gain
-						catalyst_new_building_in_city = minor_struggle_catalyst_gain
-						catalyst_sign_truce_outside_war = minor_struggle_catalyst_gain
-						catalyst_formed_interreligious_alliance_with_important_character = minor_struggle_catalyst_gain
-						catalyst_ransom_important = medium_struggle_catalyst_gain
-						catalyst_grant_privilege_to_diff_faith_culture_vassal = medium_struggle_catalyst_gain
+						catalyst_learned_new_language_important = minor_struggle_catalyst_gain # AI done
+						catalyst_new_building_in_temple = minimal_struggle_catalyst_gain # How to do AI?
+						catalyst_sign_truce_outside_war = minor_struggle_catalyst_gain # will need update when addding truce through wards
+						catalyst_ransom_important = minor_struggle_catalyst_gain
 						catalyst_invite_diff_faith_culture_to_feast = medium_struggle_catalyst_gain
 						catalyst_independence_from_non_dejure_vassal = major_struggle_catalyst_gain
-						catalyst_grant_land_local_noble = major_struggle_catalyst_gain
-						catalyst_became_best_friend_soulmate_with_very_important_character = major_struggle_catalyst_gain
+						catalyst_forced_conversion = minor_struggle_catalyst_gain
 						catalyst_convert_local_culture_faith = major_struggle_catalyst_gain
-						catalyst_release_important = massive_struggle_catalyst_gain
+						catalyst_go_on_pilgrimage = medium_struggle_catalyst_gain
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
 					}
 				}
 			}
@@ -308,8 +304,6 @@ tibetan_struggle = {
 				###### Involved
 				involved_parameters = {
 					holy_order_can_be_created_by_dukes = yes
-					interfaith_marriages_available_between_involved_characters = yes
-					interfaith_marriages_between_involved_characters_costs_piety = yes
 				}
 
 				involved_character_modifier = {
@@ -366,6 +360,7 @@ tibetan_struggle = {
 					unlocks_claim_throne_for_powerful_vassals = yes
 					unlocks_truce_purchasing_interaction = yes
 					unlocks_expedite_scheme_decision = yes
+					factions_more_common = yes
 				}
 
 				involved_character_modifier = {
@@ -407,10 +402,11 @@ tibetan_struggle = {
 			ending_decisions = {
 				struggle_tibet_ending_hostility_decision
 				struggle_tibet_ending_compromise_decision
+				struggle_tibet_ending_conciliation_decision
 			 }
 		}
 
-		# Compromise happens either when Hostility has gone on so long that people are sick of it, or else when Hostility has been narrowly avoided after a bout of Tension and folks're relieved; shared trauma and too much violence encourage people to calm down and live and let live.
+		# Reflection
 		struggle_tibet_phase_compromise = {
 			##################################################
 			# General Set-Up
@@ -420,17 +416,16 @@ tibetan_struggle = {
 			future_phases = {
 				struggle_tibet_phase_opportunity = {
 					catalysts = {
-						catalyst_passing_of_time = minimal_struggle_catalyst_gain
 						catalyst_gain_claim_on_title = minor_struggle_catalyst_gain
 						catalyst_win_any_war_within_the_region = minor_struggle_catalyst_gain # Good
-						catalyst_new_building_in_castle = minor_struggle_catalyst_gain # Good
+						catalyst_new_building_in_castle = minimal_struggle_catalyst_gain # How to do AI?
 						catalyst_becomes_rival_with_involved = major_struggle_catalyst_gain # Good
 						catalyst_using_a_hook_on_very_important_character = medium_struggle_catalyst_gain # good
 						catalyst_unnatural_death_important_character = medium_struggle_catalyst_gain
 						catalyst_usurp_title = major_struggle_catalyst_gain # good
-						catalyst_forced_conversion = medium_struggle_catalyst_gain
 						catalyst_reveal_secret_important = major_struggle_catalyst_gain
 						catalyst_broke_truce_against_important_character = massive_struggle_catalyst_gain # Cannot motivate the AI to do that without code support
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
 					}
 				}
 			}
@@ -490,12 +485,13 @@ tibetan_struggle = {
 				###### Common
 				common_parameters = {
 					holy_wars_in_region_cannot_be_declared = yes
-					county_faith_conversion_in_region_proceeds_slower = yes
+					county_faith_conversion_in_region_proceeds_faster = yes
 				}
 
 				###### Involved
 				involved_parameters = {
-					interfaith_marriages_available_between_involved_characters = yes
+					unlocks_patronize_faith_decision = yes
+					unlocks_proselytize_faith_interaction = yes
 					piety_from_new_alliance = yes
 					completing_building_in_temple_gives_piety = yes
 					release_prisoner_diff_faith_gives_prestige = yes
@@ -582,10 +578,11 @@ tibetan_struggle = {
 			ending_decisions = {
 				struggle_tibet_ending_hostility_decision
 				struggle_tibet_ending_compromise_decision
+				struggle_tibet_ending_conciliation_decision
 			 }
 		}
 
-		# During Conciliation Phase, things have gotten so amicable that societies outside the Struggle often find relations difficult to parse; interfaith marriages & myriad cultural changes are common.
+		# Patronage
 		struggle_tibet_phase_conciliation = {
 			##################################################
 			# General Set-Up
@@ -595,18 +592,16 @@ tibetan_struggle = {
 			future_phases = {
 				struggle_tibet_phase_compromise = {
 					catalysts = {
-						catalyst_passing_of_time = minimal_struggle_catalyst_gain
 						catalyst_gain_claim_on_title = minor_struggle_catalyst_gain
 						catalyst_win_any_war_within_the_region = minor_struggle_catalyst_gain # Good
-						catalyst_new_building_in_castle = minor_struggle_catalyst_gain # Good
+						catalyst_new_building_in_castle = minimal_struggle_catalyst_gain # How to do AI?
 						catalyst_becomes_rival_with_involved = major_struggle_catalyst_gain # Good
 						catalyst_using_a_hook_on_very_important_character = medium_struggle_catalyst_gain # good
-						#- Host a Feast when having at least two different-faith vassals
 						catalyst_unnatural_death_important_character = medium_struggle_catalyst_gain
 						catalyst_usurp_title = major_struggle_catalyst_gain # good
-						catalyst_forced_conversion = medium_struggle_catalyst_gain
 						catalyst_reveal_secret_important = major_struggle_catalyst_gain
 						catalyst_broke_truce_against_important_character = massive_struggle_catalyst_gain # Cannot motivate the AI to do that without code support
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
 					}
 				}
 			}
@@ -661,18 +656,16 @@ tibetan_struggle = {
 
 				###### Involved
 				involved_character_modifier = {
-					opinion_of_different_faith = 20
-					different_faith_county_opinion_mult = -0.5
-					opinion_of_different_faith_liege = 10
+					# opinion_of_different_faith = -10
+					# different_faith_county_opinion_mult = -0.5
+					# opinion_of_different_faith_liege = 10
 				}
 
 				involved_parameters = {
-					unlocks_golden_age_jewish_science_decision = yes
-					unlocks_build_pilgrim_roads_decision = yes
+					unlocks_patronize_faith_decision = yes
+					unlocks_proselytize_faith_interaction = yes
 					truces_by_involved_or_interlopers_within_region_longer = yes
-					county_conversion_disabled_for_involved_faiths_within_region = yes
-					interfaith_marriages_available_between_involved_characters = yes
-					interfaith_marriages_between_involved_characters_gives_piety = yes
+					# county_conversion_disabled_for_involved_faiths_within_region = yes
 					release_prisoner_diff_faith_gives_prestige = yes
 					learning_languages_gives_piety = yes
 					holy_wars_in_region_cannot_be_declared = yes
@@ -694,6 +687,7 @@ tibetan_struggle = {
 
 				###### Involved
 				involved_parameters = {
+					county_culture_conversion_in_region_proceeds_slower = yes
 					easier_culture_hybridising_for_involved_and_interlopers = yes
 					release_prisoner_diff_culture_gives_prestige = yes
 				}
@@ -726,7 +720,6 @@ tibetan_struggle = {
 				involved_parameters = {
 					# struggle_vips_and_culture_faith_heads_may_develop_spontaneous_positive_or_negative_relations = yes
 					struggle_unlocks_befriend_schemes_for_everyone = yes
-					unlocks_golden_age_jewish_science_decision = yes # To implement
 					struggle_prestige_from_feast = yes
 					struggle_gifts_involved_diff_faith_culture_leads_to_friendship = yes
 					struggle_grant_titles_diff_faith_culture_to_leads_to_friendship = yes
@@ -775,9 +768,8 @@ tibetan_struggle = {
 			ending_decisions = {
 				struggle_tibet_ending_hostility_decision
 				struggle_tibet_ending_compromise_decision
+				struggle_tibet_ending_conciliation_decision
 			 }
 		}
 	}
-
-	# AI should gift
 }

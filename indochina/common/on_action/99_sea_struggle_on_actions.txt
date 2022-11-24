@@ -1,0 +1,125 @@
+﻿# root: is involved (or interloper) character
+# Scope:struggle is the currently pulsing struggle.
+# yearly_struggle_playable_pulse = {}
+
+# root: is involved (or interloper) character
+# Scope:struggle is the currently pulsing struggle.
+five_year_struggle_playable_pulse = {
+	random_events = {
+		chance_to_happen = 95
+		1 = 0
+	}
+}
+
+tibetan_struggle_starting_events = {
+	events = {
+		neutral_struggle.0001
+		tibetan_struggle.0003
+	}
+}
+
+# A title is transferred to a new character
+# root = the new holder
+# scope:title = the title that changes hands
+# scope:previous_holder = previous holder. Might be dead
+on_title_gain = {
+	on_actions = {
+		tibet_catalyst_on_title_gain
+	}
+}
+
+# A claim is gained by a character
+# root = the claimant
+# scope:title = the title that is claimed
+# scope:transfer_type = flag:inheritance or none
+on_explicit_claim_gain = {
+	on_actions = {
+		tibet_catalyst_on_claim_gain
+	}
+}
+
+#Struggle Catalysts
+
+tibet_catalyst_on_claim_gain = {
+	effect = {
+		# Struggle Catalyst
+		if = {
+			limit = {
+				NOT = { scope:transfer_type = flag:inheritance }
+				any_character_struggle = { is_struggle_type = tibetan_struggle }
+				title:e_tibet = {
+					any_in_de_jure_hierarchy = {
+						this = 	scope:title
+					}
+				}
+				root = {
+					any_character_struggle = {
+						involvement = involved
+						activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+							CATALYST = catalyst_gain_claim_on_title
+							CHAR = root
+						}
+					}
+				}
+			}
+			root = {
+				every_character_struggle = {
+					involvement = involved
+					limit = {
+						activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+							CATALYST = catalyst_gain_claim_on_title
+							CHAR = root
+						}
+					}
+					activate_struggle_catalyst = {
+						catalyst = catalyst_gain_claim_on_title
+						character = root
+					}
+				}
+			}
+		}
+	}
+}
+
+tibet_catalyst_on_title_gain = {
+	effect = {
+		if = {
+			limit = {
+				# We are only interested in the title within the Struggle Region
+				any_character_struggle = { is_struggle_type = tibetan_struggle }
+				title:e_tibet = {
+					any_in_de_jure_hierarchy = {
+						this = 	scope:title
+					}
+				}
+				# Only for usurpation
+				scope:transfer_type = flag:usurped
+
+				root = {
+					any_character_struggle = {
+						involvement = involved
+						activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+							CATALYST = catalyst_usurp_title
+							CHAR = root
+						}
+					}
+				}
+			}
+			root = {
+				every_character_struggle = {
+					involvement = involved
+					limit = {
+						activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+							CATALYST = catalyst_usurp_title
+							CHAR = root
+						}
+					}
+					activate_struggle_catalyst = {
+						catalyst = catalyst_usurp_title
+						character = root
+					}
+				}
+			}
+		}
+	}
+}
