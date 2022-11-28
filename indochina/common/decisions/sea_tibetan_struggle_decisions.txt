@@ -24,6 +24,8 @@ struggle_tibet_ending_hostility_decision = {
 
 	is_valid = {
 		is_independent_ruler = yes
+		is_at_war = no
+		has_targeting_faction = no
 
 		custom_tooltip = {
 			text = struggle_tibet_ending_hostility_decision_correct_phase_tt
@@ -48,56 +50,31 @@ struggle_tibet_ending_hostility_decision = {
 			completely_controls = title:k_tsang
 		}
 
-		# All your capital kingdom's de jure counties are of your culture and faith
-		trigger_if = {
-			limit = {
-				exists = global_var:unite_the_spanish_thrones_decision_title
-				primary_title = global_var:unite_the_spanish_thrones_decision_title
-			}
-			custom_tooltip = {
-				text = struggle_tibet_ending_hostility_decision_county_tt
-				capital_county.de_jure_liege.de_jure_liege = {
-					any_de_jure_county = {
-						percent = 0.75
-						culture = root.culture
-						faith = root.faith
-					}
-				}
-			}
-		}
-		trigger_else = {
-			custom_tooltip = {
-				text = struggle_tibet_ending_hostility_decision_county_tt
-				capital_county.de_jure_liege.de_jure_liege = {
-					any_de_jure_county = {
-						count = all
-						culture = root.culture
-						faith = root.faith
-					}
+		# All your capital kingdom's de jure counties are of your culture
+		custom_tooltip = {
+			text = struggle_tibet_ending_hostility_decision_county_tt
+			capital_county.de_jure_liege.de_jure_liege = {
+				any_de_jure_county = {
+					count = all
+					culture = root.culture
 				}
 			}
 		}
 
-		# No other realm controls more than 20% of the Tibet region
+		# You control at least 80% of Tibet
 		custom_tooltip = {
 			text = struggle_tibet_ending_hostility_decision_region_tt
-			NOT = {
-				struggle:tibetan_struggle = {
-					any_involved_ruler = {
-						NOT = { this = root }
-						is_independent_ruler = yes
-						exists = primary_title
-						primary_title = { is_mercenary_company = no }
-						save_temporary_scope_as = tibetan_realm
-						any_county_in_region = {
-							region = world_tibet
-							percent > fp2_struggle_hostility_region_percent_decimal_value
-							holder.top_liege = scope:tibetan_realm
-						}
-					}
-				}
+
+			any_county_in_region = {
+				region = world_tibet
+				percent >= tibetan_struggle_hostility_region_percent_decimal_value
+				holder.top_liege = root
 			}
 		}
+
+		# At peace
+
+		# No factions
 	}
 
 	effect = {
@@ -107,9 +84,9 @@ struggle_tibet_ending_hostility_decision = {
 			tibetan_struggle_hostility_ender_effect = yes
 		}
 		custom_tooltip = tibetan_struggle_can_create_empire_of_tibet_tt
-		custom_description_no_bullet = { text = fp2_struggle_house_tt }
+		custom_description_no_bullet = { text = tibetan_struggle_house_tt }
 		# Keep the Struggle Clash for your House
-		custom_tooltip = fp2_struggle_can_keep_using_struggle_clash_tt
+		custom_tooltip = tibetan_struggle_can_keep_using_struggle_clash_tt
 		# Boost to culture and faith conversion
 
 		# Boost culture promotion
@@ -120,7 +97,7 @@ struggle_tibet_ending_hostility_decision = {
 		custom_tooltip = tibetan_struggle_hostility_opinion_negative_tt
 
 		# Choose Holy War boost, Culture War boost, or both
-		custom_description_no_bullet = { text = fp2_struggle_hostility_list_tt }
+		custom_description_no_bullet = { text = tibetan_struggle_hostility_list_tt }
 
 		show_as_tooltip = {
 			stress_impact = {
@@ -130,7 +107,7 @@ struggle_tibet_ending_hostility_decision = {
 		}
 
 		# Trigger a player facing event as a coda
-		trigger_event = fp2_struggle.0900
+		trigger_event = tibetan_struggle.0900
 	}
 
 	cost = {}
@@ -185,23 +162,23 @@ struggle_tibet_ending_compromise_decision = {
 		OR = {
 			# Exalted among Men or higher
 			prestige_level >= very_high_prestige_level
-			# Hold and completely control a de jure kingdom of Hispania
+			# Hold and completely control a de jure kingdom of Tibet
 			custom_tooltip = {
 				text = struggle_tibet_ending_compromise_decision_kingdom_tt
-				fp2_struggle_ending_hold_de_jure_kingdom_trigger = yes
+				tibetan_struggle_ending_hold_de_jure_kingdom_trigger = yes
 			}
 		}
 
 		# Control less than 50% of Tibet
 		custom_tooltip = {
 			text = struggle_tibet_ending_compromise_decision_region_tt
-			fp2_struggle_ending_percent_tibetan_trigger = yes
+			tibetan_struggle_ending_percent_tibet_trigger = yes
 		}
 
 		# No one else controls more than 50% of Tibet
 		custom_tooltip = {
 			text = struggle_tibet_ending_compromise_decision_other_region_tt
-			fp2_struggle_ending_other_percent_tibetan_trigger = yes
+			tibetan_struggle_ending_other_percent_tibetan_trigger = yes
 		}
 
 		# No Independent Involved rulers are at war with each other
@@ -267,7 +244,7 @@ struggle_tibet_ending_compromise_decision = {
 				text = struggle_tibet_ending_compromise_decision_interloper_tt
 				any_county_in_region = {
 					region = world_tibet
-					percent > fp2_struggle_compromise_uninvolved_percent_decimal_value
+					percent > tibetan_struggle_compromise_uninvolved_percent_decimal_value
 					holder.top_liege = { fp2_character_interloper_in_struggle_trigger = yes }
 				}
 			}
@@ -282,17 +259,17 @@ struggle_tibet_ending_compromise_decision = {
 		if = {
 			limit = {
 				title:e_tibet = {
-					any_in_de_jure_hierarchy = { fp2_struggle_ending_compromise_independent_duchy_trigger = yes }
+					any_in_de_jure_hierarchy = { tibetan_struggle_ending_compromise_independent_duchy_trigger = yes }
 				}
 			}
-			custom_tooltip = fp2_struggle_compromise_create_new_kingdoms_tt
+			custom_tooltip = tibetan_struggle_compromise_create_new_kingdoms_tt
 		}
 		# Other Tooltips!
-		fp2_struggle_compromise_tooltip_effect = yes
+		tibetan_struggle_compromise_tooltip_effect = yes
 
 		##### Minor Effects #####
 		# Self-sufficiency/defensive modifiers for each independent realm
-		show_as_tooltip = { fp2_struggle_compromise_modifier_rewards_effect = yes }
+		show_as_tooltip = { tibetan_struggle_compromise_modifier_rewards_effect = yes }
 
 		show_as_tooltip = {
 			stress_impact = {
@@ -301,7 +278,7 @@ struggle_tibet_ending_compromise_decision = {
 		}
 
 		# Trigger a player facing event as a coda
-		trigger_event = fp2_struggle.0901
+		trigger_event = tibetan_struggle.0901
 	}
 
 	cost = {}
@@ -380,7 +357,7 @@ struggle_tibet_ending_conciliation_decision = {
 		# Control less than 50% of tibet
 		custom_tooltip = {
 			text = struggle_tibet_ending_compromise_decision_region_tt
-			fp2_struggle_ending_percent_tibet_trigger = yes
+			tibetan_struggle_ending_percent_tibet_trigger = yes
 		}
 	}
 
@@ -408,7 +385,7 @@ struggle_tibet_ending_conciliation_decision = {
 
 
 		# Trigger a player facing event as a coda
-		trigger_event = fp2_struggle.0902
+		trigger_event = tibetan_struggle.0902
 	}
 
 	cost = {}
@@ -418,4 +395,166 @@ struggle_tibet_ending_conciliation_decision = {
 	ai_potential = { always = yes }
 
 	ai_will_do = { base = 100 }
+}
+
+
+#############################################
+# Secure Tibetan Foothold
+# by Joe Parkin and Ola Jentzsch
+#############################################
+secure_tibetan_foothold_decision = {
+	title = secure_tibetan_foothold_decision_title
+	picture = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	desc = secure_tibetan_foothold_decision_desc
+	selection_tooltip = secure_tibetan_foothold_decision_tooltip
+	sort_order = 80
+
+	major = yes
+
+	is_shown = {
+		# Struggle is active
+		exists = struggle:tibetan_struggle
+		# Not Involved and capital lies outside Tibet
+		custom_tooltip = {
+			text = tibetan_struggle_uninvolved_or_external_tt
+			NOR = {
+				any_character_struggle = {
+					is_struggle_type = tibetan_struggle
+					involvement = involved
+				}
+			}
+		}
+		# Hold land near Tibet
+		any_sub_realm_county = {
+			title_province = { geographical_region = world_tibet }
+		}
+		NOT = { has_title = title:e_tibet }
+	}
+
+	is_valid = {
+		##### General triggers #####
+
+		# Need lots of likes
+		#TODO prestige_level >= high_prestige_level
+		# Struggle phase must be right
+		custom_tooltip = {
+			text = tibetan_struggle_uninvolved_or_external_tt
+			NOT = {
+				capital_province = { geographical_region = world_tibet }
+			}
+		}
+		custom_tooltip = {
+			text = tibetan_struggle_secure_tibetan_foothold_empire_tt
+			any_held_title = {
+				tier = tier_empire
+				NOT = { this = title:e_tibet }
+			}
+		}
+		# If my religion is involved, I need to own the better portion of those counties
+		trigger_if = {
+			limit = {
+				religion = {
+					any_faith = {
+						struggle:tibetan_struggle = { is_faith_involved_in_struggle = prev }
+					}
+				}
+			}
+			custom_tooltip = {
+				text = tibetan_struggle_secure_tibetan_foothold_religion_tt
+				tibetan_struggle_secure_tibetan_foothold_religion_percent_value >= tibetan_struggle_secure_tibetan_foothold_religion_target_percent_value
+			}
+		}
+		# Otherwise, I need to own a big chunk of the peninsula
+		trigger_else = {
+			custom_tooltip = {
+				text = tibetan_struggle_secure_tibetan_foothold_outsider_tt
+				any_county_in_region = {
+					region = world_tibet
+					percent >= tibetan_struggle_secure_tibetan_foothold_outsider_target_percent_decimal_value
+					holder.top_liege = root
+				}
+			}
+		}
+
+		##### Tibet kingdom triggers #####
+
+		# Any de jure kingdom of Tibet is completely controlled
+		custom_tooltip = {
+			text = tibetan_struggle_secure_tibetan_foothold_kingdom_tibetan_tt
+			any_held_title = { tibetan_struggle_secure_tibetan_foothold_tibetan_kingdom_trigger = yes }
+		}
+		# Real tooltips
+		trigger_if = {
+			limit = { exists = scope:tibetan_kingdom_temp }
+			# That kingdom is mostly my faith
+			custom_tooltip = {
+				text = tibetan_struggle_secure_tibetan_foothold_kingdom_faith_tt
+				tibetan_struggle_secure_tibetan_foothold_faith_trigger = yes
+			}
+			# Borders held lands in a non-tibetan kingdom you hold
+			custom_tooltip = {
+				text = tibetan_struggle_secure_tibetan_foothold_kingdom_border_tt
+				scope:tibetan_kingdom_temp = { tibetan_struggle_secure_tibetan_foothold_outsider_kingdom_trigger = yes }
+			}
+			# Held that kingdom for a while
+			custom_tooltip = {
+				text = tibetan_struggle_secure_tibetan_foothold_kingdom_held_tt
+				scope:tibetan_kingdom_temp = { title_held_years >= tibetan_struggle_secure_tibetan_foothold_years_value }
+			}
+		}
+		# Fake tooltips
+		trigger_else = {
+			custom_tooltip = {
+				text = tibetan_struggle_secure_tibetan_foothold_kingdom_faith_tt
+				always = no
+			}
+			# Borders held lands in a non-tibetan kingdom you hold
+			custom_tooltip = {
+				text = tibetan_struggle_secure_tibetan_foothold_kingdom_border_tt
+				always = no
+			}
+			custom_tooltip = {
+				text = tibetan_struggle_secure_tibetan_foothold_kingdom_held_tt
+				always = no
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		trigger_if = {
+			limit = { exists = struggle:tibetan_struggle }
+			custom_tooltip = {
+				text = tibetan_struggle_phase_hostility_or_opportunity_tt
+				struggle:tibetan_struggle = {
+					has_struggle_phase_parameter = unlocks_secure_tibetan_foothold_decision
+				}
+			}
+		}
+	}
+
+	effect = {
+		if = {
+			limit = {
+				any_held_title = { tier = tier_empire }
+			}
+			custom_tooltip = tibetan_struggle_secure_tibetan_foothold_empire_held_effect_tt
+		}
+		else = { custom_tooltip = tibetan_struggle_secure_tibetan_foothold_empire_dejure_effect_tt }
+
+		trigger_event = {
+			id = fp2_other_decisions.1000
+		}
+
+		custom_tooltip = tibetan_struggle_secure_tibetan_foothold_ends_the_struggle_tt
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = {}
+
+	ai_will_do = {
+		base = 100
+	}
 }

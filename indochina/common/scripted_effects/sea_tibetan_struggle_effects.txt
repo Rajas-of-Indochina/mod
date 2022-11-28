@@ -180,15 +180,14 @@ tibetan_struggle_compromise_create_new_kingdom_effect = {
 		set_coa = $FETCH$
 		set_color_from_title = $FETCH$
 		set_capital_county = $FETCH$.title_capital_county
-		set_de_jure_liege_title = title:e_spain
+		set_de_jure_liege_title = title:e_tibet
 	}
 }
 
 # Create new de jure kingdoms from relevant duchies
 tibetan_struggle_compromise_duchies_to_kingdoms_effect = {
 	hidden_effect = {
-		title:d_zaragoza = { add_to_list = titular_iberian_duchies }
-		title:e_spain = {
+		title:e_tibet = {
 			# Cycle through de jure duchies held by independent dukes
 			every_in_de_jure_hierarchy = {
 				# Prefer primary titles
@@ -205,14 +204,14 @@ tibetan_struggle_compromise_duchies_to_kingdoms_effect = {
 				save_scope_as = old_title
 				tibetan_struggle_compromise_create_new_kingdom_effect = { TYPE = NEW FETCH = scope:old_title }
 			}
-			# Cycle through titular duchies held by independent dukes (e.g. Zaragoza)
+
 			every_in_list = {
-				list = titular_iberian_duchies
+				list = titular_tibetan_duchies
 				save_scope_as = special_duchy
 				if = {
 					# Independent holder who controls at least 50% a de jure duchy, and no kingdom has the same as that duchy
 					limit = { tibetan_struggle_ending_compromise_titular_trigger = yes }
-					title:e_spain = {
+					title:e_tibet = {
 						random_in_de_jure_hierarchy = {
 							limit = {
 								tier = tier_duchy
@@ -239,7 +238,7 @@ tibetan_struggle_compromise_duchies_to_kingdoms_effect = {
 
 # Moves duchies to another kingdom
 tibetan_struggle_compromise_transfer_duchies_effect = {
-	title:e_spain = {
+	title:e_tibet = {
 		while = {
 			limit = {
 				any_in_de_jure_hierarchy = { tibetan_struggle_compromise_transfer_duchy_trigger = yes }
@@ -300,7 +299,7 @@ tibetan_struggle_compromise_create_new_empire_effect = {
 # Create new de jure empires from relevant kingdoms
 tibetan_struggle_compromise_kingdoms_to_empires_effect = {
 	hidden_effect = {
-		title:e_spain = {
+		title:e_tibet = {
 			every_in_de_jure_hierarchy = {
 				limit = {
 					tier = tier_kingdom
@@ -318,7 +317,7 @@ tibetan_struggle_compromise_kingdoms_to_empires_effect = {
 # Distribute remaining Kingdoms to neighboring empires
 tibetan_struggle_compromise_distribute_kingdoms_to_neighbouring_empires_effect = {
 	hidden_effect = {
-		title:e_spain = {
+		title:e_tibet = {
 			every_in_de_jure_hierarchy = {
 				limit = { tier = tier_kingdom }
 				save_scope_as = kingdom_to_distribute
@@ -331,7 +330,7 @@ tibetan_struggle_compromise_distribute_kingdoms_to_neighbouring_empires_effect =
 						any_this_title_or_de_jure_above = { is_in_list = new_empire_list }
 					}
 					weight = {
-						modifier = { # Value one from Iberia for small empire
+						modifier = { # Value one from Tibet for small empire
 							add = {
 								value = 2
 								subtract = {
@@ -344,7 +343,7 @@ tibetan_struggle_compromise_distribute_kingdoms_to_neighbouring_empires_effect =
 							}
 							any_in_de_jure_hierarchy = {
 			 					tier = tier_county
-								title_province = { geographical_region = world_europe_west_iberia }
+								title_province = { geographical_region = world_tibet }
 							}
 						}
 						modifier = { # Value smaller empire
@@ -1644,76 +1643,8 @@ get_highest_player_skill_effect = {
 	}
 }
 
-tibetan_struggle_found_kingdom_toledo_empire_effect = {
-	create_title_and_vassal_change = {
-		type = created
-		save_scope_as = title_change
-		add_claim_on_loss = no
-	}
-	title:k_toledo = {
-		change_title_holder = {
-			holder = root
-			change = scope:title_change
-		}
-	}
-	resolve_title_and_vassal_change = scope:title_change
-	title:d_toledo = { add_to_list = kingdom_toledo_absorb_list }
-	if = {
-		limit = { NOT = { exists = scope:has_kingdom_toledo_absorb_list_been_created } }
-		ordered_held_title = {
-			limit = {
-				tier = tier_duchy
-				is_titular = no
-				NOT = { this = title:d_toledo }
-				root = { completely_controls = prev }
-				any_title_to_title_neighboring_and_across_water_duchy = { this = title:d_toledo }
-				de_jure_liege = {
-					any_in_de_jure_hierarchy = {
-						count > 2
-						tier = tier_duchy
-					}
-				}
-			}
-			order_by = {
-				value = 0
-				every_de_jure_county = {
-					limit = { any_neighboring_county = { de_jure_liege = title:d_toledo } }
-					add = 1
-				}
-			}
-			add_to_list = kingdom_toledo_absorb_list
-		}
-	}
-	every_in_list = {
-		list = kingdom_toledo_absorb_list
-		if = {
-			limit = {
-				exists = de_jure_liege.holder
-				NOT = { de_jure_liege.holder = root }
-			}
-			de_jure_liege.holder = { add_to_list = kingdom_toledo_opinion_list }
-		}
-		set_de_jure_liege_title = title:k_toledo
-	}
-	hidden_effect = { title:k_toledo = { set_de_jure_liege_title = title:e_spain } }
-	every_in_list = {
-		list = kingdom_toledo_opinion_list
-		limit = { is_ai = yes }
-		add_opinion = {
-			target = root
-			modifier = absorbed_de_jure_opinion
-		}
-	}
-	#Prestige
-	add_prestige = massive_prestige_gain
-	add_character_modifier = {
-		modifier = fp2_form_kingdom_toledo_modifier
-		years = 10
-	}
-}
-
 tibetan_struggle_hostility_ender_effect = {
-	give_nickname = nick_the_conquistador
+	give_nickname = nick_the_great
 }
 
 tibetan_struggle_compromise_ender_effect = {
@@ -1725,8 +1656,8 @@ tibetan_struggle_compromise_tooltip_effect = {
 	# De Jure Kingdoms will become De Jure Empires
 	custom_tooltip = struggle_compromise_duchy_transfer_tt
 	custom_tooltip = tibetan_struggle_compromise_create_new_empires_tt
-	# RIP Hispania
-	custom_tooltip = tibetan_struggle_compromise_destroy_hispania_tt
+	# RIP Tibet
+	custom_tooltip = tibetan_struggle_compromise_destroy_tibet_tt
 	if = {
 		limit = {
 			struggle:tibetan_struggle = {
@@ -1744,15 +1675,15 @@ tibetan_struggle_compromise_tooltip_effect = {
 }
 
 tibetan_struggle_conciliation_ender_effect = {
-	give_nickname = nick_the_equitable
+	give_nickname = nick_the_wise
 	dynasty = { add_dynasty_prestige = 10000 }
 }
 
 tibetan_struggle_conciliation_tooltip_effect = {
-	# Hispania is available!
+	# Tibet is available!
 	custom_tooltip = tibetan_struggle_can_create_empire_of_tibet_tt
 	# All Involved cultures gain acceptance of each other
 	custom_tooltip = tibetan_struggle_conciliation_culture_tt
-	# Involved cultures/faiths can offer to join defensive wars with outsiders targetting Iberia
+	# Involved cultures/faiths can offer to join defensive wars with outsiders targeting Tibet
 	custom_tooltip = tibetan_struggle_conciliation_join_war_tt
 }
