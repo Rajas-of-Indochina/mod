@@ -71,10 +71,6 @@ struggle_tibet_ending_hostility_decision = {
 				holder.top_liege = root
 			}
 		}
-
-		# At peace
-
-		# No factions
 	}
 
 	effect = {
@@ -336,19 +332,21 @@ struggle_tibet_ending_conciliation_decision = {
 
 		piety_level >= very_high_piety_level
 
-		# Every other independent involved ruler in tibet is allied to you
 		custom_tooltip = {
-			text = struggle_tibet_ending_conciliation_decision_alliance_tt
+			text = struggle_tibet_ending_conciliation_decision_hof_exists_tt
+			faith = { exists = religious_head }
+		}
+
+		# Every other independent involved ruler in Tibet follows your faith
+		custom_tooltip = {
+			text = struggle_tibet_ending_conciliation_decision_faith_tt
 			struggle:tibetan_struggle = {
 				NOT = {
 					any_involved_ruler = {
 						is_independent_ruler = yes
 						primary_title = { is_mercenary_company = no }
 						primary_title = { is_holy_order = no }
-						NOR = {
-							this = root
-							is_allied_to = root
-						}
+						NOT = { faith = root.faith }
 					}
 				}
 			}
@@ -358,6 +356,12 @@ struggle_tibet_ending_conciliation_decision = {
 		custom_tooltip = {
 			text = struggle_tibet_ending_compromise_decision_region_tt
 			tibetan_struggle_ending_percent_tibet_trigger = yes
+		}
+
+		# No one else controls more than 50% of Tibet
+		custom_tooltip = {
+			text = struggle_tibet_ending_compromise_decision_other_region_tt
+			tibetan_struggle_ending_other_percent_tibet_trigger = yes
 		}
 	}
 
@@ -371,18 +375,10 @@ struggle_tibet_ending_conciliation_decision = {
 
 		show_as_tooltip = {
 			stress_impact = {
-				arrogant = medium_stress_impact_gain
-				zealous = medium_stress_impact_gain
+				cynical = medium_stress_impact_gain
+				zealous = medium_stress_impact_loss
 			}
 		}
-
-		# Achievements
-		add_achievement_global_variable_effect = {
-			VARIABLE = fp2_tibetan_conciliation_achievement_unlocked
-			VALUE = yes
-		}
-		fp2_holiday_in_tibet_check = yes
-
 
 		# Trigger a player facing event as a coda
 		trigger_event = tibetan_struggle.0902
@@ -404,7 +400,7 @@ struggle_tibet_ending_conciliation_decision = {
 #############################################
 secure_tibetan_foothold_decision = {
 	title = secure_tibetan_foothold_decision_title
-	picture = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	picture = "gfx/interface/illustrations/decisions/decision_secure_tibetan_foothold.dds"
 	desc = secure_tibetan_foothold_decision_desc
 	selection_tooltip = secure_tibetan_foothold_decision_tooltip
 	sort_order = 80
@@ -477,7 +473,6 @@ secure_tibetan_foothold_decision = {
 		}
 
 		##### Tibet kingdom triggers #####
-
 		# Any de jure kingdom of Tibet is completely controlled
 		custom_tooltip = {
 			text = tibetan_struggle_secure_tibetan_foothold_kingdom_tibetan_tt
