@@ -46,7 +46,7 @@ republic_government = {
 # Head of faith will always get this if possible
 theocracy_government = {
 	primary_holding = church_holding
-	valid_holdings = { castle_holding }
+	valid_holdings = { castle_holding cow_metropolis_holding }
 	religious = yes
 	required_county_holdings = { church_holding castle_holding city_holding }
 
@@ -56,17 +56,12 @@ theocracy_government = {
 				has_doctrine = doctrine_theocracy_lay_clergy
 			}
 		}
-		NOT = {
+		NAND = {
 			OR = {
-				AND = {
-					NOT = { has_trait = devoted }
-					faith = { religion_tag = buddhism_religion }
-				}
-				AND = {
-					NOT = { has_trait = devoted }
-					faith = { religion_tag = jainism_religion }	
-				}
+				faith = { religion_tag = buddhism_religion }
+				faith = { religion_tag = jainism_religion }	
 			}
+			NOT = { has_trait = devoted }
 		}
 	}
 

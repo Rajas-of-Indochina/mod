@@ -104,6 +104,7 @@ dharma_festivals.102 = {# Buying gifts for your loved ones
 	immediate = {
 		primary_spouse = {
 			save_scope_as = first_spouse
+			save_scope_as = spouse
 		}
 	}
 
@@ -135,22 +136,22 @@ dharma_festivals.102 = {# Buying gifts for your loved ones
 			improvident = miniscule_stress_impact_loss
 		}
 	}	
-	option = {# Your lover
-		name = dharma_festivals.102.lover
-		trigger = {
-			primary_spouse = {
-				NOT = { this = scope:lover }
-			}	
-		}
-		remove_short_term_gold = medium_gold_value
-		add_character_flag = { flag = diwali_lover_gift }
-		stress_impact = {
-			seducer = miniscule_stress_impact_loss
-			lustful = miniscule_stress_impact_loss
-			generous = miniscule_stress_impact_loss
-			improvident = miniscule_stress_impact_loss
-		}
-	}
+	# option = {# Your lover
+	# 	name = dharma_festivals.102.lover
+	# 	trigger = {
+	# 		primary_spouse = {
+	# 			NOT = { this = scope:lover }
+	# 		}	
+	# 	}
+	# 	remove_short_term_gold = medium_gold_value
+	# 	add_character_flag = { flag = diwali_lover_gift }
+	# 	stress_impact = {
+	# 		seducer = miniscule_stress_impact_loss
+	# 		lustful = miniscule_stress_impact_loss
+	# 		generous = miniscule_stress_impact_loss
+	# 		improvident = miniscule_stress_impact_loss
+	# 	}
+	# }
 	option = {# All your wives
 		name = dharma_festivals.102.spouses
 		trigger = {
@@ -343,6 +344,9 @@ dharma_festivals.106 = {# Giving the gift to your loved ones
 	}
 
 	option = {# Your spouse gets a gift
+		trigger = {
+			any_spouse = { count < 2 }
+		}
 		name = dharma_festivals.106.spouse
 		add_piety = minor_piety_gain
 		every_spouse = {
@@ -356,6 +360,10 @@ dharma_festivals.106 = {# Giving the gift to your loved ones
 		}
 	}
 	option = {# Your wives get a gift
+		trigger = {
+			has_character_flag = diwali_wives_gift
+			any_spouse = { count >= 2 }
+		}
 		name = dharma_festivals.106.spouses
 		add_piety = minor_piety_gain
 		every_spouse = {
@@ -369,6 +377,10 @@ dharma_festivals.106 = {# Giving the gift to your loved ones
 		}
 	}
 	option = {# Your first wife gets a gift
+		trigger = {
+			has_character_flag = diwali_first_spouse_gift
+			any_spouse = { count >= 2 }
+		}
 		name = dharma_festivals.106.first_wife
 		add_piety = minor_piety_gain
 		primary_spouse = {
@@ -382,7 +394,7 @@ dharma_festivals.106 = {# Giving the gift to your loved ones
 		every_spouse = {
 			limit = { 
 				is_alive = yes 
-				NOT = { primary_spouse = scope:first_spouse }
+				NOT = { this = scope:first_spouse }
 			}
 			add_opinion = {# They don't like you for not getting a gift
 				modifier = disappointed_opinion
@@ -397,30 +409,30 @@ dharma_festivals.106 = {# Giving the gift to your loved ones
 		}
 
 	}
-	option = {# Your lover gets a gift
-		name = dharma_festivals.106.lover
-		add_piety = minor_piety_gain
-		scope:lover = {
-			add_opinion = {
-				target = root
-				modifier = lover_breakup_opinion
-				opinion = 15
-			}
-		}
-		every_spouse = {
-			limit = { NOT = { this = scope:lover } }
-			add_opinion = {# They don't like you for not getting a gift
-				target = root
-				modifier = disappointed_opinion
-				opinion = -10
-			}
-			add_opinion = {# They are envious of your lover
-				target = scope:lover
-				modifier = envy_opinion
-				opinion = -15
-			}
-		}
-	}
+	# option = {# Your lover gets a gift
+	# 	name = dharma_festivals.106.lover
+	# 	add_piety = minor_piety_gain
+	# 	scope:lover = {
+	# 		add_opinion = {
+	# 			target = root
+	# 			modifier = lover_breakup_opinion
+	# 			opinion = 15
+	# 		}
+	# 	}
+	# 	every_spouse = {
+	# 		limit = { NOT = { this = scope:lover } }
+	# 		add_opinion = {# They don't like you for not getting a gift
+	# 			target = root
+	# 			modifier = disappointed_opinion
+	# 			opinion = -10
+	# 		}
+	# 		add_opinion = {# They are envious of your lover
+	# 			target = scope:lover
+	# 			modifier = envy_opinion
+	# 			opinion = -15
+	# 		}
+	# 	}
+	# }
 
 	after = {
 		trigger_event = { 
@@ -740,7 +752,9 @@ dharma_festivals.126 = {# Navaratri begins Color for each day
 			limit = {
 				OR = {
 					has_culture = culture:gujarati
-					has_culture = culture:saurashtra
+					culture = {
+						any_parent_or_above = culture:gujarati
+					}
 				}
 			}
 			trigger_event = { 
@@ -952,7 +966,9 @@ dharma_festivals.131 = {# Animal Sacrifice to Durga
 				capital_province = { geographical_region = world_india_rajastan }
 				NOR = {# Gujarati characters do something else
 					has_culture = culture:gujarati
-					has_culture = culture:saurashtra
+					culture = {
+						any_parent_or_above = culture:gujarati
+					}
 				}
 			}
 			trigger_event = { 

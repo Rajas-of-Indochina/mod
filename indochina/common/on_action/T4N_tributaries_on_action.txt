@@ -73,7 +73,7 @@ T4N_tributaries_on_war_started = {
         if = { #permanent tributary calls his suzerain to defensive war
             limit = {
                 scope:defender = {
-                    exists = var:my_suzerain
+                    has_variable = my_suzerain
                     NOT = {
                         any_war_ally = {
                             this = var:my_suzerain
@@ -183,13 +183,13 @@ T4N_tributaries_on_death = {
     effect = {
         if = {
             limit = {
-                exists = var:suzerain
+                has_variable = suzerain
             }
             trigger_event = { id = tributaries.1 }
         }
         if = {
             limit = {
-                exists = var:my_suzerain
+                has_variable = my_suzerain
             }
             trigger_event = { id = tributaries.2 }
         }
@@ -199,14 +199,14 @@ T4N_tributaries_on_death = {
 quarterly_trib_housekeeping_pulse = {
     trigger = {
         OR = {
-            exists = var:my_suzerain
+            has_variable = my_suzerain
             has_variable_list = permanent_tributaries
         }
     }
     effect = {
         if = { # Reassign tribs to their suzerain if they got detached somehow
             limit = {
-                exists = var:my_suzerain
+                has_variable = my_suzerain
                 NOT = {
                     var:my_suzerain = {
                         is_target_in_variable_list = { name = permanent_tributaries target = prev }
@@ -236,7 +236,7 @@ quarterly_trib_housekeeping_pulse = {
                 }
                 else_if = { # Reassign suzerain to their trib if they were detached somehow
                     limit = {
-                        NOT = { exists = var:my_suzerain }
+                        NOT = { has_variable = my_suzerain }
                     }
                     set_variable = { name = my_suzerain value = scope:suzerain }
                 }
