@@ -1813,3 +1813,81 @@ south_asia.0041 = {# Inform Lankan players of the monks arriving
 	}
 }
 
+# Reformed Indo-Greek Kingdom
+south_asia.0042 = {
+	type = character_event
+	title = south_asia.0042.t
+	desc = south_asia.0042.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		add_prestige = massive_prestige_value
+	}
+
+	option = {
+		# Buddhist syncretism
+		name = south_asia.0042.buddhist
+		trigger = {
+			OR = {
+				has_religion = religion:buddhism_religion
+				has_trait = honest
+				has_trait = calm
+				has_trait = generous
+			}
+		}
+		trait = calm
+		trait = generous
+		trait = honest
+		greco_buddhism_effect = yes
+	}
+
+	option = {
+		# Hindu syncretism
+		name = south_asia.0042.hindu
+		trigger = {
+			OR = {
+				has_religion = religion:hinduism_religion
+				has_trait = honest
+				has_trait = content
+				has_trait = temperate
+			}
+		}
+		trait = content
+		trait = temperate
+		trait = honest
+		greco_hinduism_effect = yes
+	}
+
+	option = {
+		# Zoroastrian syncretism
+		name = south_asia.0042.zoroastrian
+		trigger = {
+			OR = {
+				has_religion = religion:buddhism_religion
+				has_trait = honest
+				has_trait = diligent
+				has_trait = just
+			}
+		}
+		trait = diligent
+		trait = just
+		trait = honest
+		greco_zoroastrianism_effect = yes
+	}
+
+
+	option = {
+		# No syncretism
+		name = south_asia.0042.default
+		indo_greek_flexibility = yes
+	}
+
+	after = {
+		reform_indo_hellenism_effect = yes
+	}
+}

@@ -1,278 +1,101 @@
-﻿# No lists or indexes, only chaos. Keep scrolling down and thou shalt find them.
-
-#############################################
-# Hostility Ending					    	#
-# by Joe Parkin								#
-#############################################
-
-struggle_india_ending_hostility_decision = {
+﻿restore_indo_greek_kingdom_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
 	major = yes
-	title = struggle_india_ending_hostility_decision
-	picture = "gfx/interface/illustrations/decisions/decision_struggle_india_hostility.dds"
-	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/decision_hostility_india.dds"
-	desc = struggle_india_ending_hostility_decision_desc
-	selection_tooltip = struggle_india_ending_hostility_decision_tooltip
-	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
-	is_invisible = yes
-	sort_order = 80
+	desc = restore_indo_greek_kingdom_decision_desc
+
+	ai_check_interval = 120
 
 	is_shown = {
-		has_fp2_dlc_trigger = yes
-	}
-
-	is_valid = {
-		is_independent_ruler = yes
-
-		custom_tooltip = {
-			text = struggle_india_ending_hostility_decision_correct_phase_tt
-			any_character_struggle = {
-				involvement = involved
-				is_struggle_type = indian_struggle
-				is_struggle_phase = struggle_india_phase_hostility
-			}
-		}
-
-		custom_tooltip = {
-			text = struggle_ending_decision_correct_involvement_tt
-			any_character_struggle = {
-				involvement = involved
-				is_struggle_type = indian_struggle
-			}
-		}
-
-		# Hold and completely control two de jure kingdoms of Hispania
+		# capital_county.title_province = {
+		# 	geographical_region = custom_indo_greek_kingdom
+		# }
+		# Need to have a cultural or religious tie to the Hellenes:
 		OR = {
-			custom_tooltip = { #
-				text = struggle_india_ending_hostility_decision_kingdom_tt
-				any_held_title = { # 1st kingdom
-					tier = tier_kingdom
-					de_jure_liege = title:e_spain
-					root = { completely_controls = prev }
-					save_temporary_scope_as = spanish_kingdom
-				}
-				any_held_title = { # 2nd kingdom
-					tier = tier_kingdom
-					de_jure_liege = title:e_spain
-					trigger_if = {
-						limit = { exists = scope:spanish_kingdom }
-						NOT = { this = scope:spanish_kingdom }
-					}
-					root = { completely_controls = prev }
-					save_temporary_scope_as = spanish_kingdom_2
-				}
-			}
-			custom_tooltip = {
-				text = struggle_india_ending_hostility_decision_united_spanish_throne_tt
-				AND = {
-					exists = global_var:unite_the_spanish_thrones_decision_title
-					primary_title = global_var:unite_the_spanish_thrones_decision_title
-				}
+			has_religion = religion:hellenism_religion
+			culture = culture:greek
+			culture = {
+				any_parent_culture = { this = culture:greek }
 			}
 		}
-
-
-		# All your capital kingdom's de jure counties are of your culture and faith
-		trigger_if = {
-			limit = {
-				exists = global_var:unite_the_spanish_thrones_decision_title
-				primary_title = global_var:unite_the_spanish_thrones_decision_title
-			}
-			custom_tooltip = {
-				text = struggle_india_ending_hostility_decision_county_tt
-				capital_county.de_jure_liege.de_jure_liege = {
-					any_de_jure_county = {
-						percent = 0.75
-						culture = root.culture
-						faith = root.faith
-					}
-				}
-			}
-		}
-		trigger_else = {
-			custom_tooltip = {
-				text = struggle_india_ending_hostility_decision_county_tt
-				capital_county.de_jure_liege.de_jure_liege = {
-					any_de_jure_county = {
-						count = all
-						culture = root.culture
-						faith = root.faith
-					}
-				}
-			}
-		}
-
-		# No other realm controls more than 20% of the india region
-		custom_tooltip = {
-			text = struggle_india_ending_hostility_decision_region_tt
-			NOT = {
-				struggle:indian_struggle = {
-					any_involved_ruler = {
-						NOT = { this = root }
-						is_independent_ruler = yes
-						exists = primary_title
-						primary_title = { is_mercenary_company = no }
-						save_temporary_scope_as = indian_realm
-						any_county_in_region = {
-							region = world_india
-							percent > fp2_struggle_hostility_region_percent_decimal_value
-							holder.top_liege = scope:indian_realm
-						}
-					}
-				}
-			}
-		}
-
-		# Completely control at least 2 of the important indian duchies
-		calc_true_if = {
-			amount >= 2
-			completely_controls = title:d_galicia
-			completely_controls = title:d_toledo
-			completely_controls = title:d_cordoba
-			completely_controls = title:d_valencia
-			completely_controls = title:d_barcelona
-		}
-	}
-
-	effect = {
-		##### Major Effects #####
-		show_as_tooltip = {
-			dynasty = { add_dynasty_prestige = 10000 }
-			fp2_struggle_hostility_ender_effect = yes
-		}
-		# Hispania is available!
-		custom_tooltip = fp2_struggle_can_create_empire_of_hispania_tt
-		custom_description_no_bullet = { text = fp2_struggle_house_tt }
-		# Keep the Struggle Clash for your House
-		custom_tooltip = fp2_struggle_can_keep_using_struggle_clash_tt
-		# Boost to culture and faith conversion
-		custom_tooltip = fp2_struggle_hostility_conversion_tt
-		# Damage opinion with other culture/faiths
-		custom_tooltip = fp2_struggle_hostility_opinion_tt
-		custom_tooltip = fp2_struggle_hostility_opinion_negative_tt
-		# Choose Holy War boost, Culture War boost, or both
-		custom_description_no_bullet = { text = fp2_struggle_hostility_list_tt }
-		#custom_tooltip = fp2_struggle_hostility_holy_cb_joint_tt
-		#custom_tooltip = fp2_struggle_hostility_culture_cb_tt
-
-
-
-		show_as_tooltip = {
-			stress_impact = {
-				humble = medium_stress_impact_gain
-				cynical = medium_stress_impact_gain
-			}
-		}
-
-		# Trigger a player facing event as a coda
-		trigger_event = fp2_struggle.0900
-	}
-
-	cost = {}
-
-	ai_check_interval = 120
-
-	ai_potential = { always = yes }
-
-	ai_will_do = { base = 100 }
-}
-
-#############################################
-# Conciliation Ending					    #
-# by Joe Parkin								#
-#############################################
-
-struggle_india_ending_conciliation_decision = {
-	major = yes
-	title = struggle_india_ending_conciliation_decision
-	picture = "gfx/interface/illustrations/decisions/decision_struggle_india_conciliation.dds"
-	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/decision_conciliation_india.dds"
-	desc = struggle_india_ending_conciliation_decision_desc
-	selection_tooltip = struggle_india_ending_conciliation_decision_tooltip
-	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
-	is_invisible = yes
-
-	sort_order = 80
-
-	is_shown = {
-		has_fp2_dlc_trigger = yes
 	}
 
 	is_valid = {
 		is_independent_ruler = yes
-
-		custom_tooltip = {
-			text = struggle_india_ending_conciliation_decision_correct_phase_tt
-			any_character_struggle = {
-				is_struggle_type = indian_struggle
-				is_struggle_phase = struggle_india_phase_conciliation
-			}
+		prestige_level >= 4
+		# # Must be of the right religion: Buddhist, Zoroastrian, Hindu or Greco-Roman
+		OR = {
+			has_religion = religion:hellenism_religion
+			has_religion = religion:zoroastrianism_religion
+			has_religion = religion:buddhism_religion
+			has_religion = religion:hinduism_religion
 		}
-
-		custom_tooltip = {
-			text = struggle_ending_decision_correct_involvement_tt
-			any_character_struggle = {
-				involvement = involved
-				is_struggle_type = indian_struggle
-			}
-		}
-
-		prestige_level >= very_high_prestige_level # Exalted among Men or higher
-
-		# Hold and completely control a de jure kingdom of Hispania
-		custom_tooltip = {
-			text = struggle_india_ending_compromise_decision_kingdom_tt
-			fp2_struggle_ending_hold_de_jure_kingdom_trigger = yes
-		}
-
-		# Every other independent involved ruler in india is allied to you
-		custom_tooltip = {
-			text = struggle_india_ending_conciliation_decision_alliance_tt
-			struggle:indian_struggle = {
-				NOT = {
-					any_involved_ruler = {
-						is_independent_ruler = yes
-						primary_title = { is_mercenary_company = no }
-						primary_title = { is_holy_order = no }
-						NOR = {
-							this = root
-							is_allied_to = root
-						}
-					}
+		# # Must have Greek roots, and either Byzantine or Indo-aryan heritage
+		OR = {
+			culture = culture:greek
+			culture = {
+				any_parent_culture = { this = culture:greek }
+				OR = {
+					has_cultural_pillar = heritage_byzantine
+					has_cultural_pillar = heritage_indo_aryan
 				}
 			}
 		}
-
-		# Control less than 50% of india
-		custom_tooltip = {
-			text = struggle_india_ending_compromise_decision_region_tt
-			fp2_struggle_ending_percent_india_trigger = yes
+		OR = {
+			# Greco-bactria was kinda the predecessor to the Indo-Greek Kingdom
+			highest_held_title_tier <= tier_kingdom
+			has_title = title:e_bactria
 		}
+		completely_controls_region = custom_indo_greek_kingdom_heartland
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_at_peace_adult = yes
 	}
 
 	effect = {
-		##### Major Effects #####
-		show_as_tooltip = {
-			fp2_struggle_conciliation_ender_effect = yes
-			fp2_struggle_conciliation_tooltip_effect = yes
-			fp2_struggle_conciliation_modifier_rewards_effect = yes
+		custom_tooltip = {
+			text = indo_greek_de_jure_tt
 		}
-
-		show_as_tooltip = {
-			stress_impact = {
-				arrogant = medium_stress_impact_gain
-				zealous = medium_stress_impact_gain
+		hidden_effect = {
+			indo_greek_de_jure_effect = yes
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+		}
+		title:e_indo_greek_kingdom = {
+			change_title_holder = {
+				holder = ROOT
+				change = scope:change
 			}
 		}
-
-		# Trigger a player facing event as a coda
-		trigger_event = fp2_struggle.0902
+		resolve_title_and_vassal_change = scope:change
+		show_as_tooltip = {
+			reform_indo_hellenism_effect = yes
+			custom_tooltip = reform_indo_hellenism.desc
+			random_list = {
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.buddhist
+					greco_buddhism_effect = yes
+				}
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.hindu
+					greco_hinduism_effect = yes
+				}
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.zoroastrian
+					greco_zoroastrianism_effect = yes
+				}
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.default
+					indo_greek_flexibility = yes
+					#Always available
+				}
+			}
+		}
 	}
-
-	cost = {}
-
-	ai_check_interval = 120
-
-	ai_potential = { always = yes }
-
-	ai_will_do = { base = 100 }
 }
