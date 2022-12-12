@@ -905,3 +905,94 @@ unsettle_nomadic_realm_effect = {
 		}
 	}
 }
+reform_indo_hellenism_effect = {
+	faith:indo_hellenism = {
+		#Remove conversion block
+		remove_variable = block_conversion_till_decision_taken
+		# And you are organizing this faith
+		set_variable = { name = has_been_reformed }
+		remove_doctrine = unreformed_faith_doctrine
+	}
+
+	set_character_faith_with_conversion = faith:indo_hellenism
+}
+
+greco_buddhism_effect = {
+	faith:indo_hellenism = {
+		remove_doctrine = tenet_adaptive
+		add_doctrine = tenet_dharmic_pacifism
+		add_doctrine = doctrine_right_to_rule_rajadharma
+		add_doctrine = special_doctrine_is_buddhist_faith
+	}
+}
+
+greco_hinduism_effect = {
+	faith:indo_hellenism = {
+		remove_doctrine = tenet_adaptive
+		add_doctrine = tenet_monasticism
+		add_doctrine = doctrine_right_to_rule_rajadharma
+		add_doctrine = special_doctrine_is_hinduism_faith
+		add_doctrine = sampradaya_vaishnavism_doctrine
+	}
+}
+
+
+greco_zoroastrianism_effect = {
+	faith:indo_hellenism = {
+		remove_doctrine = tenet_adaptive
+		add_doctrine = tenet_sky_burials
+		add_doctrine = doctrine_right_to_rule_divine
+		remove_doctrine = doctrine_no_head
+		add_doctrine = doctrine_spiritual_head
+	}
+	if = {
+		limit = {
+			can_create_head_of_faith_title_trigger = { FAITH = faith:indo_hellenism }
+		}
+		faith:indo_hellenism = {
+			save_scope_as = faith
+		}
+		create_head_of_faith_title_effect = yes
+	}
+}
+
+
+indo_greek_flexibility = {
+	faith:indo_hellenism = {
+		add_doctrine = doctrine_right_to_rule_divine
+		add_doctrine = tenet_unreformed_syncretism
+	}
+}
+
+indo_greek_de_jure_effect = {
+	title:k_sindh = {
+		add_to_temporary_list = igk
+	}
+	title:k_punjab = {
+		add_to_temporary_list = igk
+	}
+	title:k_kashmir = {
+		add_to_temporary_list = igk
+	}
+	title:k_makran = {
+		add_to_temporary_list = igk
+	}
+	title:k_kabulistan = {
+		add_to_temporary_list = igk
+	}
+
+	every_in_list = {
+		list = igk
+		limit = {
+			OR = {
+				this = title:k_sindh
+				this = title:k_punjab
+				this.holder = ROOT
+				ROOT = {
+					completely_controls = PREV
+				}
+			}
+		}
+		set_de_jure_liege_title = title:e_indo_greek_kingdom
+	}
+}

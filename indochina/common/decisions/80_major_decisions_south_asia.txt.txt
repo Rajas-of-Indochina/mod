@@ -472,3 +472,106 @@ spread_theravada_faith_decision = {
 		base = 100
 	}
 }
+
+# Re-establish Yavanarajya
+restore_indo_greek_kingdom_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	major = yes
+	desc = restore_indo_greek_kingdom_decision_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		# capital_county.title_province = {
+		# 	geographical_region = custom_indo_greek_kingdom
+		# }
+		# Need to have a cultural or religious tie to the Hellenes:
+		OR = {
+			has_religion = religion:hellenism_religion
+			culture = culture:greek
+			culture = {
+				any_parent_culture = { this = culture:greek }
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		prestige_level >= 4
+		# # Must be of the right religion: Buddhist, Zoroastrian, Hindu or Greco-Roman
+		OR = {
+			has_religion = religion:hellenism_religion
+			has_religion = religion:zoroastrianism_religion
+			has_religion = religion:buddhism_religion
+			has_religion = religion:hinduism_religion
+		}
+		# # Must have Greek roots, and either Byzantine or Indo-aryan heritage
+		OR = {
+			culture = culture:greek
+			culture = {
+				any_parent_culture = { this = culture:greek }
+				OR = {
+					has_cultural_pillar = heritage_byzantine
+					has_cultural_pillar = heritage_indo_aryan
+				}
+			}
+		}
+		OR = {
+			# Greco-bactria was kinda the predecessor to the Indo-Greek Kingdom
+			highest_held_title_tier <= tier_kingdom
+			has_title = title:e_bactria
+		}
+		completely_controls_region = custom_indo_greek_kingdom_heartland
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_at_peace_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = indo_greek_de_jure_tt
+		}
+		hidden_effect = {
+			indo_greek_de_jure_effect = yes
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+		}
+		title:e_indo_greek_kingdom = {
+			change_title_holder = {
+				holder = ROOT
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		show_as_tooltip = {
+			reform_indo_hellenism_effect = yes
+			custom_tooltip = reform_indo_hellenism.desc
+			random_list = {
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.buddhist
+					greco_buddhism_effect = yes
+				}
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.hindu
+					greco_hinduism_effect = yes
+				}
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.zoroastrian
+					greco_zoroastrianism_effect = yes
+				}
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.default
+					indo_greek_flexibility = yes
+					#Always available
+				}
+			}
+		}
+	}
+}
