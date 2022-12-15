@@ -736,7 +736,6 @@ greco_hinduism_effect = {
 	}
 }
 
-
 greco_zoroastrianism_effect = {
 	faith:indo_hellenism = {
 		remove_doctrine = tenet_adaptive
@@ -755,7 +754,6 @@ greco_zoroastrianism_effect = {
 		create_head_of_faith_title_effect = yes
 	}
 }
-
 
 indo_greek_flexibility = {
 	faith:indo_hellenism = {
@@ -794,5 +792,29 @@ indo_greek_de_jure_effect = {
 			}
 		}
 		set_de_jure_liege_title = title:e_indo_greek_kingdom
+	}
+}
+
+indo_greek_culture_decision_effect = {
+	set_culture = culture:indo_greek
+	culture:indo_greek = {
+		reset_culture_creation_date = yes
+	}
+
+	every_sub_realm_county = {
+		limit = {
+			OR = {
+				culture = { has_cultural_pillar = heritage_indo_aryan }
+				culture = { has_cultural_pillar = language_greek }
+			}
+		}
+		hidden_effect = {	
+			random_list = {
+				40 = {
+					set_county_culture = culture:indo_greek
+				}
+				60 = {}
+			}
+		}
 	}
 }
