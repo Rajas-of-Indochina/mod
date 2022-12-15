@@ -241,11 +241,91 @@ struggle_india_ending_conciliation_decision = {
 				}
 			}
 		}
+<<<<<<< HEAD
 
 		# Control less than 50% of india
 		custom_tooltip = {
 			text = struggle_india_ending_compromise_decision_region_tt
 			fp2_struggle_ending_percent_india_trigger = yes
+=======
+		hidden_effect = {
+			trigger_event = south_asia.0042
+		}
+	}
+}
+
+indo_greek_culture_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	major = yes
+	desc = indo_greek_culture_decision_desc
+	ai_check_interval = 120
+
+	is_shown = {
+		capital_county.title_province = {
+			OR = {
+				# gotte be kinda sorta near historical indo-greek lands
+				geographical_region = world_india_rajastan
+				geographical_region = custom_indo_greek_kingdom
+			}
+		}
+		OR = {
+			# Needs to be either Indo-Aryan or have some kind of Greek cultural roots
+			culture = { has_cultural_pillar = heritage_indo_aryan }
+			culture = { any_parent_or_above = { this = culture:greek } }
+			culture = { has_cultural_pillar = language_greek }
+			# Or at least speek Greek
+			knows_language = language_greek
+		}
+	}
+
+	is_valid = {
+		# Famous
+		prestige_level >= 3
+		# Speeks Greek
+		knows_language = language_greek
+		# Greeks (or post-greeks) and Indo-Aryans coexist within your realm
+		OR = {
+			AND = {
+				any_powerful_vassal = {
+					culture = {
+						OR = {
+							this = culture:greek
+							any_parent_or_above = { this = culture:greek }
+							culture = { has_cultural_pillar = language_greek }
+						}
+					}
+				}
+				any_powerful_vassal = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+				}
+			}
+			AND = {
+				any_sub_realm_county = {
+					culture = {
+						OR = {
+							this = culture:greek
+							any_parent_or_above = { this = culture:greek }
+							culture = { has_cultural_pillar = language_greek }
+						}
+					}
+				}
+				any_sub_realm_county = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+				}
+			}
+
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_at_peace_adult = yes
+	}
+
+	effect = {
+		add_gold = 1
+		show_as_tooltip = {
+			indo_greek_culture_decision_effect = yes
+>>>>>>> 58ce9ef5 (More Eastern Mycenaeaboo Decisions, groundwork for struggle stuff)
 		}
 	}
 
