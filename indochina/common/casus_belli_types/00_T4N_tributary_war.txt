@@ -19,7 +19,7 @@ permanent_tributary_war_cb = {
                 tier >= tier_county
             }
             root.primary_title.tier >= scope:defender.primary_title.tier
-            NOT = { exists = var:my_suzerain } # defender does not have a suzerain
+            NOT = { has_variable = my_suzerain } # defender does not have a suzerain
             custom_description = {
                 text = not_a_tributary
                 subject = scope:defender
@@ -275,7 +275,7 @@ one_time_tributary_war_cb = {
                 tier >= tier_county
             }
             root.primary_title.tier >= scope:defender.primary_title.tier
-            NOT = { exists = var:my_suzerain } # defender does not have a suzerain
+            NOT = { has_variable = my_suzerain } # defender does not have a suzerain
             custom_description = {
                 text = not_a_tributary
                 subject = scope:defender
@@ -797,7 +797,7 @@ independence_tributary_war_cb = {
 
     allowed_against_character = {
         scope:defender = {
-            exists = var:suzerain
+            has_variable = suzerain
             OR = {
                 is_target_in_variable_list = { name = non_permanent_tributaries target = scope:attacker }
                 is_target_in_variable_list = { name = permanent_tributaries target = scope:attacker }
