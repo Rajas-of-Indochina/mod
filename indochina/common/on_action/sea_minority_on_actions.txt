@@ -2,6 +2,7 @@
 yearly_global_pulse = {
 	on_actions = {
 		on_yearly_sea_minority_maintainance
+		indian_struggle_minority_spread
 	}
 }
 
@@ -257,6 +258,103 @@ spawn_minority_characters = {
 			clear_variable_list = potential_faiths
 			clear_saved_scope = faith_to_spawn
 			clear_saved_scope = culture_to_spawn
+		}
+	}
+}
+
+# Root is an independent landed character
+indian_struggle_minority_spread = {
+	effect = {
+		every_realm_county = {
+			limit = {
+				any_neighbor_county = {
+					NOT = { holder.top_liege = prev.holder.top_liege } # Different realm
+					NOR = {
+						title_province.religion = prev.holder.top_liege.religion # Neither the owner's religion nor the county's
+						title_province.religion = prev.title_province.religion
+					}
+					OR = {
+						AND = {
+							title_province.religion = religion:buddhism_religion
+							any_county_struggle = { has_struggle_phase = struggle_india_buddhist_dominance }
+						}
+						AND = {
+							title_province.religion = religion:hinduism_religion
+							any_county_struggle = { has_struggle_phase = struggle_india_hindu_dominance }
+						}
+						AND = {
+							title_province.religion = religion:jainism_religion
+							any_county_struggle = { has_struggle_phase = struggle_india_jain_dominance }
+						}
+						AND = {
+							title_province.religion = religion:indian_religion
+							any_county_struggle = { has_struggle_phase = struggle_india_indian_animist_dominance }
+						}
+						AND = {
+							title_province.religion = religion:_religion
+							any_county_struggle = { has_struggle_phase = struggle_india_muslim_dominance }
+						}
+						AND = {
+							NOR = {
+								title_province.religion = religion:buddhism_religion
+								title_province.religion = religion:hinduism_religion
+								title_province.religion = religion:jainism_religion
+								title_province.religion = religion:indian_religion
+								title_province.religion = religion:islam_religion
+							}
+							any_county_struggle = { has_struggle_phase = struggle_india_foreign_dominance }
+						}
+					}
+				}
+			}
+			random_neighbor_county = {
+				limit = {					
+					NOT = { holder.top_liege = prev.holder.top_liege } # Different realm
+					NOR = {
+						title_province.religion = prev.holder.top_liege.religion # Neither the owner's religion nor the county's
+						title_province.religion = prev.title_province.religion
+					}
+					OR = {
+						AND = {
+							title_province.religion = religion:buddhism_religion
+							any_county_struggle = { has_struggle_phase = struggle_india_buddhist_dominance }
+						}
+						AND = {
+							title_province.religion = religion:hinduism_religion
+							any_county_struggle = { has_struggle_phase = struggle_india_hindu_dominance }
+						}
+						AND = {
+							title_province.religion = religion:jainism_religion
+							any_county_struggle = { has_struggle_phase = struggle_india_jain_dominance }
+						}
+						AND = {
+							title_province.religion = religion:indian_religion
+							any_county_struggle = { has_struggle_phase = struggle_india_indian_animist_dominance }
+						}
+						AND = {
+							title_province.religion = religion:_religion
+							any_county_struggle = { has_struggle_phase = struggle_india_muslim_dominance }
+						}
+						AND = {
+							NOR = {
+								title_province.religion = religion:buddhism_religion
+								title_province.religion = religion:hinduism_religion
+								title_province.religion = religion:jainism_religion
+								title_province.religion = religion:indian_religion
+								title_province.religion = religion:islam_religion
+							}
+							any_county_struggle = { has_struggle_phase = struggle_india_foreign_dominance }
+						}
+					}
+				}
+				save_scope_as = source_county
+			}
+			random_list = {
+				40 = {
+					trigger_event = { on_action = do_culture_faith_migration }
+				}
+				60 = {}
+			}
 		}
 	}
 }

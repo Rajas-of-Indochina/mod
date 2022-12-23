@@ -10,6 +10,24 @@
 						multiply = prestige_level
 					}
 				}
+				scope:vassal = {					
+					if = {
+						limit = {
+							AND = {
+								scope:liege = { # Dominant faith co-religionist vassals contribute more
+									religion = scope:vassal.religion
+									india_struggle_dominant_phase_trigger = yes
+								}
+								any_character_struggle = {
+									is_struggle_type = indian_struggle
+								}
+							}
+						}
+						add = {
+							value = 0.05
+						}
+					}
+				}
 			}
 			tax = {
 				value = 0
@@ -18,6 +36,24 @@
 					add = {
 						value = 0.05
 						multiply = prestige_level
+					}
+				}
+				scope:vassal = {					
+					if = {
+						limit = {
+							AND = {
+								scope:liege = { # Dominant faith co-religionist vassals contribute more
+									religion = scope:vassal.religion
+									india_struggle_dominant_phase_trigger = yes
+								}
+								any_character_struggle = {
+									is_struggle_type = indian_struggle
+								}
+							}
+						}
+						add = {
+							value = 0.05
+						}
 					}
 				}
 			}

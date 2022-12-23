@@ -80,3 +80,50 @@ ghazi_special_rights = {
 		}
 	}
 }
+
+jizya_special_rights = {
+	display_mode = checkbox
+	is_shown = {
+		scope:liege.faith = {
+			has_doctrine = tenet_tax_nonbelievers
+		}
+		NOT = {	scope:vassal.faith = scope:liege.faith }
+	}
+
+	obligation_levels = {
+		jizya_special_rights_default = {
+			default = yes
+			position = { 0 0 }
+
+			ai_liege_desire = 1
+			ai_vassal_desire = 0
+		}
+		jizya_special_rights_granted = {
+			is_valid = {
+				scope:liege.faith = {
+					has_doctrine = tenet_tax_nonbelievers
+				}
+				NOT = {	scope:vassal.faith = scope:liege.faith }
+				scope:liege = { # Jizya more powerful while dominant
+					india_struggle_dominant_phase_trigger = yes
+				}
+			}
+			parent = jizya_special_rights_default
+			position = { 1 0 }
+
+			vassal_opinion = 20
+			tax_factor = 0.4
+			levies_factor = -0.4
+
+			vassal_modifier = {
+				monthly_prestige = -0.25
+			}
+
+			flag = vassal_contract_cannot_revoke_titles
+			flag = religiously_protected
+
+			ai_liege_desire = @ai_standard_liege_desire
+			ai_vassal_desire = 0
+		}
+	}
+}

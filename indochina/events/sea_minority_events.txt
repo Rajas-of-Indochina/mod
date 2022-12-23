@@ -159,6 +159,31 @@ scripted_effect expel_religious_minorities_effect = {
 			}
 		}
 	}
+
+	if = {
+		limit = {
+			NOR = {
+				india_struggle_dominant_phase_trigger = no # Not dominant
+				scope:expelled_faith.religion = ROOT.religion # Different religion
+			}
+			any_character_struggle = {
+				is_struggle_type = indian_struggle # but still participating in the Indian struggle
+			}
+		}
+		add_piety = {
+			every_in_list = {
+				list = small_minority_counties_seized_from
+				add = this.development_level
+			}
+			every_in_list = {
+				list = large_minority_counties_seized_from
+				add = {
+					value = this.development_level
+					multiply = 2
+				}
+			}
+		}
+	}
 }
 
 scripted_effect expel_cultural_minorities_effect = {
