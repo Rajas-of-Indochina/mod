@@ -1086,12 +1086,14 @@ sea_title_event.1000 = {
 		if = {
 			limit = {
 				liege = { has_government = tribal_government }
+				NOT = { primary_title.title_province = { has_holding_type = city_holding } }
 			}
 			change_government = tribal_government
 		}
 		else_if = {
 			limit = {
 				liege = { has_government = nomadic_government }
+				NOT = { primary_title.title_province = { has_holding_type = city_holding } }
 			}
 			change_government = nomadic_government
 		}
@@ -1107,20 +1109,6 @@ sea_title_event.1000 = {
 			}
 			change_government = chinese_government
 		}
-	}
-}
-
-# Convert from Chinese gov to vassal gov
-sea_title_event.1001 = {
-	hidden = yes
-
-	trigger = {
-		has_government = chinese_government
-		exists = liege
-		NOT = { liege = this }
-	}
-	immediate = {
-		change_government = chinese_vassal_government
 	}
 }
 

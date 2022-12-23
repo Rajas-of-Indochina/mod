@@ -797,11 +797,6 @@ dharma_buddhism.054 = {# The Mahasiddha Naropa
 	override_background = {
 		event_background = tibetan_temple
 	}
-	left_portrait = {
-		character = root
-		animation = personality_rational
-	}
-	
 	immediate = {
 		set_global_variable = {
 			name = dharma_buddhism_naropa_arrived
@@ -817,10 +812,23 @@ dharma_buddhism.054 = {# The Mahasiddha Naropa
 				save_scope_as = mahasiddha_naropa_county
 			}
 			title:c_mudgagiri.holder = {
-				save_scope_as = mahasiddha_naropa_buddy
-				dharma_spawn_mahasiddha_naropa_effect = yes
+				create_character = {
+					template = mahasiddha_naropa_character_template
+					name = Naropa
+					employer = title:c_mudgagiri.holder
+					save_scope_as = mahasiddha_naropa
+				}
 			}
 		}
+	}
+
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:mahasiddha_naropa
+		animation = personality_zealous
 	}
 	
 	trigger = {
@@ -843,10 +851,6 @@ dharma_buddhism.055 = {# Atisa Arrives in a Tibetan Buddhist Kingdom
 	override_background = {
 		event_background = tibetan_temple
 	}
-	left_portrait = {
-		character = root
-		animation = personality_rational
-	}	
 	
 	immediate = {
 		set_global_variable = {
@@ -864,10 +868,24 @@ dharma_buddhism.055 = {# Atisa Arrives in a Tibetan Buddhist Kingdom
 				save_scope_as = mahasiddha_atisa_county
 			}
 			title:k_guge.holder = {
-				save_scope_as = atisa_buddy
-				dharma_spawn_atisa_effect = yes
+				create_character = {
+					template = atisa_character_template
+					name = Atisa
+					employer = title:k_guge.holder
+					save_scope_as = atisa
+				}
 			}
 		}
+	}
+
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	right_portrait = {
+		character = scope:atisa
+		animation = personality_rational
 	}
 
 	trigger = {
@@ -1043,10 +1061,6 @@ dharma_buddhism.060 = {# Marpa sets up his seat in a Tibetan Monastary
 	override_background = {
 		event_background = tibetan_temple
 	}
-	left_portrait = {
-		character = root
-		animation = personality_rational
-	}
 
 	immediate = {
 		set_global_variable = {
@@ -1063,12 +1077,25 @@ dharma_buddhism.060 = {# Marpa sets up his seat in a Tibetan Monastary
 				save_scope_as = marpa_county
 			}
 			title:d_lhatok.holder = {
-				save_scope_as = marpa_buddy
-				dharma_spawn_marpa_effect = yes
+				create_character = {
+					template = marpa_character_template
+					name = Marpa
+					employer = title:d_lhatok.holder
+					save_scope_as = marpa
+				}
 			}
 		}
 	}
 	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:marpa
+		animation = personality_zealous
+	}
+
 	trigger = {
 		exists = global_var:dharma_buddhism_naropa_arrived
 		not = {	exists = global_var:dharma_buddhism_marpa_arrived }
@@ -3203,25 +3230,19 @@ dharma_buddhism.130 = {# Departing the Monastary for home
 	immediate = {
 		if = {
 			limit = {
-				var:dharma_buddhist_retreat_outcome_counter = {
-					compare_value <= 9
-				}
+				var:dharma_buddhist_retreat_outcome_counter <= 9
 			}
 			add_character_flag = buddhist_retreat_mystic
 		}
 		else_if = {
 			limit = {
-				var:dharma_buddhist_retreat_outcome_counter = {
-					compare_value <= 6
-				}
+				var:dharma_buddhist_retreat_outcome_counter <= 6
 			}
 			add_character_flag = buddhist_retreat_better_person
 		}
 		else_if = {
 			limit = {
-				var:dharma_buddhist_retreat_outcome_counter = {
-					compare_value <= 3
-				}
+				var:dharma_buddhist_retreat_outcome_counter <= 3
 			}
 			add_character_flag = buddhist_retreat_pious
 		}

@@ -3273,3 +3273,31 @@ language_kaurareg = {
 
 	color = kaurareg
 }
+language_west_himalayan = {# Zhangzhung
+	type = language
+	is_shown = {
+		language_is_shown_trigger = {
+			LANGUAGE = language_west_himalayan
+		}
+	}
+	parameters = {
+		language_group_tibeto_burman = yes
+		language_family_sino_tibetan = yes
+	}
+	ai_will_do = {
+		value = 10
+		if = {
+			limit = { has_cultural_pillar = language_west_himalayan }
+			multiply = same_language_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_group_tibeto_burman }
+			multiply = same_language_group_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_family_sino_tibetan }
+			multiply = same_language_family_choice_factor
+		}
+	}
+	color = { 1.0 0.4 0.0 }
+}

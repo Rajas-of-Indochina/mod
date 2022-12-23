@@ -1,9 +1,12 @@
 ﻿#######################################
 # General Decisions
 #######################################
-go_on_pilgrimage_decision = {# go on a pilgrimage
+
+go_on_pilgrimage_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
 	ai_check_interval = 60
+
+	sort_order = 64
 
 	desc = go_on_pilgrimage_decision_desc
 	selection_tooltip = go_on_pilgrimage_decision_tooltip
@@ -12,19 +15,7 @@ go_on_pilgrimage_decision = {# go on a pilgrimage
 
 	is_shown = {
 		is_landed = yes
-		NOR = {
-			# These Faiths historically shunned going on pilgrimages, saying they were a waste of time & money.
-			faith = faith:waldensian
-			faith = faith:paulician
-			faith = faith:lollard
-		}
-
-		# Also we must have an actual holy site we can visit.
-		faith = {	
-			any_holy_site = {
-				exists = this
-			}
-		}
+		believes_in_pilgrimage_trigger = yes
 	}
 
 	is_valid_showing_failures_only = {
@@ -90,29 +81,23 @@ go_on_pilgrimage_decision = {# go on a pilgrimage
 			limit = { religion = religion:jainism_religion }
 			trigger_event = pilgrimage.0004
 		}
-		if = {# Hindu Pilgrimages
+		else_if = {# Hindu Pilgrimages
 			limit = { religion = religion:hinduism_religion }
 			trigger_event = pilgrimage.0006
 		}
-		if = {# Buddhist Pilgrimages
+		else_if = {# Buddhist Pilgrimages
 			limit = { religion = religion:buddhism_religion }
 			trigger_event = pilgrimage.0030
 		}		
-		else_if = {# Everyone Else
-			limit = { 
-				not = {
-					religion = religion:jainism_religion 
-					religion = religion:hinduism_religion 
-					religion = religion:buddhism_religion 
-				} 
-			}
+		else = {# Everyone Else
 			trigger_event = pilgrimage.0001
 		}
-
 	}
 
 	ai_potential = {
 		is_landed = yes
+		is_available_adult = yes
+		short_term_gold > pilgrimage_minimum_cost
 	}
 
 	ai_will_do = {
@@ -148,6 +133,7 @@ go_on_pilgrimage_decision = {# go on a pilgrimage
 		}
 	}
 }
+
 start_hunt_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_activity.dds"
 	ai_check_interval = 60
@@ -279,7 +265,12 @@ select_personal_deity_tibet_decision = {# Tibetan Gods and Goddesses
 	is_shown = {
 		OR = {
 			religion = religion:bon_religion
-			faith = faith:lamaism
+			OR = {
+				faith = faith:lamaism
+				faith = faith:gelug
+				faith = faith:sakya
+				faith = faith:kagyu
+			}
 		}
 	}
 
@@ -970,8 +961,7 @@ dharma_adopt_tibetan_school = {# Follow a Tibetan Buddhist School
 	}
 	
 	is_valid = {
-		has_perk = faithful_perk
-		faith = faith:mahayana
+		faith = faith:lamaism
 	}
 	
 	is_valid_showing_failures_only = {
