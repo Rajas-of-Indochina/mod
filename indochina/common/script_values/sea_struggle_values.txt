@@ -1,0 +1,435 @@
+﻿
+##################################################
+# Decisions
+
+##### Struggle Ending Decisions #####
+
+### Common
+
+# Counts every county in region, to check against
+struggle_tibet_ending_ending_decision_region_total_value = {
+	value = 0
+	every_county_in_region = {
+		region = world_tibet
+		add = 1
+	}
+}
+
+# Counts independent involved realms in Tibet, to compare
+struggle_tibet_ending_ending_decision_foreign_realm_total_value = {
+	value = 0
+	struggle:tibetan_struggle = {
+		every_involved_ruler = {
+			limit = {
+				NOT = { this = root }
+				is_independent_ruler = yes
+				primary_title = { is_holy_order = no }
+				primary_title = { is_mercenary_company = no }
+			}
+			add = 1
+		}
+	}
+}
+
+# Counts completely controlled de jure kingdoms of Hispania
+tibetan_struggle_ending_kingdom_counter_value = {
+	every_held_title = {
+		limit = {
+			tier = tier_kingdom
+			de_jure_liege = title:e_tibet
+			root = { completely_controls = prev }
+		}
+		add = 1
+	}
+}
+
+### Hostility
+
+# Parameter for conversion speed multiplier
+tibetan_struggle_hostility_conversion_value = 1.5
+
+# Parameter for culture and faith opinion loss
+tibetan_struggle_hostility_opinion_value = 15
+
+tibetan_struggle_hostility_opinion_negative_value = -30
+
+# Paramter for cultural acceptance loss
+tibetan_struggle_hostility_culture_acceptance_value = -50
+
+tibetan_struggle_hostility_culture_acceptance_large_value = -75
+
+# Counter for de jure capital kingdom's total counties
+tibetan_struggle_hostility_county_total_value = {
+	capital_county.de_jure_liege.de_jure_liege = {
+		every_de_jure_county = { add = 1 }
+	}
+}
+
+tibetan_struggle_hostility_county_total_light_value = {
+	capital_county.de_jure_liege.de_jure_liege = {
+		every_de_jure_county = { add = 1 }
+	}
+	multiply = 0.75
+}
+
+# Counter for de jure capital kingdom's same culture and faith counties
+tibetan_struggle_hostility_county_counter_value = {
+	capital_county.de_jure_liege.de_jure_liege = {
+		every_de_jure_county = {
+			limit = {
+				culture = root.culture
+				faith = root.faith
+			}
+			add = 1
+		}
+	}
+}
+
+# Counter for other rulers who own too much of Tibet
+tibetan_struggle_hostility_region_counter_value = {
+	struggle:tibetan_struggle = {
+		every_involved_ruler = {
+			limit = {
+				NOT = { this = root }
+				is_independent_ruler = yes
+				primary_title = { is_holy_order = no }
+				primary_title = { is_mercenary_company = no }
+				any_county_in_region = {
+					region = world_tibet
+					percent > tibetan_struggle_hostility_region_percent_decimal_value # set by tibetan_struggle_hostility_region_percent_value
+					holder.top_liege = prev
+				}
+			}
+			add = 1
+		}
+	}
+}
+
+# Paramater for de jure kingdoms required
+tibetan_struggle_hostility_kingdom_total_value = 2
+
+# Paramameter for percentage of Tibet that must be controlled
+tibetan_struggle_hostility_region_percent_value = 80
+
+# Uses above to plug in to script as a decimal
+tibetan_struggle_hostility_region_percent_decimal_value = {
+	value = tibetan_struggle_hostility_region_percent_value
+	divide = 100
+	max = 1
+}
+
+### Compromise
+
+# Counter for controlled counties in Tibet
+struggle_tibet_ending_compromise_decision_region_owned_value = {
+	value = 0
+	every_county_in_region = {
+		region = world_tibet
+		limit = { holder.top_liege = root }
+		add = 1
+	}
+}
+
+# Percentage of Tibetan counties owned
+struggle_tibet_ending_compromise_decision_region_owned_percent_value = {
+	value = struggle_tibet_ending_compromise_decision_region_owned_value
+	divide = struggle_tibet_ending_ending_decision_region_total_value
+	multiply = 100
+}
+
+# Parameter for mininmum opinion
+struggle_tibet_ending_compromise_decision_opinion_value = {
+	value = 60
+}
+
+# Counter for hooked and friendly rulers
+struggle_tibet_ending_compromise_decision_opinion_counter_value = {
+	value = 0
+	struggle:tibetan_struggle = {
+		every_involved_ruler = {
+			limit = {
+				NOT = { this = root }
+				is_independent_ruler = yes
+				primary_title = { is_holy_order = no }
+				primary_title = { is_mercenary_company = no }
+				save_temporary_scope_as = this_character
+				OR = {
+					root = { has_strong_hook = scope:this_character }
+					opinion = {
+						target = root
+						value >= struggle_tibet_ending_compromise_decision_opinion_value
+					}
+				}
+			}
+			add = 1
+		}
+	}
+}
+
+# Counter for Tibetan counties owned by non-Involved
+struggle_tibet_ending_compromise_decision_region_interloper_value = {
+	value = 0
+	every_county_in_region = {
+		region = world_tibet
+		limit = {
+			holder.top_liege = { fp2_character_involved_in_struggle_trigger = no }
+		}
+		add = 1
+	}
+}
+
+# Percentage of Tibetan counties owned by non-Involved
+struggle_tibet_ending_compromise_decision_region_interloper_percent_value = {
+	value = struggle_tibet_ending_compromise_decision_region_interloper_value
+	divide = struggle_tibet_ending_ending_decision_region_total_value
+	multiply = 100
+}
+
+# Counter for independent king or higher Involved rulers
+struggle_tibet_ending_compromise_decision_independent_counter_value = {
+	value = 0
+	struggle:tibetan_struggle = {
+		every_involved_ruler = {
+			limit = {
+				NOT = { this = root }
+				is_independent_ruler = yes
+				primary_title = {
+					is_mercenary_company = no
+					is_holy_order = no
+					tier >= tier_kingdom
+				}
+			}
+			add = 1
+		}
+	}
+}
+
+# Counter for inter-Involved character wars
+struggle_tibet_ending_compromise_decision_war_counter_value = {
+	struggle:tibetan_struggle = {
+		every_involved_ruler = {
+			limit = {
+				is_independent_ruler = yes
+				primary_title = { is_mercenary_company = no }
+				primary_title = { is_holy_order = no }
+				any_primary_war_enemy = {
+					is_independent_ruler = yes
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = tibetan_struggle
+					}
+					primary_title = { is_holy_order = no }
+					primary_title = { is_mercenary_company = no }
+				}
+			}
+			add =  {
+				value = 0
+				if = {
+					 limit = {
+					 	any_character_war = {
+							OR = {
+								AND = {
+									primary_attacker = prev
+									primary_defender = {
+										any_character_struggle = {
+											involvement = involved
+											is_struggle_type = tibetan_struggle
+										}
+										is_independent_ruler = yes
+										primary_title = { is_mercenary_company = no }
+									}
+								}
+								AND = {
+									primary_defender = prev
+									primary_attacker = {
+										any_character_struggle = {
+											involvement = involved
+											is_struggle_type = tibetan_struggle
+										}
+										is_independent_ruler = yes
+										primary_title = { is_mercenary_company = no }
+									}
+								}
+							}
+						}
+					 }
+					add = 0.5 # they are both primary participant so they will add 0.5 each
+				}
+				else = {
+					add = 1 # only one of them is primary participant, so we need to add 1
+				}
+			}
+		}
+	}
+}
+
+# Paramameter for percentage of Tibet that you cannot control
+tibetan_struggle_compromise_owned_percent_value = 50
+
+# Uses above to plug in to script as a decimal
+tibetan_struggle_compromise_owned_percent_decimal_value = {
+	value = tibetan_struggle_compromise_owned_percent_value
+	divide = 100
+	max = 1
+}
+
+# Paramameter for percentage of Tibet that no other Involved ruler can control
+tibetan_struggle_compromise_involved_percent_value = 50
+
+# Uses above to plug in to script as a decimal
+tibetan_struggle_compromise_involved_percent_decimal_value = {
+	value = tibetan_struggle_compromise_involved_percent_value
+	divide = 100
+	max = 1
+}
+
+# Paramameter for percentage of Tibet that no Uninvolved ruler can control
+tibetan_struggle_compromise_uninvolved_percent_value = 25
+
+# Uses above to plug in to script as a decimal
+tibetan_struggle_compromise_uninvolved_percent_decimal_value = {
+	value = tibetan_struggle_compromise_uninvolved_percent_value
+	divide = 100
+	max = 1
+}
+
+### Conciliation
+
+# Counter for allied Involved rulers
+struggle_tibet_ending_conciliation_decision_alliance_counter_value = {
+	value = 0
+	struggle:tibetan_struggle = {
+		every_involved_ruler = {
+			limit = {
+				NOT = { this = root }
+				is_independent_ruler = yes
+				primary_title = { is_holy_order = no }
+				primary_title = { is_mercenary_company = no }
+				faith = root.faith
+			}
+			add = 1
+		}
+	}
+}
+
+# Parameter for num de jure kingdoms of Tibet must be owned
+tibetan_struggle_conciliation_kingdom_total_value = 1
+
+# Parameter for cultural acceptance gain
+tibetan_struggle_conciliation_culture_acceptance_value = 50
+
+tibetan_struggle_secure_tibetan_foothold_years_value = 15
+
+tibetan_struggle_secure_tibetan_foothold_faith_target_percent_value = 50
+
+tibetan_struggle_secure_tibetan_foothold_faith_total_value = {
+	if = {
+		limit = { exists = scope:tibetan_kingdom_temp }
+		scope:tibetan_kingdom_temp = {
+			every_de_jure_county = { add = 1 }
+		}
+	}
+	min = 1
+}
+
+tibetan_struggle_secure_tibetan_foothold_faith_value = {
+	value = 0
+	if = {
+		limit = { exists = scope:tibetan_kingdom_temp }
+		scope:tibetan_kingdom_temp = {
+			every_de_jure_county = {
+				limit = { faith = holder.top_liege.faith }
+				add = 1
+			}
+		}
+	}
+	min = 1
+}
+
+tibetan_struggle_secure_tibetan_foothold_faith_percent_value = {
+	value = tibetan_struggle_secure_tibetan_foothold_faith_value
+	divide = tibetan_struggle_secure_tibetan_foothold_faith_total_value
+	multiply = 100
+}
+
+##### Religion values #####
+
+# Total Tibetan counties of my Religion
+tibetan_struggle_secure_tibetan_foothold_religion_total_value = {
+	value = 0
+	every_county_in_region = {
+		region = world_tibet
+		limit = { religion = root.religion }
+		add = 1
+	}
+}
+
+# Held Tibetan counties of my Religion
+tibetan_struggle_secure_tibetan_foothold_religion_owned_value = {
+	value = 0
+	every_county_in_region = {
+		region = world_tibet
+		limit = {
+			religion = root.religion
+			holder.top_liege = root
+		}
+		add = 1
+	}
+}
+
+# Percentage owned Tibetan counties of my Religion
+tibetan_struggle_secure_tibetan_foothold_religion_percent_value = {
+	value = tibetan_struggle_secure_tibetan_foothold_religion_owned_value
+	divide = tibetan_struggle_secure_tibetan_foothold_religion_total_value
+	multiply = 100
+	min = 1
+}
+
+# Target percentage owned Tibet counties of my Religion
+tibetan_struggle_secure_tibetan_foothold_religion_target_percent_value = 50
+
+tibetan_struggle_secure_tibetan_foothold_religion_target_percent_decimal_value = {
+	value = tibetan_struggle_secure_tibetan_foothold_religion_target_percent_value
+	divide = 100
+}
+
+##### Outsider values #####
+
+# Target percentage owned counties of Tibet
+tibetan_struggle_secure_tibetan_foothold_outsider_target_percent_value = 33
+
+tibetan_struggle_secure_tibetan_foothold_outsider_target_percent_decimal_value = {
+	value = tibetan_struggle_secure_tibetan_foothold_outsider_target_percent_value
+	divide = 100
+}
+
+# Decimal target percentage owned counties of Tibet
+tibetan_struggle_secure_tibetan_foothold_outsider_percent_decimal_value = {
+	value = tibetan_struggle_secure_tibetan_foothold_outsider_percent_value
+	divide = 100
+	max = 1
+}
+
+# Percentage owned counties of Tibet
+tibetan_struggle_secure_tibetan_foothold_outsider_percent_value = {
+	value = tibetan_struggle_secure_tibetan_foothold_outsider_value
+	divide = tibetan_struggle_secure_tibetan_foothold_outsider_total_value
+	multiply = 100
+}
+
+tibetan_struggle_secure_tibetan_foothold_outsider_total_value = {
+	value = 0
+	every_county_in_region = {
+		region = world_tibet
+		add = 1
+	}
+}
+
+tibetan_struggle_secure_tibetan_foothold_outsider_value = {
+	value = 0
+	every_county_in_region = {
+		region = world_tibet
+		limit = { holder.top_liege = root }
+		add = 1
+	}
+}
