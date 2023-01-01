@@ -1,4 +1,4 @@
-# Overwriting to add stuff like the Igorot axe
+# We have to overwrite if we want to add stuff, like the Igorot axe or the Javanese kris
 
 marshal = {
     male = { 
@@ -444,11 +444,13 @@ marshal = {
 					culture = {
 						has_clothing_gfx = indian_clothing_gfx
 						NOT = { has_cultural_pillar = language_northern_luzon }
+						NOT = { has_cultural_pillar = heritage_malayic }
 					}
 				}			
 				animations_props = artisan_sword_indian_prop
 				animations = council_marshal_decal
 			}
+
 			
 			portrait_modifier = {
 				trigger = {
@@ -472,12 +474,22 @@ marshal = {
 				animations = council_marshal_decal
 			}
 
+			# Malayic cultures get the kris
+			portrait_modifier = {
+				trigger = {
+					culture = { has_cultural_pillar = heritage_malayic }
+				}			
+				animations_props = roa_javanese_kris_prop
+				animations = council_marshal_decal
+			}
+
 			portrait_modifier = {
 				trigger = {
 					culture = {
 						NOR = {
 							this = culture:norse
 							culture = { has_cultural_pillar = language_northern_luzon }
+							culture = { has_cultural_pillar = heritage_malayic }
 						}
 						# we avoid the "Animation triggered has no valid state properties" error log spam
 					}
