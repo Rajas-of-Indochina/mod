@@ -1,0 +1,134 @@
+﻿@ai_standard_liege_desire = 2
+@ai_standard_vassal_desire = 1
+
+gupta_organization = {
+	display_mode = tree
+	icon = gold_icon
+	obligation_levels = {
+		full_gold_gupta_organization = {
+			position = { 0 0 }
+
+			tax = 0.4
+			levies = 0
+			vassal_opinion = 10
+
+			ai_liege_desire = 5
+			ai_vassal_desire = 1
+		}
+		medium_gold_gupta_organization = {
+			parent = full_gold_gupta_organization
+			position = { 1 0 }
+
+			tax = 0.3
+			levies = 0.1
+			vassal_opinion = 5
+
+			ai_liege_desire = 4
+			ai_vassal_desire = 2
+		}
+		no_gupta_organization = {
+			parent = medium_gold_gupta_organization
+			default = yes
+			position = { 2 0 }
+
+			tax = 0.2
+			levies = 0.2
+
+			ai_liege_desire = 3
+			ai_vassal_desire = 5
+		}
+		medium_levy_gupta_organization = {
+			parent = no_gupta_organization
+			position = { 3 0 }
+			
+			tax = 0.1
+			levies = 0.3
+			vassal_opinion = -15
+
+			ai_liege_desire = 4
+			ai_vassal_desire = 2
+		}
+		full_levy_gupta_organization = {
+			parent = medium_levy_gupta_organization
+			position = { 4 0 }
+			
+			tax = 0
+			levies = 0.4
+			vassal_opinion = -25
+
+			ai_liege_desire = 5
+			ai_vassal_desire = 1
+		}
+	}
+}
+
+gupta_nobility_scutage = {
+	display_mode = checkbox
+	obligation_levels = {
+		gupta_nobility_scutage_none = {
+			default = yes
+			position = { 0 0 }
+			
+			ai_liege_desire = @ai_standard_liege_desire
+			ai_vassal_desire = 0
+		}
+		gupta_nobility_scutage_on = {
+			parent = gupta_nobility_scutage_none
+			position = { 1 0 }
+			is_valid = {
+				custom_description = {
+					text = gupta_nobility_scutage_validity
+					scope:vassal = {
+						AND = {
+							trigger_if = {
+								limit = {
+									exists = father
+								}
+								father = {
+									is_lowborn = no
+								}
+							}
+							trigger_else_if = {
+								limit = {
+									NOT = {
+										exists = father
+									}
+								}
+								always = yes
+							}
+							trigger_else = {
+								always = no
+							}
+							
+							trigger_if = {
+								limit = {
+									exists = mother
+								}
+								mother = {
+									is_lowborn = no
+								}
+							}
+							trigger_else_if = {
+								limit = {
+									NOT = {
+										exists = mother
+									}
+								}
+								always = yes
+							}
+							trigger_else = {
+								always = no
+							}
+						}
+					}
+				}
+			}
+			
+			tax_factor = -2
+			levies_factor = -2
+			
+			ai_liege_desire = 0
+			ai_vassal_desire = 10
+		}
+	}
+}

@@ -1,0 +1,89 @@
+﻿### TFE edit: Added a new type of Head of Faith - Imperial (Pontifex Maximus, Pharaoh, that kind of stuff)
+doctrine_head_of_faith = {
+	group = "main_group"
+
+	doctrine_no_head = {
+		visible = no
+		piety_cost = {
+			value = faith_doctrine_cost_mid
+			if = {
+				limit = { has_doctrine = doctrine_no_head }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+		parameters = {
+			no_head_of_faith = yes
+			minimum_fervor = 25
+		}
+	}
+	doctrine_spiritual_head = {
+		visible = no
+		piety_cost = {
+			value = faith_doctrine_cost_high
+			if = {
+				limit = { has_doctrine = doctrine_spiritual_head }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+		parameters = {
+			spiritual_head_of_faith = yes
+			spiritual_head_of_faith_claims = yes
+			spiritual_head_of_faith_gold = yes
+		}
+	}
+	doctrine_temporal_head = {
+		visible = no
+		piety_cost = {
+			value = faith_doctrine_cost_massive
+			if = {
+				limit = { has_doctrine = doctrine_temporal_head }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+		can_pick = {
+			custom_description = {
+				text = incompatible_doctrine_theocracy_temporal_trigger
+				NOT = { flag:doctrine_theocracy_temporal = { is_in_list = selected_doctrines } }
+			}
+			custom_description = {
+				text = incompatible_doctrine_spiritual_appointment_temporal_trigger
+				NOR = {
+					flag:doctrine_clerical_succession_spiritual_appointment = { is_in_list = selected_doctrines }
+					flag:doctrine_clerical_succession_spiritual_fixed_appointment = { is_in_list = selected_doctrines }
+				}
+			}
+		}
+
+		parameters = {
+			temporal_head_of_faith = yes
+			temporal_head_of_faith_directed_holy_wars = yes
+		}
+	}
+	
+	### Imperial Head of Faith, where the head of faith is the Emperor of an Empire that made it its Official Imperial Faith
+	doctrine_imperial_head = {
+		visible = no
+		piety_cost = {
+			value = faith_doctrine_cost_massive
+			if = {
+				limit = { has_doctrine = doctrine_imperial_head }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+		can_pick = {
+			custom_description = {
+				text = only_hellenic_or_kushitism
+				OR = {
+					religion_tag = hellenism_religion
+					religion_tag = kushitism_religion 
+				}
+			}
+		}
+
+		parameters = {
+			imperial_head_of_faith_empire_oif = yes
+			imperial_head_of_faith_destroyed_no_empire_oif = yes
+			imperial_head_of_faith_hof_imperial_cult_government = yes
+		}
+	}
+}

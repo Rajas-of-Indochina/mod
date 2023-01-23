@@ -1,0 +1,308 @@
+﻿decide_senate_party = {
+	if = {
+		limit = {
+			is_target_in_global_variable_list = {
+				name = all_senate_italy
+				target = THIS
+			}
+		}
+		random_list = {
+			1 = {
+				modifier = {
+					add = {
+						value = global_var:aristocratic_senate_italy_gold
+						divide = 100
+					}
+				}
+				add_to_global_variable_list = {
+					name = aristocratic_senate_italy
+					target = THIS
+				}
+			}
+			1 = {
+				modifier = {
+					add = {
+						value = global_var:populist_senate_italy_gold
+						divide = 100
+					}
+				}
+				add_to_global_variable_list = {
+					name = populist_senate_italy
+					target = THIS
+				}
+			}
+			1 = {
+				modifier = {
+					add = {
+						value = global_var:traditionalist_senate_italy_gold
+						divide = 100
+					}
+				}
+				add_to_global_variable_list = {
+					name = traditionalist_senate_italy
+					target = THIS
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			is_target_in_global_variable_list = {
+				name = all_senate_eastern
+				target = THIS
+			}
+		}
+		random_list = {
+			1 = {
+				modifier = {
+					add = {
+						value = global_var:aristocratic_senate_eastern_gold
+						divide = 100
+					}
+				}
+				add_to_global_variable_list = {
+					name = aristocratic_senate_eastern
+					target = THIS
+				}
+			}
+			1 = {
+				modifier = {
+					add = {
+						value = global_var:populist_senate_eastern_gold
+						divide = 100
+					}
+				}
+				add_to_global_variable_list = {
+					name = populist_senate_eastern
+					target = THIS
+				}
+			}
+			1 = {
+				modifier = {
+					add = {
+						value = global_var:traditionalist_senate_eastern_gold
+						divide = 100
+					}
+				}
+				add_to_global_variable_list = {
+					name = traditionalist_senate_eastern
+					target = THIS
+				}
+			}
+		}
+	}
+}
+
+decide_senate_idea = {
+	random_list = {
+		10 = {
+			modifier = {
+				add = loyalist_senate
+			}
+			set_variable = loyalist_senate
+		}
+		10 = {
+			modifier = {
+				add = disloyal_senate
+			}
+			set_variable = disloyal_senate
+		}
+		10 = {
+			modifier = {
+				add = pragmatic_senate
+			}
+			set_variable = pragmatic_senate
+		}
+		10 = {
+			modifier = {
+				add = gloryhound_senate
+			}
+			set_variable = gloryhound_senate
+		}
+	}
+}
+
+decide_new_task = {
+	random_list = {
+		10 = {
+			modifier = {
+				add = convert_culture_task
+			}
+			random_realm_county = {
+				limit = {
+					NOT = {
+						culture = holder.top_liege.culture
+					}
+				}
+				set_global_variable = {
+					name = italy_senate_convert_culture_county
+					value = THIS
+				}
+			}
+			set_global_variable = {
+				name = italy_senate_tasks
+				value = flag:convert_culture
+			}
+		}
+		10 = {
+			modifier = {
+				add = convert_faith_task
+			}
+			random_realm_county = {
+				limit = {
+					NOT = {
+						faith = holder.top_liege.faith
+					}
+				}
+				set_global_variable = {
+					name = italy_senate_convert_faith_county
+					value = THIS
+				}
+			}
+			set_global_variable = {
+				name = italy_senate_tasks
+				value = flag:convert_faith
+			}
+		}
+		10 = {
+			modifier = {
+				add = conquer_task
+			}
+			decide_conquer = yes
+			set_global_variable = {
+				name = italy_senate_tasks
+				value = flag:conquer
+			}
+		}
+		10 = {
+			modifier = {
+				add = building_task
+			}
+			random_realm_county = {
+				limit = {
+					any_county_province = {
+						free_building_slots >= 1
+					}
+				}
+				set_global_variable = {
+					name = italy_senate_building_county
+					value = THIS
+				}
+			}
+			set_global_variable = {
+				name = italy_senate_tasks
+				value = flag:building
+			}
+		}
+	}
+}
+decide_new_task_eastern = {
+	random_list = {
+		10 = {
+			modifier = {
+				add = convert_culture_task_eastern
+			}
+			random_realm_county = {
+				limit = {
+					NOT = {
+						culture = holder.top_liege.culture
+					}
+				}
+				set_global_variable = {
+					name = eastern_senate_convert_culture_county
+					value = THIS
+				}
+			}
+			set_global_variable = {
+				name = eastern_senate_tasks
+				value = flag:convert_culture
+			}
+		}
+		10 = {
+			modifier = {
+				add = convert_faith_task_eastern
+			}
+			random_realm_county = {
+				limit = {
+					NOT = {
+						faith = holder.top_liege.faith
+					}
+				}
+				set_global_variable = {
+					name = eastern_senate_convert_faith_county
+					value = THIS
+				}
+			}
+			set_global_variable = {
+				name = eastern_senate_tasks
+				value = flag:convert_faith
+			}
+		}
+		10 = {
+			modifier = {
+				add = conquer_task_eastern
+			}
+			trigger_event = {
+				id = senate.0007
+				days = 1
+			}
+			set_global_variable = {
+				name = eastern_senate_tasks
+				value = flag:conquer
+			}
+		}
+		10 = {
+			modifier = {
+				add = building_task_eastern
+			}
+			random_realm_county = {
+				limit = {
+					any_county_province = {
+						free_building_slots >= 1
+					}
+				}
+				set_global_variable = {
+					name = eastern_senate_building_county
+					value = THIS
+				}
+			}
+			set_global_variable = {
+				name = eastern_senate_tasks
+				value = flag:building
+			}
+		}
+	}
+}
+
+decide_conquer = {
+	random_neighboring_top_liege_realm_owner = {
+		limit = {
+			trigger_if = {
+				limit = {
+					any_neighboring_top_liege_realm_owner = {
+						max_military_strength <= 2000
+					}
+				}
+				max_military_strength <= 2000
+			}
+			is_alive = yes
+			is_landed = yes
+			NOT = {
+				AND = {
+					exists = var:my_suzerain
+					var:my_suzerain = title:c_roma.holder.top_liege
+					var:my_suzerain = {
+						OR = {
+							is_target_in_variable_list = { name = non_permanent_tributaries target = prev }  #tributaries are gud
+							is_target_in_variable_list = { name = permanent_tributaries target = prev }
+						}
+					}
+				}
+			}
+		}
+		set_global_variable = {
+			name = italy_senate_conquer
+			value = THIS
+		}
+	}
+}
