@@ -1,4 +1,5 @@
-﻿feudalize_tribal_holding_interaction = {
+﻿#Edited to also include estates
+feudalize_tribal_holding_interaction = {
 	category = interaction_category_uncategorized
 	hidden = yes
 	special_interaction = feudalize_tribal_holding
@@ -25,14 +26,47 @@
 			is_capital_barony = no # we'll use the county in that case
 			trigger_if = {
 				limit = { tier <= tier_county }
-				title_province = {
-					has_holding_type = tribal_holding
+				OR = {
+					title_province = {
+						has_holding_type = tribal_holding
+					}
+					title_province = {
+						has_holding_type = estate_holding
+					}
 				}
 			}
 			trigger_else = {
 				custom_description = {
 					text = "feudalize_tribal_holding_interaction_title_not_county_or_below"
 					always = no
+				}
+			}
+		}
+		NOT = {
+			AND = {
+				scope:target = {
+					title_province = {
+						has_holding_type = estate_holding
+					}
+				}
+				scope:actor = {
+					OR = {
+						has_government = imperial_cult_government
+						has_government = imperial_government
+						has_government = autocratic_government
+						AND = {
+							has_government = roman_government 
+							OR = {
+								is_independent_ruler = no
+								AND = {
+									exists = culture
+									culture = {
+										has_cultural_pillar = heritage_latin 
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -51,9 +85,8 @@
 	}
 
 	cost = {
-		gold = {
-			value = feudalize_tribal_holding_interaction_cost
-		}
+		gold = scope:actor.feudalize_tribal_holding_interaction_cost
+		
 	}
 
 	on_accept = {

@@ -1,0 +1,539 @@
+﻿namespace = collapse
+
+collapse.0001 = {
+	title = collapse.0001.t
+	desc = collapse.0001.desc
+	scope = character
+	theme = diplomacy
+	immediate = {
+		play_music_cue = mood_Imperium
+	}
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = collapse.0001.option.a
+		if = {
+			limit = {
+				has_title = title:e_western_roman_empire
+			}
+			set_global_variable = {
+				name = wre_collapsed
+				value = yes
+			}
+		}
+		if = {
+			limit = {
+				has_title = title:e_byzantium
+			}
+			set_global_variable = {
+				name = ere_collapsed
+				value = yes
+			}
+		}
+		if = {
+			limit = {
+				AND = {
+					has_title = title:e_western_roman_empire
+					exists = title:e_byzantium
+					any_character_artifact = {
+						has_variable = regaliawest
+					}
+				}
+			}
+			title:e_byzantium.holder = {
+				trigger_event = {
+					id = collapse.0008
+					days = 15
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				AND = {
+					has_title = title:e_byzantium
+					exists = title:e_western_roman_empire
+					any_character_artifact = {
+						has_variable = regaliaeast
+					}
+				}
+			}
+			title:e_western_roman_empire.holder = {
+				trigger_event = {
+					id = collapse.0008
+					days = 15
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_title = title:e_western_roman_empire
+					NOT = {
+						exists = global_var:wre_partial_collapsed
+					}
+				}
+				dejure_shift_hispania_effect = yes
+				dejure_shift_gallia_effect = yes
+				if = {
+					limit = {
+						NOT = { exists = global_var:britannia_dejure_splity }
+					}
+					dejure_shift_britannia_effect = yes
+				}
+				title:e_britannia = {
+					set_color_from_title = title:e_britannia_2
+				}
+			}
+			every_vassal = {
+				limit = {
+					has_government = imperial_government
+				}
+				add_character_modifier = broken_bureaucratic_chain
+				if = {
+					limit = {
+						exists = primary_heir
+					}
+					primary_heir = {
+						if = {
+							limit = {
+								is_landed = no
+							}
+							add_character_modifier = broken_bureaucratic_chain
+						}
+					}
+				}
+			}
+		}
+		destroy_title = root.primary_title
+		custom_tooltip = collapse.0001.option.a.tooltip
+		save_scope_as = emperor_poop
+		every_player = {
+			limit = {
+				NOT = {
+					THIS = root
+				}
+			}
+			trigger_event = collapse.0009
+		}
+		
+	}
+}
+
+collapse.0002 = {
+	title = collapse.0002.t
+	desc = collapse.0002.desc
+	scope = character
+	theme = diplomacy
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = collapse.0002.option.a
+		add_character_modifier = mil_collapse
+		if = {
+			limit = {
+				exists = primary_heir
+			}
+			primary_heir = {
+				if = {
+					limit = {
+						is_landed = no
+					}
+					add_character_modifier = mil_collapse
+				}
+			}
+		}
+		custom_tooltip = collapse.0002.option.a.tooltip
+	}
+}
+
+collapse.0003 = {
+	title = collapse.0003.t
+	desc = collapse.0003.desc
+	scope = character
+	theme = diplomacy
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = collapse.0003.option.a
+		add_character_modifier = civic_collapse
+		if = {
+			limit = {
+				exists = primary_heir
+			}
+			primary_heir = {
+				if = {
+					limit = {
+						is_landed = no
+					}
+					add_character_modifier = civic_collapse
+				}
+			}
+		}
+		custom_tooltip = collapse.0003.option.a.tooltip
+	}
+}
+
+collapse.0004 = {
+	title = collapse.0004.t
+	desc = collapse.0004.desc
+	scope = character
+	theme = diplomacy
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = collapse.0004.option.a
+		every_vassal = {
+			add_opinion = {
+				target = root
+				opinion = -200
+				years = 30
+				modifier = hate_opinion
+			}
+		}
+		custom_tooltip = collapse.0004.option.a.tooltip
+	}
+}
+
+collapse.0005 = {
+	title = collapse.0005.t
+	desc = collapse.0005.desc
+	scope = character
+	theme = diplomacy
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = collapse.0005.option.a
+		custom_tooltip = collapse.0005.option.a.tooltip
+	}
+}
+
+collapse.0006 = {
+	title = collapse.0006.t
+	desc = collapse.0006.desc
+	scope = character
+	theme = diplomacy
+	immediate = {
+		set_global_variable = {
+			name = duchies_civic
+			value = yes
+		}
+		primary_title = {
+			every_in_de_facto_hierarchy = {
+				limit = {
+					tier = tier_duchy
+					is_title_created = yes
+					holder = {
+						primary_title = PREV
+					}
+					is_titular = no
+					NOT = {
+						kingdom = title:k_italy
+					}
+					NOT = {
+						kingdom = title:k_italia_suburbicariae
+					}
+					NOT = {
+						THIS = title:d_transjurania
+					}
+					NOT = {
+						kingdom = title:k_italia_annonariae
+					}
+				}
+				if = {
+					limit = {
+						any_in_de_facto_hierarchy = {
+							tier = tier_county
+							development_level < 3
+						}
+					}
+					save_scope_as = tmp_title
+					root = {
+						add_to_variable_list = {
+							name = duchies_sacrifice
+							target = scope:tmp_title
+						}
+					}
+				}
+			}
+		}
+	}
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = collapse.0006.option.a
+		custom_tooltip = collapse.0006.option.a.tooltip
+		every_vassal_or_below = {
+			trigger_event = collapse.0007
+		}
+
+		every_in_list = {
+			variable = duchies_sacrifice
+			create_title_and_vassal_change = {
+				type = independency
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			holder = {
+				becomes_independent = { change = scope:change }
+				add_truce_both_ways = {
+					character = root
+					years = 15
+					override = yes
+					name = imperial_release_truce
+				}	
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		clear_variable_list = duchies_sacrifice
+	}
+	option = {
+		name = collapse.0006.option.b
+		clear_variable_list = duchies_sacrifice
+	}
+}
+
+collapse.0007 = {
+	title = collapse.0007.t
+	desc = collapse.0007.desc
+	scope = character
+	theme = diplomacy
+	immediate = {
+		play_music_cue = mood_Imperium
+	}
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = collapse.0007.option.a
+		custom_tooltip = collapse.0007.option.a.tooltip
+	}
+}
+
+collapse.0008 = {
+	title = collapse.0008.t
+	desc = collapse.0008.desc
+	scope = character
+	theme = diplomacy
+	immediate = {
+		if = {
+			limit = {
+				has_title = title:e_western_roman_empire
+			}
+			global_var:regaliaeast = {
+				save_scope_as = regaliae
+			}
+
+		}
+		else_if = {
+			limit = {
+				has_title = title:e_byzantium
+			}
+			global_var:regaliawest = {
+				save_scope_as = regalia
+			}
+		}
+	}
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	artifact = {
+		target = scope:regalia
+		position = lower_left_portrait
+	}
+
+	option = {
+		name = collapse.0008.option.a
+		if = {
+			limit = {
+				has_title = title:e_western_roman_empire
+			}
+			global_var:regaliaeast = {
+				save_scope_as = regaliaeast
+				set_owner = root
+			}
+
+		}
+		else_if = {
+			limit = {
+				has_title = title:e_byzantium
+			}
+			global_var:regaliawest = {
+				save_scope_as = regaliawest
+				set_owner = root
+			}
+		}
+	}
+	option = {
+		name = collapse.0008.option.b
+		add_prestige = 200
+	}
+}
+
+collapse.0009 = {
+	title = collapse.0009.t
+	desc = collapse.0009.desc
+	scope = character
+	theme = diplomacy
+	immediate = {
+		play_music_cue = mood_Imperium
+	}
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:emperor_poop
+		animation = fear
+	}
+
+	option = {
+		name = collapse.0009.a
+		custom_tooltip = collapse.0009.a.tooltip
+	}
+}
+
+collapse.0010 = {
+	title = collapse.0010.t
+	desc = collapse.0010.desc
+	scope = character
+	theme = diplomacy
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = collapse.0010.a
+		custom_tooltip = collapse.0010.a.tooltip
+		if = {
+			limit = {
+				has_title = title:e_western_roman_empire
+			}
+			set_global_variable = {
+				name = wre_partial_collapsed
+				value = yes
+			}
+			every_vassal = {
+				limit = {
+					NOT = {
+						OR = {
+							OR = {
+								capital_county.kingdom = title:k_italia_suburbicariae
+								capital_county.kingdom = title:k_italia_annonariae
+								capital_county.kingdom = title:k_pannonia
+							}
+							opinion = {
+								target = root
+								value >= 80
+							}
+						}
+					}
+				}
+				create_title_and_vassal_change = {
+					type = independency
+					save_scope_as = change
+					add_claim_on_loss = no
+				}
+				becomes_independent = { change = scope:change }
+				resolve_title_and_vassal_change = scope:change
+			}
+			hidden_effect = {
+				dejure_shift_hispania_effect = yes
+				dejure_shift_gallia_effect = yes
+				if = {
+					limit = {
+						NOT = { exists = global_var:britannia_dejure_splity }
+					}
+					dejure_shift_britannia_effect = yes
+				}
+				title:e_britannia = {
+					set_color_from_title = title:e_britannia_2
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				has_title = title:e_byzantium
+			}
+			set_global_variable = {
+				name = ere_partial_collapsed
+				value = yes
+			}
+			every_vassal = {
+				limit = {
+					NOT = {
+						OR = {
+							OR = {
+								capital_county.kingdom = title:k_macedon
+								capital_county.kingdom = title:k_thessalonika
+								capital_county.kingdom = title:k_daciae
+							}
+							opinion = {
+								target = root
+								value >= 80
+							}
+						}
+					}
+				}
+				create_title_and_vassal_change = {
+					type = independency
+					save_scope_as = change
+					add_claim_on_loss = no
+				}
+				becomes_independent = { change = scope:change }
+				resolve_title_and_vassal_change = scope:change
+			}
+		}
+	}
+}

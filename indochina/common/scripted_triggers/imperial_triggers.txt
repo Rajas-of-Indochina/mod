@@ -1,0 +1,75 @@
+﻿has_imperial_laws = {
+	is_landed = yes
+	OR = {
+		AND = {
+			highest_held_title_tier = tier_empire
+			OR = {
+				has_government = imperial_government
+				has_government = imperial_cult_government
+			}
+		}
+		AND = {
+			has_government = autocratic_government
+			is_independent_ruler = yes
+		}
+	}
+}
+
+has_imperial_vassal_laws = {
+	OR = {
+		has_government = imperial_government 
+		has_government = autocratic_government
+		has_government = imperial_cult_government
+	}
+	is_landed = yes
+	any_liege_or_above = {
+		has_imperial_laws = yes
+	}
+	NOT = {
+		is_independent_ruler = yes
+	}
+}
+
+# Idk if that's the best place, but whatevs
+ruler_can_use_legions = {
+	ruler_can_use_legions_no_primary_title_tier = yes
+	primary_title.tier > tier_county
+}
+
+ruler_can_use_legions_no_primary_title_tier = {
+	OR = {
+		has_government = imperial_government
+		has_government = autocratic_government
+		has_government = imperial_cult_government
+	}
+	culture = { has_cultural_parameter = powerful_rulers_raise_legions }
+}
+
+access_to_italian_senate = {
+	global_var:italian_senate_dismantle = flag:no
+	OR = {
+		has_government = imperial_government
+		has_government = autocratic_government
+		has_government = imperial_cult_government
+		has_government = roman_government
+	}
+	any_realm_county = {
+		THIS = title:c_roma
+	}
+	is_independent_ruler = yes
+}
+
+access_to_eastern_senate = {
+	global_var:eastern_senate_dismantle = flag:no
+	access_to_italian_senate = no
+	OR = {
+		has_government = imperial_government
+		has_government = autocratic_government
+		has_government = imperial_cult_government
+		has_government = roman_government
+	}
+	any_realm_county = {
+		THIS = title:c_byzantion
+	}
+	is_independent_ruler = yes
+}

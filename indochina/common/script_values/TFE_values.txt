@@ -1,0 +1,3314 @@
+﻿### Caliphal Authority
+cal_authority_target = {
+	value = 10
+
+	every_realm_province = {
+		limit = {
+			barony = { is_holy_site_of = faith }
+		}
+		add = 2
+	}
+
+	if = {
+		limit = {
+			NOT = { any_realm_province = { barony = { is_holy_site_of = faith } } } 
+		}
+		subtract = 2
+	}
+
+	if = {
+		limit = {
+			piety_level = max_piety_level
+		}
+		add = 10
+	}
+	if = {
+		limit = {
+			piety_level = very_high_piety_level
+		}
+		add = 5
+	}
+	if = {
+		limit = {
+			piety_level = high_piety_level
+		}
+		add = 3
+	}
+	if = {
+		limit = {
+			piety_level = low_piety_level
+		}
+		subtract = 2
+	}
+
+	if = {
+		limit = {
+			has_character_flag = islam_prophet
+			
+		}
+		add = 200
+	}
+
+	max = 100
+	min = 0
+}
+
+### Imperial Competence
+imp_policy_1_requirement = 2635
+imp_policy_2_requirement = 3831
+imp_policy_3_requirement = 4959
+
+## Military Competence
+mil_competence_net = {
+	value = 0
+
+	### General, shared in some forms by all competences
+	add = {
+		value = mil_competence_martial
+		desc = "MIL_COMP_MARTIAL"
+	}
+	add = {
+		value = mil_competence_martial_marshal
+		desc = "MIL_COMP_MARTIAL_MARSHAL"
+	}
+	add = {
+		value = mil_competence_martial_court
+		desc = "MIL_COMP_MARTIAL_COURT"
+	}
+	
+	### More specific
+	add = {
+		value = mil_competence_empire_size
+		desc = "MIL_COMP_EMPIRE_SIZE"
+	}
+	add = {
+		value = mil_competence_unprotected_borders
+		desc = "MIL_COMP_UNPROTECTED_BORDERS"
+	}
+	add = {
+		value = mil_competence_allies
+		desc = "MIL_COMP_ALLIES"
+	}
+	add = {
+		value = mil_competence_empire
+		desc = "MIL_COMP_EMPIRE"
+	}
+	add = {
+		value = mil_competence_legions
+		desc = "MIL_COMP_LEGIONS"
+	}
+	add = {
+		value = mil_competence_army_size
+		desc = "MIL_COMP_ARMY_SIZE"
+	}
+	add = {
+		value = mil_competence_knights_prowess
+		desc = "MIL_COMP_KNIGHTS_PROWESS"
+	}
+	add = {
+		value = mil_competence_maa_regiments
+		desc = "MIL_COMP_MAA_REGIMENTS"
+	}
+	# add = {
+		# value = mil_competence_sub_value_3
+		# desc = "MIL_COMP_ARMYQUALITY"
+	# }
+}
+mil_competence_total = {
+	value = 0
+
+	add = {
+		value = mil_competence_net
+		desc = "MIL_COMP_TOTAL"
+	}
+}
+
+# An Emperor with a high martial is GOOD
+mil_competence_martial = {
+	add = martial
+}
+
+# A Marshal with a high martial is GOOD
+mil_competence_martial_marshal = {
+	value = 0
+	
+	every_martial_councillor = {
+		add = martial
+	}
+}
+
+# A Martial court is GOOD
+mil_competence_martial_court_grandeur_bonus = 10
+mil_competence_martial_court = {
+	value = 0
+	
+	if = {
+		limit = {
+			has_royal_court = yes
+			has_court_type = court_warlike
+		}
+		add = court_grandeur_current_level
+		multiply = mil_competence_martial_court_grandeur_bonus
+	}
+}
+
+# A large empire is BAD (well, harder to defend)
+mil_competence_empire_size_penalty = 0.2
+mil_competence_empire_size = {
+	value = 0
+	
+	subtract = {
+		value = {
+			every_realm_county = {
+				add = mil_competence_empire_size_penalty
+			}
+		}
+	}
+}
+
+# Every county whose neighbour is potentially hostile to you is dangerous
+mil_competence_unprotected_borders_penalty = -5
+mil_competence_unprotected_borders = {
+	value = 0
+	
+	# Every county bordering a realm will penalize you, unless the border is secure enough (fort level >= 5)
+	every_realm_county = {
+		limit = {
+			holder.top_liege = { save_temporary_scope_as = emperor }
+			any_neighboring_county = {
+				holder.top_liege = {
+					save_temporary_scope_as = current_ruler
+					
+					NOR = {
+						this = scope:emperor # Can't be you, obviously
+						is_allied_to = scope:emperor # Allies will probably make your border secure
+						has_truce = scope:emperor # They won't attack you through a truce
+						AND = {
+							exists = var:my_suzerain
+							var:my_suzerain = scope:emperor
+							var:my_suzerain = {
+								OR = {
+									is_target_in_variable_list = { name = non_permanent_tributaries target = prev }  #tributaries are gud
+									is_target_in_variable_list = { name = permanent_tributaries target = prev }
+								}
+							}
+						}
+						
+						AND = {
+							trigger_if = { # If they can raid, defeat their armies
+								limit = { can_raid_trigger = yes }
+								has_raid_immunity_against = scope:emperor
+							}
+							trigger_else = { always = yes }
+							
+							# If you have a strong hook, they can't DoW you
+							scope:emperor = { has_strong_hook = scope:current_ruler }
+						}
+					}
+				}
+			}
+		}
+		add = {
+			value = mil_competence_unprotected_borders_penalty
+			add = total_county_fort_level
+			max = 0
+		}
+	}
+}
+
+# Having allies is GOOD
+mil_competence_allies_ratio = 500
+mil_competence_allies = {
+	value = 0
+	
+	every_ally = {
+		limit = { NOT = { top_liege = prev } }
+		add = max_military_strength
+
+		divide = mil_competence_allies_ratio
+	}
+}
+
+# Having lots of soldiers is GOOD
+mil_competence_army_size_ratio = 100
+mil_competence_army_size = {
+	value = 0
+	add = max_military_strength
+	divide = mil_competence_army_size_ratio
+}
+
+# Having next to no soldiers is BAD
+
+mil_competence_empire_sub_value = {
+	value = max_military_strength
+	if = {
+		limit = {
+			has_variable_list = legion_counties
+		}
+		every_in_list = {
+			variable = legion_counties
+			add = 1000
+		}
+	}
+	
+}
+mil_competence_empire = {
+	value = 0
+	if = {
+		limit = {
+			OR = {
+				has_title = title:e_byzantium
+				has_title = title:e_roman_empire
+			}
+			AND = {
+				mil_competence_empire_sub_value < 3000
+				NOT = {
+					mil_competence_empire_sub_value = 0 #pdx pls fix your engine
+				}
+			}
+			NOT = {
+				AND = {
+					has_title = title:e_byzantium
+					exists = global_var:ere_partial_collapsed
+				}
+			}
+		}
+		add = mil_competence_empire_sub_value
+		subtract = 3000
+
+		multiply = 50
+	}
+}
+
+# Having legions is GOOD
+mil_competence_legion = 15
+mil_competence_prae_guard = 15 # Added to mil_competence_legion
+mil_competence_legions = {
+	value = 0
+	if = {
+		limit = {
+			has_variable_list = legion_counties
+		}
+		every_in_list = {
+			variable = legion_counties
+			add = mil_competence_legion
+			if = {
+				limit = { has_variable = prae_guard }
+				add = mil_competence_prae_guard
+			}
+		}
+	}
+}
+
+# Having good knights is GOOD
+mil_competence_knights_prowess_min = 6
+mil_competence_knights_prowess_point = 2
+mil_competence_knights_prowess = {
+	value = 0
+	every_knight = {
+		add = {
+			value = prowess
+			subtract = mil_competence_knights_prowess_min
+		
+			multiply = mil_competence_knights_prowess_point
+		}
+	}
+}
+
+# Having lots of MaA regiments is GOOD
+mil_competence_maa_regiments_skirmishers_points = 5
+mil_competence_maa_regiments_archers_points = 10
+mil_competence_maa_regiments_pikemen_points = 10
+mil_competence_maa_regiments_light_cavalry_points = 15
+mil_competence_maa_regiments_heavy_infantry_points = 20
+mil_competence_maa_regiments_heavy_cavalry_points = 25
+# Special
+mil_competence_maa_regiments_archer_cavalry_points = 20
+mil_competence_maa_regiments_camel_cavalry_points = 20
+mil_competence_maa_regiments_elephant_cavalry_points = 25
+
+mil_competence_maa_regiments = {
+	value = 0
+	
+	# # Skirmishers (light infantry)
+	# if = {
+		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value = 1 } }
+		# add = { value = mil_competence_maa_regiments_skirmishers_points multiply = 1 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value = 2 } }
+		# add = { value = mil_competence_maa_regiments_skirmishers_points multiply = 2 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value = 3 } }
+		# add = { value = mil_competence_maa_regiments_skirmishers_points multiply = 3 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value = 4 } }
+		# add = { value = mil_competence_maa_regiments_skirmishers_points multiply = 4 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value = 5 } }
+		# add = { value = mil_competence_maa_regiments_skirmishers_points multiply = 5 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value = 6 } }
+		# add = { value = mil_competence_maa_regiments_skirmishers_points multiply = 6 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value = 7 } }
+		# add = { value = mil_competence_maa_regiments_skirmishers_points multiply = 7 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value = 8 } }
+		# add = { value = mil_competence_maa_regiments_skirmishers_points multiply = 8 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value = 9 } }
+		# add = { value = mil_competence_maa_regiments_skirmishers_points multiply = 9 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value >= 10 } }
+		# add = { value = mil_competence_maa_regiments_skirmishers_points multiply = 10 }
+	# }
+	
+	# # Archers
+	# if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archers value = 1 } }
+		# add = { value = mil_competence_maa_regiments_archers_points multiply = 1 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archers value = 2 } }
+		# add = { value = mil_competence_maa_regiments_archers_points multiply = 2 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archers value = 3 } }
+		# add = { value = mil_competence_maa_regiments_archers_points multiply = 3 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archers value = 4 } }
+		# add = { value = mil_competence_maa_regiments_archers_points multiply = 4 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archers value = 5 } }
+		# add = { value = mil_competence_maa_regiments_archers_points multiply = 5 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archers value = 6 } }
+		# add = { value = mil_competence_maa_regiments_archers_points multiply = 6 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archers value = 7 } }
+		# add = { value = mil_competence_maa_regiments_archers_points multiply = 7 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archers value = 8 } }
+		# add = { value = mil_competence_maa_regiments_archers_points multiply = 8 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archers value = 9 } }
+		# add = { value = mil_competence_maa_regiments_archers_points multiply = 9 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archers value >= 10 } }
+		# add = { value = mil_competence_maa_regiments_archers_points multiply = 10 }
+	# }
+	
+	# # Pikemen
+	# if = {
+		# limit = { number_maa_regiments_of_base_type = { type = pikemen value = 1 } }
+		# add = { value = mil_competence_maa_regiments_pikemen_points multiply = 1 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = pikemen value = 2 } }
+		# add = { value = mil_competence_maa_regiments_pikemen_points multiply = 2 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = pikemen value = 3 } }
+		# add = { value = mil_competence_maa_regiments_pikemen_points multiply = 3 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = pikemen value = 4 } }
+		# add = { value = mil_competence_maa_regiments_pikemen_points multiply = 4 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = pikemen value = 5 } }
+		# add = { value = mil_competence_maa_regiments_pikemen_points multiply = 5 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = pikemen value = 6 } }
+		# add = { value = mil_competence_maa_regiments_pikemen_points multiply = 6 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = pikemen value = 7 } }
+		# add = { value = mil_competence_maa_regiments_pikemen_points multiply = 7 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = pikemen value = 8 } }
+		# add = { value = mil_competence_maa_regiments_pikemen_points multiply = 8 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = pikemen value = 9 } }
+		# add = { value = mil_competence_maa_regiments_pikemen_points multiply = 9 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = pikemen value >= 10 } }
+		# add = { value = mil_competence_maa_regiments_pikemen_points multiply = 10 }
+	# }
+	
+	# # Light Cavalry
+	# if = {
+		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value = 1 } }
+		# add = { value = mil_competence_maa_regiments_light_cavalry_points multiply = 1 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value = 2 } }
+		# add = { value = mil_competence_maa_regiments_light_cavalry_points multiply = 2 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value = 3 } }
+		# add = { value = mil_competence_maa_regiments_light_cavalry_points multiply = 3 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value = 4 } }
+		# add = { value = mil_competence_maa_regiments_light_cavalry_points multiply = 4 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value = 5 } }
+		# add = { value = mil_competence_maa_regiments_light_cavalry_points multiply = 5 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value = 6 } }
+		# add = { value = mil_competence_maa_regiments_light_cavalry_points multiply = 6 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value = 7 } }
+		# add = { value = mil_competence_maa_regiments_light_cavalry_points multiply = 7 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value = 8 } }
+		# add = { value = mil_competence_maa_regiments_light_cavalry_points multiply = 8 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value = 9 } }
+		# add = { value = mil_competence_maa_regiments_light_cavalry_points multiply = 9 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value >= 10 } }
+		# add = { value = mil_competence_maa_regiments_light_cavalry_points multiply = 10 }
+	# }
+	
+	# # Heavy Infantry
+	# if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value = 1 } }
+		# add = { value = mil_competence_maa_regiments_heavy_infantry_points multiply = 1 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value = 2 } }
+		# add = { value = mil_competence_maa_regiments_heavy_infantry_points multiply = 2 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value = 3 } }
+		# add = { value = mil_competence_maa_regiments_heavy_infantry_points multiply = 3 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value = 4 } }
+		# add = { value = mil_competence_maa_regiments_heavy_infantry_points multiply = 4 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value = 5 } }
+		# add = { value = mil_competence_maa_regiments_heavy_infantry_points multiply = 5 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value = 6 } }
+		# add = { value = mil_competence_maa_regiments_heavy_infantry_points multiply = 6 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value = 7 } }
+		# add = { value = mil_competence_maa_regiments_heavy_infantry_points multiply = 7 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value = 8 } }
+		# add = { value = mil_competence_maa_regiments_heavy_infantry_points multiply = 8 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value = 9 } }
+		# add = { value = mil_competence_maa_regiments_heavy_infantry_points multiply = 9 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value >= 10 } }
+		# add = { value = mil_competence_maa_regiments_heavy_infantry_points multiply = 10 }
+	# }
+	
+	# # Heavy Cavalry
+	# if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value = 1 } }
+		# add = { value = mil_competence_maa_regiments_heavy_cavalry_points multiply = 1 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value = 2 } }
+		# add = { value = mil_competence_maa_regiments_heavy_cavalry_points multiply = 2 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value = 3 } }
+		# add = { value = mil_competence_maa_regiments_heavy_cavalry_points multiply = 3 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value = 4 } }
+		# add = { value = mil_competence_maa_regiments_heavy_cavalry_points multiply = 4 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value = 5 } }
+		# add = { value = mil_competence_maa_regiments_heavy_cavalry_points multiply = 5 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value = 6 } }
+		# add = { value = mil_competence_maa_regiments_heavy_cavalry_points multiply = 6 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value = 7 } }
+		# add = { value = mil_competence_maa_regiments_heavy_cavalry_points multiply = 7 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value = 8 } }
+		# add = { value = mil_competence_maa_regiments_heavy_cavalry_points multiply = 8 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value = 9 } }
+		# add = { value = mil_competence_maa_regiments_heavy_cavalry_points multiply = 9 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value >= 10 } }
+		# add = { value = mil_competence_maa_regiments_heavy_cavalry_points multiply = 10 }
+	# }
+	
+	# # Archer Cavalry
+	# if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value = 1 } }
+		# add = { value = mil_competence_maa_regiments_archer_cavalry_points multiply = 1 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value = 2 } }
+		# add = { value = mil_competence_maa_regiments_archer_cavalry_points multiply = 2 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value = 3 } }
+		# add = { value = mil_competence_maa_regiments_archer_cavalry_points multiply = 3 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value = 4 } }
+		# add = { value = mil_competence_maa_regiments_archer_cavalry_points multiply = 4 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value = 5 } }
+		# add = { value = mil_competence_maa_regiments_archer_cavalry_points multiply = 5 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value = 6 } }
+		# add = { value = mil_competence_maa_regiments_archer_cavalry_points multiply = 6 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value = 7 } }
+		# add = { value = mil_competence_maa_regiments_archer_cavalry_points multiply = 7 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value = 8 } }
+		# add = { value = mil_competence_maa_regiments_archer_cavalry_points multiply = 8 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value = 9 } }
+		# add = { value = mil_competence_maa_regiments_archer_cavalry_points multiply = 9 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value >= 10 } }
+		# add = { value = mil_competence_maa_regiments_archer_cavalry_points multiply = 10 }
+	# }
+	
+	# # Camel Cavalry
+	# if = {
+		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value = 1 } }
+		# add = { value = mil_competence_maa_regiments_camel_cavalry_points multiply = 1 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value = 2 } }
+		# add = { value = mil_competence_maa_regiments_camel_cavalry_points multiply = 2 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value = 3 } }
+		# add = { value = mil_competence_maa_regiments_camel_cavalry_points multiply = 3 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value = 4 } }
+		# add = { value = mil_competence_maa_regiments_camel_cavalry_points multiply = 4 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value = 5 } }
+		# add = { value = mil_competence_maa_regiments_camel_cavalry_points multiply = 5 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value = 6 } }
+		# add = { value = mil_competence_maa_regiments_camel_cavalry_points multiply = 6 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value = 7 } }
+		# add = { value = mil_competence_maa_regiments_camel_cavalry_points multiply = 7 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value = 8 } }
+		# add = { value = mil_competence_maa_regiments_camel_cavalry_points multiply = 8 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value = 9 } }
+		# add = { value = mil_competence_maa_regiments_camel_cavalry_points multiply = 9 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value >= 10 } }
+		# add = { value = mil_competence_maa_regiments_camel_cavalry_points multiply = 10 }
+	# }
+	
+	# # Elephant Cavalry
+	# if = {
+		# limit = { number_maa_regiments_of_base_type = { type = elephant_cavalry value = 1 } }
+		# add = { value = mil_competence_maa_regiments_elephant_cavalry_points multiply = 1 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = elephant_cavalry value = 2 } }
+		# add = { value = mil_competence_maa_regiments_elephant_cavalry_points multiply = 2 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = elephant_cavalry value = 3 } }
+		# add = { value = mil_competence_maa_regiments_elephant_cavalry_points multiply = 3 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = elephant_cavalry value = 4 } }
+		# add = { value = mil_competence_maa_regiments_elephant_cavalry_points multiply = 4 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = elephant_cavalry value = 5 } }
+		# add = { value = mil_competence_maa_regiments_elephant_cavalry_points multiply = 5 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = elephant_cavalry value = 6 } }
+		# add = { value = mil_competence_maa_regiments_elephant_cavalry_points multiply = 6 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = elephant_cavalry value = 7 } }
+		# add = { value = mil_competence_maa_regiments_elephant_cavalry_points multiply = 7 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = elephant_cavalry value = 8 } }
+		# add = { value = mil_competence_maa_regiments_elephant_cavalry_points multiply = 8 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = elephant_cavalry value = 9 } }
+		# add = { value = mil_competence_maa_regiments_elephant_cavalry_points multiply = 9 }
+	# }
+	# else_if = {
+		# limit = { number_maa_regiments_of_base_type = { type = elephant_cavalry value >= 10 } }
+		# add = { value = mil_competence_maa_regiments_elephant_cavalry_points multiply = 10 }
+	# }
+}
+
+# Nb of max soldiers / 1000
+mil_competence_sub_value_2 = {
+	value = max_military_strength
+
+	divide = 1000
+}
+
+mil_competence_sub_value_3 = {
+	value = number_of_maa_regiments
+
+	if = {
+		limit = {
+			mil_competence_sub_value_2 > 0
+		}
+		divide = mil_competence_sub_value_2
+	}
+
+	if = {
+		limit = {
+			has_government = autocratic_government
+		}
+		subtract = 0.4
+	}
+	else = {
+		subtract = 0.5
+	}
+
+	if = {
+		limit = {
+			# Very low nb of regiments per 1k soldiers, and very low nb of regiments in general
+			AND = {
+				mil_competence_sub_value_4 < 0
+				number_of_maa_regiments < 5
+			}
+		}
+		multiply = 700
+	}
+	else_if = {
+		limit = {
+			# Somewhat good nb of regiments per 1k soldiers
+			OR = {
+				mil_competence_sub_value_4 > 0
+				number_of_maa_regiments = 5
+			}
+		}
+		multiply = 100
+	}
+	else_if = {
+		limit = {
+			OR = {
+				number_of_maa_regiments > 5
+			}
+		}
+		multiply = 50
+	}
+}
+
+# Nb of maa regiments / ( Nb of max soldiers / 1000)
+# How many regiments per 1k soldiers?
+mil_competence_sub_value_4 = {
+	value = number_of_maa_regiments
+
+	if = {
+		limit = {
+			mil_competence_sub_value_2 > 0
+		}
+		divide = mil_competence_sub_value_2
+	}
+
+	if = {
+		limit = {
+			has_government = autocratic_government
+		}
+		subtract = 0.4
+	}
+	else = {
+		subtract = 0.5
+	}
+}
+
+## Civic Competence
+civic_competence_net = {
+	value = 0
+
+	### General, shared in some forms by all competences
+	add = {
+		value = civic_competence_stewardship
+		desc = "CIVIC_COMP_STEWARDSHIP"
+	}
+	add = {
+		value = civic_competence_stewardship_steward
+		desc = "CIVIC_COMP_STEWARDSHIP_STEWARD"
+	}
+	add = {
+		value = civic_comp_administrative_court
+		desc = "CIVIC_COMP_ADMINISTRATIVE_COURT"
+	}
+	
+	### More specific
+	add = {
+		value = civic_competence_empire_size
+		desc = "CIVIC_COMP_EMPIRE_SIZE"
+	}
+	add = {
+		value = civic_competence_empire_size_unintegrated
+		desc = "CIVIC_COMP_EMPIRE_SIZE_UNINTEGRATED"
+	}
+	add = {
+		value = civic_competence_domain_size
+		desc = "CIVIC_COMP_DOMAIN_SIZE"
+	}
+	# add = {
+		# value = civic_competence_empire_county_opinion
+		# desc = "CIVIC_COMP_EMPIRE_COUNTY_OPINION"
+	# }
+	add = {
+		value = civic_competence_income
+		desc = "CIVIC_COMP_INCOME"
+	}
+	add = {
+		value = civic_competence_gold_reserve
+		desc = "CIVIC_COMP_GOLD_RESERVE"
+	}
+	add = {
+		value = civic_competence_development
+		desc = "CIVIC_COMP_DEVELOPMENT"
+	}
+	add = {
+		value = civic_competence_buildings
+		desc = "CIVIC_COMP_BUILDINGS"
+	}
+	
+	# add = {
+		# value = {
+			# every_vassal = {
+				# limit = {
+					# has_realm_law = centeral_law_policy_4
+				# }
+				# add = 15
+			# }
+			# every_vassal = {
+				# limit = {
+					# has_realm_law = centeral_law_policy_3
+				# }
+				# add = 10
+			# }
+			# every_vassal = {
+				# limit = {
+					# has_realm_law = centeral_law_policy_2
+				# }
+				# add = 5
+			# }
+			# every_vassal = {
+				# limit = {
+					# has_realm_law = centeral_law_policy_1
+				# }
+				# add = 1
+			# }
+		
+			# every_vassal = {
+				# limit = {
+					# has_realm_law = de_centeral_law_policy_4
+				# }
+				# subtract = 20
+			# }
+			# every_vassal = {
+				# limit = {
+					# has_realm_law = de_centeral_law_policy_3
+				# }
+				# subtract = 15
+			# }
+			# every_vassal = {
+				# limit = {
+					# has_realm_law = de_centeral_law_policy_2
+				# }
+				# subtract = 5
+			# }
+			# every_vassal = {
+				# limit = {
+					# has_realm_law = de_centeral_law_policy_1
+				# }
+				# subtract = 1
+			# }
+		# }
+
+		# desc = "CIVIC_COMP_CENTRAL"
+	# }
+
+	# add = {
+		# value = {
+			# every_realm_county = {
+				# limit = {
+					# county_control < 10
+				# }
+				# subtract = 2
+			# }
+		# }
+		# desc = "CIVIC_COMP_CONTROL"
+	# }
+}
+civic_competence_total = {
+	value = 0
+
+	add = {
+		value = civic_competence_net
+		desc = "CIVIC_COMP_TOTAL"
+	}
+}
+
+# An Emperor with a high stewardship is GOOD
+civic_competence_stewardship = {
+	add = stewardship
+}
+
+# A Steward with a high stewardship is GOOD
+civic_competence_stewardship_steward = {
+	value = 0
+	
+	every_stewardship_councillor = {
+		add = stewardship
+	}
+}
+
+# An Administrative court is GOOD
+civic_competence_administrative_court_grandeur_bonus = 10
+civic_competence_administrative_court = {
+	value = 0
+	
+	if = {
+		limit = {
+			has_royal_court = yes
+			has_court_type = court_administrative
+		}
+		add = court_grandeur_current_level
+		multiply = civic_competence_administrative_court_grandeur_bonus
+	}
+}
+
+# More integrated territory (i.e you're their de Jure liege) = more bureaucratic upkeep, so BAD
+civic_competence_empire_size_penalty_base = 1
+civic_competence_empire_size_penalty_county_opinion_modifier = { # Counties that don't like us weigh more, those that do like us weigh less
+	value = 0
+	
+	add = { # If county opinion = -20, we get a modifier (-20 * (-1) / 100) = 0.2, so it weighs 20% more
+		value = county_opinion
+		multiply = -1
+		divide = 100
+	}
+}
+civic_competence_empire_size_penalty_control_modifier = { # Counties that are almost independent weigh more, those that we have a tight control over weigh less
+	value = 0
+	
+	add = { # If control = 50, we get a modifier (100 - 50 )/ 100 = 0.5, so it weighs 50% more
+		value = 100
+		subtract = county_control
+		divide = 100
+	}
+	
+	# Absolute Control, makes counties weigh 25% less
+	if = {
+		limit = {
+			holder = { has_perk = absolute_control_perk }
+			county_control >= 100
+		}
+		subtract = 0.25
+	}
+}
+civic_competence_empire_size_penalty_modifiers = { # Allows a rather smooth transition
+	value = 1
+	
+	add = civic_competence_empire_size_penalty_county_opinion_modifier
+	add = civic_competence_empire_size_penalty_control_modifier
+}
+civic_competence_empire_size_penalty = { # Base * sum of various modifiers
+	value = civic_competence_empire_size_penalty_base
+	
+	multiply = civic_competence_empire_size_penalty_modifiers
+}
+civic_competence_empire_size = {
+	value = 0
+	
+	subtract = {
+		value = {
+			every_realm_county = {
+				limit = {
+					holder.top_liege = { save_temporary_scope_as = emperor } # Technically not always an Emperor, for Autocracies it can be lower
+					trigger_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_empire }
+						empire.holder = scope:emperor
+					}
+					trigger_else_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_kingdom }
+						kingdom.holder = scope:emperor
+					}
+					trigger_else_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_duchy }
+						duchy.holder = scope:emperor
+					}
+					trigger_else = { always = yes }
+				}
+				add = civic_competence_empire_size_penalty
+			}
+		}
+	}
+}
+
+# More unintegrated territory (i.e you're NOT their de Jure liege) = even more bureaucratic upkeep, so BAD (worse)
+civic_competence_empire_size_unintegrated_penalty = 2
+civic_competence_empire_size_unintegrated = {
+	value = 0
+	
+	subtract = {
+		value = {
+			every_realm_county = {
+				limit = {
+					holder.top_liege = { save_temporary_scope_as = emperor } # Technically not always an Emperor, for Autocracies it can be lower
+					trigger_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_empire }
+						NOT = { empire.holder = scope:emperor }
+					}
+					trigger_else_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_kingdom }
+						NOT = { kingdom.holder = scope:emperor }
+					}
+					trigger_else_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_duchy }
+						NOT = { duchy.holder = scope:emperor }
+					}
+					trigger_else = { always = no }
+				}
+				add = civic_competence_empire_size_unintegrated_penalty
+			}
+		}
+	}
+}
+
+# A vast personal domain is GOOD
+civic_competence_domain_size_value = 5
+civic_competence_domain_size = {
+	value = 0
+	
+	add = {
+		value = {
+			add = domain_size
+			multiply = civic_competence_domain_size_value
+		}
+	}
+}
+
+# The people not being in open rebellion is GOOD, them not liking your rule is BAD
+# Note: We only check integrated counties
+civic_competence_empire_county_opinion = {
+	value = 0
+	
+	add = {
+		value = {
+			every_realm_county = {
+				limit = {
+					holder.top_liege = { save_temporary_scope_as = emperor } # Technically not always an Emperor, for Autocracies it can be lower
+					trigger_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_empire }
+						empire.holder = scope:emperor
+					}
+					trigger_else_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_kingdom }
+						kingdom.holder = scope:emperor
+					}
+					trigger_else_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_duchy }
+						duchy.holder = scope:emperor
+					}
+					trigger_else = { always = yes }
+				}
+				add = county_opinion
+			}
+		}
+	}
+}
+
+# Gaining lots of cash is GOOD
+civic_competence_income = {
+	value = 0
+	
+	add = yearly_character_balance
+	if = {
+		limit = {
+			is_ai = yes
+		}
+		divide = 5 #dumb AI lol
+	}
+}
+
+# Having a lot of gold in reserve is GOOD (and debt bad, accordingly)
+civic_competence_gold_reserve = {
+	value = 0
+	
+	add = gold
+	divide = 20
+}
+
+# High development is GOOD
+civic_competence_development_breakpoint = 6
+civic_competence_development_breakpoint_after_450 = 10
+civic_competence_development_breakpoint_after_550 = 15
+civic_competence_development_breakpoint_after_650 = 20
+civic_competence_development_point = 1
+civic_competence_development = {
+	value = 0
+	
+	add = {
+		value = {
+			every_realm_county = {
+				limit = {
+					holder.top_liege = { save_temporary_scope_as = emperor } # Technically not always an Emperor, for Autocracies it can be lower
+					trigger_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_empire }
+						empire.holder = scope:emperor
+					}
+					trigger_else_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_kingdom }
+						kingdom.holder = scope:emperor
+					}
+					trigger_else_if = {
+						limit = { holder.top_liege.highest_held_title_tier = tier_duchy }
+						duchy.holder = scope:emperor
+					}
+					trigger_else = { always = yes }
+				}
+				add = development_level
+				if = {
+					limit = {
+						OR = {
+							AND = {
+								current_date <= 1090
+								game_start_date = 867.1.1
+							}
+
+							AND = {
+								current_date <= 1160
+								game_start_date = 1066.9.15
+							}
+						}
+					}
+					subtract = civic_competence_development_breakpoint
+				}
+				else_if = {
+					limit = {
+						OR = {
+							AND = {
+								current_date <= 1170
+								game_start_date = 867.1.1
+							}
+
+							AND = {
+								current_date <= 1240
+								game_start_date = 1066.9.15
+							}
+						}
+					}
+					subtract = civic_competence_development_breakpoint_after_450
+				}
+				else_if = {
+					limit = {
+						OR = {
+							AND = {
+								current_date <= 1270
+								game_start_date = 867.1.1
+							}
+
+							AND = {
+								current_date <= 1340
+								game_start_date = 1066.9.15
+							}
+						}
+					}
+					subtract = civic_competence_development_breakpoint_after_550
+				}
+				else = {
+					subtract = civic_competence_development_breakpoint_after_650
+				}
+			}
+		}
+	}
+}
+
+# Lots of building is GOOD
+civic_competence_buildings_point = 0.1
+civic_competence_buildings = {
+	value = 0
+	
+	add = {
+		value = {
+			every_realm_province = {
+				limit = {
+					trigger_if = {
+						limit = { province_owner.top_liege.highest_held_title_tier = tier_empire }
+						empire.holder = province_owner.top_liege
+					}
+					trigger_else_if = {
+						limit = { province_owner.top_liege.highest_held_title_tier = tier_kingdom }
+						kingdom.holder = province_owner.top_liege
+					}
+					trigger_else_if = {
+						limit = { province_owner.top_liege.highest_held_title_tier = tier_duchy }
+						duchy.holder = province_owner.top_liege
+					}
+					trigger_else = { always = yes }
+				}
+				add = combined_building_level
+				# add = 10
+			}
+		}
+	}
+	multiply = civic_competence_buildings_point
+}
+
+## Diplomatic Competence
+diplo_competence_net = {
+	value = 0
+
+	### General, shared in some forms by all competences
+	add = {
+		value = diplo_competence_diplomacy
+		desc = "DIPLO_COMP_DIPLOMACY"
+	}
+	add = {
+		value = diplo_competence_diplomacy_chancellor
+		desc = "DIPLO_COMP_DIPLOMACY_CHANCELLOR"
+	}
+	add = {
+		value = diplo_competence_diplomatic_court
+		desc = "DIPLO_COMP_DIPLOMATIC_COURT"
+	}
+	add = {
+		value = diplo_competence_county_opinion
+		desc = "DIPLO_COMP_COUNTY_OPINION"
+	}
+	add = {
+		value = diplo_competence_vassal_opinion
+		desc = "DIPLO_COMP_VASSAL_OPINION"
+	}
+	
+	# add = {
+		# value = {
+			# every_realm_county = {
+				# limit = {
+					# county_opinion > 70
+				# }
+				# add = 20
+			# }
+			# every_realm_county = {
+				# limit = {
+					# county_opinion <= -30
+				# }
+				# subtract = 5
+			# }
+		# }
+		# desc = "DIPLO_COMP_OPINION"
+	# }
+	# add = {
+		# value = {
+			# every_ally = {
+				# add = 10
+			# }
+		# }
+		# desc = "DIPLO_COMP_ALLY"
+	# }
+	# add = {
+		# value = {
+			# every_vassal = {
+				# limit = {
+					# opinion = {
+						# target = PREV
+						# value > 60
+					# }
+				# }
+				# add = 10
+			# }
+			# every_vassal = {
+				# limit = {
+					# opinion = {
+						# target = PREV
+						# value < -30
+					# }
+				# }
+				# subtract = 5
+			# }
+		# }
+		# desc = "DIPLO_COMP_VASSAL"
+	# }
+}
+diplo_competence_total = {
+	value = 0
+
+	add = {
+		value = diplo_competence_net
+		desc = "DIPLO_COMP_TOTAL"
+	}
+}
+
+# An Emperor with a high diplomacy is GOOD
+diplo_competence_diplomacy = {
+	add = diplomacy
+}
+
+
+
+diplo_competence_diplomacy_chancellor_compare = {
+	value = 0
+	
+	every_diplomacy_councillor = {
+		add = diplomacy
+	}
+	subtract = 7
+	if = {
+		limit = {
+			vassal_count > 0
+		}
+		divide = vassal_count
+	}
+	subtract = 1
+}
+
+# A Chancellor with a high diplomacy is GOOD
+diplo_competence_diplomacy_chancellor = {
+	value = 0
+	
+	every_diplomacy_councillor = {
+		add = diplomacy
+	}
+	subtract = 7
+	if = {
+		limit = {
+			vassal_count > 0
+		}
+		divide = vassal_count
+	}
+	subtract = 1
+
+	if = {
+		limit = {
+			AND = {
+				is_ai = yes
+			}
+		}
+		multiply = 50
+	}
+	else = {
+		multiply = 150
+	}
+}
+
+# A Diplomatic court is GOOD
+diplo_competence_diplomatic_court_grandeur_bonus = 10
+diplo_competence_diplomatic_court = {
+	value = 0
+	
+	if = {
+		limit = {
+			has_royal_court = yes
+			has_court_type = court_diplomatic
+		}
+		add = court_grandeur_current_level
+		multiply = diplo_competence_diplomatic_court_grandeur_bonus
+	}
+}
+
+#Average County Opinion
+diplo_competence_county_opinion_mult = 10
+diplo_competence_county_opinion = {
+	value = 0
+	
+	every_realm_county = {
+		add = county_opinion
+	}
+	if = {
+		limit = {
+			realm_size > 0
+		}
+		divide = realm_size
+	}
+	multiply = diplo_competence_county_opinion_mult
+}
+
+#Average Vassal Opinion
+diplo_competence_vassal_opinion_mult = 5
+#This might exist in base game. If so, pls replace
+diplo_competence_vassal_number = {
+	value = 0
+	
+	every_vassal = {
+		add = 1
+	}
+}
+diplo_competence_vassal_opinion = {
+	value = 0
+	
+	every_vassal = {
+		if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value >= 100
+				}
+			}
+			add = 100
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value >= 90
+				}
+			}
+			add = 90
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value >= 80
+				}
+			}
+			add = 80
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value >= 70
+				}
+			}
+			add = 70
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value >= 60
+				}
+			}
+			add = 60
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value >= 50
+				}
+			}
+			add = 50
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value >= 40
+				}
+			}
+			add = 30
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value >= 20
+				}
+			}
+			subtract = 10
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value >= 10
+				}
+			}
+			subtract = 20
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value >= 0
+				}
+			}
+			subtract = 30
+		}
+
+		if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value <= -100
+				}
+			}
+			subtract = 100
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value <= -90
+				}
+			}
+			subtract = 90
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value <= -80
+				}
+			}
+			subtract = 80
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value <= -70
+				}
+			}
+			subtract = 70
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value <= -50
+				}
+			}
+			subtract = 50
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value <= -40
+				}
+			}
+			subtract = 40
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value <= -30
+				}
+			}
+			subtract = 30
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value <= -20
+				}
+			}
+			subtract = 20
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = PREV
+					value <= -10
+				}
+			}
+			subtract = 10
+		}
+	}
+	if = {
+		limit = {
+			diplo_competence_vassal_number > 0
+		}
+		divide = diplo_competence_vassal_number
+	}
+	multiply = diplo_competence_vassal_opinion_mult
+}
+
+### Monuments
+monument_price = {
+	value = 0
+	if = {
+		limit = {
+			exists = var:statue
+		}
+		if = {
+			limit = {
+				var:statue = flag:gold
+			}
+			add = 20000
+		}
+		if = {
+			limit = {
+				var:statue = flag:marble
+			}
+			add = 15000
+		}
+		if = {
+			limit = {
+				var:statue = flag:limestone
+			}
+			add = 10000
+		}
+		if = {
+			limit = {
+				var:statue = flag:stone
+			}
+			add = 5000
+		}
+		if = {
+			limit = {
+				var:statue = flag:copper
+			}
+			add = 15000
+		}
+	}
+}
+
+monument_refund = {
+	value = 0
+	if = {
+		limit = {
+			exists = var:monument_material
+		}
+		if = {
+			limit = {
+				var:monument_material = flag:gold
+			}
+			add = 20000
+		}
+		if = {
+			limit = {
+				var:monument_material = flag:marble
+			}
+			add = 15000
+		}
+		if = {
+			limit = {
+				var:monument_material = flag:limestone
+			}
+			add = 10000
+		}
+		if = {
+			limit = {
+				var:monument_material = flag:stone
+			}
+			add = 5000
+		}
+		if = {
+			limit = {
+				var:monument_material = flag:copper
+			}
+			add = 15000
+		}
+		if = {
+			limit = {
+				var:monument_material = flag:copper_rust
+			}
+			add = 14500
+		}
+	}
+	if = {
+		limit = {
+			exists = var:monument_gardens
+		}
+		add = 300
+	}
+	if = {
+		limit = {
+			exists = var:monument_fences
+		}
+		add = 400
+	}
+	multiply = 0.3
+	divide = 2
+}
+
+### Misc
+# Gladiators
+sell_gladiator_price = {
+	value = 10
+	
+	add = {
+		value = prowess
+		subtract = 8
+		multiply = 2
+	}
+}
+
+# Distribute Bread decision
+distribute_bread_price_dev_modifier = 5
+
+distribute_bread_price = {
+	value = 0
+	
+	add = {
+		value = {
+			save_temporary_scope_as = current_title
+			every_in_de_jure_hierarchy = {
+				limit = {
+					tier = tier_county
+					
+					holder = {
+						OR = {
+							this = scope:current_title.holder
+							is_vassal_or_below_of = scope:current_title.holder
+						}
+					}
+				}
+				add = this.development_level
+			}
+			multiply = distribute_bread_price_dev_modifier
+		}
+	}
+}
+
+# Abandoning Province gold gain
+abandon_britannia_gold_gained = {
+	value = 5000
+}
+
+# Total fort level of a county
+total_county_fort_level = {
+	value = 0
+	
+	every_in_de_jure_hierarchy = {
+		limit = { tier = tier_barony }
+		title_province = { add = fort_level }
+	}
+}
+
+migrator_priority_value = {
+	value = 0
+
+	#Add martial score directly
+	add = martial
+	#Add prowess score directly
+	add = prowess
+	#Add reduced diplomacy score
+	add = {
+		value = diplomacy
+		multiply = 0.5
+	}
+	#Add reduced intrigue score
+	add = {
+		value = intrigue
+		multiply = 0.5
+	}
+	#Weight up for prestige level
+	add = {
+		value = prestige_level
+		multiply = 10
+	}
+	#+++Ambitious
+	if = {
+		limit = { has_trait = ambitious }
+		add = 15
+	}
+	#++Strategist
+	if = {
+		limit = { has_trait = strategist }
+		add = 10
+	}
+	#++Brave
+	if = {
+		limit = { has_trait = brave }
+		add = 10
+	}
+	#++Stubborn
+	if = {
+		limit = { has_trait = stubborn }
+		add = 10
+	}
+	#++Varangian
+	if = {
+		limit = { has_trait = varangian }
+		add = 10
+	}
+	#+Any blademaster
+	if = {
+		limit = { has_trait = lifestyle_blademaster }
+		add = 5
+	}
+	#+Diligent
+	if = {
+		limit = { has_trait = diligent }
+		add = 5
+	}
+	#+Wrathful
+	if = {
+		limit = { has_trait = wrathful }
+		add = 5
+	}
+	#+Impatient
+	if = {
+		limit = { has_trait = impatient }
+		add = 5
+	}
+	#+Arrogant
+	if = {
+		limit = { has_trait = arrogant }
+		add = 5
+	}
+	#+Vengeful
+	if = {
+		limit = { has_trait = vengeful }
+		add = 5
+	}
+	#+Berserker
+	if = {
+		limit = { has_trait = berserker }
+		add = 5
+	}
+	#+Shieldmaiden
+	if = {
+		limit = { has_trait = shieldmaiden }
+		add = 5
+	}
+	#-Forgiving
+	if = {
+		limit = { has_trait = forgiving }
+		add = -5
+	}
+	#-Humble
+	if = {
+		limit = { has_trait = humble }
+		add = -5
+	}
+	#-Patient
+	if = {
+		limit = { has_trait = patient }
+		add = -5
+	}
+	#-Calm
+	if = {
+		limit = { has_trait = calm }
+		add = -5
+	}
+	#-Lazy
+	if = {
+		limit = { has_trait = lazy }
+		add = -5
+	}
+	#--Craven
+	if = {
+		limit = { has_trait = craven }
+		add = -10
+	}
+	#---Content
+	if = {
+		limit = { has_trait = content }
+		add = -15
+	}
+	#Weight down heavily for pacifist faith.
+	if = {
+		limit = {
+			faith = { has_doctrine_parameter = pacifist_opinion_active }
+		}
+		add = -30
+	}
+	#Weight up if historically migrant culture and game rules say so
+	if = {
+		limit = {
+			culture = {
+				OR = {
+					this = culture:gothic
+					this = culture:visigothic
+					this = culture:ostrogothic
+					this = culture:vandal
+					this = culture:langobard
+					this = culture:old_suebi
+					this = culture:old_saxon
+					this = culture:jute
+					this = culture:angle
+					this = culture:alan
+					this = culture:sclavenian
+					this = culture:belocroat
+					this = culture:beloserb
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = tfe_historical_migrations_strict
+			}
+			add = 1000
+		}
+		else_if = {
+			limit = {
+				has_game_rule = tfe_historical_migrations_default
+			}
+			add = 30
+		}
+	}
+}
+
+grand_raid_gold = {
+	value = 0
+	scope:defender = {
+		every_realm_county = {
+			add = 1
+		}
+	}
+	multiply = 10
+	
+	min = 200
+}
+
+#traits for senate ideals, improve later
+loyalist_senate = {
+	value = 0
+	if = {
+		limit = {
+			has_trait = content
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = compassionate
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = trusting
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = humble
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = arrogant
+		}
+		subtract = 1
+	}
+	if = {
+		limit = {
+			has_trait = ambitious
+		}
+		subtract = 1
+	}
+	if = {
+		limit = {
+			has_trait = paranoid
+		}
+		subtract = 1
+	}
+	if = {
+		limit = {
+			has_trait = stubborn
+		}
+		subtract = 1
+	}
+	opinion_modifier = {
+		opinion_target = top_liege
+		multiplier = 0.5
+		step = 1
+		max = 5
+	}
+}
+disloyal_senate = {
+	value = 0
+	if = {
+		limit = {
+			has_trait = content
+		}
+		subtract = 1
+	}
+	if = {
+		limit = {
+			has_trait = compassionate
+		}
+		subtract = 1
+	}
+	if = {
+		limit = {
+			has_trait = trusting
+		}
+		subtract = 1
+	}
+	if = {
+		limit = {
+			has_trait = humble
+		}
+		subtract = 1
+	}
+	if = {
+		limit = {
+			has_trait = arrogant
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = ambitious
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = paranoid
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = stubborn
+		}
+		add = 1
+	}
+	opinion_modifier = {
+		opinion_target = top_liege
+		multiplier = 0.5
+		step = 1
+		max = 5
+	}
+}
+pragmatic_senate = {
+	value = 0
+	if = {
+		limit = {
+			has_trait = just
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = honest
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = fickle
+		}
+		add = 1
+	}
+}
+gloryhound_senate = {
+	value = 0
+	if = {
+		limit = {
+			has_trait = ambitious
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = vengeful
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = callous
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = brave
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = diligent
+		}
+		add = 1
+	}
+
+	if = {
+		limit = {
+			has_trait = content
+		}
+		subtract = 1
+	}
+	if = {
+		limit = {
+			has_trait = forgiving
+		}
+		subtract = 1
+	}
+	if = {
+		limit = {
+			has_trait = compassionate
+		}
+		subtract = 1
+	}
+	if = {
+		limit = {
+			has_trait = craven
+		}
+		subtract = 1
+	}
+	if = {
+		limit = {
+			has_trait = lazy
+		}
+		subtract = 1
+	}
+}
+
+culture_script_province_count = {
+	value = 0
+	if = {
+		limit = {
+			has_cultural_tradition = tradition_script_arabic
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_arabic
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_aramaic
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_aramaic
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_armenian
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_armenian
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_brahmi
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_brahmi
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_coptic
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_coptic
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_cuneiform
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_cuneiform
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_cyrillic
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_cyrillic
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_devanagari
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_devanagari
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_etruscan
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_etruscan
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_geez
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_geez
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_georgian
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_georgian
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_glagolitic
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_glagolitic
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_gothic
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_gothic
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_greek
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_greek
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_gupta
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_gupta
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_han
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_han
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_hebrew
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_hebrew
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_hieroglyphic
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_hieroglyphic
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_hungarian
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_hungarian
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_latin
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_latin
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_manichean
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_manichean
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_meroitic
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_meroitic
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_mon
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_mon
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_nabatean
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_nabatean
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_ogham
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_ogham
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_pahlavi
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_pahlavi
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_phoenician
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_phoenician
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_runic
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_runic
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_sinhala
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_sinhala
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_sogdian
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_sogdian
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_south_arabian
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_south_arabian
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_syriac
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_syriac
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_tamil
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_tamil
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_tibetan
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_tibetan
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_tifinagh
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_tifinagh
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_cultural_tradition = tradition_script_turkic
+		}
+		every_culture_global = {
+			if = {
+				limit = {
+					has_cultural_tradition = tradition_script_turkic
+				}
+				every_culture_county = {
+					add = 1
+				}
+			}
+		}
+	}
+}
+
+culture_script_grandeur_bonus = {
+	value = 0
+	add = culture_script_province_count
+	divide = 50
+	floor = yes
+}
+
+convert_culture_task = {
+	value = 0
+	every_in_global_list = {
+		variable  = all_senate_italy
+		if = {
+			limit = {
+				has_variable = gloryhound_senate #Gloryhounds won't want converting stuff but can like culture more than faith depending on traits
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = zealous 
+						has_trait = devoted 
+						has_trait = theologian 
+					}
+				}
+				subtract = 1
+			}
+			else = {
+				subtract = 0.5
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = pragmatic_senate #Pragmatic just asses the state of the realm and go from there
+			}
+			if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.7
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				add = 1
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.5
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				add = 0.5
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.3
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				add = 0.2
+			}
+
+			if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.7
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				subtract = 1
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.5
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				subtract = 0.5
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.3
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				subtract = 0.2
+			}
+		}
+	}
+
+	min = -10
+}
+
+convert_faith_task = {
+	value = 0
+	every_in_global_list = {
+		variable  = all_senate_italy
+		if = {
+			limit = {
+				has_variable = gloryhound_senate #Gloryhounds won't want converting stuff but can like faith more than culture depending on traits
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = zealous 
+						has_trait = devoted 
+						has_trait = theologian 
+					}
+				}
+				add = 1
+			}
+			else = {
+				subtract = 0.5
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = pragmatic_senate #Pragmatic just asses the state of the realm and go from there
+			}
+			if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.7
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				subtract = 1
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.5
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				subtract = 0.5
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.3
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				subtract = 0.2
+			}
+
+			if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.7
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				add = 1
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.5
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				add = 0.5
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.3
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				add = 0.2
+			}
+		}
+	}
+
+	min = -10
+}
+
+conquer_task = {
+	value = 0
+	every_in_global_list = {
+		variable  = all_senate_italy
+		if = {
+			limit = {
+				has_variable = gloryhound_senate #Gloryhounds like dis
+			}
+			add = 1
+		}
+		else_if = {
+			limit = {
+				has_variable = pragmatic_senate #Pragmatic just asses the state of the realm and go from there
+			}
+			if = {
+				limit = {
+					top_liege = {
+						AND = {
+							max_military_strength >= 6000
+							any_neighboring_top_liege_realm_owner = {			#will redo later
+								max_military_strength <= 2000
+							}
+						}
+					}
+				}
+				add = 1
+			}
+			else = {
+				subtract = 1
+			}
+		}
+	}
+
+	min = -10
+}
+building_task = {
+	value = 0
+	every_in_global_list = {
+		variable  = all_senate_italy
+		if = {
+			limit = {
+				has_variable = gloryhound_senate #Gloryhounds don't like dis
+			}
+			subtract = 1
+		}
+		else_if = {
+			limit = {
+				has_variable = pragmatic_senate #Pragmatic just asses the state of the realm and go from there
+			}
+			if = {
+				limit = {
+					top_liege = {
+						civic_competence_buildings < 20
+					}
+				}
+				add = 1
+			}
+			else = {
+				subtract = 1
+			}
+		}
+	}
+
+	min = -10
+}
+convert_culture_task_eastern = {
+	value = 0
+	every_in_global_list = {
+		variable  = all_senate_eastern
+		if = {
+			limit = {
+				has_variable = gloryhound_senate #Gloryhounds won't want converting stuff but can like culture more than faith depending on traits
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = zealous 
+						has_trait = devoted 
+						has_trait = theologian 
+					}
+				}
+				subtract = 1
+			}
+			else = {
+				subtract = 0.5
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = pragmatic_senate #Pragmatic just asses the state of the realm and go from there
+			}
+			if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.7
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				add = 1
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.5
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				add = 0.5
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.3
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				add = 0.2
+			}
+
+			if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.7
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				subtract = 1
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.5
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				subtract = 0.5
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.3
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				subtract = 0.2
+			}
+		}
+	}
+
+	min = -10
+}
+
+convert_faith_task_eastern = {
+	value = 0
+	every_in_global_list = {
+		variable  = all_senate_eastern
+		if = {
+			limit = {
+				has_variable = gloryhound_senate #Gloryhounds won't want converting stuff but can like faith more than culture depending on traits
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = zealous 
+						has_trait = devoted 
+						has_trait = theologian 
+					}
+				}
+				add = 1
+			}
+			else = {
+				subtract = 0.5
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = pragmatic_senate #Pragmatic just asses the state of the realm and go from there
+			}
+			if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.7
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				subtract = 1
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.5
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				subtract = 0.5
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.3
+							NOT = {
+								culture = holder.top_liege.culture
+							}
+						}
+					}
+				}
+				subtract = 0.2
+			}
+
+			if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.7
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				add = 1
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.5
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				add = 0.5
+			}
+			else_if = {
+				limit = {
+					top_liege = {
+						any_realm_county = {
+							percent > 0.3
+							NOT = {
+								faith = holder.top_liege.faith
+							}
+						}
+					}
+				}
+				add = 0.2
+			}
+		}
+	}
+
+	min = -10
+}
+
+conquer_task_eastern = {
+	value = 0
+	every_in_global_list = {
+		variable  = all_senate_eastern
+		if = {
+			limit = {
+				has_variable = gloryhound_senate #Gloryhounds like dis
+			}
+			add = 1
+		}
+		else_if = {
+			limit = {
+				has_variable = pragmatic_senate #Pragmatic just asses the state of the realm and go from there
+			}
+			if = {
+				limit = {
+					top_liege = {
+						AND = {
+							max_military_strength >= 6000
+							any_neighboring_top_liege_realm_owner = {			#will redo later
+								max_military_strength <= 2000
+							}
+						}
+					}
+				}
+				add = 1
+			}
+			else = {
+				subtract = 1
+			}
+		}
+	}
+
+	min = -10
+}
+building_task_eastern = {
+	value = 0
+	every_in_global_list = {
+		variable  = all_senate_eastern
+		if = {
+			limit = {
+				has_variable = gloryhound_senate #Gloryhounds don't like dis
+			}
+			subtract = 1
+		}
+		else_if = {
+			limit = {
+				has_variable = pragmatic_senate #Pragmatic just asses the state of the realm and go from there
+			}
+			if = {
+				limit = {
+					top_liege = {
+						civic_competence_buildings < 20
+					}
+				}
+				add = 1
+			}
+			else = {
+				subtract = 1
+			}
+		}
+	}
+
+	min = -10
+}
+
+roman_bathhouse_cost_base_value = {
+	value = 50
+	if = {
+		limit = {
+			culture = {
+				has_cultural_tradition = tradition_roman_architecture
+			}
+		}
+		subtract = 10
+	}
+}
+
+
+
+
+TFE_minor_flavor_activity_cost = {
+	value = 20
+	multiply = {
+		value = root.primary_title.tier
+		subtract = 1.5
+		min = 1
+	}
+	if = {
+		limit = {
+			root.primary_title.tier > tier_duchy
+		}
+		add = 10
+	}
+}
+
+missionary_chance = {
+	value = 0
+	every_court_position_holder = {
+		type = missionary
+		if = {
+			limit = {
+				aptitude = { court_position = missionary value >= 1 }
+			}
+			add = 1
+		}
+		if = {
+			limit = {
+				aptitude = { court_position = missionary value >= 2 }
+			}
+			add = 2
+		}
+		if = {
+			limit = {
+				aptitude = { court_position = missionary value >= 3 }
+			}
+			add = 3
+		}
+		if = {
+			limit = {
+				aptitude = { court_position = missionary value >= 4 }
+			}
+			add = 4
+		}
+		if = {
+			limit = {
+				aptitude = { court_position = missionary value >= 5 }
+			}
+			add = 5
+		}
+	}
+}

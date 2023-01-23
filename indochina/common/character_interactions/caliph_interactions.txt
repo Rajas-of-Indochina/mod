@@ -1,0 +1,49 @@
+﻿select_preferred_caliph = {
+	category = interaction_category_religion
+	use_diplomatic_range = no
+	is_shown = {
+		scope:actor.faith = scope:recipient.faith
+		scope:actor = {
+			NOT = {
+				has_government = caliphate_government
+			}
+			has_religion = religion:islam_religion
+		}
+		scope:recipient = {
+			has_government = caliphate_government
+		}
+	}
+
+	auto_accept = {
+		always = yes
+	}
+
+	on_accept = {
+		scope:actor = {
+			if = {
+				limit = {
+					any_relation = {
+						type = preferred_caliph
+						count >= 1
+					}
+				}
+				every_relation = {
+					type = preferred_caliph
+					remove_relation_preferred_caliph = THIS
+				}
+			}
+			set_relation_preferred_caliph = scope:recipient
+		}
+	}
+	
+	ai_will_do = {
+		base = 75
+		
+		opinion_modifier = {
+			opinion_target = scope:recipient
+			multiplier = 0.5
+			step = 5
+			max = 25
+		}
+	}
+}

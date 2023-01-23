@@ -1,0 +1,125 @@
+﻿zakah_dev_realm = {
+	scope = character
+
+	effect = {
+		change_variable = {
+			name = zakah_balance
+			subtract = 500
+		}
+
+		set_variable = {
+			name = dev_zakah_tmp_count
+			value = 50
+		}
+		change_variable = {
+			name = dev_zakah_tmp_count
+			divide = realm_size
+		}
+		every_realm_county = {
+			change_development_level = root.var:dev_zakah_tmp_count
+		}
+	}	 			
+}
+
+zakah_opinion_realm = {
+	scope = character
+
+	effect = {
+		change_variable = {
+			name = zakah_balance
+			subtract = 200
+		}
+
+		hidden_effect = {
+			every_realm_county = {
+				add_county_modifier = {
+					modifier = opinion_zakah
+					years = 10
+				}
+			}
+		}
+	}	 			
+}
+
+zakah_dev_all = {
+	scope = character
+
+	effect = {
+		change_variable = {
+			name = zakah_balance
+			subtract = 1500
+		}
+
+		set_variable = {
+			name = dev_zakah_tmp_count
+			value = 75
+		}
+		set_variable = {
+			name = faith_counties
+			value = 0
+		}
+		hidden_effect = {
+			every_county = {
+				limit = {
+					faith = root.faith
+				}
+				root = {
+					change_variable = {
+						name = faith_counties
+						add = 1
+					}
+				}
+			}
+			change_variable = {
+				name = dev_zakah_tmp_count
+				divide = var:faith_counties
+			}
+			every_county = {
+				limit = {
+					faith = root.faith
+				}
+				change_development_level = root.var:dev_zakah_tmp_count
+			}
+		}
+	}	 			
+}
+
+zakah_modifier_supply = {
+	scope = character
+
+	effect = {
+		change_variable = {
+			name = zakah_balance
+			subtract = 1500
+		}
+
+		hidden_effect = {
+			every_realm_province = {
+				add_province_modifier = {
+					modifier = zakah_modifier_supply
+					years = 10
+				}
+			}
+		}
+	}	 			
+}
+
+zakah_modifier_dev = {
+	scope = character
+
+	effect = {
+		change_variable = {
+			name = zakah_balance
+			subtract = 1500
+		}
+
+		hidden_effect = {
+			every_realm_county = {
+				add_county_modifier = {
+					modifier = opinion_zakah
+					years = 50
+				}
+			}
+		}
+	}	 			
+}

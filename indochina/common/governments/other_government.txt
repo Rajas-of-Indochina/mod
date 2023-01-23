@@ -1,0 +1,271 @@
+﻿city_state_government = {
+	primary_holding = city_holding
+	rulers_should_have_dynasty = yes
+	valid_holdings = { castle_holding tribal_holding church_holding}
+	required_county_holdings = { city_holding castle_holding }
+	royal_court = yes
+
+	vassal_contract = { 
+		feudal_government_taxes
+		feudal_government_levies
+		religious_rights
+		fortification_rights
+		coinage_rights
+		jizya_special_rights
+		succession_rights
+		war_declaration_rights
+		council_rights
+		title_revocation_rights 
+	}
+
+	character_modifier = {
+		domain_limit = -200
+	}
+	color = { 0 30 60 }
+
+	opinion_of_liege = {
+		if = {
+			limit = {
+				scope:liege = {
+					has_variable = ecostability
+				}
+			}
+			scope:vassal = {
+				if = {
+					limit = {
+						scope:liege = {
+							has_government = city_state_government
+						}
+					}
+	
+					if = {
+						limit = {
+							scope:liege = {
+								var:ecostability > 50
+							}
+						}
+							if = {
+								limit = {
+									scope:liege = {
+										var:ecostability > 100
+									}
+								}
+								value = 20
+							}
+							else_if = {
+								limit = {
+									scope:liege = {
+										var:ecostability < 100
+									}
+								}
+								value = 10
+							}
+					}
+					else_if = {
+						limit = {
+							scope:liege = {
+								var:ecostability < -50
+							}
+						}
+							if = {
+								limit = {
+									scope:liege = {
+										var:ecostability > -100
+									}
+								}
+								value = -10
+							}
+							else_if = {
+								limit = {
+									scope:liege = {
+										var:ecostability < -100
+									}
+								}
+								value = -20
+							}
+					}
+					
+				}
+			}
+		}
+	}
+
+	opinion_of_liege_desc = {
+		first_valid = {
+			desc = tfe_economic_stability
+		}
+	}
+		
+}
+
+nomadic_government = {
+	primary_holding = tribal_holding
+	affected_by_development = no
+	rulers_should_have_dynasty = yes
+	supply_limit_mult_for_others = -0.8
+	valid_holdings = { castle_holding city_holding church_holding}
+	regiments_prestige_as_gold = yes
+	required_county_holdings = { tribal_holding city_holding church_holding }
+	flag = government_can_raid_rule
+	royal_court = yes
+
+	vassal_contract = { 
+		tribal_government_obligations
+		jizya_special_rights
+	}
+
+	character_modifier = {
+		development_growth_factor = -0.5
+		army_maintenance_mult = -0.5
+		title_creation_cost_mult = -0.5
+		ai_war_chance = 0.8
+
+		domain_tax_mult = -0.5
+        vassal_tax_mult = -0.25
+        men_at_arms_maintenance_per_dread_mult = -0.005
+        
+        additional_fort_level = -10
+        castle_holding_build_speed = 5
+        city_holding_build_speed = 5
+        # metropolis_holding_build_speed = 5
+	}
+	color = { 255 204 51 }
+}
+
+eranshar_government = {
+	primary_holding = castle_holding
+	rulers_should_have_dynasty = yes
+	create_cadet_branches = yes
+	dynasty_named_realms = yes
+	valid_holdings = { castle_holding city_holding church_holding}
+	required_county_holdings = { castle_holding city_holding church_holding }
+	royal_court = yes
+
+	vassal_contract = { 
+		eranshar_centralization
+		eranshar_special_contracts
+		eranshar_scutage
+		jizya_special_rights
+		religious_rights
+		fortification_rights
+		coinage_rights
+		succession_rights
+		war_declaration_rights
+		council_rights
+		title_revocation_rights 
+	}
+	color = { 213 213 19 }
+}
+
+caliphate_government = {
+	primary_holding = castle_holding
+	preferred_religions = { islam_religion }
+
+	valid_holdings = { castle_holding }
+	required_county_holdings = { castle_holding city_holding church_holding }
+	always_use_patronym = yes
+	dynasty_named_realms = yes
+	create_cadet_branches = yes
+	rulers_should_have_dynasty = yes
+	royal_court = yes
+
+	fallback = 2
+
+	character_modifier = {
+		levy_reinforcement_rate_same_faith = 0.3
+		levy_reinforcement_rate_different_faith = -0.1
+		same_faith_opinion = 10
+		ai_war_chance = 0.3
+	}
+
+	vassal_contract = { 
+		caliphate_centralization
+		fortification_rights
+		religious_rights
+		coinage_rights
+		succession_rights
+		war_declaration_rights
+		council_rights
+		jizya_special_rights
+		title_revocation_rights 
+	}
+
+	color = { 37 148 14 }
+}
+
+muslim_government = {
+	primary_holding = castle_holding
+	preferred_religions = { islam_religion }
+
+	valid_holdings = { castle_holding }
+	required_county_holdings = { castle_holding city_holding church_holding }
+	always_use_patronym = yes
+	dynasty_named_realms = yes
+	create_cadet_branches = yes
+	rulers_should_have_dynasty = yes
+	royal_court = yes
+
+	fallback = 2
+
+	vassal_contract = { 
+		islamic_taxes
+		islamic_levies
+		special_contract_iqta
+		succession_rights_iqta
+		dynastic_autonomy 
+		jizya_special_rights
+		caliphate_zakah_rights
+		fortification_rights
+		religious_rights
+		coinage_rights
+		succession_rights
+		war_declaration_rights
+		council_rights
+		title_revocation_rights 
+	}
+
+	color = { 111 231 27 }
+}
+
+imperial_cult_government = {
+	primary_holding = castle_holding
+	valid_holdings = { castle_holding church_holding trade_center_holding estate_holding  }
+	required_county_holdings = { castle_holding city_holding church_holding }
+	
+	create_cadet_branches = yes
+	rulers_should_have_dynasty = yes
+	dynasty_named_realms = no
+	royal_court = yes
+	
+	fallback = 1
+	
+	can_get_government = { 
+		faith = {
+			has_doctrine_parameter = imperial_head_of_faith_hof_imperial_cult_government
+			religious_head = root
+		}
+	}
+
+	character_modifier = {
+		levy_reinforcement_rate_same_faith = 0.3
+		levy_reinforcement_rate_different_faith = -0.3
+		same_faith_opinion = 10
+		different_faith_opinion = -10
+	}
+	vassal_contract = {
+		imperial_government_taxes
+		imperial_government_levies
+		special_contract
+		eranshar_special_contracts
+		religious_rights
+		jizya_special_rights
+		fortification_rights
+		coinage_rights
+		succession_rights
+		war_declaration_rights
+		council_rights
+		title_revocation_rights
+	}
+	
+	color = { 200 20 10 }
+}
