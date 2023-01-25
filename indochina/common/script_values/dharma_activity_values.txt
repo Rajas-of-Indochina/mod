@@ -81,6 +81,42 @@ language_soft_cap_modifier_value = {
 	subtract = language_soft_cap
 }
 
+#####################################
+# Hero Stone
+#####################################
+raise_hero_stone_gold_cost = { value = medium_gold_value }
+raise_hero_stone_county_preference_cap_value = {
+	value = 0
 
+	# Add +1 for every entity in the list.
+	every_in_list = {
+		list = personally_held_counties_list
+		add = 1
+	}
+	# Cap it out at the max for the event.
+	max = 3
+}
+raise_hero_stone_variant_ancestor_value = {
+	value = 0
 
-
+	# Weight up for hero_stone-celebrating culture.
+	if = {
+		limit = { culture = { has_cultural_pillar = heritage_dravidian } }
+		add = 25
+	}
+	# Weight up for low popular opinion.
+	add = {
+		value = this.county_opinion
+		multiply = -1
+	}
+	# Weight down for existing hero_stone.
+	if = {
+		limit = { exists = this.var:hero_stone_slot_occupied }
+		add = -100
+	}
+}
+dharma_hero_stone_duration_value = { value = 50 }
+dharma_hero_stone_desc_normal_weight_value = 1
+dharma_hero_stone_desc_upweight_weight_value = 5
+dharma_hero_stone_desc_heavy_upweight_weight_value = 50
+dharma_hero_stone_desc_always_upweight_weight_value = 10000

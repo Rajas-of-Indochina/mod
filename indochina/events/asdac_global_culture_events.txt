@@ -1,0 +1,338 @@
+﻿namespace = asdac_global_culture
+#########################################################################
+# Splitting Norse into Danish, Swedish, and Norwegian					#
+# by Sean Hughes														#
+# global_culture.8001-0019												#
+#########################################################################
+
+asdac_global_culture.8001 = {
+	type = empty
+	hidden = yes
+	
+	immediate = {
+		# Split the Norse culture into Swedish, Danish, and Norwegian
+		culture:russian = { save_scope_as = russian } # Save scope for player notification events.
+		culture:ukrainian = {
+			# 'Diverge' this culture by copying innovations/traditions.
+			reset_culture_creation_date = yes
+			get_all_innovations_from = scope:russian
+			copy_all_traditions_from = scope:russian
+			add_culture_tradition = tradition_horse_lords
+			if = {
+				limit = { has_cultural_tradition = tradition_malleable_invaders }
+				remove_culture_tradition = tradition_malleable_invaders
+			}
+
+			# Save scope for player notification events.
+			save_scope_as = ukrainian 
+		}
+		culture:great_russian = {
+			# 'Diverge' this culture by copying innovations/traditions.
+			reset_culture_creation_date = yes
+			get_all_innovations_from = scope:russian
+			copy_all_traditions_from = scope:russian
+			if = {
+				limit = { has_cultural_tradition = tradition_malleable_invaders }
+				remove_culture_tradition = tradition_malleable_invaders
+			}
+
+			# Save scope for player notification events.
+			save_scope_as = great_russian
+		}
+		culture:belarusian = {
+			# 'Diverge' this culture by copying innovations/traditions.
+			reset_culture_creation_date = yes
+			get_all_innovations_from = scope:russian
+			copy_all_traditions_from = scope:russian
+			if = {
+				limit = { has_cultural_tradition = tradition_malleable_invaders }
+				remove_culture_tradition = tradition_malleable_invaders
+			}
+
+			# Save scope for player notification events.
+			save_scope_as = belarusian
+		}
+
+		# Compile a list of all russian counties in Scandanavia to convert to the appropriate culture.
+		every_county = {
+			limit = {
+				# All russian counties in Scandanavia will convert to the appropriate culture.
+				culture = culture:russian
+				title_province = {
+					geographical_region = custom_rus
+				}
+			}
+			add_to_list = russian_counties
+		}
+
+		# Convert the russian counties to the new culture.
+		every_in_list = {
+			list = russian_counties
+			limit = {
+				# Same-culture players get an event informing them of their county's conversion *before* it happens (for their provinces only).
+				NOT = {
+					holder = {
+						OR = {
+							AND = {
+								is_ai = no
+								culture = culture:russian
+							}
+							any_liege_or_above = {
+								is_ai = no
+								culture = culture:russian
+							}
+						}
+					}
+				}
+			}
+						
+			# First, all Norse counties in Denmark become Danish
+			convert_county_and_holder_if_in_region_effect = {
+				OLD_CULTURE = culture:russian
+				NEW_CULTURE = culture:belarusian
+				REGION = custom_belarus
+			}
+
+			# Second, any Norse counties in Norway become Norwegian
+			convert_county_and_holder_if_in_region_effect = {
+				OLD_CULTURE = culture:russian
+				NEW_CULTURE = culture:great_russian
+				REGION = custom_russia
+			}
+
+			# Finally, all remaining Norse counties become Swedish
+			convert_county_and_holder_if_in_region_effect = {
+				OLD_CULTURE = culture:russian
+				NEW_CULTURE = culture:ukrainian
+				REGION = custom_rus
+			}
+		}
+
+		# Send the appropriate notification event to each player.
+		every_player = {
+			if = {
+				limit = {
+					culture = culture:russian
+					capital_province = {
+						geographical_region = custom_rus
+					}
+				}
+				if = {
+					limit = {
+						NOT = {
+							any_liege_or_above = {
+								is_ai = no
+							}
+						}
+					}
+					trigger_event = asdac_global_culture.8002
+				}
+			}
+			else_if = {		#Notify russian players who have adventured outside of Scandinavia
+				limit = {
+					culture = culture:russian
+					is_ai = no
+				}
+				trigger_event = asdac_global_culture.8005
+			}
+			else = {
+				if = {
+					limit = {
+						is_ai = no
+						save_temporary_scope_as = player
+						any_in_list = {
+							list = russian_counties
+							holder = {
+								is_within_diplo_range = { CHARACTER = scope:player }
+							}
+						}
+					}
+					trigger_event = asdac_global_culture.8005
+				}
+			}
+		}
+	}
+}
+
+# If a player is strong enough, they can resist the culture flip for their sub-realm only.
+asdac_global_culture.8002 = {
+	type = character_event
+	title = global_culture.8002.t
+	desc = global_culture.8002.desc
+	theme = culture_change
+	left_portrait = root
+
+	immediate = {
+		# Determine what the player's target culture is (based off of religion and capital region)
+		if = {
+			limit = {
+				capital_province = {
+					geographical_region = custom_belarus
+				}
+			}
+			culture:belarusian = { save_scope_as = my_new_culture }
+		}
+		else_if = {
+			limit = {
+				capital_province = {
+					geographical_region = custom_russia
+				}
+			}
+			culture:great_russian = { save_scope_as = my_new_culture }
+		}
+		else_if = {
+			limit = {
+				capital_province = {
+					geographical_region = custom_rus
+				}
+			}
+			culture:ukrainian = { save_scope_as = my_new_culture }
+		}
+
+		culture = { save_scope_as = old_culture }
+	}
+
+	# Option 1 (Almost always the only option): Accept the culture conversion.
+	option = {
+		name = global_culture.8002.a
+		if = {
+			limit = {
+				capital_province = {
+					geographical_region = custom_rus
+				}
+			}
+			convert_player_realm_from_old_culture_to_new_effect = {
+				OLD_CULTURE = culture:russian
+				NEW_CULTURE = scope:my_new_culture
+			}
+		}
+		else_if = { # Some of my realm is in Scandinavia but I am not
+			limit = {
+				any_sub_realm_county = {
+					culture = culture:russian
+					title_province = {
+						geographical_region = custom_rus
+					}
+				}
+			}
+			every_county_in_region = {
+				region = custom_rus
+				if = {
+					limit = {
+						title_province = { geographical_region = custom_belarus }
+						culture = culture:russian
+					}
+					set_county_culture = culture:belarusian
+					if = {
+						limit = {
+							holder = { capital_county = prev }
+						}
+						holder = { set_culture = culture:belarusian }
+					}
+				}
+				else_if = {
+					limit = {
+						title_province = { geographical_region = custom_russia }
+						culture = culture:russian
+					}
+					set_county_culture = culture:great_russian
+					if = {
+						limit = {
+							holder = { capital_county = prev }
+						}
+						holder = { set_culture = culture:great_russian }
+					}
+				}
+				else_if = {
+					limit = {
+						culture = culture:russian
+					}
+					set_county_culture = culture:ukrainian
+					if = {
+						limit = {
+							holder = { capital_county = prev }
+						}
+						holder = { set_culture = culture:ukrainian }
+					}
+				}
+			}
+		}
+	}
+
+	# Option 2: I am strong enough to keep our old culture intact!
+	option = {
+		name = global_culture.8002.b
+
+		trigger = {
+			custom_description = {
+				text = controls_enough_culture_counties
+				any_in_list = {
+					list = russian_counties
+					percent >= 0.8
+
+					OR = {
+						holder = root
+						holder = {
+							any_liege_or_above = {
+								this = root
+							}
+						}
+					}
+				}
+			}
+		}
+
+		show_as_unavailable = {
+			custom_description = {
+				text = controls_enough_culture_counties	
+				any_in_list = {
+					list = russian_counties
+					percent < 0.8
+
+					OR = {
+						holder = root
+						holder = {
+							any_liege_or_above = {
+								this = root
+							}
+						}
+					}
+				}
+			}
+		}
+
+		custom_tooltip = global_culture.custom.keep_culture
+	}
+}
+
+# As this is purely an informative event for players, it doesn't actually have any gameplay effects.
+asdac_global_culture.8005 = {
+	type = character_event
+	title = global_culture.8005.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = culture:russian
+				}
+				desc = global_culture.8005.desc_russian
+			}
+			desc = global_culture.8005.desc
+		}
+	}
+	theme = culture_change
+
+	option = {
+		trigger = {
+			NOT = { culture = culture:russian }
+		}
+		name = global_culture.8005.a
+	}
+
+	option = {
+		trigger = {
+			culture = culture:russian
+		}
+		name = global_culture.8005.b
+	}
+}

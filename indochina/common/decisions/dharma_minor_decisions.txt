@@ -253,6 +253,69 @@ start_hunt_decision = {
 		}
 	}
 }
+dharma_raise_hero_stone_decision = {
+	title = dharma_raise_hero_stone_decision_name
+	picture = "gfx/interface/illustrations/decisions/fp1_decision_raise_runestone.dds"
+	desc = raise_hero_stone_decision_desc
+	selection_tooltip = raise_hero_stone_decision_tooltip
+	major = yes
+
+	cooldown = { years = 10 }
+	
+	sort_order = 80
+
+	is_shown = {
+		# Landed characters only: nobody likes a mercenary.
+		is_landed = yes
+		primary_title.tier > tier_barony
+		# Holds a suitable culture 
+		culture = { has_cultural_pillar = heritage_dravidian }
+	}
+
+	is_valid = {
+		custom_description = {# Got to have a suitable Ancestor worthy of a Hero Stone
+			text = dharma_hero_stone_decision_ancestor
+			has_variable = ancestor_to_bury
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		# Standard checks.
+		is_available_adult = yes
+		# Shouldn't be at war.
+		is_at_war = no
+	}
+
+	cost = { gold = raise_stele_gold_cost }
+
+	effect = {
+		# Save the gold value for refund purposes.
+		set_variable = {
+			name = raise_stele_refund
+			value = raise_stele_gold_cost
+		}
+		# Generic effects.
+		show_as_tooltip = { 
+			dharma_hero_stone_bonuses_effect = yes 
+		}
+		# Show type effects.
+		custom_tooltip = dharma_hero_stone_decision_tt.effects_list
+		# Moved ahead to selection.
+		trigger_event = dharma_dravidian.001
+	}
+
+	ai_check_interval = 36
+	
+	ai_potential = {
+		# Only take it if you can afford it.
+		short_term_gold >= raise_stele_gold_cost
+	}
+
+	ai_will_do = {
+		# We don't want too many Hero Stones all over the place.
+		base = 50
+	}
+}
 #######################################
 # Select Personal diety
 #######################################
@@ -369,7 +432,7 @@ select_personal_nat_decision = {# Burmese Gods and Goddesses
 	}
 }
 select_personal_deity_buddhist_decision = {# Buddhist Gods and Goddesses
-	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds"
 
 	desc = select_personal_deity_buddhist_decision_desc
 	selection_tooltip = select_personal_deity_buddhist_decision_tooltip
@@ -437,6 +500,7 @@ dharma_vedic_animal_sacrifice = {# Hindu Animal Sacrifice
 		OR = {
 			faith = faith:shrautism
 			faith = faith:kalikula_shaktism
+			faith = faith:trika_shaivism	
 		}
 	}
 	
@@ -444,7 +508,8 @@ dharma_vedic_animal_sacrifice = {# Hindu Animal Sacrifice
 		OR = {
 			faith = faith:shrautism
 			faith = faith:kalikula_shaktism	
-		}
+			faith = faith:trika_shaivism
+		}		
 		gold >= 50
 	}
 	
@@ -643,7 +708,7 @@ dharma_attend_navaratri_festival = {# Attend Navaratri festival
 		base = 50
 	}
 }
-select_personal_deity_hinduism_decision = {
+select_personal_deity_hinduism_decision = {# select a personal deity
 	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
 
 	desc = select_personal_deity_hinduism_decision_desc
@@ -698,7 +763,7 @@ select_personal_deity_hinduism_decision = {
 	}
 }
 dharma_pick_hindu_philosophy = {# Follow a Mahayana Buddhist School
-	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds" 
 	ai_check_interval = 96
 	cooldown = { months = 36 }
 	desc = dharma_pick_hindu_philosophy_desc
@@ -889,7 +954,7 @@ dharma_attend_vesak_festival = {# Attend Vesak festival
 	}
 }
 dharma_adopt_mahayana_school = {# Follow a Mahayana Buddhist School
-	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds" 
 	ai_check_interval = 96
 	cooldown = { months = 36 }
 	desc = dharma_adopt_mahayana_school_desc
@@ -949,7 +1014,7 @@ dharma_adopt_mahayana_school = {# Follow a Mahayana Buddhist School
 	}
 }
 dharma_adopt_tibetan_school = {# Follow a Tibetan Buddhist School
-	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds" 
 	ai_check_interval = 96
 	cooldown = { months = 36 }
 	desc = dharma_adopt_tibetan_school_desc
@@ -961,7 +1026,8 @@ dharma_adopt_tibetan_school = {# Follow a Tibetan Buddhist School
 	}
 	
 	is_valid = {
-		faith = faith:lamaism
+		has_perk = faithful_perk
+		faith = faith:mahayana
 	}
 	
 	is_valid_showing_failures_only = {
@@ -1072,9 +1138,7 @@ initiate_consolamentum_decision = {# Commite Selkhana decision
 			add_piety_level = 1
 		}
 		death = { death_reason = death_suicide}
-		show_as_tooltip = {
-			add_piety_level = 1
-		}
+		show_as_tooltip = {	add_piety_level = 1	}
 	}
 
 	ai_check_interval = 60
@@ -1352,7 +1416,7 @@ dharma_attend_losar_festival = {# Attend Tibetan New Year Losar
 	}
 }
 dharma_attend_pongal_festival = {# Attend Pongal festival
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds"
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
 	ai_check_interval = 24
 	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
 	desc = dharma_attend_pongal_festival_desc
@@ -1397,7 +1461,7 @@ dharma_attend_pongal_festival = {# Attend Pongal festival
 	}
 }
 dharma_attend_thaipusam_festival = {# Attend Thaipusam festival
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds"
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
 	ai_check_interval = 24
 	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
 	desc = dharma_attend_thaipusam_festival_desc
@@ -1454,7 +1518,7 @@ dharma_attend_thaipusam_festival = {# Attend Thaipusam festival
 	}
 }
 dharma_attend_ratha_yatra_festival = {# Attend Ratha Yatra festival
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds"
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
 	ai_check_interval = 24
 	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
 	desc = dharma_attend_ratha_yatra_festival_desc
@@ -1502,7 +1566,7 @@ dharma_attend_ratha_yatra_festival = {# Attend Ratha Yatra festival
 	}
 }
 dharma_attend_thingyan_festival = {# Attend Thingyan festival
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds"
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
 	ai_check_interval = 24
 	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
 	desc = dharma_attend_thingyan_festival_desc
@@ -1545,7 +1609,7 @@ dharma_attend_thingyan_festival = {# Attend Thingyan festival
 	}
 }
 dharma_attend_chhath_festival = {# Attend Chhath festival
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds"
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
 	ai_check_interval = 24
 	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
 	desc = dharma_attend_chhath_festival_desc
@@ -1600,7 +1664,7 @@ dharma_attend_chhath_festival = {# Attend Chhath festival
 	}
 }
 dharma_attend_gangaur_festival = {# Attend Gangaur festival
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_jain_festival.dds"
+	picture = "gfx/interface/illustrations/decisions/dharma_indian_festival.dds" 
 	ai_check_interval = 24
 	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
 	desc = dharma_attend_gangaur_festival_desc

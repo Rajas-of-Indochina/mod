@@ -1,0 +1,137 @@
+﻿namespace = asdac_east_europe
+
+asdac_east_europe.9001 = { #by me
+	hidden = yes
+	type = character_event
+
+	immediate = {
+		serbian_empire_decision_effects = yes
+	}
+}
+
+##################################################
+# Restoring the Principality of Carantania
+# by Ewan Cowhig Croft
+# 9101-9102
+##################################################
+
+#	You founded the kingdom!
+asdac_east_europe.9101 = {
+	type = character_event
+	title = asdac_east_europe.9101.t
+	desc = asdac_east_europe.9101.desc
+	theme = crown
+	left_portrait = {
+		character = scope:restorer
+		animation = personality_honorable
+	}
+	override_background = { event_background = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_postive_effect"
+		restore_principality_of_carantania_decision_scripted_effect = yes
+	}
+
+	#I was motivated by nobility!
+	option = {
+		name = asdac_east_europe.9101.a
+
+		#Your legacy will be remembered.
+		add_prestige_experience = major_prestige_gain
+
+		stress_impact = { arrogant = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_boldness = 0.5
+			}
+		}
+	}
+
+	#I was motivated by faith!
+	option = {
+		name = asdac_east_europe.9101.b
+
+		#Your piety will be remembered.
+		add_piety_experience = major_piety_gain
+
+		stress_impact = { zealous = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_zeal = 0.5
+				ai_boldness = 0.25
+			}
+		}
+	}
+
+	#I was motivated by a cynical lust for power!
+	option = {
+		name = asdac_east_europe.9101.c
+
+		#Your wry smile walking away from your coronation will be remembered.
+		add_stress = major_stress_loss
+
+		stress_impact = { cynical = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_greed = 0.5
+				ai_rationality = 0.25
+				ai_honor = -0.25
+			}
+		}
+	}
+}
+
+#	Someone else founded the kingdom!
+#asdac_east_europe.9102 = {
+#	type = character_event
+#	title = asdac_east_europe.9102.t
+#	desc = asdac_east_europe.9102.desc
+#	theme = crown
+#	left_portrait = {
+#		character = scope:restorer
+#		animation = personality_honorable
+#	}
+#	override_background = { event_background = wilderness_mountains }
+#
+#	immediate = {
+#		play_music_cue = "mx_cue_postive_effect"
+#		restore_principality_of_carantania_decision_scripted_effect = yes
+#	}
+#
+#	#Kings and Emperors consider them an upstart.
+#	option = {
+#		name = asdac_east_europe.9102.a
+#		trigger = { highest_held_title_tier >= tier_kingdom }
+#
+#		#AI option is inconsequential.
+#		ai_chance = { base = 100 }
+#	}
+#
+#	#Same-culture rulers are probably quite happy.
+#	##Deliberately same-culture rather than Bosnian, since it's mechanically possible to found the kingdom as a Croatian or Serbian just looking to get a ruler-title.
+#	option = {
+#		name = asdac_east_europe.9102.b
+#		trigger = { culture = scope:restorer.culture }
+#
+#		#AI option is inconsequential.
+#		ai_chance = { base = 100 }
+#	}
+
+	#Everyone else is a bit wary.
+#	option = {
+#		name = asdac_east_europe.9102.c
+#		trigger = {
+#			NOR = {
+#				highest_held_title_tier >= tier_kingdom
+#				culture = scope:restorer.culture
+#			}
+#		}
+
+		#AI option is inconsequential.
+#		ai_chance = { base = 100 }
+#	}
+#}

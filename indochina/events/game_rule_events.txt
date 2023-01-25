@@ -129,19 +129,19 @@ game_rule.1001 = { #by Mathilda Bjarnehed
 		NOR = {
 			has_government = republic_government
 			has_government = theocracy_government
+			has_government = holy_order_government_2
 
-			OR = {
-				AND = {
-					exists = character:420011
-					this = character:420011 # Jayavarman III
-				}
-				AND = {
-					exists = character:7757
-					this = character:7757 #Matilda Canossa, her bookmark start is about overcoming the issue of no heir
-				}
+			AND = {
+				exists = character:420011
+				this = character:420011 # Jayavarman III
+			}
+			AND = {
+				exists = character:7757
+				this = character:7757 #Matilda Canossa, her bookmark start is about overcoming the issue of no heir
 			}
 		}
 	}
+
 
 	immediate = {
 		if = {
@@ -259,6 +259,10 @@ scripted_trigger weak_empire = {
 			}
 			percent >= 0.20
 		}
+	}
+	NAND = {
+		this = title:e_byzantium
+		title:e_byzantium.holder = { completely_controls = title:c_byzantion }
 	}
 }
 

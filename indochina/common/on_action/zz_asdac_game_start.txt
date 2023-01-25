@@ -1,0 +1,748 @@
+﻿on_game_start = {
+	on_actions = {
+		asdac_on_game_start
+	}
+}
+asdac_on_game_start = {
+	effect = {
+		if = {
+			limit = {
+				exists = character:32625
+			}
+			character:32625 = { set_capital_county = title:c_knin }
+		}
+		if = {
+			limit = {
+				exists = character:487021
+			}
+			character:487021 = { Set_capital_county = title:c_ansbach }
+
+		}
+		if = {
+			limit = {
+				exists = title:k_buryatia.holder
+			}
+			dummy_male = {
+				destroy_title = title:k_buryatia
+			}
+			title:k_buryatia = {
+				copy_title_history = title:k_saxon
+			}
+		}
+		if = {
+			limit = {
+				game_start_date >= 1187.1.1
+			}
+			culture:turkish = {
+				set_culture_name = {
+					noun = turcoman
+					collective_noun = turcoman_collective_noun
+					prefix = turcoman_prefix
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_fp2_dlc_trigger = yes
+				#game_start_date < 1250.1.1
+			}
+			start_struggle = { struggle_type = iberian_struggle start_phase = struggle_iberia_phase_opportunity }
+		}
+		if = {
+			limit = {
+				exists = title:d_masmudi.holder
+				has_fp2_dlc_trigger = yes
+				exists = struggle:iberian_struggle
+			}
+			struggle:iberian_struggle = {
+				#change_struggle_phase = struggle_iberia_phase_hostility
+				set_faith_as_involved = faith:masmudi
+			}
+		}
+		if = {
+			limit = {
+				game_start_date = 1204.5.16
+				has_fp2_dlc_trigger = yes
+			}
+			start_struggle = { struggle_type = asdac_byzantine_struggle start_phase = struggle_byzantine_phase_hostility }
+			struggle:asdac_byzantine_struggle = {
+				change_struggle_phase = struggle_byzantine_phase_hostility
+			}
+		}
+		#culture:egyptian = {
+		#	set_culture_pillar = heritage_egyptian
+		#}
+		#culture:coptic_egyptian = {
+		#	set_culture_pillar = heritage_egyptian
+		#}
+		if = {
+			limit = {
+				exists = title:e_byzantium.holder
+				game_start_date >= 1081.4.1
+			}
+			title:e_byzantium.holder = {
+				every_vassal = {
+					limit = {
+						vassal_contract_has_modifiable_obligations = yes
+					}
+					#vassal_contract_decrease_obligation_level = feudal_government_taxes
+					vassal_contract_decrease_obligation_level = feudal_government_levies
+					set_vassal_contract_modification_blocked = no
+				}
+			}
+		}
+
+		every_living_character = {
+			limit = {
+				OR = {
+					has_culture = culture:serbian
+					has_culture = culture:croatian
+				}
+				is_landed = yes
+				is_ruler = yes
+				has_government = feudal_government
+				has_faith = faith:slavic_pagan
+			}
+			change_government = tribal_government
+		}
+		title:b_banjaluka = { set_title_name = c_vrbas }
+		culture:frisian = {
+			add_culture_tradition = tradition_maritime_mercantilism
+		}
+		culture:old_saxon = {
+			set_heritage_from = culture:saxon
+			set_language_from = culture:saxon
+		}
+		culture:ilmenian = {
+			set_name_list = name_list_old_east_slavic
+		}
+		culture:severian = {
+			set_name_list = name_list_old_east_slavic
+		}
+		culture:volhynian = {
+			set_name_list = name_list_old_east_slavic
+		}
+		culture:mon = {
+			set_culture_pillar = language_mon
+		}
+		culture:ongud = {
+			set_culture_pillar = heritage_turkic
+			set_culture_pillar = language_mongolic
+		}
+		culture:khitan = {
+			set_culture_pillar = language_xianbei
+		}
+		culture:tuyuhun = {
+			set_culture_pillar = language_xianbei
+		}
+		culture:german = {
+			set_culture_pillar = heritage_east_germanic
+			set_culture_pillar = language_gothic
+		}
+		every_living_character = {
+			limit = {
+				age > 150
+			}
+			death = {
+				death_reason = death_natural_causes
+			}
+		}
+		title:d_muwalladi = {
+			add_title_law = temporal_head_of_faith_succession_law
+			set_capital_county = title:c_cordoba
+		}
+		faith:zayidi = {
+			set_religious_head_title = title:d_zayidi
+		}
+		title:d_zayidi = {
+			add_title_law = temporal_head_of_faith_succession_law
+		}
+		faith:alevi = {
+			set_religious_head_title = title:d_imami
+		}
+		if = {
+			limit = {
+				exists = title:d_zayidi.holder
+				title:d_zayidi.holder = { highest_held_title_tier = tier_duchy }
+			}
+			title:d_zayidi.holder = {
+				set_primary_title_to = title:d_zayidi
+			}
+		}
+		#faith:nizari = {
+		#	set_religious_head_title = title:d_nizari
+		#}
+		if = {
+			limit = { game_start_date = 936.8.7 }
+			title:c_opole = { set_color_from_title = title:c_opole }
+		}
+		if = {
+			limit = { game_start_date < 1000.1.1 }
+			title:k_italy = { set_capital_county = title:c_pavia }
+			title:k_italy.holder = { set_realm_capital = title:c_pavia }
+		}
+		if = {
+			limit = { game_start_date > 1067.1.1 }
+			title:k_sakya_trizin.holder = { add_realm_law_skip_effects = male_preference_law }
+		}
+		if = {
+			limit = {
+				game_start_date > 1095.11.27
+			}
+			religion:christianity_religion = {
+				every_faith = {
+					religion = {
+						set_variable = {
+							name = variable_ghw_unlocked # Crusades
+							value = yes
+						}
+					}
+				}
+			}
+			religion:islam_religion = {
+				every_faith = {
+					religion = {
+						set_variable = {
+							name = variable_ghw_unlocked # Crusades
+							value = yes
+						}
+					}
+				}
+			}
+		}
+
+		### 1187 ###
+		character:204500 = {
+			if = {
+				limit = {
+					is_alive = yes
+					is_landed = yes
+				}
+				trigger_event = {
+					id = asdac_bookmark.1001
+					days = { 365 730 }
+				}
+			}
+		}
+		if = {
+			limit = {
+				game_start_date = 1187.1.1
+			}
+			character:230000 = { set_realm_capital = title:c_gurganj }
+			character:204500 = {
+				if = {
+					limit = {
+						is_alive = yes
+						is_landed = yes
+					}
+				}
+				house = {
+					add_house_modifier = {
+						modifier = ireland_laudabiliter_modifier
+						days = 25101
+					}
+				}
+			}
+			faith:catholic = {
+				change_fervor = {
+					value = 24
+					desc = cultural_acceptance_historical_relations#test_interaction_fervor_gain
+				}
+			}
+			faith:ashari = {
+				change_fervor = {
+					value = 25
+					desc = cultural_acceptance_historical_relations#test_interaction_fervor_gain
+				}
+			}
+			faith:masmudi = {
+				change_fervor = {
+					value = 25
+					desc = cultural_acceptance_historical_relations#test_interaction_fervor_gain
+				}
+			}
+			faith:slavic_pagan = {
+				change_fervor = {
+					value = -30
+					desc = cultural_acceptance_historical_relations#test_interaction_fervor_gain
+				}
+			}
+			#trigger_event = holy_order_game_start.0001 #Form Knights Templar and Hashshashin
+		}
+		character:226000 = { #Saladin
+			if = {
+				limit = {
+					is_alive = yes
+					is_landed = yes
+				}
+				trigger_event = {
+					id = asdac_bookmark.1101
+					days = 71
+				}
+			}
+		}
+		character:125501 = { #Genghis Khan Temujin
+			if = {
+				limit = {
+					is_alive = yes
+					is_landed = yes
+				}
+				trigger_event = {
+					id = asdac_bookmark.2001
+					days = 1
+				}
+				trigger_event = {
+					id = asdac_bookmark.2002
+					days = 1
+				}
+			}
+		}
+		
+		### 1204 ###
+		if = {
+			limit = {
+				game_start_date = 1204.5.16
+			}
+			character:93052 = { set_realm_capital = title:c_gurganj }
+			faith:orthodox = {
+				change_fervor = {
+					value = 25
+					desc = cultural_acceptance_historical_relations#test_interaction_fervor_gain
+				}
+			}
+			faith:ashari = {
+				change_fervor = {
+					value = 25
+					desc = cultural_acceptance_historical_relations#test_interaction_fervor_gain
+				}
+			}
+			faith:masmudi = {
+				change_fervor = {
+					value = 25
+					desc = cultural_acceptance_historical_relations#test_interaction_fervor_gain
+				}
+			}
+			faith:slavic_pagan = {
+				change_fervor = {
+					value = -30
+					desc = cultural_acceptance_historical_relations#test_interaction_fervor_gain
+				}
+			}
+			character:204514 = {
+				if = {
+					limit = {
+						is_alive = yes
+						is_landed = yes
+					}
+				}
+				house = {
+					add_house_modifier = {
+						modifier = ireland_laudabiliter_modifier
+						days = 18761
+					}
+				}
+			}
+			#trigger_event = holy_order_game_start.0002 #Form Knights Templar, Knights Hospitaller, Hashshashin, Teutonic Order
+		}
+		
+		if = {
+			limit = {
+				game_start_date > 1235.1.1
+			}
+			faith:bosnian_church = { remove_doctrine = special_doctrine_ecumenical_christian }
+		}
+		if = {
+			limit = {
+				game_start_date = 1337.1.1
+			}
+			title:d_ryazan.holder = { set_realm_capital = title:c_ryazan }
+			title:e_golden_horde.holder = { set_realm_capital = title:c_itil }
+			
+			title:b_pegu = { set_title_name = "dynn_Hanthawaddy" }
+			#trigger_event = holy_order_game_start.0003 #Form Holy Orders
+			faith:slavic_pagan = {
+				change_fervor = {
+					value = -30
+					desc = cultural_acceptance_historical_relations#test_interaction_fervor_gain
+				}
+			}
+			province:4828 = {
+				remove_building = house_of_wisdom_01
+			}
+			character:170258 = {
+				set_realm_capital = title:c_delhi
+			}
+			#title:k_serbia = { set_de_jure_liege_title = title:e_illyria }
+			#title:k_bosnia = { set_de_jure_liege_title = title:e_illyria }
+			#title:k_croatia = { set_de_jure_liege_title = title:e_illyria }
+			#title:k_albania = { set_de_jure_liege_title = title:e_illyria }
+			trigger_event = {
+				id = asdac_bookmark.3001
+				years = 19
+			}
+			title:d_opsikion = { set_capital_county = title:c_prusa } #Nicaea was irrelevant during the Ottoman period
+			title:k_nikaea = { set_capital_county = title:c_prusa }
+			title:d_opsikion.holder = { set_realm_capital = title:c_prusa }
+			title:c_nikaea = { set_color_from_title = title:c_nikaea }
+			
+			title:d_anatolia.holder = { set_realm_capital = title:c_lycaonia }
+						
+			title:d_charsianon.holder = { set_realm_capital = title:c_kaisereia }
+			
+			title:d_paphlagonia.holder = { set_realm_capital = title:c_pompeiopolis }
+			
+			title:d_thracesia.holder = { set_realm_capital = title:c_chonae }
+		}
+		if = {
+			limit = {
+				exists = title:e_hre.holder
+				game_start_date < 1187.1.1
+			}
+			clear_global_variable_list = hre_elector_list
+			add_to_global_variable_list = {
+				name = hre_elector_list
+				target = title:c_cologne
+			}
+			add_to_global_variable_list = {
+				name = hre_elector_list
+				target = title:c_mainz
+			}
+			add_to_global_variable_list = {
+				name = hre_elector_list
+				target = title:c_trier
+			}
+			add_to_global_variable_list = {
+				name = hre_elector_list
+				target = title:d_bohemia
+			}
+			add_to_global_variable_list = {
+				name = hre_elector_list
+				target = title:d_west_franconia
+			}
+			add_to_global_variable_list = {
+				name = hre_elector_list
+				target = title:d_ostmark
+			}
+			add_to_global_variable_list = {
+				name = hre_elector_list
+				target = title:d_angria
+			}
+			hre_elector_list_save_effect = yes
+		}
+		if = {
+			limit = {
+				exists = title:e_hre.holder
+				game_start_date >= 1187.1.1
+			}
+			clear_global_variable_list = hre_elector_list
+			add_to_global_variable_list = {
+				name = hre_elector_list
+				target = title:c_cologne
+			}
+			add_to_global_variable_list = {
+				name = hre_elector_list
+				target = title:c_mainz
+			}
+			add_to_global_variable_list = {
+				name = hre_elector_list
+				target = title:c_trier
+			}
+			add_to_global_variable_list = {
+				name = hre_elector_list
+				target = title:d_bohemia
+			}
+			add_to_global_variable_list = { #Palatinate
+				name = hre_elector_list
+				target = title:d_rhine
+			}
+			add_to_global_variable_list = { #Brandenburg
+				name = hre_elector_list
+				target = title:d_ostmark
+			}
+			add_to_global_variable_list = { #Saxony
+				name = hre_elector_list
+				target = title:d_angria
+			}
+			hre_elector_list_save_effect = yes
+		}
+		if = {
+			limit = { game_start_date = 1337.1.1 }
+			culture:irish = { remove_culture_tradition = tradition_polygamous }
+			culture:gaelic = { remove_culture_tradition = tradition_concubines }
+			culture:welsh = { remove_culture_tradition = tradition_concubines }
+			culture:cumbrian = { remove_culture_tradition = tradition_concubines }
+		}
+		if = {
+			limit = { game_start_date > 1080.1.1 }
+			culture:greek = { add_culture_tradition = tradition_zealous_people }
+		}
+		if = {
+			limit = { game_start_date > 1180.1.1 }
+			title:c_kolon = { set_title_name = c_zala }
+			title:b_kolon = { set_title_name = b_zalavar }
+			
+		}
+		if = {
+			limit = {
+				exists = title:e_bulgaria.holder
+			}
+			dummy_male = { destroy_title = title:k_bulgaria }
+			every_living_character = {
+				limit = { has_claim_on = title:k_bulgaria }
+				remove_claim = title:k_bulgaria
+			}
+		}
+	}
+}
+on_game_start_after_lobby = {
+	on_actions = {
+		asdac_on_game_start_after_lobby
+	}
+}
+
+asdac_on_game_start_after_lobby = {
+	effect = {
+		if = {
+			limit = {
+				exists = struggle:iberian_struggle
+			}
+			struggle:iberian_struggle = { set_culture_as_involved = culture:aragonese }
+		}
+		culture:belarusian = {
+			change_cultural_acceptance = {
+				target = culture:lithuanian
+				value = 20
+				desc = cultural_acceptance_historical_relations
+			}
+		}
+		culture:ukrainian = {
+			change_cultural_acceptance = {
+				target = culture:polish
+				value = 20
+				desc = cultural_acceptance_historical_relations
+			}
+		}
+		culture:drevlyan = {
+			change_cultural_acceptance = {
+				target = culture:russian
+				value = -50
+				desc = cultural_acceptance_historical_relations
+			}
+		}
+		culture:ottoman_turkish = {
+			change_cultural_acceptance = {
+				target = culture:greek
+				value = -95
+				desc = cultural_acceptance_historical_relations
+			}
+		}
+		culture:tajik = {
+			change_cultural_acceptance = {
+				target = culture:persian
+				value = 30
+				desc = cultural_acceptance_historical_relations
+			}
+		}
+		culture:portuguese = {
+			change_cultural_acceptance = {
+				target = culture:galician
+				value = 30
+				desc = cultural_acceptance_historical_relations
+			}
+		}
+		culture:baloch = {
+			change_cultural_acceptance = {
+				target = culture:sindhi
+				value = 10
+				desc = cultural_acceptance_historical_relations
+			}
+		}
+		culture:kurdish = {
+			change_cultural_acceptance = {
+				target = culture:luri
+				value = 20
+				desc = cultural_acceptance_historical_relations
+			}
+		}
+		if = {
+			limit = {
+				game_start_date > 1150.1.1
+			}
+			culture:turkish = {
+				change_cultural_acceptance = {
+					target = culture:ottoman_turkish
+					value = 20
+					desc = cultural_acceptance_historical_relations
+				}
+			}
+			culture:welsh = {
+				change_cultural_acceptance = {
+					target = culture:english
+					value = -10
+					desc = cultural_acceptance_historical_relations
+				}
+				change_cultural_acceptance = {
+					target = culture:norman
+					value = -10
+					desc = cultural_acceptance_historical_relations
+				}
+			}
+			culture:irish = {
+				change_cultural_acceptance = {
+					target = culture:english
+					value = -10
+					desc = cultural_acceptance_historical_relations
+				}
+				change_cultural_acceptance = {
+					target = culture:norman
+					value = -10
+					desc = cultural_acceptance_historical_relations
+				}
+			}
+		}
+		culture:crimean_gothic = {
+			change_cultural_acceptance = {
+				target = culture:greek
+				value = 15
+				desc = cultural_acceptance_historical_relations
+			}
+		}
+		if = {
+			limit = {
+				game_start_date = 1337.1.1
+			}
+			culture:dalmatian = {
+				change_cultural_acceptance = {
+					target = culture:croatian
+					value = 20
+					desc = cultural_acceptance_historical_relations
+				}
+			}
+			culture:arberian = {
+				change_cultural_acceptance = {
+					target = culture:sicilian
+					value = 15
+					desc = cultural_acceptance_historical_relations
+				}
+			}
+		}
+		if = {
+			limit = {
+				game_start_date = 936.8.7
+				has_dlc_feature = royal_court
+			}
+			title:k_east_francia.holder = {
+				create_artifact_spear_destiny_effect = { OWNER = this }
+			}
+		}
+		#if = {
+		#	limit = {
+		#		exists = title:e_hre.holder
+		#		has_dlc_feature = royal_court
+		#	}
+		#	title:e_hre.holder = {
+		#		create_artifact_spear_destiny_effect = { OWNER = title:e_hre.holder }
+		#	}
+		#}
+		if = {
+			limit = {
+				exists = title:k_italy.holder
+				has_dlc_feature = royal_court
+			}
+			title:k_italy.holder = {
+				create_artifact_pedestal_crown_iron_effect = { OWNER = title:k_italy.holder }
+			}
+		}
+		if = {
+			limit = { game_start_date = 1337.1.1 }
+			if = {
+				limit = {
+					OR = {
+						has_game_rule = matrilineal_marriages_never
+						AND = {
+							has_game_rule = matrilineal_marriages_female_and_equal
+							has_game_rule = default_gender_equality
+						}
+					}
+				}
+				character:461703 = {
+					create_betrothal = character:469513
+				}
+			} else = {
+				character:461703 = {
+					create_betrothal_matrilineal = character:469513
+				}
+			}
+		}
+		every_living_character = {
+			limit = {
+				culture = culture:mon
+			}
+			unlearn_language = language_burmese
+			learn_language = language_mon
+		}
+		every_living_character = {
+			limit = {
+				OR = {
+					culture = culture:khitan
+					culture = culture:tuyuhun
+				}
+			}
+			unlearn_language = language_mongolic
+			learn_language = language_xianbei
+		}
+		every_living_character = {
+			limit = {
+				culture = culture:old_saxon
+			}
+			unlearn_language = language_anglic
+			learn_language = language_saxon
+		}
+		every_living_character = {
+			limit = {
+				culture = culture:ongud
+			}
+			unlearn_language = language_turkic
+			learn_language = language_mongolic
+		}
+		every_living_character = {
+			limit = {
+				culture = culture:german
+			}
+			unlearn_language = language_high_german
+			learn_language = language_gothic
+		}
+		every_living_character = {
+			limit = {
+				OR = {
+					dynasty = dynasty:7276
+					dynasty = dynasty:7277
+					dynasty = dynasty:101732
+					dynasty = dynasty:101875
+				}
+			}
+			learn_language = language_arabic
+		}
+		every_living_character = {
+			limit = {
+				dynasty = dynasty:1045082
+				NOT = { house = house:house_qutlugh_khan }
+			}
+			learn_language = language_chinese
+		}
+		culture:coptic_egyptian = {
+			change_cultural_acceptance = {
+				target = culture:egyptian
+				value = 20
+				desc = cultural_acceptance_historical_relations
+			}
+		}
+		culture:croatian = {
+			change_cultural_acceptance = {
+				target = culture:cisalpine
+				value = -15
+				desc = cultural_acceptance_historical_relations
+			}
+		}
+	}
+}

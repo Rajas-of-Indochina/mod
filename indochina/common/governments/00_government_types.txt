@@ -7,7 +7,7 @@
 	fallback = 1
 
 	primary_holding = castle_holding
-	valid_holdings = { city_holding cow_metropolis_holding }
+	valid_holdings = { city_holding }
 	required_county_holdings = { castle_holding city_holding church_holding }
 
 	vassal_contract = {
@@ -29,7 +29,7 @@
 
 republic_government = {
 	primary_holding = city_holding
-	valid_holdings = { castle_holding cow_metropolis_holding }
+	valid_holdings = { castle_holding }
 	required_county_holdings = { city_holding castle_holding church_holding }
 
 	ai = {
@@ -46,7 +46,7 @@ republic_government = {
 # Head of faith will always get this if possible
 theocracy_government = {
 	primary_holding = church_holding
-	valid_holdings = { castle_holding cow_metropolis_holding }
+	valid_holdings = { castle_holding }
 	religious = yes
 	required_county_holdings = { church_holding castle_holding city_holding }
 
@@ -56,18 +56,24 @@ theocracy_government = {
 				has_doctrine = doctrine_theocracy_lay_clergy
 			}
 		}
-		NAND = {
+		NOT = {
 			OR = {
-				faith = { religion_tag = buddhism_religion }
-				faith = { religion_tag = jainism_religion }	
+				AND = {
+					NOT = { has_trait = devoted }
+					faith = { religion_tag = buddhism_religion }
+				}
+				AND = {
+					NOT = { has_trait = devoted }
+					faith = { religion_tag = jainism_religion }
+				}
 			}
-			NOT = { has_trait = devoted }
 		}
 	}
 
 	vassal_contract = { theocracy_government_obligations }
 	color = hsv{ 0.00 0.00 0.78 }
 }
+
 
 clan_government = {
 	primary_holding = castle_holding
@@ -80,7 +86,7 @@ clan_government = {
 	rulers_should_have_dynasty = yes
 	royal_court = yes
 
-	valid_holdings = { castle_holding city_holding cow_metropolis_holding }
+	valid_holdings = { castle_holding city_holding }
 	required_county_holdings = { castle_holding city_holding church_holding }
 	always_use_patronym = yes
 	dynasty_named_realms = yes
