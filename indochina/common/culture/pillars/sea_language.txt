@@ -1952,6 +1952,36 @@ language_kam = {
 
 	color = { 90 255 185 }
 }
+language_kra = {
+	type = language
+	is_shown = {
+		language_is_shown_trigger = {
+			LANGUAGE = language_kam
+		}
+	}
+	parameters = {
+		language_group_kra = yes
+		language_family_kra_dai = yes
+	}
+
+	ai_will_do = {
+		value = 10
+		if = {
+			limit = { has_cultural_pillar = language_kam }
+			multiply = same_language_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_group_kra }
+			multiply = same_language_group_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_family_kra_dai }
+			multiply = same_language_family_choice_factor
+		}
+	}
+
+	color = { 90 255 185 }
+}
 language_hlai = {
 	type = language
 	is_shown = {
@@ -3328,7 +3358,7 @@ language_ainu = {
 		}
 	}
 
-	color = jurchen
+	color = ainu
 }
 language_yamato = {
 	type = language
@@ -3357,5 +3387,34 @@ language_yamato = {
 		}
 	}
 
-	color = { 212 90 30 }
+	color = yamato
+}
+language_cai_long = {
+	type = language
+	is_shown = {
+		language_is_shown_trigger = {
+			LANGUAGE = language_cai_long
+		}
+	}
+	parameters = {
+		language_group_bai = yes
+		language_family_sino_tibetan = yes
+	}
+	ai_will_do = {
+		value = 10
+		if = {
+			limit = { has_cultural_pillar = language_cai_long }
+			multiply = same_language_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_group_bai }
+			multiply = same_language_group_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_family_sino_tibetan }
+			multiply = same_language_family_choice_factor
+		}
+	}
+
+	color = cai_long
 }
