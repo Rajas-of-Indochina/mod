@@ -14,6 +14,7 @@ crown_authority = {
 		}
 
 		can_keep = { realm_law_use_crown_authority = yes }
+		can_have = { realm_law_use_crown_authority = yes }
 	}
 	
 	crown_authority_1 = {
@@ -27,6 +28,7 @@ crown_authority = {
 		flag = can_change_partition_succession_laws
 
 		can_keep = { realm_law_use_crown_authority = yes }
+		can_have = { realm_law_use_crown_authority = yes }
 
 		can_pass = {
 			trigger_if = {
@@ -42,12 +44,9 @@ crown_authority = {
 					}
 				}
 			}
-			OR = {
-				root.culture = { has_innovation = innovation_plenary_assemblies }
-				has_government = chinese_government
-			}
+			root.culture = { has_innovation = innovation_plenary_assemblies }
 		}
-		
+
 		pass_cost = {
 			prestige = {
 				if = {
@@ -123,6 +122,7 @@ crown_authority = {
 		flag = titles_cannot_leave_realm_on_succession # Hardcoded flag
 		
 		can_keep = { realm_law_use_crown_authority = yes }
+		can_have = { realm_law_use_crown_authority = yes }
 
 		can_pass = {
 			trigger_if = {
@@ -141,10 +141,7 @@ crown_authority = {
 					}
 				}
 			}
-			OR = {
-				root.culture = { has_innovation = innovation_royal_prerogative }
-				has_government = chinese_government
-			}
+			root.culture = { has_innovation = innovation_royal_prerogative }
 		}
 
 		pass_cost = {
@@ -207,6 +204,7 @@ crown_authority = {
 		flag = can_designate_heirs
 		
 		can_keep = { realm_law_use_crown_authority = yes }
+		can_have = { realm_law_use_crown_authority = yes }
 
 		can_pass = {
 			has_realm_law = crown_authority_2
@@ -220,16 +218,9 @@ crown_authority = {
 					}
 				}
 			}
-			OR = {
-				root.culture = { has_innovation = innovation_royal_prerogative }
-				has_government = chinese_government
-			}
+			root.culture = { has_innovation = innovation_royal_prerogative }
 		}
 		
-		should_start_with = {
-			has_government = chinese_government
-		}
-
 		pass_cost = {
 			prestige = {
 				if = {
@@ -430,6 +421,31 @@ tribal_authority = {
 				limit = { has_realm_law = tribal_authority_2 }
 				value = 1
 			}
+		}
+	}
+}
+
+bureaucratic_authority = {
+	default = bureaucratic_authority_0
+	flag = realm_law
+
+	bureaucratic_authority_0 = {
+		flag = vassal_internal_wars_banned
+		flag = vassal_refusal_is_treason
+		flag = can_change_succession_laws
+		flag = titles_cannot_leave_realm_on_succession # Hardcoded flag
+		flag = can_change_partition_succession_laws
+		flag = vassal_all_wars_banned
+		flag = can_designate_heirs
+
+		can_keep = {
+			has_government = chinese_government
+		}
+		can_pass = {
+			has_government = chinese_government
+		}
+		should_start_with = {
+			has_government = chinese_government
 		}
 	}
 }
