@@ -4613,7 +4613,7 @@ headgear = {
 				OR = {
 					religion = religion:buddhism_religion
 					faith = faith:bon
-					religion = religion:taoism_religion
+					#religion = religion:taoism_religion
 				}
 			}
 		}
@@ -4915,7 +4915,7 @@ headgear = {
         }
 	}
 
-	## CHINA
+	## China ##
 
 	chinese_commoners = {
 		dna_modifiers = {
@@ -4947,7 +4947,7 @@ headgear = {
 				portrait_chinese_clothing_trigger = yes
 			}
 			modifier = {
-				add = 20
+				add = 50
 				highest_held_title_tier < tier_county
 				NOR = {
 					AND = {
@@ -4963,6 +4963,7 @@ headgear = {
 			}
 		}
 	}
+
 	chinese_mayors = {
 		dna_modifiers = {
 			accessory = {
@@ -4982,6 +4983,7 @@ headgear = {
 			}
 		}
 	}
+
 	chinese_low_nobles = {
 		dna_modifiers = {
 			accessory = {
@@ -4994,7 +4996,8 @@ headgear = {
 		weight = {
 			base = 0
 			modifier = {
-				add = 50
+				add = 100
+				NOT = { has_government = theocracy_government }
 				NAND = {
 					has_trait = peasant_leader
 					OR = {
@@ -5011,7 +5014,14 @@ headgear = {
 						}
 					}
 				}
-				portrait_chinese_clothing_trigger = yes
+				OR = {
+					portrait_chinese_clothing_trigger = yes
+					AND = {
+						exists = primary_spouse
+						is_ruler = no
+						primary_spouse = { portrait_chinese_clothing_trigger = yes }
+					}
+				}
 				OR = {
 					AND = {
 						highest_held_title_tier = tier_county
@@ -5037,6 +5047,7 @@ headgear = {
 			}
 		}
 	}
+
 	chinese_high_nobles = {
 		dna_modifiers = {
 			accessory = {
@@ -5049,7 +5060,8 @@ headgear = {
 		weight = {
 			base = 0
 			modifier = {
-				add = 50
+				add = 100
+				NOT = { has_government = theocracy_government }
 				NAND = {
 					has_trait = peasant_leader
 					OR = {
@@ -5066,7 +5078,14 @@ headgear = {
 						}
 					}
 				}
-				portrait_chinese_clothing_trigger = yes
+				OR = {
+					portrait_chinese_clothing_trigger = yes
+					AND = {
+						exists = primary_spouse
+						is_ruler = no
+						primary_spouse = { portrait_chinese_clothing_trigger = yes }
+					}
+				}
 				OR = {
 					AND = {
 						OR = {
@@ -5093,6 +5112,7 @@ headgear = {
 			}
 		}
 	}
+
 	chinese_royalty = {
 		dna_modifiers = {
 			accessory = {
@@ -5105,8 +5125,16 @@ headgear = {
 		weight = {
 			base = 0
 			modifier = {
-				add = 50
-				portrait_chinese_clothing_trigger = yes
+				add = 80
+				NOT = { has_government = theocracy_government }
+				OR = {
+					portrait_chinese_clothing_trigger = yes
+					AND = {
+						exists = primary_spouse
+						is_ruler = no
+						primary_spouse = { portrait_chinese_clothing_trigger = yes }
+					}
+				}
 				NAND = {
 					has_trait = peasant_leader
 					OR = {
@@ -5146,10 +5174,10 @@ headgear = {
 						}
 					}
 				}
-
 			}
 		}
 	}
+
 	chinese_princes = {
 		dna_modifiers = {
 			accessory = {
@@ -5180,8 +5208,15 @@ headgear = {
 		weight = {
 			base = 0
 			modifier = {
-				add = 50
-				highest_held_title_tier = tier_empire
+				add = 110
+				OR = {
+					highest_held_title_tier = tier_empire
+					AND = {
+						exists = primary_spouse
+						is_female = yes
+						primary_spouse = { highest_held_title_tier = tier_empire }
+					}
+				}
 				NAND = {
 					has_trait = peasant_leader
 					OR = {
@@ -5203,10 +5238,102 @@ headgear = {
 					has_government = republic_government
 					AND = { is_ruler = yes has_government = theocracy_government }
 				}
-				portrait_chinese_clothing_trigger = yes
+				portrait_chinese_wear_helmet_trigger = no
+				OR = {
+					has_primary_title = title:e_celestia
+					portrait_chinese_clothing_trigger = yes
+					AND = {
+						exists = primary_spouse
+						is_ruler = no
+						primary_spouse = { portrait_chinese_clothing_trigger = yes }
+					}
+				}
 			}
 		}
 	}
+
+	chinese_song_headgear = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = chinese_song_headgear
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		}
+		weight = {
+			base = -30
+			modifier = {
+				add = 30
+				NAND = {
+					has_trait = peasant_leader
+					OR = {
+						is_ruler = no
+						is_leading_faction_type = peasant_faction
+						AND = {
+							is_ruler = yes
+							is_landed = no
+							OR = {
+								has_government = feudal_government
+								has_government = clan_government
+							}
+						}
+					}
+				}
+				portrait_chinese_clothing_trigger = yes
+				OR = {
+					AND = {
+						OR = {
+							highest_held_title_tier = tier_duchy
+							AND = { is_ruler = yes has_government = theocracy_government }
+						}
+						NOT = { AND = { is_ruler = yes has_government = mercenary_government  } } # Blocked for mercenaries
+					}
+					AND = {
+						exists = primary_spouse
+						OR = {
+							is_ruler = no
+							highest_held_title_tier = tier_barony
+						}
+						primary_spouse = {
+							OR = {
+								highest_held_title_tier = tier_duchy
+								AND = { is_ruler = yes has_government = theocracy_government }
+							}
+						}
+					}
+				}
+			}
+			modifier = {
+				add = 170
+				current_date >= 960.1.1
+				exists = this
+				is_adult = yes
+				OR = {
+					has_government = imperial_government
+					AND = {
+				        exists = liege
+				        liege = {
+							AND = {
+								has_title = title:e_celestia
+								has_government = imperial_government
+							}
+				        }
+				    }
+				}
+				portrait_chinese_wear_helmet_trigger = no
+			}
+			modifier = {
+				add = -180
+				exists = this
+				NOR = {
+					has_government = bureau_government
+					has_government = imperial_government
+				}
+			}
+		}
+	}
+
 	chinese_war = {
 		dna_modifiers = {
 			accessory = {
@@ -5219,10 +5346,11 @@ headgear = {
 		weight = {
 			base = 0
 			modifier = {
-				add = 100
+				add = 170
 				portrait_chinese_wear_helmet_trigger = yes
 				portrait_chinese_clothing_trigger = yes
 				NOR = {
+					religion = religion:christianity_religion
 				    AND = {
 				        religion = religion:christianity_religion
 				        has_government = holy_order_government
@@ -5259,6 +5387,149 @@ headgear = {
 				            }
 				        }
 				    }
+				}
+			}
+		}
+	}
+
+	## Taoist ##
+
+	religious_taoist_devoted_headgear = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = religious_taoism_high
+				range = { 0 1 } # For the randomness to work correctly
+			}
+			accessory = {
+                mode = add
+                gene = hairstyles
+                template = japanese_hairstyles
+                range = { 0 1 } # For the randomness to work correctly
+            }
+		}
+		outfit_tags = { monk_outfit }
+		weight = {
+			base = 0
+			modifier = {
+				add = 100
+				portrait_has_trait_trigger = { TRAIT = devoted }
+				religion = religion:taoism_religion
+			}
+		}
+	}
+
+	religious_taoist_headgear = {
+	    dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = religious_taoism_high
+				range = { 0 1 } # For the randomness to work correctly
+			}
+			accessory = {
+                mode = add
+                gene = hairstyles
+                template = japanese_hairstyles
+                range = { 0 1 } # For the randomness to work correctly
+            }
+	    }
+	    outfit_tags = { priest_outfit }
+	    weight = {
+	        base = 0
+	        modifier = {
+				add = 110
+				exists = this
+				OR = {
+					has_character_flag = need_priest_outfit
+					is_theocratic_lessee = yes
+					AND = { is_ruler = yes has_government = theocracy_government }
+					has_council_position = councillor_court_chaplain
+				}
+				OR = {
+					religion = religion:taoism_religion
+				}
+			}
+	    }
+	}
+
+
+	# Shogunate
+
+	shogunate_no_headgear = {
+
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = no_headgear
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		}
+
+		weight = {
+			base = 0
+			# No headgear for Japanese characters
+			modifier = {
+				add = 50
+				OR = {
+					portrait_yamato_clothing_trigger = yes
+					portrait_ryukyu_clothing_trigger = yes
+					portrait_ainu_clothing_trigger = yes
+				}
+			}
+			modifier = {
+				add = 50
+				portrait_japanese_wear_armor_trigger = yes
+			}
+		}
+	}
+
+	shogunate_japanese_suieikan = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = shogunate_suieikan
+				range = { 0 1 }
+			}
+		}
+
+		weight = {
+			base = 0
+			modifier = {
+				add = 50
+				AND = {
+					OR = {
+						AND = {
+							highest_held_title_tier >= tier_duchy
+							OR = {
+								has_government = feudal_government
+								has_government = imperial_government
+							}
+						}
+						has_title = title:d_gosho
+						AND = {
+							exists = court_owner
+							court_owner = {
+								highest_held_title_tier >= tier_kingdom
+								#culture = { has_cultural_pillar = heritage_imperial_court }
+							}
+						}
+						#culture = { has_cultural_pillar = heritage_imperial_court }
+					}
+					scope:age >= 16
+					NOT = { portrait_wear_armor_trigger = yes }
+					portrait_yamato_clothing_trigger = yes
+				}
+			}
+			modifier = {
+				add = 50
+				AND = {
+					scope:age >= 16
+					shogunate_should_be_no_hair_trigger = no
+					portrait_yamato_clothing_trigger = yes
 				}
 			}
 		}
