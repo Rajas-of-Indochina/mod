@@ -46,6 +46,32 @@
 			add = 1
 		}
 	}
+	struggle:indian_struggle = {
+		every_involved_ruler = {
+			limit = {
+				religion = religion:hinduism_religion
+				is_independent_ruler = yes
+			}
+			every_realm_county = {
+				limit = { title_province.geographical_region = india_struggle_region }
+				add = 1
+			}
+		}
+		every_interloper_ruler = {
+			limit = {
+				religion = religion:hinduism_religion
+				is_independent_ruler = yes
+			}
+			add = {
+				value = 0
+				every_realm_county = {
+					limit = { title_province.geographical_region = india_struggle_region }
+					add = 1
+				}
+				divide = 2
+			}
+		}
+	}
 }
 
 struggle_india_buddhist_score = {
@@ -94,6 +120,32 @@ struggle_india_buddhist_score = {
 				has_uninvolved_small_minority_faith_trigger = { RELIGION = religion:buddhism_religion }
 			}
 			add = 1
+		}
+	}
+	struggle:indian_struggle = {
+		every_involved_ruler = {
+			limit = {
+				religion = religion:buddhism_religion
+				is_independent_ruler = yes
+			}
+			every_realm_county = {
+				limit = { title_province.geographical_region = india_struggle_region }
+				add = 1
+			}
+		}
+		every_interloper_ruler = {
+			limit = {
+				religion = religion:buddhism_religion
+				is_independent_ruler = yes
+			}
+			add = {
+				value = 0
+				every_realm_county = {
+					limit = { title_province.geographical_region = india_struggle_region }
+					add = 1
+				}
+				divide = 2
+			}
 		}
 	}
 }
@@ -146,6 +198,32 @@ struggle_india_jainist_score = {
 			add = 1
 		}
 	}
+	struggle:indian_struggle = {
+		every_involved_ruler = {
+			limit = {
+				religion = religion:jainism_religion
+				is_independent_ruler = yes
+			}
+			every_realm_county = {
+				limit = { title_province.geographical_region = india_struggle_region }
+				add = 1
+			}
+		}
+		every_interloper_ruler = {
+			limit = {
+				religion = religion:jainism_religion
+				is_independent_ruler = yes
+			}
+			add = {
+				value = 0
+				every_realm_county = {
+					limit = { title_province.geographical_region = india_struggle_region }
+					add = 1
+				}
+				divide = 2
+			}
+		}
+	}
 }
 
 struggle_india_muslim_score = {
@@ -194,6 +272,32 @@ struggle_india_muslim_score = {
 				has_uninvolved_small_minority_faith_trigger = { RELIGION = religion:islam_religion }
 			}
 			add = 1
+		}
+	}
+	struggle:indian_struggle = {
+		every_involved_ruler = {
+			limit = {
+				religion = religion:islam_religion
+				is_independent_ruler = yes
+			}
+			every_realm_county = {
+				limit = { title_province.geographical_region = india_struggle_region }
+				add = 1
+			}
+		}
+		every_interloper_ruler = {
+			limit = {
+				religion = religion:islam_religion
+				is_independent_ruler = yes
+			}
+			add = {
+				value = 0
+				every_realm_county = {
+					limit = { title_province.geographical_region = india_struggle_region }
+					add = 1
+				}
+				divide = 2
+			}
 		}
 	}
 }
@@ -246,6 +350,32 @@ struggle_india_indian_pagan_score = {
 			add = 1
 		}
 	}
+	struggle:indian_struggle = {
+		every_involved_ruler = {
+			limit = {
+				religion = religion:indian_religion
+				is_independent_ruler = yes
+			}
+			every_realm_county = {
+				limit = { title_province.geographical_region = india_struggle_region }
+				add = 1
+			}
+		}
+		every_interloper_ruler = {
+			limit = {
+				religion = religion:indian_religion
+				is_independent_ruler = yes
+			}
+			add = {
+				value = 0
+				every_realm_county = {
+					limit = { title_province.geographical_region = india_struggle_region }
+					add = 1
+				}
+				divide = 2
+			}
+		}
+	}
 }
 
 struggle_india_foreign_score = {
@@ -256,7 +386,13 @@ struggle_india_foreign_score = {
 		if = {
 			limit = {
 				struggle:indian_struggle = { is_faith_involved_in_struggle = PREV.faith}
-				religion = religion:baltic_religion
+				NOR = {
+					religion = religion:buddhism_religion
+					religion = religion:hinduism_religion
+					religion = religion:jainism_religion
+					religion = religion:islam_religion
+					religion = religion:indian_religion
+				}
 			}
 			add = {
 				value = development_level
@@ -270,7 +406,13 @@ struggle_india_foreign_score = {
 					has_involved_large_minority_faith_trigger = { RELIGION = religion:baltic_religion }
 					AND = {
 						NOT = { struggle:indian_struggle = {is_faith_involved_in_struggle = PREV.faith} }
-						religion = religion:baltic_religion
+						NOR = {
+							religion = religion:buddhism_religion
+							religion = religion:hinduism_religion
+							religion = religion:jainism_religion
+							religion = religion:islam_religion
+							religion = religion:indian_religion
+						}
 					}
 				}
 			}
@@ -296,4 +438,81 @@ struggle_india_foreign_score = {
 			add = 1
 		}
 	}
+	struggle:indian_struggle = {
+		every_involved_ruler = {
+			limit = {
+				NOR = {
+					religion = religion:buddhism_religion
+					religion = religion:hinduism_religion
+					religion = religion:jainism_religion
+					religion = religion:islam_religion
+					religion = religion:indian_religion
+				}
+				is_independent_ruler = yes
+			}
+			every_realm_county = {
+				limit = { title_province.geographical_region = india_struggle_region }
+				add = 1
+			}
+		}
+		every_interloper_ruler = {
+			limit = {
+				NOR = {
+					religion = religion:buddhism_religion
+					religion = religion:hinduism_religion
+					religion = religion:jainism_religion
+					religion = religion:islam_religion
+					religion = religion:indian_religion
+				}
+				is_independent_ruler = yes
+			}
+			add = {
+				value = 0
+				every_realm_county = {
+					limit = { title_province.geographical_region = india_struggle_region }
+					add = 1
+				}
+				divide = 2
+			}
+		}
+	}
+}
+
+struggle_india_total_score = {
+	value = struggle_india_hindu_score
+	add = struggle_india_buddhist_score
+	add = struggle_india_jainist_score
+	add = struggle_india_muslim_score
+	add = struggle_india_indian_pagan_score
+	add = struggle_india_foreign_score
+}
+
+struggle_india_hindu_share = {
+	value = struggle_india_hindu_score
+	divide = struggle_india_total_score
+}
+
+struggle_india_buddhist_share = {
+	value = struggle_india_buddhist_score
+	divide = struggle_india_total_score
+}
+
+struggle_india_jainist_share = {
+	value = struggle_india_jainist_score
+	divide = struggle_india_total_score
+}
+
+struggle_india_muslim_share = {
+	value = struggle_india_muslim_score
+	divide = struggle_india_total_score
+}
+
+struggle_india_indian_pagan_share = {
+	value = struggle_india_indian_pagan_score
+	divide = struggle_india_total_score
+}
+
+struggle_india_foreign_share = {
+	value = struggle_india_hindu_score
+	divide = struggle_india_total_score
 }
