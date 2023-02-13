@@ -1,47 +1,112 @@
-﻿india_struggle_dominant_phase_trigger = {
-	exists = struggle:indian_struggle
-	OR = {
-		AND = {
-			religion = religion:buddhism_religion
-			any_character_struggle = {
-				is_struggle_phase = struggle_india_buddhist_dominance
+﻿# $RELIGION$ can be a religion or foreign_faiths
+has_involved_large_minority_faith_trigger = {
+	any_in_list = {
+		variable = faith_minorities_large
+		struggle:indian_struggle = {is_faith_involved_in_struggle = PREV}
+		trigger_if = {
+			limit = {
+				OR = {
+					$RELIGION$ = religion:buddhism_religion
+					$RELIGION$ = religion:hinduism_religion
+					$RELIGION$ = religion:jainism_religion
+					$RELIGION$ = religion:islam_religion
+					$RELIGION$ = religion:indian_religion
+				}
 			}
-		}
-		AND = {
-			religion = religion:hinduism_religion
-			any_character_struggle = {
-				is_struggle_phase = struggle_india_hindu_dominance
-			}
-		}
-		AND = {
-			religion = religion:jainism_religion
-			any_character_struggle = {
-				is_struggle_phase = struggle_india_jain_dominance
-			}
-		}
-		AND = {
-			religion = religion:indian_religion
-			any_character_struggle = {
-				is_struggle_phase = struggle_india_indian_animist_dominance
-			}
-		}
-		AND = {
-			religion = religion:islam_religion
-			any_character_struggle = {
-				is_struggle_phase = struggle_india_muslim_dominance
-			}
-		}
-		AND = {
 			NOR = {
 				religion = religion:buddhism_religion
 				religion = religion:hinduism_religion
 				religion = religion:jainism_religion
-				religion = religion:indian_religion
 				religion = religion:islam_religion
+				religion = religion:indian_religion
 			}
-			any_character_struggle = {
-				is_struggle_phase = struggle_india_foreign_dominance
+		}
+		trigger_else = {
+			religion = $RELIGION$
+		}
+	}
+}
+
+has_involved_small_minority_faith_trigger = {
+	any_in_list = {
+		variable = faith_minorities_large
+		struggle:indian_struggle = {is_faith_involved_in_struggle = PREV}
+		trigger_if = {
+			limit = {
+				NOR = {
+					$RELIGION$ = religion:buddhism_religion
+					$RELIGION$ = religion:hinduism_religion
+					$RELIGION$ = religion:jainism_religion
+					$RELIGION$ = religion:islam_religion
+					$RELIGION$ = religion:indian_religion
+				}
 			}
+			NOR = {
+				religion = religion:buddhism_religion
+				religion = religion:hinduism_religion
+				religion = religion:jainism_religion
+				religion = religion:islam_religion
+				religion = religion:indian_religion
+			}
+		}
+		trigger_else = {
+			religion = $RELIGION$
+		}
+	}
+}
+
+has_uninvolved_large_minority_faith_trigger = {
+	any_in_list = {
+		variable = faith_minorities_large
+		NOT = { struggle:indian_struggle = {is_faith_involved_in_struggle = PREV} }
+		trigger_if = {
+			limit = {
+				NOR = {
+					$RELIGION$ = religion:buddhism_religion
+					$RELIGION$ = religion:hinduism_religion
+					$RELIGION$ = religion:jainism_religion
+					$RELIGION$ = religion:islam_religion
+					$RELIGION$ = religion:indian_religion
+				}
+			}
+			NOR = {
+				religion = religion:buddhism_religion
+				religion = religion:hinduism_religion
+				religion = religion:jainism_religion
+				religion = religion:islam_religion
+				religion = religion:indian_religion
+			}
+		}
+		trigger_else = {
+			religion = $RELIGION$
+		}
+	}
+}
+
+has_uninvolved_small_minority_faith_trigger = {
+	any_in_list = {
+		variable = faith_minorities_large
+		NOT = { struggle:indian_struggle = {is_faith_involved_in_struggle = PREV} }
+		trigger_if = {
+			limit = {
+				NOR = {
+					$RELIGION$ = religion:buddhism_religion
+					$RELIGION$ = religion:hinduism_religion
+					$RELIGION$ = religion:jainism_religion
+					$RELIGION$ = religion:islam_religion
+					$RELIGION$ = religion:indian_religion
+				}
+			}
+			NOR = {
+				religion = religion:buddhism_religion
+				religion = religion:hinduism_religion
+				religion = religion:jainism_religion
+				religion = religion:islam_religion
+				religion = religion:indian_religion
+			}
+		}
+		trigger_else = {
+			religion = $RELIGION$
 		}
 	}
 }
