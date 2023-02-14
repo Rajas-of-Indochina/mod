@@ -1,25 +1,94 @@
-﻿trigger_india_struggle_catalyst = {
+﻿assign_dominance_effect = {
 	if = {
 		limit = {
-			NOR = {
-				$RELIGION$ = religion:religion_buddhism
-				$RELIGION$ = religion:religion_hinduism
-				$RELIGION$ = religion:religion_jainism
-				$RELIGION$ = religion:religion_islam
-				$RELIGION$ = religion:religion_indian_religion
+			struggle:indian_struggle = {
+				is_struggle_phase = struggle_india_realignment
 			}
 		}
-		every_character_struggle = {
-			activate_struggle_catalyst = {
-				catalyst = $CATALYST$_$RELIGION$
-				character = $CHARACTER$
-			}
+		set_global_variable = {
+			name = next_dominant_faction
+			value = var:dominant_faction
 		}
 	}
-	every_character_struggle = {
-		activate_struggle_catalyst = {
-			catalyst = $CATALYST$_foreign_religion
-			character = $CHARACTER$
+	else_if = {
+		limit = {
+			AND = {
+				struggle_india_hindu_score >= struggle_india_buddhist_score
+				struggle_india_hindu_score >= struggle_india_jainist_score
+				struggle_india_hindu_score >= struggle_india_muslim_score
+				struggle_india_hindu_score >= struggle_india_indian_pagan_score
+				struggle_india_hindu_score >= struggle_india_foreign_score
+			}
+		}
+		set_global_variable = {
+			name = next_dominant_faction
+			value = flag:hindu_dominance
+		}
+	}
+	else_if = {
+		limit = {
+			AND = {
+				struggle_india_buddhist_score >= struggle_india_hindu_score
+				struggle_india_buddhist_score >= struggle_india_jainist_score
+				struggle_india_buddhist_score >= struggle_india_muslim_score
+				struggle_india_buddhist_score >= struggle_india_indian_pagan_score
+				struggle_india_buddhist_score >= struggle_india_foreign_score
+			}
+		}
+		set_global_variable = {
+			name = next_dominant_faction
+			value = flag:buddhist_dominance
+		}
+	}
+	else_if = {
+		limit = {
+			AND = {
+				struggle_india_jainist_score >= struggle_india_hindu_score
+				struggle_india_jainist_score >= struggle_india_buddhist_score
+				struggle_india_jainist_score >= struggle_india_muslim_score
+				struggle_india_jainist_score >= struggle_india_indian_pagan_score
+				struggle_india_jainist_score >= struggle_india_foreign_score
+			}
+		}
+		set_global_variable = {
+			name = next_dominant_faction
+			value = flag:jainist_dominance
+		}
+	}
+	else_if = {
+		limit = {
+			AND = {
+				struggle_india_muslim_score >= struggle_india_hindu_score
+				struggle_india_muslim_score >= struggle_india_buddhist_score
+				struggle_india_muslim_score >= struggle_india_jainist_score
+				struggle_india_muslim_score >= struggle_india_indian_pagan_score
+				struggle_india_muslim_score >= struggle_india_foreign_score
+			}
+		}
+		set_global_variable = {
+			name = next_dominant_faction
+			value = flag:muslim_dominance
+		}
+	}
+	else_if = {
+		limit = {
+			AND = {
+				struggle_india_indian_pagan_score >= struggle_india_hindu_score
+				struggle_india_indian_pagan_score >= struggle_india_buddhist_score
+				struggle_india_indian_pagan_score >= struggle_india_jainist_score
+				struggle_india_indian_pagan_score >= struggle_india_muslim_score
+				struggle_india_indian_pagan_score >= struggle_india_foreign_score
+			}
+		}
+		set_global_variable = {
+			name = next_dominant_faction
+			value = flag:indian_pagan_dominance
+		}
+	}
+	else = {
+		set_global_variable = {
+			name = next_dominant_faction
+			value = flag:foreign_dominance
 		}
 	}
 }

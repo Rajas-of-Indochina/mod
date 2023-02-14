@@ -47,6 +47,48 @@ struggle_india_ending_unification_decision = {
 				is_struggle_type = indian_struggle
 			}
 		}
+
+		trigger_if = {
+			limit = { religion = religion:hinduism_religion }
+			custom_tooltip = {
+				text = dominant_religion_trigger_tt_hindu
+				struggle_india_hindu_share >= 0.6
+			}
+		}
+		trigger_else_if = {
+			limit = { religion = religion:buddhism_religion }
+			custom_tooltip = {
+				text = dominant_religion_trigger_tt_buddhist
+				struggle_india_buddhist_share >= 0.6
+			}
+		}
+		trigger_else_if = {
+			limit = { religion = religion:jainism_religion }
+			custom_tooltip = {
+				text = dominant_religion_trigger_tt_jainist
+				struggle_india_jainist_share >= 0.6
+			}
+		}
+		trigger_else_if = {
+			limit = { religion = religion:islam_religion }
+			custom_tooltip = {
+				text = dominant_religion_trigger_tt_muslim
+				struggle_india_muslim_share >= 0.6
+			}
+		}
+		trigger_else_if = {
+			limit = { religion = religion:indian_religion }
+			custom_tooltip = {
+				text = dominant_religion_trigger_tt_indian_pagan
+				struggle_india_indian_pagan_share >= 0.6
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = dominant_religion_trigger_tt_foreign
+				struggle_india_foreign_share >= 0.6
+			}
+		}
 	}
 
 	effect = {
@@ -61,6 +103,10 @@ struggle_india_ending_unification_decision = {
 		add_gold = struggle_india_muslim_score
 		add_gold = struggle_india_indian_pagan_score
 		add_gold = struggle_india_foreign_score
+	}
+
+	widget = {
+		gui = "decision_view_india_struggle_pie_chart"
 	}
 
 	cost = {}
@@ -105,6 +151,10 @@ struggle_india_ending_religious_peace_decision = {
 			dynasty = { add_dynasty_prestige = 10000 }
 			fp2_struggle_hostility_ender_effect = yes
 		}
+	}
+
+	widget = {
+		gui = "decision_view_india_struggle_pie_chart"
 	}
 
 	cost = {}
@@ -243,6 +293,12 @@ indo_greek_culture_decision = {
 			# Or at least speek Greek
 			knows_language = language_greek
 		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:indo_greek_culture_decision
+			}
+		}
 	}
 
 	is_valid = {
@@ -289,9 +345,33 @@ indo_greek_culture_decision = {
 	}
 
 	effect = {
-		add_gold = 1
 		show_as_tooltip = {
 			indo_greek_culture_decision_effect = yes
+			random_list = {
+				100 = {
+					show_chance = no
+					desc = spiritualist_yavana
+					culture:indo_greek = {
+						set_culture_pillar = ethos_spiritual
+						add_culture_tradition = tradition_mendicant_mystics
+					}					
+				}
+				100 = {
+					show_chance = no
+					desc = bureaucratic_yavana
+					culture:indo_greek = {
+						set_culture_pillar = ethos_bureaucratic
+						add_culture_tradition = tradition_roman_legacy
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			trigger_event = south_asia.0043
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:indo_greek_culture_decision
+			}
 		}
 	}
 }
@@ -299,7 +379,7 @@ indo_greek_culture_decision = {
 establish_indian_kingdom_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
 	major = yes
-	desc = establish_indian_kingdom_decision
+	desc = establish_indian_kingdom_decision_desc
 
 	ai_check_interval = 120
 
