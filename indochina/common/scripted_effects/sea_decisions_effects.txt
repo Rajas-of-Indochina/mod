@@ -800,21 +800,94 @@ indo_greek_culture_decision_effect = {
 	culture:indo_greek = {
 		reset_culture_creation_date = yes
 	}
+	struggle:india_struggle = { set_culture_as_involved = culture:indo_greek }
+	custom_tooltip = {
+		text = yavana_counties_conversion_tt
 
-	every_sub_realm_county = {
+		every_realm_county = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+					culture = { has_cultural_pillar = heritage_byzantine }
+					culture = { has_cultural_pillar = language_greek }
+				}
+			}
+			random = {
+				chance = 40
+				set_county_culture = culture:indo_greek
+				modifier = {
+					add = development_level
+				}
+			}
+		}
+	}
+
+	custom_tooltip = {
+		text = yavana_vassal_conversion_tt
+		every_vassal_or_below = {
+			limit = {
+				is_ai = yes
+				OR = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+					culture = { has_cultural_pillar = heritage_byzantine }
+					culture = { has_cultural_pillar = language_greek }
+				}
+			}
+			random_list = {
+				1 = {
+					set_culture = culture:indo_greek
+					opinion_modifier = {
+						opinion_target = ROOT
+						who = THIS
+						multiplier = 0.1
+					}
+				}
+				1 = {}
+			}
+		}
+	}
+}
+
+chakravarti_ending_effect = {
+	if = {
 		limit = {
 			OR = {
-				culture = { has_cultural_pillar = heritage_indo_aryan }
-				culture = { has_cultural_pillar = language_greek }
-			}
-		}
-		hidden_effect = {	
-			random_list = {
-				40 = {
-					set_county_culture = culture:indo_greek
+				religion = religion:hinduism_religion
+				religion = religion:buddhism_religion
+				religion = religion:jainism_religion
+				religion = religion:indian_religion
+				faith = { # Hellenes get a different nickname
+					has_doctrine = tenet_eastern_syncretism
+					NOT = { religion = religion:hellenism_religion }
 				}
-				60 = {}
 			}
 		}
+		give_nickname = nick_chakravarti_dharmic
+	}
+	else_if = {
+		limit = {
+			religion = religion:islam_religion
+		}
+		give_nickname = nick_chakravarti_muslim
+	}
+	else_if = {
+		limit = {
+			OR = {
+				culture = {
+					OR = {
+						has_cultural_pillar = language_greek
+						has_cultural_pillar = heritage_byzantine
+						any_parent_culture_or_above = {
+							this = culture:greek
+						}
+					}
+				}
+				religion = religion:hellenism_religion
+			}
+		}
+		give_nickname = nick_chakravarti_hellenic
+	}
+	else = {
+		give_nickname = nick_chakravarti_generic
 	}
 }

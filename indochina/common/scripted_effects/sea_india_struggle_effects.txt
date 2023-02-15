@@ -1,17 +1,6 @@
 ﻿assign_dominance_effect = {
 	if = {
 		limit = {
-			struggle:indian_struggle = {
-				is_struggle_phase = struggle_india_realignment
-			}
-		}
-		set_global_variable = {
-			name = next_dominant_faction
-			value = var:dominant_faction
-		}
-	}
-	else_if = {
-		limit = {
 			AND = {
 				struggle_india_hindu_score >= struggle_india_buddhist_score
 				struggle_india_hindu_score >= struggle_india_jainist_score
@@ -21,7 +10,7 @@
 			}
 		}
 		set_global_variable = {
-			name = next_dominant_faction
+			name = dominant_faction
 			value = flag:hindu_dominance
 		}
 	}
@@ -36,7 +25,7 @@
 			}
 		}
 		set_global_variable = {
-			name = next_dominant_faction
+			name = dominant_faction
 			value = flag:buddhist_dominance
 		}
 	}
@@ -51,7 +40,7 @@
 			}
 		}
 		set_global_variable = {
-			name = next_dominant_faction
+			name = dominant_faction
 			value = flag:jainist_dominance
 		}
 	}
@@ -66,7 +55,7 @@
 			}
 		}
 		set_global_variable = {
-			name = next_dominant_faction
+			name = dominant_faction
 			value = flag:muslim_dominance
 		}
 	}
@@ -81,14 +70,68 @@
 			}
 		}
 		set_global_variable = {
-			name = next_dominant_faction
+			name = dominant_faction
 			value = flag:indian_pagan_dominance
 		}
 	}
 	else = {
 		set_global_variable = {
-			name = next_dominant_faction
+			name = dominant_faction
 			value = flag:foreign_dominance
+		}
+	}
+}
+
+# Override vanilla
+unite_india_decision_effect = {
+	if = {
+		limit = { has_title = title:e_indo_greek_kingdom } # If you're the new Menander then things get moved under Yavanarajya
+		title:e_indo_greek_kingdom = { save_scope_as = indian_empire_liege }
+	}
+	else = {
+		#Create the title and make it primary
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = title_change
+			add_claim_on_loss = no
+		}
+		title:e_india = {
+			change_title_holder = {
+				holder = root
+				change = scope:title_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:title_change
+		set_primary_title_to = title:e_india
+		title:e_india = { save_scope_as = indian_empire_liege }
+	}
+
+	title:e_rajastan = { add_to_list = indian_empire }
+	title:e_deccan = { add_to_list = indian_empire }
+	title:e_bengal = { add_to_list = indian_empire }
+
+	every_in_list = {
+		list = indian_empire
+		every_in_de_jure_hierarchy = {
+			limit = {
+				tier = tier_kingdom
+			}
+			set_de_jure_liege_title = scope:indian_empire_liege
+		}
+	}
+
+	hidden_effect = {
+		if = {
+			limit = { has_title = title:e_rajastan }
+			destroy_title = title:e_rajastan
+		}
+		if = {
+			limit = { has_title = title:e_deccan }
+			destroy_title = title:e_deccan
+		}
+		if = {
+			limit = { has_title = title:e_bengal }
+			destroy_title = title:e_bengal
 		}
 	}
 }

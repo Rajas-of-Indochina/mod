@@ -1,42 +1,65 @@
-﻿# root: is involved (or interloper) character
-# Scope:struggle is the currently pulsing struggle.
-# yearly_struggle_playable_pulse = {}
-
-# root: is involved (or interloper) character
-# Scope:struggle is the currently pulsing struggle.
-on_game_start = {
+﻿on_game_start = {
 	on_actions = {
-		lock_indo_greek
+		lock_faiths
+		setup_dominance_variables
 	}
 }
 
-lock_indo_greek = {
+lock_faiths = {
 	effect = {
 		faith:indo_hellenism = { set_variable = { name = block_conversion_till_decision_taken } }
+		faith:sikhism = { set_variable = { name = block_conversion_till_nebulous_circumstances } }
 	}
 }
 
-#ROOT = struggle
-calc_dominance = {
+setup_dominance_variables = {
 	effect = {
-		#setup dominance variables
-		if = {
-			limit = {
-				OR = {
-					NOT = { has_variable = hinduism_religion_BP }
-					NOT = { has_variable = buddhism_religion_BP }
-					NOT = { has_variable = jainism_religion_BP }
-					NOT = { has_variable = islam_religion_BP }
-					NOT = { has_variable = indian_religion_BP }
-					NOT = { has_variable = foreign_religion_BP }
-				}
-			}
-			set_variable = { name = hinduism_religion_BP value = 0 }
-			set_variable = { name = buddhism_religion_BP value = 0 }
-			set_variable = { name = jainism_religion_BP value = 0 }
-			set_variable = { name = islam_religion_BP value = 0 }
-			set_variable = { name = indian_religion_BP value = 0 }
-			set_variable = { name = foreign_religion_BP value = 0 }
+		set_global_variable = {
+			name = dominant_faction
+			value = flag:hindu_dominance
 		}
+	}
+}
+
+on_title_gain = {
+	on_actions = {
+		india_struggle_title_gain
+	}
+}
+
+on_character_faith_change = {
+	on_actions = {
+		india_struggle_faith_change
+	}
+}
+
+on_county_faith_change = {
+	on_actions = {
+		india_struggle_faith_change
+	}
+}
+
+india_struggle_title_gain = {
+	trigger = {
+		scope:title = { tier = tier_county }
+		title_province = { geographical_region = india_struggle_region }
+		struggle:indian_struggle = { is_struggle_phase = struggle_india_realignment }
+	}
+	effect = {
+		assign_dominance_effect = yes
+	}
+}
+
+india_struggle_faith_change = {
+	trigger = {
+		limit = {
+			OR = {
+				any_character_struggle = { is_struggle_phase = struggle_india_realignment }
+				any_county_struggle = { is_struggle_phase = struggle_india_realignment }
+			}
+		}
+	}
+	effect = {
+		assign_dominance_effect = yes
 	}
 }

@@ -110,3 +110,39 @@ has_uninvolved_small_minority_faith_trigger = {
 		}
 	}
 }
+
+is_dominant_religion = {
+	trigger_if = {
+		limit = { global_var:dominant_faction = flag:hindu_dominance }
+		religion = religion:hinduism_religion
+	}
+	trigger_else_if = {
+		limit = { global_var:dominant_faction = flag:buddhist_dominance }
+		religion = religion:buddhism_religion
+	}
+	trigger_else_if = {
+		limit = { global_var:dominant_faction = flag:jainist_dominance }
+		religion = religion:jainism_religion
+	}
+	trigger_else_if = {
+		limit = { global_var:dominant_faction = flag:muslim_dominance }
+		religion = religion:islam_religion
+	}
+	trigger_else_if = {
+		limit = { global_var:dominant_faction = flag:indian_pagan_dominance }
+		religion = religion:indian_religion
+	}
+	trigger_else_if = {
+		limit = { global_var:dominant_faction = flag:foreign_dominance }
+		NOR = {
+			religion = religion:hinduism_religion
+			religion = religion:buddhism_religion
+			religion = religion:jainism_religion
+			religion = religion:islam_religion
+			religion = religion:indian_religion
+		}
+	}
+	trigger_else = {
+		always = no # fallback
+	}
+}

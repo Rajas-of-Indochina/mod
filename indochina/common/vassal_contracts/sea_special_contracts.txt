@@ -104,15 +104,22 @@ jizya_special_rights = {
 					has_doctrine = tenet_tax_nonbelievers
 				}
 				NOT = {	scope:vassal.faith = scope:liege.faith }
-				scope:liege = { # Jizya more powerful while dominant
-					#india_struggle_dominant_phase_trigger = yes
-				}
 			}
 			parent = jizya_special_rights_default
 			position = { 1 0 }
 
 			vassal_opinion = 20
-			tax_factor = 0.4
+			tax_factor = {
+				value = 0.4
+				if = {
+					limit = {
+						scope:liege = { # Jizya more powerful while dominant
+							any_character_struggle = { has_struggle_phase_parameter = india_dominant_common_enhanced_jizya }
+						}
+					}
+					add = 0.1
+				}
+			}
 			levies_factor = -0.4
 
 			vassal_modifier = {

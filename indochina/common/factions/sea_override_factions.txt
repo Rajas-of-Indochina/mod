@@ -165,8 +165,11 @@
 			AND = {
 				religion = scope:faction.faction_target
 				scope:faction.faction_target = {
-					#india_struggle_dominant_phase_trigger = yes
+					any_character_struggle = {
+						has_struggle_phase_parameter = india_dominant_common_mandala_loyalty
+					}
 					has_government = mandala_government
+					is_dominant_religion = no
 				}
 			}
 		}
@@ -177,9 +180,9 @@
 			AND = {
 				NOT = { religion = scope:faction.faction_target }
 				scope:faction.faction_target = {
-					#india_struggle_dominant_phase_trigger = no
-					any_character_struggle = { is_struggle_type = indian_struggle }
+					any_character_struggle = { has_struggle_phase = india_nondominant_common_mandala_disloyalty }
 					has_government = mandala_government
+					is_dominant_religion = no
 				}
 			}
 		}
@@ -251,10 +254,14 @@
 	is_county_valid = {
 		NOT = { religion = scope:faction.faction_target.religion }
 		religion = scope:faction.faction_leader.religion
-		title_province = { geographical_region = india_struggle_region }
+		is_dominant_religon = no
+		any_county_struggle = {
+			struggle_type = indian_struggle
+			has_struggle_phase_parameter = india_nondominant_common_counties_join_factions
+		}
 		holder = {
 			this = scope:faction.faction_target
-			#india_struggle_dominant_phase_trigger = yes
+			is_dominant_religion = yes
 		}
 	}
 
@@ -531,13 +538,15 @@ populist_faction = {
 				}
 			}
 		}
-
+		
+		# Dominant religious county loyalty
 		modifier = {
 			add = -1000
 			AND = {
 				title_province.faith.religion = scope:target.religion
 				scope:target = {
-					#india_struggle_dominant_phase_trigger = yes
+					any_character_struggle = { has_phase_parameter = india_dominant_common_county_loyalty }
+					is_dominant_religion = yes
 				}
 			}
 		}
@@ -632,6 +641,18 @@ populist_faction = {
 			}
 			scope:faction.faction_target.culture = {
 				has_cultural_parameter = peasant_and_populist_factions_less_common
+			}
+		}
+		
+		# Dominant religious county loyalty
+		modifier = {
+			add = -1000
+			AND = {
+				title_province.faith.religion = scope:target.religion
+				scope:target = {
+					any_character_struggle = { has_phase_parameter = india_dominant_common_county_loyalty }
+					is_dominant_religion = yes
+				}
 			}
 		}
 

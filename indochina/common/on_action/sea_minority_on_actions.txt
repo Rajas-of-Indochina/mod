@@ -1,4 +1,4 @@
-﻿
+
 yearly_global_pulse = {
 	on_actions = {
 		on_yearly_sea_minority_maintainance
@@ -51,6 +51,25 @@ on_yearly_sea_minority_maintainance = {
 				trigger_event = {
 					days = { 1 360 }
 					on_action = do_minority_faith_growth
+				}
+			}
+		}
+
+		# Indian struggle minority spread
+		
+		every_county_in_region = {
+			region = india_struggle_region
+			limit = {
+				is_dominant_religion = no
+				any_county_struggle = {
+					has_struggle_parameter = india_nondominant_common_spread_minorities
+				}
+			}
+			random = {
+				chance = 1
+				trigger_event = {
+					days = { 1 365 }
+					on_action = indian_struggle_minority_spread
 				}
 			}
 		}
@@ -262,99 +281,25 @@ spawn_minority_characters = {
 	}
 }
 
-# Root is an independent landed character
-# indian_struggle_minority_spread = {
-# 	effect = {
-# 		every_realm_county = {
-# 			limit = {
-# 				any_neighboring_county = {
-# 					NOT = { holder.top_liege = prev.holder.top_liege } # Different realm
-# 					NOR = {
-# 						title_province.religion = prev.holder.top_liege.religion # Neither the owner's religion nor the county's
-# 						title_province.religion = prev.title_province.religion
-# 					}
-# 					OR = {
-# 						AND = {
-# 							title_province.religion = religion:buddhism_religion
-# 							any_county_struggle = { has_struggle_phase = struggle_india_buddhist_dominance }
-# 						}
-# 						AND = {
-# 							title_province.religion = religion:hinduism_religion
-# 							any_county_struggle = { has_struggle_phase = struggle_india_hindu_dominance }
-# 						}
-# 						AND = {
-# 							title_province.religion = religion:jainism_religion
-# 							any_county_struggle = { has_struggle_phase = struggle_india_jain_dominance }
-# 						}
-# 						AND = {
-# 							title_province.religion = religion:indian_religion
-# 							any_county_struggle = { has_struggle_phase = struggle_india_indian_animist_dominance }
-# 						}
-# 						AND = {
-# 							title_province.religion = religion:_religion
-# 							any_county_struggle = { has_struggle_phase = struggle_india_muslim_dominance }
-# 						}
-# 						AND = {
-# 							NOR = {
-# 								title_province.religion = religion:buddhism_religion
-# 								title_province.religion = religion:hinduism_religion
-# 								title_province.religion = religion:jainism_religion
-# 								title_province.religion = religion:indian_religion
-# 								title_province.religion = religion:islam_religion
-# 							}
-# 							any_county_struggle = { has_struggle_phase = struggle_india_foreign_dominance }
-# 						}
-# 					}
-# 				}
-# 			}
-# 			# random_neighboring_county = {
-# 			# 	limit = {					
-# 			# 		NOT = { holder.top_liege = prev.holder.top_liege } # Different realm
-# 			# 		NOR = {
-# 			# 			title_province.religion = prev.holder.top_liege.religion # Neither the owner's religion nor the county's
-# 			# 			title_province.religion = prev.title_province.religion
-# 			# 		}
-# 			# 		OR = {
-# 			# 			AND = {
-# 			# 				title_province.religion = religion:buddhism_religion
-# 			# 				any_county_struggle = { has_struggle_phase = struggle_india_buddhist_dominance }
-# 			# 			}
-# 			# 			AND = {
-# 			# 				title_province.religion = religion:hinduism_religion
-# 			# 				any_county_struggle = { has_struggle_phase = struggle_india_hindu_dominance }
-# 			# 			}
-# 			# 			AND = {
-# 			# 				title_province.religion = religion:jainism_religion
-# 			# 				any_county_struggle = { has_struggle_phase = struggle_india_jain_dominance }
-# 			# 			}
-# 			# 			AND = {
-# 			# 				title_province.religion = religion:indian_religion
-# 			# 				any_county_struggle = { has_struggle_phase = struggle_india_indian_animist_dominance }
-# 			# 			}
-# 			# 			AND = {
-# 			# 				title_province.religion = religion:_religion
-# 			# 				any_county_struggle = { has_struggle_phase = struggle_india_muslim_dominance }
-# 			# 			}
-# 			# 			AND = {
-# 			# 				NOR = {
-# 			# 					title_province.religion = religion:buddhism_religion
-# 			# 					title_province.religion = religion:hinduism_religion
-# 			# 					title_province.religion = religion:jainism_religion
-# 			# 					title_province.religion = religion:indian_religion
-# 			# 					title_province.religion = religion:islam_religion
-# 			# 				}
-# 			# 				any_county_struggle = { has_struggle_phase = struggle_india_foreign_dominance }
-# 			# 			}
-# 			# 		}
-# 			# 	}
-# 			# 	save_scope_as = source_county
-# 			# }
-# 			random_list = {
-# 				40 = {
-# 					trigger_event = { on_action = do_culture_faith_migration }
-# 				}
-# 				60 = {}
-# 			}
-# 		}
-# 	}
-# }
+indian_struggle_minority_spread = {
+	effect = {
+		save_scope_as = source_county
+		random_neighboring_county = {
+			limit = {
+				OR = {
+					NOT = { culture = scope:source_county.culture }
+					NOT = { faith = scope:source_county.faith }
+				}
+			}
+			if = {
+				limit = { culture = scope:source_county.culture }
+				promote_culture_minority_effect = { CULTURE = scope:source_county.culture }
+			}
+			if = {
+				limit = { faith = scope:source_county.faith }
+				promote_faith_minority_effect = { FAITH = scope:source_county.faith }
+			}
+			notify_characters_of_culture_faith_migration_effect = yes
+		}
+	}
+}

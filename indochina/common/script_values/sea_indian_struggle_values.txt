@@ -1,4 +1,11 @@
-﻿struggle_india_hindu_score = {
+﻿minimal_struggle_catalyst_loss = -1
+minor_struggle_catalyst_gain = -3
+medium_struggle_catalyst_gain = -5
+major_struggle_catalyst_gain = -10
+massive_struggle_catalyst_gain = -25
+
+
+struggle_india_hindu_score = {
 	value = 0
 	every_county_in_region = {
 		region = india_struggle_region
@@ -546,3 +553,75 @@ struggle_india_anti_foreign_share = {
 	value = 1.0
 	subtract = struggle_india_foreign_share
 }
+
+# Truce Durations (override vanilla)
+## Since we want these to work out to nice, even numbers, we calc them manually rather than use multipliers.
+standard_truce_duration_days = {
+	value = 1825
+	# Deductions.
+	## Flexible truces perk.
+	if = {
+		limit = {
+			scope:attacker = { has_perk = flexible_truces_perk }
+		}
+		add = -450
+	}
+	## Certain struggle phases.
+	if = {
+		limit = {
+			scope:attacker = {
+				any_character_struggle = {
+					is_struggle_parameter_active_secondary_character_involvement_either_trigger = {
+						PARAMETER = truces_by_involved_or_interlopers_within_region_shorter
+						CHAR = scope:defender
+					}
+				}
+			}
+		}
+		add = -900
+	}
+	if = {
+		limit = {
+			scope:attacker = {
+				any_character_struggle = {
+					is_struggle_parameter_active_secondary_character_involvement_either_trigger = {
+						PARAMETER = truces_by_involved_or_interlopers_within_region_longer
+						CHAR = scope:defender
+					}
+				}
+			}
+		}
+		add = 900
+	}
+	# Indian Struggle: During Dominance, non-dominant religions have a shorter truce against other religions
+	if = {
+		limit = {
+			scope:attacker = {
+				is_dominant_religion = no
+				any_character_struggle = {
+					is_struggle_parameter_active_secondary_character_involvement_either_trigger = {
+						PARAMETER = india_nondominant_common_infidel_short_truces
+						CHAR = scope:defender
+					}
+				}
+				NOT = { religion = scope:defender.religion }
+			}
+		}
+		add = -900
+	}
+	# A truce should at least give a 2-year breather.
+	min = 730
+	if = {
+		limit = {
+			scope:attacker = {
+				any_character_war = {
+					primary_attacker = scope:attacker
+					primary_defender = scope:defender
+					using_cb = fp2_border_raid
+				}
+			}
+		}
+		multiply = 2
+	}
+}
+
