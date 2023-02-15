@@ -317,6 +317,62 @@
 
 				visible = "[CanChangeMapMode]"
 
+				widget = {
+					name = "map_mode_tributary"
+					size = { 32 32 }
+					parentanchor = vcenter
+
+					blockoverride 'mm_datacontext'
+					{
+						datacontext = "[GetScriptedGui('sea_tributary_map_effect')]"
+					}
+
+			        icon = {
+			            size = { 100% 100% }
+			            texture = "gfx/interface/component_masks/mask_circle.dds"
+
+			            block = "mm_glow"
+			            {
+			                visible = "[IsMapMode('tributaries_map_mode')]"
+			            }
+
+			            glow = {
+			                color = { 0.93 0.65 0.45 1.0 }
+			                glow_radius = 6
+
+			                glow_generation_rules= {
+			                    glow_alpha_mask = 0
+			                    glow_blur_passes = 15
+			                    glow_texture_downscale = 5.5f
+			                    glow_ignore_inside_pixels = yes
+			                }
+			            }
+
+			            using = Animation_Glow_Pulse
+			        }
+
+			        button_round = {
+			            size = { 100% 100% }
+			            using = tooltip_nw
+
+						onclick = "[SetMapMode('tributaries_map_mode')]"
+						down = "[And( GetScriptedGui('sea_tributary_map_effect').IsShown(GuiScope.End), IsMapMode('tributaries_map_mode') )]"
+						enabled = "[GetScriptedGui('sea_tributary_map_effect').IsValid(GuiScope.End)]"
+
+			            block "mm_button" {}
+
+			            button_icon = {
+			                parentanchor = center
+			                alwaystransparent = yes
+			                down = "[IsMapMode('tributaries_map_mode')]"
+				            texture = "gfx/interface/icons/flat_icons/mapmode_tributaries.dds"
+
+			                block "mm_icon" {}
+			            }
+			        }
+
+				}
+
 				icon_button_mapmode = {
 					name = "map_mode_religion_button"
 					size = { 32 32 }
@@ -346,22 +402,6 @@
 					blockoverride "mm_button"
 					{
 						shortcut = "map_mode_2"
-					}
-				}
-
-				icon_button_mapmode = {
-					name = "map_mode_houses_button"
-					size = { 32 32 }
-					parentanchor = vcenter
-
-					blockoverride 'mm_datacontext'
-					{
-						datacontext = "[GetMapMode('houses')]"
-					}
-
-					blockoverride "mm_button"
-					{
-						shortcut = "map_mode_4"
 					}
 				}
 
@@ -423,6 +463,15 @@
 					default_format = "#medium;italic"
 					margin_bottom = 5
 					max_width = 110
+				}
+
+				mm_text_button = {
+					name = "map_mode_houses_button"
+					blockoverride 'datacontext'
+					{
+						datacontext = "[GetMapMode( 'houses' )]"
+					}
+					shortcut = "map_mode_5"
 				}
 
 				mm_text_button = {
