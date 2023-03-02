@@ -3,13 +3,13 @@
 }
 
 on_game_start_after_lobby = {
-	on_actions = { 
+	on_actions = {
 		delay = { days = 1 }
-		ccu_startup_debug 
+		ccu_startup_debug
 	}
 }
 
-ccu_startup = {	
+ccu_startup = {
 	effect = { every_culture_global = { ccu_initialize_culture = yes } }
 }
 
@@ -17,25 +17,25 @@ on_culture_created = {
 	on_actions = { ccu_culture_created }
 }
 
-ccu_culture_created = {	
-	effect = { 
+ccu_culture_created = {
+	effect = {
 		# Primary option. Faster to get the variable from the parent culture than to run the full initialization.
 		every_parent_culture = {
 			limit = { has_same_culture_language = prev }
-			prev = { 
-				set_variable = { name = language_group value = prev.var:language_group } 
+			prev = {
+				set_variable = { name = language_group value = prev.var:language_group }
 				set_variable = { name = language_family value = prev.var:language_family }
 				set_variable = { name = language_union value = prev.var:language_union }
-			}			
+			}
 		}
 		every_parent_culture = {
 			limit = { has_same_culture_heritage = prev }
-			prev = { 
-				set_variable = { name = heritage_group value = prev.var:heritage_group } 
+			prev = {
+				set_variable = { name = heritage_group value = prev.var:heritage_group }
 				set_variable = { name = heritage_family value = prev.var:heritage_family }
-			}			
+			}
 		}
-		
+
 		# Failsafe in case the heritage or language of the divergent culture doesn't match either parent
 		# I didn't think that was possible but it was observed to happen in-game
 		if = {
@@ -43,7 +43,7 @@ ccu_culture_created = {
 			ccu_initialize_heritage_group = yes
 			ccu_initialize_heritage_family = yes
 		}
-		if = { 
+		if = {
 			limit = { NOT = { has_variable = language_group } }
 			ccu_initialize_language_group = yes
 			ccu_initialize_language_family = yes

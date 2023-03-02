@@ -11,7 +11,7 @@ cal_authority_target = {
 
 	if = {
 		limit = {
-			NOT = { any_realm_province = { barony = { is_holy_site_of = faith } } } 
+			NOT = { any_realm_province = { barony = { is_holy_site_of = faith } } }
 		}
 		subtract = 2
 	}
@@ -44,7 +44,7 @@ cal_authority_target = {
 	if = {
 		limit = {
 			has_character_flag = islam_prophet
-			
+
 		}
 		add = 200
 	}
@@ -75,7 +75,7 @@ mil_competence_net = {
 		value = mil_competence_martial_court
 		desc = "MIL_COMP_MARTIAL_COURT"
 	}
-	
+
 	### More specific
 	add = {
 		value = mil_competence_empire_size
@@ -131,7 +131,7 @@ mil_competence_martial = {
 # A Marshal with a high martial is GOOD
 mil_competence_martial_marshal = {
 	value = 0
-	
+
 	every_martial_councillor = {
 		add = martial
 	}
@@ -141,7 +141,7 @@ mil_competence_martial_marshal = {
 mil_competence_martial_court_grandeur_bonus = 10
 mil_competence_martial_court = {
 	value = 0
-	
+
 	if = {
 		limit = {
 			has_royal_court = yes
@@ -156,7 +156,7 @@ mil_competence_martial_court = {
 mil_competence_empire_size_penalty = 0.2
 mil_competence_empire_size = {
 	value = 0
-	
+
 	subtract = {
 		value = {
 			every_realm_county = {
@@ -170,7 +170,7 @@ mil_competence_empire_size = {
 mil_competence_unprotected_borders_penalty = -5
 mil_competence_unprotected_borders = {
 	value = 0
-	
+
 	# Every county bordering a realm will penalize you, unless the border is secure enough (fort level >= 5)
 	every_realm_county = {
 		limit = {
@@ -178,7 +178,7 @@ mil_competence_unprotected_borders = {
 			any_neighboring_county = {
 				holder.top_liege = {
 					save_temporary_scope_as = current_ruler
-					
+
 					NOR = {
 						this = scope:emperor # Can't be you, obviously
 						is_allied_to = scope:emperor # Allies will probably make your border secure
@@ -193,14 +193,14 @@ mil_competence_unprotected_borders = {
 								}
 							}
 						}
-						
+
 						AND = {
 							trigger_if = { # If they can raid, defeat their armies
 								limit = { can_raid_trigger = yes }
 								has_raid_immunity_against = scope:emperor
 							}
 							trigger_else = { always = yes }
-							
+
 							# If you have a strong hook, they can't DoW you
 							scope:emperor = { has_strong_hook = scope:current_ruler }
 						}
@@ -220,7 +220,7 @@ mil_competence_unprotected_borders = {
 mil_competence_allies_ratio = 500
 mil_competence_allies = {
 	value = 0
-	
+
 	every_ally = {
 		limit = { NOT = { top_liege = prev } }
 		add = max_military_strength
@@ -250,7 +250,7 @@ mil_competence_empire_sub_value = {
 			add = 1000
 		}
 	}
-	
+
 }
 mil_competence_empire = {
 	value = 0
@@ -309,7 +309,7 @@ mil_competence_knights_prowess = {
 		add = {
 			value = prowess
 			subtract = mil_competence_knights_prowess_min
-		
+
 			multiply = mil_competence_knights_prowess_point
 		}
 	}
@@ -329,7 +329,7 @@ mil_competence_maa_regiments_elephant_cavalry_points = 25
 
 mil_competence_maa_regiments = {
 	value = 0
-	
+
 	# # Skirmishers (light infantry)
 	# if = {
 		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value = 1 } }
@@ -371,7 +371,7 @@ mil_competence_maa_regiments = {
 		# limit = { number_maa_regiments_of_base_type = { type = skirmishers value >= 10 } }
 		# add = { value = mil_competence_maa_regiments_skirmishers_points multiply = 10 }
 	# }
-	
+
 	# # Archers
 	# if = {
 		# limit = { number_maa_regiments_of_base_type = { type = archers value = 1 } }
@@ -413,7 +413,7 @@ mil_competence_maa_regiments = {
 		# limit = { number_maa_regiments_of_base_type = { type = archers value >= 10 } }
 		# add = { value = mil_competence_maa_regiments_archers_points multiply = 10 }
 	# }
-	
+
 	# # Pikemen
 	# if = {
 		# limit = { number_maa_regiments_of_base_type = { type = pikemen value = 1 } }
@@ -455,7 +455,7 @@ mil_competence_maa_regiments = {
 		# limit = { number_maa_regiments_of_base_type = { type = pikemen value >= 10 } }
 		# add = { value = mil_competence_maa_regiments_pikemen_points multiply = 10 }
 	# }
-	
+
 	# # Light Cavalry
 	# if = {
 		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value = 1 } }
@@ -497,7 +497,7 @@ mil_competence_maa_regiments = {
 		# limit = { number_maa_regiments_of_base_type = { type = light_cavalry value >= 10 } }
 		# add = { value = mil_competence_maa_regiments_light_cavalry_points multiply = 10 }
 	# }
-	
+
 	# # Heavy Infantry
 	# if = {
 		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value = 1 } }
@@ -539,7 +539,7 @@ mil_competence_maa_regiments = {
 		# limit = { number_maa_regiments_of_base_type = { type = heavy_infantry value >= 10 } }
 		# add = { value = mil_competence_maa_regiments_heavy_infantry_points multiply = 10 }
 	# }
-	
+
 	# # Heavy Cavalry
 	# if = {
 		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value = 1 } }
@@ -581,7 +581,7 @@ mil_competence_maa_regiments = {
 		# limit = { number_maa_regiments_of_base_type = { type = heavy_cavalry value >= 10 } }
 		# add = { value = mil_competence_maa_regiments_heavy_cavalry_points multiply = 10 }
 	# }
-	
+
 	# # Archer Cavalry
 	# if = {
 		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value = 1 } }
@@ -623,7 +623,7 @@ mil_competence_maa_regiments = {
 		# limit = { number_maa_regiments_of_base_type = { type = archer_cavalry value >= 10 } }
 		# add = { value = mil_competence_maa_regiments_archer_cavalry_points multiply = 10 }
 	# }
-	
+
 	# # Camel Cavalry
 	# if = {
 		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value = 1 } }
@@ -665,7 +665,7 @@ mil_competence_maa_regiments = {
 		# limit = { number_maa_regiments_of_base_type = { type = camel_cavalry value >= 10 } }
 		# add = { value = mil_competence_maa_regiments_camel_cavalry_points multiply = 10 }
 	# }
-	
+
 	# # Elephant Cavalry
 	# if = {
 		# limit = { number_maa_regiments_of_base_type = { type = elephant_cavalry value = 1 } }
@@ -806,7 +806,7 @@ civic_competence_net = {
 		value = civic_comp_administrative_court
 		desc = "CIVIC_COMP_ADMINISTRATIVE_COURT"
 	}
-	
+
 	### More specific
 	add = {
 		value = civic_competence_empire_size
@@ -840,7 +840,7 @@ civic_competence_net = {
 		value = civic_competence_buildings
 		desc = "CIVIC_COMP_BUILDINGS"
 	}
-	
+
 	# add = {
 		# value = {
 			# every_vassal = {
@@ -867,7 +867,7 @@ civic_competence_net = {
 				# }
 				# add = 1
 			# }
-		
+
 			# every_vassal = {
 				# limit = {
 					# has_realm_law = de_centeral_law_policy_4
@@ -926,7 +926,7 @@ civic_competence_stewardship = {
 # A Steward with a high stewardship is GOOD
 civic_competence_stewardship_steward = {
 	value = 0
-	
+
 	every_stewardship_councillor = {
 		add = stewardship
 	}
@@ -936,7 +936,7 @@ civic_competence_stewardship_steward = {
 civic_competence_administrative_court_grandeur_bonus = 10
 civic_competence_administrative_court = {
 	value = 0
-	
+
 	if = {
 		limit = {
 			has_royal_court = yes
@@ -951,7 +951,7 @@ civic_competence_administrative_court = {
 civic_competence_empire_size_penalty_base = 1
 civic_competence_empire_size_penalty_county_opinion_modifier = { # Counties that don't like us weigh more, those that do like us weigh less
 	value = 0
-	
+
 	add = { # If county opinion = -20, we get a modifier (-20 * (-1) / 100) = 0.2, so it weighs 20% more
 		value = county_opinion
 		multiply = -1
@@ -960,13 +960,13 @@ civic_competence_empire_size_penalty_county_opinion_modifier = { # Counties that
 }
 civic_competence_empire_size_penalty_control_modifier = { # Counties that are almost independent weigh more, those that we have a tight control over weigh less
 	value = 0
-	
+
 	add = { # If control = 50, we get a modifier (100 - 50 )/ 100 = 0.5, so it weighs 50% more
 		value = 100
 		subtract = county_control
 		divide = 100
 	}
-	
+
 	# Absolute Control, makes counties weigh 25% less
 	if = {
 		limit = {
@@ -978,18 +978,18 @@ civic_competence_empire_size_penalty_control_modifier = { # Counties that are al
 }
 civic_competence_empire_size_penalty_modifiers = { # Allows a rather smooth transition
 	value = 1
-	
+
 	add = civic_competence_empire_size_penalty_county_opinion_modifier
 	add = civic_competence_empire_size_penalty_control_modifier
 }
 civic_competence_empire_size_penalty = { # Base * sum of various modifiers
 	value = civic_competence_empire_size_penalty_base
-	
+
 	multiply = civic_competence_empire_size_penalty_modifiers
 }
 civic_competence_empire_size = {
 	value = 0
-	
+
 	subtract = {
 		value = {
 			every_realm_county = {
@@ -1019,7 +1019,7 @@ civic_competence_empire_size = {
 civic_competence_empire_size_unintegrated_penalty = 2
 civic_competence_empire_size_unintegrated = {
 	value = 0
-	
+
 	subtract = {
 		value = {
 			every_realm_county = {
@@ -1049,7 +1049,7 @@ civic_competence_empire_size_unintegrated = {
 civic_competence_domain_size_value = 5
 civic_competence_domain_size = {
 	value = 0
-	
+
 	add = {
 		value = {
 			add = domain_size
@@ -1062,7 +1062,7 @@ civic_competence_domain_size = {
 # Note: We only check integrated counties
 civic_competence_empire_county_opinion = {
 	value = 0
-	
+
 	add = {
 		value = {
 			every_realm_county = {
@@ -1091,7 +1091,7 @@ civic_competence_empire_county_opinion = {
 # Gaining lots of cash is GOOD
 civic_competence_income = {
 	value = 0
-	
+
 	add = yearly_character_balance
 	if = {
 		limit = {
@@ -1104,7 +1104,7 @@ civic_competence_income = {
 # Having a lot of gold in reserve is GOOD (and debt bad, accordingly)
 civic_competence_gold_reserve = {
 	value = 0
-	
+
 	add = gold
 	divide = 20
 }
@@ -1117,7 +1117,7 @@ civic_competence_development_breakpoint_after_650 = 20
 civic_competence_development_point = 1
 civic_competence_development = {
 	value = 0
-	
+
 	add = {
 		value = {
 			every_realm_county = {
@@ -1198,7 +1198,7 @@ civic_competence_development = {
 civic_competence_buildings_point = 0.1
 civic_competence_buildings = {
 	value = 0
-	
+
 	add = {
 		value = {
 			every_realm_province = {
@@ -1250,7 +1250,7 @@ diplo_competence_net = {
 		value = diplo_competence_vassal_opinion
 		desc = "DIPLO_COMP_VASSAL_OPINION"
 	}
-	
+
 	# add = {
 		# value = {
 			# every_realm_county = {
@@ -1318,7 +1318,7 @@ diplo_competence_diplomacy = {
 
 diplo_competence_diplomacy_chancellor_compare = {
 	value = 0
-	
+
 	every_diplomacy_councillor = {
 		add = diplomacy
 	}
@@ -1335,7 +1335,7 @@ diplo_competence_diplomacy_chancellor_compare = {
 # A Chancellor with a high diplomacy is GOOD
 diplo_competence_diplomacy_chancellor = {
 	value = 0
-	
+
 	every_diplomacy_councillor = {
 		add = diplomacy
 	}
@@ -1365,7 +1365,7 @@ diplo_competence_diplomacy_chancellor = {
 diplo_competence_diplomatic_court_grandeur_bonus = 10
 diplo_competence_diplomatic_court = {
 	value = 0
-	
+
 	if = {
 		limit = {
 			has_royal_court = yes
@@ -1380,7 +1380,7 @@ diplo_competence_diplomatic_court = {
 diplo_competence_county_opinion_mult = 10
 diplo_competence_county_opinion = {
 	value = 0
-	
+
 	every_realm_county = {
 		add = county_opinion
 	}
@@ -1398,14 +1398,14 @@ diplo_competence_vassal_opinion_mult = 5
 #This might exist in base game. If so, pls replace
 diplo_competence_vassal_number = {
 	value = 0
-	
+
 	every_vassal = {
 		add = 1
 	}
 }
 diplo_competence_vassal_opinion = {
 	value = 0
-	
+
 	every_vassal = {
 		if = {
 			limit = {
@@ -1692,7 +1692,7 @@ monument_refund = {
 # Gladiators
 sell_gladiator_price = {
 	value = 10
-	
+
 	add = {
 		value = prowess
 		subtract = 8
@@ -1705,14 +1705,14 @@ distribute_bread_price_dev_modifier = 5
 
 distribute_bread_price = {
 	value = 0
-	
+
 	add = {
 		value = {
 			save_temporary_scope_as = current_title
 			every_in_de_jure_hierarchy = {
 				limit = {
 					tier = tier_county
-					
+
 					holder = {
 						OR = {
 							this = scope:current_title.holder
@@ -1735,7 +1735,7 @@ abandon_britannia_gold_gained = {
 # Total fort level of a county
 total_county_fort_level = {
 	value = 0
-	
+
 	every_in_de_jure_hierarchy = {
 		limit = { tier = tier_barony }
 		title_province = { add = fort_level }
@@ -1915,7 +1915,7 @@ grand_raid_gold = {
 		}
 	}
 	multiply = 10
-	
+
 	min = 200
 }
 
@@ -2682,9 +2682,9 @@ convert_culture_task = {
 			if = {
 				limit = {
 					OR = {
-						has_trait = zealous 
-						has_trait = devoted 
-						has_trait = theologian 
+						has_trait = zealous
+						has_trait = devoted
+						has_trait = theologian
 					}
 				}
 				subtract = 1
@@ -2793,9 +2793,9 @@ convert_faith_task = {
 			if = {
 				limit = {
 					OR = {
-						has_trait = zealous 
-						has_trait = devoted 
-						has_trait = theologian 
+						has_trait = zealous
+						has_trait = devoted
+						has_trait = theologian
 					}
 				}
 				add = 1
@@ -2969,9 +2969,9 @@ convert_culture_task_eastern = {
 			if = {
 				limit = {
 					OR = {
-						has_trait = zealous 
-						has_trait = devoted 
-						has_trait = theologian 
+						has_trait = zealous
+						has_trait = devoted
+						has_trait = theologian
 					}
 				}
 				subtract = 1
@@ -3080,9 +3080,9 @@ convert_faith_task_eastern = {
 			if = {
 				limit = {
 					OR = {
-						has_trait = zealous 
-						has_trait = devoted 
-						has_trait = theologian 
+						has_trait = zealous
+						has_trait = devoted
+						has_trait = theologian
 					}
 				}
 				add = 1

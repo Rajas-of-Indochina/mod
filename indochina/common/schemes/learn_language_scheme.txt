@@ -1,11 +1,11 @@
 ﻿learn_language = {
-	
+
 	skill = learning
 	desc = learn_language_desc_general
 	cooldown = { months = 2 }
 	uses_agents = no
 	power_per_skill_point = 1
-	spymaster_power_per_skill_point = 0	
+	spymaster_power_per_skill_point = 0
 	resistance_per_skill_point = 0
 	spymaster_resistance_per_skill_point = 0
 	uses_resistance = no
@@ -14,7 +14,7 @@
 	minimum_success = 5
 	maximum_success = 95
 	icon = icon_scheme_culture
-	
+
 	allow = {
 		age >= 6
 		NOR = {
@@ -60,7 +60,7 @@
 			}
 		}
 	}
-	
+
 	valid = {
 		NOR = {
 			culture = { # You can't learn your own native language
@@ -78,7 +78,7 @@
 
 	base_success_chance = {
 		base = 0
-		
+
 		modifier = {
 			add = {
 				value = scope:owner.learning
@@ -87,7 +87,7 @@
 			desc = SCHEME_LEARNING_MODIFIER
 			scope:owner.learning > 0
 		}
-		
+
 		modifier = {
 			add = {
 				value = scope:owner.piety_level
@@ -99,14 +99,14 @@
 				has_cultural_parameter = language_success_chance_per_piety_level
 			}
 		}
-		
+
 		modifier = {
 			add = scope:owner.cp:councillor_court_chaplain.learning
 			desc = SCHEME_CHAPLAIN_HELP_LEARNING_MODIFIER
 			exists = scope:owner.cp:councillor_court_chaplain
 			scope:owner.cp:councillor_court_chaplain.learning > 0
 		}
-		
+
 		modifier = {
 			add = {
 				value = 5
@@ -118,7 +118,7 @@
 			desc = SCHEME_KNOWN_LANGUAGES_MODIFIER
 			scope:owner.num_of_known_languages > 1
 		}
-		
+
 		modifier = {
 			add = 10
 			scope:owner.culture = { has_same_language_group_as = { TARGET = scope:target.culture } }
@@ -135,7 +135,7 @@
 			scope:owner.culture = { is_in_language_union_with = { TARGET = scope:target.culture } }
 			desc = SCHEME_SAME_LANGUAGE_UNION_AS_NATIVE_LANGUAGE
 		}
-		
+
 		modifier = {
 			add = {
 				value = 30
@@ -145,7 +145,7 @@
 			desc = SCHEME_YOUTH_MODIFIER
 			scope:owner.age < 30
 		}
-		
+
 		modifier = {
 			add = 25
 			desc = SCHEME_HERITAGE_MODIFIER
@@ -153,7 +153,7 @@
 				has_same_culture_heritage = scope:owner.culture
 			}
 		}
-		
+
 		modifier = {
 			add = 50
 			desc = SCHEME_LOYAL_SOLDIERS_MODIFIER
@@ -166,7 +166,7 @@
 				}
 			}
 		}
-		
+
 		modifier = {
 			add = 30
 			desc = SCHEME_CULTURE_BLENDING_MODIFIER
@@ -183,33 +183,33 @@
 			scope:owner = { has_trait = intellect_good_1 }
 			add = 10
 		}
-		
+
 		modifier = {
 			desc = "scheme_intellect_good_2"
 			scope:owner = { has_trait = intellect_good_2 }
 			add = 20
 		}
-		
+
 		modifier = {
 			desc = "scheme_intellect_good_3"
 			scope:owner = { has_trait = intellect_good_3 }
 			add = 30
 		}
-		
+
 		modifier = {
 			scope:target = { has_trait = stubborn }
 			desc = "SCHEME_TRAIT_STUBBORN"
 			add = 10
 		}
-		
+
 		modifier = {
 			scope:target = { has_trait = ambitious }
 			desc = "SCHEME_TRAIT_AMBITIOUS"
 			add = 5
 		}
-		
-		#Paranoid value is added automatically because of trait	parameter enemy_personal_scheme_success_chance_add 
-		
+
+		#Paranoid value is added automatically because of trait	parameter enemy_personal_scheme_success_chance_add
+
 		# Lifestyles
 
 		# Dynasty Kin Personal Scheme Success Chance on Dynasty Perk
@@ -278,7 +278,7 @@
 			else = {
 				trigger_event = {
 					on_action = learn_language_failure
-				}	
+				}
 			}
 		}
 	}
@@ -324,7 +324,7 @@
 
 		if = {
 			limit = {
-				scope:target = { 
+				scope:target = {
 					NOT = { in_diplomatic_range = scope:owner }
 				}
 			}
@@ -339,7 +339,7 @@
 				}
 			}
 		}
-		
+
 		scope:owner = {
 			if = {
 				limit = {

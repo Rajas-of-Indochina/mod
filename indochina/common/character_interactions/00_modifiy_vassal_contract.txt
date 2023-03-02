@@ -10,7 +10,7 @@
 
 	force_notification = yes
 	notification_text = MODIFY_VASSAL_CONTRACT_NOTIFICATION_TO_VASSAL
-	
+
 	is_shown = {
 		scope:recipient = {
 			NOT = { this = scope:actor }
@@ -22,10 +22,10 @@
 	}
 
 	is_valid_showing_failures_only = {
-		scope:recipient = { 
+		scope:recipient = {
 			is_busy_in_events_localised = yes
-		} 
-		NOT = { scope:actor = { is_at_war_with = scope:recipient } } 
+		}
+		NOT = { scope:actor = { is_at_war_with = scope:recipient } }
 	}
 
 	can_send = {
@@ -42,7 +42,7 @@
 		trigger_else = {
 			scope:actor = {
 				has_changed_contract_obligation_trigger = { WHO = scope:recipient }
-				
+
 				custom_description = {
 					text = "liege_modify_vassal_contract_cannot_exceed_tyranny_cap"
 					object = scope:actor
@@ -75,7 +75,7 @@
 				}
 				trigger_else = {} # Otherwise we're fine!
 			}
-				
+
 			# Cannot change more than three things at once
 			custom_description = {
 				text = "vassal_modify_vassal_contract_obligation_change_limit"
@@ -323,7 +323,7 @@ vassal_modify_vassal_contract_interaction = {
 		trigger_else = {
 			scope:recipient = {
 				has_changed_contract_obligation_trigger = { WHO = scope:recipient }
-				
+
 				# Must be an even trade overall
 				custom_description = {
 					text = "vassal_modify_vassal_contract_cannot_increase_obligation_level"
@@ -331,7 +331,7 @@ vassal_modify_vassal_contract_interaction = {
 					value = count_obligation_improvements_for_vassal_include_hook
 					count_obligation_improvements_for_vassal_include_hook = 0
 				}
-				
+
 				# Cannot change more than three things at once
 				custom_description = {
 					text = "vassal_modify_vassal_contract_obligation_change_limit"
@@ -487,7 +487,7 @@ ai_only_liege_modify_vassal_contract_interaction = {
 	desc = liege_modify_vassal_contract_interaction_desc
 
 	auto_accept = yes
-	
+
 	is_shown = {
 		scope:actor = {
 			is_ai = yes
@@ -504,17 +504,17 @@ ai_only_liege_modify_vassal_contract_interaction = {
 			vassal_contract_can_be_modified_trigger = yes
 			does_ai_liege_in_vassal_contract_desire_obligation_change = yes
 		}
-		scope:recipient = { is_busy_in_events_localised = yes } 
-		NOT = { scope:actor = { is_at_war_with = scope:recipient } } 
+		scope:recipient = { is_busy_in_events_localised = yes }
+		NOT = { scope:actor = { is_at_war_with = scope:recipient } }
 	}
-		
+
 	on_accept = {
 		scope:actor = {
 			stress_impact = {
 				generous = minor_stress_impact_gain
 			}
 		}
-		
+
 		scope:recipient = {
 			set_vassal_contract_modification_blocked = yes
 			trigger_event = char_interaction.0250
@@ -524,15 +524,15 @@ ai_only_liege_modify_vassal_contract_interaction = {
 	ai_potential = {
 		is_at_war = no
 	}
-	
+
 	ai_targets = {
 		ai_recipients = vassals
 	}
 	ai_frequency = 24
-	
+
 	ai_will_do = {
 		base = 100
-		
+
 		modifier = {
 			factor = 0
 			scope:recipient = {
@@ -549,7 +549,7 @@ ai_only_liege_modify_vassal_contract_interaction = {
 			}
 		}
 	}
-	
+
 }
 
 ai_only_vassal_modify_vassal_contract_interaction = {
@@ -558,7 +558,7 @@ ai_only_vassal_modify_vassal_contract_interaction = {
 	desc = vassal_modify_vassal_contract_interaction_desc
 
 	auto_accept = yes
-	
+
 	is_shown = {
 		scope:actor = {
 			is_ai = yes
@@ -577,7 +577,7 @@ ai_only_vassal_modify_vassal_contract_interaction = {
 		scope:recipient = { is_busy_in_events_localised = yes }
 		NOT = { scope:actor = { is_at_war_with = scope:recipient } }
 	}
-		
+
 	on_accept = {
 		scope:recipient = {
 			trigger_event = char_interaction.0251
@@ -587,15 +587,15 @@ ai_only_vassal_modify_vassal_contract_interaction = {
 	ai_potential = {
 		always = yes
 	}
-	
+
 	ai_targets = {
 		ai_recipients = liege
 	}
 	ai_frequency = 24
-	
+
 	ai_will_do = {
 		base = 100
-		
+
 		modifier = {
 			factor = 0
 			scope:recipient = {
