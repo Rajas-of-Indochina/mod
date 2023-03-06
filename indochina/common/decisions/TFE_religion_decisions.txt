@@ -1,14 +1,14 @@
-﻿new_official_imperial_faith_decision = { 
+﻿new_official_imperial_faith_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
 	major = yes
 	desc = new_official_imperial_faith_decision_desc
-	
+
 	ai_check_interval = 36
-	
+
 	is_shown = {
 		# Obviously only Emperors can declare their faith to be the official faith of the Empire
 		primary_title.tier >= tier_empire
-		
+
 		OR = {
 			# Either the Empire has no official faith...
 			NOT = { exists = primary_title.var:official_imperial_faith }
@@ -16,10 +16,10 @@
 			NOT = { faith = primary_title.var:official_imperial_faith }
 		}
 	}
-	
+
 	is_valid = {
 		piety_level >= 3
-		
+
 		# Maybe make it more difficult if it's unreformed?
 		custom_description = {
 			text = faith_is_reformed
@@ -27,11 +27,11 @@
 			faith = { NOT = { has_doctrine_parameter = unreformed } }
 		}
 	}
-	
+
 	cost = {
 		piety = 1000
 	}
-	
+
 	effect = {
 		save_scope_as = emperor
 		faith = { save_scope_as = new_faith }
@@ -40,21 +40,21 @@
 			limit = { exists = primary_title.var:official_imperial_faith }
 			primary_title.var:official_imperial_faith = { save_scope_as = old_faith }
 		}
-		
+
 		show_as_tooltip = { new_official_imperial_faith_effect = yes }
-		
+
 		trigger_event = TFE_major_decisions.0001
-		
+
 		# every_player = {
 			# # limit = { NOT = { this = root } }
 			# trigger_event = TFE_major_decisions.0002
 		# }
 	}
-	
+
 	ai_potential = {
 		#always = yes
 	}
-	
+
 	ai_will_do = {
 		base = 100
 	}

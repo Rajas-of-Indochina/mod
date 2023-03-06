@@ -482,7 +482,7 @@ mandala_subjugation_cb = {
 	allowed_for_character = {
 		has_government = mandala_government
 	}
-	
+
 	# Root is the title
 	# scope:attacker is the attacker
 	# scope:defender is the defender
@@ -501,7 +501,7 @@ mandala_subjugation_cb = {
 			}
 		}
 	}
-	
+
 	allowed_against_character = {
 		scope:defender = {
 			has_government = mandala_government
@@ -513,7 +513,7 @@ mandala_subjugation_cb = {
 			}
 		}
 	}
-	
+
 	cost = {
 		prestige = {
 			value = tribal_subjugation_cb_prestige_cost
@@ -539,19 +539,19 @@ mandala_subjugation_cb = {
 			multiply = common_cb_piety_cost_multiplier
 		}
 	}
-	
+
 	should_invalidate = {
 		scope:defender = {
 			is_independent_ruler = no
 		}
 	}
-	
+
 	on_declaration = {
 		on_declared_war = yes
-	}	
-	
+	}
+
 	on_invalidated_desc = msg_subjugation_war_invalidated_message
-	
+
 	on_invalidated = {
 		scope:attacker = {
 			if = {
@@ -582,7 +582,7 @@ mandala_subjugation_cb = {
 					}
 				}
 			}
-			desc = {			
+			desc = {
 				first_valid = {
 					triggered_desc = {
 						trigger = { scope:attacker = { is_local_player = yes } }
@@ -597,7 +597,7 @@ mandala_subjugation_cb = {
 			}
 		}
 	}
-	
+
 	on_victory = {
 		scope:attacker = { show_pow_release_message_effect = yes }
 		create_title_and_vassal_change = {
@@ -605,7 +605,7 @@ mandala_subjugation_cb = {
 			save_scope_as = change
 			add_claim_on_loss = no
 		}
-		
+
 		if = {
 			limit = {
 				scope:defender.primary_title.tier < scope:attacker.primary_title.tier
@@ -640,7 +640,7 @@ mandala_subjugation_cb = {
 					}
 				}
 			}
-			
+
 			scope:defender = {
 				if = {
 					limit = {
@@ -660,7 +660,7 @@ mandala_subjugation_cb = {
 					}
 				}
 			}
-			
+
 			scope:defender = {
 				change_liege = {
 					liege = scope:attacker
@@ -668,10 +668,10 @@ mandala_subjugation_cb = {
 				}
 			}
 		}
-		
+
 		resolve_title_and_vassal_change = scope:change
-		
-		
+
+
 		# Prestige level progress for the attacker
 		scope:attacker = {
 			add_prestige_experience = {
@@ -695,7 +695,7 @@ mandala_subjugation_cb = {
 			WINNER_ALLY_FAME_SCALE = 1
 			LOSER_ALLY_FAME_SCALE = 1
 		}
-		
+
 		# Truce
 		add_truce_attacker_victory_effect = yes
 
@@ -712,7 +712,7 @@ mandala_subjugation_cb = {
 			desc = tribal_subjugation_cb_white_peace_desc
 		}
 	}
-	
+
 	on_white_peace = {
 		scope:attacker = { show_pow_release_message_effect = yes }
 		# Prestige loss for the attacker
@@ -741,7 +741,7 @@ mandala_subjugation_cb = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
-		
+
 		add_truce_white_peace_effect = yes
 	}
 
@@ -763,10 +763,10 @@ mandala_subjugation_cb = {
 			desc = tribal_subjugation_cb_white_peace_desc
 		}
 	}
-	
+
 	on_defeat = {
 		scope:attacker = { show_pow_release_message_effect = yes }
-		
+
 		# Prestige loss for the attacker
 		scope:attacker = {
 			pay_short_term_gold_reparations_effect = {
@@ -793,33 +793,33 @@ mandala_subjugation_cb = {
 			WINNER_ALLY_FAME_SCALE = 1
 			LOSER_ALLY_FAME_SCALE = 1
 		}
-		
+
 		scope:attacker = {
 			save_temporary_scope_as = loser
 		}
-		
+
 		# Truce
 		add_truce_attacker_defeat_effect = yes
-		
+
 		on_lost_aggression_war_discontent_loss = yes
 	}
-	
+
 	on_primary_attacker_death = inherit
 	on_primary_defender_death = inherit
-	
+
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
-	
+
 	war_name = "MANDALA_SUBJUGATION_WAR_NAME"
 	war_name_base = "MANDALA_SUBJUGATION_WAR_NAME_BASE"
 	cb_name = "MANDALA_SUBJUGATION_CB_NAME"
 	interface_priority = 59
-	
+
 	ticking_war_score_targets_entire_realm = yes
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 	attacker_ticking_warscore = 0
 	attacker_wargoal_percentage = 0.8
-	
+
 	max_ai_diplo_distance_to_title = 500
 }
