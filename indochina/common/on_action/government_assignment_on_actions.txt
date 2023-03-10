@@ -1,6 +1,7 @@
 ﻿on_game_start = {
 	on_actions = {
 		on_government_assign_start
+		set_vassal_contracts_and_laws
 	}
 }
 
@@ -69,6 +70,15 @@ on_government_assign_start = {
 					}
 					change_government = muslim_government
 				}
+			}
+			if = {
+				limit = {
+					OR = {
+						culture = culture:mon
+						culture = culture:pyu
+					}
+				}
+				change_government = city_state_government
 			}
 		}
 		if = {
@@ -557,6 +567,38 @@ on_government_assign_start = {
 					limit = { has_realm_law = tribal_authority_3 }
 					remove_realm_law = tribal_authority_3
 				}
+			}
+		}
+	}
+}
+
+set_vassal_contracts_and_laws = {
+	effect = {
+		if = {
+			limit = {
+				title:e_byzantium = {
+					is_title_created = yes
+				}
+			}
+			title:e_byzantium.holder = {
+				add_realm_law_skip_effects = imperial_authority_2
+				every_vassal_or_below = {
+					limit = {
+						has_government = imperial_government
+					}
+
+					add_realm_law_skip_effects = military_office_authority_0
+				}
+			}
+		}
+		if = {
+			limit = {
+				title:e_celestia_china = {
+					is_title_created = yes
+				}
+			}
+			title:e_celestia_china.holder = {
+				# add_realm_law_skip_effects = imperial_authority_2
 			}
 		}
 	}

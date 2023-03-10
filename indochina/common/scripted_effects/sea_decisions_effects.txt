@@ -83,12 +83,18 @@ convert_whole_realm_to_feudalism_effect = {
 
 	##Sort out new laws.
 	hidden_effect = {
-		every_realm_province = {
-			limit = { has_holding_type = tribal_holding }
-			set_holding_type = castle_holding
-			add_province_modifier = {
-				modifier = converted_to_feudal_county_modifier
-				years = 10
+		capital_county = {
+			every_county_province = {
+				barony = {
+					if = {
+						limit = { has_holding_type = tribal_holding }
+						set_holding_type = castle_holding
+						add_province_modifier = {
+							modifier = converted_to_feudal_county_modifier
+							years = 10
+						}
+					}
+				}
 			}
 		}
 

@@ -1,0 +1,203 @@
+﻿
+on_declared_war = {
+	###############################
+	##### Attacker music
+	###############################
+	if = {
+		limit = {
+			exists = scope:war # silence error when building description before war exists
+			scope:war = { using_holy_war_cb_trigger = yes } # going CB->war->is this war's CB a certain type->yes
+		}
+		scope:attacker = { play_music_cue = mx_cue_crusade_starts }
+	}
+	else_if = {
+		limit = {
+			exists = scope:war
+			OR = {
+				scope:attacker = { fp2_character_any_involvement_iberian_struggle_trigger = yes }
+				scope:defender = { fp2_character_any_involvement_iberian_struggle_trigger = yes }
+			}
+		}
+		scope:attacker = { play_music_cue = mx_IberiaWar }
+	}
+	else_if = {
+		limit = {
+			exists = scope:war
+			scope:attacker = { fp1_is_norse_tribal = yes }
+		}
+		scope:attacker = { play_music_cue = mx_raid }
+	}
+	else_if = {
+		limit = {
+			exists = scope:war
+			scope:attacker = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_tai }
+				}
+			}
+		}
+		scope:attacker = { play_music_cue = sea_thai_war }
+	}
+	else = {
+		scope:attacker = { play_music_cue = mx_cue_war_declared }
+	}
+	###############################
+	##### Defender music
+	###############################
+	if = {
+		limit = {
+			exists = scope:war
+			OR = {
+				scope:attacker = { fp2_character_any_involvement_iberian_struggle_trigger = yes }
+				scope:defender = { fp2_character_any_involvement_iberian_struggle_trigger = yes }
+			}
+		}
+		scope:defender = { play_music_cue = mx_IberiaWar }
+	}
+	else_if = {
+		limit = {
+			exists = scope:war
+			scope:defender = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_tai }
+				}
+			}
+		}
+		scope:defender = { play_music_cue = sea_thai_war }
+	}
+	else = {
+		scope:defender = {
+			play_music_cue = mx_cue_war_declared
+		}
+	}
+
+	###############################
+	##### Effects
+	###############################
+
+	if = {
+		limit = {
+			scope:attacker = {
+				has_truce = scope:defender
+			}
+		}
+		scope:attacker = {
+			custom_description_no_bullet = {
+				text = attack_breaking_truce_text
+			}
+			if = {
+				limit = {
+					NOT = { has_perk = flexible_truces_perk }
+				}
+				add_prestige = break_truce_prestige_loss
+				add_prestige_level = break_truce_prestige_level_loss
+			}
+			add_character_modifier = {
+				modifier = broke_truce
+				years = 3
+			}
+
+			# Struggle Catalysts.
+			if = {
+				limit = {
+					any_character_struggle = {
+						involvement = involved
+						activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+							CATALYST = catalyst_broke_truce_against_important_character
+							CHAR = scope:defender
+						}
+					}
+				}
+				every_character_struggle = {
+					involvement = involved
+					limit = {
+						activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+							CATALYST = catalyst_broke_truce_against_important_character
+							CHAR = scope:defender
+						}
+					}
+					activate_struggle_catalyst = {
+						catalyst = catalyst_broke_truce_against_important_character
+						character = scope:attacker
+					}
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:attacker = {
+				is_allied_to = scope:defender
+			}
+		}
+		scope:attacker = {
+			custom_description_no_bullet = {
+				text = attack_ally_text
+			}
+			add_prestige = attack_ally_prestige_loss
+			add_prestige_level = attack_ally_prestige_level_loss
+			add_character_modifier = {
+				modifier = attacked_ally
+				years = 3
+			}
+			break_alliance = scope:defender
+		}
+	}
+	scope:defender = {
+		add_opinion = {
+			target = scope:attacker
+			modifier = declared_war
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				scope:attacker = {
+					is_parent_of = scope:defender
+				}
+			}
+		}
+		if = {
+			limit = {
+				scope:defender = {
+					has_father = yes
+				}
+			}
+			scope:defender = {
+				father = {
+					add_opinion = {
+						target = scope:attacker
+						modifier = declared_war_on_son_daughter
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				scope:defender = {
+					has_mother = yes
+				}
+			}
+			scope:defender = {
+				mother = {
+					add_opinion = {
+						target = scope:attacker
+						modifier = declared_war_on_son_daughter
+					}
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			NOT = { scope:attacker.culture = scope:defender.culture }
+		}
+		scope:defender.culture = {
+			change_cultural_acceptance = {
+				target = scope:attacker.culture
+				value = declare_war_culture_acceptance_impact
+				desc = cultural_acceptance_loss_declared_war
+			}
+		}
+	}
+}

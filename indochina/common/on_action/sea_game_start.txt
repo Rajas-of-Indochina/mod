@@ -5,7 +5,7 @@ on_game_start = {
         # holy_site_buildings_on_game_start
         # holy_site_descriptions_on_game_start
         add_right_to_rule_doctrines_on_game_start
-        reorganize_chinese_realms_on_game_start
+        # reorganize_chinese_realms_on_game_start
         add_disloyal_subjects_tradition_on_game_start
         assign_nanzhao_state
     }
@@ -15,11 +15,14 @@ on_game_start_after_lobby = {
     on_actions = {
         ruler_popup_events
         # indian_struggle_on_game_start
-        tibetan_struggle_on_game_start
+        # tibetan_struggle_on_game_start
         # chinese_struggle_on_game_start
         sea_set_cultural_acceptance
         on_yearly_assign_culture_faith
         sea_historical_artifacts
+
+        # Chinese gov setup
+        sea_historical_chinese_vassal_contracts
     }
 }
 
@@ -56,6 +59,13 @@ sea_set_cultural_acceptance = {
         culture:malay = {
             change_cultural_acceptance = {
                 target = culture:khmer
+                value = 40
+                desc = cultural_acceptance_historical_relations
+            }
+        }
+        culture:han = {
+            change_cultural_acceptance = {
+                target = culture:shatuo
                 value = 40
                 desc = cultural_acceptance_historical_relations
             }
@@ -141,7 +151,13 @@ add_right_to_rule_doctrines_on_game_start = {
                         }
                     }
 
-                    add_doctrine = doctrine_right_to_rule_rajadharma
+                    if = {
+                        limit = { this = faith:mahayana }
+                        add_doctrine = doctrine_right_to_rule_divine
+                    }
+                    else = {
+                        add_doctrine = doctrine_right_to_rule_rajadharma
+                    }
                 }
             }
             ## Everyone else gets Material Right
@@ -338,6 +354,58 @@ sea_historical_artifacts = {
                 title:c_tondo.holder = {
                     create_artifact_laguna_copperplate = { OWNER = this }
                 }
+            }
+        }
+    }
+}
+
+#####
+
+sea_historical_chinese_vassal_contracts = {
+    effect = {
+        title:e_celestia_china.holder = {
+            add_realm_law_skip_effects = bureaucratic_authority_1
+
+            if = {
+                limit = {
+                    game_start_date <= 900.1.1 # Tang Dynasty
+                }
+                # Set all vassals to military
+                every_vassal = {
+                    limit = {
+                        primary_title.tier >= tier_county
+                    }
+
+                    vassal_contract_set_obligation_level = {
+                        type = chinese_administration_type
+                        level = chinese_administration_type_military
+                    }
+
+                    if = {
+                        limit = {
+                            OR = {
+                                # Three Fanzhen of Hebei
+                                this = character:tangv017
+                                this = character:tangv018
+                                this = character:tangv019
+                            }
+                        }
+                        vassal_contract_set_obligation_level = {
+                            type = chinese_centralization_level
+                            level = chinese_centralization_level_1
+                        }
+                        vassal_contract_set_obligation_level = {
+                            type = chinese_centralization_level
+                            level = chinese_centralization_level_0
+                        }
+                    }
+                }
+            }
+            else_if = {
+                limit = {
+                    game_start_date >= 960.1.1 # Song Dynasty
+                }
+                #
             }
         }
     }
