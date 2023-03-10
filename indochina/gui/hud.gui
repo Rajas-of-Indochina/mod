@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 #################### META INFO #######################
 ######################################################
 
@@ -2744,6 +2744,13 @@ widget = {
 				item = {
 					button_struggle_banner = {}
 				}
+			}
+
+			flowcontainer = {
+				name = "senate_hud"
+				parentanchor = vcenter
+				ignoreinvisible = yes
+
 				flowcontainer = {
 					ignoreinvisible = yes
 					visible = "[Not(IsObserver)]"
@@ -2766,6 +2773,48 @@ widget = {
 					}
 				}
 			}
+
+			flowcontainer = {
+				name = "chinese_hud"
+				parentanchor = vcenter
+				ignoreinvisible = yes
+
+				flowcontainer = {
+					ignoreinvisible = yes
+					visible = "[Not(IsObserver)]"
+
+					button = {
+						name = "oe_hud_widget_china_office"
+						datacontext = "[GetScriptedGui('is_china_government_or_vassal')]"
+						visible = "[And( Not(IsObserver), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End) )]"
+						# visible = "[Not(IsRightWindowOpen)]"
+						texture = "gfx/interface/icons/china_symbol_frame.dds"
+						onclick = "[GetVariableSystem.Toggle( 'china_office_toggle' )]"
+						onclick = "[ToggleGameViewData('council_window', GetPlayer.GetID)]"
+						onclick = "[AccessCouncilWindow.SetLiegeCouncil]"
+						onclick = "[AccessCouncilWindow.Close]"
+						size = { 60 60 }
+						tooltip = "CHINESE_HUD_TOOLTIP"
+					}
+				}
+			}
+
+			widget = {
+				size = { 50 50 }
+				allow_outside = yes
+				parentanchor = vcenter|right
+				position = { -135 375 }
+				layer = hud_layer
+				alwaystransparent = yes
+				movable = no
+				visible = "[And(Not(IsObserver),IsDefaultGUIMode)]"
+				#visible = "[InGameTopbar.ShouldBeVisible]"
+				#background elements
+				using = Animation_ShowHide_Quick
+
+			}
+
+
 		}
 
 		## Map Modes

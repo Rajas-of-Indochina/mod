@@ -51,7 +51,6 @@ window = {
 					using = Font_Type_Flavor
 					using = Font_Size_Big
 				}
-
 			}
 
 			blockoverride "button_close"
@@ -84,10 +83,10 @@ window = {
 				layoutpolicy_vertical = expanding
 				spacing = 10
 
-				# Vbox for Feudal Contract ## Wrench's comment: WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+				# Vbox for Feudal Contract
 				vbox = {
 					name = "paper_contract"
-					visible = "[Or( Character.GetGovernment.IsType('feudal_government') , Or( Character.GetGovernment.IsType('city_state_government') ,  Or( Character.GetGovernment.IsType('eranshar_government') , Or( Character.GetGovernment.IsType('muslim_government') , Or( Character.GetGovernment.IsType('gupta_government') , Or( Character.GetGovernment.IsType('imperial_government') , Or( Character.GetGovernment.IsType('autocratic_government') , Or( Character.GetGovernment.IsType('legion_government') , Or( Character.GetGovernment.IsType('imperial_cult_government') , Or( Character.GetGovernment.IsType('roman_government') , Character.GetGovernment.IsType('caliphate_government'))) ) ) ) ) ) ) ) )]"
+					visible = "[Character.GetGovernment.IsType('feudal_government')]"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
 					using = Background_Letter
@@ -441,12 +440,115 @@ window = {
 				# Vbox for other government contract
 				vbox = {
 					name = "lambda_vassal_paper_contract"
-					visible = "[Not(Or( Character.GetGovernment.IsType('feudal_government') , Or( Character.GetGovernment.IsType('city_state_government') ,  Or( Character.GetGovernment.IsType('eranshar_government') , Or( Character.GetGovernment.IsType('muslim_government') , Or( Character.GetGovernment.IsType('gupta_government') , Or( Character.GetGovernment.IsType('imperial_government') , Or( Character.GetGovernment.IsType('autocratic_government') , Or( Character.GetGovernment.IsType('legion_government') , Or( Character.GetGovernment.IsType('imperial_cult_government') , Or( Character.GetGovernment.IsType('roman_government') , Character.GetGovernment.IsType('caliphate_government'))) ) ) ) ) ) ) ) ))]"
+					visible = "[Not(Character.GetGovernment.IsType('feudal_government'))]"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
 					using = Background_Letter
 					margin = { 20 20 }
 					spacing = 5
+
+					vbox = {
+						name = "major_line_tree_levels"
+						layoutpolicy_horizontal = expanding
+						visible = "[Character.GetGovernment.IsType('imperial_government')]" #律令制税兵
+						spacing = 10
+
+						datamodel = "[ModifyVassalContractInteractionWindow.AccessObligationLevelLineTrees]"
+
+						item = {
+							vbox = {
+								layoutpolicy_vertical = expanding
+								layoutpolicy_horizontal = expanding
+
+								datacontext = "[ObligationLevelLineTree.GetContainerData]"
+
+								visible = "[ObligationContainerData.ShouldShow( ModifyVassalContractInteractionWindow.GetContractPreview )]"
+
+								spacing = 10
+
+								text_single = {
+									text = "[ObligationContainerData.GetName] [ObligationContainerData.GetIcon]"
+									using = Font_Size_Medium
+									default_format = "#light_background"
+								}
+
+								container = {
+									layoutpolicy_vertical = expanding
+
+									name = "obligation_level_item_line_area" # Name used in code do not change
+
+									datamodel = "[ObligationLevelLineTree.AccessItems]"
+
+									item = {
+										widget = {
+											datacontext = "[ObligationLevelLineItem.AccessItem]"
+											size = { 120 83 }
+											position = "[ObligationLevelLineTree.GetItemPosition( ModifyVassalContractInteractionWindowObligationLevelOption.Self )]"
+
+											container = {
+												parentanchor = center
+
+												widget = {
+													name = "top_pin"
+													visible = "[ObligationLevelLineItem.SetupTopWidget( PdxGuiWidget.Self )]"
+												}
+
+												widget = {
+													name = "bottom_pin"
+													visible = "[ObligationLevelLineItem.SetupBottomWidget( PdxGuiWidget.Self )]"
+												}
+											}
+
+											button_letter = {
+												size = { 100 80 }
+
+												text_single = {
+													text = "[ModifyVassalContractInteractionWindowObligationLevelOption.GetName]"
+													visible = "[Not(ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected)]"
+													default_format = "#light_background"
+													parentanchor = center
+													position = {0 -3 }
+												}
+
+												text_single = {
+													text = "[ModifyVassalContractInteractionWindowObligationLevelOption.GetName]"
+													visible = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected]"
+													default_format = "#high"
+													parentanchor = center
+													position = {0 -3 }
+												}
+
+												tooltip = "[ModifyVassalContractInteractionWindowObligationLevelOption.GetTooltip]"
+
+												onclick = "[ModifyVassalContractInteractionWindowObligationLevelOption.Select]"
+												down = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected]"
+												enabled = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsEnabled]"
+												using = tooltip_above
+
+												background = {
+													using = Background_Area_Dark
+													visible = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected]"
+												}
+
+												icon = {
+													parentanchor = top|hcenter
+													position = { 0 -5 }
+													texture = "gfx/interface/buttons/button_tree_expand.dds"
+													framesize = { 36 36 }
+													size = { 24 24 }
+													frame = 2
+													tintcolor = { 0.4 0.4 0.5 0.7 }
+													visible = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsCurrent]"
+
+													using = Mask_Rough_Edges
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
 
 					vbox =  {
 						layoutpolicy_vertical = expanding
@@ -454,7 +556,7 @@ window = {
 						vbox = {
 							name = "lambda_vassal_minor_list_levels_radio_buttons"
 							datamodel = "[ModifyVassalContractInteractionWindow.AccessObligationLevelRadioButtons]"
-							visible = "[And(Not(Character.GetPrimaryTitle.IsBarony),Not( Character.GetPrimaryTitle.IsCounty))]"
+							visible = "[OR(And(Not(Character.GetPrimaryTitle.IsBarony),Not( Character.GetPrimaryTitle.IsCounty)),Character.GetGovernment.IsType('imperial_government')]"
 
 							background = {
 								using = Background_Area_With_Header
@@ -698,18 +800,15 @@ window = {
 			}
 
 			vbox = {
-				name = "contract_result_info"
 				spacing = 10
 				layoutpolicy_vertical = expanding
 				margin = { 10 0 }
 				margin_top = 5
 
 				hbox = {
-					name = "vassal_profile"
 					margin_right = 10
 					layoutpolicy_horizontal = expanding
 					datacontext = "[VassalContract.GetVassal]"
-
 					background = {
 						using = Background_Area
 					}
@@ -732,36 +831,7 @@ window = {
 					expand = {}
 
 					coa_realm_medium_crown = {}
-				} # vassal_profile
-
-				vbox = {
-					visible = "[Not(ModifyVassalContractInteractionWindow.IsRightfulLiege)]"
-					margin = { 5 5 }
-
-					hbox = {
-						background = {
-							using = Background_Area_Dark
-							margin = { 16 8 }
-						}
-
-						warning_icon = {
-							size = { 25 25 }
-						}
-
-						text_multi = {
-							min_width = 300
-							max_width = 400
-							autoresize = yes
-							margin = { 5 0 }
-
-							text = "VASSAL_CONTRACT_LIEGE_IS_NOT_RIGHTFUL_LIEGE_NOTICE"
-							align = nobaseline
-							using = Font_Size_Small
-						}
-					}
 				}
-
-				spacer = { size = {10 10} }
 
 				hbox = {
 					visible = "[CharacterInteractionConfirmationWindow.GetEffectsDescription.HasAnyAcceptEffect]"
@@ -782,7 +852,6 @@ window = {
 				}
 
 				vbox = {
-					name = "no_effect_notice"
 					visible = "[Not( CharacterInteractionConfirmationWindow.GetEffectsDescription.HasAnyAcceptEffect )]"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
@@ -813,7 +882,6 @@ window = {
 							layoutpolicy_horizontal = expanding
 							spacing = 40
 
-							# Final tax obligations
 							vbox = {
 								spacing = 5
 
@@ -869,7 +937,6 @@ window = {
 
 							expand = {}
 
-							# Final levy obligations
 							vbox = {
 								spacing = 5
 
@@ -922,7 +989,7 @@ window = {
 								}
 							}
 						}
-					} # tax_levy_opinion_info
+					}
 				}
 
 				expand = {}
@@ -949,8 +1016,6 @@ window = {
 							widget_value_breakdown_tooltip = {}
 						}
 					}
-
-					expand = {}
 
 					## Options
 					vbox_interaction_options = {

@@ -874,3 +874,129 @@ market_villages_02 = {
 		base = 1
 	}
 }
+
+# Shrines
+
+tribal_shrines_01 = {
+	construction_time = quick_construction_time
+
+	is_enabled = {
+		building_requirement_tribal = yes
+	}
+	can_construct_potential = {
+		has_building_or_higher = tribe_01
+	}
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = yes
+	}
+
+	cost_prestige = expensive_building_tier_1_cost
+	cost_gold = tribal_building_tier_1_cost
+
+	province_modifier = {
+		monthly_income = 0.3
+	}
+	character_modifier = {
+		monthly_piety = 0.1
+	}
+
+	next_building = tribal_shrines_02
+
+	type_icon = "icon_building_market_villages.dds"
+
+	ai_value = {
+		base = 1
+		ai_tier_1_building_modifier = yes
+	}
+}
+
+tribal_shrines_02 = {
+	construction_time = quick_construction_time
+
+	is_enabled = {
+		building_requirement_tribal = yes
+	}
+	can_construct_potential = {
+		has_building_or_higher = tribe_01
+	}
+	can_construct_showing_failures_only = {
+		scope:holder = {
+			culture = { has_innovation = innovation_city_planning }
+		}
+		building_requirement_tribal = yes
+	}
+
+	cost_prestige = expensive_building_tier_2_cost
+	cost_gold = tribal_building_tier_2_cost
+
+	province_modifier = {
+		monthly_income = 0.5
+	}
+	character_modifier = {
+		monthly_piety = 0.3
+	}
+
+	ai_value = {
+		base = 1
+	}
+}
+
+nomadic_pastures_01 = {
+	construction_time = quick_construction_time
+
+	is_enabled = {
+		scope:holder = {
+			has_government = nomadic_government
+		}
+	}
+	can_construct_potential = {
+		has_building_or_higher = tribe_01
+	}
+
+	can_construct_showing_failures_only = {
+		scope:holder = {
+			has_government = nomadic_government
+		}
+		OR = {
+			terrain = farmlands
+			terrain = plains
+			terrain = steppe
+			terrain = hills
+			terrain = oasis
+			terrain = floodplains
+
+			#TODO these should have a reduced effect
+			terrain = drylands
+			terrain = wetlands
+			#terrain = desert
+		}
+	}
+
+	cost_prestige = expensive_building_tier_1_cost
+	cost_gold = tribal_building_tier_1_cost
+
+	#levy = excellent_building_levy_tier_1
+
+	character_modifier = {
+		archer_cavalry_max_size_add = 1
+		light_cavalry_max_size_add = 1
+
+		archer_cavalry_damage_mult = 0.02
+		archer_cavalry_toughness_mult = 0.02
+		light_cavalry_damage_mult = 0.03
+		light_cavalry_toughness_mult = 0.03
+
+		men_at_arms_maintenance = -0.05
+
+		heavy_infantry_max_size_add = -1
+		pikemen_max_size_add = -1
+		archers_max_size_add = -1
+		siege_weapon_max_size_add = -1
+	}
+
+	type_icon = "icon_building_warcamps.dds"
+
+	ai_value = {
+		base = 100
+	}
+}

@@ -831,7 +831,58 @@ task_fabricate_claim = {
 				desc = COUNCILLOR_IS_YOUR_NEMESIS
 			}
 		}
-
+		if = { # Celestial
+			limit = {
+				scope:councillor_liege = {
+					is_independent_ruler = no
+				}
+				scope:county.holder = {
+					is_independent_ruler = no
+				}
+				scope:county.holder.top_liege = scope:councillor_liege.top_liege
+				scope:councillor_liege.top_liege = { is_oe_imperial_government = yes }
+			}
+			add = {
+				value = scope:councillor.court_chaplain_fabricate_claim_monthly_increase_nemesis_bonus
+				desc = COUNCILLOR_IS_IN_CELESTIAL
+			}
+		}
+		if = { # Celestial
+			limit = {
+				scope:councillor_liege = {
+					is_independent_ruler = no
+				}
+				scope:county.holder = {
+					is_independent_ruler = no
+				}
+				scope:county.holder.top_liege = scope:councillor_liege.top_liege
+				scope:county.holder = {
+					culture = {
+						has_cultural_parameter = can_have_tradition_succession_law
+					}
+				}
+			}
+			add = {
+				value = scope:councillor.court_chaplain_fabricate_claim_monthly_increase_nemesis_bonus
+				desc = COUNCILLOR_IS_HAN_TRADITION
+			}
+		}
+		if = { # Unity
+			limit = {
+				scope:councillor_liege = {
+					is_independent_ruler = no
+				}
+				scope:county.holder = {
+					is_independent_ruler = no
+				}
+				scope:county.holder.top_liege = scope:councillor_liege.top_liege
+				scope:county.holder.culture = { has_cultural_innovation = innovation_centralization_of_authority }
+			}
+			add = {
+				value = scope:councillor.court_chaplain_fabricate_claim_monthly_increase_nemesis_bonus
+				desc = COUNCILLOR_IS_CULTRUAL_CENTRALIZATION
+			}
+		}
 		# Perk Bonuses
 		if = {
 			limit = {
@@ -860,7 +911,6 @@ task_fabricate_claim = {
 				desc = FAMILY_BUSINESS_BONUS_VALUE
 			}
 		}
-
 		# Tradition Bonuses
 		if = {
 			limit = {
@@ -875,7 +925,6 @@ task_fabricate_claim = {
 				desc = FABRICATE_CLAIM_LANGUAGE_SCHOLARS_BONUS
 			}
 		}
-
 		# Innovation Bonuses
 		if = {
 			limit = {

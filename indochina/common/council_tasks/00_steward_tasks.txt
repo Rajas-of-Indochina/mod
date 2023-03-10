@@ -748,16 +748,6 @@ task_promote_culture = {
 				desc = fp2_struggle_hostility_culture_conversion_task_desc
 			}
 		}
-		if = {
-			limit = {
-				scope:councillor_liege = {
-					vassal_contract_has_flag = eranshar_special_contracts_cultural_enforcment
-				}
-			}
-			add = {
-				value = 30
-			}
-		}
 	}
 
 	potential_county = {
@@ -1108,7 +1098,25 @@ task_promote_culture = {
 						has_character_flag = agenda_towards_escalation
 						any_character_struggle = {
 							involvement = involved
+							is_struggle_type = iberian_struggle
 							is_struggle_phase = struggle_iberia_phase_hostility
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+		if = {
+			# Don't do this too often
+			limit = {
+				scope:councillor_liege = {
+					has_character_flag = no_ai_culture_convert
+					NAND = { # ignore it if in Hostility with escalation
+						has_character_flag = agenda_towards_escalation
+						any_character_struggle = {
+							involvement = involved
+							is_struggle_type = tartaria_struggle
+							is_struggle_phase = struggle_tartaria_phase_hostility
 						}
 					}
 				}
@@ -1405,6 +1413,7 @@ task_accept_culture = {
 			trigger_if = {
 				limit = {
 					scope:councillor_liege = { is_ai = yes }
+					scope:councillor_liege = { exists = capital_county }
 				}
 				OR = {
 					this = scope:councillor_liege.capital_county

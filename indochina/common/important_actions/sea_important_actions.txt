@@ -57,3 +57,72 @@ action_can_propose_alliance_mandala_vassal = {
 		}
 	}
 }
+
+action_can_adopt_heir = {
+	priority = 300
+	combine_into_one = yes
+
+	check_create_action = {
+		if = {
+			limit = {
+				NOR = {
+					has_religion = religion:christianity_religion
+					has_religion = religion:islam_religion
+					has_religion = religion:judaism_religion
+				}
+				OR = {
+					NOT = { exists = player_heir }
+					AND = {
+						has_realm_law = female_preference_law
+						player_heir = { is_male = yes }
+					}
+					AND = {
+						has_realm_law = male_preference_law
+						player_heir = { is_female = yes }
+					}
+				}
+			}
+			every_courtier = {
+				limit = {
+					root = {
+						is_character_interaction_potentially_accepted = {
+							recipient = prev
+							interaction = adoption_interaction
+						}
+					}
+
+					OR = {
+
+						AND = {
+							root = { has_realm_law = female_preference_law }
+							is_female = yes
+						}
+						AND = {
+							root = { has_realm_law = male_preference_law }
+							is_male = yes
+						}
+					}
+
+					# is_lowborn = no
+				}
+				try_create_important_action = {
+					important_action_type = action_can_adopt_heir
+					actor = root
+					recipient = this
+				}
+			}
+		}
+	}
+
+	effect = {
+		open_interaction_window = {
+			interaction = adoption_interaction
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}
+
+action_can_tribalize_holding = {
+
+}

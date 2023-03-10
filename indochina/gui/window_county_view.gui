@@ -1209,6 +1209,33 @@ window = {
 				}
 			}
 
+			### TRIBALIZE A FEUDAL HOLDING ###
+			widget = {
+				allow_outside = yes
+				parentanchor = center
+				position = { 76 -20 }
+
+				button_round  = {
+					datacontext = "[HoldingView.GetGUIHoldingBuilding]"
+					datacontext = "[HoldingView.GetTitle]"
+					datacontext = "[HoldingView.GetHolder]"
+					visible = "[And( Character.IsLocalPlayer, Character.IsPlayerInteractionShownAndCanPickTitle('tribalize_feudal_holding_interaction', Title.Self) )]"
+					enabled = "[Character.IsPlayerInteractionWithTargetTitleValid('tribalize_feudal_holding_interaction', Title.Self)]"
+					tooltip = "[Character.GetPlayerInteractionWithTargetTitleTooltip('tribalize_feudal_holding_interaction', Title.Self)]"
+					oversound = "event:/SFX/UI/Generic/sfx_ui_generic_pointer_over"
+					clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_select"
+					onclick = "[Character.OpenPlayerInteractionWithTargetTitle('tribalize_feudal_holding_interaction', Title.Self)]"
+
+					button_icon = {
+						framesize = { 70 60 }
+						size = { 25 25 }
+						parentanchor = center
+						alwaystransparent = yes
+						texture = "gfx/interface/icons/flat_icons/army_toggle_raiding.dds"
+					}
+				}
+			}
+
 			### BOTTOM LEFT
 			hbox = {
 				parentanchor = top|right

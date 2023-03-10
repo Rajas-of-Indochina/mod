@@ -21,6 +21,7 @@ window = {
 		using = Window_Position_MainTab
 
 		on_start = "[GetVariableSystem.Set( 'military_view_tabs', 'troops' )]"
+		on_start = "[GetVariableSystem.Clear( 'event_troop_open' )]"
 	}
 
 	state = {
@@ -33,7 +34,7 @@ window = {
 	margin_widget = {
 		size = { 100% 100% }
 		margin = { 0 26 }
-		margin_right = 20
+		#margin_right = 20
 
 		widget = {
 			size = { 100% 100% }
@@ -89,7 +90,7 @@ window = {
 							enabled = "[PlayerCanRaiseAnyRaiderRallyPoint]"
 
 							text = "RAISE_ALL_RAIDERS"
-							size = { 200 32 }
+							size = {210 32}
 
 							tooltip = "[GetPlayerRaiseAllRaidersTooltip]"
 							using = tooltip_se
@@ -98,7 +99,6 @@ window = {
 
 						button_standard = {
 							datacontext = "[GetPlayer]"
-
 							onclick = "[PlayerDisbandAll]"
 							enabled = "[PlayerCanDisbandAll]"
 
@@ -161,7 +161,7 @@ window = {
 
 						text_single = {
 							parentanchor = vcenter|right
-							position = {-15 0}
+							position = {-20 0}
 							text = "[GetDataModelSize(MilitaryView.GetAllHolyOrders)]"
 
 							default_format = "#low"
@@ -169,15 +169,14 @@ window = {
 							alpha = "[Select_float( DataModelHasItems( MilitaryView.GetAllHolyOrders ), '(float)1.0', '(float)0.5' )]"
 						}
 					}
-
 					button_tab = {
 						layoutpolicy_horizontal = expanding
-						onclick = "[GetVariableSystem.Set( 'military_view_tabs', 'legions' )]"
-						down = "[GetVariableSystem.HasValue( 'military_view_tabs', 'legions' )]"
-						visible = "[Or(EqualTo_string(GetPlayer.GetGovernment.GetName, GetGovernment('imperial_government').GetName), Or(EqualTo_string(GetPlayer.GetGovernment.GetName, GetGovernment('imperial_cult_government').GetName), EqualTo_string(GetPlayer.GetGovernment.GetName, GetGovernment('autocratic_government').GetName)))]"
+						onclick = "[GetVariableSystem.Set( 'military_view_tabs', 'oe_legions' )]"
+						down = "[GetVariableSystem.HasValue( 'military_view_tabs', 'oe_legions' )]"
+						visible = "[EqualTo_string(GetPlayer.GetGovernment.GetName, GetGovernment('imperial_government').GetName)]"
 
 						text_single = {
-							text = "Legions"
+							text = "[oe_legions]"
 							parentanchor = center
 
 							maximumsize = { 400 -1 }
@@ -209,17 +208,13 @@ window = {
 
 						background = {
 							texture = "gfx/interface/skinned/illustrations/moving.dds"
+							margin = { -5 0 }
 							fittype = end
 							alpha = 0.3
-							
-							using = Mask_Rough_Edges
-
-							using = Mask_Rough_Edges
 
 							modify_texture = {
-								texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+								texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
 								blend_mode = alphamultiply
-								mirror = vertical
 							}
 						}
 
@@ -513,6 +508,9 @@ window = {
 														tooltip = "[MilitaryView.GetMAACountAndCapTooltip]"
 														using = tooltip_ne
 													}
+												}
+												divider_light = {
+													layoutpolicy_horizontal = expanding
 												}
 											}
 
@@ -1061,9 +1059,8 @@ window = {
 						framesize = { 1200 848 }
 
 						modify_texture = {
-							texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+							texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
 							blend_mode = alphamultiply
-							mirror = vertical
 						}
 					}
 
@@ -1135,9 +1132,8 @@ window = {
 						alpha = 0.3
 
 						modify_texture = {
-							texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+							texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
 							blend_mode = alphamultiply
-							mirror = vertical
 						}
 					}
 
@@ -1212,16 +1208,17 @@ window = {
 						}
 					}
 				}
-
 				scrollbox = {
-					name = "tab_legions"
-					visible = "[GetVariableSystem.HasValue( 'military_view_tabs', 'legions' )]"
+					name = "tab_oe_legions"
+					visible = "[And(GetVariableSystem.HasValue( 'military_view_tabs', 'oe_legions' ), GetScriptedGui('update_legions_list').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ))]"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
 
 					state = {
+						
 						name = _show
 						using = Animation_FadeIn_Quick
+						
 					}
 
 					state = {
@@ -1232,20 +1229,18 @@ window = {
 					background = {
 						texture = "gfx/interface/illustrations/legion_bg.dds"
 						margin = { -5 0 }
-						fittype = end
+						fittype = centercrop
 						alpha = 0.3
-						framesize = { 1200 848 }
 
 						modify_texture = {
 							texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
 							blend_mode = alphamultiply
 						}
 					}
-
 					blockoverride "scrollbox_content" {
 						vbox = {
 							text_label_center = {
-								text = "[legions|E]"
+								text = "[oe_legions|E]"
 								default_format = "#high"
 								using = Font_Size_Big
 							}
@@ -1256,15 +1251,15 @@ window = {
 								size = {0 20}
 							}
 							vbox = {
-								datamodel = "[GetPlayer.MakeScope.GetList('legion_counties')]"
+								datamodel = "[GetPlayer.MakeScope.GetList('oe_legions_list')]"
 	
 								item = {
 									hbox = {
 										ignoreinvisible = yes
 										layoutpolicy_horizontal = expanding
-										datacontext = "[Scope.Title]"
+										#ddatacontext = "[Scope.GetCharacter]"
 										background = {
-											texture = "gfx/interface/illustrations/legion_bg_thin.dds"
+											texture = "[Character.GetCapitalLocation.GetTitle.GetCountyData.GetCapital.GetTerrain.GetIllustration]"										
 											alpha = 0.7
 							
 											modify_texture = {
@@ -1275,41 +1270,38 @@ window = {
 										}
 	
 										portrait_shoulders = {
-											datacontext = "[Title.GetHolder]"
+											datacontext = "[Scope.GetCharacter]"
 										}
 										spacer = {
 											size = {20 0}
 										}
-	
 										text_label_left = {
-											visible = "[Not(Title.MakeScope.Var('prae_guard').IsSet)]"
-											text = "Legion of [Title.GetNameNoTier]"
+											datacontext = "[Scope.GetCharacter]"											
+											text = "[Character.GetPrimaryTitle.GetBaseNameNoTierNoTooltip]防秋兵"
 											default_format = "#high"
 											using = Font_Size_Big
 										}
-										text_label_left = {
-											visible = "[Title.MakeScope.Var('prae_guard').IsSet)]"
-											text = "Praetorian Guard"
-											default_format = "#high"
-											using = Font_Size_Big
-										}
+
+										
+										expand = {}
 
 										button = {
 											size = {100 100}
 											texture = "gfx/interface/icons/raise_legion.dds"
-											enabled = "[And( Not(Title.GetHolder.MakeScope.Var('legion_available').IsSet), GetPlayer.IsAtWar)]"
+											enabled = "[And( Not(Scope.GetCharacter.MakeScope.Var('legion_available').IsSet), GetPlayer.IsAtWar)]"
 											tooltipwidget = {
 												widget = {
 													using = DefaultTooltipBackground
 													size = {200 100}
 													vbox = {
-														margin = { 15 10 }
+														
+		#datacontext = "[Scope.GetCharacter]"												margin = { 15 10 }
 														spacing = 10
 														set_parent_size_to_minimum = yes
 														minimumsize = { 150 0 }
 														text_single = {
 															layoutpolicy_horizontal = expanding
-															text = "#T Raise [legions|E] #!"
+															text = "#T 集结[oe_legions|E]#!"
 															background = {
 																using = Background_Area
 																margin = { 10 0 }
@@ -1319,98 +1311,15 @@ window = {
 													}
 												}
 											}
-											onclick = "[GetScriptedGui('raise_legion').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('county', Scope.Title.MakeScope ).End )]"
+											
+											
+onclick = "[GetScriptedGui('raise_new_hm_legion').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('target', Scope.GetCharacter.MakeScope ).End )]"											#onclick = "[GetScriptedGui('raise_new_hm_legion').Execute( GuiScope.SetRoot( GetCharacter.MakeScope ).AddScope( 'player', GetPlayer.MakeScope ).End )]"
 										}
 									}
 								}
 							}
-							divider_light = {
-								layoutpolicy_horizontal = expanding
-							}
-							spacer = {
-								size = {0 20}
-							}
-
-							text_label_center = {
-								text = "[available_counties|E]"
-								default_format = "#high"
-								using = Font_Size_Big
-							}
-							divider_light = {
-								layoutpolicy_horizontal = expanding
-							}
-							spacer = {
-								size = {0 20}
-							}
-							vbox = {
-								datamodel = "[GetPlayer.MakeScope.GetList('legion_county_available')]"
-	
-								item = {
-									hbox = {
-										ignoreinvisible = yes
-										layoutpolicy_horizontal = expanding
-										datacontext = "[Scope.Title]"
-										background = {
-											texture = "[Title.GetCountyData.GetCapital.GetTerrain.GetIllustration]"
-											alpha = 0.7
 							
-											modify_texture = {
-												texture = "gfx/interface/window_county/mask_holding_illustration.dds"
-												blend_mode = alphamultiply
-												alpha = 0.95
-											}
-										}
-	
-										coa_title_big = {}
-										spacer = {
-											size = {20 0}
-										}
-	
-										text_label_left = {
-											text = "[Title.GetNameNoTooltip]"
-											default_format = "#high"
-											using = Font_Size_Big
-										}
-										button = {
-											size = {100 100}
-											parentanchor = right|hcenter
-											texture = "gfx/interface/icons/create_legion.dds"
-											enabled = "[GreaterThanOrEqualTo_CFixedPoint(GetPlayer.GetGold, '(CFixedPoint)2000')]"
-
-											tooltipwidget = {
-												widget = {
-													using = DefaultTooltipBackground
-													size = {200 100}
-													vbox = {
-														margin = { 15 10 }
-														spacing = 10
-														set_parent_size_to_minimum = yes
-														minimumsize = { 150 0 }
-														text_single = {
-															layoutpolicy_horizontal = expanding
-															text = "#T Create Legion, Cost: 2000 [gold|e] #!"
-															background = {
-																using = Background_Area
-																margin = { 10 0 }
-																margin_bottom = 5
-															}
-														}
-													}
-												}
-											}
-
-											onclick = "[GetScriptedGui('create_legion').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('county', Scope.Title.MakeScope ).End )]"
-										}
-										
-	
-									}
-								}
-							}
-							divider_light = {
-								layoutpolicy_horizontal = expanding
-							}
 						}
-					
 					}
 				}
 			}
@@ -1468,8 +1377,10 @@ types MilitaryView
 				}
 			}
 		}
+
 		hbox = {
 			layoutpolicy_horizontal = expanding
+
 			vbox = {
 				margin = { 5 5 }
 				layoutpolicy_horizontal = expanding
@@ -1548,6 +1459,7 @@ types MilitaryView
 					expand = {}
 				}
 			}
+
 			vbox = {
 				layoutpolicy_vertical = growing
 
