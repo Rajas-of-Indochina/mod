@@ -1,16 +1,16 @@
-﻿#######################################
-# Character interior background
-#######################################
+﻿### Character interior background
 character_view_bg = {
-	#######################################
+
+	######################################
+
 	# Dead
-	#######################################
 	texture = {
 		reference = "event_scenes/temple.dds"
 		trigger = {
 			is_alive = no
 		}
 	}
+
 	environment = {
 		reference = "environment_event_temple"
 
@@ -18,31 +18,25 @@ character_view_bg = {
 			is_alive = no
 		}
 	}
-	#######################################
-	# Wandering drunk/reveler
-	#######################################
+
+	##########################################
+
+	# Wandering
 	texture = {
-		reference = "character_view/tavern.dds"
+		reference = "event_scenes/tavern.dds"
 
 		trigger = {
-			OR = {
-				has_trait = drunkard
-				has_trait = lifestyle_reveler
-			}
 			NOR = {
 				exists = liege
 				exists = host
 			}
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_tavern"
 
 		trigger = {
-			OR = {
-				has_trait = drunkard
-				has_trait = lifestyle_reveler
-			}
 			NOR = {
 				exists = liege
 				exists = host
@@ -50,6 +44,7 @@ character_view_bg = {
 			is_character_window_main_character = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_tavern_spouse"
 
@@ -58,10 +53,6 @@ character_view_bg = {
 				AND = {
 					exists = primary_spouse
 					primary_spouse = {
-						OR = {
-							has_trait = drunkard
-							has_trait = lifestyle_reveler
-						}
 						NOR = {
 							exists = liege
 							exists = host
@@ -72,10 +63,6 @@ character_view_bg = {
 					exists = betrothed
 					betrothed = {
 						NOR = {
-							OR = {
-								has_trait = drunkard
-								has_trait = lifestyle_reveler
-							}
 							exists = liege
 							exists = host
 						}
@@ -85,379 +72,61 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
-	# Wandering coastal
-	#######################################
+
+	##########################################
+
+	# Chinese Throneroom
 	texture = {
-		reference = "character_view/docks.dds"
+		reference = "character_view/throneroom_china.dds"
 
 		trigger = {
-			exists = location
-			location = {
-				is_coastal = yes
-			}
-			NOR = {
-				exists = liege
-				exists = host
-			}
+			exists = primary_title
+			primary_title = title:e_celestia_china
+			# has_graphical_china_region_trigger = yes
 		}
 	}
-	environment = {
-		reference = "environment_event_docks"
 
-		trigger = {
-			exists = location
-			location = {
-				is_coastal = yes
-			}
-			NOR = {
-				exists = liege
-				exists = host
-			}
-			is_character_window_main_character = yes
-		}
-	}
-	environment = {
-		reference = "environment_event_docks"
+	# Chinese, regular
+	texture = {
+		reference = "character_view/china.dds"
 
 		trigger = {
 			OR = {
-				AND = {
-					exists = primary_spouse
-					primary_spouse = {
-						exists = location
-						location = {
-							is_coastal = yes
-						}
-						NOR = {
-							exists = liege
-							exists = host
-						}
-					}
-				}
-				AND = {
-					exists = betrothed
-					betrothed = {
-						exists = location
-						location = {
-							is_coastal = yes
-						}
-						NOR = {
-							exists = liege
-							exists = host
+				has_government = chinese_government
+				has_graphical_china_region_trigger = yes
+				culture = {
+					OR = {
+						has_cultural_pillar = heritage_korean
+						any_parent_culture_or_above = {
+							has_cultural_pillar = heritage_korean
 						}
 					}
 				}
 			}
-			is_character_window_main_character = no
 		}
 	}
-	#######################################
-	# Wandering europe
-	#######################################
-	texture = {
-		reference = "character_view/crossroads_inn.dds"
 
-		trigger = {
-			exists = location
-			location = {
-				geographical_region = world_europe
-			}
-			NOR = {
-				exists = liege
-				exists = host
-			}
-		}
-	}
-	environment = {
-		reference = "environment_event_bp1_crossroads_inn"
-
-		trigger = {
-			exists = location
-			location = {
-				geographical_region = world_europe
-			}
-			NOR = {
-				exists = liege
-				exists = host
-			}
-			is_character_window_main_character = yes
-		}
-	}
-	environment = {
-		reference = "environment_event_bp1_crossroads_inn"
-
-		trigger = {
-			OR = {
-				AND = {
-					exists = primary_spouse
-					primary_spouse = {
-						exists = location
-						location = {
-							geographical_region = world_europe
-						}
-						NOR = {
-							exists = liege
-							exists = host
-						}
-					}
-				}
-				AND = {
-					exists = betrothed
-					betrothed = {
-						exists = location
-						location = {
-							geographical_region = world_europe
-						}
-						NOR = {
-							exists = liege
-							exists = host
-						}
-					}
-				}
-			}
-			is_character_window_main_character = no
-		}
-	}
-	#######################################
-	# Wandering mena
-	#######################################
-	texture = {
-		reference = "character_view/courtyard_mena.dds"
-
-		trigger = {
-			exists = location
-			location = {
-				OR = {
-					geographical_region = world_middle_east
-					geographical_region = world_middle_east_persia
-				}
-			}
-			NOR = {
-				exists = liege
-				exists = host
-			}
-		}
-	}
-	environment = {
-		reference = "environment_event_bp1_courtyard_mena"
-
-		trigger = {
-			exists = location
-			location = {
-				OR = {
-					geographical_region = world_middle_east
-					geographical_region = world_middle_east_persia
-				}
-			}
-			NOR = {
-				exists = liege
-				exists = host
-			}
-			is_character_window_main_character = yes
-		}
-	}
-	environment = {
-		reference = "environment_event_bp1_courtyard_mena"
-
-		trigger = {
-			OR = {
-				AND = {
-					exists = primary_spouse
-					primary_spouse = {
-						exists = location
-						location = {
-							OR = {
-								geographical_region = world_middle_east
-								geographical_region = world_middle_east_persia
-							}
-						}
-						NOR = {
-							exists = liege
-							exists = host
-						}
-					}
-				}
-				AND = {
-					exists = betrothed
-					betrothed = {
-						exists = location
-						location = {
-							OR = {
-								geographical_region = world_middle_east
-								geographical_region = world_middle_east_persia
-							}
-						}
-						NOR = {
-							exists = liege
-							exists = host
-						}
-					}
-				}
-			}
-			is_character_window_main_character = no
-		}
-	}
-	#######################################
-	# Wandering india
-	#######################################
-	texture = {
-		reference = "character_view/courtyard_indian.dds"
-
-		trigger = {
-			exists = location
-			location = {
-				geographical_region = world_india
-			}
-			NOR = {
-				exists = liege
-				exists = host
-			}
-		}
-	}
-	environment = {
-		reference = "environment_event_bp1_courtyard_indian"
-
-		trigger = {
-			exists = location
-			location = {
-				geographical_region = world_india
-			}
-			NOR = {
-				exists = liege
-				exists = host
-			}
-			is_character_window_main_character = yes
-		}
-	}
-	environment = {
-		reference = "environment_event_bp1_courtyard_indian"
-
-		trigger = {
-			OR = {
-				AND = {
-					exists = primary_spouse
-					primary_spouse = {
-						exists = location
-						location = {
-							geographical_region = world_india
-						}
-						NOR = {
-							exists = liege
-							exists = host
-						}
-					}
-				}
-				AND = {
-					exists = betrothed
-					betrothed = {
-						exists = location
-						location = {
-							geographical_region = world_india
-						}
-						NOR = {
-							exists = liege
-							exists = host
-						}
-					}
-				}
-			}
-			is_character_window_main_character = no
-		}
-	}
-	#######################################
-	# Wandering fallback
-	#######################################
-	texture = {
-		reference = "character_view/bonfire.dds"
-
-		trigger = {
-			NOR = {
-				exists = liege
-				exists = host
-			}
-		}
-	}
-	environment = {
-		reference = "environment_event_bp1_bonfire"
-
-		trigger = {
-			NOR = {
-				exists = liege
-				exists = host
-			}
-			is_character_window_main_character = yes
-		}
-	}
-	environment = {
-		reference = "environment_event_bp1_bonfire"
-
-		trigger = {
-			OR = {
-				AND = {
-					exists = primary_spouse
-					primary_spouse = {
-						NOR = {
-							exists = liege
-							exists = host
-						}
-					}
-				}
-				AND = {
-					exists = betrothed
-					betrothed = {
-						NOR = {
-							exists = liege
-							exists = host
-						}
-					}
-				}
-			}
-			is_character_window_main_character = no
-		}
-	}
-	#######################################
-	# Tibetan
-	#######################################
+	# Tibetan Throneroom
 	texture = {
 		reference = "character_view/dharma_tibet_throneroom.dds"
 
 		trigger = {
+			exists = primary_title
+			primary_title.tier >= tier_empire
 			has_graphical_tibet_region_trigger = yes
 		}
 	}
-	environment = {
-		reference = "environment_cw_tibet_main"
+
+	# Tibetan, regular
+	texture = {
+		reference = "character_view/india.dds"
 
 		trigger = {
-			is_character_window_main_character = yes
 			has_graphical_tibet_region_trigger = yes
 		}
 	}
-	environment = {
-		reference = "environment_cw_tibet_spouse"
 
-		trigger = {
-			OR = {
-				AND = {
-					exists = primary_spouse
-					primary_spouse = {
-						has_graphical_tibet_region_trigger = yes
-					}
-				}
-				AND = {
-					exists = betrothed
-					betrothed = {
-						has_graphical_tibet_region_trigger = yes
-					}
-				}
-			}
-			is_character_window_main_character = no
-		}
-	}
-	#######################################
-	# Tribal Indian
-	#######################################
+	# Tribal India
 	texture = {
 		reference = "character_view/dharma_tribal_throneroom.dds"
 
@@ -470,53 +139,20 @@ character_view_bg = {
 			}
 		}
 	}
-	environment = {
-		reference = "environment_cw_tribal_india_main"
+
+	# Japan
+	texture = {
+		reference = "character_view/yamato.dds"
 
 		trigger = {
-			has_government = tribal_government
-			is_character_window_main_character = yes
-			OR = {
-				has_graphical_india_region_trigger = yes
-				has_graphical_burma_region_trigger = yes
-				has_graphical_tibet_region_trigger = yes
-			}
+			has_graphical_japan_region_trigger = yes
 		}
 	}
-	environment = {
-		reference = "environment_cw_tribal_india_spouse"
 
-		trigger = {
-			OR = {
-				AND = {
-					exists = primary_spouse
-					primary_spouse = {
-						has_government = tribal_government
-						OR = {
-							has_graphical_india_region_trigger = yes
-							has_graphical_burma_region_trigger = yes
-							has_graphical_tibet_region_trigger = yes
-						}
-					}
-				}
-				AND = {
-					exists = betrothed
-					betrothed = {
-						has_government = tribal_government
-						OR = {
-							has_graphical_india_region_trigger = yes
-							has_graphical_burma_region_trigger = yes
-							has_graphical_tibet_region_trigger = yes
-						}
-					}
-				}
-			}
-			is_character_window_main_character = no
-		}
-	}
-	#######################################
-	# Feudal Norse
-	#######################################
+
+	##########################################
+
+	# 'Feudal'/High-tier Norse, or non-Tribals in Scandinavia
 	texture = { # FP1 Norse
 		reference = "character_view/fp1_throneroom_nontribal.dds"
 
@@ -577,6 +213,7 @@ character_view_bg = {
 			}
 		}
 	}
+
 	environment = {
 		reference = "environment_fp1_cw_nontribal_main"
 
@@ -638,6 +275,7 @@ character_view_bg = {
 			is_character_window_main_character = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_fp1_cw_nontribal_spouse"
 
@@ -681,9 +319,10 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	##########################################
+
 	# Tribal Norse
-	#######################################
 	texture = { # FP1 Norse
 		reference = "character_view/fp1_throneroom_tribal.dds"
 
@@ -728,6 +367,7 @@ character_view_bg = {
 			}
 		}
 	}
+
 	environment = {
 		reference = "environment_fp1_cw_tribal_main"
 
@@ -773,6 +413,7 @@ character_view_bg = {
 			is_character_window_main_character = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_fp1_cw_tribal_spouse"
 
@@ -804,24 +445,35 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	##########################################
+
 	# Tribal
-	#######################################
 	texture = {
 		reference = "character_view/throneroom_tribal.dds"
 
 		trigger = {
-			has_government = tribal_government
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_tribal_main"
 
 		trigger = {
-			has_government = tribal_government
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
 			is_character_window_main_character = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_tribal_spouse"
 
@@ -830,22 +482,31 @@ character_view_bg = {
 				AND = {
 					exists = primary_spouse
 					primary_spouse = {
-						has_government = tribal_government
+						OR = {
+							has_government = tribal_government
+							has_government = nomadic_government
+							has_government = anarchist_government
+						}
 					}
 				}
 				AND = {
 					exists = betrothed
 					betrothed = {
-						has_government = tribal_government
+						OR = {
+							has_government = tribal_government
+							has_government = nomadic_government
+							has_government = anarchist_government
+						}
 					}
 				}
 			}
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	##########################################
+
 	# Iberian, high rank
-	#######################################
 	texture = {
 		reference = "character_view/fp2_throneroom_iberian.dds"
 
@@ -856,6 +517,7 @@ character_view_bg = {
 			has_graphical_iberia_region_trigger = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_fp2_iberian_throneroom_main"
 
@@ -866,6 +528,7 @@ character_view_bg = {
 			is_character_window_main_character = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_fp2_iberian_throneroom_spouse"
 
@@ -891,9 +554,9 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	##########################################
 	# Iberian, regular
-	#######################################
 	texture = {
 		reference = "character_view/fp2_iberian.dds"
 
@@ -902,6 +565,7 @@ character_view_bg = {
 			has_graphical_iberia_region_trigger = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_fp2_iberian"
 
@@ -910,6 +574,7 @@ character_view_bg = {
 			is_character_window_main_character = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_fp2_iberian_spouse"
 
@@ -927,9 +592,10 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	############################################
+
 	# Mediterranean, high rank
-	#######################################
 	texture = {
 		reference = "character_view/throneroom_mediterranean.dds"
 
@@ -939,6 +605,7 @@ character_view_bg = {
 			has_graphical_mediterranean_region_trigger = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_mediterranean_throneroom_main"
 
@@ -949,6 +616,7 @@ character_view_bg = {
 			is_character_window_main_character = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_mediterranean_throneroom_spouse"
 
@@ -974,9 +642,9 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	##########################################
 	# Mediterranean, regular
-	#######################################
 	texture = {
 		reference = "character_view/mediterranean.dds"
 
@@ -984,6 +652,7 @@ character_view_bg = {
 			has_graphical_mediterranean_region_trigger = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_mediterranean_main"
 
@@ -992,6 +661,7 @@ character_view_bg = {
 			is_character_window_main_character = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_mediterranean_spouse"
 
@@ -1013,9 +683,10 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	##########################################
+
 	# Eastern, high rank
-	#######################################
 	texture = {
 		reference = "character_view/throneroom_east.dds"
 
@@ -1025,6 +696,7 @@ character_view_bg = {
 			has_graphical_mena_region_trigger = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_east_throneroom_main"
 
@@ -1035,6 +707,7 @@ character_view_bg = {
 			has_graphical_mena_region_trigger = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_east_throneroom_spouse"
 
@@ -1060,9 +733,10 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
-	#  Eastern, regular
-	#######################################
+
+	##########################################
+
+	# Eastern, regular
 	texture = {
 		reference = "character_view/mena.dds"
 
@@ -1070,6 +744,7 @@ character_view_bg = {
 			has_graphical_mena_region_trigger = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_east_main"
 
@@ -1078,6 +753,7 @@ character_view_bg = {
 			has_graphical_mena_region_trigger = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_east_spouse"
 
@@ -1099,9 +775,10 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	##########################################
+
 	# India, high rank
-	#######################################
 	texture = {
 		reference = "character_view/throneroom_india.dds"
 
@@ -1111,9 +788,11 @@ character_view_bg = {
 			OR = {
 				has_graphical_india_region_trigger = yes
 				has_graphical_burma_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
 			}
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_india_throneroom_main"
 
@@ -1123,10 +802,12 @@ character_view_bg = {
 			OR = {
 				has_graphical_india_region_trigger = yes
 				has_graphical_burma_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
 			}
 			is_character_window_main_character = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_india_throneroom_spouse"
 
@@ -1140,6 +821,7 @@ character_view_bg = {
 						OR = {
 							has_graphical_india_region_trigger = yes
 							has_graphical_burma_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
 						}
 					}
 				}
@@ -1151,6 +833,7 @@ character_view_bg = {
 						OR = {
 							has_graphical_india_region_trigger = yes
 							has_graphical_burma_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
 						}
 					}
 				}
@@ -1158,9 +841,10 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	##########################################
+
 	# India, regular
-	#######################################
 	texture = {
 		reference = "character_view/india.dds"
 
@@ -1168,9 +852,11 @@ character_view_bg = {
 			OR = {
 				has_graphical_india_region_trigger = yes
 				has_graphical_burma_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
 			}
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_india_main"
 
@@ -1179,11 +865,14 @@ character_view_bg = {
 			OR = {
 				has_graphical_india_region_trigger = yes
 				has_graphical_burma_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
 			}
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_india_spouse"
+
 		trigger = {
 			OR = {
 				AND = {
@@ -1192,6 +881,7 @@ character_view_bg = {
 						OR = {
 							has_graphical_india_region_trigger = yes
 							has_graphical_burma_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
 						}
 					}
 				}
@@ -1201,6 +891,7 @@ character_view_bg = {
 						OR = {
 							has_graphical_india_region_trigger = yes
 							has_graphical_burma_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
 						}
 					}
 				}
@@ -1208,9 +899,10 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	##########################################
+
 	# Western, high rank
-	#######################################
 	texture = {
 		reference = "character_view/throneroom_west.dds"
 
@@ -1220,6 +912,7 @@ character_view_bg = {
 			has_graphical_western_region_trigger = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_west"
 
@@ -1231,6 +924,7 @@ character_view_bg = {
 
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_west_spouse"
 		trigger = {
@@ -1255,9 +949,10 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	##########################################
+
 	# Western, regular
-	#######################################
 	texture = {
 		reference = "character_view/west.dds"
 
@@ -1265,9 +960,11 @@ character_view_bg = {
 			has_graphical_western_region_trigger = yes
 		}
 	}
+
 	texture = {
 		reference = "character_view/west.dds"
 	}
+
 	environment = {
 		reference = "environment_cw_west"
 
@@ -1276,6 +973,7 @@ character_view_bg = {
 			is_character_window_main_character = yes
 		}
 	}
+
 	environment = {
 		reference = "environment_cw_west_spouse"
 		trigger = {
@@ -1296,44 +994,18 @@ character_view_bg = {
 			is_character_window_main_character = no
 		}
 	}
-	#######################################
+
+	##########################################
+
 	# Fallback Environment
-	#######################################
 	environment = {
 		reference = "environment_event_temple"
 	}
 }
+
 character_location_exterior = {
-	texture = {# Tribal India
-		reference = "event_scenes/dharma_tribal_village.dds"
-		trigger = {
-			has_graphical_india_region_trigger = yes
-			has_government = tribal_government
-		}
-	}
-	texture = {# Kashmir and Himalayas
-		reference = "event_scenes/dharma_snow_hall.dds"
-		trigger = {
-			exists = capital_province
-			capital_province = {
-				geographical_region = world_india_kashmir
-			}
-		}
-	}
-	texture = {# General Tibetan
-		reference = "event_scenes/dharma_tibet_temple_exterior.dds"
-		trigger = {
-			has_graphical_tibet_region_trigger = yes
-		}
-	}
-	texture = {# General Indian
-		reference = "event_scenes/dharma_city_entrence.dds"
-		trigger = {
-			has_graphical_india_region_trigger = yes
-		}
-	}
-	texture = {# Plains
-		reference = "event_scenes/bp1_plains.dds"
+	texture = {
+		reference = "terrain_types/plains.dds"
 
 		trigger = {
 			NOT = {
@@ -1345,7 +1017,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Hills
+
+	texture = {
 		reference = "terrain_types/hills.dds"
 
 		trigger = {
@@ -1358,7 +1031,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Desert Mountains
+
+	texture = {
 		reference = "terrain_types/desert_mountains.dds"
 
 		trigger = {
@@ -1371,7 +1045,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Oasis
+
+	texture = {
 		reference = "terrain_types/oasis.dds"
 
 		trigger = {
@@ -1384,7 +1059,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Jungle
+
+	texture = {
 		reference = "terrain_types/jungle.dds"
 
 		trigger = {
@@ -1397,7 +1073,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Flood plains
+
+	texture = {
 		reference = "terrain_types/floodplains.dds"
 
 		trigger = {
@@ -1410,7 +1087,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Drylands
+
+	texture = {
 		reference = "terrain_types/drylands.dds"
 
 		trigger = {
@@ -1423,7 +1101,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Wetlands
+
+	texture = {
 		reference = "terrain_types/wetlands.dds"
 
 		trigger = {
@@ -1436,7 +1115,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Farms
+
+	texture = {
 		reference = "event_scenes/farms.dds"
 
 		trigger = {
@@ -1462,7 +1142,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Steppe
+
+	texture = {
 		reference = "event_scenes/steppe.dds"
 
 		trigger = {
@@ -1475,7 +1156,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Forest
+
+	texture = {
 		reference = "event_scenes/forest.dds"
 
 		trigger = {
@@ -1488,7 +1170,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Forest Pine
+
+	texture = {
 		reference = "event_scenes/forest_pine.dds"
 
 		trigger = {
@@ -1501,7 +1184,8 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Mountains
+
+	texture = {
 		reference = "terrain_types/mountains.dds"
 
 		trigger = {
@@ -1514,67 +1198,120 @@ character_location_exterior = {
 			}
 		}
 	}
-	texture = {# Tribe Arid
+
+	texture = {
 		reference = "holding_types/tribe_arid.dds"
 
 		trigger = {
-			has_government = tribal_government
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
 			exists = capital_province
 			capital_province = {
 				geographical_region = world_africa
 			}
 		}
 	}
-	texture = {# Steppe
+
+	texture = {
 		reference = "event_scenes/steppe.dds"
 
 		trigger = {
-			has_government = tribal_government
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
 			exists = capital_province
 			capital_province = {
 				geographical_region = world_steppe
 			}
 		}
 	}
-	texture = {# Desert
+
+	texture = {
 		reference = "event_scenes/desert.dds"
 
 		trigger = {
-			has_government = tribal_government
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
 			exists = capital_province
 			capital_province = {
 				geographical_region = world_middle_east_arabia
 			}
 		}
 	}
-	texture = {# Market Tribal
+
+	texture = {
+		reference = "event_scenes/market_east.dds"
+
+		trigger = {
+			exists = capital_province
+			capital_province = {
+				OR = {
+					geographical_region = world_tibet
+					geographical_region = world_china
+				}
+			}
+		}
+	}
+
+	texture = {
+		reference = "event_scenes/market_east.dds"
+
+		trigger = {
+			exists = capital_province
+			capital_province = {
+				geographical_region = world_steppe
+			}
+		}
+	}
+
+	texture = {
 		reference = "event_scenes/market_tribal.dds"
 
 		trigger = {
-			has_government = tribal_government
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+				has_government = anarchist_government
+			}
 		}
 	}
-	texture = {# Market West
+
+	texture = {
 		reference = "event_scenes/market_west.dds"
 
 		trigger = {
 			has_graphical_western_region_trigger = yes
 		}
 	}
-	texture = {# Market East
+
+	texture = {
 		reference = "event_scenes/market_east.dds"
+
 		trigger = {
 			OR = {
 				has_graphical_india_region_trigger = yes
 				has_graphical_mena_region_trigger = yes
 				has_graphical_mediterranean_region_trigger = yes
+				has_graphical_burma_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
 			}
 		}
 	}
+
+	texture = {
+		reference = "event_scenes/market_east.dds"
+	}
 }
-#######################################
-# Religious interior
-#######################################
+
+### Religious interior
 religion_interior = {
 	########################################
 	# Ganesha Temple Interior
@@ -1794,9 +1531,8 @@ religion_interior = {
 		reference = "character_view_spouse"
 	}
 }
-#######################################
-# Religious holding image
-#######################################
+
+### Religious holding image
 religion_holding = {
 
 	texture = {	# Temple Holding - Tibetan
@@ -1837,10 +1573,19 @@ religion_holding = {
 		reference = "blank.dds"
 	}
 }
-#######################################
-# Holding image based on title
-#######################################
+
+### Holding image based on title
 title_holding = {
+
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				has_holding_type = tribal_holding
+			}
+		}
+		reference = "holding_types/tribe_grass.dds"
+	}
 	texture = {
 		trigger = {
 			OR = {
@@ -1955,7 +1700,9 @@ title_holding = {
 		trigger = {
 			title_illustration_save_province_temporary = yes
 			scope:province = {
-				has_holding_type = city_holding
+				OR = {
+					has_holding_type = city_holding
+				}
 				exists = culture
 				culture = {
 					has_graphical_india_culture_group_trigger = yes
@@ -1968,7 +1715,9 @@ title_holding = {
 		trigger = {
 			title_illustration_save_province_temporary = yes
 			scope:province = {
-				has_holding_type = city_holding
+				OR = {
+					has_holding_type = city_holding
+				}
 				exists = culture
 				culture = {
 					has_graphical_mediterranean_culture_group_trigger = yes
@@ -1981,7 +1730,9 @@ title_holding = {
 		trigger = {
 			title_illustration_save_province_temporary = yes
 			scope:province = {
-				has_holding_type = city_holding
+				OR = {
+					has_holding_type = city_holding
+				}
 				exists = culture
 				culture = {
 					has_graphical_mena_culture_group_trigger = yes
@@ -1994,7 +1745,9 @@ title_holding = {
 		trigger = {
 			title_illustration_save_province_temporary = yes
 			scope:province = {
-				has_holding_type = city_holding
+				OR = {
+					has_holding_type = city_holding
+				}
 				exists = culture
 				culture = {
 					has_graphical_western_culture_group_trigger = yes
@@ -2007,7 +1760,9 @@ title_holding = {
 		trigger = {
 			title_illustration_save_province_temporary = yes
 			scope:province = {
-				has_holding_type = city_holding
+				OR = {
+					has_holding_type = city_holding
+				}
 			}
 		}
 		reference = "holding_types/city_western.dds"
@@ -2092,7 +1847,140 @@ title_holding = {
 		}
 		reference = "holding_types/temple_generic_grass.dds"
 	}
+
+	### Baronies without holdings show their terrain type
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = desert
+			}
+		}
+		reference = "terrain_types/desert.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = desert_mountains
+			}
+		}
+		reference = "terrain_types/desert_mountains.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = drylands
+			}
+		}
+		reference = "terrain_types/drylands.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = farmlands
+			}
+		}
+		reference = "terrain_types/farmlands.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = floodplains
+			}
+		}
+		reference = "terrain_types/floodplains.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = forest
+			}
+		}
+		reference = "terrain_types/forest.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = hills
+			}
+		}
+		reference = "terrain_types/hills.dds"
+	}
+	texture = {
+	   trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = jungle
+			}
+		}
+		reference = "terrain_types/jungle.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = mountains
+			}
+		}
+		reference = "terrain_types/mountains.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = oasis
+			}
+		}
+		reference = "terrain_types/oasis.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = plains
+			}
+		}
+		reference = "terrain_types/plains.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = steppe
+			}
+		}
+		reference = "terrain_types/steppe.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = taiga
+			}
+		}
+		reference = "terrain_types/taiga.dds"
+	}
+	texture = {
+		trigger = {
+			title_illustration_save_province_temporary = yes
+			scope:province = {
+				terrain = wetlands
+			}
+		}
+		reference = "terrain_types/wetlands.dds"
+	}
+	# Ultimate fallback
+	texture = {
+		reference = "terrain_types/plains.dds"
+	}
 }
+
 artifact_regional_pattern = {
 
 	# India
@@ -2132,9 +2020,9 @@ artifact_regional_pattern = {
 		reference = "regional_patterns/mask_pattern_western.dds"
 	}
 }
-#######################################
-# Private location background
-#######################################
+
+### Private location background for a character (mostly interior, but sometimes exterior for flavour)
+# This intentionally tries to be different from the 'character_view_bg' because you might see them at the same time
 character_private = {
 	#######################################
 	# Dead
