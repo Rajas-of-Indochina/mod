@@ -5,9 +5,9 @@ on_game_start = {
         # holy_site_buildings_on_game_start
         # holy_site_descriptions_on_game_start
         add_right_to_rule_doctrines_on_game_start
-        # reorganize_chinese_realms_on_game_start
         add_disloyal_subjects_tradition_on_game_start
         assign_nanzhao_state
+        acculturate_kirghiz_vassals
     }
 }
 
@@ -227,43 +227,23 @@ indian_struggle_on_game_start = {
 
 #####
 
-# Warning: Jank
-reorganize_chinese_realms_on_game_start = {
+acculturate_kirghiz_vassals = {
     effect = {
-        title:e_celestia_china.holder = {
-            every_vassal = {
-                limit = {
-                    highest_held_title_tier = tier_kingdom
-                    NOT = { primary_title = title:k_jinghai }
-                }
+        title:e_kirghiz_khanate.holder = {
+            every_vassal_or_below = {
+                if = {
+                    limit = {
+                        NOT = { this = character:303255 } # Borjigin
+                    }
 
-                primary_title = { save_scope_as = old_title }
+                    set_culture = capital_province.culture
+                    set_character_faith = capital_province.faith
 
-                create_title_and_vassal_change = {
-                    type = created
-                    save_scope_as = change
-                    add_claim_on_loss = no
-                }
-                create_dynamic_title = {
-                    tier = duchy
-                    name = NEW_CREATED_TITLE_NAME
-                }
-
-                scope:new_title = {
-                    set_no_automatic_claims = yes
-                    set_can_be_named_after_dynasty = no
-                    change_title_holder = {
-                        holder = prev
-                        change = scope:change
+                    every_close_or_extended_family_member = {
+                        set_culture = prev.capital_province.culture
+                        set_character_faith = prev.capital_province.faith
                     }
                 }
-                resolve_title_and_vassal_change = scope:change
-                scope:new_title = {
-                    generate_coa = yes
-                    set_color_from_title = scope:old_title
-                }
-
-                destroy_title = scope:old_title
             }
         }
     }
