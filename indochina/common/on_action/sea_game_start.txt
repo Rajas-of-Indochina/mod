@@ -229,19 +229,47 @@ indian_struggle_on_game_start = {
 
 acculturate_kirghiz_vassals = {
     effect = {
-        title:e_kirghiz_khanate.holder = {
-            every_vassal_or_below = {
-                if = {
-                    limit = {
-                        NOT = { this = character:303255 } # Borjigin
+        if = {
+            limit = {
+                exists = title:e_kirghiz_khanate.holder
+            }
+            title:e_kirghiz_khanate.holder = {
+                every_vassal_or_below = {
+                    if = {
+                        limit = {
+                            NOT = { this = character:303255 } # Borjigin
+                        }
+
+                        set_culture = capital_province.culture
+                        set_character_faith = capital_province.faith
+
+                        every_close_or_extended_family_member = {
+                            set_culture = prev.capital_province.culture
+                            set_character_faith = prev.capital_province.faith
+                        }
                     }
+                }
+            }
+        }
+        if = {
+            limit = {
+                exists = title:e_liao.holder
+            }
+            title:e_liao.holder = {
+                every_vassal_or_below = {
+                    if = {
+                        limit = {
+                            NOT = { this = character:303267 }
+                            NOT = { culture = culture:khitan }
+                        }
 
-                    set_culture = capital_province.culture
-                    set_character_faith = capital_province.faith
+                        set_culture = capital_province.culture
+                        set_character_faith = capital_province.faith
 
-                    every_close_or_extended_family_member = {
-                        set_culture = prev.capital_province.culture
-                        set_character_faith = prev.capital_province.faith
+                        every_close_or_extended_family_member = {
+                            set_culture = prev.capital_province.culture
+                            set_character_faith = prev.capital_province.faith
+                        }
                     }
                 }
             }
