@@ -1187,43 +1187,37 @@ dharma_jainism.041 = {# Asuspicious Dreams - father version
 	}
 
 	trigger = {
-		scope:spouse = { has_trait = pregnant }
+		# Note: `scope:spouse` in trigger got changed to `primary_partner` to avoid error
+		exists = primary_partner
+		primary_partner = { has_trait = pregnant }
 		AND = {# Both you and your spouse must follow Jainism
-			scope:spouse = { religion = religion:jainism_religion }
+			primary_partner = { religion = religion:jainism_religion }
 			religion = religion:jainism_religion
 		}
 		is_landed = yes
 		not = { has_character_flag = dharma_jain_had_asupicious_dream } # this should only happen once
 		NOT = {# If mother is also a ruler she doesn't get two dreams
-			scope:spouse = { has_character_flag = dharma_jain_dreams_airavata }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_vrishabha }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_simha }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_lakshmi }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_phul_mala }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_chandra }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_surya }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_dhvaja }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_meena_yugma }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_purna_kalasha }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_ratnakar }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_simhasana }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_deva_vimana }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_palace }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_ratnadhag }
-			scope:spouse = { has_character_flag = dharma_jain_dreams_nirdhumra_agni }
+			primary_partner = { has_character_flag = dharma_jain_dreams_airavata }
+			primary_partner = { has_character_flag = dharma_jain_dreams_vrishabha }
+			primary_partner = { has_character_flag = dharma_jain_dreams_simha }
+			primary_partner = { has_character_flag = dharma_jain_dreams_lakshmi }
+			primary_partner = { has_character_flag = dharma_jain_dreams_phul_mala }
+			primary_partner = { has_character_flag = dharma_jain_dreams_chandra }
+			primary_partner = { has_character_flag = dharma_jain_dreams_surya }
+			primary_partner = { has_character_flag = dharma_jain_dreams_dhvaja }
+			primary_partner = { has_character_flag = dharma_jain_dreams_meena_yugma }
+			primary_partner = { has_character_flag = dharma_jain_dreams_purna_kalasha }
+			primary_partner = { has_character_flag = dharma_jain_dreams_ratnakar }
+			primary_partner = { has_character_flag = dharma_jain_dreams_simhasana }
+			primary_partner = { has_character_flag = dharma_jain_dreams_deva_vimana }
+			primary_partner = { has_character_flag = dharma_jain_dreams_palace }
+			primary_partner = { has_character_flag = dharma_jain_dreams_ratnadhag }
+			primary_partner = { has_character_flag = dharma_jain_dreams_nirdhumra_agni }
 		}
 	}
 
 	immediate = {
 		add_character_flag = dharma_jain_had_asupicious_dream
-		if = {
-			limit = {
-				exists = primary_partner
-			}
-			primary_partner = {
-				save_scope_as = spouse
-			}
-		}
 		random_list = {
 			1 = { add_character_flag = dharma_jain_dreams_airavata }
 			1 = { add_character_flag = dharma_jain_dreams_vrishabha }
@@ -1247,7 +1241,7 @@ dharma_jainism.041 = {# Asuspicious Dreams - father version
 
 	option = {# Wonderful Dreams
 		name = dharma_jainism.041.dream
-		scope:spouse = { add_piety = major_piety_gain } # the mother gains piety if having auspecious dreams
+		primary_partner = { add_piety = major_piety_gain } # the mother gains piety if having auspecious dreams
 		stress_impact = {
 			base = miniscule_stress_impact_loss
 		}
