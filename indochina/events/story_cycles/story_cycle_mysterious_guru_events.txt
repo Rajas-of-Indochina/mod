@@ -1,0 +1,869 @@
+﻿namespace = mysterious_guru
+
+# Scripted Triggers
+scripted_trigger mysterious_guru_suitable_angry_imam = {
+	religion = religion:islam_religion
+	is_available_ai_adult = yes
+}
+
+scripted_effect select_suitable_angry_imam = {
+	# Prefer YOUR Imam
+	if = {
+		limit = {
+			exists = cp:councillor_court_chaplain
+			cp:councillor_court_chaplain = { is_available_ai_adult = yes }
+		}
+		cp:councillor_court_chaplain = { save_scope_as = angry_imam }
+	}
+	# Or else a landed Islamic theocrat (Or the Caliph, I suppose)
+	else_if = {
+		limit = {
+			any_vassal = {
+				mysterious_guru_suitable_angry_imam = yes
+				OR = {
+					has_government = theocracy_government
+					has_title = faith.religious_head_title
+				}
+			}
+		}
+		random_vassal = {
+			limit = {
+				mysterious_guru_suitable_angry_imam = yes
+				OR = {
+					has_government = theocracy_government
+					has_title = faith.religious_head_title
+				}
+			}
+			save_scope_as = angry_imam
+		}
+	}
+	# Failing that, any Islamic court chaplain.
+	else_if = {
+		limit = {
+			any_vassal_or_below = { cp:councillor_court_chaplain = { mysterious_guru_suitable_angry_imam = yes } }
+		}
+		random_vassal_or_below = {
+			limit = { cp:councillor_court_chaplain = { mysterious_guru_suitable_angry_imam = yes } }
+			cp:councillor_court_chaplain = { save_scope_as = angry_imam }
+		}
+	}
+	else = {
+		create_character = {
+			location = scope:guru_host.capital_province
+			template = monk_character_template
+			culture = scope:guru_host.culture
+			faith = faith:ashari
+			save_scope_as = angry_imam
+		}
+	}
+}
+
+scripted_trigger mysterious_guru_suitable_naysayer = {
+	OR = {
+		has_trait_rank = {
+			trait = education_martial
+			rank > 0
+		}
+		has_trait_rank = {
+			trait = education_martial_prowess
+			rank > 0
+		}
+		has_trait = wrathful
+	}
+}
+
+scripted_effect select_naysayer = {
+	if = {
+		# Prefer a courtier
+		limit = {
+			any_courtier = { mysterious_guru_suitable_naysayer = yes }
+		}
+		random_courtier = {
+			limit = {
+				mysterious_guru_suitable_naysayer = yes
+			}
+			save_scope_as = naysayer
+		}
+	}
+	else_if = {
+		# Otherwise, find a suitably war-minded vassal
+		limit = {
+			any_vassal = { mysterious_guru_suitable_naysayer = yes }
+		}
+		random_vassal = {
+			limit = {
+				mysterious_guru_suitable_naysayer = yes
+			}
+			save_scope_as = naysayer
+		}
+	}
+	else_if = {
+		# Otherwise fall back to your marshal
+		limit = { exists = cp:councillor_marshal }
+		cp:councillor_marshal = {
+			save_scope_as = naysayer
+		}
+	}
+	else_if = { # Or a knight...
+		limit = { number_of_knights > 0 }
+		random_knight = {
+			save_scope_as = naysayer
+		}
+	}
+	else = { # For the love of Waheguru, find somebody who likes war.
+		create_character = {
+			location = scope:guru_host.capital_province
+			template = new_warrior_character
+			culture = scope:guru_host.culture
+			faith = faith:vaishnavism
+			save_scope_as = naysayer
+		}
+	}
+}
+
+scripted_trigger mysterious_guru_suitable_mocker = {
+	OR = {
+		has_trait = cynical
+		has_trait = zealous
+		has_trait = arrogant
+	}
+}
+
+scripted_effect get_mocker = {
+	create_character = {
+		location = scope:guru_host.capital_province
+		template = pool_repopulate_local_flavor
+		save_scope_as = mocker
+	}
+	scope:mocker = { add_trait = cynical }
+}
+
+# mysterious_guru.0001
+# The Guru appears.
+#	# Ask to speak to him (mysterious_guru.0002)
+#	# Ignore him (mysterious_guru.0003)
+#	# Have him arrested (mysterious_guru.0004)
+mysterious_guru.0001 = {
+	type = character_event
+	title = mysterious_guru.0001.t
+	desc = mysterious_guru.0001.desc
+	theme = faith
+	left_portrait = {
+		character = scope:guru_host
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:guru
+		animation = personality_compassionate
+	}
+
+	immediate = {
+		# Create Guru Nanak, 100+ years early
+		create_character = {
+			location = root.capital_province
+			#general
+			age = 41
+			faith = faith:sikhism
+			culture = culture:punjabi
+			dynasty = generate
+			# Education
+			trait = education_learning_4
+			# Personality
+			trait = compassionate
+			trait = zealous
+			trait = humble
+			# Misc
+			trait = heresiarch
+			trait = theologian
+			trait = scholar
+			trait = whole_of_body
+			trait = devoted
+			save_scope_as = guru
+		}
+		random_realm_county = {
+			limit = { holder = { is_ai = no } }
+			save_scope_as = guru_county
+		}
+	}
+
+	option = {
+		# Grant the Guru an audience
+		name = mysterious_guru.0001.a
+		trigger_event = {
+			id = mysterious_guru.0002
+			days = {7 14}
+		}
+	}
+
+	option = {
+		# Whatever.
+		name = mysterious_guru.0001.b
+		scope:guru_county = {
+			set_county_faith = faith:sikhism
+			trigger_event = {
+				id = mysterious_guru.0003
+				years = { 40 60 }
+			}
+		}
+		set_global_variable = sikhism_ignored
+	}
+
+	option = {
+		# Have him arrested!
+		name = mysterious_guru.0001.c
+		trigger_event = {
+			id = mysterious_guru.0004
+			days = {7 14}
+		}
+	}
+}
+
+# mysterious_guru.0002
+# Ask to speak to this Guru.
+#	# Offer to host him in your court (begin story)
+#	# Send him on his way (mysterious_guru.0003)
+#	# Have him executed! (zealous only. Skip story and disable sikhism permanently.)
+mysterious_guru.0002 = {
+	type = character_event
+	title = mysterious_guru.0002.t
+	desc = mysterious_guru.0002.desc
+	theme = faith
+	left_portrait = {
+		character = scope:guru_host
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:guru
+		animation = personality_compassionate
+	}
+
+	option = {
+		# You find his ideas intriguing
+		name = mysterious_guru.0002.a
+		add_courtier = scope:guru
+		scope:guru = { add_character_flag = blocked_from_leaving }
+		create_story = {
+			type = story_mysterious_guru
+			save_scope_as = story
+		}
+
+		trigger_event = {
+			on_action = guru_events_cycle
+			months = {6 12}
+
+		}
+	}
+	option = {
+		# Whatever
+		name = mysterious_guru.0002.b
+		random_realm_county = {
+			limit = { holder = { is_ai = no } }
+			set_county_faith = faith:sikhism
+			trigger_event = {
+				id = mysterious_guru.0003
+				years = { 40 60 }
+			}
+		}
+		set_global_variable = sikhism_ignored
+	}
+	option = {
+		# Kill this heretic!
+		name = mysterious_guru.0002.c
+		scope:guru = {
+			death = {
+				death_reason = death_execution
+				killer = scope:guru_host
+			}
+		}
+	}
+}
+
+# mysterious_guru.0003
+# hidden event, fires after 50 years.
+# If any counties or landed characters are still Sikh, unlocks conversion to Sikhism, adds head of faith
+mysterious_guru.0003 = {
+	type = empty
+	trigger = {
+		has_global_variable = sikhism_ignored
+	}
+	immediate = {
+		faith:sikhism = { remove_variable = block_conversion_till_nebulous_circumstances }
+	}
+}
+
+# mysterious_guru.0004
+# The Guru has been arrested.
+#	# Hear him out. (mysterious_guru.0002)
+#	# Have him summarily killed. (Skip story and disable sikhism permanently.)
+mysterious_guru.0004 = {
+	type = character_event
+	title = mysterious_guru.0004.t
+	desc = mysterious_guru.0004.desc
+	theme = faith
+	left_portrait = {
+		character = scope:guru_host
+		animation = personality_callous
+	}
+	right_portrait = {
+		character = scope:guru
+		animation = chaplain
+	}
+
+	option = {
+		# Give him a chance to speak
+		name = mysterious_guru.0004.a
+		trigger_event = {
+			id = mysterious_guru.0002
+
+		}
+	}
+
+	option = {
+		name = mysterious_guru.0004.b
+		scope:guru = {
+			death = {
+				killer = PREV
+				death_reason = death_execution
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = wrathful
+					has_trait = zealous
+					has_trait = sadistic
+				}
+			}
+			add_stress = medium_stress_loss
+		}
+		stress_impact = {
+			wrathful = medium_stress_impact_loss
+			zealous = medium_stress_impact_loss
+			sadistic = medium_stress_impact_loss
+		}
+		add_piety = medium_piety_gain
+	}
+
+}
+
+# mysterious_guru.0005
+# An Imam from your realm claims the Guru is anti-Islam
+#	# Let the Guru defend himself
+#	# Defend the guru. (Learning challenge, Sikhism gains Islamic Syncretism on success, +1 Guru Approval)
+#	# Misrepresent the Guru's teachings. (Intrigue challenge, Sikhism gains Islamic Syncretism on success, +1 Guru Betrayal)
+#	# Tell the Imam to choke on a hot dog (Gives Muslim opinion malus, +1 Guru approval)
+mysterious_guru.0005 = {
+	type = character_event
+	title = mysterious_guru.0005.t
+	desc = mysterious_guru.0005.desc
+	theme = faith
+	left_portrait = {
+		character = scope:guru
+		animation = personality_zealous 
+	}
+	right_portrait = {
+		character = scope:angry_imam
+		animation = personality_zealous 
+	}
+	immediate = {
+		select_suitable_angry_imam = yes
+		ADD_character_flag = guru_story_islam_event_flag
+		trigger_event = {
+			on_action = guru_events_cycle
+			months = {6 12}
+
+		}
+	}
+	trigger = {
+		NOT = { has_character_flag = guru_story_islam_event_flag }
+	}
+
+	option = {
+		name = mysterious_guru.0005.a
+		#Defend the Guru from the Imam's accusations
+		custom_tooltip = GURU_APPROVAL_TT
+		hidden_effect = {
+			scope:story = {
+				change_variable = {
+					name = guru_approval
+					add = 1
+				}
+			}
+		}
+		duel = {
+			skill = learning
+			target = scope:angry_imam
+
+			50 = {
+				desc = mysterious_guru.0005.a.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3
+					min = -49
+				}
+				send_interface_toast = {
+					title = mysterious_guru.0005.a.success
+					faith:sikhism = {
+						remove_doctrine = doctrine_mz_no_syncretism
+						add_doctrine = tenet_islamic_syncretism
+					}
+				}
+			}
+
+			50 = {
+				desc = mysterious_guru.0005.a.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3
+					min = -49
+				}
+				send_interface_toast = {
+					title = mysterious_guru.0005.a.failure
+					add_piety = medium_piety_loss
+				}
+			}
+		}
+	}
+	option = {
+		name = mysterious_guru.0005.b
+		#Mislead the Imam
+		custom_tooltip = GURU_BETRAYAL_TT
+		hidden_effect = {
+			scope:story = {
+				change_variable = {
+					name = guru_betrayal
+					add = 1
+				}
+			}
+		}
+		duel = {
+			skill = intrigue
+			target = scope:angry_imam
+
+			50 = {
+				desc = mysterious_guru.0005.b.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3
+					min = -49
+				}
+				send_interface_toast = {
+					title = mysterious_guru.0005.b.success
+					faith:sikhism = {
+						remove_doctrine = doctrine_mz_no_syncretism
+						add_doctrine = tenet_islamic_syncretism
+					}
+				}
+			}
+
+			50 = {
+				desc = mysterious_guru.0005.b.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3
+					min = -49
+				}
+				send_interface_toast = {
+					title = mysterious_guru.0005.a.failure
+					add_piety = medium_piety_loss
+				}
+			}
+		}
+	}
+	option = {
+		name = mysterious_guru.0005.c
+		# Tell the Imam to pound sand
+		custom_tooltip = GURU_APPROVAL_TT
+		hidden_effect = {
+			scope:story = {
+				change_variable = {
+					name = guru_approval
+					add = 1
+				}
+			}
+		}
+	}
+}
+
+
+# mysterious_guru.0006
+# Your guru preaches peaceful conduct but also that war to defend righteousness can be necessary. Naysayers accuse hypocrisy.
+#	# Let the Guru defend himself
+#	# Take an emphatically pacifist stance without exception. (Replace Struggle and Submission with Dharmic Pacifism. +1 Guru betrayal.)
+#	# Disabuse the naysayer of the foolish notion that defending justice means warmongering. (+1 Guru Approval)
+mysterious_guru.0006 = {
+	type = character_event
+	title = mysterious_guru.0006.t
+	desc = mysterious_guru.0006.desc
+	theme = faith
+	left_portrait = {
+		character = scope:guru
+		animation = personality_zealous 
+	}
+	right_portrait = {
+		character = scope:naysayer
+		animation = eyeroll
+	}
+	immediate = {
+		select_naysayer = yes
+		ADD_character_flag = guru_story_dharamyudh_event_flag
+		trigger_event = {
+			on_action = guru_events_cycle
+			months = {6 12}
+
+		}
+	}
+	trigger = {
+		NOT = { has_character_flag = guru_story_dharamyudh_event_flag }
+	}
+
+	option = {
+		name = mysterious_guru.0006.a
+		# Let the Guru defend himself
+		add_piety = minor_piety_gain
+	}
+	option = {
+		name = mysterious_guru.0006.b
+		# Take a hard pacifist stance
+		add_prestige = medium_prestige_loss
+		faith:sikhism = {
+			remove_doctrine = tenet_struggle_submission
+			add_doctrine = tenet_dharmic_pacifism
+		}
+		custom_tooltip = GURU_BETRAYAL_TT
+	}
+	option = {
+		name = mysterious_guru.0006.c
+		# Defend the concept of Dharamyudh
+		add_piety = medium_piety_loss
+		custom_tooltip = GURU_APPROVAL_TT
+		hidden_effect = {
+			scope:story = {
+				change_variable = {
+					name = guru_approval
+					add = 1
+				}
+			}
+		}
+	}
+}
+
+# mysterious_guru.0007
+# A courtier mocks the Guru's faith and claims his god is false, demanding the Guru perform a miracle to prove his faith is true. The Guru doesn't react.
+#	# Dismiss the courtier.
+#	# Perform a "miracle" to shut them up. (Intrigue challenge. On success, replace Witchcraft: Criminal with Witchcraft: Shunned. +1 Guru betrayal)
+#	# Accuse the courtier of superstition and witchcraft. (Learning challenge. On success the target gets the Witch trait and imprisoned if criminal.)
+#	# Ignore the accusations and join the Guru in meditation. (Learning challenge, on success gain significant piety. Either way, +1 Guru approval)
+mysterious_guru.0007 = {
+	type = character_event
+	title = mysterious_guru.0007.t
+	desc = mysterious_guru.0007.desc
+	theme = faith
+	left_portrait = {
+		character = scope:guru_host
+		animation = rage
+	}
+	right_portrait = {
+		character = scope:mocker
+		animation = laugh
+	}
+	lower_center_portrait = {
+		character = scope:guru
+	}
+	trigger = {
+		NOT = { has_character_flag = guru_story_mockery_event_flag }
+	}
+	immediate = {
+		get_mocker = yes
+		ADD_character_flag = guru_story_mockery_event_flag
+		trigger_event = {
+			on_action = guru_events_cycle
+			months = {6 12}
+
+		}
+	}
+	option = {
+		# Fake a miracle
+		name = mysterious_guru.0007.a
+		custom_tooltip = GURU_BETRAYAL_TT
+		hidden_effect = {
+			scope:story = {
+				change_variable = {
+					name = guru_betrayal
+					add = 1
+				}
+			}
+		}
+		duel = {
+			skill = intrigue
+			target = scope:mocker
+			50 = {
+				desc = mysterious_guru.0007.a.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3
+					min = -49
+				}
+				send_interface_toast = {
+					title = mysterious_guru.0007.a.success
+					faith:sikhism = {
+						remove_doctrine = doctrine_witchcraft_crime
+						add_doctrine = doctrine_witchcraft_shunned
+					}
+				}
+			}
+			50 = {
+				desc = mysterious_guru.0007.a.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3
+					min = -49
+				}
+				add_piety = medium_piety_loss
+			}
+		}
+	}
+	option = {
+		# Accuse them of witchcraft
+		name = mysterious_guru.0007.b
+		duel = {
+			skill = learning
+			target = scope:mocker
+			50 = {
+				desc = mysterious_guru.0007.b.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3
+					min = -49
+				}
+				send_interface_toast = {
+					title = mysterious_guru.0007.b.success
+					scope:mocker = {
+						add_trait_force_tooltip = witch
+					}
+				}
+			}
+			50 = {
+				desc = mysterious_guru.0007.b.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3
+					min = -49
+				}
+				add_prestige = medium_prestige_loss
+			}
+		}
+	}
+	option = {
+		# Ignore them
+		name = mysterious_guru.0007.c
+		custom_tooltip = GURU_APPROVAL_TT
+		hidden_effect = {
+			scope:story = {
+				change_variable = {
+					name = guru_approval
+					add = 1
+				}
+			}
+		}
+		duel = {
+			skill = learning
+			target = scope:guru
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3
+					min = -49
+				}
+				if = {
+					limit = { has_trait_rank = {
+						trait = lifestyle_mystic rank >= 1
+					} }
+					change_trait_rank = {
+						trait = lifestyle_mystic
+						rank = 1
+					}
+				}
+				else = {
+					add_trait_force_tooltip = mystic_1
+				}
+			}
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3
+					min = -49
+				}
+				add_piety = medium_piety_gain
+			}
+		}
+	}
+}
+
+# mysterious_guru.0008
+# The Guru's passing (offer of successor)
+# The Guru is on his death bed. If the guru's opinion of you is high enough and you have at least 1 Guru approval, then he'll offer to make you his successor.
+#	# Accept. (Convert to Sikhism. Sikhism gains Head of Faith: Temporal and you create the head of faith.)
+#	# Refuse
+# After: mysterious_guru.0010
+mysterious_guru.0008 = {
+	type = character_event
+	title = mysterious_guru.0008.t
+	desc = mysterious_guru.0008.desc
+	theme = faith
+	trigger = {
+		AND = {
+			has_character_flag = guru_story_dharamyudh_event_flag
+			has_character_flag = guru_story_islam_event_flag
+			has_character_flag = guru_story_mockery_event_flag
+			scope:story = {
+				var:guru_betrayal < var:guru_approval
+			}
+		}
+	}
+	left_portrait = {
+		character = scope:guru_host
+		animation = throne_room_kneel_1
+	}
+	right_portrait = {
+		character = scope:guru
+		animation = sick
+	}
+	option = {
+		# Accept the Guru's offer and become the head of faith for Sikhism.
+		name = mysterious_guru.0008.a
+		faith:sikhism = {
+			remove_doctrine = doctrine_no_head
+			add_doctrine = doctrine_temporal_head
+		}
+		set_character_faith_with_conversion = faith:sikhism
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = title_change
+			add_claim_on_loss = no
+		}
+		title:d_sikh_guru = {
+			change_title_holder = {
+				holder = root
+				change = scope:title_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:title_change
+	}
+	option = {
+		# Decline, the faith remains headless. You'll still be able to convert at his funeral
+		name = mysterious_guru.0008.b
+	}
+
+	after = {
+		scope:guru = {
+			death = {
+				death_reason = death_ill
+			}
+		}
+		
+		trigger_event = {
+			id = mysterious_guru.0010
+			days = { 7 14 }
+		}
+	}
+}
+
+# mysterious_guru.0009
+# The Guru's passing (no offer)
+# The Guru is on his death bed and he thinks you suck. He'll take you to task about how much you've distorted his teachings and name some other guy his successor.
+# After: mysterious_guru.0010
+mysterious_guru.0009 = {
+	type = character_event
+	title = mysterious_guru.0008.t
+	desc = mysterious_guru.0009.desc
+	trigger = {
+		AND = {
+			has_character_flag = guru_story_dharamyudh_event_flag
+			has_character_flag = guru_story_islam_event_flag
+			has_character_flag = guru_story_mockery_event_flag
+			scope:story = {
+				var:guru_betrayal >= var:guru_approval
+			}
+		}
+	}
+	left_portrait = {
+		character = scope:new_guru
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:guru
+		animation = sick
+	}
+	immediate = {
+		create_character = {
+			location = root.capital_province
+			#general
+			age = 28
+			faith = faith:sikhism
+			culture = culture:punjabi
+			dynasty = generate
+			# Education
+			trait = education_learning_4
+			# Personality
+			trait = compassionate
+			trait = zealous
+			trait = humble
+			# Misc
+			save_scope_as = new_guru
+		}
+	}
+	option = {
+		name = mysterious_guru.0009.a
+	}
+	after = {
+		scope:guru = {
+			death = {
+				death_reason = death_ill
+			}
+		}
+		trigger_event = {
+			id = mysterious_guru.0010
+			days = { 7 14 }
+		}
+	}
+}
+
+# mysterious_guru.0010
+# The Guru's funeral
+# The Guru is dead and it's time for his funeral, but the body is accidentally revealed during a scuffle between Hindus and Muslims both trying to claim him as theirs. Surprise! His body is gone and only flowers remain.
+# A sign from God! (if not Sikh, convert to Sikhism. Get modifier that increases conversion rate.)
+# Strange. (nothing happens, end story.)
+mysterious_guru.0010 = {
+	type = character_event
+	title = mysterious_guru.0010.t
+	desc = mysterious_guru.0010.desc
+	theme = faith
+	left_portrait = {
+		character = scope:guru_host
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:guru
+		animation = personality_zealous
+	}
+	immediate = {
+		faith:sikhism = { remove_variable = block_conversion_till_nebulous_circumstances }
+	}
+
+	option = {
+		name = mysterious_guru.0010.a
+		# A sign from God!
+		if = {
+			limit = { NOT = { has_faith = faith:sikhism } }
+		}
+	}
+
+	option = {
+		name = mysterious_guru.0010.b
+	}
+
+	after = {
+		scope:story = { end_story = yes }
+	}
+}

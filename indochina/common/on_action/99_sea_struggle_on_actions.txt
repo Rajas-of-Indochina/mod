@@ -5,6 +5,12 @@
 	}
 }
 
+yearly_global_pulse = {
+	on_actions = {
+		guru_appears
+	}
+}
+
 lock_faiths = {
 	effect = {
 		faith:indo_hellenism = { set_variable = { name = block_conversion_till_decision_taken } }
@@ -52,14 +58,141 @@ india_struggle_title_gain = {
 
 india_struggle_faith_change = {
 	trigger = {
-		limit = {
-			OR = {
-				any_character_struggle = { is_struggle_phase = struggle_india_realignment }
-				any_county_struggle = { is_struggle_phase = struggle_india_realignment }
-			}
+		OR = {
+			any_character_struggle = { is_struggle_phase = struggle_india_realignment }
+			any_county_struggle = { is_struggle_phase = struggle_india_realignment }
 		}
 	}
 	effect = {
 		assign_dominance_effect = yes
+	}
+}
+
+naturally_unlock_sikhism = {
+	# If Sikhism is ignored then it may unlock naturally as long as there's a Sikh ruler or county
+	trigger = {
+		has_global_variable = global_var:sikhism_ignored
+		OR = {
+			any_county = { faith = faith:sikhism }
+			any_ruler = { faith = faith:sikhism }
+		}
+	}
+	random_list = {
+		2 = { faith:sikhism = { remove_variable = block_conversion_till_nebulous_circumstances } }
+		98 = {}
+	}
+}
+
+guru_appears = {
+	trigger = {
+		# Definitely not happening before the 14th century
+		current_date = 1350.1.1
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_events
+				target = flag:mysterious_guru_event
+			}
+		}
+	}
+	effect = {
+		if = {
+			# If there's a player in this region, we wait for one to become eligible.
+			limit = {
+				any_player = {
+					capital_province = { geographical_region = ghw_region_western_india }
+				}
+			}
+			if = {
+				limit = {
+					any_player = {
+						capital_province = { geographical_region = ghw_region_western_india }
+						fp2_lyonese_monk_0002_valid_character_configuration_trigger = yes
+					}
+				}	
+				random_player = {
+					limit = {
+						capital_province = { geographical_region = ghw_region_western_india }
+						fp2_lyonese_monk_0002_valid_character_configuration_trigger = yes
+					}
+					random = {
+						chance = 2
+						random_county_in_region = {
+							region = ghw_region_western_india
+							limit = {
+								holder = {
+									is_physically_able = yes
+									fp2_lyonese_monk_0002_valid_character_configuration_trigger = yes
+									NOR = {
+										has_government = theocracy_government
+										has_government = republic_government
+									}						
+								}
+							}
+							holder = {
+								save_scope_as = guru_host
+								trigger_event = {
+									id = mysterious_guru.0001
+								}
+							}
+						}
+					}
+				}
+				add_to_global_variable_list = {
+					name = unavailable_unique_events
+					target = flag:mysterious_guru_event
+				}
+			}
+			else_if = {
+				limit = {
+					any_county_in_region = {
+						region = ghw_region_western_india
+						holder = {
+							is_physically_able = yes
+							fp2_lyonese_monk_0002_valid_character_configuration_trigger = yes
+							NOR = {
+								has_government = theocracy_government
+								has_government = republic_government
+							}						
+						}
+					}
+				}
+				random = {
+					chance = 2
+					random_county_in_region = {
+						region = ghw_region_western_india
+						limit = {
+							holder = {
+								is_physically_able = yes
+								fp2_lyonese_monk_0002_valid_character_configuration_trigger = yes
+								NOR = {
+									has_government = theocracy_government
+									has_government = republic_government
+								}						
+							}
+						}
+						holder = {
+							save_scope_as = guru_host
+							trigger_event = {
+								id = mysterious_guru.0001
+							}
+						}
+					}
+				}
+				add_to_global_variable_list = {
+					name = unavailable_unique_events
+					target = flag:mysterious_guru_event
+				}
+			}
+		}
+	}
+}
+
+guru_events_cycle = {
+	random_events = {
+		100 = mysterious_guru.0005
+		100 = mysterious_guru.0006
+		100 = mysterious_guru.0007
+		100 = mysterious_guru.0008
+		100 = mysterious_guru.0009
 	}
 }

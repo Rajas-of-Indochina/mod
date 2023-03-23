@@ -1,0 +1,44 @@
+﻿story_mysterious_guru = {
+	# Mostly used to track how much you have tried to mess with the Guru's teachings.
+	# Used to help determine if he names you his successor.
+	on_setup = {
+		set_variable = {
+			name = guru_betrayal
+			value = 0
+		}
+		set_variable = {
+			name = guru_approval
+			value = 1
+		}
+	}
+
+	on_owner_death = {
+		if = {
+			# If you decided to host the Guru then your heir will keep the story going if you die.
+			limit = { exists = story_owner.player_heir }
+			story_owner = {
+				if = {
+					limit = { has_character_flag = guru_story_islam_event_flag }
+					player_heir = { ADD_character_flag = guru_story_islam_event_flag }
+				}
+				if = {
+					limit = { has_character_flag = guru_story_dharamyudh_event_flag }
+					player_heir = { ADD_character_flag = guru_story_dharamyudh_event_flag }
+				}
+				if = {
+					limit = { has_character_flag = guru_story_mockery_event_flag }
+					player_heir = { ADD_character_flag = guru_story_mockery_event_flag }
+				}
+				player_heir = {
+					save_scope_as = guru_host
+				}
+			}
+		}
+		else = {
+			# Otherwise just default to Sikhism becoming tenuously allowed.
+			set_global_variable = sikhism_ignored
+			scope:guru = { silent_disappearance_effect = yes }
+			end_story = yes
+		}
+	}
+}
