@@ -1,0 +1,614 @@
+
+window = {
+#######朝廷
+	name = "china_officials_window"
+	parentanchor = center
+	size = { 1800 800 }
+	position = { -150 0 }
+	layer = windows_layer
+	visible = "[GetVariableSystem.Exists( 'china_office_toggle' )]"
+
+	using = Background_Rice_paper
+	widget = {
+		size = { 100 850 }
+		widgetanchor = center
+		parentanchor = bottom|left
+		position = { 0 -400 }
+
+		background = {
+			texture = "gfx/interface/illustrations/new_ui_bg/letter_event_edge_left.dds"
+		}
+	}
+	widget = {
+		size = { 100 850 }
+		widgetanchor = center
+		parentanchor = bottom|right
+		position = { 0 -400 }
+
+		background = {
+			texture = "gfx/interface/illustrations/new_ui_bg/letter_event_edge_right.dds"
+		}
+	}
+
+	vbox = {
+		using = Window_Margins
+		#标题
+
+		header_pattern = {
+			visible = "[ScriptedGui.IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			layoutpolicy_horizontal = expanding
+			blockoverride "header_text"
+			{
+				text = "CHINESE_HUD_TOOLTIP"
+			}
+			blockoverride "button_close"
+			{
+				onclick = "[GetVariableSystem.Clear('china_office_toggle')]"
+			}
+		}
+
+		hbox = {
+			name = "vassals_succession_tabs"
+			layoutpolicy_horizontal = expanding
+
+			button_tab = {
+				name = "tutorial_highlight_domain_tab"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				onclick = "[GetVariableSystem.Clear( 'china_central_toggle' )]"
+
+				onclick = "[GetScriptedGui('update_BureaucracyEmpireship_list').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ]"
+
+				tooltip = "neiting_button"
+
+				down = "[And( Not(GetVariableSystem.Exists( 'china_central_toggle' )), GetVariableSystem.Exists( 'china_office_toggle' ))]"
+
+				text = "CHINA_VASSALS_HEADER"
+				default_format = "#light_background"
+				using = Font_Type_Flavor
+				using = Font_Size_Medium
+				# format_override = { high light_background }
+			}
+			button_tab = {
+				name = "tutorial_highlight_vassals_tab"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				onclick = "[GetVariableSystem.Toggle( 'china_central_toggle' )]"
+
+				down = "[GetVariableSystem.Exists( 'china_central_toggle' )]"
+
+				tooltip = "zhongshu_button"
+				text = "CHINA_COUNCIL_HEADER"
+				default_format = "#light_background"
+				using = Font_Type_Flavor
+				using = Font_Size_Medium
+				# format_override = { high light_background }
+			}
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			widget = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				vbox = {
+					spacing = 10
+
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						spacing = 10
+
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							visible = "[And( Not(GetVariableSystem.Exists( 'china_central_toggle' )), GetVariableSystem.Exists( 'china_office_toggle' ))]"
+
+							background = {
+								texture = "gfx/interface/illustrations/new_ui_bg/china_bg1.dds"
+								alpha = 0.7
+								fittype = centercrop
+							}
+
+							scrollbox = {
+								name = "character_administrative_officials_grid"
+								parentanchor = top
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+
+
+								blockoverride "scrollbox_margins" { }
+
+							  	blockoverride "scrollbox_content"
+							  	{
+									spacing = 5
+									margin = { 0 10 }
+
+									hbox = {
+										layoutpolicy_horizontal = expanding
+
+										text_label_center = {
+											text = "[tributaries|V]"
+											fontsize = 25
+											visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('all_tributaries')))]"
+										}
+
+										text_label_center = {
+											text = "[chinese_other_vassals|V]"
+											fontsize = 25
+											visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('fanzhen_list')))]"
+										}
+
+										text_label_center = {
+											text = "[chinese_civil_vassals|V]"
+											fontsize = 25
+											visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('civil_government_list')))]"
+										}
+
+										text_label_center = {
+											text = "[chinese_military_vassals|V]"
+											fontsize = 25
+											visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('military_government_list')))]"
+										}
+									}
+
+
+									hbox = {
+										layoutpolicy_horizontal = expanding
+										layoutpolicy_vertical = expanding
+										spacing = 5
+
+									 	# Tributaries
+										vbox = {
+											layoutpolicy_vertical = expanding
+
+											dynamicgridbox = {
+												datamodel = "[GetPlayer.MakeScope.GetList('all_tributaries')]"
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datamodel_wrap = 3
+												flipdirection = yes
+												item = {
+
+													portrait_shoulders = {
+														datacontext = "[Scope.GetCharacter]"
+														size = { 140 220 }
+														text_single = {
+															datacontext = "[Scope.GetCharacter]"
+															text = "[Character.GetPrimaryTitle.GetName]"
+															parentanchor = bottom|hcenter
+															using = Font_Size_Medium
+															default_format = "#light_background"
+															using = Font_Type_Flavor
+															format_override = { high light_background }
+															position = { 0 20 }
+														}
+													}
+												}
+											}
+										}
+
+										divider = {
+											layoutpolicy_vertical = expanding
+										}
+
+										# Tribal and Feudal
+										vbox = {
+											layoutpolicy_vertical = expanding
+
+											dynamicgridbox = { # Populists
+												datamodel = "[GetPlayer.MakeScope.GetList('fanzhen_list')]"
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datamodel_wrap = 3
+												flipdirection = yes
+												item = {
+
+													portrait_shoulders = {
+														datacontext = "[Scope.GetCharacter]"
+														size = { 140 220 }
+														text_single = {
+															datacontext = "[Scope.GetCharacter]"
+															text = "[Character.GetPrimaryTitle.GetName]"
+															parentanchor = bottom|hcenter
+															using = Font_Size_Medium
+															default_format = "#light_background"
+															using = Font_Type_Flavor
+															format_override = { high light_background }
+															position = { 0 20 }
+														}
+													}
+
+												}
+											}
+										}
+
+										divider = {
+											layoutpolicy_vertical = expanding
+										}
+
+										# Civil governments
+										vbox = {
+											layoutpolicy_vertical = expanding
+
+											dynamicgridbox = {
+												datamodel = "[GetPlayer.MakeScope.GetList('civil_government_list')]"
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datamodel_wrap = 4
+												# spacing = 5
+												flipdirection = yes
+
+												item = {
+
+													portrait_shoulders = {
+														datacontext = "[Scope.GetCharacter]"
+														size = { 140 220 }
+														text_single = {
+															datacontext = "[Scope.GetCharacter]"
+															text = "[Character.GetPrimaryTitle.GetName]"
+															parentanchor = bottom|hcenter
+															using = Font_Size_Medium
+															default_format = "#light_background"
+															using = Font_Type_Flavor
+															format_override = { high light_background }
+															position = { 0 20 }
+														}
+														button = {
+															name = "replace"
+															parentanchor = bottom|right
+															size = { 30 30 }
+															position = { 0 20 }
+															texture = "gfx/interface/icons/faith/mfi_scroll.dds"
+															tooltip = "[Character.GetPlayerInteractionTooltip('change_vassal_corps_interaction')]"
+
+															onclick = "[Character.OpenPlayerInteraction('change_vassal_corps_interaction')]"
+
+															enabled = "[Character.OpenPlayerInteraction('change_vassal_corps_interaction')]"#COUNCILWINDOW_TT_REPLACE
+															using = tooltip_se
+														}
+													}
+												}
+											}
+										}
+
+										divider = {
+											layoutpolicy_vertical = expanding
+										}
+
+										# Military governments
+										vbox = {
+											layoutpolicy_vertical = expanding
+
+											dynamicgridbox = { # Loyalists
+												datamodel = "[GetPlayer.MakeScope.GetList('military_government_list')]"
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datamodel_wrap = 4
+												flipdirection = yes
+												# spacing = 5
+												item = {
+													portrait_shoulders = {
+														datacontext = "[Scope.GetCharacter]"
+														size = { 140 220 }
+														text_single = {
+															datacontext = "[Scope.GetCharacter]"
+															text = "[Character.GetPrimaryTitle.GetName]"
+															parentanchor = bottom|hcenter
+															using = Font_Size_Medium
+															default_format = "#light_background"
+															using = Font_Type_Flavor
+															format_override = { high light_background }
+															position = { 0 20 }
+														}
+														button = {
+															name = "replace"
+															parentanchor = bottom|right
+															size = { 30 30 }
+															position = { 0 20 }
+															texture = "gfx/interface/icons/traits/BureaucracyEmpire_bureaucrat_2.dds"
+															tooltip = "[Character.GetPlayerInteractionTooltip('change_vassal_bureau_interaction')]"
+
+															onclick = "[Character.OpenPlayerInteraction('change_vassal_bureau_interaction')]"
+
+															enabled = "[Character.OpenPlayerInteraction('change_vassal_bureau_interaction')]"#COUNCILWINDOW_TT_REPLACE
+															using = tooltip_se
+														}
+													}
+												}
+											}
+										}
+									}
+							  	}
+		                    }
+	                    }
+
+
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							visible = "[GetVariableSystem.Exists( 'china_central_toggle' )]"
+
+							scrollbox = {
+								name = "character_administrative_officials_grid_2"
+								parentanchor = top
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+
+								background = {
+									texture = "gfx/interface/illustrations/new_ui_bg/china_bg2.dds"
+									alpha = 1
+									fittype = centercrop
+								}
+
+								blockoverride "scrollbox_margins" { }
+
+								blockoverride "scrollbox_content"
+								{
+									spacing = 20
+									margin = { 0 20 }
+									vbox = {
+
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											text_label_center = {
+											text = "three_departments"
+											using = Font_Size_Big
+											default_format = "#high"
+											}
+										}
+
+										# Grand Chancellor (zaixiang)
+
+										hbox = {
+											spacing = 100
+
+											widget_china_councillor_item = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datacontext = "[AccessCouncilWindow.GetCouncillor('councillor_chancellor')]"
+												datacontext = "[GuiCouncilPosition.GetActiveCouncilTask]"
+												datacontext = "[ActiveCouncilTask.GetPositionType]"
+												datacontext = "[ActiveCouncilTask.GetCouncillor]"
+
+												background = {
+													texture = "gfx/interface/illustrations/new_ui_bg/bg_rice_paper.dds"
+													using = Mask_Rough_Edges
+													alpha = 0.2
+												}
+												# textbox = {
+												# 	margin_top = 150
+												# 	margin_right = 10
+												# 	margin_left = 145
+												# 	layoutpolicy_horizontal = expanding
+												# 	text = "tongpingzhang_text"
+												# 	using = Font_Size_Small
+												# 	default_format = "#light_background"
+												# 	using = Font_Type_Flavor
+												# 	format_override = { high light_background }
+												# }
+												background = {
+													texture = "gfx/interface/hud/pause_border.dds"
+												}
+											}
+
+											# Prime Minister/Secretary (zhongshuling)
+
+											widget_china_councillor_item = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datacontext = "[AccessCouncilWindow.GetCouncillor('councillor_steward')]"
+												datacontext = "[GuiCouncilPosition.GetActiveCouncilTask]"
+												datacontext = "[ActiveCouncilTask.GetPositionType]"
+												datacontext = "[ActiveCouncilTask.GetCouncillor]"
+
+												background = {
+													texture = "gfx/interface/illustrations/new_ui_bg/bg_rice_paper.dds"
+													using = Mask_Rough_Edges
+													alpha = 0.2
+												}
+												# textbox = {
+												# 	margin_top = 150
+												# 	margin_right = 10
+												# 	margin_left = 145
+												# 	layoutpolicy_horizontal = expanding
+												# 	text = "shumishi_text"
+												# 	using = Font_Size_Small
+												# 	default_format = "#light_background"
+												# 	using = Font_Type_Flavor
+												# 	format_override = { high light_background }
+												# }
+												background = {
+													texture = "gfx/interface/hud/pause_border.dds"
+												}
+											}
+										}
+										button = {
+											size = { 0 20 }
+										}
+										#########六部
+										hbox = {
+											spacing = 20
+											widget_china_councillor_item = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datacontext = "[AccessCouncilWindow.GetCouncillor('councillor_china_1')]"
+												datacontext = "[GuiCouncilPosition.GetActiveCouncilTask]"
+												datacontext = "[ActiveCouncilTask.GetPositionType]"
+												datacontext = "[ActiveCouncilTask.GetCouncillor]"
+
+												background = {
+													texture = "gfx/interface/illustrations/new_ui_bg/bg_rice_paper.dds"
+													using = Mask_Rough_Edges
+													alpha = 0.2
+												}
+												background = {
+													texture = "gfx/interface/hud/pause_border.dds"
+												}
+											}
+											widget_china_councillor_item = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datacontext = "[AccessCouncilWindow.GetCouncillor('councillor_china_2')]"
+												datacontext = "[GuiCouncilPosition.GetActiveCouncilTask]"
+												datacontext = "[ActiveCouncilTask.GetPositionType]"
+												datacontext = "[ActiveCouncilTask.GetCouncillor]"
+
+												background = {
+													texture = "gfx/interface/illustrations/new_ui_bg/bg_rice_paper.dds"
+													using = Mask_Rough_Edges
+													alpha = 0.2
+												}
+												background = {
+													texture = "gfx/interface/hud/pause_border.dds"
+												}
+											}
+
+											button = {
+												size = { 0 160 }
+											}
+										}
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											text_label_center = {
+												text = "six_boards"
+												using = Font_Size_Big
+												default_format = "#high"
+											}
+										}
+										hbox = {
+											spacing = 20
+											widget_china_councillor_small_item = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datacontext = "[AccessCouncilWindow.GetCouncillor('councillor_liebu')]"
+												datacontext = "[GuiCouncilPosition.GetActiveCouncilTask]"
+												datacontext = "[ActiveCouncilTask.GetPositionType]"
+												datacontext = "[ActiveCouncilTask.GetCouncillor]"
+
+												background = {
+													texture = "gfx/interface/illustrations/new_ui_bg/bg_rice_paper.dds"
+													using = Mask_Rough_Edges
+													alpha = 0.2
+												}
+												background = {
+													texture = "gfx/interface/hud/pause_border.dds"
+												}
+											}
+											widget_china_councillor_small_item = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datacontext = "[AccessCouncilWindow.GetCouncillor('councillor_bingbu')]"
+												datacontext = "[GuiCouncilPosition.GetActiveCouncilTask]"
+												datacontext = "[ActiveCouncilTask.GetPositionType]"
+												datacontext = "[ActiveCouncilTask.GetCouncillor]"
+
+												background = {
+													texture = "gfx/interface/illustrations/new_ui_bg/bg_rice_paper.dds"
+													using = Mask_Rough_Edges
+													alpha = 0.2
+												}
+												background = {
+													texture = "gfx/interface/hud/pause_border.dds"
+												}
+											}
+											widget_china_councillor_small_item = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datacontext = "[AccessCouncilWindow.GetCouncillor('councillor_libu')]"
+												datacontext = "[GuiCouncilPosition.GetActiveCouncilTask]"
+												datacontext = "[ActiveCouncilTask.GetPositionType]"
+												datacontext = "[ActiveCouncilTask.GetCouncillor]"
+
+												background = {
+													texture = "gfx/interface/illustrations/new_ui_bg/bg_rice_paper.dds"
+													using = Mask_Rough_Edges
+													alpha = 0.2
+												}
+												background = {
+													texture = "gfx/interface/hud/pause_border.dds"
+												}
+											}
+											widget_china_councillor_small_item = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datacontext = "[AccessCouncilWindow.GetCouncillor('councillor_xingbu')]"
+												datacontext = "[GuiCouncilPosition.GetActiveCouncilTask]"
+												datacontext = "[ActiveCouncilTask.GetPositionType]"
+												datacontext = "[ActiveCouncilTask.GetCouncillor]"
+
+												background = {
+													texture = "gfx/interface/illustrations/new_ui_bg/bg_rice_paper.dds"
+													using = Mask_Rough_Edges
+													alpha = 0.2
+												}
+												background = {
+													texture = "gfx/interface/hud/pause_border.dds"
+												}
+											}
+											widget_china_councillor_small_item = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datacontext = "[AccessCouncilWindow.GetCouncillor('councillor_hubu')]"
+												datacontext = "[GuiCouncilPosition.GetActiveCouncilTask]"
+												datacontext = "[ActiveCouncilTask.GetPositionType]"
+												datacontext = "[ActiveCouncilTask.GetCouncillor]"
+
+												background = {
+													texture = "gfx/interface/illustrations/new_ui_bg/bg_rice_paper.dds"
+													using = Mask_Rough_Edges
+													alpha = 0.2
+												}
+												background = {
+													texture = "gfx/interface/hud/pause_border.dds"
+												}
+											}
+											widget_china_councillor_small_item = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												datacontext = "[AccessCouncilWindow.GetCouncillor('councillor_gongbu')]"
+												datacontext = "[GuiCouncilPosition.GetActiveCouncilTask]"
+												datacontext = "[ActiveCouncilTask.GetPositionType]"
+												datacontext = "[ActiveCouncilTask.GetCouncillor]"
+
+												background = {
+													texture = "gfx/interface/illustrations/new_ui_bg/bg_rice_paper.dds"
+													using = Mask_Rough_Edges
+													alpha = 0.2
+												}
+												background = {
+													texture = "gfx/interface/hud/pause_border.dds"
+												}
+											}
+											button = {
+												size = { 0 160 }
+											}
+										}
+										divider = {
+											layoutpolicy_horizontal = expanding
+										}
+									}
+								}
+		                    }
+	                    }
+						#Make a difference east / west ?
+						hbox = {
+							vbox = {
+
+							}
+						}
+						divider = {
+
+						}
+					}
+				}
+			}
+		}
+		divider = {
+			layoutpolicy_horizontal = expanding
+		}
+	}
+}
