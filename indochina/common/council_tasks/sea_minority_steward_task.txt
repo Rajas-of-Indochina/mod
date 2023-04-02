@@ -601,7 +601,25 @@ task_promote_minority = {
 	restart_on_finish = yes
 	highlight_own_realm = yes
 
-	effect_desc = {}
+	effect_desc = {
+		triggered_desc = {
+			trigger = { exists = scope:county.var:faith_to_convert }
+			desc = task_promote_minority_effect_desc_faith
+		}
+		triggered_desc = {
+			trigger = { exists = scope:county.var:culture_to_convert }
+			desc = task_promote_minority_effect_desc_culture
+		}
+		triggered_desc = {
+			trigger = {
+				NOT = {
+					exists = scope:county.var:culture_to_convert
+					exists = scope:county.var:faith_to_convert
+				}
+			}
+			desc = task_promote_minority_effect_desc
+		}
+	}
 
 	progress = {
 		value = 0

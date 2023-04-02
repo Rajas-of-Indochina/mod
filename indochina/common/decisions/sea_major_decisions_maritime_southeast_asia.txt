@@ -505,3 +505,41 @@ form_majapahit_empire = {
 		base = 100
 	}
 }
+
+invite_islamic_settlers_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	ai_check_interval = 48
+	desc = invite_islamic_settlers_decision_desc
+
+	is_shown = {
+		capital_county.title_province = {
+			geographical_region = world_greater_nusantara
+		}
+	}
+
+	minimum_cost = {
+		piety = massive_piety_gain
+	}
+
+	is_valid = {
+		OR = {
+			religion = religion:islam_religion
+			NOT = { has_trait = zealous }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	effect = {
+		custom_tooltip = invite_islamic_settlers_decision_tt_a
+		trigger_event = maritime_southeast_asia.0008
+	}
+
+	cooldown = {
+		years = 10
+	}
+}
