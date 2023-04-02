@@ -509,6 +509,7 @@ form_majapahit_empire = {
 invite_islamic_settlers_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
 	ai_check_interval = 48
+	major = yes
 	desc = invite_islamic_settlers_decision_desc
 
 	is_shown = {
@@ -519,12 +520,28 @@ invite_islamic_settlers_decision = {
 
 	minimum_cost = {
 		piety = massive_piety_gain
+		gold = {
+			value = 0
+			if = {
+				limit = { culture = { has_cultural_era_or_later = culture_era_late_medieval } }
+				add = massive_gold_value
+			}
+			else = {
+				add = major_gold_value
+			}
+		}
 	}
 
 	is_valid = {
 		OR = {
 			religion = religion:islam_religion
 			NOT = { has_trait = zealous }
+			faith = {
+				has_doctrine = tenet_islamic_syncretism
+			}
+		}
+		NOT = {
+			has_realm_law = religious_minority_status_3
 		}
 	}
 
