@@ -378,7 +378,6 @@ types chinaPortraitTypes
 		}
 
 		vbox = {
-
 			hbox = {
 				layoutpolicy_horizontal = expanding
 				margin = { 0 5 }
@@ -390,20 +389,21 @@ types chinaPortraitTypes
 
 				background = {
 					visible = "[ObjectsEqual( Character.Self, GetPlayer )]"
-					texture = "gfx/interface/buttons/background_pattern.dds"
+					texture = "gfx/interface/component_masks/patterns/mask_pattern_02.dds"
 					spriteType = Corneredtiled
 					alpha = 0.4
 
 					using = Color_Blue
 
 					modify_texture = {
-						#texture = "gfx/interface/tiles/tile_fade_mask.dds"
+						texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
 						blend_mode = alphamultiply
 						alpha = 0.9
+						mirror = horizontal
 					}
 
 					modify_texture = {
-						texture = "gfx/interface/buttons/background_alpha.dds"
+						texture = "gfx/interface/component_masks/mask_texture_01.dds"
 						spriteType = Corneredtiled
 						spriteborder = { 15 15 }
 						blend_mode = alphamultiply
@@ -412,7 +412,7 @@ types chinaPortraitTypes
 
 				background = {
 					visible = "[ObjectsEqual( Character.Self, GetPlayer )]"
-					texture = "gfx/interface/buttons/background_frame.dds"
+					texture = "gfx/interface/component_masks/mask_frame.dds"
 					spriteType = Corneredstretched
 					spriteborder = { 15 15 }
 					alpha = 0.25
@@ -420,15 +420,21 @@ types chinaPortraitTypes
 					using = Color_Blue
 
 					modify_texture = {
-						#texture = "gfx/interface/tiles/tile_fade_mask.dds"
+						texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
 						blend_mode = alphamultiply
 						alpha = 0.9
+						mirror = horizontal
 					}
 				}
 
 				spacer = {
 					visible = "[GuiCouncilPosition.CanPotentiallySelectCouncillor]"
 					size = { 6 6 }
+				}
+
+				spacer = {
+					visible = "[CouncilWindow.IsLiegeCouncilShown]"
+					size = { 5 5 }
 				}
 
 				block "replace_councillor"
@@ -446,6 +452,20 @@ types chinaPortraitTypes
 							button_change = {
 								alwaystransparent = yes
 								parentanchor = center
+							}
+						}
+
+						button_round = {
+							name = "leave"
+							visible = "[ObjectsEqual( GetPlayer.Self, Character.Self )]"
+							onclick = "[CouncilWindow.OnLeaveCouncil]"
+							tooltip = "DECISIONS_VIEW_LEAVE_COUNCIL_TT"
+							using = tooltip_se
+
+							button_leave_council = {
+								mirror = horizontal
+								parentanchor = center
+								alwaystransparent = yes
 							}
 						}
 					}
@@ -471,6 +491,28 @@ types chinaPortraitTypes
 						align = nobaseline
 						autoresize = no
 						fontsize_min = 13
+					}
+				}
+
+				skill_icon_label = {
+					datacontext = "[GuiCouncilPosition.GetMainSkillItem]"
+					visible = "[ActiveCouncilTask.HasMainSkill]"
+
+					blockoverride "icon_size"
+					{
+						size = { 35 35 }
+					}
+
+					blockoverride "font_size" {
+						using = Font_Size_Medium
+						visible = "[And( ActiveCouncilTask.HasMainSkill, ActiveCouncilTask.HasCouncillor )]"
+						min_width = 13
+					}
+
+					blockoverride "tooltip"
+					{
+						tooltip_enabled = "[And( ActiveCouncilTask.HasMainSkill, ActiveCouncilTask.HasCouncillor )]"
+						tooltip = "[SkillItem.GetSkillBreakdownTooltip]"
 					}
 				}
 			}
