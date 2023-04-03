@@ -10,8 +10,11 @@
 		is_landed = yes
 		sub_realm_size <= 5
 		realm_size <= 50
-		NOT = {
-			has_government = city_state_government
+
+		OR = {
+			has_government = mandala_government
+			has_government = clan_government
+			has_government = feudal_government
 		}
 	}
 
@@ -25,13 +28,60 @@
 	}
 
 	ai_potential = {
-		always = yes
+		always = no
 	}
 
-	ai_will_do = {
-		base = 30
+	cost = {
+		gold =  150
+		prestige = 200
 	}
-	cost = { gold = { value = 150 } prestige = { value = 200 } }
+}
+
+change_from_city_state = {
+	picture = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	desc = change_from_city_state_desc
+	selection_tooltip = change_from_city_state_tooltip
+	major = yes
+	ai_check_interval = 500
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_government = city_state_government
+		realm_size >= 20
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		prestige_level >= 3
+	}
+
+	effect = {
+		if = {
+			limit = {
+				faith = { has_doctrine = doctrine_right_to_rule_divine }
+			}
+			change_government = feudal_government
+		}
+		else_if = {
+			limit = {
+				faith = { has_doctrine = doctrine_right_to_rule_rajadharma }
+			}
+			change_government = mandala_government
+		}
+		else = {
+			change_government = clan_government
+		}
+	}
+
+	ai_potential = {
+		always = no
+	}
+
+	cost = {
+		gold =  150
+		prestige = 200
+	}
 }
 
 central_claim = {
