@@ -24,16 +24,6 @@ declare_war_interaction = {
                 is_at_war_with = scope:recipient
             }
         }
-        scope:recipient = {
-            NOT = {
-                AND = {
-                    has_variable = my_suzerain
-                    var:my_suzerain = {
-                        this = scope:actor
-                    }
-                }
-            }
-        }
     }
 
     is_valid_showing_failures_only = {
@@ -89,6 +79,78 @@ declare_war_interaction = {
                 limit = { is_imprisoned = yes }
                 NOT = {
                     imprisoner = scope:actor
+                }
+            }
+        }
+        trigger_if = {
+            limit = {
+                has_game_rule = imperial_war_disabled
+            }
+            custom_description = {
+                text = isnt_under_an_imperial_empire
+                NOT = {
+                    AND = {
+                        scope:actor = {
+                            AND = {
+                                OR = {
+                                    has_government = imperial_government
+                                    has_government = autocratic_government
+                                    has_government = legion_government
+                                }
+                                is_independent_ruler = no
+                                liege = {
+                                    any_vassal = {
+                                        THIS = scope:recipient
+                                    }
+                                }
+                            }
+                        }
+                        scope:recipient = {
+                            AND = {
+                                OR = {
+                                    has_government = imperial_government
+                                    has_government = autocratic_government
+                                    has_government = legion_government
+                                }
+                                is_independent_ruler = no
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        trigger_if = {
+            limit = {
+                scope:actor = {
+                    is_ai = yes
+                }
+            }
+            scope:actor = {
+                NOT = {
+                    AND = {
+                        is_independent_ruler = no
+                        OR = {
+                            has_government = imperial_government
+                            has_government = autocratic_government
+                        }
+                    }
+                }
+            }
+        }
+        trigger_if = {
+            limit = {
+                scope:actor = {
+                    has_variable = my_suzerain
+                }
+            }
+            custom_tooltip = {
+                text = declare_war_target_is_suzerain
+                scope:actor = {
+                    NOT = {
+                        var:my_suzerain = {
+                            this = scope:recipient
+                        }
+                    }
                 }
             }
         }
