@@ -1025,7 +1025,7 @@ ruler_offer_tribute_to_recipient = {
     }
 }
 
-free_tributary = {
+free_tributary_interaction = {
     category = interaction_category_diplomacy
     use_diplomatic_range = yes
 
@@ -1036,7 +1036,6 @@ free_tributary = {
             NOT = {
                 has_variable = my_suzerain
             }
-            is_at_war = no
             NOT = { this = scope:recipient }
         }
         scope:recipient = {
@@ -1047,23 +1046,24 @@ free_tributary = {
         }
     }
 
+    is_valid_showing_failures_only = {
+        scope:actor = {
+            is_at_war = no
+        }
+    }
+
     auto_accept = {
         always = yes
     }
 
     on_accept = {
         scope:recipient = {
-            remove_variable = my_suzerain
-
-            scope:actor = {
-                remove_list_variable = { name = permanent_tributaries target = prev }
+            free_tributary_effect = yes
+            add_truce_both_ways = {
+                character = character:actor
+                days = 365
+                name = TRUCE_BROKEN_TRIBUTARY
             }
-            scope:actor = {
-                remove_list_variable = { name = all_tributaries target = prev }
-            }
-        }
-        scope:actor = {
-            trigger_event = { id = tributaries.4 }
         }
     }
 

@@ -17,24 +17,27 @@ make_tributary = {
 }
 
 # THIS is the tributary
-free_tributary = {
-    var:my_suzerain = {
-        if = {
-            limit = {
-                is_target_in_variable_list = { name = non_permanent_tributaries target = prev }
+free_tributary_effect = {
+    custom_tooltip = {
+        text = free_tributary_effect_tt
+        var:my_suzerain = {
+            if = {
+                limit = {
+                    is_target_in_variable_list = { name = non_permanent_tributaries target = prev }
+                }
+                remove_list_variable = { name = non_permanent_tributaries target = prev }
             }
-            remove_list_variable = { name = non_permanent_tributaries target = prev }
-        }
-        if = {
-            limit = {
-                is_target_in_variable_list = { name = permanent_tributaries target = prev }
+            if = {
+                limit = {
+                    is_target_in_variable_list = { name = permanent_tributaries target = prev }
+                }
+                remove_list_variable = { name = permanent_tributaries target = prev }
             }
-            remove_list_variable = { name = permanent_tributaries target = prev }
+            remove_list_variable = { name = all_tributaries target = prev }
+            trigger_event = { id = tributaries.4 }
         }
-        remove_list_variable = { name = all_tributaries target = prev }
-        trigger_event = { id = tributaries.4 }
+        remove_variable = my_suzerain
     }
-    remove_variable = my_suzerain
 }
 
 # Params
