@@ -255,6 +255,8 @@ window = {
 										}
 										hbox = {
 											layoutpolicy_horizontal = expanding
+											margin_top = 25
+
 											text_label_center = {
 												text = "six_boards"
 												using = Font_Size_Big
@@ -377,7 +379,6 @@ window = {
 		                    }
 	                    }
 
-
 	                    # Vassals
 
 						vbox = {
@@ -397,7 +398,6 @@ window = {
 								layoutpolicy_horizontal = expanding
 								layoutpolicy_vertical = expanding
 
-
 								blockoverride "scrollbox_margins" { }
 
 							  	blockoverride "scrollbox_content"
@@ -407,41 +407,18 @@ window = {
 
 									hbox = {
 										layoutpolicy_horizontal = expanding
-
-										text_label_center = {
-											text = "[tributaries|V]"
-											fontsize = 25
-											visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('all_tributaries')))]"
-										}
-
-										text_label_center = {
-											text = "[chinese_civil_vassals|V]"
-											fontsize = 25
-											visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('civil_government_list')))]"
-										}
-
-										text_label_center = {
-											text = "[chinese_military_vassals|V]"
-											fontsize = 25
-											visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('military_government_list')))]"
-										}
-
-										text_label_center = {
-											text = "[chinese_other_vassals|V]"
-											fontsize = 25
-											visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('fanzhen_list')))]"
-										}
-									}
-
-
-									hbox = {
-										layoutpolicy_horizontal = expanding
 										layoutpolicy_vertical = expanding
 										spacing = 5
 
 									 	# Tributaries
 										vbox = {
 											layoutpolicy_vertical = expanding
+
+											text_label_center = {
+												text = "[tributaries|V]"
+												fontsize = 25
+												visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('all_tributaries')))]"
+											}
 
 											dynamicgridbox = {
 												datamodel = "[GetPlayer.MakeScope.GetList('all_tributaries')]"
@@ -477,6 +454,12 @@ window = {
 										vbox = {
 											layoutpolicy_vertical = expanding
 
+											text_label_center = {
+												text = "[chinese_civil_vassals|V]"
+												fontsize = 25
+												visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('civil_government_list')))]"
+											}
+
 											dynamicgridbox = {
 												datamodel = "[GetPlayer.MakeScope.GetList('civil_government_list')]"
 												layoutpolicy_horizontal = expanding
@@ -500,19 +483,19 @@ window = {
 															format_override = { high light_background }
 															position = { 0 20 }
 														}
-														button = {
-															name = "replace"
-															parentanchor = bottom|right
-															size = { 30 30 }
-															position = { 0 20 }
-															texture = "gfx/interface/icons/faith/mfi_scroll.dds"
-															tooltip = "[Character.GetPlayerInteractionTooltip('change_vassal_corps_interaction')]"
-
-															onclick = "[Character.OpenPlayerInteraction('change_vassal_corps_interaction')]"
-
-															enabled = "[Character.OpenPlayerInteraction('change_vassal_corps_interaction')]"#COUNCILWINDOW_TT_REPLACE
-															using = tooltip_se
-														}
+														# button = {
+														#	name = "replace"
+														#	parentanchor = bottom|right
+														#	size = { 30 30 }
+														#	position = { 0 20 }
+														#	texture = "gfx/interface/icons/faith/mfi_scroll.dds"
+														#	tooltip = "[Character.GetPlayerInteractionTooltip('change_vassal_corps_interaction')]"
+														#
+														#	onclick = "[Character.OpenPlayerInteraction('change_vassal_corps_interaction')]"
+														#
+														#	enabled = "[Character.OpenPlayerInteraction('change_vassal_corps_interaction')]"#COUNCILWINDOW_TT_REPLACE
+														#	using = tooltip_se
+														# }
 													}
 												}
 											}
@@ -525,6 +508,12 @@ window = {
 										# Military governments
 										vbox = {
 											layoutpolicy_vertical = expanding
+
+											text_label_center = {
+												text = "[chinese_military_vassals|V]"
+												fontsize = 25
+												visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('military_government_list')))]"
+											}
 
 											dynamicgridbox = { # Loyalists
 												datamodel = "[GetPlayer.MakeScope.GetList('military_government_list')]"
@@ -573,6 +562,12 @@ window = {
 										vbox = {
 											layoutpolicy_vertical = expanding
 
+											text_label_center = {
+												text = "[chinese_other_vassals|V]"
+												fontsize = 25
+												visible = "[Not(IsDataModelEmpty(GetPlayer.MakeScope.GetList('fanzhen_list')))]"
+											}
+
 											dynamicgridbox = { # Populists
 												datamodel = "[GetPlayer.MakeScope.GetList('fanzhen_list')]"
 												layoutpolicy_horizontal = expanding
@@ -599,22 +594,10 @@ window = {
 												}
 											}
 										}
-
 									}
 							  	}
 		                    }
 	                    }
-
-
-						#Make a difference east / west ?
-						hbox = {
-							vbox = {
-
-							}
-						}
-						divider = {
-
-						}
 					}
 				}
 			}
