@@ -322,11 +322,6 @@
 					size = { 32 32 }
 					parentanchor = vcenter
 
-					blockoverride 'mm_datacontext'
-					{
-						datacontext = "[GetScriptedGui('sea_tributary_map_effect')]"
-					}
-
 			        icon = {
 			            size = { 100% 100% }
 			            texture = "gfx/interface/component_masks/mask_circle.dds"
@@ -352,10 +347,14 @@
 			        }
 
 			        button_round = {
+						tooltip = "SEA_TRIBUTARY_MAP_TOOLTIP"
 			            size = { 100% 100% }
 			            using = tooltip_nw
 
+			            datacontext = "[GetScriptedGui('sea_tributary_map_effect')]"
+
 						onclick = "[SetMapMode('tributaries_map_mode')]"
+						onclick = "[GetScriptedGui('sea_tributary_map_effect').Execute(GuiScope.End)]"
 						down = "[And( GetScriptedGui('sea_tributary_map_effect').IsShown(GuiScope.End), IsMapMode('tributaries_map_mode') )]"
 						enabled = "[GetScriptedGui('sea_tributary_map_effect').IsValid(GuiScope.End)]"
 
