@@ -10,9 +10,18 @@
 #   TributaryType (name of scripted effect)
 #   The type of tributary being created
 make_tributary = {
-    $TYPE$ = {
-        TRIBUTARY = $TRIBUTARY$
-        SUZERAIN = $SUZERAIN$
+    if = {
+        limit = {
+            NOT = {
+                $TRIBUTARY$ = {
+                    is_vassal_or_below_of = $SUZERAIN$
+                }
+            }
+        }
+        $TYPE$ = {
+            TRIBUTARY = $TRIBUTARY$
+            SUZERAIN = $SUZERAIN$
+        }
     }
 }
 
