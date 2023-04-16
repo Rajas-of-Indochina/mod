@@ -1073,59 +1073,61 @@ free_tributary_interaction = {
 }
 
 # Do this
-annex_tributary = {
-    category = interaction_category_diplomacy
-    use_diplomatic_range = no
-
-    desc = annex_tributary_interaction_desc
-
-    is_shown = {
-        scope:actor = {
-            is_target_in_variable_list = { name = permanent_tributaries target = scope:recipient }
-            NOT = {
-                this = scope:recipient
-            }
-        }
-        exists = scope:recipient.var:possible_vasalisation_year
-    }
-
-    is_valid_showing_failures_only = {
-        scope:actor.primary_title.tier > scope:recipient.primary_title.tier
-    }
-
-    on_accept = {
-        scope:recipient = {
-            custom_description = {
-                text = annex_tributary_desc
-                subject = scope:recipient
-                create_title_and_vassal_change = {
-                    type = independency
-                    save_scope_as = change
-                }
-                change_liege = { liege = scope:actor change = scope:change }
-                resolve_title_and_vassal_change = scope:change
-                remove_variable = my_suzerain
-                scope:actor = {
-                    remove_list_variable = { name = permanent_tributaries target = prev }
-                }
-            }
-        }
-    }
-
-    ai_accept = {
-        base = -10
-
-        modifier = {
-            add = -100
-            scope:recipient.var:possible_vasalisation_year <= current_year
-            desc = trib_annexation_too_early
-        }
-    }
-
-    ai_will_do = {
-        base = 10
-    }
-}
+# Use a strong hook
+# OR replace with trib contract interface
+# annex_tributary = {
+#     category = interaction_category_diplomacy
+#     use_diplomatic_range = no
+#
+#     desc = annex_tributary_interaction_desc
+#
+#     is_shown = {
+#         scope:actor = {
+#             is_target_in_variable_list = { name = permanent_tributaries target = scope:recipient }
+#             NOT = {
+#                 this = scope:recipient
+#             }
+#         }
+#         exists = scope:recipient.var:possible_vasalisation_year
+#     }
+#
+#     is_valid_showing_failures_only = {
+#         scope:actor.primary_title.tier > scope:recipient.primary_title.tier
+#     }
+#
+#     on_accept = {
+#         scope:recipient = {
+#             custom_description = {
+#                 text = annex_tributary_desc
+#                 subject = scope:recipient
+#                 create_title_and_vassal_change = {
+#                     type = independency
+#                     save_scope_as = change
+#                 }
+#                 change_liege = { liege = scope:actor change = scope:change }
+#                 resolve_title_and_vassal_change = scope:change
+#                 remove_variable = my_suzerain
+#                 scope:actor = {
+#                     remove_list_variable = { name = permanent_tributaries target = prev }
+#                 }
+#             }
+#         }
+#     }
+#
+#     ai_accept = {
+#         base = -10
+#
+#         modifier = {
+#             add = -100
+#             scope:recipient.var:possible_vasalisation_year <= current_year
+#             desc = trib_annexation_too_early
+#         }
+#     }
+#
+#     ai_will_do = {
+#         base = 10
+#     }
+# }
 
 #release vassal as tributary / copy of 'grant independence'
 #needs some tweaking on conditions maybe
