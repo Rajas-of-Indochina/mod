@@ -1236,6 +1236,33 @@ window = {
 				}
 			}
 
+			### CONVERT HOLDING TYPE ###
+			widget = {
+				allow_outside = yes
+				parentanchor = center
+				position = { 76 -20 }
+
+				button_round  = {
+					datacontext = "[HoldingView.GetGUIHoldingBuilding]"
+					datacontext = "[HoldingView.GetTitle]"
+					datacontext = "[HoldingView.GetHolder]"
+					visible = "[And( Character.IsLocalPlayer, Character.IsPlayerInteractionShownAndCanPickTitle('convert_holding_type_interaction', Title.Self) )]"
+					enabled = "[Character.IsPlayerInteractionWithTargetTitleValid('convert_holding_type_interaction', Title.Self)]"
+					tooltip = "[Character.GetPlayerInteractionWithTargetTitleTooltip('convert_holding_type_interaction', Title.Self)]"
+					oversound = "event:/SFX/UI/Generic/sfx_ui_generic_pointer_over"
+					clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_select"
+					onclick = "[Character.OpenPlayerInteractionWithTargetTitle('convert_holding_type_interaction', Title.Self)]"
+
+					button_icon = {
+						framesize = { 70 60 }
+						size = { 25 25 }
+						parentanchor = center
+						alwaystransparent = yes
+						texture = "gfx/interface/icons/flat_icons/feudalize_tribe.dds"
+					}
+				}
+			}
+
 			### BOTTOM LEFT
 			hbox = {
 				parentanchor = top|right
