@@ -1,5 +1,8 @@
 types caliphwidgets {
     type caliphwindow = window {
+		name = "caliphwindow"
+		datacontext = "[GetVariableSystem]"
+		datacontext = "[GetPlayer]"
 		parentanchor = top|right
 		layer = windows_layer
 		movable = no
@@ -21,6 +24,13 @@ types caliphwidgets {
 			using = Sound_WindowShow_Standard
 			using = Window_Position_MainTab
 			alpha = 1
+		}
+
+		state = {
+			name = dismiss
+			next = _hide
+
+			trigger_when = "[GetVariableSystem.Exists( 'hide_right_windows' )]"
 		}
 
 		background = {
@@ -66,7 +76,7 @@ types caliphwidgets {
 
     					blockoverride "header_text"
     					{
-    						text = "Caliphate Managment"
+    						raw_text = "Caliphate Managment"
     					}
 
     					blockoverride "button_close"
@@ -83,7 +93,7 @@ types caliphwidgets {
     				margin = { 40 0 }
     				ignoreinvisible = yes
 
-    				hbox = {
+					hbox = {
 						text_label_center = {
 							text = "[caliph_autho|E]:  [GetPlayer.MakeScope.Var('cal_authority').GetValue|0]"
 							default_format = "#high"
@@ -109,7 +119,7 @@ types caliphwidgets {
 										vbox = {
 											text_single = {
 												layoutpolicy_horizontal = expanding
-												text = "#T Caliphate Authority Equilibrium#!"
+												raw_text = "#T Caliphate Authority Equilibrium#!"
 												background = {
 													using = Background_Area
 													margin = { 10 0 }
@@ -121,7 +131,7 @@ types caliphwidgets {
 											}
 											text_single = {
 												layoutpolicy_horizontal = expanding
-												text = "This is the value your caliphate authority would slowly decay towards if it wasn't increasing"
+												raw_text = "This is the value your caliphate authority would slowly decay towards if it wasn't increasing"
 												background = {
 													using = Background_Area
 													margin = { 10 0 }
@@ -159,7 +169,7 @@ types caliphwidgets {
     								vbox = {
     									text_single = {
     										layoutpolicy_horizontal = expanding
-    										text = "#T Caliphate Authority#!"
+    										raw_text = "#T Caliphate Authority#!"
     										background = {
     											using = Background_Area
     											margin = { 10 0 }
@@ -211,11 +221,11 @@ types caliphwidgets {
 
     								button = {
     									size = { 150 230 }
-    									texture = "gfx/interface/icons/custom/zakah_dev_realm.dds"
+    									texture = "gfx/interface/icons/zakah/zakah_dev_realm.dds"
     									onclick = "[GetScriptedGui('zakah_dev_realm').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
     									enabled = "[GreaterThanOrEqualTo_CFixedPoint(GetPlayer.MakeScope.Var('zakah_balance').GetValue, '(CFixedPoint)500')]"
     									icon = {
-    										texture = "gfx/interface/icons/custom/border.dds"
+    										texture = "gfx/interface/icons/zakah/border.dds"
     										size = {150 230}
     									}
     									tooltipwidget = {
@@ -230,7 +240,7 @@ types caliphwidgets {
     												vbox = {
     													text_single = {
     														layoutpolicy_horizontal = expanding
-    														text = "#T Build Shelters for The Homeless: 500 Gold#!"
+    														raw_text = "#T Build Shelters for The Homeless: 500 Gold#!"
     														background = {
     															using = Background_Area
     															margin = { 10 0 }
@@ -242,7 +252,19 @@ types caliphwidgets {
     													}
     													text_single = {
     														layoutpolicy_horizontal = expanding
-    														text = "Build shelters all over the realm to help the homeless. this will increase development depending on the size of your realm"
+    														raw_text = "Build shelters all over the realm to help the homeless."
+    														background = {
+    															using = Background_Area
+    															margin = { 10 0 }
+    															margin_bottom = 5
+    														}
+    													}
+														spacer = {
+															size = {0 1}
+														}
+														text_single = {
+    														layoutpolicy_horizontal = expanding
+    														text = "This will increase development depending on the size of your realm"
     														background = {
     															using = Background_Area
     															margin = { 10 0 }
@@ -261,11 +283,11 @@ types caliphwidgets {
 
     								button = {
     									size = { 150 230 }
-    									texture = "gfx/interface/icons/custom/zakah_opinion_realm.dds"
+    									texture = "gfx/interface/icons/zakah/zakah_opinion_realm.dds"
     									onclick = "[GetScriptedGui('zakah_opinion_realm').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
     									enabled = "[GreaterThanOrEqualTo_CFixedPoint(GetPlayer.MakeScope.Var('zakah_balance').GetValue, '(CFixedPoint)200')]"
     									icon = {
-    										texture = "gfx/interface/icons/custom/border.dds"
+    										texture = "gfx/interface/icons/zakah/border.dds"
     										size = {150 230}
     									}
     									tooltipwidget = {
@@ -292,7 +314,19 @@ types caliphwidgets {
     													}
     													text_single = {
     														layoutpolicy_horizontal = expanding
-    														text = "Send scouts to find the poor and unfortunate and help their cause. this will increase spirits and happiness throughout the realm and increase opinion"
+    														text = "Send scouts to find the poor and unfortunate and help their cause."
+    														background = {
+    															using = Background_Area
+    															margin = { 10 0 }
+    															margin_bottom = 5
+    														}
+    													}
+														spacer = {
+															size = { 0 1}
+														}
+														text_single = {
+    														layoutpolicy_horizontal = expanding
+    														text = "This will increase spirits and happiness throughout the realm and increase opinion"
     														background = {
     															using = Background_Area
     															margin = { 10 0 }
@@ -315,11 +349,11 @@ types caliphwidgets {
 
     								button = {
     									size = { 150 230 }
-    									texture = "gfx/interface/icons/custom/zakah_dev_all.dds"
+    									texture = "gfx/interface/icons/zakah/zakah_dev_all.dds"
     									onclick = "[GetScriptedGui('zakah_dev_all').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
     									enabled = "[GreaterThanOrEqualTo_CFixedPoint(GetPlayer.MakeScope.Var('zakah_balance').GetValue, '(CFixedPoint)1500')]"
     									icon = {
-    										texture = "gfx/interface/icons/custom/border.dds"
+    										texture = "gfx/interface/icons/zakah/border.dds"
     										size = {150 230}
     									}
     									tooltipwidget = {
@@ -346,7 +380,19 @@ types caliphwidgets {
     													}
     													text_single = {
     														layoutpolicy_horizontal = expanding
-    														text = "Build shelters all over the world for people of your faith to help the homeless. this will increase development depending on the size of your faith"
+    														text = "Build shelters all over the world for people of your faith to help the homeless."
+    														background = {
+    															using = Background_Area
+    															margin = { 10 0 }
+    															margin_bottom = 5
+    														}
+    													}
+														spacer = {
+															size = {0 1}
+														}
+														text_single = {
+    														layoutpolicy_horizontal = expanding
+    														text = "This will increase development depending on the size of your faith"
     														background = {
     															using = Background_Area
     															margin = { 10 0 }
@@ -365,11 +411,11 @@ types caliphwidgets {
 
     								button = {
     									size = { 150 230 }
-    									texture = "gfx/interface/icons/custom/zakah_modifier_supply.dds"
+    									texture = "gfx/interface/icons/zakah/zakah_modifier_supply.dds"
     									onclick = "[GetScriptedGui('zakah_modifier_supply').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
     									enabled = "[GreaterThanOrEqualTo_CFixedPoint(GetPlayer.MakeScope.Var('zakah_balance').GetValue, '(CFixedPoint)1500')]"
     									icon = {
-    										texture = "gfx/interface/icons/custom/border.dds"
+    										texture = "gfx/interface/icons/zakah/border.dds"
     										size = {150 230}
     									}
     									tooltipwidget = {
@@ -396,7 +442,19 @@ types caliphwidgets {
     													}
     													text_single = {
     														layoutpolicy_horizontal = expanding
-    														text = "Help build multiple resting areas for travellers and anyone crossing the path. this would increae the supply limit for your realm's provinces."
+    														text = "Help build multiple resting areas for travellers and anyone crossing the path."
+    														background = {
+    															using = Background_Area
+    															margin = { 10 0 }
+    															margin_bottom = 5
+    														}
+    													}
+														spacer = {
+															size = {0 1}
+														}
+														text_single = {
+    														layoutpolicy_horizontal = expanding
+    														text = "This would increae the supply limit for your realm's provinces."
     														background = {
     															using = Background_Area
     															margin = { 10 0 }
@@ -418,11 +476,11 @@ types caliphwidgets {
 
     							button = {
     								size = { 150 230 }
-    								texture = "gfx/interface/icons/custom/zakah_modifier_dev.dds"
+    								texture = "gfx/interface/icons/zakah/zakah_modifier_dev.dds"
     								onclick = "[GetScriptedGui('zakah_modifier_dev').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
     								enabled = "[GreaterThanOrEqualTo_CFixedPoint(GetPlayer.MakeScope.Var('zakah_balance').GetValue, '(CFixedPoint)1500')]"
     								icon = {
-    									texture = "gfx/interface/icons/custom/border.dds"
+    									texture = "gfx/interface/icons/zakah/border.dds"
     									size = {150 230}
     								}
     								tooltipwidget = {
@@ -449,7 +507,19 @@ types caliphwidgets {
     												}
     												text_single = {
     													layoutpolicy_horizontal = expanding
-    													text = "Create large-scale groups for building shelters for the homeless in the long run. this will constantly increase your realm's development."
+    													text = "Create large-scale groups for building shelters for the homeless in the long run."
+    													background = {
+    														using = Background_Area
+    														margin = { 10 0 }
+    														margin_bottom = 5
+    													}
+    												}
+													spacer = {
+														size = {0 1}
+													}
+													text_single = {
+    													layoutpolicy_horizontal = expanding
+    													text = "This will constantly increase your realm's development."
     													background = {
     														using = Background_Area
     														margin = { 10 0 }
@@ -468,295 +538,4 @@ types caliphwidgets {
     		}
     	}
     }
-}
-
-types lawswidgets {
-	type Laws = hbox {
-		datamodel = "[MyRealmWindow.GetRealmLaws]"
-		ignoreinvisible = yes
-		item = {
-			vbox = {
-				datacontext = "[GuiLawGroup.GetLawGroup]"
-				block "visible" {
-					visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_1' ), GuiLawGroup.IsAvailable )]"
-				}
-				ignoreinvisible = yes
-				spacer = {
-					size = { 0 5 }
-				}
-				text_label_center = {
-					text = "[LawGroup.GetName]"
-					default_format = "#high"
-					using = Font_Size_Big
-					position = {160 20}
-				}
-				spacer = {
-					size = {0 5 }
-				}
-				hbox = {
-					ignoreinvisible = yes
-					icon = {
-						texture = "gfx/interface/icons/banner1.dds"
-						visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_1' ), GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('mil_comp').GetValue, '(CFixedPoint)0') )]"
-						size = { 110 170 }
-						tooltip = "GET_MIL_COMPETENCE_COMPLETE_BREAKDOWN"
-					}
-					icon = {
-						texture = "gfx/interface/icons/bannerburnt1.dds"
-						visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_1' ), LessThanOrEqualTo_CFixedPoint(GetPlayer.MakeScope.Var('mil_comp').GetValue, '(CFixedPoint)0') )]"
-						size = { 110 170 }
-						tooltip = "GET_MIL_COMPETENCE_COMPLETE_BREAKDOWN"
-					}
-					icon = {
-						texture = "gfx/interface/icons/banner2.dds"
-						visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_2' ), GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('civic_comp').GetValue, '(CFixedPoint)0') )]"
-						size = { 110 170 }
-						tooltip = "GET_CIVIC_COMPETENCE_COMPLETE_BREAKDOWN"
-					}
-					icon = {
-						texture = "gfx/interface/icons/bannerburnt2.dds"
-						visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_2' ), LessThanOrEqualTo_CFixedPoint(GetPlayer.MakeScope.Var('civic_comp').GetValue, '(CFixedPoint)0') )]"
-						size = { 110 170 }
-						tooltip = "GET_CIVIC_COMPETENCE_COMPLETE_BREAKDOWN"
-					}
-					icon = {
-						texture = "gfx/interface/icons/banner3.dds"
-						visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_3' ), GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('diplo_comp').GetValue, '(CFixedPoint)0') )]"
-						size = { 110 170 }
-						tooltip = "GET_DIPLO_COMPETENCE_COMPLETE_BREAKDOWN"
-					}
-					icon = {
-						texture = "gfx/interface/icons/bannerburnt3.dds"
-						visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_3' ), LessThanOrEqualTo_CFixedPoint(GetPlayer.MakeScope.Var('diplo_comp').GetValue, '(CFixedPoint)0') )]"
-						size = { 110 170 }
-						tooltip = "GET_DIPLO_COMPETENCE_COMPLETE_BREAKDOWN"
-					}
-					spacer = {
-						size = {50 0 }
-						visible = "[Not(GuiLawGroup.GetLawGroup.HasFlag( 'policy_5_buttons' ))]"
-					}
-					hbox = {
-						datamodel = "[GuiLawGroup.GetLaws]"
-				
-						item = {
-							hbox = {
-								spacer = {
-									size = { 5 0 }
-								}
-								button_standard = {
-									datacontext = "[GuiLaw.GetLaw]"
-									size = { 110 170 }
-									enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
-									visible = "[Not(GuiLawGroup.GetLawGroup.HasFlag( 'policy_5_buttons' ))]"
-									onclick = "[GuiLaw.Enact]"
-									tooltipwidget = { pass_law_tooltip = {} }
-									using = tooltip_below
-									icon = {
-										texture = "[Law.GetIcon]"
-										size = {110 170}
-									}
-									icon = {
-										texture = "gfx/interface/icons/custom/border_laws.dds"
-										size = {110 170}
-									}
-									icon = {
-										visible = "[GuiLaw.IsEnacted]"
-										texture = "gfx/interface/icons/law_select.dds"
-										size = {62 50}
-										position = {-2 5}
-										parentanchor = top|hcenter
-									}
-								}
-								button_standard = {
-									datacontext = "[GuiLaw.GetLaw]"
-									size = { 90 170 }
-									enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
-									visible = "[GuiLawGroup.GetLawGroup.HasFlag( 'policy_5_buttons' )]"
-									onclick = "[GuiLaw.Enact]"
-									tooltipwidget = { pass_law_tooltip = {} }
-									using = tooltip_below
-									icon = {
-										texture = "[Law.GetIcon]"
-										size = {90 170}
-									}
-									icon = {
-										visible = "[GuiLaw.IsEnacted]"
-										texture = "gfx/interface/icons/law_select.dds"
-										size = {62 50}
-										parentanchor = center
-									}
-								}
-							}
-						}
-					}
-				}
-				
-				# Imperial Competency Bars
-				progressbar_red = {
-					value = "[FixedPointToFloat(GetPlayer.MakeScope.Var('mil_comp').GetValue)]"
-					visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_1' ), GuiLawGroup.IsAvailable )]"
-					texture = "gfx/interface/progressbars/progressbar_laws.dds"
-					direction = horizontal
-					size = {515 20}
-					position = {0 250}
-					min = 0
-					max = 5000
-					tooltipwidget = {
-						widget = {
-							using = DefaultTooltipBackground
-							size = {200 100}
-							vbox = {
-								margin = { 15 10 }
-								spacing = 10
-								set_parent_size_to_minimum = yes
-								minimumsize = { 280 0 }
-								vbox = {
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										text = "GET_MIL_COMPETENCE"
-										background = {
-											using = Background_Area
-											margin = { 10 0 }
-											margin_bottom = 5
-										}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										text = "MIL_COMP_EXPLAIN"
-									}
-									spacer = {
-										size = {0 1}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										layoutpolicy_vertical = expanding
-										multiline = yes
-										text = "COMP_PASS_LAW"
-									}
-									spacer = {
-										size = {0 1}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										text = "LOW_COMPETENCE_WARNING"
-									}
-								}
-							}
-						}
-					}
-				}
-				progressbar_red = {
-					value = "[FixedPointToFloat(GetPlayer.MakeScope.Var('civic_comp').GetValue)]"
-					visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_2' ), GuiLawGroup.IsAvailable )]"
-					texture = "gfx/interface/progressbars/progressbar_laws.dds"
-					direction = horizontal
-					size = {515 20}
-					position = {0 250}
-					min = 0
-					max = 5000
-					tooltipwidget = {
-						widget = {
-							using = DefaultTooltipBackground
-							size = {200 100}
-							vbox = {
-								margin = { 15 10 }
-								spacing = 10
-								set_parent_size_to_minimum = yes
-								minimumsize = { 280 0 }
-								vbox = {
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										text = "GET_CIV_COMPETENCE"
-										background = {
-											using = Background_Area
-											margin = { 10 0 }
-											margin_bottom = 5
-										}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										layoutpolicy_vertical = expanding
-										multiline = yes
-										text = "CIVIC_COMP_EXPLAIN"
-									}
-									spacer = {
-										size = {0 1}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										layoutpolicy_vertical = expanding
-										multiline = yes
-										text = "COMP_PASS_LAW"
-									}
-									spacer = {
-										size = {0 1}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										layoutpolicy_vertical = expanding
-										multiline = yes
-										text = "LOW_COMPETENCE_WARNING"
-									}
-								}
-							}
-						}
-					}
-				}
-				progressbar_red = {
-					value = "[FixedPointToFloat(GetPlayer.MakeScope.Var('diplo_comp').GetValue)]"
-					visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_3' ), GuiLawGroup.IsAvailable )]"
-					texture = "gfx/interface/progressbars/progressbar_laws.dds"
-					bg = "gfx/interface/progressbars/progressbar_laws_maybe.dds"
-					direction = horizontal
-					size = {515 20}
-					position = {0 250}
-					min = 0
-					max = 5000
-					tooltipwidget = {
-						widget = {
-							using = DefaultTooltipBackground
-							size = {200 100}
-							vbox = {
-								margin = { 15 10 }
-								spacing = 10
-								set_parent_size_to_minimum = yes
-								minimumsize = { 280 0 }
-								vbox = {
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										text = "GET_DIP_COMPETENCE"
-										background = {
-											using = Background_Area
-											margin = { 10 0 }
-											margin_bottom = 5
-										}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										text = "DIPLO_COMP_EXPLAIN"
-									}
-									spacer = {
-										size = {0 1}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										layoutpolicy_vertical = expanding
-										multiline = yes
-										text = "COMP_PASS_LAW"
-									}
-									spacer = {
-										size = {0 1}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										text = "LOW_COMPETENCE_WARNING"
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
 }

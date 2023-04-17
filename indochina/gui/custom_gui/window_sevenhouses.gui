@@ -1,0 +1,437 @@
+﻿types sevenhouseswidgets {
+    type sevenhouseswindow = window {
+		name = "sevenhouseswindow"
+		datacontext = "[GetVariableSystem]"
+		datacontext = "[GetPlayer]"
+		parentanchor = top|right
+		layer = windows_layer
+		movable = no
+		using = Window_Size_MainTab
+		visible = "[GetVariableSystem.Exists('sevenhouseswindow')]"
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+			using = Sound_WindowHide_Standard
+			using = Window_Position_MainTab_Hide
+			trigger_when = "[IsRightWindowOpen]"
+			on_start = "[GetScriptedGui('close_sevenhouses').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+			alpha = 0
+		}
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			using = Sound_WindowShow_Standard
+			using = Window_Position_MainTab
+			on_start = "[GetScriptedGui('open_sevenhouses').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+			on_start = "[GetVariableSystem.Set( 'sevenhouses_button_chosen', 'sevenhouses' )]"
+			alpha = 1
+		}
+
+		state = {
+			name = dismiss
+			next = _hide
+
+			trigger_when = "[GetVariableSystem.Exists( 'hide_right_windows' )]"
+		}
+
+		background = {
+			texture = "gfx/interface/component_tiles/solid_black_label.dds"
+			margin_left = -40
+			fittype = centercrop
+		}
+
+    	margin_widget = {
+    		size = { 100% 100% }
+    		margin = { 0 26 }
+    		using = Window_Background
+
+    		background = {
+    			texture = "gfx/interface/component_tiles/tile_window_background_subwindow.dds"
+    			spriteType = Corneredtiled
+    			spriteborder = { 18 18 }
+    			margin = { -23 -17 }
+    			margin_left = -20
+    			margin_bottom = 20
+    			texture_density = 2
+
+    			modify_texture = {
+    				name = "overlay"
+    				texture = "gfx/interface/component_overlay/overlay_effect.dds"
+    				spriteType = Corneredstretched
+    				spriteborder = { 0 0 }
+    				blend_mode = overlay
+    			}
+    		}
+
+			vbox = {
+    			layoutpolicy_horizontal = expanding
+    			margin_right = 1 #this is vanilla margin
+    			margin_bottom = 70 #this prevents the scrollarea from extending behind the hud
+
+    			vbox = {
+    				layoutpolicy_horizontal = expanding
+    				using = Window_Margins
+
+    				header_pattern = {
+    					layoutpolicy_horizontal = expanding
+
+    					blockoverride "header_text"
+    					{
+    						raw_text = "SEVEN_HOUSES_BUTTON"
+    					}
+
+    					blockoverride "button_close"
+    					{
+    						onclick = "[GetVariableSystem.Toggle('sevenhouseswindow')]"
+    					}
+    					expand = {}
+    				}
+
+					background = {
+						texture = "gfx/interface/illustrations/struggle_backgrounds/struggle_compromise_bg.dds"
+						margin = { -40 450 }
+						fittype = end
+						alpha = 0.3
+						
+						using = Mask_Rough_Edges
+
+						using = Mask_Rough_Edges
+
+						modify_texture = {
+							texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_thick.dds"
+							blend_mode = alphamultiply
+							mirror = horizontal
+						}
+                    }
+    			}
+				hbox = {
+					ignoreinvisible = yes
+					layoutpolicy_vertical = expanding
+					layoutpolicy_horizontal = expanding
+					
+					vbox = {
+						
+						layoutpolicy_vertical = expanding
+						layoutpolicy_horizontal = expanding
+						text_label_center = {
+							text = "SEVEN_HOUSES_SHAH"
+							default_format = "#high"
+							using = Font_Size_Medium
+						}
+						spacer = {
+							size = {0 20}
+						}
+						hbox = {
+							vbox = {
+								layoutpolicy_vertical = expanding
+								layoutpolicy_horizontal = expanding
+								text_single = {
+									text = "SEVEN_HOUSES_FAVOR"
+									default_format = "#high"
+								}
+								hbox = {
+									progressbar_red = {
+										direction = vertical
+										value = "[GetGlobalVariable('shah_persia_window_var').GetCharacter.MakeScope.ScriptValue('sevenhouses_favor_value')]"
+										texture = "gfx/interface/progressbars/progressbar_laws.dds"
+										bg = "gfx/interface/progressbars/progressbar_laws_maybe.dds"
+										size = {20 250}
+										min = 0
+										max = 100
+										tooltipwidget = {
+											widget = {
+												using = DefaultTooltipBackground
+												size = {200 100}
+												vbox = {
+													margin = { 15 10 }
+													spacing = 10
+													set_parent_size_to_minimum = yes
+													minimumsize = { 280 0 }
+													vbox = {
+														text_single = {
+															layoutpolicy_horizontal = expanding
+															text = "GET_SEVEN_FAVOR"
+															background = {
+																using = Background_Area
+																margin = { 10 0 }
+																margin_bottom = 5
+															}
+														}
+														text_single = {
+															layoutpolicy_horizontal = expanding
+															text = "SEVEN_FAVOR_EXPLAIN"
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+		
+							}
+							portrait_body = {
+								blockoverride "coa" {}
+								blockoverride "status_icons" {}
+								datacontext = "[GetGlobalVariable('shah_persia_window_var').GetCharacter]"
+								scale = 1.25
+							}
+							spacer = {
+								size = {35 0}
+							}
+							vbox = {
+						
+								layoutpolicy_vertical = expanding
+								layoutpolicy_horizontal = expanding
+								text_single = {
+									text = "SEVEN_HOUSES_STRENGTH"
+									default_format = "#high"	
+								}
+								progressbar_red = {
+									direction = vertical
+									value = "[GetGlobalVariable('shah_persia_window_var').GetCharacter.MakeScope.ScriptValue('sevenhouses_strength_value')]"
+									texture = "gfx/interface/progressbars/progressbar_laws.dds"
+									bg = "gfx/interface/progressbars/progressbar_laws_maybe.dds"
+									size = {20 250}
+									min = 0
+									max = 100
+									tooltipwidget = {
+										widget = {
+											using = DefaultTooltipBackground
+											size = {200 100}
+											vbox = {
+												margin = { 15 10 }
+												spacing = 10
+												set_parent_size_to_minimum = yes
+												minimumsize = { 280 0 }
+												vbox = {
+													text_single = {
+														layoutpolicy_horizontal = expanding
+														text = "GET_SEVEN_STRENGTH"
+														background = {
+															using = Background_Area
+															margin = { 10 0 }
+															margin_bottom = 5
+														}
+													}
+													text_single = {
+														layoutpolicy_horizontal = expanding
+														text = "SEVEN_STRENGTH_EXPLAIN"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+						spacer = {
+							size = {0 20}
+						}
+						text_label_center = {
+							text = "[GetPlayer.GetName]"
+							default_format = "#high"
+						}
+						spacer = {
+							size = {0 30}
+						}
+						hbox = {
+							button_tab = {
+								text = "SEVEN_HOUSES_SUB_HEADING"
+								default_format = "#high"
+								using = Font_Size_Medium
+								size = { 280 50 }
+								onclick = "[GetVariableSystem.Set( 'sevenhouses_button_chosen', 'sevenhouses' )]"
+								down = "[GetVariableSystem.HasValue( 'sevenhouses_button_chosen', 'sevenhouses' )]"
+							}
+							button_tab = {
+								text = "SEVEN_HOUSES_SUB_HEADING_DECISIONS"
+								default_format = "#high"
+								using = Font_Size_Medium
+								size = { 280 50 }
+								onclick = "[GetVariableSystem.Set( 'sevenhouses_button_chosen', 'decisions' )]"
+								down = "[GetVariableSystem.HasValue( 'sevenhouses_button_chosen', 'decisions' )]"
+							}
+						}
+						hbox = {
+							visible = "[GetVariableSystem.HasValue( 'sevenhouses_button_chosen', 'sevenhouses' )]"
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							margin_right = 50
+							margin_left = 50
+							scrollbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								blockoverride "scrollbox_content"
+								{
+									vbox = {
+										datamodel = "[GetGlobalList('seven_houses')]"
+										item = {
+											hbox = {
+												ignoreinvisible = yes
+												datacontext = "[Scope.Dynasty]"
+												portrait_torso = {
+													datacontext = "[Dynasty.GetDynast]"
+													visible = "[GreaterThan_int32( Dynasty.GetNumberOfLivingMembers, '(int32)0')]"
+												}
+												icon = {
+													texture = "gfx/interface/icons/icon_dead.dds"
+													size = {170 170}
+													visible = "[Not(GreaterThan_int32( Dynasty.GetNumberOfLivingMembers, '(int32)0'))]"
+													tooltip = "DEAD_HOUSE_TOOLTIP"
+												}
+												spacer = {
+													size = {30 0}
+												}
+												divider_light = {
+													layoutpolicy_vertical = expanding
+													alpha = 0.8
+												}
+												spacer = {
+													size = {30 0}
+												}
+												vbox = {
+													spacer = {
+														size = {0 20}
+													}
+													text_label_center = {
+														text = "[Dynasty.GetName]"
+														default_format = "#high"
+														using = Font_Size_Medium
+													}
+													divider_light = {
+														layoutpolicy_horizontal = expanding
+													}
+													coa_dynasty_huge = {
+														datacontext = "[Dynasty]"
+													}
+												}
+												spacer = {
+													size = {0 20}
+												}
+											}
+										}
+									} 
+								}
+							}
+						}
+						hbox = {
+							visible = "[GetVariableSystem.HasValue( 'sevenhouses_button_chosen', 'decisions' )]"
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							margin_right = 50
+							margin_left = 50
+							scrollbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								blockoverride "scrollbox_content"
+								{
+									vbox = {
+										button_endhouses_modular = {
+											datacontext = "[GetDecisionWithKey( 'TFE_assimilate_houses' )]"
+											
+										}
+										spacer = {
+											size = {0 5}
+										}
+										button_endhouses_modular = {
+											datacontext = "[GetDecisionWithKey( 'TFE_abolish_houses' )]"
+										}
+										spacer = {
+											size = {0 5}
+										}
+										button_endhouses_modular = {
+											datacontext = "[GetDecisionWithKey( 'TFE_instate_dehqans' )]"
+										}
+									} 
+								}
+							}
+						}
+					}
+					
+				}
+			}
+
+			
+
+    	}
+    }
+	type button_endhouses_modular = vbox
+	{
+		text_label_center = {
+			text = "[Decision.GetTitleForPlayer]"
+			default_format = "#high"
+		}
+		button = {
+			
+			tooltip = SHOW_DECISION_TOOLTIP
+			onclick = "[OpenDecisionDetailView(Decision.Self)]"
+			state = {
+				name = _mouse_hierarchy_enter
+				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('glow_hold_court_leave','glow_hold_court_enter')]"
+			}
+			state = {
+				name = _mouse_hierarchy_leave
+				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('glow_hold_court_enter','glow_hold_court_leave')]"
+			}
+			texture = "[Decision.GetPicture]"
+			icon = {
+				texture = "gfx/interface/icons/custom/border_decisions_sevenhouses.dds"
+				size = { 500 200 }
+			}
+			size = { 500 200 }
+		}
+	}
+	type button_endhouses_assimilate = vbox
+	{
+		text_label_center = {
+			text = "[GetDecisionWithKey( 'TFE_assimilate_houses' ).GetTitleForPlayer]"
+			default_format = "#high"
+		}
+		button = {
+			datacontext = "[GetDecisionWithKey( 'TFE_assimilate_houses' )]"
+			tooltip = SHOW_DECISION_TOOLTIP
+			onclick = "[OpenDecisionDetailView(Decision.Self)]"
+			state = {
+				name = _mouse_hierarchy_enter
+				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('glow_hold_court_leave','glow_hold_court_enter')]"
+			}
+			state = {
+				name = _mouse_hierarchy_leave
+				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('glow_hold_court_enter','glow_hold_court_leave')]"
+			}
+			texture = "[GetDecisionWithKey( 'TFE_assimilate_houses' ).GetPicture]"
+			icon = {
+				texture = "gfx/interface/icons/zakah/border.dds"
+				size = { 500 150 }
+			}
+			size = { 500 150 }
+		}
+	}
+	type button_endhouses_abolish = vbox
+	{
+		text_label_center = {
+			text = "[GetDecisionWithKey( 'TFE_abolish_houses' ).GetTitleForPlayer]"
+			default_format = "#high"
+		}
+		button = {
+			datacontext = "[GetDecisionWithKey( 'TFE_abolish_houses' )]"
+			tooltip = SHOW_DECISION_TOOLTIP
+			state = {
+				name = _mouse_hierarchy_enter
+				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('glow_hold_court_leave','glow_hold_court_enter')]"
+			}
+			onclick = "[OpenDecisionDetailView(Decision.Self)]"
+			state = {
+				name = _mouse_hierarchy_leave
+				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('glow_hold_court_enter','glow_hold_court_leave')]"
+			}
+			texture = "[GetDecisionWithKey( 'TFE_abolish_houses' ).GetPicture]"
+			icon = {
+				texture = "gfx/interface/icons/custom/border_decisions_sevenhouses.dds"
+				size = { 500 150 }
+			}
+			size = { 500 150 }
+		}
+	}
+}

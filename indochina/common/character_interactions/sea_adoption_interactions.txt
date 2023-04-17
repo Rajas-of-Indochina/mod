@@ -7,9 +7,12 @@ adoption_interaction = {
 	desc = adoption_interaction_desc
 
 	is_shown = {
-		NOT = {
-			# Medieval Christian Europe did not approve of having unrelated children
-			religion = religion:christianity_religion
+		scope:actor = {
+			NOT = {
+				# Medieval Christian Europe did not approve of having unrelated children
+				religion = religion:christianity_religion
+				# Should probably just keep this within Europe but this will do for now
+			}
 		}
 
 		scope:recipient = {
@@ -64,10 +67,12 @@ adoption_interaction = {
 
 			if = {
 				limit = {
-					NOR = {
-						# Islam and Judaism were okay with adoption but insisted that they not be considered the same as one's own children
-						has_religion = religion:islam_religion
-						has_religion = religion:judaism_religion
+					scope:actor = {
+						NOR = {
+							# Islam and Judaism were okay with adoption but insisted that they not be considered the same as one's own children
+							has_religion = religion:islam_religion
+							has_religion = religion:judaism_religion
+						}
 					}
 				}
 				set_house = scope:actor.house
