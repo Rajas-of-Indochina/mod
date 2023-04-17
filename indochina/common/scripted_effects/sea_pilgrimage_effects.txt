@@ -115,3 +115,33 @@ set_up_holy_sites_for_selection_effect = {
 		debug_log_scopes = yes
 	}
 }
+
+
+
+# Used in the option to pick a specific Holy Site
+holy_site_selection_event_option_effect = {
+	if = {
+		limit = { is_in_an_activity = no }
+
+		# HOLY_SITE = holy_site
+		hidden_effect = {
+			set_variable = {
+				name = pilgrimage_cooldown_timer
+				years = pilgrimage_cooldown_year_amount
+			}
+		}
+		$HOLY_SITE$.title_province = {
+			spawn_activity = {
+				owner = root
+				type = activity_pilgrimage
+			}
+		}
+		if = {
+			limit = { is_ai = no }
+			calculate_pilgrimage_distance_effect = {
+				PILGRIM = root
+				HOLY_SITE = $HOLY_SITE$
+			}
+		}
+	}
+}
