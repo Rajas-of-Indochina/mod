@@ -846,6 +846,96 @@ tibetan_struggle.0911 = {
 	}
 }
 
+tibetan_struggle.0902 = { # Conciliation
+	type = fullscreen_event
+	title = tibetan_struggle.0902.t
+	desc = {
+		first_valid = {
+		    triggered_desc = {
+		        trigger = {
+					culture = {
+						OR = {
+							this = culture:basque
+							any_parent_culture = { this = culture:basque }
+							has_cultural_pillar = language_basque
+						}
+					}
+		        }
+		        desc = tibetan_struggle.0900.opening.basque
+		    }
+		    triggered_desc = {
+		        trigger = {
+					culture = {
+						OR = {
+							this = culture:andalusian
+							any_parent_culture = { this = culture:andalusian }
+							has_cultural_pillar = language_arabic
+						}
+					}
+		        }
+		        desc = tibetan_struggle.0900.opening.andalusian
+		    }
+		    triggered_desc = {
+		        trigger = {
+					culture = { has_cultural_pillar = heritage_iberian }
+		        }
+		        desc = tibetan_struggle.0900.opening.iberian
+		    }
+		    desc = tibetan_struggle.0900.opening
+		}
+		desc = tibetan_struggle.0902.desc
+	}
+	theme = court
+	override_background = { event_background = tibetan_fullscreen_conciliation }
+	override_sound = { reference = "event:/DLC/tibetan/SFX/UI/tibetan_struggle_ui_intro_end_animate" }
+
+	immediate = {
+		play_music_cue = "mx_Struggle_ending_conciliation"
+		set_global_variable = {
+			name = tibetan_struggle_conciliation_ending
+			value = yes
+		}
+		# Add all involved rulers to a list, for ping event
+		tibetan_stuggle_ending_involved_list_effect = yes
+
+		# Add all involved cultures with counties to a list, for marriage and holy war checks
+		tibetan_struggle_ending_culture_list_effect = yes
+
+		# Change cultural acceptance
+		tibetan_struggle_conciliation_cultural_acceptance_effect = yes
+
+		##### Major Effects #####
+		tibetan_struggle_conciliation_ender_effect = yes
+		tibetan_struggle_conciliation_tooltip_effect = yes
+		tibetan_struggle_conciliation_modifier_rewards_effect = yes
+	}
+
+	#
+	option = {
+		name = tibetan_struggle.0902.a
+	}
+
+	after = {
+		stress_impact = {
+			arrogant = medium_stress_impact_gain
+			zealous = medium_stress_impact_gain
+		}
+
+		# Notify & End Struggle
+		save_scope_as = tibetan_loc_struggle_ender # Loc used to use root, this fixes it
+		every_player = {
+			limit = { tibetan_does_this_player_care_about_the_fate_of_iberia = yes } # Needs to be checked before the struggle ends due to race condition issues
+			add_to_list = player_to_notify # Making a list so stuff is tiggered after the struggle ends, to make extra sure I don't break anything.
+		}
+
+		struggle:iberian_struggle = { end_struggle = struggle_iberia_ending_conciliation_decision }
+		every_in_list = { # Then we *actually* notify palyers, making sure the struggle has already ended
+			list = player_to_notify
+			trigger_event = tibetan_struggle.0912
+		}
+	}
+}
+
 tibetan_struggle.0912 = {
 	type = fullscreen_event
 	title = tibetan_struggle.0902.t
