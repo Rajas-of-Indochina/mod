@@ -414,12 +414,24 @@ maritime_southeast_asia.0003 = {
 		create_hybrid_culture = culture:han
 		scope:new_culture = {
 			set_ethos_from = scope:old_culture
+			set_heritage_from = scope:old_culture
 			set_culture_pillar = language_chinese
 			if = {
-				limit = { NOT = { has_cultural_tradition = tradition_sinicized_culture } }
+				limit = {
+					NOT = { has_cultural_tradition = tradition_sinicized_culture }
+				}
 				add_culture_tradition = tradition_sinicized_culture
 			}
+			if = {
+				limit = { has_cultural_tradition = tradition_confucian_philosophy }
+				remove_cultural_tradition = tradition_confucian_philosophy
+			}
 		}
+	}
+
+	option = {
+		# Keep your culture
+		name = maritime_southeast_asia.0003.a
 	}
 }
 
