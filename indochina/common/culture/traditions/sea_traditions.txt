@@ -1,4 +1,4 @@
-﻿
+
 tradition_angkorian_architecture = {
 	category = realm
 
@@ -348,11 +348,13 @@ tradition_confucian_philosophy = {
 	}
 	can_pick = {
 		has_cultural_pillar = heritage_chinese
+		NOT = { any_in_list = { list = traits this = flag:tradition_sinicized_culture } }
 	}
 
 	parameters = {
 		innovation_from_learning_traits = yes
 		vassals_more_likely_accept_punishments = yes
+		unlock_bureaucracy_param = yes
 	}
 	character_modifier = {
 		monthly_learning_lifestyle_xp_gain_mult = 0.1
@@ -845,6 +847,113 @@ tradition_steppe_confederations = {
 				}
 			}
 			multiply = 0.1
+		}
+	}
+}
+
+tradition_sinicized_culture = {
+	category = regional
+
+	layers = {
+		0 = learning
+		1 = indian
+		4 = philosopher.dds
+	}
+
+	is_shown = {
+		NOT = { has_cultural_pillar = heritage_chinese }
+		OR = {
+			has_cultural_tradition = tradition_sinicized_culture
+			any_parent_culture = { has_cultural_pillar = heritage_chinese }
+			any_culture_county = {
+				any_neighbor_county = { culture = { has_cultural_pillar = heritage_chinese } }
+			}
+		}
+	}
+
+	can_pick = {
+		NOT = { any_in_list = { list = traits this = flag:tradition_confucian_philosophy } }
+		NOT = { has_cultural_pillar = heritage_chinese }
+	}
+
+	parameters = {
+		unlock_bureaucracy_param = yes
+		# Makes your culture count as part of the Chinese heritage group, thanks CCU!
+		heritage_group_chinese = yes
+		heritage_family_east_asian = yes
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_double_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_communal }
+						any_in_list = { list = traits this = flag:ethos_courtly }
+						any_in_list = { list = traits this = flag:ethos_bureaucratic }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_courtly_or_bureaucratic_desc
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						culture_head = { has_court_language = language_chinese }
+						any_in_list = {
+							list = traits
+							this = flag:language_chinese
+						}
+					}
+				}
+				subtract = {
+					value = 1000
+					desc = SINOPHONE
+				}
+			}
+			if = {
+				# This is much cheaper for cultures that already have an easy time hybridizing
+				limit = {
+					has_cultural_parameter = cheaper_to_hybridize
+				}
+				multiply = {
+					value = 0.5
+					desc = CULTURAL_FLEXIBILITY
+				}
+			}
+			if = {
+				# ...And pricier for those that have a hard time.
+				limit = {
+					has_cultural_parameter = harder_to_hybridize
+				}
+				multiply = {
+					value = 2
+					desc = CULTURAL_INFLEXIBILITY
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOR = {
+					any_in_list = { list = traits this = flag:ethos_communal }
+					any_in_list = { list = traits this = flag:ethos_courtly }
+					any_in_list = { list = traits this = flag:ethos_bureaucratic }
+				}
+			}
+			multiply = 0
 		}
 	}
 }
