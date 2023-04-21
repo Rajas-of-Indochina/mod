@@ -1,4 +1,4 @@
-
+﻿
 tradition_angkorian_architecture = {
 	category = realm
 
@@ -766,23 +766,25 @@ tradition_balbals = {
 }
 
 tradition_steppe_confederations = {
-	category = societal
+	category = realm
 
 	layers = {
 		0 = diplo
-		1 = mena
+		1 = western
 		4 = diplomat.dds
 	}
 
+	is_shown = {
+		has_cultural_parameter = heritage_group_altaic
+	}
 	parameters = {
-		diplomacy_education_better_outcomes = yes
-		charming_trait_more_common = yes
+		has_steppe_alliances = yes
+		extra_language_cap_2 = yes
 	}
 	character_modifier = {
-		monthly_court_grandeur_change_mult = 0.15
-		owned_personal_scheme_success_chance_add = 10
-		enemy_hostile_scheme_success_chance_add = 10
+		learn_language_scheme_power_mult = 0.25
 	}
+
 	cost = {
 		prestige = {
 			add = {
@@ -790,65 +792,12 @@ tradition_steppe_confederations = {
 				desc = BASE
 				format = "BASE_VALUE_FORMAT"
 			}
-			if = {
-				limit = {
-					NOR = {
-						any_in_list = { list = traits this = flag:ethos_communal }
-						any_in_list = { list = traits this = flag:ethos_egalitarian }
-						any_in_list = { list = traits this = flag:ethos_stoic }
-					}
-				}
-				add = {
-					value = tradition_incompatible_ethos_penalty
-					desc = not_communal_egalitarian_or_stoic_desc
-				}
-			}
-			if = {
-				limit = {
-					trigger_if = {
-						limit = {
-							scope:character = {
-								is_ai = no
-							}
-						}
-						NOT = {
-							any_ruler = {
-								count >= 5
-								culture = prev
-								primary_title.tier >= tier_county
-								has_trait = education_diplomacy_4
-							}
-						}
-					}
-					trigger_else = {
-						always = no
-					}
-				}
-				add = {
-					value = tradition_unfulfilled_criteria_penalty
-					desc = rulers_with_diplomacy_edu_desc
-				}
-			}
 
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
-	ai_will_do = {
-		value = 100
-		if = {
-			limit = {
-				OR = {
-					any_in_list = { list = traits this = flag:tradition_eye_for_an_eye }
-					any_in_list = { list = traits this = flag:tradition_zealous_people }
-					any_in_list = { list = traits this = flag:tradition_forbearing }
-					any_in_list = { list = traits this = flag:tradition_equitable }
-					any_in_list = { list = traits this = flag:tradition_charitable }
-					any_in_list = { list = traits this = flag:tradition_modest }
-				}
-			}
-			multiply = 0.1
-		}
-	}
+
+	ai_will_do = { value = 100 }
 }
 
 tradition_sinicized_culture = {
