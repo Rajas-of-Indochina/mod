@@ -339,12 +339,99 @@ maritime_southeast_asia.0003 = {
 	immediate = {
 		play_music_cue = "mx_cue_epic_sacral_moment"
 		reform_nanyue_decision_effect = yes
+		add_prestige = massive_prestige_value
+		add_prestige_level = 2
 	}
 
 	option = {
+		trigger = {
+			culture = {
+				OR = {
+					has_cultural_pillar = heritage_chinese
+					has_cultural_pillar = heritage_tai
+				}
+			}
+		}
+		# Create Han/Tai hybrid (Yue)
 		name = maritime_southeast_asia.0003.a
-		add_prestige = massive_prestige_value
-		add_prestige_level = 2
+		if = {
+			# For Chinese cultures merging with Tai
+			limit = { culture = { has_cultural_pillar = heritage_chinese } }
+			create_hybrid_culture = culture:tai
+			scope:new_culture = {
+				hidden_effect = { set_culture_pillar = heritage_chinese }
+				if = {
+					limit = { NOT = { has_cultural_tradition = tradition_confucian_philosophy } }
+					add_culture_tradition = tradition_confucian_philosophy
+				}
+				set_culture_pillar = language_chinese
+			}
+		}
+		else_if = {
+			# For Tai cultures merging with Han
+			limit = { culture = { has_cultural_pillar = heritage_tai } }
+			create_hybrid_culture = culture:han
+			scope:new_culture = {
+				hidden_effect = { set_culture_pillar = heritage_tai }
+				if = {
+					limit = { NOT = { has_cultural_tradition = tradition_sinicized_culture } }
+					add_culture_tradition = tradition_sinicized_culture
+				}
+				set_culture_pillar = language_chinese
+			}
+		}
+	}
+
+	option = {
+		# For non-Chinese, non-Tai East Asian cultures
+		trigger = {
+			culture = {
+				NOR = {
+					has_cultural_pillar = heritage_chinese
+					has_cultural_pillar = heritage_tai
+				}
+				has_cultural_parameter = heritage_family_east_asian
+			}
+		}
+		name = maritime_southeast_asia.0003.a
+		create_hybrid_culture = culture:han
+		scope:new_culture = {
+			if = {
+				limit = { NOT = { has_cultural_tradition = tradition_sinicized_culture } }
+				add_culture_tradition = tradition_sinicized_culture
+			}
+			set_culture_pillar = language_chinese
+		}
+	}
+
+	option = {
+		# For everyone else (I see you beelining for China as Haesteinn)
+		trigger = {
+			culture = { NOT = { has_cultural_parameter = heritage_family_east_asian } }
+		}
+		name = maritime_southeast_asia.0003.a
+		culture = { save_scope_as = old_culture }
+		create_hybrid_culture = culture:han
+		scope:new_culture = {
+			set_ethos_from = scope:old_culture
+			set_heritage_from = scope:old_culture
+			set_culture_pillar = language_chinese
+			if = {
+				limit = {
+					NOT = { has_cultural_tradition = tradition_sinicized_culture }
+				}
+				add_culture_tradition = tradition_sinicized_culture
+			}
+			if = {
+				limit = { has_cultural_tradition = tradition_confucian_philosophy }
+				remove_cultural_tradition = tradition_confucian_philosophy
+			}
+		}
+	}
+
+	option = {
+		# Keep your culture
+		name = maritime_southeast_asia.0003.a
 	}
 }
 
