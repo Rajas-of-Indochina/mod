@@ -358,14 +358,6 @@ maritime_southeast_asia.0003 = {
 			# For Chinese cultures merging with Tai
 			limit = { culture = { has_cultural_pillar = heritage_chinese } }
 			create_hybrid_culture = culture:tai
-			scope:new_culture = {
-				hidden_effect = { set_culture_pillar = heritage_chinese }
-				if = {
-					limit = { NOT = { has_cultural_tradition = tradition_confucian_philosophy } }
-					add_culture_tradition = tradition_confucian_philosophy
-				}
-				set_culture_pillar = language_chinese
-			}
 		}
 		else_if = {
 			# For Tai cultures merging with Han
@@ -395,13 +387,6 @@ maritime_southeast_asia.0003 = {
 		}
 		name = maritime_southeast_asia.0003.a
 		create_hybrid_culture = culture:han
-		scope:new_culture = {
-			if = {
-				limit = { NOT = { has_cultural_tradition = tradition_sinicized_culture } }
-				add_culture_tradition = tradition_sinicized_culture
-			}
-			set_culture_pillar = language_chinese
-		}
 	}
 
 	option = {
@@ -416,22 +401,26 @@ maritime_southeast_asia.0003 = {
 			set_ethos_from = scope:old_culture
 			set_heritage_from = scope:old_culture
 			set_culture_pillar = language_chinese
-			if = {
-				limit = {
-					NOT = { has_cultural_tradition = tradition_sinicized_culture }
-				}
-				add_culture_tradition = tradition_sinicized_culture
-			}
-			if = {
-				limit = { has_cultural_tradition = tradition_confucian_philosophy }
-				remove_cultural_tradition = tradition_confucian_philosophy
-			}
 		}
 	}
 
 	option = {
 		# Keep your culture
 		name = maritime_southeast_asia.0003.a
+	}
+
+	after = {
+		scope:new_culture = {
+			if = {
+				limit = {
+					has_cultural_pillar = heritage_chinese
+				}
+				remove_cultural_tradition = tradition_sinicized_culture
+			}
+			else = {
+				remove_cultural_tradition = tradition_confucian_philosophy
+			}
+		}
 	}
 }
 
