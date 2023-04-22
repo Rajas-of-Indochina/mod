@@ -84,28 +84,6 @@ convert_to_feudalism_liege_converted_decision = { #by Linnéa Thimrén
 
 	ai_will_do = {
 		base = 100
-		subtract = {
-			value = 40
-			culture = { has_cultural_tradition = tradition_migratory }
-		}
-		subtract = {
-			value = 40
-			has_government = nomadic_government
-		}
-		add = {
-			value = 40
-			culture = { has_cultural_parameter = unlock_bureaucracy_param }
-		}
-		add = {
-			value = 20
-			any_liege_or_above = {
-				has_government = chinese_government
-			}
-		}
-		add = {
-			value = 20
-			religion = religion:taoism_religion
-		}
 	}
 }
 
@@ -369,10 +347,12 @@ adopt_chinese_government_decision = {
 					highest_held_title_tier >= tier_kingdom
 					any_realm_county = {
 						percent >= 0.25
-						title_province = world_china
+						title_province.geographical_region = world_china
 					}
 					capital_province.geographical_region = world_china
 				}
+				culture = { has_cultural_parameter = unlock_bureaucracy_param }
+				religion = religion:taoism_religion
 			}
 		}
 		trigger_if = {
