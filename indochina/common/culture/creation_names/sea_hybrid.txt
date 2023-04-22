@@ -16,7 +16,7 @@ dambro = { # Dambro - Mon-Malay Hybrid; Hypothetical
 	hybrid = yes
 }
 
-yue = { # Yue - Tai-Chinese Hybrid; in Guangdong OTL
+yue = { # Yue or Taiyue/Daiyue - Tai-Chinese Hybrid; in Guangdong OTL
 	trigger = {
 		OR = {
 			AND = {
@@ -119,7 +119,7 @@ taikhun = { # Tai Khün - Tai-Palaungic Speaker Hybrid; in Kengtung OTL
 }
 
 
-siamese = { # Siamese - Tai-Mon/Lavo Hybrid; in Ayutthaya OTL
+siamlavo = { # Siam-Lavo (from Xianlo) - Tai-Mon/Lavo Hybrid; in Ayutthaya OTL
 	trigger = {
 		OR = {
 			AND = {
@@ -139,7 +139,7 @@ siamese = { # Siamese - Tai-Mon/Lavo Hybrid; in Ayutthaya OTL
 	hybrid = yes
 }
 
-khom = { # Khom - Tai-Khmer Hybrid; in Late Lavo period
+khomhybrid = { # Khom - Tai-Khmer Hybrid; in Late Lavo period
 	trigger = {
 		OR = {
 			AND = {
@@ -165,12 +165,12 @@ lakkia = { # Lakkia - Tai-Mien; in China
 			AND = {
 				scope:culture = { has_cultural_pillar = heritage_tai }
 				OR = {
-					scope:other_culture = { has_cultural_pillar = language_mien }
+					scope:other_culture = { has_cultural_pillar = heritage_mien }
 				}
 			}
 			AND = {
 				OR = {
-					scope:culture = { has_cultural_pillar = language_mien }
+					scope:culture = { has_cultural_pillar = heritage_mien }
 				}
 				scope:other_culture = { has_cultural_pillar = heritage_tai }
 			}
@@ -195,6 +195,50 @@ tubo = { # Tubo - Chinese-Tibetan Hybrid; in Tibet OTL
 	hybrid = yes
 }
 
+haedong = { # Chinese-Korean hybrid; in Korean form
+    trigger = {
+        OR = {
+            AND = {
+                scope:culture = { has_cultural_pillar = heritage_korean }
+                OR = {
+                    scope:other_culture = { has_cultural_pillar = heritage_chinese }
+                }
+            }
+        }
+    }
+    hybrid = yes
+}
+
+haidong = { # Chinese-Korean hybrid; in Chinese form
+    trigger = {
+        OR = {
+            AND = {
+                scope:culture = { has_cultural_pillar = heritage_chinese }
+                OR = {
+                    scope:other_culture = { has_cultural_pillar = heritage_korean }
+                }
+            }
+    	}
+	}
+    hybrid = yes
+}
+
+khatso = { # Khatso - Mongol-Loloish Hybrid; in Yunnan
+	trigger = {
+		OR = {
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_tatar }
+				scope:other_culture = { has_cultural_pillar = heritage_lolish }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_lolish }
+				scope:other_culture = { has_cultural_pillar = heritage_tatar }
+			}
+		}
+	}
+	hybrid = yes
+}
+
 dian = { # Dian - Chinese-Lolo Hybrid; in Yunnan OTL
 	trigger = {
 		OR = {
@@ -211,16 +255,48 @@ dian = { # Dian - Chinese-Lolo Hybrid; in Yunnan OTL
 	hybrid = yes
 }
 
-liao = { # Liao - Chinese-Korean Hybrid; Hypothetical
+jin = { # Jin - Chinese-Tungusic (Jurchen) Hybrid; Hypothetical
 	trigger = {
 		OR = {
 			AND = {
 				scope:culture = { has_cultural_pillar = heritage_chinese }
-				scope:other_culture = { has_cultural_pillar = heritage_korean }
+				scope:other_culture = { has_cultural_pillar = heritage_tungusic }
 			}
 			AND = {
-				scope:culture = { has_cultural_pillar = heritage_korean }
+				scope:culture = { has_cultural_pillar = heritage_tungusic }
 				scope:other_culture = { has_cultural_pillar = heritage_chinese }
+			}
+		}
+	}
+	hybrid = yes
+}
+
+liao = { # Liao - Chinese-Khitan Hybrid; Hypothetical
+	trigger = {
+		OR = {
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_chinese }
+				scope:other_culture = { has_cultural_pillar = language_khitan }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = language_khitan  }
+				scope:other_culture = { has_cultural_pillar = heritage_chinese}
+			}
+		}
+	}
+	hybrid = yes
+}
+
+xia = { # Xia - Chinese-Tangut Hybrid; Hypothetical
+	trigger = {
+		OR = {
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_chinese }
+				scope:other_culture = { has_cultural_pillar = heritage_qiangic }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_qiangic }
+				scope:other_culture = { has_cultural_pillar = heritage_chinese}
 			}
 		}
 	}
@@ -488,7 +564,7 @@ taitho = { # Tai Thổ - Tai-Vietic Speaker Hybrid
 	}
 	hybrid = yes
 }
-	
+
 kasiguranin = { # Kasiguranin - Tagalog-Aeta Hybrid; descended from early Tagalog which mixed heavily with the Agta in the area of Casiguran, Aurora
 	trigger = {
 		OR = {
@@ -516,7 +592,7 @@ lusong = { # Lusong - Malayic-Tagalog/Central Luzon Speaker Hybrid
 				scope:culture = { has_cultural_pillar = heritage_malayic }
 				scope:other_culture = { has_cultural_pillar = language_central_luzon }
 			}
-			
+
 			AND = {
 				scope:other_culture = culture:tagalog
 				scope:culture = { has_cultural_pillar = heritage_malayic }
@@ -541,7 +617,7 @@ chavacano = { # Chavacano - Iberian-Lumad/Filipino Hybrid; Spanish based creoles
 				scope:culture = { has_cultural_pillar = language_iberian }
 				scope:other_culture = { has_cultural_pillar = heritage_lumad }
 			}
-			
+
 			AND = {
 				scope:culture = { has_cultural_pillar = heritage_filipino }
 				scope:other_culture = { has_cultural_pillar = language_iberian }
@@ -645,6 +721,23 @@ macanese = { # Macanese - Chinese-Iberian Hybrid; in Macao OTL
 			}
 			AND = {
 				scope:culture = { has_cultural_pillar = heritage_chinese }
+				scope:other_culture = { has_cultural_pillar = heritage_iberian }
+			}
+		}
+	}
+	hybrid = yes
+}
+
+# This one is just for fun
+chinese_vikings = {
+	trigger = {
+		OR = {
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_north_germanic }
+				scope:other_culture = { has_cultural_pillar = heritage_chinese }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_north_germanic }
 				scope:other_culture = { has_cultural_pillar = heritage_iberian }
 			}
 		}

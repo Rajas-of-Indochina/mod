@@ -1,0 +1,661 @@
+﻿@crown_authority_cooldown_years = 20
+
+imperial_authority = {
+	default = imperial_authority_2
+	cumulative = yes
+	flag = realm_law
+
+	imperial_authority_0 = { #oof owie law
+		modifier = {
+			direct_vassal_opinion = 30
+			vassal_tax_mult = -0.5
+			vassal_levy_contribution_mult = -0.5
+			domain_limit = -2
+		}
+
+		can_keep = {
+			realm_law_use_imperial_authority = yes
+			OR = {
+				highest_held_title_tier = tier_empire
+				AND = {
+					has_government = autocratic_government
+					is_independent_ruler = yes
+				}
+			}
+			realm_law_use_eranshar_authority = no
+			realm_law_use_nomadic_authority = no
+			realm_law_use_gupta_authority = no
+		}
+	}
+
+	imperial_authority_1 = { #Minimal Authority law
+		modifier = {
+			direct_vassal_opinion = -15
+			vassal_tax_mult = 0.3
+			vassal_levy_contribution_mult = 0.3
+			domain_limit = 1
+		}
+
+		flag = can_change_succession_laws
+		flag = title_revocation_allowed
+
+		can_keep = {
+			realm_law_use_imperial_authority = yes
+			OR = {
+				highest_held_title_tier = tier_empire
+				AND = {
+					has_government = autocratic_government
+					is_independent_ruler = yes
+				}
+			}
+			realm_law_use_eranshar_authority = no
+			realm_law_use_nomadic_authority = no
+			realm_law_use_gupta_authority = no
+		}
+
+		can_pass = {
+			trigger_if = {
+				limit = { has_realm_law = imperial_authority_0 }
+				custom_description = {
+					subject = root
+					text = "has_crown_authority_cooldown"
+					NAND = {
+						has_variable = crown_authority_cooldown
+						NOT = {
+							culture = { has_innovation = innovation_all_things }
+						}
+					}
+				}
+			}
+		}
+
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOR = {
+							has_realm_law = imperial_authority_2
+							has_realm_law = imperial_authority_3
+						}
+					}
+					add = increase_crown_authority_prestige_cost
+				}
+			}
+		}
+
+		on_pass = {
+			# Increment cooldown breaker tally, if appropriate.
+			calculate_authority_cooldown_break_effect = yes
+			# Set regular cooldown.
+			set_variable = {
+				name = crown_authority_cooldown
+				years = @crown_authority_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = imperial_authority_0 }
+				value = 1
+			}
+		}
+	}
+
+	imperial_authority_2 = { #default authority
+		modifier = {
+			direct_vassal_opinion = -30
+			vassal_tax_mult = 0.3
+			vassal_levy_contribution_mult = 0.3
+			domain_limit = 2
+		}
+		flag = vassal_retraction_allowed
+
+		can_keep = {
+			realm_law_use_imperial_authority = yes
+			OR = {
+				highest_held_title_tier = tier_empire
+				AND = {
+					has_government = autocratic_government
+					is_independent_ruler = yes
+				}
+			}
+			realm_law_use_eranshar_authority = no
+			realm_law_use_nomadic_authority = no
+			realm_law_use_gupta_authority = no
+		}
+		should_start_with = {
+			always = yes
+		}
+		can_pass = {
+			trigger_if = {
+				limit = {
+					NOT = { has_realm_law = imperial_authority_3 }
+				}
+				has_realm_law = imperial_authority_1
+				custom_description = {
+					subject = root
+					text = "has_crown_authority_cooldown"
+					NAND = {
+						has_variable = crown_authority_cooldown
+						NOT = {
+							culture = { has_innovation = innovation_all_things }
+						}
+					}
+				}
+			}
+		}
+
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOT = { has_realm_law = imperial_authority_3 }
+					}
+					add = increase_crown_authority_prestige_cost
+				}
+			}
+		}
+
+		on_pass = {
+			# Increment cooldown breaker tally, if appropriate.
+			calculate_authority_cooldown_break_effect = yes
+			# Set regular cooldown.
+			set_variable = {
+				name = crown_authority_cooldown
+				years = @crown_authority_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = imperial_authority_1 }
+				value = 1
+			}
+		}
+	}
+
+	imperial_authority_3 = { #High Authority
+		modifier = {
+			direct_vassal_opinion = -15
+			vassal_tax_mult = 0.3
+			vassal_levy_contribution_mult = 0.3
+			domain_limit = 1
+		}
+
+		can_keep = {
+			realm_law_use_imperial_authority = yes
+			OR = {
+				highest_held_title_tier = tier_empire
+				AND = {
+					has_government = autocratic_government
+					is_independent_ruler = yes
+				}
+			}
+			realm_law_use_eranshar_authority = no
+			realm_law_use_nomadic_authority = no
+			realm_law_use_gupta_authority = no
+		}
+
+		can_pass = {
+			has_realm_law = imperial_authority_2
+			custom_description = {
+				subject = root
+				text = "has_crown_authority_cooldown"
+				NAND = {
+						has_variable = crown_authority_cooldown
+						NOT = {
+							culture = { has_innovation = innovation_all_things }
+						}
+					}
+			}
+		}
+
+		pass_cost = { prestige = increase_crown_authority_prestige_cost }
+
+		on_pass = {
+			# Increment cooldown breaker tally, if appropriate.
+			calculate_authority_cooldown_break_effect = yes
+			# Set regular cooldown.
+			set_variable = {
+				name = crown_authority_cooldown
+				years = @crown_authority_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = imperial_authority_2 }
+				value = 1
+			}
+		}
+	}
+	imperial_authority_4 = { #extortionate authority
+		modifier = {
+			direct_vassal_opinion = -15
+			vassal_tax_mult = 0.3
+			vassal_levy_contribution_mult = 0.3
+			domain_limit = 1
+		}
+		flag = titles_cannot_leave_realm_on_succession
+		can_keep = {
+			realm_law_use_imperial_authority = yes
+			OR = {
+				highest_held_title_tier = tier_empire
+				AND = {
+					has_government = autocratic_government
+					is_independent_ruler = yes
+				}
+			}
+			realm_law_use_eranshar_authority = no
+			realm_law_use_nomadic_authority = no
+			realm_law_use_gupta_authority = no
+		}
+
+		can_pass = {
+			has_realm_law = imperial_authority_3
+			custom_description = {
+				subject = root
+				text = "has_crown_authority_cooldown"
+				NAND = {
+						has_variable = crown_authority_cooldown
+						NOT = {
+							culture = { has_innovation = innovation_all_things }
+						}
+					}
+			}
+			trigger_if = {
+				limit = {
+					OR = {
+						has_game_rule = enabled
+						AND = {
+							has_game_rule = enabled_in_430
+							current_date >= 430.1.1
+						}
+					}
+				}
+				custom_description = {
+					text = two_competence_vars_max
+					subject = root
+					AND = {
+						OR = {
+							has_game_rule = enabled
+							AND = {
+								has_game_rule = enabled_in_430
+								current_date >= 430.1.1
+							}
+						}
+						exists = var:mil_comp
+						exists = var:civic_comp
+						exists = var:diplo_comp
+						OR = {
+							AND = {
+								var:diplo_comp = 5000
+								var:civic_comp = 5000
+							}
+							AND = {
+								var:diplo_comp = 5000
+								var:mil_comp = 5000
+							}
+							AND = {
+								var:civic_comp = 5000
+								var:mil_comp = 5000
+							}
+						}
+					}
+				}
+			}
+		}
+
+		pass_cost = { prestige = increase_crown_authority_prestige_cost }
+
+		on_pass = {
+			# Increment cooldown breaker tally, if appropriate.
+			calculate_authority_cooldown_break_effect = yes
+			# Set regular cooldown.
+			set_variable = {
+				name = crown_authority_cooldown
+				years = @crown_authority_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = imperial_authority_3 }
+				value = 1
+			}
+		}
+	}
+	imperial_authority_5 = { #Absolute Authority
+		modifier = {
+			direct_vassal_opinion = -15
+			vassal_tax_mult = 0.3
+			vassal_levy_contribution_mult = 0.3
+			domain_limit = 2
+		}
+		flag = can_designate_heirs
+		can_keep = {
+			realm_law_use_imperial_authority = yes
+			OR = {
+				highest_held_title_tier = tier_empire
+				AND = {
+					has_government = autocratic_government
+					is_independent_ruler = yes
+				}
+			}
+			realm_law_use_eranshar_authority = no
+			realm_law_use_nomadic_authority = no
+			realm_law_use_gupta_authority = no
+		}
+
+		can_pass = {
+			has_realm_law = imperial_authority_4
+			custom_description = {
+				subject = root
+				text = "has_crown_authority_cooldown"
+				NAND = {
+						has_variable = crown_authority_cooldown
+						NOT = {
+							culture = { has_innovation = innovation_all_things }
+						}
+					}
+			}
+			trigger_if = {
+				limit = {
+					OR = {
+						has_game_rule = enabled
+						AND = {
+							has_game_rule = enabled_in_430
+							current_date >= 430.1.1
+						}
+					}
+				}
+				custom_description = {
+					text = three_competence_vars_max
+					subject = root
+					AND = {
+						OR = {
+							has_game_rule = enabled
+							AND = {
+								has_game_rule = enabled_in_430
+								current_date >= 430.1.1
+							}
+						}
+						exists = var:mil_comp
+						exists = var:civic_comp
+						exists = var:diplo_comp
+						var:diplo_comp = 5000
+						var:civic_comp = 5000
+						var:mil_comp = 5000
+					}
+				}
+			}
+
+		}
+
+		pass_cost = { prestige = increase_crown_authority_prestige_cost }
+
+		on_pass = {
+			# Increment cooldown breaker tally, if appropriate.
+			calculate_authority_cooldown_break_effect = yes
+			# Set regular cooldown.
+			set_variable = {
+				name = crown_authority_cooldown
+				years = @crown_authority_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = imperial_authority_4 }
+				value = 1
+			}
+		}
+	}
+}
+
+military_office_authority = {
+	default = military_office_authority_1
+	cumulative = yes
+	flag = realm_law
+
+	military_office_authority_0 = {
+		modifier = {
+			direct_vassal_opinion = 30
+			vassal_tax_mult = -0.5
+			vassal_levy_contribution_mult = -0.5
+			domain_tax_mult = -0.2
+			knight_limit = -2
+			levy_reinforcement_rate = -0.3
+		}
+
+		can_keep = {
+			realm_law_use_imperial_authority = yes
+			NOT = {
+				OR = {
+					highest_held_title_tier = tier_empire
+					AND = {
+						has_government = autocratic_government
+						is_independent_ruler = yes
+					}
+				}
+			}
+			realm_law_use_eranshar_authority = no
+			realm_law_use_nomadic_authority = no
+			realm_law_use_gupta_authority = no
+		}
+	}
+
+	military_office_authority_1 = {
+		modifier = {
+			direct_vassal_opinion = -15
+			vassal_tax_mult = 0.3
+			vassal_levy_contribution_mult = 0.3
+			domain_tax_mult = 0.1
+			knight_limit = 1
+			levy_reinforcement_rate = 0.2
+		}
+
+		flag = can_change_succession_laws
+		flag = title_revocation_allowed
+		should_start_with = {
+			always = yes
+		}
+		can_keep = {
+			realm_law_use_imperial_authority = yes
+			NOT = {
+				OR = {
+					highest_held_title_tier = tier_empire
+					AND = {
+						has_government = autocratic_government
+						is_independent_ruler = yes
+					}
+				}
+			}
+			realm_law_use_eranshar_authority = no
+			realm_law_use_nomadic_authority = no
+			realm_law_use_gupta_authority = no
+		}
+
+		can_pass = {
+			trigger_if = {
+				limit = { has_realm_law = military_office_authority_0 }
+				custom_description = {
+					subject = root
+					text = "has_crown_authority_cooldown"
+					NAND = {
+						has_variable = crown_authority_cooldown
+						NOT = {
+							culture = { has_innovation = innovation_all_things }
+						}
+					}
+				}
+			}
+		}
+
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOR = {
+							has_realm_law = military_office_authority_2
+							has_realm_law = military_office_authority_3
+						}
+					}
+					add = increase_crown_authority_prestige_cost
+				}
+			}
+		}
+
+		on_pass = {
+			# Increment cooldown breaker tally, if appropriate.
+			calculate_authority_cooldown_break_effect = yes
+			# Set regular cooldown.
+			set_variable = {
+				name = crown_authority_cooldown
+				years = @crown_authority_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = military_office_authority_0 }
+				value = 1
+			}
+		}
+	}
+
+	military_office_authority_2 = {
+		modifier = {
+			direct_vassal_opinion = -30
+			vassal_tax_mult = 0.3
+			vassal_levy_contribution_mult = 0.3
+			domain_tax_mult = 0.1
+			knight_limit = 1
+			levy_reinforcement_rate = 0.2
+		}
+		flag = vassal_retraction_allowed
+
+		can_keep = {
+			realm_law_use_imperial_authority = yes
+			NOT = {
+				OR = {
+					highest_held_title_tier = tier_empire
+					AND = {
+						has_government = autocratic_government
+						is_independent_ruler = yes
+					}
+				}
+			}
+			realm_law_use_eranshar_authority = no
+			realm_law_use_nomadic_authority = no
+			realm_law_use_gupta_authority = no
+		}
+
+		can_pass = {
+			trigger_if = {
+				limit = {
+					NOT = { has_realm_law = military_office_authority_3 }
+				}
+				has_realm_law = military_office_authority_1
+				custom_description = {
+					subject = root
+					text = "has_crown_authority_cooldown"
+					NAND = {
+						has_variable = crown_authority_cooldown
+						NOT = {
+							culture = { has_innovation = innovation_all_things }
+						}
+					}
+				}
+			}
+		}
+
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOT = { has_realm_law = military_office_authority_3 }
+					}
+					add = increase_crown_authority_prestige_cost
+				}
+			}
+		}
+
+		on_pass = {
+			# Increment cooldown breaker tally, if appropriate.
+			calculate_authority_cooldown_break_effect = yes
+			# Set regular cooldown.
+			set_variable = {
+				name = crown_authority_cooldown
+				years = @crown_authority_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = military_office_authority_1 }
+				value = 1
+			}
+		}
+	}
+
+	military_office_authority_3 = {
+		modifier = {
+			direct_vassal_opinion = -15
+			vassal_tax_mult = 0.3
+			vassal_levy_contribution_mult = 0.3
+			domain_tax_mult = 0.1
+			knight_limit = 1
+			levy_reinforcement_rate = 0.2
+		}
+
+		can_keep = {
+			realm_law_use_imperial_authority = yes
+			NOT = {
+				OR = {
+					highest_held_title_tier = tier_empire
+					AND = {
+						has_government = autocratic_government
+						is_independent_ruler = yes
+					}
+				}
+			}
+			realm_law_use_eranshar_authority = no
+			realm_law_use_nomadic_authority = no
+			realm_law_use_gupta_authority = no
+		}
+
+		can_pass = {
+			has_realm_law = military_office_authority_2
+			custom_description = {
+				subject = root
+				text = "has_crown_authority_cooldown"
+				NAND = {
+						has_variable = crown_authority_cooldown
+						NOT = {
+							culture = { has_innovation = innovation_all_things }
+						}
+					}
+			}
+		}
+
+		pass_cost = { prestige = increase_crown_authority_prestige_cost }
+
+		on_pass = {
+			# Increment cooldown breaker tally, if appropriate.
+			calculate_authority_cooldown_break_effect = yes
+			# Set regular cooldown.
+			set_variable = {
+				name = crown_authority_cooldown
+				years = @crown_authority_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = military_office_authority_2 }
+				value = 1
+			}
+		}
+	}
+}

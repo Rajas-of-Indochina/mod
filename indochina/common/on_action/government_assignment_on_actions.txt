@@ -1,6 +1,7 @@
 ﻿on_game_start = {
 	on_actions = {
 		on_government_assign_start
+		set_vassal_contracts_and_laws
 	}
 }
 
@@ -10,6 +11,379 @@ on_government_assign_start = {
 			name = Gov_is_loaded
 			value = yes
 		}
+		religion:kushitism_religion = {
+			every_faith = {
+				remove_doctrine = doctrine_theocracy_temporal
+				add_doctrine = doctrine_imperial_head
+			}
+		}
+		religion:hellenism_religion = {
+			every_faith = {
+				remove_doctrine = doctrine_theocracy_temporal
+				add_doctrine = doctrine_imperial_head
+			}
+		}
+		every_independent_ruler = {
+			limit = {
+				primary_title.tier = tier_empire
+				NOT = { faith = { has_doctrine = unreformed_faith_doctrine } }
+			}
+
+			save_scope_as = current_emperor
+
+			new_official_imperial_faith_effect_skip_effects = { EMPIRE = scope:current_emperor.primary_title FAITH = scope:current_emperor.faith }
+		}
+
+		every_ruler = {
+			if = {
+				limit = {
+					has_religion = religion:islam_religion
+					NOT = {
+						has_government = tribal_government
+					}
+				}
+				if = {
+					limit = {
+						faith.religious_head = THIS
+					}
+					change_government = caliphate_government
+				}
+				else_if = {
+					limit = {
+						capital_county = {
+							OR = {
+								empire = {
+									THIS = title:e_arabia
+								}
+								empire = {
+									THIS = title:e_persia
+								}
+								empire = {
+									THIS = title:e_spain
+								}
+								kingdom = {
+									THIS = title:k_sindh
+								}
+							}
+						}
+
+					}
+					change_government = muslim_government
+				}
+			}
+			if = {
+				limit = {
+					is_independent_ruler = yes
+					OR = {
+						culture = culture:mon
+						culture = culture:pyu
+					}
+					OR = {
+						primary_title.empire = title:e_burma
+						primary_title.empire = title:e_angkor
+					}
+				}
+				change_government = city_state_government
+				if = {
+					limit = { NOT = { has_realm_law = crown_authority_0 } }
+					add_realm_law_skip_effects = crown_authority_0
+				}
+
+				if = {
+					limit = { highest_held_title_tier > tier_county }
+
+					save_scope_as = liege
+
+					every_held_title = {
+						limit = {
+							tier = tier_county
+							NOT = { this = scope:liege.capital_county }
+						}
+
+						save_scope_as = title
+
+						create_character = {
+							template = pool_sea_game_start_stewardship
+							faith = scope:liege.faith
+							culture = scope:liege.culture
+							gender = male
+	                        dynasty = generate
+	                        location = scope:title.title_province
+							save_scope_as = new_character
+						}
+
+						create_title_and_vassal_change = {
+							type = granted
+							save_scope_as = change
+							add_claim_on_loss = no
+						}
+						scope:title = {
+							change_title_holder = {
+								holder = scope:new_character
+								change = scope:change
+							}
+						}
+						resolve_title_and_vassal_change = scope:change
+
+						hidden_effect = {
+							scope:new_character = {
+								change_government = city_state_government
+								if = {
+									limit = { NOT = { has_realm_law = crown_authority_0 } }
+									add_realm_law_skip_effects = crown_authority_0
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				title:k_andalusia = {
+					is_title_created = yes
+				}
+			}
+			title:k_andalusia.holder = {
+				change_government = caliphate_government
+			}
+		}
+		if = {
+			limit = {
+				title:d_gotland = {
+					is_title_created = yes
+				}
+			}
+			title:d_gotland.holder = {
+				change_government = city_state_government
+			}
+		}
+		title:c_socotra.holder = {
+			change_government = city_state_government
+		}
+		if = {
+			limit = {
+				current_date <= 900.1.1
+			}
+			title:d_bulgaria.holder = {
+				change_government = autocratic_government
+			}
+		}
+		if = {
+			limit = {
+				current_date >= 900.1.1
+			}
+			title:d_duklja.holder = {
+				change_government = autocratic_government
+				every_vassal_or_below = {
+					change_government = autocratic_government
+				}
+			}
+		}
+		title:c_napoli.holder = {
+			change_government = autocratic_government
+		}
+		if = {
+			limit = {
+				title:e_byzantium = {
+					is_title_created = yes
+				}
+			}
+			title:e_byzantium.holder = {
+				change_government = imperial_government
+				every_vassal_or_below = {
+					limit = {
+						has_government = feudal_government
+					}
+					if = {
+						limit = {
+							highest_held_title_tier > tier_county
+						}
+						change_government = imperial_government
+					}
+					else_if = {
+						limit = {
+							highest_held_title_tier = tier_county
+						}
+						change_government = roman_government
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				title:e_byzantium = {
+					is_title_created = yes
+				}
+			}
+			title:e_byzantium.holder = {
+				random_held_title = {
+					limit = {
+						AND = {
+							tier = tier_county
+							NOT = {
+								THIS = PREV.capital_county
+							}
+							NOT = {
+								title_province = {
+									has_holding_type = estate_holding
+								}
+							}
+						}
+					}
+					title_province = {
+						set_holding_type = estate_holding
+					}
+				}
+				random_held_title = {
+					limit = {
+						AND = {
+							tier = tier_county
+							NOT = {
+								THIS = PREV.capital_county
+							}
+							NOT = {
+								title_province = {
+									has_holding_type = estate_holding
+								}
+							}
+						}
+					}
+					title_province = {
+						set_holding_type = estate_holding
+					}
+				}
+				every_vassal_or_below = {
+					limit = {
+						OR = {
+							has_government = feudal_government
+							has_government = imperial_government
+							has_government = roman_government
+						}
+					}
+					if = {
+						limit = {
+							highest_held_title_tier > tier_county
+						}
+						change_government = imperial_government
+						random_held_title = {
+							limit = {
+								AND = {
+									tier = tier_county
+									NOT = {
+										THIS = PREV.capital_county
+									}
+									NOT = {
+										title_province = {
+											has_holding_type = estate_holding
+										}
+									}
+								}
+							}
+							title_province = {
+								set_holding_type = estate_holding
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							highest_held_title_tier = tier_county
+						}
+						every_held_title = {
+							limit = {
+								AND = {
+									tier = tier_county
+									NOT = {
+										title_province = {
+											has_holding_type = estate_holding
+										}
+									}
+								}
+							}
+							title_province = {
+								set_holding_type = estate_holding
+							}
+						}
+						change_government = roman_government
+
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				title:d_kabul = {
+					is_title_created = yes
+				}
+				current_date <= 900.1.1
+			}
+			title:d_kabul.holder = {
+				change_government = city_state_government
+				every_vassal_or_below = {
+					change_government = city_state_government
+				}
+			}
+		}
+		if = {
+			limit = {
+				title:c_ghur = {
+					is_title_created = yes
+				}
+				current_date <= 900.1.1
+			}
+			title:c_ghur.holder = {
+				change_government = city_state_government
+			}
+		}
+		if = {
+			limit = {
+				title:c_kasmira = {
+					is_title_created = yes
+				}
+				current_date <= 900.1.1
+			}
+			title:c_kasmira.holder = {
+				change_government = city_state_government
+			}
+		}
+		if = {
+			limit = {
+				title:d_multan = {
+					is_title_created = yes
+				}
+				current_date <= 900.1.1
+			}
+			title:d_multan.holder = {
+				change_government = city_state_government
+			}
+		}
+		if = {
+			limit = {
+				title:c_nandana = {
+					is_title_created = yes
+				}
+				current_date <= 900.1.1
+			}
+			title:c_nandana.holder = {
+				change_government = city_state_government
+			}
+		}
+		title:k_sicily = {
+			every_in_de_jure_hierarchy = {
+				limit = {
+					is_title_created = yes
+				}
+				holder = {
+					if = {
+						limit = {
+							has_government = caliphate_government
+						}
+						change_government = clan_government
+					}
+				}
+			}
+		}
+
 		every_ruler = {
 			save_scope_as = ruler
 
@@ -18,7 +392,10 @@ on_government_assign_start = {
 					has_government = tribal_government
 					exists = capital_county
 					culture = { has_cultural_tradition = tradition_horse_lords }
-					NOT = { culture = culture:tuyuhun }
+					NOR = {
+						culture = culture:tuyuhun
+						culture = culture:shatuo
+					}
 				}
 				change_government = nomadic_government
 			}
@@ -250,6 +627,38 @@ on_government_assign_start = {
 					limit = { has_realm_law = tribal_authority_3 }
 					remove_realm_law = tribal_authority_3
 				}
+			}
+		}
+	}
+}
+
+set_vassal_contracts_and_laws = {
+	effect = {
+		if = {
+			limit = {
+				title:e_byzantium = {
+					is_title_created = yes
+				}
+			}
+			title:e_byzantium.holder = {
+				add_realm_law_skip_effects = imperial_authority_2
+				every_vassal_or_below = {
+					limit = {
+						has_government = imperial_government
+					}
+
+					add_realm_law_skip_effects = military_office_authority_0
+				}
+			}
+		}
+		if = {
+			limit = {
+				title:e_celestia_china = {
+					is_title_created = yes
+				}
+			}
+			title:e_celestia_china.holder = {
+				# add_realm_law_skip_effects = imperial_authority_2
 			}
 		}
 	}

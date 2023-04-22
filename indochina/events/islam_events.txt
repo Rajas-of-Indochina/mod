@@ -1,0 +1,224 @@
+﻿namespace = islam
+
+islam.0002 = {
+	title = islam.0002.t
+	desc = islam.0002.desc
+	scope = character
+	theme = faith
+
+	immediate = {
+		save_scope_as = tmp_zakah_giver
+		set_variable = {
+			name = tmp_zakah
+			value = gold
+		}
+		change_variable = {
+			name = tmp_zakah
+			multiply = 0.02
+		}
+	}
+
+	override_background = {
+		event_background = throne_room
+	}
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = islam.0002.option.a
+		custom_tooltip = islam.0002.option.a.tooltip
+		remove_short_term_gold = var:tmp_zakah
+
+		if = {
+			limit = {
+				has_government = caliphate_government
+			}
+			change_variable = {
+				name = zakah_balance
+				add = var:tmp_zakah
+			}
+		}
+		else_if = {
+			limit = {
+				is_independent_ruler = no
+				vassal_contract_has_flag = caliphate_zakah_enforced
+			}
+			liege = {
+				if = {
+					limit = {
+						has_government = caliphate_government
+					}
+					change_variable = {
+						name = zakah_balance
+						add = PREV.var:tmp_zakah
+					}
+				}
+				else_if = {
+					limit = {
+						any_relation = {
+							type = preferred_caliph
+							count >= 1
+						}
+					}
+					every_relation = {
+						type = preferred_caliph
+						change_variable = {
+							name = zakah_balance
+							add = scope:tmp_zakah_giver.var:tmp_zakah
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						faith = {
+							exists = religious_head
+						}
+					}
+					faith = {
+						religious_head = {
+							change_variable = {
+								name = zakah_balance
+								add = scope:tmp_zakah_giver.var:tmp_zakah
+							}
+						}
+					}
+				}
+				else = {
+					set_variable = {
+						name = dev_zakah_tmp
+						value = scope:tmp_zakah_giver.var:tmp_zakah
+					}
+					change_variable = {
+						name = dev_zakah_tmp
+						divide = 1000
+					}
+					hidden_effect = {
+						every_realm_county = {
+							change_development_level = PREV.var:dev_zakah_tmp
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				any_relation = {
+					type = preferred_caliph
+					count >= 1
+				}
+			}
+			every_relation = {
+				type = preferred_caliph
+				change_variable = {
+					name = zakah_balance
+					add = scope:tmp_zakah_giver.var:tmp_zakah
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				faith = {
+					exists = religious_head
+				}
+			}
+			faith = {
+				religious_head = {
+					change_variable = {
+						name = zakah_balance
+						add = scope:tmp_zakah_giver.var:tmp_zakah
+					}
+				}
+			}
+		}
+		else = {
+			set_variable = {
+				name = dev_zakah_tmp
+				value = scope:tmp_zakah_giver.var:tmp_zakah
+			}
+			change_variable = {
+				name = dev_zakah_tmp
+				divide = 1000
+			}
+			hidden_effect = {
+				every_realm_county = {
+					change_development_level = PREV.var:dev_zakah_tmp
+				}
+			}
+		}
+
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = islam.0002.option.b
+
+		add_piety = -200
+		if = {
+			limit = {
+				exists = var:cal_authority
+			}
+			change_variable = {
+				name = cal_authority
+				subtract = 2
+			}
+		}
+		ai_chance = { base = 0.5 }
+	}
+}
+
+islam.0004 = {
+	title = islam.0004.t
+	desc = islam.0004.desc
+	scope = character
+	theme = diplomacy
+	override_background = {
+		event_background = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:attacker
+		animation = anger
+	}
+
+	option = {
+		name = islam.0004.option.a
+
+		trigger = {
+			highest_held_title_tier < tier_empire
+		}
+
+		set_character_faith = scope:attacker.faith
+		change_government = muslim_government
+		ai_chance = { base = 0.01 }
+
+		create_title_and_vassal_change = {
+            type = conquest
+            save_scope_as = change
+        }
+		change_liege = {
+			liege = scope:attacker
+			change = scope:change
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+	option = {
+		name = islam.0004.option.b
+		custom_tooltip = islam.0004.b.tooltip
+		add_piety = 300
+		ai_chance = { base = 10 }
+	}
+
+	option = {
+		name = islam.0004.option.c
+
+		trigger = {
+			highest_held_title_tier = tier_empire
+		}
+		set_character_faith = scope:attacker.faith
+		ai_chance = { base = 0.01 }
+	}
+}

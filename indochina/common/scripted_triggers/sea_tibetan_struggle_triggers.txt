@@ -1,0 +1,374 @@
+﻿
+##################################################
+# General Triggers
+
+tibetan_character_any_involvement_tibetan_struggle_trigger = {
+	OR = {
+		tibetan_character_involved_in_struggle_trigger = yes
+		tibetan_character_interloper_in_struggle_trigger = yes
+	}
+}
+
+tibetan_character_involved_in_struggle_trigger = {
+	any_character_struggle = {
+		involvement = involved
+		is_struggle_type = tibetan_struggle
+	}
+}
+
+tibetan_character_interloper_in_struggle_trigger = {
+	any_character_struggle = {
+		involvement = interloper
+		is_struggle_type = tibetan_struggle
+	}
+}
+
+tibetan_character_uninvolved_in_struggle_trigger = {
+	exists = struggle:tibetan_struggle
+	tibetan_character_interloper_in_struggle_trigger = no
+	tibetan_character_involved_in_struggle_trigger = no
+}
+
+##################################################
+# Decision Triggers
+
+##### Struggle Ending #####
+
+### Common
+
+# Checks a de jure kingdom of Tibet is completely controlled
+tibetan_struggle_ending_hold_de_jure_kingdom_trigger = {
+	any_held_title = {
+		tier = tier_kingdom
+		de_jure_liege = title:e_tibet
+		save_temporary_scope_as = tibetan_kingdom
+	}
+	trigger_if = {
+		limit = { exists = scope:tibetan_kingdom }
+		completely_controls = scope:tibetan_kingdom
+	}
+	trigger_else = { always = no }
+}
+
+# Checks less than half of Tibet owned
+tibetan_struggle_ending_percent_tibet_trigger = {
+	any_county_in_region = {
+		region = world_tibet
+		percent < tibetan_struggle_compromise_owned_percent_decimal_value
+		holder.top_liege = root
+	}
+}
+
+# Checks no more than half of Tibet is owned by another
+tibetan_struggle_ending_other_percent_tibet_trigger = {
+	struggle:tibetan_struggle = {
+		NOT = {
+			any_involved_ruler = {
+				exists = primary_title # Max figured out that is_independent_ruler causes errors if you are unlanded
+				NOT = { this = root }
+				is_independent_ruler = yes
+				primary_title = { is_mercenary_company = no }
+				any_county_in_region = {
+					region = world_tibet
+					percent > tibetan_struggle_compromise_involved_percent_decimal_value
+					holder.top_liege = prev
+				}
+			}
+		}
+	}
+}
+
+# Checks duchy is held by an independent ruler who owns at least half of it
+tibetan_struggle_ending_compromise_independent_duchy_trigger = {
+	tier = tier_duchy
+	# Is created
+	exists = holder
+	OR = {
+		# Is not the heartland of an existing kingdom
+		NOT = { title_capital_county = de_jure_liege.title_capital_county }
+		# Capital duke doesn't control kingdom, edge case
+		AND = {
+			exists = de_jure_liege.holder
+			NOT = { holder = de_jure_liege.holder }
+		}
+	}
+	# Is ruled by an independent duke
+	holder = {
+		is_independent_ruler = yes
+		save_temporary_scope_as = duchy_holder
+		primary_title = {
+			is_mercenary_company = no
+			OR = {
+				tier = tier_duchy
+				tier = tier_kingdom
+			}
+		}
+	}
+	OR = {
+		this = holder.primary_title
+		holder.primary_title.tier = tier_kingdom
+	}
+	# Duke rules at least half the de jure duchy
+	any_direct_de_jure_vassal_title = {
+		percent >= 0.5
+		holder.top_liege = scope:duchy_holder
+	}
+}
+
+# Checks duchy should be split from de jure kingdom
+tibetan_struggle_ending_compromise_split_duchy_trigger = {
+	tier = tier_duchy
+	# Has not been tampered with already
+	NOT = { is_in_list = duchy_kingdom }
+	# Is not created
+	NOT = { exists = holder }
+	# Is not heartland of an existing kingdom
+	NOT = { title_capital_county = de_jure_liege.title_capital_county }
+	save_temporary_scope_as = duchy
+	# Less than half is owned by de jure kingdom, if created
+	trigger_if = {
+		limit = { exists = scope:duchy.de_jure_liege.holder }
+		any_direct_de_jure_vassal_title = {
+			percent < 0.5
+			holder.top_liege = scope:duchy.de_jure_liege.holder.top_liege
+		}
+	}
+	trigger_else = { always = no }
+}
+
+# Checks titular duchy should be made into de jure kingdom
+tibetan_struggle_ending_compromise_titular_trigger = {
+	# Has not been tampered with already
+	NOT = { is_in_list = duchy_kingdom }
+	# Is created
+	exists = holder
+	# Is ruled by an independent duke
+	holder = {
+		is_independent_ruler = yes
+		primary_title = {
+			is_mercenary_company = no
+			tier = tier_duchy
+		}
+	}
+	# Titular duke holds at least half of any de jure duchy of Tibet
+	title:e_tibet = {
+		any_in_de_jure_hierarchy = {
+			tier = tier_duchy
+			any_direct_de_jure_vassal_title = {
+				percent >= 0.5
+				holder.top_liege = scope:special_duchy.holder
+			}
+		}
+	}
+}
+
+# Should title be created by ststus quo decision?
+tibetan_struggle_ending_compromise_create_title_trigger = {
+	NOR = {
+		this = title:e_tibet
+		exists = holder
+		is_in_list = assigned_title
+		# Only if no other same rank rulers in title (e.g. multiple kings under empire)
+		any_direct_de_jure_vassal_title = {
+			exists = holder
+			NOT = { holder = scope:new_owner_temp }
+		}
+	}
+}
+
+# Checks two cultures were Involved in the struggle that ended in Conciliation
+tibetan_struggle_conciliation_special_cultural_rules_trigger = {
+	has_global_variable = tibetan_struggle_conciliation_ending
+	any_in_global_list = {
+		variable = tibetan_struggle_ending_culture_list
+		this = $C1$.culture
+	}
+	any_in_global_list = {
+		variable = tibetan_struggle_ending_culture_list
+		this = $C2$.culture
+	}
+}
+
+# Checks two faiths were Involved in the struggle that ended in Conciliation
+are_holy_wars_disabled_by_struggle_conciliation_trigger = {
+	has_global_variable = tibetan_struggle_conciliation_ending
+	any_in_global_list = {
+		variable = tibetan_struggle_ending_faith_list
+		this = scope:attacker.faith
+	}
+	any_in_global_list = {
+		variable = tibetan_struggle_ending_faith_list
+		this = scope:defender.faith
+	}
+}
+
+# Checks if characters were both involved in struggle
+tibetan_struggle_conciliation_recipient_actor_involved_trigger = {
+	has_global_variable = tibetan_struggle_conciliation_ending
+	AND = {
+		scope:actor.capital_province = { geographical_region = world_tibet }
+		scope:recipient.capital_province = { geographical_region = world_tibet }
+		# Offer comes from an Involved culture/faith character
+		OR = {
+			any_in_global_list = {
+				variable = tibetan_struggle_ending_faith_list
+				this = scope:actor.faith
+			}
+			any_in_global_list = {
+				variable = tibetan_struggle_ending_culture_list
+				this = scope:actor.culture
+			}
+		}
+		# Recipient is from an Involved culture/faith
+		OR = {
+			any_in_global_list = {
+				variable = tibetan_struggle_ending_faith_list
+				this = scope:recipient.faith
+			}
+			any_in_global_list = {
+				variable = tibetan_struggle_ending_culture_list
+				this = scope:recipient.culture
+			}
+		}
+	}
+}
+
+# Checks if character was involved in struggle
+tibetan_struggle_conciliation_scope_uninvolved_trigger = {
+	has_global_variable = tibetan_struggle_conciliation_ending
+	OR = {
+		NOR = {
+			any_in_global_list = {
+				variable = tibetan_struggle_ending_faith_list
+				this = $SCOPE$.faith
+			}
+			any_in_global_list = {
+				variable = tibetan_struggle_ending_culture_list
+				this = $SCOPE$.culture
+			}
+		}
+		NOT = {
+			$SCOPE$.capital_province = { geographical_region = world_tibet }
+		}
+	}
+}
+
+tibetan_struggle_compromise_transfer_duchy_trigger = {
+	tier = tier_duchy
+	save_temporary_scope_as = transfer_duchy
+	# Duchy is completely controlled by its capital's holder's top_liege
+	exists = title_capital_county.holder.top_liege
+	title_capital_county.holder.top_liege = { completely_controls = scope:transfer_duchy }
+	# De jure liege does not control duchy
+	trigger_if = {
+		limit = { exists = kingdom.holder }
+		NOT = { kingdom = scope:transfer_duchy.title_capital_county.holder.top_liege.capital_county.kingdom }
+	}
+	# Is controlled by a kingdom tier
+	trigger_else = { title_capital_county.holder.top_liege.primary_title.tier >= tier_kingdom }
+	# Duchy is connected de_jure to holders kingdom
+	any_de_jure_county = {
+		any_title_to_title_neighboring_and_across_water_county = {
+			exists = kingdom.holder
+			kingdom.holder = scope:transfer_duchy.title_capital_county.holder.top_liege
+		}
+	}
+}
+
+tibetan_struggle_secure_tibetan_foothold_tibetan_kingdom_trigger = {
+	tier = tier_kingdom
+	de_jure_liege = title:e_tibet
+	root = { completely_controls = prev }
+	save_temporary_scope_as = tibetan_kingdom_temp
+}
+
+tibetan_struggle_secure_tibetan_foothold_faith_trigger = {
+	tibetan_struggle_secure_tibetan_foothold_faith_percent_value >= tibetan_struggle_secure_tibetan_foothold_faith_target_percent_value
+}
+
+tibetan_struggle_secure_tibetan_foothold_outsider_kingdom_trigger = {
+	any_de_jure_county = {
+		any_title_to_title_neighboring_and_across_water_county = {
+			NOT = { empire = title:e_tibet }
+			kingdom.holder = root
+		}
+	}
+}
+
+tibetan_struggle_tibetan_reclamation_should_vassalize_trigger = {
+	any_character_struggle = { is_struggle_type = tibetan_struggle }
+	any_held_title = { tier < scope:attacker.primary_title.tier }
+	any_realm_county = {
+		count = all
+		duchy = { is_in_list = target_titles }
+		any_county_struggle = { is_struggle_type = tibetan_struggle }
+	}
+}
+
+tibetan_struggle_any_realm_county_in_tibet_trigger = {
+	any_realm_county = { target_is_de_jure_liege_or_above = title:e_tibet }
+}
+
+fp2_tibetan_reclamation_vassalize_tibetan_trigger = {
+	tier = tier_county
+	holder = {
+		any_character_struggle = {
+			involvement = involved
+			is_struggle_type = tibetan_struggle
+		}
+		liege = scope:defender
+		NOT = { this = scope:defender }
+		capital_county = {
+			any_county_struggle = { is_struggle_type = tibetan_struggle }
+		}
+	}
+}
+
+fp2_tibetan_reclamation_involved_county_trigger = {
+	any_realm_county = {
+		any_county_struggle = { is_struggle_type = tibetan_struggle }
+	}
+}
+
+fp2_tibetan_reclamation_vassalize_vassal_trigger = {
+	primary_title.tier >= tier_county
+	primary_title.tier < scope:attacker.primary_title.tier
+	any_character_struggle = { is_struggle_type = tibetan_struggle }
+	capital_county = {
+		duchy = { is_in_list = target_titles }
+	}
+	any_sub_realm_county = {
+		count = all
+		duchy = { is_in_list = target_titles }
+		any_county_struggle = { is_struggle_type = tibetan_struggle }
+	}
+}
+
+tibetan_struggle_enforce_truce_war_leader_trigger = {
+	custom_tooltip = {
+		text = fp2_enforce_truce_war_with_not_involved_tt
+		any_character_struggle = {
+			involvement = involved
+		}
+	}
+	custom_tooltip = {
+		text = fp2_enforce_truce_tier_difference_tt
+		tier_difference = {
+			target = scope:actor
+			value <= 0
+		}
+	}
+	NOR = {
+		this = scope:recipient
+		this = scope:actor
+	}
+	custom_tooltip = {
+		text = fp2_enforce_truce_liege_or_independent_tt
+		OR = {
+			scope:recipient = { is_independent_ruler = yes }
+			scope:recipient.top_liege = scope:actor.top_liege
+			is_independent_ruler = yes
+			top_liege = scope:actor.top_liege
+		}
+	}
+}

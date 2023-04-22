@@ -1,0 +1,294 @@
+﻿grand_raid_cb = {
+	group = raid
+
+	allowed_for_character = {
+		has_government = nomadic_government
+	}
+
+	allowed_for_character_display_regardless = {
+		prestige_level >= medium_prestige_level
+		is_at_war = no
+		NOT = {
+			has_character_flag = 5_years_raid
+		}
+	}
+
+	allowed_against_character = {
+		highest_held_title_tier >= tier_kingdom
+		any_vassal_or_below = {
+			NOT = {
+				THIS = scope:attacker
+			}
+		}
+	}
+
+	target_titles = neighbor_land
+	target_title_tier = county
+	should_show_war_goal_subview = yes
+	combine_into_one = yes
+	mutually_exclusive_titles = { always = yes }
+
+	on_invalidated = {
+		scope:attacker = {
+			remove_character_flag = 5_years_raid
+		}
+	}
+	on_invalidated_desc = msg_grand_raid_war_invalidated_message
+
+	on_declaration = {
+		on_declared_war = yes
+		scope:attacker = {
+			add_character_flag = {
+				flag = 5_years_raid
+				years = 5
+			}
+		}
+		scope:defender = {
+			set_variable = {
+				name = realm_size
+				value = 0
+			}
+			every_realm_county = {
+				scope:defender = {
+					change_variable = {
+						name = realm_size
+						add = 1
+					}
+				}
+			}
+			change_variable = {
+				name = realm_size
+				multiply = 10
+			}
+			if = {
+				limit = {
+					var:realm_size = 0
+				}
+				change_variable = {
+					name = realm_size
+					add = 200
+				}
+			}
+		}
+	}
+
+	cost = {
+		piety = {
+			value = 0
+			if = {
+				limit = {
+					scope:attacker.faith = scope:defender.faith
+					scope:defender = {
+						has_government = theocracy_government
+					}
+				}
+				add = {
+					value = 200
+					desc = CB_ATTACKER_THEOCRACY
+				}
+			}
+			if = {
+				limit = {
+					scope:attacker = {
+						has_perk = bellum_justum_perk
+					}
+				}
+				multiply = {
+					add = bellum_justum_discount_percentage
+					divide = 100
+					desc = CB_ATTACKER_BELLUM_JUSTUM
+				}
+			}
+			if = {
+				limit = {
+					scope:attacker = {
+						has_dynasty = yes
+						dynasty = {
+							has_dynasty_perk = warfare_legacy_2
+						}
+					}
+				}
+				multiply = {
+					value = warfare_legacy_2_discount
+					desc = CB_ATTACKER_DYNASTY_WARFARE
+				}
+			}
+			if = {
+				limit = {
+					has_game_rule = no_cost_casus_belli_costs
+				}
+				multiply = {
+					value = 0
+					desc = CB_GAME_RULE_NO_COST
+				}
+			}
+		}
+		prestige = {
+			value = 200
+			if = {
+				limit = {
+					NOT = { scope:defender.faith = scope:attacker.faith }
+				}
+				add = {
+					value = 200
+					desc = CB_COST_DIFFERENT_FAITH
+				}
+			}
+			if = {
+				limit = {
+					scope:attacker = {
+						has_perk = bellum_justum_perk
+					}
+				}
+				multiply = {
+					add = bellum_justum_discount_percentage
+					divide = 100
+					desc = CB_ATTACKER_BELLUM_JUSTUM
+				}
+			}
+			if = {
+				limit = {
+					scope:attacker = {
+						has_dynasty = yes
+						dynasty = {
+							has_dynasty_perk = warfare_legacy_2
+						}
+					}
+				}
+				multiply = {
+					value = warfare_legacy_2_discount
+					desc = CB_ATTACKER_DYNASTY_WARFARE
+				}
+			}
+			if = {
+				limit = {
+					has_game_rule = no_cost_casus_belli_costs
+				}
+				multiply = {
+					value = 0
+					desc = CB_GAME_RULE_NO_COST
+				}
+			}
+		}
+	}
+
+	on_victory_desc = {
+		triggered_desc = {
+			trigger = { scope:attacker = { is_local_player = yes } }
+			desc = grand_raid_war_warning_desc
+		}
+	}
+
+	on_victory = {
+		custom_tooltip = GRAND_RAID_TOOLTIP
+		if = {
+			limit = {
+				scope:defender = {
+					NOT = {
+						exists = var:realm_size
+					}
+				}
+			}
+			scope:defender = {
+				set_variable = {
+					name = realm_size
+					value = 0
+				}
+				every_realm_county = {
+					scope:defender = {
+						change_variable = {
+							name = realm_size
+							add = 1
+						}
+					}
+				}
+				change_variable = {
+					name = realm_size
+					multiply = 10
+				}
+				if = {
+					limit = {
+						var:realm_size = 0
+					}
+					change_variable = {
+						name = realm_size
+						add = 200
+					}
+				}
+			}
+		}
+		scope:defender = {
+			pay_long_term_gold = {
+				target = scope:attacker
+				gold = var:realm_size
+			}
+			add_prestige = -500
+		}
+		scope:attacker = {
+			add_prestige = scope:defender.var:realm_size
+			add_prestige = 500
+			add_dynasty_prestige = 300
+		}
+
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+		setup_invasion_cb = {
+			titles = target_titles
+			attacker = scope:attacker
+			defender = scope:defender
+			change = scope:change
+			take_occupied = yes
+		}
+		resolve_title_and_vassal_change = scope:change
+		scope:defender = {
+			remove_variable = realm_size
+		}
+
+
+	}
+
+	on_white_peace_desc = {
+	}
+
+	on_white_peace = {
+		scope:attacker = {
+			add_prestige = -200
+		}
+		scope:defender = {
+			remove_variable = realm_size
+		}
+	}
+
+	on_defeat_desc = {
+	}
+
+	on_defeat = {
+
+		scope:attacker = {
+			add_prestige = -500
+			add_dynasty_prestige = -50
+		}
+
+		on_lost_aggression_war_discontent_loss = yes
+		scope:defender = {
+			remove_variable = realm_size
+		}
+	}
+
+	transfer_behavior = transfer
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name = GRAND_RAID_WAR_NAME
+	war_name_base = GRAND_RAID_WAR_NAME_BASE
+	cb_name = GRAND_RAID_CB
+
+	interface_priority = 100
+}

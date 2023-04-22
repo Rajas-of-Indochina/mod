@@ -1,0 +1,138 @@
+﻿
+three_teachings_convert_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_three_teachings.dds"
+
+	cooldown = { days = 3650 }
+
+	is_shown = {
+		NOT = { faith.religious_head = root }
+		OR = {
+			faith = faith:zenzong
+			religion = religion:taoism_religion
+		}
+	}
+
+	effect = {
+		trigger_event = sea_religion.0001
+	}
+
+	cost = {
+		piety = 100
+	}
+
+	ai_check_interval = 1
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+
+		# Weight up for traits.
+		modifier = {
+			add = -1000
+			has_trait = zealous
+		}
+	}
+}
+
+# Adopt bureaucracy
+# Get recognized by China (get truce with China if you're another empire on their border, a la Liao)
+
+#convert_to_chinese_bureaucracy_decision = {
+#	picture = "gfx/interface/illustrations/decisions/decision_chinese_bureaucracy.dds"
+#	major = yes
+#	desc = convert_to_chinese_bureaucracy_decision_desc
+#
+#	ai_check_interval = 36
+#
+#	is_shown = {
+#		highest_held_title_tier = tier_empire
+#		OR = {
+#			has_government = feudal_government
+#			has_government = nomadic_government
+#			has_government = tribal_government
+#			has_government = mandala_government
+#			has_government = clan_government
+#		}
+#	}
+#
+#	is_valid = {
+#	}
+#
+#	cost = {
+#		gold = 300
+#	}
+#
+#	effect = {
+#		change_government = chinese_government
+#
+#		every_vassal_or_below = {
+#			limit = {
+#				trigger_if = {
+#					limit = { root = { has_government = feudal_government } }
+#					has_government = feudal_government
+#				}
+#				trigger_if = {
+#					limit = { root = { has_government = tribal_government } }
+#					has_government = tribal_government
+#				}
+#				trigger_if = {
+#					limit = { root = { has_government = mandala_government } }
+#					has_government = mandala_government
+#				}
+#				trigger_if = {
+#					limit = { root = { has_government = clan_government } }
+#					has_government = clan_government
+#				}
+#			}
+#
+#			change_government = chinese_government
+#		}
+#	}
+#
+#	ai_potential = {
+#		always = yes
+#	}
+#
+#	ai_will_do = {
+#		base = 100
+#	}
+#}
+
+# Eschew bureaucracy
+# Do if either independent or imperial authority is very low or you have a strong hook on the emperor (?)
+
+# convert_to_feudal_from_chinese_bureaucracy_decision = {
+# 	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+# 	major = yes
+# 	desc = convert_to_chinese_bureaucracy_decision_desc
+#
+# 	ai_check_interval = 36
+#
+# 	is_shown = {
+# 		is_independent_ruler = yes
+# 		highest_held_title_tier <= tier_kingdom
+# 		has_government = chinese_government
+# 	}
+#
+# 	is_valid = {
+# 	}
+#
+# 	cost = {
+# 		prestige = 150
+# 	}
+#
+# 	effect = {
+# 		change_government = feudal_government
+# 	}
+#
+# 	ai_potential = {
+# 		always = yes
+# 	}
+#
+# 	ai_will_do = {
+# 		base = 100
+# 	}
+# }

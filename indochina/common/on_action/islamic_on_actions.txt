@@ -1,0 +1,281 @@
+﻿on_game_start = {
+	on_actions = {
+		on_caliphate_start
+	}
+}
+
+on_caliphate_start = {
+	effect = {
+		every_ruler = {
+			limit = {
+				NOT = {exists = var:cal_authority}
+				has_government = caliphate_government
+			}
+			save_scope_as = caliph
+			set_variable = {
+				name = cal_authority
+				value = 10
+			}
+			set_variable = {
+				name = zakah_balance
+				value = 0
+			}
+
+			every_realm_province = {
+				limit = {
+					barony = { is_holy_site_of = scope:caliph.faith }
+				}
+
+				scope:caliph = {
+					change_variable = {
+						name = cal_authority
+						add = 2
+					}
+				}
+			}
+
+			if = {
+				limit = {
+					NOT = { any_realm_province = { barony = { is_holy_site_of = scope:caliph.faith } } }
+				}
+				change_variable = {
+					name = cal_authority
+					subtract = 2
+				}
+			}
+
+			if = {
+				limit = {
+					piety_level = max_piety_level
+				}
+				change_variable = {
+					name = cal_authority
+					add = 5
+				}
+			}
+			if = {
+				limit = {
+					piety_level = very_high_piety_level
+				}
+				change_variable = {
+					name = cal_authority
+					add = 2
+				}
+			}
+			if = {
+				limit = {
+					piety_level = high_piety_level
+				}
+				change_variable = {
+					name = cal_authority
+					add = 1
+				}
+			}
+			if = {
+				limit = {
+					piety_level = low_piety_level
+				}
+				change_variable = {
+					name = cal_authority
+					subtract = 2
+				}
+			}
+
+			clamp_variable = {
+				name = cal_authority
+				max = 100
+				min = 0
+			}
+
+			while = {
+				count = var:cal_authority
+				add_character_modifier = caliph_auth
+			}
+
+		}
+	}
+	on_actions = {
+		delay = { years = 1 }
+		on_yearly_caliphate
+	}
+	on_actions = {
+		delay = { years = 1 }
+		on_yearly_zakah
+	}
+}
+
+on_yearly_caliphate = {
+	effect = {
+		every_ruler = {
+			if = {
+				limit = {
+					NOT = {exists = var:cal_authority}
+					has_government = caliphate_government
+				}
+				set_variable = {
+					name = cal_authority
+					value = 10
+				}
+			}
+
+			if = {
+				limit = {
+					NOT = {exists = var:zakah_balance}
+					has_government = caliphate_government
+				}
+				set_variable = {
+					name = zakah_balance
+					value = 0
+				}
+			}
+
+			if = {
+				limit = {
+					NOT = {has_government = caliphate_government}
+					exists = var:zakah_balance
+				}
+				remove_variable = zakah_balance
+				remove_variable = cal_authority
+				remove_all_character_modifier_instances = caliph_auth
+			}
+		}
+
+		every_ruler = {
+			limit = {
+				exists = var:cal_authority
+			}
+
+			save_scope_as = caliph
+
+			every_realm_province = {
+				limit = {
+					barony = { is_holy_site_of = scope:caliph.faith }
+				}
+
+				scope:caliph = {
+					change_variable = {
+						name = cal_authority
+						add = 0.3
+					}
+				}
+			}
+
+			if = {
+				limit = {
+					NOT = { any_realm_province = { barony = { is_holy_site_of = scope:caliph.faith } } }
+				}
+				change_variable = {
+					name = cal_authority
+					subtract = 1
+				}
+			}
+
+			if = {
+				limit = {
+					piety_level = max_piety_level
+				}
+				change_variable = {
+					name = cal_authority
+					add = 3
+				}
+			}
+			if = {
+				limit = {
+					piety_level = very_high_piety_level
+				}
+				change_variable = {
+					name = cal_authority
+					add = 2
+				}
+			}
+			if = {
+				limit = {
+					piety_level = high_piety_level
+				}
+				change_variable = {
+					name = cal_authority
+					add = 1
+				}
+			}
+			if = {
+				limit = {
+					piety_level = medium_piety_level
+				}
+				change_variable = {
+					name = cal_authority
+					add = 0.5
+				}
+			}
+			if = {
+				limit = {
+					piety_level = low_piety_level
+				}
+				change_variable = {
+					name = cal_authority
+					subtract = 1
+				}
+			}
+
+			every_relation = {
+				type = preferred_caliph
+				PREV = {
+					change_variable = {
+						name = cal_authority
+						add = 0.1
+					}
+				}
+			}
+
+			set_variable = {
+				name = cal_authority_temp
+				value = cal_authority_target
+			}
+			change_variable = {
+				name = cal_authority_temp
+				subtract = var:cal_authority
+			}
+			change_variable = {
+				name = cal_authority_temp
+				multiply = 0.3
+			}
+			change_variable = {
+				name = cal_authority
+				add = var:cal_authority_temp
+			}
+
+			clamp_variable = {
+				name = cal_authority
+				max = 100
+				min = 0
+			}
+
+			remove_all_character_modifier_instances = caliph_auth
+			while = {
+				count = var:cal_authority
+				add_character_modifier = caliph_auth
+			}
+		}
+	}
+	on_actions = {
+		delay = { years = 1 }
+		on_yearly_caliphate
+	}
+}
+
+on_yearly_zakah = {
+	effect = {
+		every_ruler = {
+			limit = {
+				has_religion = religion:islam_religion
+			}
+			trigger_event = {
+				id = islam.0002
+				days = {5 10}
+			}
+		}
+	}
+	on_actions = {
+		delay = { years = 1 }
+		on_yearly_zakah
+	}
+}

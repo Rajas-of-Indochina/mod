@@ -348,11 +348,13 @@ tradition_confucian_philosophy = {
 	}
 	can_pick = {
 		has_cultural_pillar = heritage_chinese
+		NOT = { any_in_list = { list = traits this = flag:tradition_sinicized_culture } }
 	}
 
 	parameters = {
 		innovation_from_learning_traits = yes
 		vassals_more_likely_accept_punishments = yes
+		unlock_bureaucracy_param = yes
 	}
 	character_modifier = {
 		monthly_learning_lifestyle_xp_gain_mult = 0.1
@@ -399,133 +401,6 @@ tradition_confucian_philosophy = {
 				}
 			}
 			multiply = 0
-		}
-	}
-}
-
-tradition_austronesian_hunting = {
-	category = combat
-
-	layers = {
-		0 = martial
-		1 = indian
-		4 = soldiers4.dds
-	}
-
-	#Replaces Adaptive Skirmishers
-	is_shown = {
-		OR = {
-			has_cultural_pillar = heritage_dayak
-			has_cultural_pillar = heritage_sulawesi
-			has_cultural_pillar = heritage_filipino
-			has_cultural_pillar = heritage_lumad
-			has_cultural_pillar = heritage_formosan
-			has_cultural_pillar = heritage_moluccan
-		}
-		NOT = { has_cultural_tradition = tradition_adaptive_skirmishing }
-	}
-	can_pick = {
-	}
-
-	character_modifier = {
-		skirmishers_damage_mult = 0.05
-		skirmishers_toughness_mult = 0.1
-		skirmishers_maintenance_mult = -0.05
-		archers_damage_mult = 0.1
-		archers_toughness_mult = 0.05
-		archers_maintenance_mult = -0.05
-		enemy_terrain_advantage = -0.25
-		heavy_cavalry_damage_mult = -0.1
-		heavy_cavalry_toughness_mult = -0.05
-		heavy_infantry_damage_mult = -0.1
-		heavy_infantry_toughness_mult = -0.05
-	}
-
-	parameters = {
-		unlock_maa_austronesian_hunters = yes
-	}
-
-	cost = {
-		prestige = {
-			add = {
-				value = tradition_base_cost
-				desc = BASE
-				format = "BASE_VALUE_FORMAT"
-			}
-			if = {
-				limit = {
-					NOR = {
-						any_in_list = { list = traits this = flag:ethos_bellicose }
-						any_in_list = { list = traits this = flag:ethos_spiritual }
-						any_in_list = { list = traits this = flag:ethos_stoic }
-					}
-				}
-				add = {
-					value = tradition_incompatible_ethos_penalty
-					desc = not_bellicose_spiritual_or_stoic_desc
-				}
-			}
-			if = {
-				limit = {
-					NOT = {
-						scope:character = {
-							number_maa_soldiers_of_base_type = {
-								type = skirmishers
-								value >= 500
-							}
-							number_maa_soldiers_of_base_type = {
-								type = archers
-								value >= 500
-							}
-						}
-					}
-				}
-				add = {
-					value = tradition_unfulfilled_criteria_penalty
-					desc = culture_head_small_soldiers_desc
-				}
-			}
-
-			multiply = tradition_replacement_cost_if_relevant
-		}
-	}
-
-	ai_will_do = {
-		value = 100
-		if = {
-			limit = {
-				scope:character = {
-					OR = {
-						number_maa_soldiers_of_base_type = {
-							type = heavy_infantry
-							value >= 200
-						}
-						number_maa_soldiers_of_base_type = {
-							type = pikemen
-							value >= 200
-						}
-					}
-				}
-			}
-			multiply = 0
-		}
-		if = {
-			limit = {
-				OR = {
-					culture_has_heavy_infantry_maa = yes
-					culture_has_heavy_cavalry_maa = yes
-				}
-			}
-			multiply = 0
-		}
-		if = {
-			limit = {
-				NOR = {
-					culture_has_archer_maa = yes
-					culture_has_skirmisher_maa = yes
-				}
-			}
-			multiply = 0.25
 		}
 	}
 }
@@ -801,5 +676,233 @@ tradition_disloyal_subjects = {
 
 	ai_will_do = {
 		value = 100
+	}
+}
+
+tradition_balbals = {
+	category = ritual
+
+	layers = {
+		0 = steward
+		1 = western
+		4 = runestone.dds
+	}
+
+	# Runestones are available in a slightly reduced form in the base title, so we let you access this tradition regardless of whether you have FP1 or not.
+	is_shown = {
+		has_cultural_parameter = heritage_group_altaic
+	}
+	can_pick = {
+		custom_tooltip = {
+			text = cannot_have_tradition_fp1_northern_stories
+			NOT = { any_in_list = { list = traits this = flag:tradition_fp1_northern_stories } }
+		}
+	}
+
+	parameters = {
+		has_access_to_runestones = yes
+	}
+
+	cost = {
+		prestige = {
+			# Base cost.
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			# Ethos requirement.
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_bellicose }
+						any_in_list = { list = traits this = flag:ethos_bureaucratic }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_or_bureaucratic_desc
+				}
+			}
+			# Poet, Arrogant, or Journaller requirement.
+			if = {
+				limit = {
+					trigger_if = {
+						limit = {
+							scope:character = {
+								is_ai = no
+							}
+						}
+						NOT = {
+							any_ruler = {
+								count >= 5
+								culture = prev
+								primary_title.tier >= tier_county
+								OR = {
+									has_trait = poet
+									has_trait = arrogant
+									has_trait = journaller
+								}
+							}
+						}
+					}
+					trigger_else = {
+						always = no
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = rulers_lacks_storytelling_traits_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+	}
+}
+
+tradition_steppe_confederations = {
+	category = realm
+
+	layers = {
+		0 = diplo
+		1 = western
+		4 = diplomat.dds
+	}
+
+	is_shown = {
+		has_cultural_parameter = heritage_group_altaic
+	}
+	parameters = {
+		has_steppe_alliances = yes
+		extra_language_cap_2 = yes
+	}
+	character_modifier = {
+		learn_language_scheme_power_mult = 0.25
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = { value = 100 }
+}
+
+tradition_sinicized_culture = {
+	category = regional
+
+	layers = {
+		0 = learning
+		1 = indian
+		4 = philosopher.dds
+	}
+
+	is_shown = {
+		NOT = { has_cultural_pillar = heritage_chinese }
+		OR = {
+			has_cultural_tradition = tradition_sinicized_culture
+			any_parent_culture = { has_cultural_pillar = heritage_chinese }
+			any_culture_county = {
+				any_neighbor_county = { culture = { has_cultural_pillar = heritage_chinese } }
+			}
+		}
+	}
+
+	can_pick = {
+		NOT = { any_in_list = { list = traits this = flag:tradition_confucian_philosophy } }
+		NOT = { has_cultural_pillar = heritage_chinese }
+	}
+
+	parameters = {
+		unlock_bureaucracy_param = yes
+		# Makes your culture count as part of the Chinese heritage group, thanks CCU!
+		heritage_group_chinese = yes
+		heritage_family_east_asian = yes
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_double_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_communal }
+						any_in_list = { list = traits this = flag:ethos_courtly }
+						any_in_list = { list = traits this = flag:ethos_bureaucratic }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_courtly_or_bureaucratic_desc
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						culture_head = { has_court_language = language_chinese }
+						any_in_list = {
+							list = traits
+							this = flag:language_chinese
+						}
+					}
+				}
+				subtract = {
+					value = 1000
+					desc = SINOPHONE
+				}
+			}
+			if = {
+				# This is much cheaper for cultures that already have an easy time hybridizing
+				limit = {
+					has_cultural_parameter = cheaper_to_hybridize
+				}
+				multiply = {
+					value = 0.5
+					desc = CULTURAL_FLEXIBILITY
+				}
+			}
+			if = {
+				# ...And pricier for those that have a hard time.
+				limit = {
+					has_cultural_parameter = harder_to_hybridize
+				}
+				multiply = {
+					value = 2
+					desc = CULTURAL_INFLEXIBILITY
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOR = {
+					any_in_list = { list = traits this = flag:ethos_communal }
+					any_in_list = { list = traits this = flag:ethos_courtly }
+					any_in_list = { list = traits this = flag:ethos_bureaucratic }
+				}
+			}
+			multiply = 0
+		}
 	}
 }

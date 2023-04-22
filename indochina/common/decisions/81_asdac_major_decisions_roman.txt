@@ -1,0 +1,283 @@
+﻿#Restoring the Byzantine Empire
+restore_byzantine_empire_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+
+	desc = restore_byzantine_empire_decision_desc
+	selection_tooltip = restore_byzantine_empire_decision_effect_tooltip
+	major = yes
+
+	ai_check_interval = 120
+
+	is_shown = {
+		game_start_date = 1204.5.16
+		is_ruler = yes
+		is_landed = yes
+		has_fp2_dlc_trigger = no
+		NOT = { exists = title:e_byzantium.holder }
+		OR = {
+			has_title = title:e_nicaea
+			has_title = title:k_nikaea
+			has_title = title:k_epirus
+			has_title = title:k_trebizond
+			has_title = title:k_thessalonika
+			has_title = title:k_hellas
+			has_title = title:k_anatolia
+		}
+		NOT = { has_title = title:e_latin_empire }
+		NOT = {  #Can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_roman_empire
+			}
+		}
+		OR = {
+			has_government = feudal_government
+			has_government = republic_government
+			has_government = clan_government
+		}
+	}
+
+	is_valid = {
+		prestige_level >= very_high_prestige_level
+		religion = religion:christianity_religion
+		OR = {
+			culture = culture:greek
+			culture = { has_cultural_pillar = language_greek }
+		}
+		completely_controls = title:d_thrace
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+	}
+
+	effect = {
+		#custom_tooltip = restore_byzantine_empire_decision_effect_tooltip
+		show_as_tooltip = {
+			create_byzantine_empire_scripted_effect = yes
+		}
+		trigger_event = {
+			id = asdac_roman_restoration.1001
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+#Restoring Poser Roman Empire (Latin Empire)
+restore_roman_empire_latin_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+
+	desc = restore_roman_empire_latin_decision_desc
+	selection_tooltip = restore_roman_empire_latin_decision_tooltip
+	major = yes
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:e_latin_empire
+		NOT = { has_title = title:e_byzantium }
+		NOT = { has_title = title:e_hre }
+		NOT = { has_title = title:e_italy }
+		NOT = { has_title = title:e_nicaea }
+		NOT = {  #Can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_roman_empire
+			}
+		}
+		OR = {
+			has_government = feudal_government
+			has_government = republic_government
+			has_government = clan_government
+		}
+	}
+
+	is_valid = {
+		prestige_level >= max_prestige_level
+
+		faith = faith:catholic
+
+		completely_controls = title:d_latium
+		completely_controls = title:d_venice
+		completely_controls = title:d_romagna
+		completely_controls = title:d_sicily
+		completely_controls = title:d_genoa
+		completely_controls = title:d_capua
+		completely_controls = title:d_apulia
+		completely_controls = title:d_thrace
+		completely_controls = title:d_antioch
+		completely_controls = title:d_palestine
+		completely_controls = title:d_alexandria
+		completely_controls = title:d_athens
+		completely_controls = title:d_tunis
+		completely_controls = title:d_croatia
+		completely_controls = title:d_thessalonika
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+	}
+
+	effect = {
+		custom_tooltip = restore_roman_empire_latin_decision_effect_tooltip
+		show_as_tooltip = {
+			create_roman_empire_latin_scripted_effect = yes
+		}
+		trigger_event = {
+			id = asdac_roman_restoration.2001
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_roman_empire
+			}
+			set_global_variable = {
+				name = flag_restored_roman_empire
+				value = root
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+ottomans_claim_byzantium_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+
+	desc = ottomans_claim_byzantium_decision_desc
+	selection_tooltip = ottomans_claim_byzantium_decision_tooltip
+	major = yes
+
+	ai_check_interval = 120
+
+	is_shown = {
+		NOT = { exists = title:e_byzantium.holder }
+		is_ruler = yes
+		is_landed = yes
+		highest_held_title_tier <= tier_kingdom
+		highest_held_title_tier > tier_county
+		#has_title = title:k_ottoman
+		dynasty = dynasty:7
+		NOT = {  #Can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_ottomans_claimed_byzantium
+			}
+		}
+	}
+
+	is_valid = {
+		prestige_level >= high_prestige_level
+		#piety_level >= high_piety_level
+		completely_controls = title:d_thrace
+		completely_controls = title:d_opsikion
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+		is_independent_ruler = yes
+	}
+
+	effect = {
+		give_nickname = nick_the_conqueror
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		title:e_byzantium = {
+			change_title_holder = {
+				holder = root
+				change = scope:change
+			}
+			#copy_title_history = title:k_ottoman
+		}
+		resolve_title_and_vassal_change = scope:change
+		hidden_effect = { set_primary_title_to = title:e_byzantium }
+		destroy_title = title:k_ottoman
+
+		#custom_tooltip = form_rum_sultanate_decision_effect_tooltip
+		#show_as_tooltip = {
+			#create_rum_scripted_effect = yes
+		#}
+		#trigger_event = {
+			#id = middle_east_decisions.0014
+		#}
+		if = { #Automatically move capital to Byzantion
+			limit = {
+				NOT = { capital_county = { this = title:c_byzantion } }
+			}
+			hidden_effect = {
+				if = { #Usurp if not held personally.
+					limit = {
+						NOT = { this = title:c_byzantion.holder }
+					}
+					create_title_and_vassal_change = {
+						type = returned
+						save_scope_as = change
+						add_claim_on_loss = no
+					}
+					title:c_byzantion = {
+						change_title_holder = {
+							holder = root
+							change = scope:change
+						}
+					}
+					resolve_title_and_vassal_change = scope:change
+				}
+			}
+			root = { set_realm_capital = title:c_byzantion }
+		}
+
+		#hidden_effect = {
+		#	title:e_byzantium = {
+		#		set_coa = k_ottoman
+		#		set_color_from_title = title:k_ottoman
+		#	}
+		#}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_ottomans_claimed_byzantium
+			}
+			set_global_variable = {
+				name = flag_ottomans_claimed_byzantium
+				value = root
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

@@ -24,16 +24,6 @@ declare_war_interaction = {
                 is_at_war_with = scope:recipient
             }
         }
-        scope:recipient = {
-            NOT = {
-                AND = {
-                    has_variable = my_suzerain
-                    var:my_suzerain = {
-                        this = scope:actor
-                    }
-                }
-            }
-        }
     }
 
     is_valid_showing_failures_only = {
@@ -89,6 +79,78 @@ declare_war_interaction = {
                 limit = { is_imprisoned = yes }
                 NOT = {
                     imprisoner = scope:actor
+                }
+            }
+        }
+        trigger_if = {
+            limit = {
+                has_game_rule = imperial_war_disabled
+            }
+            custom_description = {
+                text = isnt_under_an_imperial_empire
+                NOT = {
+                    AND = {
+                        scope:actor = {
+                            AND = {
+                                OR = {
+                                    has_government = imperial_government
+                                    has_government = autocratic_government
+                                    has_government = legion_government
+                                }
+                                is_independent_ruler = no
+                                liege = {
+                                    any_vassal = {
+                                        THIS = scope:recipient
+                                    }
+                                }
+                            }
+                        }
+                        scope:recipient = {
+                            AND = {
+                                OR = {
+                                    has_government = imperial_government
+                                    has_government = autocratic_government
+                                    has_government = legion_government
+                                }
+                                is_independent_ruler = no
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        trigger_if = {
+            limit = {
+                scope:actor = {
+                    is_ai = yes
+                }
+            }
+            scope:actor = {
+                NOT = {
+                    AND = {
+                        is_independent_ruler = no
+                        OR = {
+                            has_government = imperial_government
+                            has_government = autocratic_government
+                        }
+                    }
+                }
+            }
+        }
+        trigger_if = {
+            limit = {
+                scope:actor = {
+                    has_variable = my_suzerain
+                }
+            }
+            custom_tooltip = {
+                text = declare_war_target_is_suzerain
+                scope:actor = {
+                    NOT = {
+                        var:my_suzerain = {
+                            this = scope:recipient
+                        }
+                    }
                 }
             }
         }
@@ -963,7 +1025,7 @@ ruler_offer_tribute_to_recipient = {
     }
 }
 
-free_tributary = {
+free_tributary_interaction = {
     category = interaction_category_diplomacy
     use_diplomatic_range = yes
 
@@ -974,7 +1036,6 @@ free_tributary = {
             NOT = {
                 has_variable = my_suzerain
             }
-            is_at_war = no
             NOT = { this = scope:recipient }
         }
         scope:recipient = {
@@ -985,23 +1046,24 @@ free_tributary = {
         }
     }
 
+    is_valid_showing_failures_only = {
+        scope:actor = {
+            is_at_war = no
+        }
+    }
+
     auto_accept = {
         always = yes
     }
 
     on_accept = {
         scope:recipient = {
-            remove_variable = my_suzerain
-
-            scope:actor = {
-                remove_list_variable = { name = permanent_tributaries target = prev }
+            free_tributary_effect = yes
+            add_truce_both_ways = {
+                character = character:actor
+                days = 365
+                name = TRUCE_BROKEN_TRIBUTARY
             }
-            scope:actor = {
-                remove_list_variable = { name = all_tributaries target = prev }
-            }
-        }
-        scope:actor = {
-            trigger_event = { id = tributaries.4 }
         }
     }
 
@@ -1010,59 +1072,62 @@ free_tributary = {
     }
 }
 
-annex_tributary = {
-    category = interaction_category_diplomacy
-    use_diplomatic_range = no
-
-    desc = annex_tributary_interaction_desc
-
-    is_shown = {
-        scope:actor = {
-            is_target_in_variable_list = { name = permanent_tributaries target = scope:recipient }
-            NOT = {
-                this = scope:recipient
-            }
-        }
-        exists = scope:recipient.var:possible_vasalisation_year
-    }
-
-    is_valid_showing_failures_only = {
-        scope:actor.primary_title.tier > scope:recipient.primary_title.tier
-    }
-
-    on_accept = {
-        scope:recipient = {
-            custom_description = {
-                text = annex_tributary_desc
-                subject = scope:recipient
-                create_title_and_vassal_change = {
-                    type = independency
-                    save_scope_as = change
-                }
-                change_liege = { liege = scope:actor change = scope:change }
-                resolve_title_and_vassal_change = scope:change
-                remove_variable = my_suzerain
-                scope:actor = {
-                    remove_list_variable = { name = permanent_tributaries target = prev }
-                }
-            }
-        }
-    }
-
-    ai_accept = {
-        base = -10
-
-        modifier = {
-            add = -100
-            scope:recipient.var:possible_vasalisation_year <= current_year
-            desc = trib_annexation_too_early
-        }
-    }
-
-    ai_will_do = {
-        base = 10
-    }
-}
+# Do this
+# Use a strong hook
+# OR replace with trib contract interface
+# annex_tributary = {
+#     category = interaction_category_diplomacy
+#     use_diplomatic_range = no
+#
+#     desc = annex_tributary_interaction_desc
+#
+#     is_shown = {
+#         scope:actor = {
+#             is_target_in_variable_list = { name = permanent_tributaries target = scope:recipient }
+#             NOT = {
+#                 this = scope:recipient
+#             }
+#         }
+#         exists = scope:recipient.var:possible_vasalisation_year
+#     }
+#
+#     is_valid_showing_failures_only = {
+#         scope:actor.primary_title.tier > scope:recipient.primary_title.tier
+#     }
+#
+#     on_accept = {
+#         scope:recipient = {
+#             custom_description = {
+#                 text = annex_tributary_desc
+#                 subject = scope:recipient
+#                 create_title_and_vassal_change = {
+#                     type = independency
+#                     save_scope_as = change
+#                 }
+#                 change_liege = { liege = scope:actor change = scope:change }
+#                 resolve_title_and_vassal_change = scope:change
+#                 remove_variable = my_suzerain
+#                 scope:actor = {
+#                     remove_list_variable = { name = permanent_tributaries target = prev }
+#                 }
+#             }
+#         }
+#     }
+#
+#     ai_accept = {
+#         base = -10
+#
+#         modifier = {
+#             add = -100
+#             scope:recipient.var:possible_vasalisation_year <= current_year
+#             desc = trib_annexation_too_early
+#         }
+#     }
+#
+#     ai_will_do = {
+#         base = 10
+#     }
+# }
 
 #release vassal as tributary / copy of 'grant independence'
 #needs some tweaking on conditions maybe

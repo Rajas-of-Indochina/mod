@@ -1,0 +1,317 @@
+﻿namespace = dharma_dravidian
+##################################################
+# Hero Stones
+##################################################
+dharma_dravidian.001 = {# Select which type of stele you'll be raising.
+	type = character_event
+	title = dharma_dravidian.001.t
+	desc = dharma_dravidian.001.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:ancestor
+		animation = personality_zealous
+	}
+	lower_right_portrait = scope:foe
+	override_background = { event_background = throne_room }
+
+	immediate = {
+		# Save the variable as scopes for easy loc.
+		var:ancestor_to_bury = { save_scope_as = ancestor }
+	}
+
+	option = {# Bury an ancestor.
+		name = dharma_dravidian.001.a
+		# Note the type going forwards.
+		save_scope_value_as = {
+			name = hero_stone_type
+			value = flag:ancestor
+		}
+		# Inform root & proceed.
+		custom_tooltip = dharma_dravidian.001.a.tt
+		trigger_event = dharma_dravidian.002
+
+		stress_impact = {
+			humble = medium_stress_impact_loss
+			arrogant = medium_stress_impact_gain
+		}
+	}
+	option = {# Actually, nahhhhhh.
+		name = dharma_dravidian.001.d
+
+		# Give 'em their deposit back.
+		add_gold = var:raise_stele_refund
+		# Clear the cooldown.
+		remove_decision_cooldown = raise_stele_decision
+
+		# No stress impact for opting out.
+		ai_chance = {
+			# If the AI has opened the interface, it should pick an option.
+			base = 0
+		}
+	}
+
+	after = {# Run some mild clean-up.
+		remove_variable = raise_stele_refund
+	}
+}
+scripted_effect dharma_apply_hero_stone_effects = {
+	# Apply content-specific effects.
+	# Save ancillary characters.
+	## Save the commissioning character.
+	$LOCATION$ = {
+		save_temporary_scope_as = hero_stone_location
+		set_variable = {
+			name = hero_stone_commissioner
+			value = root
+			years = dharma_hero_stone_duration_value
+		}
+	}
+	## Create a hidden dummy character from the local area to ascribe the carvings to.
+	hidden_effect = {
+		# Make the character.
+		create_character = {
+			age = 25
+			random_traits = yes
+			gender_female_chance = 50
+			dynasty = none
+			faith = $LOCATION$.faith
+			culture = $LOCATION$.culture
+			location = $LOCATION$.title_province
+			save_scope_as = carver
+		}
+		# Save them in the designated county.
+		$LOCATION$ = {
+			set_variable = {
+				name = hero_stone_carver
+				value = scope:carver
+				years = dharma_hero_stone_duration_value
+			}
+		}
+		# Kill them off.
+		scope:carver = {
+			death = { death_reason = death_vanished }
+		}
+	}
+	## Ancestor effects.
+	if = {
+		limit = { scope:hero_stone_type = flag:ancestor }
+		$LOCATION$ = {
+			# Set up the container for loc.
+			set_variable = {
+				name = hero_stone_container
+				value = root.var:ancestor_to_bury
+				years = dharma_hero_stone_duration_value
+			}
+			# Add the actual modifier.
+			## Stronger version for counties with stele-liking cultures.
+			if = {
+				limit = { culture = { has_cultural_pillar = heritage_dravidian } }
+				add_county_modifier = {
+					modifier = dharma_hero_stone_ancestors_strong
+					years = dharma_hero_stone_duration_value
+				}
+			}
+			## Weaker version for counties with cultures that don't.
+			else = {
+				add_county_modifier = {
+					modifier = dharma_hero_stone_ancestors_weak
+					years = dharma_hero_stone_duration_value
+				}
+			}
+			# Add a generic flag for easy value adjustments elsewhere.
+			set_variable = {
+				name = hero_stone_slot_occupied
+				value = yes
+				years = dharma_hero_stone_duration_value
+			}
+		}
+	}
+}
+dharma_dravidian.002 = {# With type chosen, select a specific location.
+	type = character_event
+	title = dharma_dravidian.002.t
+	desc = dharma_dravidian.002.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		# We grieve ancestors.
+		triggered_animation = {
+			trigger = { scope:hero_stone_type = flag:ancestor }
+			animation = grief
+		}
+	}
+	right_portrait = {
+		character = scope:secondary_portrait
+		# Ancestors show piety.
+		triggered_animation = {
+			trigger = { scope:hero_stone_type = flag:ancestor }
+			animation = personality_zealous
+		}
+	}
+	override_background = { event_background = cliff_temple }
+
+	immediate = {
+		# First, we need to grab all of root's personally held counties.
+		every_held_title = {
+			limit = { tier = tier_county }
+			add_to_list = personally_held_counties_list
+		}
+		# Then we sort them out according to the effectiveness of the modifiers.
+		## Ancestor stelae want stele-valid areas with low popular opinion.
+		if = {
+			limit = { scope:hero_stone_type = flag:ancestor }
+			ordered_in_list = {
+				list = personally_held_counties_list
+				max = raise_hero_stone_county_preference_cap_value
+				order_by = raise_hero_stone_variant_ancestor_value
+				# Grab three options.
+				if = {
+					limit = {
+						NOT = { exists = scope:location_a }
+					}
+					save_scope_as = location_a
+				}
+				else_if = {
+					limit = {
+						NOR = {
+							this = scope:location_a
+							exists = scope:location_b
+						}
+					}
+					save_scope_as = location_b
+				}
+				else_if = {
+					limit = {
+						NOR = {
+							this = scope:location_a
+							this = scope:location_b
+							exists = scope:location_c
+						}
+					}
+					save_scope_as = location_c
+				}
+			}
+		}
+		# If, for some reason, we have no designated county, just pick their capital.
+		else_if = {
+			limit = {
+				NOT = { exists = scope:location_a }
+			}
+			capital_county = { save_scope_as = location_a }
+		}
+		# Next, try to set up a secondary portrait.
+		## Ancestors can be shown.
+		if = {
+			limit = { scope:hero_stone_type = flag:ancestor }
+			var:ancestor_to_bury = { save_scope_as = secondary_portrait }
+		}
+		## As can beaten foes.
+		else_if = {
+			limit = { scope:hero_stone_type = flag:conquest }
+			var:recent_conquest_victory = { save_scope_as = secondary_portrait }
+		}
+		## But there's no secondary character available for promotion hero_stones.
+		# Finally, take care of generic stele effects.
+		dharma_hero_stone_bonuses_effect = yes
+	}
+
+	# Scope:location_a sounds good.
+	option = {
+		name = dharma_dravidian.002.a
+
+		# Sort the local hero_stone.
+		dharma_apply_hero_stone_effects = { LOCATION = scope:location_a }
+
+		# No stress impact for arbitrary choice.
+		ai_chance = {
+			# AI should always pick the best option.
+			base = 100
+		}
+	}
+
+	# Scope:location_b is a decent spot.
+	option = {
+		name = dharma_dravidian.002.b
+		trigger = { exists = scope:location_b }
+
+		# Sort the local stele.
+		dharma_apply_hero_stone_effects = { LOCATION = scope:location_b }
+
+		# No stress impact for arbitrary choice.
+		ai_chance = {
+			# AI should always pick the best option; the first one.
+			base = 0
+		}
+	}
+
+	# Scope:location_c makes a fine choice.
+	option = {
+		name = dharma_dravidian.002.c
+		trigger = { exists = scope:location_c }
+
+		# Sort the local stele.
+		dharma_apply_hero_stone_effects = { LOCATION = scope:location_c }
+
+		# No stress impact for arbitrary choice.
+		ai_chance = {
+			# AI should always pick the best option; the first one.
+			base = 0
+		}
+	}
+
+	# Run some mild clean-up.
+	after = {
+		# Remove used variables.
+		if = {
+			limit = { scope:hero_stone_type = flag:ancestor }
+			remove_variable = ancestor_to_bury
+		}
+	}
+}
+dharma_dravidian.003 = {# New holder for a county with a stele.
+	hidden = yes
+
+	trigger = {
+		fp1_remove_stele_new_holder_trigger = {
+			TITLE = scope:title
+			PREVIOUS_HOLDER = scope:previous_holder
+			NEW_HOLDER = root
+		}
+	}
+
+	immediate = {
+		# Blanket remove all types.
+		scope:title = {
+			remove_variable = hero_stone_container
+			remove_variable = hero_stone_carver
+			remove_variable = hero_stone_commissioner
+			remove_variable = hero_stone_slot_occupied
+			remove_county_modifier = dharma_hero_stone_ancestors_strong
+			remove_county_modifier = dharma_hero_stone_ancestors_weak
+		}
+	}
+}
+dharma_dravidian.004 = {# Hidden Event to apply the ancestor_to_bury variable
+	hidden = yes
+	trigger = {# Dravidian Faiths need to have a worthy Ancestor
+		exists = player_heir
+		player_heir = { is_close_family_of = root }
+		dynasty = player_heir.dynasty
+		# Has access to a valid method of raising runestones.
+		culture = { has_cultural_pillar = heritage_dravidian }
+	}
+
+	immediate = {
+		player_heir = {
+			set_variable = {
+				name = ancestor_to_bury
+				value = root
+				years = 5
+			}
+		}
+	}
+}

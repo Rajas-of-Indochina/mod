@@ -17,7 +17,11 @@ historical_succession_access_single_heir_succession_law_trigger = {
 	OR = {
 		has_title = title:e_byzantium
 		has_title = title:k_austria
-		has_title = title:e_roman_empire
+		has_government = imperial_government
+		has_government = autocratic_government
+		has_government = legion_government
+		has_government = city_state_government
+		has_government = eranshar_government
 		AND = {
 			has_title = title:e_france
 			is_target_in_global_variable_list = {
@@ -32,12 +36,18 @@ historical_succession_access_single_heir_succession_law_trigger = {
             game_start_date >= 867.1.1
             game_start_date <= 867.12.31
 
-			has_title = title:k_balhae_china
+			has_title = title:k_balhae
 		}
 
-		# India
-		culture = { has_cultural_pillar = heritage_indo_aryan }
-		culture = { has_cultural_pillar = heritage_dravidian }
+		# Japan
+		culture = { has_cultural_pillar = heritage_yamato }
+
+		# Khitans
+		AND = {
+			has_title = title:e_liao
+
+            game_start_date >= 867.1.1
+		}
 	}
 }
 
@@ -50,7 +60,14 @@ historical_succession_access_single_heir_succession_law_youngest_trigger = {
 
 historical_succession_access_single_heir_dynasty_house_trigger = {
 	AND = {
-		has_title = title:d_bohemia
+		OR = {
+			has_title = title:d_bohemia
+			AND = {
+				has_title = title:d_moravia
+				game_start_date = 1187.1.1
+			}
+		}
 		culture = { has_innovation = innovation_table_of_princes }
+		NOT = { has_title = title:k_bohemia }
 	}
 }

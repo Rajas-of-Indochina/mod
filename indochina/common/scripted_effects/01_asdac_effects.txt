@@ -1,0 +1,583 @@
+﻿create_byzantine_empire_scripted_effect = {
+	#Create Byzantine Empire, shift dejure/history/laws
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:e_byzantium = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+	hidden_effect = { set_primary_title_to = title:e_byzantium }
+	every_held_title = { #Should destroy all other Empires owned at the time.
+		limit = {
+			OR = {
+				tier = tier_empire
+				tier = tier_kingdom
+			}
+			NOT = { this = title:e_byzantium }
+		}
+		root = { destroy_title = prev }
+	}
+	#if = { #destroy Latin Empire
+		#limit = {
+			#exists = title:e_latin_empire.holder
+		#}
+		#destroy_title = title:e_latin_empire
+	#}
+
+	if = { #Automatically move capital to Constantinople, unless it's been set to Rome.
+		limit = {
+			NOT = { capital_county = { this = title:c_roma } }
+			NOT = { capital_county = { this = title:c_byzantion } }
+			culture = { has_cultural_pillar = heritage_byzantine }
+		}
+		hidden_effect = {
+			if = { #Usurp if not held personally.
+				limit = {
+					NOT = { this = title:c_byzantion.holder }
+				}
+				create_title_and_vassal_change = {
+					type = returned
+					save_scope_as = change
+					add_claim_on_loss = no
+				}
+				title:c_byzantion = {
+					change_title_holder = {
+						holder = root
+						change = scope:change
+					}
+				}
+				resolve_title_and_vassal_change = scope:change
+			}
+		}
+		root = { set_realm_capital = title:c_byzantion }
+	}
+}
+
+create_roman_empire_latin_scripted_effect = {
+	add_trait = augustus
+	#Create Roman Empire, shift dejure/history/laws, destroy e_latin_empire.
+	hidden_effect = {
+		every_held_title = { #Should shift all dejure of all Empires owned at the time.
+			limit = {
+				tier = tier_empire
+			}
+			every_in_de_jure_hierarchy = {
+				limit = {
+					tier = tier_kingdom
+				}
+				set_de_jure_liege_title = title:e_roman_empire
+
+			}
+		}
+		title:e_byzantium = {
+			every_in_de_jure_hierarchy = {
+				limit = {
+					tier = tier_kingdom
+				}
+				set_de_jure_liege_title = title:e_roman_empire
+			}
+		}
+		every_held_title = { #Completely Controlled Kingdoms as well.
+			limit = {
+				tier = tier_kingdom
+				root = { completely_controls = prev }
+			}
+			set_de_jure_liege_title = title:e_roman_empire
+		}
+	}
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:e_roman_empire = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+		copy_title_history = title:e_latin_empire
+	}
+	resolve_title_and_vassal_change = scope:change
+	hidden_effect = { set_primary_title_to = title:e_roman_empire }
+	every_held_title = { #Should destroy all other Empires owned at the time.
+		limit = {
+				tier = tier_empire
+			NOT = { this = title:e_roman_empire }
+		}
+		root = { destroy_title = prev }
+	}
+	hidden_effect = {
+		title:e_roman_empire = {
+			#set_coa = e_hre_roman
+			set_color_from_title = title:e_latin_empire
+		}
+	}
+
+	if = { #Automatically move capital to Constantinople, unless it's been set to Rome.
+		limit = {
+			NOT = { capital_county = { this = title:c_roma } }
+			NOT = { capital_county = { this = title:c_byzantion } }
+			culture = { has_cultural_pillar = heritage_byzantine }
+		}
+		hidden_effect = {
+			if = { #Usurp if not held personally.
+				limit = {
+					NOT = { this = title:c_byzantion.holder }
+				}
+				create_title_and_vassal_change = {
+					type = returned
+					save_scope_as = change
+					add_claim_on_loss = no
+				}
+				title:c_byzantion = {
+					change_title_holder = {
+						holder = root
+						change = scope:change
+					}
+				}
+				resolve_title_and_vassal_change = scope:change
+			}
+		}
+		root = { set_realm_capital = title:c_byzantion }
+	}
+	else_if = {
+		limit = {
+			NOT = { capital_county = { this = title:c_roma } }
+			NOT = { capital_county = { this = title:c_byzantion } }
+			NOT = { culture = { has_cultural_pillar = heritage_byzantine } }
+			exists = title:e_roman_empire.holder
+		}
+		hidden_effect = {
+			if = { #Usurp if not held personally.
+				limit = {
+					NOT = { this = title:c_roma.holder }
+				}
+				create_title_and_vassal_change = {
+					type = returned
+					save_scope_as = change
+					add_claim_on_loss = no
+				}
+				title:c_roma = {
+					change_title_holder = {
+						holder = root
+						change = scope:change
+					}
+				}
+				resolve_title_and_vassal_change = scope:change
+			}
+		}
+		root = { set_realm_capital = title:c_roma }
+	}
+	hidden_effect = {
+		create_story = restoring_roman_provinces_story
+		add_character_flag = flag_restorer_of_rome #used for Eulogy.
+	}
+}
+
+
+serbian_empire_decision_effects = {
+	#Create Serbian Empire, shift dejure/history/laws, destroy k_serbia.
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:e_serbia = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+		copy_title_history = title:k_serbia
+	}
+	resolve_title_and_vassal_change = scope:change
+	hidden_effect = { set_primary_title_to = title:e_serbia }
+	destroy_title = title:k_serbia
+	every_held_title = { #Should destroy all other Empires owned at the time.
+		limit = {
+				tier = tier_empire
+			NOT = { this = title:e_serbia }
+		}
+		root = { destroy_title = prev }
+	}
+
+
+	if = { #Automatically move capital to Skopje
+		limit = {
+			NOT = { capital_county = { this = title:c_skopje } }
+		}
+		hidden_effect = {
+			if = { #Usurp if not held personally.
+				limit = {
+					NOT = { this = title:c_skopje.holder }
+				}
+				create_title_and_vassal_change = {
+					type = returned
+					save_scope_as = change
+					add_claim_on_loss = no
+				}
+				title:c_skopje = {
+					change_title_holder = {
+						holder = root
+						change = scope:change
+					}
+				}
+				resolve_title_and_vassal_change = scope:change
+			}
+		}
+		root = { set_realm_capital = title:c_skopje }
+	}
+}
+
+embrace_turkish_culture_effect = {
+	# Scopes saves for localization
+	root = {
+		save_scope_as = embracer
+	}
+
+	# Prestige Bonus
+	add_prestige = medium_prestige_gain
+
+	#Convert your, and your whole family's, culture
+	set_culture = culture:ottoman_turkish
+	if = {
+		limit = { any_spouse = { is_landed = no } }
+		every_spouse = {
+			limit = {
+				is_landed = no
+			}
+			set_culture = culture:ottoman_turkish
+		}
+	}
+	if = {
+		limit = {
+			any_close_family_member = {
+				is_landed = no
+				NOT = { is_spouse_of = root }
+			}
+		}
+		every_close_family_member = {
+			limit = {
+				is_landed = no
+				NOT = { is_spouse_of = root }
+			}
+			custom = all_unlanded_family_members
+			set_culture = culture:ottoman_turkish
+		}
+	}
+
+	#Convert appropriate vassals, and their family
+	if = {
+		limit = {
+			any_vassal_or_below = {
+				is_ai = yes
+
+				culture = culture:turkish
+
+				primary_title = {
+					OR = {
+						de_jure_liege = title:e_byzantium
+						de_jure_liege.de_jure_liege = title:e_byzantium
+						de_jure_liege.de_jure_liege.de_jure_liege = title:e_byzantium
+						de_jure_liege.de_jure_liege.de_jure_liege.de_jure_liege = title:e_byzantium
+					}
+				}
+			}
+		}
+		every_vassal_or_below = {
+			custom = embrace_turkish_culture_vassals_custom
+			limit = {
+				is_ai = yes
+				culture = culture:turkish
+
+				primary_title = {
+					OR = {
+						de_jure_liege = title:e_byzantium
+						de_jure_liege.de_jure_liege = title:e_byzantium
+						de_jure_liege.de_jure_liege.de_jure_liege = title:e_byzantium
+						de_jure_liege.de_jure_liege.de_jure_liege.de_jure_liege = title:e_byzantium
+					}
+				}
+			}
+			set_culture = culture:ottoman_turkish
+		}
+	}
+
+	#Flip Counties
+	every_county_in_region = {
+		region = world_asia_minor
+		custom = embrace_turkish_culture_counties_custom
+		limit = {
+			target_is_de_facto_liege_or_above = root.primary_title
+		}
+		random = {
+			chance = 40
+			set_county_culture = culture:ottoman_turkish
+		}
+	}
+
+	culture:ottoman_turkish = {
+		custom_tooltip = decision_embrace_turkish_culture_get_innovations
+		hidden_effect = {
+			get_all_innovations_from = culture:turkish
+			get_all_innovations_from = culture:greek
+		}
+	}
+}
+
+reunite_two_sicilies_effect = {
+	add_prestige = massive_prestige_gain
+
+	#Laws
+	if = {
+		limit = { has_realm_law = crown_authority_0 }
+		add_realm_law_skip_effects = crown_authority_2
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_realm_law = crown_authority_1
+				has_realm_law = crown_authority_2
+			}
+		}
+		add_realm_law_skip_effects = crown_authority_3
+	}
+	hidden_effect = {
+		every_held_title = {
+			limit = {
+				OR = {
+					this = title:k_naples
+					this = title:k_trinacria
+				}
+			}
+			every_in_de_jure_hierarchy = {
+				limit = {
+					tier = tier_duchy
+				}
+				set_de_jure_liege_title = title:k_sicily
+
+			}
+		}
+	}
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+
+	title:k_sicily = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+		set_color_from_title = title:k_two_sicilies
+	}
+	resolve_title_and_vassal_change = scope:change
+	hidden_effect = { set_primary_title_to = title:k_sicily }
+	every_held_title = { #Should destroy all other Empires owned at the time.
+		limit = {
+			tier = tier_kingdom
+			OR = {
+				this = title:k_naples
+				this = title:k_trinacria
+			}
+		}
+		root = { destroy_title = prev }
+	}
+}
+
+restore_principality_of_carantania_decision_scripted_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:d_carinthia.de_jure_liege = {
+		save_scope_as = old_liege
+	}
+	title:k_carinthia = {
+		save_scope_as = carantania
+		change_title_holder = {
+			holder = scope:restorer
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+
+	title:d_carinthia = { set_de_jure_liege_title = title:k_carinthia }
+	title:d_steyermark = { set_de_jure_liege_title = title:k_carinthia }
+	title:d_krain = { set_de_jure_liege_title = title:k_carinthia }
+	#if = {
+		#limit = {
+			#title:d_istria.de_jure_liege = scope:old_liege
+		#}
+		#title:d_istria = { set_de_jure_liege_title = title:k_carinthia }
+	#}
+	hidden_effect = {
+		title:d_friuli = { save_scope_as = carantania_friuli }
+		title:d_istria = { save_scope_as = carantania_istria }
+		if = {
+			limit = {
+				title:d_friuli = { holder = root  }
+			}
+			title:d_friuli = { set_de_jure_liege_title = title:k_carinthia }
+		}
+		if = {
+			limit = {
+				title:d_istria = { holder = root  }
+			}
+			title:d_istria = { set_de_jure_liege_title = title:k_carinthia }
+		}
+		title:d_carinthia = {
+			set_coa = d_carinthia
+		}
+		title:c_karnten = {
+			set_coa = c_karnten
+		}
+	}
+	custom_tooltip = restore_principality_of_carantania_decision_effects_de_jure_tt
+}
+
+empire_of_bulgaria_decision_scripted_effect = {
+	#Create Bulgarian Empire, shift dejure/history/laws, destroy k_bulgaria.
+	hidden_effect = {
+		title:k_bulgaria = {
+			set_de_jure_liege_title = title:e_bulgaria
+		}
+
+		every_held_title = { #Any other held Kingdom as well.
+			limit = {
+				tier = tier_kingdom
+			}
+			set_de_jure_liege_title = title:e_bulgaria
+		}
+	}
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:e_bulgaria = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+		copy_title_history = title:k_bulgaria
+	}
+	resolve_title_and_vassal_change = scope:change
+	hidden_effect = { set_primary_title_to = title:e_bulgaria }
+	destroy_title = title:k_bulgaria
+	give_nickname = nick_the_great
+	add_prestige = 500
+}
+
+form_albania_decision_scripted_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_albania = {
+		change_title_holder = {
+			holder = scope:founder
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+
+	title:d_dyrrachion = { set_de_jure_liege_title = title:k_albania }
+	title:d_arbanon = { set_de_jure_liege_title = title:k_albania }
+	if = {
+		limit = {
+			OR = {
+				culture = culture:arberian
+				culture = { has_cultural_pillar = language_albanian }
+			}
+		}
+		add_prestige = 500
+	}
+}
+
+form_tsardom_of_russia_decision_scripted_effect = {
+	#Create Russia, shift dejure/history/laws, destroy k_muscovy.
+
+	give_nickname = nick_the_terrible
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:e_russian_empire = {
+		change_title_holder = {
+			holder = root
+			change = scope:change
+		}
+		copy_title_history = title:k_muscovy
+	}
+	resolve_title_and_vassal_change = scope:change
+	hidden_effect = { set_primary_title_to = title:e_russian_empire }
+	destroy_title = title:k_muscovy
+	every_held_title = { #Should destroy all other Empires owned at the time.
+		limit = {
+				tier = tier_empire
+			NOT = { this = title:e_russian_empire }
+		}
+		root = { destroy_title = prev }
+	}
+
+
+	if = { #Automatically move capital to Moscow
+		limit = {
+			NOT = { capital_county = { this = title:c_moskva } }
+		}
+		hidden_effect = {
+			if = { #Usurp if not held personally.
+				limit = {
+					NOT = { this = title:c_moskva.holder }
+				}
+				create_title_and_vassal_change = {
+					type = returned
+					save_scope_as = change
+					add_claim_on_loss = no
+				}
+				title:c_moskva = {
+					change_title_holder = {
+						holder = root
+						change = scope:change
+					}
+				}
+				resolve_title_and_vassal_change = scope:change
+			}
+		}
+		root = { set_realm_capital = title:c_moskva }
+	}
+	title:k_muscovy = { add_to_list = russian_kingdoms }
+	title:k_novgorod = { add_to_list = russian_kingdoms }
+	title:k_bjarmaland = { add_to_list = russian_kingdoms }
+	title:k_mordvinia = { add_to_list = russian_kingdoms }
+	title:k_kazan = { add_to_list = russian_kingdoms }
+	title:k_permia = { add_to_list = russian_kingdoms }
+	title:k_bashkiria = { add_to_list = russian_kingdoms }
+	title:k_volga_bulgaria = { add_to_list = russian_kingdoms }
+	title:k_opolye = { add_to_list = russian_kingdoms }
+	hidden_effect = {
+		every_in_list = {
+			list = russian_kingdoms
+
+			set_de_jure_liege_title = title:e_russian_empire
+		}
+		title:e_russia = {
+			set_capital_county = title:c_kiev
+		}
+	}
+}

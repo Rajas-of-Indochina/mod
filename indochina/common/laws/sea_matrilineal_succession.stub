@@ -1,0 +1,97 @@
+# 
+# 	single_heir_matrilineal_succession_law = {
+# 		can_keep = {
+# 			always = no
+# 		}
+# 		can_have = {
+# 			always = no
+# 		}
+# 		can_pass = {
+# 			# can_change_succession_law_trigger = yes
+# 		}
+# 		should_start_with = {
+# 		}
+# 		succession = {
+# 			order_of_succession = inheritance
+# 			traversal_order = dynasty_house
+# 			rank = oldest
+# 			title_division = single_heir
+# 		}
+# 		flag = advanced_succession_law
+# 		modifier = {
+# 			player_heir_opinion = 20
+# 			eligible_child_except_player_heir_opinion = -5
+# 		}
+# 		pass_cost = {
+# 			prestige = change_succession_law_prestige_cost
+# 		}
+# 		revoke_cost = {
+# 			prestige = change_succession_law_prestige_cost
+# 		}
+# 		on_pass = {
+# 			# if male
+
+# 				# if male only
+# 					# eldest sister's eldest son
+
+# 				# if male preference
+# 					# first eldest sister's eldest son, then eldest sister
+
+# 				# if equal
+# 					# eldest sister
+
+# 				# if female preference
+# 					# eldest sister
+
+# 				# if female only
+# 					# eldest sister
+
+# 			# if female
+
+# 				# if male only
+# 					# eldest son or eldest brother
+
+# 				# if male preference
+# 					# eldest son or eldest brother, then eldest daughter or eldest sister
+
+# 				# if equal
+# 					# eldest child, then eldest sibling
+
+# 				# if female preference
+# 					# eldest daughter or eldest sister, then eldest son or eldest brother
+
+# 				# if female only
+# 					# eldest daughter or eldest sister
+
+# 			ordered_sibling = {
+# 				limit = { is_female = yes }
+# 				order_by = age
+
+# 				save_scope_as = sister
+# 			}
+
+# 			scope:sister = {
+# 				ordered_child = {
+# 					limit = { is_male = yes }
+# 					order_by = age
+
+# 					save_scope_as = nephew
+# 				}
+# 			}
+
+# 			set_designated_heir = scope:nephew
+# 		}
+
+# 		ai_will_do = {
+# 			if = {
+# 				limit = {
+# 					OR = {
+# 						has_realm_law = confederate_partition_succession_law
+# 						has_realm_law = partition_succession_law
+# 						has_realm_law = high_partition_succession_law
+# 					}
+# 				}
+# 				value = 3
+# 			}
+# 		}
+# 	}

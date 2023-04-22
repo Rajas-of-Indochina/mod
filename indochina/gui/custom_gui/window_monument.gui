@@ -1,0 +1,639 @@
+types monumentwidgets {
+    type monumentwindow = window {
+            layer = middle
+            movable = yes
+            size = {1100 900}
+            parentanchor = bottom|left
+            using = Window_Decoration_Spike
+            datacontext = "[HoldingView.GetTitle]"
+            visible = "[And(GetVariableSystem.Exists('monument_window_visible'), And(Not(HoldingView.GetTitle.MakeScope.Var( 'monument_existing' ).IsSet), HoldingView.HasHolding))]"
+
+            state = {
+                name = _hide
+                using = Animation_FadeOut_Quick
+                using = Sound_WindowHide_Standard
+                using = Window_Position_MainTab_Hide
+                trigger_when = "[IsRightWindowOpen]"
+                on_start = "[GetScriptedGui('end_monument').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End)]"
+                alpha = 0
+            }
+            state = {
+                name = _show
+                using = Animation_FadeIn_Quick
+                using = Sound_WindowShow_Standard
+                using = Window_Position_MainTab
+                on_start = "[GetVariableSystem.Set( 'monument_view', 'statue' )]"
+                on_start = "[GetScriptedGui('start_monument').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End)]"
+                alpha = 1
+            }
+            state = {
+                trigger_when = "[Not(GetVariableSystem.HasValue('HoldingViewTitle',HoldingView.GetTitle.GetKey))]"
+                on_start = "[GetVariableSystem.Set('HoldingViewTitle',HoldingView.GetTitle.GetKey)]"
+                on_start = "[GetScriptedGui('start_monument').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End)]"
+            }
+            state = {
+                trigger_when = "[Not(HoldingView.GetTitle.MakeScope.Var('statue_reference').IsSet)]"
+                on_start = "[GetScriptedGui('start_monument').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End)]"
+            }
+            
+    
+            margin_widget = {
+                size = { 100% 100% }
+                margin = { 0 12 }
+                using = Window_Background
+    
+                background = {
+                    texture = "gfx/interface/component_tiles/tile_window_background_subwindow.dds"
+                    spriteType = Corneredtiled
+                    spriteborder = { 18 18 }
+                    margin = { -23 -10 }
+                    margin_left = -20
+                    margin_bottom = 20
+                    texture_density = 2
+    
+                    modify_texture = {
+                        name = "overlay"
+                        texture = "gfx/interface/component_overlay/overlay_effect.dds"
+                        spriteType = Corneredstretched
+                        spriteborder = { 0 0 }
+                        blend_mode = overlay
+                    }
+                }
+    
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin_bottom = 100 #this prevents the scrollarea from extending behind the hud
+    
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        using = Window_Margins
+    
+                        header_pattern = {
+                            layoutpolicy_horizontal = expanding
+    
+                            blockoverride "header_text"
+                            {
+                                raw_text = "Build a Monument in The [HoldingView.GetTitle.MakeScope.Title.GetName]"
+                            }
+    
+                            blockoverride "button_close"
+                            {
+                                onclick = "[GetVariableSystem.Toggle('monument_window_visible')]"
+                            }
+                            expand = {}
+                        }
+                    }
+
+                    hbox = {
+                        
+                        margin_right = 100 #this is vanilla margin
+                        margin_left = 100 #this is vanilla margin
+                        layoutpolicy_vertical = expanding
+                        layoutpolicy_horizontal = expanding
+                        vbox = {
+                            layoutpolicy_vertical = expanding
+                            background = {
+                                texture = "[HoldingView.GetTitle.GetCountyData.GetCapital.GetTerrain.GetIllustration]"
+                                margin_right = 180
+                                alpha = 0.3
+                                modify_texture = {
+                                    name = "mask"
+                                    texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+                                    spriteType = Corneredstretched
+                                    spriteborder = { 0 0 }
+                                    blend_mode = alphamultiply
+                                }
+                            }
+                            portrait_body = {
+                                datacontext = "[HoldingView.GetTitle.MakeScope.Var('statue_reference').Char]"
+                                blockoverride "status_icons" {}
+                                blockoverride "opinion_box" {}
+                                blockoverride "coa" {}
+                                blockoverride "dead_icon" {}
+                                blockoverride "glow_flip" {}
+                                blockoverride "onclick" {}
+                                blockoverride "empty_character" {}
+                                blockoverride "prison" {}
+                                blockoverride "portrait_texture" {
+                                    portrait_texture = "[Character.GetPortrait(HoldingView.GetTitle.Custom('GetStatueEnvironment'), 'camera_body', HoldingView.GetTitle.Custom('GetStatuePose'), PdxGetWidgetScreenSize(PdxGuiWidget.Self))]" 
+                                }
+                                blockoverride "mask" {
+                                    mask = "gfx/portraits/portrait_mask_body.dds"
+                                }
+
+                                scale = 2
+                                blockoverride "grayscale" {}
+                            }
+                            spacer = {
+                                size = {0 300}
+                            }
+                        }
+                        spacer = {
+                            size = {200 0}
+                        }
+                        divider_light = {
+                            layoutpolicy_vertical = expanding
+                        }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding
+                            layoutpolicy_vertical = expanding
+                            button_tab = {
+                                layoutpolicy_horizontal = expanding
+                                raw_text = "Statue"
+                                default_format = "#low"
+                            }
+                            text_label_center = {
+                                raw_text = "#T Potential References#!"
+                            }
+                            scrollbox = {
+                                layoutpolicy_horizontal = expanding
+                                layoutpolicy_vertical = expanding
+                                blockoverride "scrollbox_content"
+                                {
+                                    scrollarea = {
+                                        scrollbar_horizontal = {
+                                            using = Scrollbar_Horizontal
+                                        }
+                                        scrollbarpolicy_vertical = always_off
+                                        layoutpolicy_horizontal = expanding
+                                        layoutpolicy_vertical = expanding
+                                        scrollwidget = {
+                                            vbox = {
+                                                hbox = {
+                                                    layoutpolicy_horizontal = expanding
+                                                    layoutpolicy_vertical = expanding
+                                                    datamodel = "[HoldingView.GetTitle.MakeScope.GetList('statue_reference_list')]"
+                                                    item = {
+                                                        flowcontainer = {
+                                                            direction = vertical
+                                                            datacontext = "[Scope.GetCharacter]"
+                                                            button_standard = {
+                                                                size = { 130 150 }
+                                                                icon = {
+                                                                    portrait_head = {
+                                                                        scale = 1.2
+                                                                        blockoverride "portrait_texture" {
+                                                                            portrait_texture = "[Character.GetPortrait(HoldingView.GetTitle.Custom('GetStatueEnvironment'), 'camera_head', HoldingView.GetTitle.Custom('GetStatuePose'), PdxGetWidgetScreenSize(PdxGuiWidget.Self))]" 
+                                                                            blockoverride "grayscale" {}
+                                                                            blockoverride "empty_character" {}
+                                                                            blockoverride "prison" {}
+                                                                        }
+                                                                    }
+                                                                }
+                                                                onclick = "[GetScriptedGui('statue_change_reference').Execute( GuiScope.SetRoot( Scope.GetCharacter.MakeScope ).AddScope('target', HoldingView.GetTitle.MakeScope ).End)]"
+                                                            }
+                                                            text_label_center = {
+                                                                raw_text = "[Scope.GetCharacter.GetFirstName]"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }  
+                                        }
+                                    }
+                                }
+                                
+                            }
+                            scrollbox = {
+
+                                layoutpolicy_horizontal = expanding
+                                layoutpolicy_vertical = expanding
+                                blockoverride "scrollbox_content"
+                                {
+                                    vbox = {
+                                        layoutpolicy_horizontal = expanding
+                                        layoutpolicy_vertical = expanding
+                                        
+                                        spacer = {
+                                            size = {0 10}
+                                        }
+                                        
+                                        
+                                       
+                                            
+                                            
+                                        hbox = {
+                                            vbox = {
+                                                text_label_center = {
+                                                    raw_text = "#T Materials#!"
+                                                }
+                                                button_standard = {
+                                                    size = { 220 100}
+                                                    onclick = "[GetScriptedGui('statue_gold').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End )]"
+                                                    icon = {
+                                                        texture = "gfx/interface/icons/modifiers/gold_resources.dds"
+                                                        size = { 50 50 }
+                                                    }
+                                                    raw_text = "#T Gold#!"
+                                                    tooltipwidget = {
+                                                        widget = {
+                                                            using = DefaultTooltipBackground
+                                                            size = {200 100}
+                                                            vbox = {
+                                                                margin = { 15 10 }
+                                                                spacing = 10
+                                                                set_parent_size_to_minimum = yes
+                                                                minimumsize = { 150 0 }
+                                                                text_single = {
+                                                                    layoutpolicy_horizontal = expanding
+                                                                    raw_text = "#T Gold#!"
+                                                                    background = {
+                                                                        using = Background_Area
+                                                                        margin = { 10 0 }
+                                                                        margin_bottom = 5
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                button_standard = {
+                                                    size = { 220 100}
+                                                    onclick = "[GetScriptedGui('statue_copper').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End )]"
+                                                    raw_text = "#T Copper#!"
+                                                    icon = {
+                                                        texture = "gfx/interface/icons/modifiers/copper_resources.dds"
+                                                        size = { 50 50 }
+                                                    }
+                                                    tooltipwidget = {
+                                                        widget = {
+                                                            using = DefaultTooltipBackground
+                                                            size = {200 100}
+                                                            vbox = {
+                                                                margin = { 15 10 }
+                                                                spacing = 10
+                                                                set_parent_size_to_minimum = yes
+                                                                minimumsize = { 150 0 }
+                                                                text_single = {
+                                                                    layoutpolicy_horizontal = expanding
+                                                                    raw_text = "#T Copper#!"
+                                                                    background = {
+                                                                        using = Background_Area
+                                                                        margin = { 10 0 }
+                                                                        margin_bottom = 5
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                button_standard = {
+                                                    size = { 220 100}
+                                                    onclick = "[GetScriptedGui('statue_marble').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End )]"
+                                                    text = "#T Marble#!"
+                                                    icon = {
+                                                        texture = "gfx/interface/icons/modifiers/marble_resources.dds"
+                                                        size = { 50 50 }
+                                                    }
+                                                    tooltipwidget = {
+                                                        widget = {
+                                                            using = DefaultTooltipBackground
+                                                            size = {200 100}
+                                                            vbox = {
+                                                                margin = { 15 10 }
+                                                                spacing = 10
+                                                                set_parent_size_to_minimum = yes
+                                                                minimumsize = { 150 0 }
+                                                                text_single = {
+                                                                    layoutpolicy_horizontal = expanding
+                                                                    raw_text = "#T Marble#!"
+                                                                    background = {
+                                                                        using = Background_Area
+                                                                        margin = { 10 0 }
+                                                                        margin_bottom = 5
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                button_standard = {
+                                                    size = { 220 100}
+                                                    onclick = "[GetScriptedGui('statue_limestone').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End )]"
+                                                    text = "#T Limestone#!"
+                                                    icon = {
+                                                        texture = "gfx/interface/icons/modifiers/wood_resources.dds"
+                                                        size = { 50 50 }
+                                                    }
+                                                    tooltipwidget = {
+                                                        widget = {
+                                                            using = DefaultTooltipBackground
+                                                            size = {200 100}
+                                                            vbox = {
+                                                                margin = { 15 10 }
+                                                                spacing = 10
+                                                                set_parent_size_to_minimum = yes
+                                                                minimumsize = { 150 0 }
+                                                                text_single = {
+                                                                    layoutpolicy_horizontal = expanding
+                                                                    raw_text = "#T Limestone#!"
+                                                                    background = {
+                                                                        using = Background_Area
+                                                                        margin = { 10 0 }
+                                                                        margin_bottom = 5
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                button_standard = {
+                                                    size = { 220 100}
+                                                    onclick = "[GetScriptedGui('statue_stone').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End )]"
+                                                    text = "#T Stone#!"
+                                                    icon = {
+                                                        texture = "gfx/interface/icons/modifiers/stone_resources.dds"
+                                                        size = { 50 50 }
+                                                    }
+                                                    tooltipwidget = {
+                                                        widget = {
+                                                            using = DefaultTooltipBackground
+                                                            size = {200 100}
+                                                            vbox = {
+                                                                margin = { 15 10 }
+                                                                spacing = 10
+                                                                set_parent_size_to_minimum = yes
+                                                                minimumsize = { 150 0 }
+                                                                text_single = {
+                                                                    layoutpolicy_horizontal = expanding
+                                                                    raw_text = "#T Stone#!"
+                                                                    background = {
+                                                                        using = Background_Area
+                                                                        margin = { 10 0 }
+                                                                        margin_bottom = 5
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            
+                                            vbox = {
+                                                text_label_center = {
+                                                    raw_text = "#T Poses#!"
+                                                }
+                                                button_standard = {
+                                                    datacontext = "[HoldingView.GetTitle.MakeScope.Var('statue_reference').Char]"
+                                                    size = { 220 100}
+                                                    onclick = "[GetScriptedGui('statue_martial').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End )]"
+                                                    raw_text = "#T Marshal#!"
+                                                    icon = {
+                                                        portrait_head = {
+                                                            blockoverride "portrait_texture" {
+                                                                portrait_texture = "[Character.GetPortrait(HoldingView.GetTitle.Custom('GetStatueEnvironment'), 'camera_body', 'marshal', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]" 
+                                                                blockoverride "grayscale" {}
+                                                            }
+                                                            scale = 0.6
+                                                        }
+                                                    }
+                                                    tooltipwidget = {
+                                                        widget = {
+                                                            using = DefaultTooltipBackground
+                                                            size = {200 100}
+                                                            vbox = {
+                                                                margin = { 15 10 }
+                                                                spacing = 10
+                                                                set_parent_size_to_minimum = yes
+                                                                minimumsize = { 150 0 }
+                                                                text_single = {
+                                                                    layoutpolicy_horizontal = expanding
+                                                                    raw_text = "#T Marshal#!"
+                                                                    background = {
+                                                                        using = Background_Area
+                                                                        margin = { 10 0 }
+                                                                        margin_bottom = 5
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                button_standard = {
+                                                    datacontext = "[HoldingView.GetTitle.MakeScope.Var('statue_reference').Char]"
+                                                    size = { 220 100}
+                                                    onclick = "[GetScriptedGui('statue_diplo').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End )]"
+                                                    text = "#T Diplomatic#!"
+                                                    icon = {
+                                                        portrait_head = {
+                                                            blockoverride "portrait_texture" {
+                                                                portrait_texture = "[Character.GetPortrait(HoldingView.GetTitle.Custom('GetStatueEnvironment'), 'camera_body', 'chancellor', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]" 
+                                                                blockoverride "grayscale" {}
+                                                            }
+                                                            scale = 0.6
+                                                        }
+                                                    }
+                                                    tooltipwidget = {
+                                                        widget = {
+                                                            using = DefaultTooltipBackground
+                                                            size = {200 100}
+                                                            vbox = {
+                                                                margin = { 15 10 }
+                                                                spacing = 10
+                                                                set_parent_size_to_minimum = yes
+                                                                minimumsize = { 150 0 }
+                                                                text_single = {
+                                                                    layoutpolicy_horizontal = expanding
+                                                                    raw_text = "#T Diplomatic#!"
+                                                                    background = {
+                                                                        using = Background_Area
+                                                                        margin = { 10 0 }
+                                                                        margin_bottom = 5
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                button_standard = {
+                                                    datacontext = "[HoldingView.GetTitle.MakeScope.Var('statue_reference').Char]"
+                                                    size = { 220 100}
+                                                    onclick = "[GetScriptedGui('statue_sword').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End )]"
+                                                    text = "#T Aggressive#!"
+                                                    icon = {
+                                                        portrait_head = {
+                                                            blockoverride "portrait_texture" {
+                                                                portrait_texture = "[Character.GetPortrait(HoldingView.GetTitle.Custom('GetStatueEnvironment'), 'camera_body', 'aggressive_sword', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]" 
+                                                                blockoverride "grayscale" {}
+                                                            }
+                                                            scale = 0.6
+                                                        }
+                                                    }
+                                                    tooltipwidget = {
+                                                        widget = {
+                                                            using = DefaultTooltipBackground
+                                                            size = {200 100}
+                                                            vbox = {
+                                                                margin = { 15 10 }
+                                                                spacing = 10
+                                                                set_parent_size_to_minimum = yes
+                                                                minimumsize = { 150 0 }
+                                                                text_single = {
+                                                                    layoutpolicy_horizontal = expanding
+                                                                    raw_text = "#T Aggressive#!"
+                                                                    background = {
+                                                                        using = Background_Area
+                                                                        margin = { 10 0 }
+                                                                        margin_bottom = 5
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                button_standard = {
+                                                    datacontext = "[HoldingView.GetTitle.MakeScope.Var('statue_reference').Char]"
+                                                    size = { 220 100}
+                                                    onclick = "[GetScriptedGui('statue_proud').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End )]"
+                                                    raw_text = "#T Proud#!"
+                                                    icon = {
+                                                        portrait_head = {
+                                                            blockoverride "portrait_texture" {
+                                                                portrait_texture = "[Character.GetPortrait(HoldingView.GetTitle.Custom('GetStatueEnvironment'), 'camera_body', 'personality_honorable', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]" 
+                                                                blockoverride "grayscale" {}
+                                                            }
+                                                            scale = 0.6
+                                                        }
+                                                    }
+                                                    tooltipwidget = {
+                                                        widget = {
+                                                            using = DefaultTooltipBackground
+                                                            size = {200 100}
+                                                            vbox = {
+                                                                margin = { 15 10 }
+                                                                spacing = 10
+                                                                set_parent_size_to_minimum = yes
+                                                                minimumsize = { 150 0 }
+                                                                text_single = {
+                                                                    layoutpolicy_horizontal = expanding
+                                                                    raw_text = "#T Proud#!"
+                                                                    background = {
+                                                                        using = Background_Area
+                                                                        margin = { 10 0 }
+                                                                        margin_bottom = 5
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                button_standard = {
+                                                    datacontext = "[HoldingView.GetTitle.MakeScope.Var('statue_reference').Char]"
+                                                    size = { 220 100}
+                                                    onclick = "[GetScriptedGui('statue_idle').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).End )]"
+                                                    raw_text = "#T Idle#!"
+                                                    icon = {
+                                                        portrait_head = {
+                                                            blockoverride "portrait_texture" {
+                                                                portrait_texture = "[Character.GetPortrait(HoldingView.GetTitle.Custom('GetStatueEnvironment'), 'camera_body', 'idle', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]" 
+                                                                blockoverride "grayscale" {}
+                                                            }
+                                                            scale = 0.6
+                                                        }
+                                                    }
+                                                    tooltipwidget = {
+                                                        widget = {
+                                                            using = DefaultTooltipBackground
+                                                            size = {200 100}
+                                                            vbox = {
+                                                                margin = { 15 10 }
+                                                                spacing = 10
+                                                                set_parent_size_to_minimum = yes
+                                                                minimumsize = { 150 0 }
+                                                                text_single = {
+                                                                    layoutpolicy_horizontal = expanding
+                                                                    raw_text = "#T Idle#!"
+                                                                    background = {
+                                                                        using = Background_Area
+                                                                        margin = { 10 0 }
+                                                                        margin_bottom = 5
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                        
+                                        
+                                        
+                                        text_label_center = {
+                                            raw_text = "#T Effects:#!"
+                                        }
+                                        text_single = {
+                                            raw_text = "[GetModifier('statue_gold').GetDesc]"
+                                            visible = "[EqualTo_string(HoldingView.GetTitle.MakeScope.Var( 'statue' ).GetFlagName, 'gold')]"
+                                        }
+                                        text_single = {
+                                            raw_text = "[GetModifier('statue_marble').GetDesc]"
+                                            visible = "[EqualTo_string(HoldingView.GetTitle.MakeScope.Var( 'statue' ).GetFlagName, 'marble')]"
+                                        }
+                                        text_single = {
+                                            raw_text = "[GetModifier('statue_limestone').GetDesc]"
+                                            visible = "[EqualTo_string(HoldingView.GetTitle.MakeScope.Var( 'statue' ).GetFlagName, 'limestone')]"
+                                        }
+                                        text_single = {
+                                            raw_text = "[GetModifier('statue_stone').GetDesc]"
+                                            visible = "[EqualTo_string(HoldingView.GetTitle.MakeScope.Var( 'statue' ).GetFlagName, 'stone')]"
+                                        }
+                                        text_single = {
+                                            raw_text = "[GetModifier('statue_copper').GetDesc]"
+                                            visible = "[EqualTo_string(HoldingView.GetTitle.MakeScope.Var( 'statue' ).GetFlagName, 'copper')]"
+                                        }
+                                        spacer = {
+                                            size = {0 20}
+                                        }
+                                        text_label_center = {
+                                            raw_text = "#T Effects For Holder:#!"
+                                        }
+                                        text_single = {
+                                            raw_text = "[GetModifier('statue_char_gold').GetDesc]"
+                                            visible = "[EqualTo_string(HoldingView.GetTitle.MakeScope.Var( 'statue' ).GetFlagName, 'gold')]"
+                                        }
+                                        text_single = {
+                                            raw_text = "[GetModifier('statue_char_marble').GetDesc]"
+                                            visible = "[EqualTo_string(HoldingView.GetTitle.MakeScope.Var( 'statue' ).GetFlagName, 'marble')]"
+                                        }
+                                        text_single = {
+                                            raw_text = "[GetModifier('statue_char_limestone').GetDesc]"
+                                            visible = "[EqualTo_string(HoldingView.GetTitle.MakeScope.Var( 'statue' ).GetFlagName, 'limestone')]"
+                                        }
+                                        text_single = {
+                                            raw_text = "[GetModifier('statue_char_stone').GetDesc]"
+                                            visible = "[EqualTo_string(HoldingView.GetTitle.MakeScope.Var( 'statue' ).GetFlagName, 'stone')]"
+                                        }
+                                        text_single = {
+                                            raw_text = "[GetModifier('statue_char_copper').GetDesc]"
+                                            visible = "[EqualTo_string(HoldingView.GetTitle.MakeScope.Var( 'statue' ).GetFlagName, 'copper')]"
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+                    spacer = {
+                        size = {0 10}
+                    }
+                    hbox = {
+                        spacer = {
+                            size = {550 0}
+                        }
+                        text_label_left = {
+                            raw_text = "Cost: [HoldingView.GetTitle.MakeScope.ScriptValue('monument_price')|0] [gold|E]"
+                        }
+                        button_standard = {
+                            size = {200 50}
+                            raw_text = "Construct"
+                            enabled = "[GreaterThanOrEqualTo_CFixedPoint(GetPlayer.GetGold, HoldingView.GetTitle.MakeScope.ScriptValue('monument_price')))]"
+                            onclick = "[GetScriptedGui('statue_construct').Execute( GuiScope.SetRoot( HoldingView.GetTitle.MakeScope ).AddScope('target', GetPlayer.MakeScope ).End)]"
+                        }
+                    }
+                    
+                }
+            }
+    }
+}

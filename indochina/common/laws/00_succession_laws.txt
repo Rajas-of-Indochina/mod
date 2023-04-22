@@ -21,7 +21,11 @@
 				AND = {
 					OR = {
 						has_government = feudal_government
+						fallen_eagle_special_needs_trigger = yes
 						has_government = clan_government
+						has_government = muslim_government
+						has_government = caliphate_government
+
 					}
 					culture = {
 						NOR = {
@@ -50,7 +54,7 @@
 			prestige = change_succession_law_prestige_cost
 		}
 	}
-	
+
 	partition_succession_law = {
 		can_keep = {
 			can_keep_partition_succession_law_trigger = yes
@@ -69,7 +73,10 @@
 			}
 			OR = {
 				has_government = feudal_government
+				fallen_eagle_special_needs_trigger = yes
 				has_government = clan_government
+				has_government = muslim_government
+						has_government = caliphate_government
 			}
 			culture = {
 				has_innovation = innovation_hereditary_rule
@@ -120,7 +127,10 @@
 			}
 			OR = {
 				has_government = feudal_government
+				fallen_eagle_special_needs_trigger = yes
 				has_government = clan_government
+				has_government = muslim_government
+						has_government = caliphate_government
 			}
 			culture = {
 				has_innovation = innovation_heraldry
@@ -157,7 +167,7 @@
 			}
 		}
 	}
-	
+
 	single_heir_succession_law = {
 		can_keep = {
 			OR = {
@@ -230,7 +240,7 @@
 			}
 		}
 	}
-	
+
 	single_heir_succession_law_youngest = {
 		can_keep = {
 			can_keep_single_heir_youngest_succession_law_trigger = yes
@@ -258,7 +268,7 @@
 			rank = youngest
 			title_division = single_heir
 		}
-		
+
 		flag = advanced_succession_law
 		modifier = {
 			player_heir_opinion = 20
@@ -271,7 +281,7 @@
 			prestige = change_succession_law_prestige_cost
 		}
 	}
-	
+
 	single_heir_dynasty_house = {
 		can_keep = {
 			can_keep_single_heir_dynasty_house_trigger = yes
@@ -305,7 +315,7 @@
 			rank = oldest
 			title_division = single_heir
 		}
-		
+
 		flag = advanced_succession_law
 		modifier = {
 			eligible_child_except_player_heir_opinion = -15
@@ -359,6 +369,7 @@
 		}
 		should_start_with = {
 			has_government = holy_order_government
+			has_government = holy_order_government_2
 		}
 		succession = {
 			order_of_succession = theocratic
@@ -366,7 +377,7 @@
 			pool_character_config = pool_holy_order_succession
 		}
 	}
-	
+
 	mercenary_company_succession_law = {
 		can_keep = {
 			can_have_mercenary_succession_law_trigger = yes
@@ -398,110 +409,12 @@
 			pool_character_config = pool_city_succession
 		}
 	}
-
-	single_heir_matrilineal_succession_law = {
-		can_keep = {
-			always = no
-		}
-		can_have = {
-			always = no
-		}
-		can_pass = {
-			# can_change_succession_law_trigger = yes
-		}
-		should_start_with = {
-		}
-		succession = {
-			order_of_succession = inheritance
-			traversal_order = dynasty_house
-			rank = oldest
-			title_division = single_heir
-		}
-		flag = advanced_succession_law
-		modifier = {
-			player_heir_opinion = 20
-			eligible_child_except_player_heir_opinion = -5
-		}
-		pass_cost = {
-			prestige = change_succession_law_prestige_cost
-		}
-		revoke_cost = {
-			prestige = change_succession_law_prestige_cost
-		}
-		on_pass = {
-			# if male
-
-				# if male only
-					# eldest sister's eldest son
-
-				# if male preference
-					# first eldest sister's eldest son, then eldest sister
-
-				# if equal
-					# eldest sister
-
-				# if female preference
-					# eldest sister
-
-				# if female only
-					# eldest sister
-
-			# if female
-
-				# if male only
-					# eldest son or eldest brother
-
-				# if male preference
-					# eldest son or eldest brother, then eldest daughter or eldest sister
-
-				# if equal
-					# eldest child, then eldest sibling
-
-				# if female preference
-					# eldest daughter or eldest sister, then eldest son or eldest brother
-
-				# if female only
-					# eldest daughter or eldest sister
-
-			ordered_sibling = {
-				limit = { is_female = yes }
-				order_by = age
-
-				save_scope_as = sister
-			}
-
-			scope:sister = {
-				ordered_child = {
-					limit = { is_male = yes }
-					order_by = age
-
-					save_scope_as = nephew
-				}
-			}
-
-			set_designated_heir = scope:nephew
-		}
-
-		ai_will_do = {
-			if = {
-				limit = {
-					OR = {
-						has_realm_law = confederate_partition_succession_law
-						has_realm_law = partition_succession_law
-						has_realm_law = high_partition_succession_law
-					}
-				}
-				value = 3
-			}
-		}
-	}
-
 }
 
 succession_gender_laws = {
 	default = male_preference_law
 	flag = succession_gender_laws
-	
+
 	male_only_law = {
 		can_title_have = {
 			can_title_have_law_general_trigger = yes
@@ -539,7 +452,7 @@ succession_gender_laws = {
 		flag = men_can_have_multiple_spouses
 		flag = men_can_have_consorts
 		flag = no_female_commanders
-		
+
 		pass_cost = {
 			prestige = change_succession_law_prestige_cost
 		}
@@ -547,7 +460,7 @@ succession_gender_laws = {
 			prestige = change_succession_law_prestige_cost
 		}
 	}
-	
+
 	male_preference_law = {
 		can_title_have = {
 			can_title_have_law_general_trigger = yes
@@ -598,7 +511,7 @@ succession_gender_laws = {
 		flag = men_can_have_multiple_spouses
 		flag = men_can_have_consorts
 		flag = no_female_commanders
-		
+
 		pass_cost = {
 			prestige = change_succession_law_prestige_cost
 		}
@@ -606,7 +519,7 @@ succession_gender_laws = {
 			prestige = change_succession_law_prestige_cost
 		}
 	}
-	
+
 	equal_law = {
 		can_title_have = {
 			can_title_have_law_general_trigger = yes
@@ -656,7 +569,7 @@ succession_gender_laws = {
 		flag = men_can_have_consorts
 		flag = women_can_have_multiple_spouses
 		flag = women_can_have_consorts
-		
+
 		pass_cost = {
 			prestige = change_succession_law_prestige_cost
 		}
@@ -678,7 +591,7 @@ succession_gender_laws = {
 			}
 		}
 	}
-	
+
 	female_preference_law = {
 		can_title_have = {
 			can_title_have_law_general_trigger = yes
@@ -714,7 +627,7 @@ succession_gender_laws = {
 		}
 		flag = women_can_have_multiple_spouses
 		flag = women_can_have_consorts
-		
+
 		pass_cost = {
 			prestige = change_succession_law_prestige_cost
 		}
@@ -722,7 +635,7 @@ succession_gender_laws = {
 			prestige = change_succession_law_prestige_cost
 		}
 	}
-	
+
 	female_only_law = {
 		can_title_have = {
 			can_title_have_law_general_trigger = yes
@@ -747,7 +660,7 @@ succession_gender_laws = {
 		}
 		flag = women_can_have_multiple_spouses
 		flag = women_can_have_consorts
-		
+
 		pass_cost = {
 			prestige = change_succession_law_prestige_cost
 		}

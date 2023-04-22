@@ -1,0 +1,749 @@
+﻿# Director of the Left
+task_councillor_china_1 = {
+	default_task = yes
+	position = councillor_china_1
+
+	task_type = task_type_general
+	task_progress = task_progress_infinite
+
+	effect_desc = {
+		desc = task_councillor_china_1_effect_desc
+	}
+
+	council_owner_modifier = {
+		name = task_collect_taxes_modifier
+		monthly_county_control_change_add = 2
+		scale = steward_collect_taxes_total_scale
+	}
+
+	# monthly_on_action = task_collect_taxes_side_effects
+
+	ai_will_do = {
+		value = 1000
+	}
+}
+
+# Director of the Right
+task_councillor_china_2 = {
+	default_task = yes
+	position = councillor_china_2
+
+	task_type = task_type_general
+	task_progress = task_progress_infinite
+
+	effect_desc = {
+		desc = task_councillor_china_2_effect_desc
+	}
+
+	council_owner_modifier = {
+		name = task_collect_taxes_modifier
+		monthly_county_control_change_add = 2
+		scale = steward_collect_taxes_total_scale
+	}
+
+	# monthly_on_action = task_collect_taxes_side_effects
+
+	ai_will_do = {
+		value = 1000
+	}
+}
+
+# Minister of Personnel
+task_councillor_liebu = {
+	default_task = yes
+	position = councillor_liebu
+
+	task_type = task_type_general
+	task_progress = task_progress_infinite
+
+	effect_desc = {
+		desc = task_domestic_affairs_effect_desc
+		triggered_desc = {
+			trigger = {
+				liege = { has_perk = chains_of_loyalty_perk }
+			}
+			desc = task_domestic_affairs_chains_of_loyalty_bonus_desc
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_erudition_legacy_5_perk = yes
+			}
+			desc = task_domestic_affairs_bureaucrats_bonus_desc
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_family_business_bonus = yes
+			}
+			desc = task_domestic_affairs_family_business_bonus_desc
+		}
+		desc = task_domestic_affairs_tyranny_effect_desc
+		triggered_desc = {
+			trigger = {
+				liege = { has_perk = chains_of_loyalty_perk }
+			}
+			desc = task_domestic_affairs_tyranny_chains_of_loyalty_bonus_desc
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_erudition_legacy_5_perk = yes
+			}
+			desc = task_domestic_affairs_tyranny_bureaucrats_bonus_desc
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_family_business_bonus = yes
+			}
+			desc = task_domestic_affairs_tyranny_family_business_bonus_desc
+		}
+		desc = {
+			desc = council_task_possible_side_effects
+			triggered_desc = {
+				trigger = {
+					diplomacy > mediocre_skill_rating
+				}
+				desc = task_increase_control_improved_vassal_opinion
+			}
+			triggered_desc = {
+				trigger = {
+					diplomacy > mediocre_skill_rating
+					liege = {
+						any_vassal = {
+							has_government = feudal_government
+							primary_title.tier > tier_barony
+						}
+					}
+				}
+				desc = task_increase_control_improve_vassal_contract
+			}
+			triggered_desc = {
+				trigger = {
+					diplomacy > mediocre_skill_rating
+				}
+				desc = task_increase_control_end_internal_war
+			}
+			triggered_desc = {
+				trigger = {
+					diplomacy > mediocre_skill_rating
+				}
+				desc = task_increase_control_force_vassal_partition
+			}
+			triggered_desc = {
+				trigger = {
+					diplomacy < high_skill_rating
+				}
+				desc = task_increase_control_lose_vassal_opinion
+			}
+			triggered_desc = {
+				trigger = {
+					diplomacy < high_skill_rating
+					liege = {
+						any_vassal = {
+							has_government = feudal_government
+							primary_title.tier > tier_barony
+						}
+					}
+				}
+				desc = task_increase_control_worsen_contract
+			}
+		}
+	}
+
+	on_start_task = {
+		set_variable = {
+			name = chancellor_domestic_affairs_opinion_value
+			value = 0
+		}
+	}
+
+	on_cancel_task = {
+		if = {
+			limit = {
+				is_alive = yes
+				has_variable = chancellor_domestic_affairs_opinion_value
+			}
+			remove_variable = chancellor_domestic_affairs_opinion_value
+		}
+	}
+
+	council_owner_modifier = {
+		name = task_domestic_affairs_opinion_moidifier
+		direct_vassal_opinion = 1
+		scale = chancellor_domestic_affairs_opinion_scale
+	}
+
+	council_owner_modifier = {
+		name = task_domestic_affairs_opinion_moidifier
+		tyranny_loss_mult = 0.01
+		scale = chancellor_domestic_affairs_tyranny_base
+	}
+
+	on_monthly = {
+		if = {
+			limit = {
+				liege = { is_ai = no }
+			}
+			if = {
+				limit = {
+					liege = {
+						has_variable = chancellor_domestic_affairs_opinion_value
+					}
+				}
+				liege = {
+					if = {
+						limit = {
+							var:chancellor_domestic_affairs_opinion_value < root.chancellor_domestic_affairs_opinion_max
+						}
+						change_variable = {
+							name = chancellor_domestic_affairs_opinion_value
+							add = root.chancellor_domestic_affairs_monthly_increase
+						}
+					}
+					if = {
+						limit = {
+							var:chancellor_domestic_affairs_opinion_value > root.chancellor_domestic_affairs_opinion_max
+						}
+						set_variable = {
+							name = chancellor_domestic_affairs_opinion_value
+							value = root.chancellor_domestic_affairs_opinion_max
+						}
+					}
+				}
+			}
+			else = {
+				liege = {
+					set_variable = {
+						name = chancellor_domestic_affairs_opinion_value
+						value = 0
+					}
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		value = 1000
+	}
+}
+
+# Minister of War
+task_councillor_bingbu = {
+	default_task = yes
+	position = councillor_bingbu
+
+	task_type = task_type_general
+	task_progress = task_progress_infinite
+
+	effect_desc = {
+		### Organized levies
+		desc = task_organize_levies_effect_desc
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_erudition_legacy_5_perk = yes
+			}
+			desc = task_organize_levies_erudition_bonus
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_family_business_bonus = yes
+			}
+			desc = task_organize_levies_family_business_bonus
+		}
+
+		### Army Maintenance
+		desc = {
+			desc = task_organize_levies_maintenance_effect_desc
+			triggered_desc = {
+				trigger = {
+					councillor_liege_has_erudition_legacy_5_perk = yes
+				}
+				desc = task_organize_levies_maintenance_erudition_bonus_desc
+			}
+			triggered_desc = {
+				trigger = {
+					councillor_liege_has_family_business_bonus = yes
+				}
+				desc = task_organize_levies_maintenance_family_business_bonus_desc
+			}
+		}
+
+		desc = {
+			desc = council_task_possible_side_effects
+			triggered_desc = {
+				trigger = {
+					scope:councillor_liege = {
+						any_sub_realm_county = {
+							NOT = { has_county_modifier = marshal_task_organized_service_modifier }
+						}
+					}
+					martial > mediocre_skill_rating
+				}
+				desc = task_organize_levies_well_organized_service
+			}
+			triggered_desc = {
+				trigger = {
+					scope:councillor_liege = {
+						any_sub_realm_county = {
+							NOT = { has_county_modifier = marshal_task_military_presence_modifier }
+						}
+					}
+					martial > mediocre_skill_rating
+				}
+				desc = task_organize_levies_increased_military_presence
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = {
+						has_character_modifier = marshal_task_levy_desertions_modifier
+					}
+					martial < high_skill_rating
+				}
+				desc = task_organize_levies_levy_desertion
+			}
+			triggered_desc = {
+				trigger = {
+					scope:councillor_liege = {
+						any_sub_realm_county = {
+							NOT = { has_county_modifier = marshal_task_unused_farmland_modifier }
+						}
+					}
+					martial < high_skill_rating
+				}
+				desc = task_organize_levies_unused_farmland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:councillor_liege = {
+						any_sub_realm_county = {
+							marshal_task_1003_county_trigger = yes
+						}
+					}
+					martial < high_skill_rating
+				}
+				desc = task_organize_levies_insufficient_guards
+			}
+		}
+	}
+
+	council_owner_modifier = {
+		name = task_organize_levies_modifier
+		levy_size = 1
+		garrison_size = 1
+		levy_reinforcement_rate = 1
+		scale = {
+			value = marshal_organize_levies_modifier_value
+			divide = 100
+		}
+	}
+
+	council_owner_modifier = {
+		name = task_organize_levies_maintenance_modifier
+
+		army_maintenance_mult = -1
+		scale = {
+			value = marshal_organize_levies_maintenance_total
+			divide = 100
+		}
+	}
+
+	# monthly_on_action = organize_the_levies_marshal_task_side_effects
+
+	ai_will_do = {
+		value = 1000
+	}
+}
+
+# Minister of Rites
+task_councillor_libu  = {
+	default_task = yes
+	position = councillor_libu
+
+	task_type = task_type_general
+	task_progress = task_progress_infinite
+
+	effect_desc = {
+		### Piety tooltip
+		desc = task_religious_relations_piety_effect_desc
+		triggered_desc = {
+			trigger = {
+				scope:councillor_liege = { has_perk = clerical_justifications_perk }
+			}
+			desc = task_religious_relations_effect_desc_perk_bonus_piety
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_erudition_legacy_5_perk = yes
+			}
+			desc = task_religious_relations_effect_desc_legacy_bonus_piety
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_family_business_bonus = yes
+			}
+			desc = task_religious_relations_effect_desc_family_business_bonus_piety
+		}
+
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:councillor.faith = {
+						OR = {
+							has_doctrine_parameter = no_head_of_faith
+							NOT = { exists = religious_head }
+						}
+						has_doctrine = doctrine_theocracy_lay_clergy
+					}
+				}
+				desc = task_religious_relations_effect_no_hof_layman_clergy_desc_opinion
+			}
+			desc = task_religious_relations_effect_desc_opinion
+		}
+
+
+		triggered_desc = {
+			trigger = {
+				scope:councillor_liege = {	has_perk = clerical_justifications_perk }
+			}
+			desc = task_religious_relations_effect_desc_perk_bonus_opinion
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_erudition_legacy_5_perk = yes
+			}
+			desc = task_religious_relations_effect_desc_legacy_bonus_opinion
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_family_business_bonus = yes
+			}
+			desc = task_religious_relations_effect_desc_family_business_bonus_opinion
+		}
+		desc = line_break
+
+		desc = {
+			desc = council_task_possible_side_effects
+			triggered_desc = {
+				trigger = {
+					learning > mediocre_skill_rating
+				}
+				desc = task_religious_relations_opinion_gain
+			}
+			triggered_desc = {
+				trigger = {
+					learning < high_skill_rating
+				}
+				desc = task_religious_relations_piety_loss
+			}
+			triggered_desc = {
+				trigger = {
+					learning < high_skill_rating
+				}
+				desc = task_religious_relations_opinion_loss
+			}
+		}
+	}
+
+	on_start_task = {
+		set_variable = {
+			name = court_chaplain_religious_relations_opinion_value
+			value = 0
+		}
+	}
+
+	on_cancel_task = {
+		if = {
+			limit = {
+				is_alive = yes
+				has_variable = court_chaplain_religious_relations_opinion_value
+			}
+			remove_variable = court_chaplain_religious_relations_opinion_value
+		}
+	}
+
+	council_owner_modifier = {
+		name = court_chaplain_religious_relations_modifier
+		monthly_piety = 1
+		scale = court_chaplain_religious_relations_modifier
+	}
+
+	council_owner_modifier = {
+		name = court_chaplain_religious_relations_perk_bonus_modifier
+		monthly_piety = 1
+		scale = court_chaplain_religious_relations_perk_bonus_modifier
+	}
+
+	council_owner_modifier = {
+		name = court_chaplain_religious_relations_erudition_legacy_5_bonus_modifier
+		monthly_piety = 1
+		scale = court_chaplain_religious_relations_erudition_legacy_5_bonus_modifier
+	}
+
+	council_owner_modifier = {
+		name = court_chaplain_religious_relations_opinion_modifier
+		theocracy_government_opinion_same_faith = 1
+		scale = court_chaplain_religious_relations_opinion_modifier
+	}
+
+	council_owner_modifier = {
+		name = court_chaplain_religious_relations_no_hof_opinion_modifier
+		same_faith_opinion = 1
+		scale = court_chaplain_religious_relations_no_hof_opinion_modifier
+	}
+
+	on_monthly = {
+		if = {
+			limit = {
+				liege = { is_ai = no }
+			}
+			if = {
+				limit = {
+					liege = {
+						has_variable = court_chaplain_religious_relations_opinion_value
+					}
+				}
+				liege = {
+					if = {
+						limit = {
+							var:court_chaplain_religious_relations_opinion_value < root.court_chaplain_religious_relations_opinion_max
+						}
+						change_variable = {
+							name = court_chaplain_religious_relations_opinion_value
+							add = root.court_chaplain_religious_relations_monthly_increase
+						}
+					}
+					if = {
+						limit = {
+							var:court_chaplain_religious_relations_opinion_value > root.court_chaplain_religious_relations_opinion_max
+						}
+						set_variable = {
+							name = court_chaplain_religious_relations_opinion_value
+							value = root.court_chaplain_religious_relations_opinion_max
+						}
+					}
+				}
+			}
+			else = {
+				liege = {
+					set_variable = {
+						name = court_chaplain_religious_relations_opinion_value
+						value = 0
+					}
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		value = 1000
+	}
+}
+
+# Minister of Revenue
+task_councillor_hubu = {
+	default_task = yes
+	position = councillor_hubu
+
+	task_type = task_type_general
+	task_progress = task_progress_infinite
+
+	effect_desc = {
+		desc = task_collect_taxes_effect_desc
+		triggered_desc = {
+			trigger = { liege = { has_perk = tax_man_perk } }
+			desc = task_collect_taxes_tax_man_bonus_desc
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_erudition_legacy_5_perk = yes
+			}
+			desc = task_collect_taxes_erudition_bonus_desc
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_family_business_bonus = yes
+			}
+			desc = task_collect_taxes_family_business_bonus_desc
+		}
+		desc = {
+			desc = council_task_possible_side_effects
+			triggered_desc = {
+				trigger = {
+					stewardship > mediocre_skill_rating
+				}
+				desc = task_collect_taxes_extra_taxes
+			}
+			triggered_desc = {
+				trigger = {
+					stewardship < high_skill_rating
+					liege = {
+						any_sub_realm_county = {
+							steward_task_county_corruption_county_trigger = yes
+						}
+					}
+				}
+				desc = task_collect_taxes_county_corruption
+			}
+		}
+	}
+
+	council_owner_modifier = {
+		name = task_collect_taxes_modifier
+		domain_tax_mult = 1
+		scale = steward_collect_taxes_total_scale
+	}
+
+	# monthly_on_action = task_collect_taxes_side_effects
+
+	ai_will_do = {
+		value = 1000
+	}
+}
+
+# Minister of Justice
+task_councillor_xingbu = {
+	position = councillor_xingbu
+	default_task = yes
+
+	task_type = task_type_general
+	task_progress = task_progress_infinite
+
+	effect_desc = {
+		desc = task_disrupt_schemes_hostile_scheme_resistance_base
+		triggered_desc = {
+			trigger = { scope:councillor_liege = { has_perk = court_of_shadows_perk } }
+			desc = task_disrupt_schemes_hostile_scheme_resistance_perk_bonus
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_erudition_legacy_5_perk = yes
+			}
+			desc = task_disrupt_schemes_hostile_scheme_resistance_legacy_bonus
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_family_business_bonus = yes
+			}
+			desc = task_disrupt_schemes_hostile_scheme_resistance_family_business_bonus
+		}
+		desc = task_disrupt_schemes_discovery_chance_base
+		triggered_desc = {
+			trigger = { scope:councillor_liege = { has_perk = court_of_shadows_perk } }
+			desc = task_disrupt_schemes_discovery_chance_perk_bonus
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_erudition_legacy_5_perk = yes
+			}
+			desc = task_disrupt_schemes_discovery_chance_legacy_bonus
+		}
+		triggered_desc = {
+			trigger = {
+				councillor_liege_has_family_business_bonus = yes
+			}
+			desc = task_disrupt_schemes_discovery_chance_family_business_bonus
+		}
+		desc = {
+			desc = council_task_possible_side_effects
+			triggered_desc = {
+				trigger = {
+					intrigue > mediocre_skill_rating
+				}
+				desc = task_disrupt_schemes_hostile_scheme_disrupted
+			}
+			triggered_desc = {
+				trigger = {
+					intrigue < high_skill_rating
+					scope:councillor_liege = {
+						has_any_secrets = yes
+					}
+				}
+				desc = task_disrupt_schemes_secret_revealed
+			}
+			triggered_desc = {
+				trigger = {
+					intrigue < high_skill_rating
+				}
+				desc = task_disrupt_schemes_courtier_secret_revealed
+			}
+		}
+	}
+
+	council_owner_modifier = {
+		name = task_disrupt_schemes_modifier
+		hostile_scheme_resistance_add = 1.0
+		scale = scope:councillor.spymaster_disrupt_schemes_modifier_base_scale
+	}
+
+	council_owner_modifier = {
+		name = task_disrupt_schemes_court_of_shadows_modifier #NOT USED?
+		hostile_scheme_resistance_add = 1.0
+		scale = scope:councillor.spymaster_disrupt_schemes_court_of_shadows_modifier_scale
+	}
+
+	council_owner_modifier = {
+		name = task_disrupt_schemes_erudition_legacy_5_modifier
+		hostile_scheme_resistance_add = 1.0
+		scale = scope:councillor.spymaster_disrupt_schemes_erudition_legacy_5_modifier_scale
+	}
+
+	council_owner_modifier = {
+		name = task_disrupt_schemes_erudition_legacy_5_modifier #TO EDIT?
+		hostile_scheme_resistance_add = 1.0
+		scale = scope:councillor.spymaster_disrupt_schemes_family_business_modifier_scale
+	}
+
+	council_owner_modifier = {
+		name = task_disrupt_schemes_modifier
+		scheme_discovery_chance_mult = 1.0
+		scale = { value = scope:councillor.spymaster_disrupt_schemes_scheme_discovery_modifier divide = 200 }
+	}
+
+	council_owner_modifier = {
+		name = task_disrupt_schemes_court_of_shadows_modifier
+		scheme_discovery_chance_mult = 1.0
+		scale = { value = scope:councillor.spymaster_disrupt_schemes_court_of_shadows_scheme_discovery_modifier_scale divide = 200 }
+	}
+
+	council_owner_modifier = {
+		name = task_disrupt_schemes_erudition_legacy_5_modifier #NOT USED?
+		scheme_discovery_chance_mult = 1.0
+		scale = { value = scope:councillor.spymaster_disrupt_schemes_erudition_legacy_5_discovery_modifier_scale divide = 200 }
+	}
+
+	council_owner_modifier = {
+		name = task_disrupt_schemes_erudition_legacy_5_modifier #TO EDIT
+		scheme_discovery_chance_mult = 1.0
+		scale = { value = scope:councillor.spymaster_disrupt_schemes_family_business_discovery_modifier_scale divide = 200 }
+	}
+
+	monthly_on_action = task_disrupt_schemes_side_effects
+
+	ai_will_do = {
+		value = 1000
+	}
+}
+
+# Minister of Works
+task_councillor_gongbu = {
+	default_task = yes
+	position = councillor_gongbu
+
+	task_type = task_type_general
+	task_progress = task_progress_infinite
+
+	effect_desc = {
+		desc = task_councillor_gongbu_effect_desc
+	}
+
+	council_owner_modifier = {
+		name = task_collect_taxes_modifier
+		holding_build_speed = -1
+		build_speed = -1
+		scale = steward_collect_taxes_total_scale
+	}
+
+	# monthly_on_action = task_collect_taxes_side_effects
+
+	ai_will_do = {
+		value = 1000
+	}
+}

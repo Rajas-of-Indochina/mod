@@ -1,0 +1,55 @@
+﻿raise_legion = {
+	scope = character
+	saved_scopes = {
+		county
+	}
+
+	effect = {
+		if = {
+			limit = {
+				NOT = {
+					any_character_war = {
+						scope:county.holder = {
+							is_attacker_in_war = PREV
+						}
+					}
+				}
+				NOT = {
+					any_character_war = {
+						scope:county.holder = {
+							is_defender_in_war = PREV
+						}
+					}
+				}
+			}
+			trigger_event = {
+				on_action = on_legion_raise
+			}
+			scope:county.holder = {
+				#set_variable = { # unused var
+				#	name = legion_available
+				#	value = 50
+				#	years = 5
+				#}
+			}
+
+			every_character_war = {
+				if = {
+					limit = {
+						PREV = { is_attacker_in_war = PREV }
+					}
+					add_attacker = scope:county.holder
+				}
+				if = {
+					limit = {
+						PREV = { is_defender_in_war = PREV }
+					}
+					add_defender = scope:county.holder
+				}
+			}
+		}
+
+
+
+	}
+}

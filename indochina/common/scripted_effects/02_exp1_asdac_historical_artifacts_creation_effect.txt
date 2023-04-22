@@ -1,0 +1,33 @@
+﻿create_artifact_spear_destiny_effect = {
+	# Get the character the artifact is being made for.
+	$OWNER$ = { save_scope_as = owner }
+	# Not really used, but if we don't set the scopes we get errors in the feature selection
+	set_artifact_rarity_illustrious = yes
+
+	# Create the artifact
+	create_artifact = {
+		name = artifact_pedestal_spear_destiny_name
+		description = artifact_pedestal_spear_destiny
+		type = pedestal
+		visuals = lance_of_longinus
+		template = general_unique_template
+		wealth = scope:wealth
+		quality = scope:quality
+		history = {
+			type = created_before_history
+		}
+		modifier = spear_ascalon_modifier
+		save_scope_as = newly_created_artifact
+		decaying = no
+	}
+
+	scope:newly_created_artifact = {
+		set_variable = { name = historical_unique_artifact value = yes }
+		set_variable = spear_destiny
+		set_variable = {
+			name = relic
+			value = flag:christian
+		}
+		save_scope_as = epic
+	}
+}

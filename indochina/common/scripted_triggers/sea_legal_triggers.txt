@@ -1,31 +1,4 @@
 ﻿
-can_raise_authority_trigger = {
-	custom_description = {
-		text = "no_powerful_vassal_with_negative_opinion"
-		NOT = {
-			any_vassal = {
-				is_powerful_vassal = yes
-				opposes_succession_law_change_trigger = yes
-			}
-		}
-	}
-}
-
-opposes_raise_authority_trigger = {
-	is_imprisoned = no
-	opinion = {
-		target = liege
-		value < 0
-	}
-	custom_description = {
-		text = law_change_approval_is_cowed
-		has_dread_level_towards = {
-			target = liege
-			level < 2
-		}
-	}
-}
-
 can_change_succession_law_trigger = {
 	trigger_if = {
 		limit = { realm_law_use_crown_authority = no }
@@ -51,3 +24,15 @@ can_change_succession_law_trigger = {
 	}
 }
 
+unlock_bureaucracy_trigger = {
+	OR = {
+		any_liege_or_above = {
+			has_government = chinese_government # Vassal of a Bureaucratic liege...
+		}
+		culture = {
+			has_cultural_parameter = unlock_bureaucracy_param # or has the needed cultural parameter...
+		}
+		religion = religion:taoism_religion # Or the right religion...
+		has_title = title:e_celestia_china # Or is the actual Emperor of China
+	}
+}

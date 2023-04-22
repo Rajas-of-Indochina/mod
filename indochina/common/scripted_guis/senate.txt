@@ -1,0 +1,634 @@
+﻿senate_visible = { #used for button in HUD
+	scope = character
+
+	is_valid = {
+		any_player = {
+			root = THIS
+		}
+		OR = {
+			access_to_italian_senate = yes
+			any_liege_or_above = {
+				access_to_italian_senate = yes
+			}
+		}
+	}
+
+	effect = {
+
+	}
+}
+senate_visible_eastern = { #used for button in HUD
+	scope = character
+
+	is_valid = {
+		any_player = {
+			root = THIS
+		}
+		OR = {
+			access_to_eastern_senate = yes
+			any_liege_or_above = {
+				access_to_eastern_senate = yes
+			}
+		}
+	}
+
+	effect = {
+
+	}
+}
+#contract stuff start
+senate_contract_admin_min = {
+	scope = character
+
+	is_valid = {
+		access_to_italian_senate = yes
+		NOT = {
+			has_character_flag = changed_admin_italy_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = italy_senate_admin
+			value = flag:minimum
+		}
+		remove_character_modifier = minumum_senate_admin
+		remove_character_modifier = taxing_rights_senate_admin
+		remove_character_modifier = absolute_senate_admin
+
+		add_character_modifier = minumum_senate_admin
+		add_character_flag = {
+			flag = changed_admin_italy_senate
+			years = 5
+		}
+	}
+}
+senate_contract_admin_taxing = {
+	scope = character
+
+	is_valid = {
+		access_to_italian_senate = yes
+		NOT = {
+			has_character_flag = changed_admin_italy_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = italy_senate_admin
+			value = flag:taxing_rights
+		}
+		remove_character_modifier = minumum_senate_admin
+		remove_character_modifier = taxing_rights_senate_admin
+		remove_character_modifier = absolute_senate_admin
+
+		add_character_modifier = taxing_rights_senate_admin
+
+		add_character_flag = {
+			flag = changed_admin_italy_senate
+			years = 5
+		}
+	}
+}
+senate_contract_admin_absolute = {
+	scope = character
+
+	is_valid = {
+		access_to_italian_senate = yes
+		NOT = {
+			has_character_flag = changed_admin_italy_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = italy_senate_admin
+			value = flag:absolute
+		}
+		remove_character_modifier = minumum_senate_admin
+		remove_character_modifier = taxing_rights_senate_admin
+		remove_character_modifier = absolute_senate_admin
+
+		add_character_modifier = absolute_senate_admin
+
+		add_character_flag = {
+			flag = changed_admin_italy_senate
+			years = 5
+		}
+	}
+}
+
+
+senate_contract_mil_exclusion = {
+	scope = character
+
+	is_valid = {
+		access_to_italian_senate = yes
+		NOT = {
+			has_character_flag = changed_mil_italy_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = italy_senate_military
+			value = flag:exclusion
+		}
+		remove_character_modifier = exclusion_senate_mil
+		remove_character_modifier = regular_senate_mil
+		remove_character_modifier = retinue_senate_mil
+
+		add_character_modifier = minumum_senate_admin
+		add_character_flag = {
+			flag = changed_mil_italy_senate
+			years = 5
+		}
+	}
+}
+senate_contract_mil_regular = {
+	scope = character
+
+	is_valid = {
+		access_to_italian_senate = yes
+		NOT = {
+			has_character_flag = changed_mil_italy_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = italy_senate_military
+			value = flag:regular
+		}
+		remove_character_modifier = exclusion_senate_mil
+		remove_character_modifier = regular_senate_mil
+		remove_character_modifier = retinue_senate_mil
+
+		add_character_modifier = regular_senate_mil
+		add_character_flag = {
+			flag = changed_mil_italy_senate
+			years = 5
+		}
+	}
+}
+senate_contract_mil_retinue = {
+	scope = character
+
+	is_valid = {
+		access_to_italian_senate = yes
+		NOT = {
+			has_character_flag = changed_mil_italy_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = italy_senate_military
+			value = flag:retinue
+		}
+		remove_character_modifier = exclusion_senate_mil
+		remove_character_modifier = regular_senate_mil
+		remove_character_modifier = retinue_senate_mil
+
+		add_character_modifier = retinue_senate_mil
+		add_character_flag = {
+			flag = changed_mil_italy_senate
+			years = 5
+		}
+	}
+}
+
+senate_contract_legislation_no = {
+	scope = character
+
+	is_valid = {
+		access_to_italian_senate = yes
+		NOT = {
+			has_character_flag = changed_legislation_italy_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = italy_senate_legistlation
+			value = flag:no_legislation
+		}
+		remove_character_modifier = no_senate_legislation
+		remove_character_modifier = regular_senate_legislation
+		remove_character_modifier = absolute_senate_legislation
+
+		add_character_modifier = no_senate_legislation
+		add_character_flag = {
+			flag = changed_legislation_italy_senate
+			years = 5
+		}
+	}
+}
+senate_contract_legislation_regular = {
+	scope = character
+
+	is_valid = {
+		access_to_italian_senate = yes
+		NOT = {
+			has_character_flag = changed_legislation_italy_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = italy_senate_legistlation
+			value = flag:regular
+		}
+		remove_character_modifier = no_senate_legislation
+		remove_character_modifier = regular_senate_legislation
+		remove_character_modifier = absolute_senate_legislation
+
+		add_character_modifier = regular_senate_legislation
+		add_character_flag = {
+			flag = changed_legislation_italy_senate
+			years = 5
+		}
+	}
+}
+senate_contract_legislation_absolute = {
+	scope = character
+
+	is_valid = {
+		access_to_italian_senate = yes
+		NOT = {
+			has_character_flag = changed_legislation_italy_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = italy_senate_legistlation
+			value = flag:absolute
+		}
+		remove_character_modifier = no_senate_legislation
+		remove_character_modifier = regular_senate_legislation
+		remove_character_modifier = absolute_senate_legislation
+
+		add_character_modifier = absolute_senate_legislation
+		add_character_flag = {
+			flag = changed_legislation_italy_senate
+			years = 5
+		}
+	}
+}
+
+senate_contract_admin_min_eastern = {
+	scope = character
+
+	is_valid = {
+		access_to_eastern_senate = yes
+		NOT = {
+			has_character_flag = changed_admin_eastern_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = eastern_senate_admin
+			value = flag:minimum
+		}
+		remove_character_modifier = minumum_senate_admin
+		remove_character_modifier = taxing_rights_senate_admin
+		remove_character_modifier = absolute_senate_admin
+
+		add_character_modifier = minumum_senate_admin
+		add_character_flag = {
+			flag = changed_admin_eastern_senate
+			years = 5
+		}
+	}
+}
+senate_contract_admin_taxing_eastern = {
+	scope = character
+
+	is_valid = {
+		access_to_eastern_senate = yes
+		NOT = {
+			has_character_flag = changed_admin_eastern_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = eastern_senate_admin
+			value = flag:taxing_rights
+		}
+		remove_character_modifier = minumum_senate_admin
+		remove_character_modifier = taxing_rights_senate_admin
+		remove_character_modifier = absolute_senate_admin
+
+		add_character_modifier = taxing_rights_senate_admin
+
+		add_character_flag = {
+			flag = changed_admin_eastern_senate
+			years = 5
+		}
+	}
+}
+senate_contract_admin_absolute_eastern = {
+	scope = character
+
+	is_valid = {
+		access_to_eastern_senate = yes
+		NOT = {
+			has_character_flag = changed_admin_eastern_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = eastern_senate_admin
+			value = flag:absolute
+		}
+		remove_character_modifier = minumum_senate_admin
+		remove_character_modifier = taxing_rights_senate_admin
+		remove_character_modifier = absolute_senate_admin
+
+		add_character_modifier = absolute_senate_admin
+
+		add_character_flag = {
+			flag = changed_admin_eastern_senate
+			years = 5
+		}
+	}
+}
+
+
+senate_contract_mil_exclusion_eastern = {
+	scope = character
+
+	is_valid = {
+		access_to_eastern_senate = yes
+		NOT = {
+			has_character_flag = changed_mil_eastern_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = eastern_senate_military
+			value = flag:exclusion
+		}
+		remove_character_modifier = exclusion_senate_mil
+		remove_character_modifier = regular_senate_mil
+		remove_character_modifier = retinue_senate_mil
+
+		add_character_modifier = minumum_senate_admin
+		add_character_flag = {
+			flag = changed_mil_eastern_senate
+			years = 5
+		}
+	}
+}
+senate_contract_mil_regular_eastern = {
+	scope = character
+
+	is_valid = {
+		access_to_eastern_senate = yes
+		NOT = {
+			has_character_flag = changed_mil_eastern_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = eastern_senate_military
+			value = flag:regular
+		}
+		remove_character_modifier = exclusion_senate_mil
+		remove_character_modifier = regular_senate_mil
+		remove_character_modifier = retinue_senate_mil
+
+		add_character_modifier = regular_senate_mil
+		add_character_flag = {
+			flag = changed_mil_eastern_senate
+			years = 5
+		}
+	}
+}
+senate_contract_mil_retinue_eastern = {
+	scope = character
+
+	is_valid = {
+		access_to_eastern_senate = yes
+		NOT = {
+			has_character_flag = changed_mil_eastern_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = eastern_senate_military
+			value = flag:retinue
+		}
+		remove_character_modifier = exclusion_senate_mil
+		remove_character_modifier = regular_senate_mil
+		remove_character_modifier = retinue_senate_mil
+
+		add_character_modifier = retinue_senate_mil
+		add_character_flag = {
+			flag = changed_mil_eastern_senate
+			years = 5
+		}
+	}
+}
+
+senate_contract_legislation_no_eastern = {
+	scope = character
+
+	is_valid = {
+		access_to_eastern_senate = yes
+		NOT = {
+			has_character_flag = changed_legislation_eastern_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = eastern_senate_legistlation
+			value = flag:no_legislation
+		}
+		remove_character_modifier = no_senate_legislation
+		remove_character_modifier = regular_senate_legislation
+		remove_character_modifier = absolute_senate_legislation
+
+		add_character_modifier = no_senate_legislation
+		add_character_flag = {
+			flag = changed_legislation_eastern_senate
+			years = 5
+		}
+	}
+}
+senate_contract_legislation_regular_eastern = {
+	scope = character
+
+	is_valid = {
+		access_to_eastern_senate = yes
+		NOT = {
+			has_character_flag = changed_legislation_eastern_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = eastern_senate_legistlation
+			value = flag:regular
+		}
+		remove_character_modifier = no_senate_legislation
+		remove_character_modifier = regular_senate_legislation
+		remove_character_modifier = absolute_senate_legislation
+
+		add_character_modifier = regular_senate_legislation
+		add_character_flag = {
+			flag = changed_legislation_eastern_senate
+			years = 5
+		}
+	}
+}
+senate_contract_legislation_absolute_eastern = {
+	scope = character
+
+	is_valid = {
+		access_to_eastern_senate = yes
+		NOT = {
+			has_character_flag = changed_legislation_eastern_senate
+		}
+	}
+
+	effect = {
+		set_global_variable = {
+			name = eastern_senate_legistlation
+			value = flag:absolute
+		}
+		remove_character_modifier = no_senate_legislation
+		remove_character_modifier = regular_senate_legislation
+		remove_character_modifier = absolute_senate_legislation
+
+		add_character_modifier = absolute_senate_legislation
+		add_character_flag = {
+			flag = changed_legislation_eastern_senate
+			years = 5
+		}
+	}
+}
+
+#senate contact stuff done
+
+vicar_enabled = { #used for button in HUD
+	scope = character
+
+	is_valid = {
+		NOT = {
+			OR = {
+				AND = {
+					liege = { access_to_eastern_senate = yes }
+					global_variable_list_size = {
+						name = aristocratic_senate_eastern
+						value > 9
+					}
+					has_character_flag = bribed_aristocrats_eastern
+				}
+				AND = {
+					liege = { access_to_eastern_senate = yes }
+					global_variable_list_size = {
+						name = populist_senate_eastern
+						value > 9
+					}
+					has_character_flag = bribed_populists_eastern
+				}
+				AND = {
+					liege = { access_to_eastern_senate = yes }
+					global_variable_list_size = {
+						name = traditionalist_senate_eastern
+						value > 9
+					}
+					has_character_flag = bribed_traditionalist_eastern
+				}
+				AND = {
+					liege = { access_to_eastern_senate = yes }
+					has_character_flag = bribed_populists_eastern
+					has_character_flag = bribed_aristocrats_eastern
+				}
+				AND = {
+					liege = { access_to_eastern_senate = yes }
+					has_character_flag = bribed_traditionalist_eastern
+					has_character_flag = bribed_aristocrats_eastern
+				}
+				AND = {
+					liege = { access_to_eastern_senate = yes }
+					has_character_flag = bribed_populists_eastern
+					has_character_flag = bribed_traditionalist_eastern
+				}
+				AND = {
+					liege = { access_to_italian_senate = yes }
+					global_variable_list_size = {
+						name = aristocratic_senate_italy
+						value > 9
+					}
+					has_character_flag = bribed_aristocrats_italy
+				}
+				AND = {
+					liege = { access_to_italian_senate = yes }
+					global_variable_list_size = {
+						name = populist_senate_italy
+						value > 9
+					}
+					has_character_flag = bribed_populists_italy
+				}
+				AND = {
+					liege = { access_to_italian_senate = yes }
+					global_variable_list_size = {
+						name = traditionalist_senate_italy
+						value > 9
+					}
+					has_character_flag = bribed_traditionalist_italy
+				}
+				AND = {
+					liege = { access_to_italian_senate = yes }
+					has_character_flag = bribed_populists_italy
+					has_character_flag = bribed_aristocrats_italy
+				}
+				AND = {
+					liege = { access_to_italian_senate = yes }
+					has_character_flag = bribed_traditionalist_italy
+					has_character_flag = bribed_aristocrats_italy
+				}
+				AND = {
+					liege = { access_to_italian_senate = yes }
+					has_character_flag = bribed_populists_italy
+					has_character_flag = bribed_traditionalist_italy
+				}
+			}
+		}
+	}
+
+	effect = {
+
+	}
+}
+
+senate_music = {
+	scope = character
+	effect = {
+		play_music_cue = mx_cue_senate
+	}
+}
+
+apotheosise_senate_select = {
+	scope = character
+	saved_scopes = {
+		emperor
+	}
+
+	effect = {
+		set_variable = {
+			name = emperor_senate_selected
+			value = scope:emperor
+		}
+	}
+}

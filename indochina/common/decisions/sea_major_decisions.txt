@@ -26,11 +26,20 @@ convert_to_feudalism_liege_converted_decision = { #by Linnéa Thimrén
 	ai_check_interval = 36
 
 	is_shown = {
-		has_government = tribal_government
+		OR = {
+			has_government = tribal_government
+			has_government = nomadic_government
+			has_government = anarchist_government
+		}
 		liege = {
 			OR = {
 				has_government = feudal_government
+				has_government = autocratic_government
+				has_government = eranshar_government
+				has_government = imperial_government
 				has_government = clan_government
+				has_government = muslim_government
+				has_government = caliphate_government
 				has_government = mandala_government
 			}
 		}
@@ -41,6 +50,9 @@ convert_to_feudalism_liege_converted_decision = { #by Linnéa Thimrén
 			has_realm_law = tribal_authority_1
 			has_realm_law = tribal_authority_2
 			has_realm_law = tribal_authority_3
+			has_realm_law = nomadic_authority_1
+			has_realm_law = nomadic_authority_2
+			has_realm_law = nomadic_authority_3
 		}
 		custom_description = {
 			text = recent_conversion_to_tribalism
@@ -102,7 +114,11 @@ convert_whole_realm_to_feudalism_decision = { #by Linnéa Thimrén
 	ai_check_interval = 36
 
 	is_shown = {
-		has_government = tribal_government
+		OR = {
+			has_government = tribal_government
+			has_government = nomadic_government
+			has_government = anarchist_government
+		}
 		OR = {
 			is_independent_ruler = yes
 			AND = {
@@ -110,7 +126,12 @@ convert_whole_realm_to_feudalism_decision = { #by Linnéa Thimrén
 				liege = {
 					NOR = {
 						has_government = feudal_government
+						has_government = autocratic_government
+						has_government = eranshar_government
+						has_government = imperial_government
 						has_government = clan_government
+						has_government = muslim_government
+						has_government = caliphate_government
 						has_government = mandala_government
 					}
 				}
@@ -119,7 +140,10 @@ convert_whole_realm_to_feudalism_decision = { #by Linnéa Thimrén
 	}
 
 	is_valid = {
-		has_realm_law = tribal_authority_3
+		OR = {
+			has_realm_law = tribal_authority_3
+			has_realm_law = nomadic_authority_3
+		}
 		prestige_level >= 2
 		capital_province.county = {
 			development_level >= convert_to_feudalism_development_requirement
@@ -248,7 +272,7 @@ found_angkor_wat_decision = {
 
 	is_shown = {
 		capital_county = title:c_aninditapura
-		title:c_aninditapura.title_province = { NOT = { has_holding_type = cow_metropolis_holding } }
+		#title:c_aninditapura.title_province = { NOT = { has_holding_type = cow_metropolis_holding } }
 		culture = { has_cultural_tradition = tradition_angkorian_architecture }
 	}
 
@@ -280,7 +304,7 @@ found_angkor_wat_decision = {
 	effect = {
 		title:c_aninditapura = {
 			title_province = {
-				set_holding_type = cow_metropolis_holding
+				#set_holding_type = cow_metropolis_holding
 				add_special_building_slot = angkor_wat_01
 			}
 		}
@@ -288,5 +312,99 @@ found_angkor_wat_decision = {
 
 	ai_potential = {
 		always = no
+	}
+}
+
+# Lets you actually take on the Chinese government type provided you meet the requirements
+adopt_chinese_government_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	desc = adopt_chinese_government_decision_desc
+	
+	ai_check_interval = 36
+
+	is_shown = {
+		NOT = {
+			has_government = chinese_government
+			has_government = anarchist_government
+		}
+		unlock_bureaucracy_trigger = yes
+	}
+
+	is_valid = {
+		trigger_if = {
+			limit = {
+				is_independent_ruler = yes
+			}
+			OR = {	
+				title:e_celestia_china = {
+					any_in_de_jure_hierarchy = {
+						holder = ROOT
+						tier >= tier_kingdom
+					}
+				}
+				AND = {
+					highest_held_title_tier >= tier_kingdom
+					any_realm_county = {
+						percent >= 0.25
+						title_province.geographical_region = world_china
+					}
+					capital_province.geographical_region = world_china
+				}
+				culture = { has_cultural_parameter = unlock_bureaucracy_param }
+				religion = religion:taoism_religion
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_government = tribal_government
+			}
+			OR = {
+				has_realm_law = tribal_authority_1
+				has_realm_law = tribal_authority_2
+				has_realm_law = tribal_authority_3
+			}
+			custom_description = {
+				text = recent_conversion_to_tribalism
+				NOT = { has_character_flag = just_converted_to_tribalism }
+			}
+		}
+		trigger_else_if = {
+			limit = {
+				has_government = nomadic_government
+			}
+			OR = {
+				has_realm_law = nomadic_authority_1
+				has_realm_law = nomadic_authority_2
+				has_realm_law = nomadic_authority_3
+			}
+		}
+	}
+
+	cost = {
+		prestige = 150
+	}
+
+	effect = {
+		trigger_event = major_decisions.0001
+		save_scope_as = actor
+		adopt_bureaucracy_effect = yes
+		hidden_effect = {
+			every_vassal = {
+				trigger_event = {
+					id = major_decisions.0002
+					days = 3
+				}
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+		
 	}
 }

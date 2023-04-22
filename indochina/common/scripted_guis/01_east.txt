@@ -1,0 +1,82 @@
+﻿
+update_BureaucracyEmpireship_list = {
+	scope = character
+	
+	effect = {
+		# Clears lists
+		clear_variable_list = fanzhen_list
+		clear_variable_list = civil_government_list
+		clear_variable_list = military_government_list
+		
+		every_vassal = {
+			if = {
+				limit = {
+					is_landed = yes
+					highest_held_title_tier >= tier_county
+					has_government = chinese_government
+					vassal_contract_has_flag = is_chinese_military_vassal
+				}
+				save_scope_as = corps_government_ally
+				root = {
+					add_to_variable_list = {
+						name = military_government_list
+						target = scope:corps_government_ally
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					is_landed = yes
+					highest_held_title_tier >= tier_county
+					has_government = chinese_government
+					vassal_contract_has_flag = is_chinese_civil_vassal
+				}
+				save_scope_as = bureau_government_ally
+				root = {
+					add_to_variable_list = {
+						name = civil_government_list
+						target = scope:bureau_government_ally
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					is_landed = yes
+					highest_held_title_tier >= tier_county
+					NOT = {
+						has_government = chinese_government
+					}
+				}
+				save_scope_as = imperial_government_ally
+				root = {
+					add_to_variable_list = {
+						name = fanzhen_list
+						target = scope:imperial_government_ally
+					}
+				}
+			}
+		}
+	}
+}
+
+Bureaucracy_Manager_court = {
+    scope = character
+    is_shown = {
+        NOT = {
+            has_global_variable = Bureaucracy_Manager_court
+        }
+    }
+    effect = {
+        if = {
+            limit = {
+                NOT = {
+                    has_global_variable = Bureaucracy_Manager_court
+                }
+            }
+            set_global_variable = Bureaucracy_Manager_court
+        }
+        else = {
+            remove_global_variable = Bureaucracy_Manager_court
+		}
+    }
+}

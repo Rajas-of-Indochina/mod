@@ -1,0 +1,91 @@
+﻿#Adopt special succession type.
+adopt_special_succession_decision = { #by Ewan Cowhig Croft
+	picture = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	desc = adopt_special_succession_decision_desc
+
+	ai_check_interval = 36
+
+	is_shown = {
+		OR = {	#Must be eligible for a special succession type.
+			special_succession_witengamot_trigger = yes
+			special_succession_thing_trigger = yes
+			special_succession_tanistry_trigger = yes
+		}
+		AND = {
+			highest_held_title_tier >= tier_kingdom
+			has_realm_law_flag = partition_succession_law
+			any_held_title = {
+				tier >= tier_kingdom
+				NOR = {
+					has_title_law_flag = advanced_succession_law
+					has_title_law_flag = elective_succession_law
+				}
+			}
+		}
+		current_date < 1100.1.1	#Curtail special succession types as the centuries wear on. Ever on.
+	}
+
+	is_valid = {
+		trigger_if = {
+			limit = { highest_held_title_tier = tier_kingdom }
+			#Either hold a valid top-tier king title as a king...
+			AND = {
+				any_held_title = {
+					tier = tier_kingdom
+					NOR = {
+						custom_description = {
+							text = found_kingdom_decision_advanced_succesion
+							has_title_law_flag = advanced_succession_law
+						}
+						custom_description = {
+							text = found_kingdom_decision_elective_succesion
+							has_title_law_flag = elective_succession_law
+						}
+					}
+				}
+			}
+		}
+		trigger_else = {
+			#... Or a valid top-tier empire title as an emperor.
+			AND = {
+				highest_held_title_tier >= tier_empire
+				any_held_title = {
+					tier >= tier_empire
+					NOR = {
+						custom_description = {
+							text = found_kingdom_decision_advanced_succesion
+							has_title_law_flag = advanced_succession_law
+						}
+						custom_description = {
+							text = found_kingdom_decision_elective_succesion
+							has_title_law_flag = elective_succession_law
+						}
+					}
+				}
+			}
+		}
+	}
+
+	cost = {
+		prestige = 300
+	}
+
+	effect = {
+		show_as_tooltip = {
+			custom_tooltip = adopt_special_succession_decision_effects.tt
+		}
+		trigger_event = major_decisions.3100
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+		modifier = {
+			factor = 0
+			has_primary_title = title:k_norway
+		}
+	}
+}

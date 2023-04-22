@@ -79,18 +79,24 @@ convert_whole_realm_to_feudalism_effect = {
 	}
 
 	##General
-	custom_tooltip = all_holding_will_change
+	#custom_tooltip = all_holding_will_change
+
+	capital_county = {
+		title_province = {
+			if = {
+				limit = { has_holding_type = tribal_holding }
+				set_holding_type = castle_holding
+				add_province_modifier = {
+					modifier = converted_to_feudal_county_modifier
+					years = 10
+				}
+			}
+		}
+	}
+
 
 	##Sort out new laws.
 	hidden_effect = {
-		every_realm_province = {
-			limit = { has_holding_type = tribal_holding }
-			set_holding_type = castle_holding
-			add_province_modifier = {
-				modifier = converted_to_feudal_county_modifier
-				years = 10
-			}
-		}
 
 		#Nuke tribal authorities.
 		if = {
@@ -224,10 +230,121 @@ convert_whole_realm_to_feudalism_effect = {
 				}
 			}
 		}
+
+		every_vassal = {			
+			capital_county = {
+				every_county_province = {
+					barony = {
+						if = {
+							limit = { has_holding_type = tribal_holding }
+							set_holding_type = castle_holding
+							add_province_modifier = {
+								modifier = converted_to_feudal_county_modifier
+								years = 10
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
 #####
+
+adopt_bureaucracy_effect = {
+	change_government = chinese_government
+
+	##Sort out new laws.
+	if = {
+		limit = {
+			OR = {
+				has_government = tribal_government
+				has_government = nomadic_government
+			}
+		}
+		custom_tooltip = all_holding_will_change
+		hidden_effect = {
+			#Nuke tribal authorities.
+			if = {
+				limit = { has_realm_law = tribal_authority_0 }
+				remove_realm_law = tribal_authority_0
+			}
+			if = {
+				limit = { has_realm_law = tribal_authority_1 }
+				remove_realm_law = tribal_authority_1
+			}
+			if = {
+				limit = { has_realm_law = tribal_authority_2 }
+				remove_realm_law = tribal_authority_2
+			}
+			if = {
+				limit = { has_realm_law = tribal_authority_3 }
+				remove_realm_law = tribal_authority_3
+			}
+			#Start off crown authorities.
+			if = {
+				limit = {
+					has_government = mandala_government
+					NOT = { has_realm_law = mandala_authority_0 }
+				}
+				add_realm_law_skip_effects = mandala_authority_0
+			}
+			else_if = {
+				limit = {
+					NOT = { has_realm_law = crown_authority_0 }
+				}
+				add_realm_law_skip_effects = crown_authority_0
+			}
+		}
+	}
+
+	#VASSAL EFFECTS
+	#Also convert every vassal.
+	hidden_effect = {
+		#Liege has taken clan, so become clan.
+		every_vassal = {
+			limit = {
+				OR = {
+					has_government = tribal_government
+					has_government = nomadic_government
+				}
+			}
+			change_government = chinese_government
+			#Nuke tribal authorities.
+			if = {
+				limit = { has_realm_law = tribal_authority_0 }
+				remove_realm_law = tribal_authority_0
+			}
+			if = {
+				limit = { has_realm_law = tribal_authority_1 }
+				remove_realm_law = tribal_authority_1
+			}
+			if = {
+				limit = { has_realm_law = tribal_authority_2 }
+				remove_realm_law = tribal_authority_2
+			}
+			if = {
+				limit = { has_realm_law = tribal_authority_3 }
+				remove_realm_law = tribal_authority_3
+			}
+		}
+		capital_county = {
+			every_county_province = {
+				barony = {
+					if = {
+						limit = { has_holding_type = tribal_holding }
+						set_holding_type = castle_holding
+						add_province_modifier = {
+							modifier = converted_to_feudal_county_modifier
+							years = 10
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 unite_nusantara_decision_effect = {
 	#Create the title and make it primary
@@ -313,19 +430,25 @@ reform_nanyue_decision_effect = {
 	}
 	resolve_title_and_vassal_change = scope:title_change
 
-	hidden_effect = {
-		set_primary_title_to = title:e_nanyue
+	set_primary_title_to = title:e_nanyue
 
+	if = {
+		limit = {
+			completely_controls = title:k_champa
+		}
+		title:k_champa = { set_de_jure_liege_title = title:e_nanyue }
+	}
+	else = {
 		title:d_vijaya = { set_de_jure_liege_title = title:k_annam }
 		title:d_amaravati = { set_de_jure_liege_title = title:k_annam }
 		title:d_tribhuvanadevi = { set_de_jure_liege_title = title:k_annam }
-		title:k_annam = { set_de_jure_liege_title = title:e_nanyue }
-		title:k_nanyue_china = { set_de_jure_liege_title = title:e_nanyue }
+	}
+	title:k_annam = { set_de_jure_liege_title = title:e_nanyue }
+	title:k_nanyue_china = { set_de_jure_liege_title = title:e_nanyue }
 
-		if = {
-			limit = { has_title = title:e_dai_viet }
-			destroy_title = title:e_dai_viet
-		}
+	if = {
+		limit = { has_title = title:e_dai_viet }
+		destroy_title = title:e_dai_viet
 	}
 
 	# Additionally give your culture a unique tradition or something
@@ -452,6 +575,7 @@ form_majapahit_empire_effect = {
 				holder = ROOT
 				ROOT = { completely_controls = PREV }
 			}
+			is_titular = no
 		}
 		add_to_list = majapahit_kingdoms
 	}
@@ -503,7 +627,7 @@ settle_nomadic_realm_effect = {
 	#VASSAL EFFECTS
 	#Also convert every vassal.
 	hidden_effect = {
-		every_vassal = {
+		every_vassal_or_below = {
 			change_government = tribal_government
 			if = {
 				limit = { has_realm_law = nomadic_authority_0 }
@@ -522,6 +646,62 @@ settle_nomadic_realm_effect = {
 				remove_realm_law = nomadic_authority_3
 			}
 			add_realm_law_skip_effects = tribal_authority_0
+		}
+	}
+}
+
+unsettle_nomadic_realm_effect = {
+	#Sort out new laws
+	change_government = nomadic_government
+	hidden_effect = {
+		if = {
+			limit = { has_realm_law = tribal_authority_0 }
+			remove_realm_law = tribal_authority_0
+		}
+		if = {
+			limit = { has_realm_law = tribal_authority_1 }
+			remove_realm_law = tribal_authority_1
+		}
+		if = {
+			limit = { has_realm_law = tribal_authority_2 }
+			remove_realm_law = tribal_authority_2
+		}
+		if = {
+			limit = { has_realm_law = tribal_authority_3 }
+			remove_realm_law = tribal_authority_3
+		}
+		add_realm_law_skip_effects = nomadic_authority_0
+	}
+
+	#VASSAL EFFECTS
+	#Also convert every vassal.
+	hidden_effect = {
+		every_vassal_or_below = {
+			limit = {
+				has_government = tribal_government
+				culture = { has_cultural_tradition = tradition_horse_lords }
+			}
+
+			change_government = nomadic_government
+			hidden_effect = {
+				if = {
+					limit = { has_realm_law = tribal_authority_0 }
+					remove_realm_law = tribal_authority_0
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_1 }
+					remove_realm_law = tribal_authority_1
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_2 }
+					remove_realm_law = tribal_authority_2
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_3 }
+					remove_realm_law = tribal_authority_3
+				}
+				add_realm_law_skip_effects = nomadic_authority_0
+			}
 		}
 	}
 }

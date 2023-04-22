@@ -1,4 +1,5 @@
-﻿feudalize_tribal_holding_interaction = {
+﻿#Edited to also include estates
+feudalize_tribal_holding_interaction = {
 	category = interaction_category_uncategorized
 	hidden = yes
 	special_interaction = feudalize_tribal_holding
@@ -7,7 +8,7 @@
 
 	target_type = title
 	target_filter = actor_domain_titles
-	
+
 	auto_accept = yes
 
 	is_shown = {
@@ -18,7 +19,165 @@
 			NOT = { has_government = anarchist_government }
 		}
 	}
-	
+
+	can_be_picked_title = {
+		scope:target = {
+			holder = scope:actor
+			is_capital_barony = no # we'll use the county in that case
+			trigger_if = {
+				limit = { tier <= tier_county }
+				OR = {
+					title_province = {
+						has_holding_type = tribal_holding
+					}
+					title_province = {
+						has_holding_type = estate_holding
+					}
+				}
+			}
+			trigger_else = {
+				custom_description = {
+					text = "feudalize_tribal_holding_interaction_title_not_county_or_below"
+					always = no
+				}
+			}
+		}
+		NOT = {
+			AND = {
+				scope:target = {
+					title_province = {
+						has_holding_type = estate_holding
+					}
+				}
+				scope:actor = {
+					OR = {
+						has_government = imperial_cult_government
+						has_government = imperial_government
+						has_government = autocratic_government
+						AND = {
+							has_government = roman_government
+							OR = {
+								is_independent_ruler = no
+								AND = {
+									exists = culture
+									culture = {
+										has_cultural_pillar = heritage_latin
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	has_valid_target_showing_failures_only = {
+		scope:target = {
+			trigger_if = {
+				limit = { tier <= tier_county }
+				title_province = {
+					barony_controller = scope:actor
+					has_ongoing_construction = no
+				}
+			}
+		}
+	}
+
+	# Castle
+	send_option = {
+		is_valid = {
+			always = yes
+		}
+		flag = feudalize_to_castle
+	}
+	# City
+	send_option = {
+		is_valid = {
+			scope:target = {
+				title_province = {
+					has_building_or_higher = market_villages_01
+				}
+			}
+		}
+		flag = feudalize_to_city
+	}
+	# Temple
+	send_option = {
+		is_valid = {
+			scope:target = {
+				title_province = {
+					has_building_or_higher = tribal_shrines_01
+				}
+			}
+		}
+		flag = feudalize_to_temple
+	}
+
+	cost = {
+		gold = scope:actor.feudalize_tribal_holding_interaction_cost
+	}
+
+	on_accept = {
+		scope:actor = {
+			send_interface_toast = {
+				title = feudalize_tribal_holding_interaction_notification
+
+				right_icon = scope:actor
+
+				if = {
+					limit = { exists = scope:target.title_province }
+
+					if = {
+						limit = {
+							scope:feudalize_to_city = yes
+						}
+						scope:target.title_province = {
+							set_holding_type = city_holding
+						}
+					}
+					else_if = {
+						limit = {
+							scope:feudalize_to_temple = yes
+						}
+						scope:target.title_province = {
+							set_holding_type = church_holding
+						}
+					}
+					else = {
+						scope:target.title_province = {
+							set_holding_type = castle_holding
+						}
+					}
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = 1500
+	}
+}
+
+tribalize_feudal_holding_interaction = {
+	category = interaction_category_uncategorized
+	hidden = yes
+	special_interaction = feudalize_tribal_holding
+
+	desc = tribalize_feudal_holding_interaction_desc
+
+	target_type = title
+	target_filter = actor_domain_titles
+
+	auto_accept = yes
+
+	is_shown = {
+		scope:actor = {
+			this = scope:recipient
+			has_government = nomadic_government
+		}
+	}
+
 	can_be_picked_title = {
 		scope:target = {
 			holder = scope:actor
@@ -26,7 +185,9 @@
 			trigger_if = {
 				limit = { tier <= tier_county }
 				title_province = {
-					has_holding_type = tribal_holding
+					OR = {
+						has_holding_type = castle_holding
+					}
 				}
 			}
 			trigger_else = {
@@ -50,23 +211,32 @@
 		}
 	}
 
-	cost = {
-		gold = {
-			value = feudalize_tribal_holding_interaction_cost
-		}
-	}
-
 	on_accept = {
 		scope:actor = {
 			send_interface_toast = {
-				title = feudalize_tribal_holding_interaction_notification
+				title = tribalize_feudal_holding_interaction_notification
 
-				right_icon = scope:actor					
+				right_icon = scope:actor
 
 				if = {
 					limit = { exists = scope:target.title_province }
 					scope:target.title_province = {
-						set_holding_type = castle_holding
+						set_holding_type = tribal_holding
+					}
+				}
+			}
+
+			add_gold = {
+				value = 50
+
+				scope:target.title_province = {
+					multiply = num_buildings
+
+					if = {
+						limit = {
+							has_building_or_higher = common_tradeport_01
+						}
+						add = -50
 					}
 				}
 			}
@@ -75,5 +245,148 @@
 
 	ai_will_do = {
 		base = 1500
+	}
+}
+
+convert_holding_type_interaction = {
+	category = interaction_category_uncategorized
+	hidden = yes
+	special_interaction = feudalize_tribal_holding
+
+	desc = convert_holding_type_interaction_desc
+
+	target_type = title
+	target_filter = actor_domain_titles_including_leases
+
+	auto_accept = yes
+
+	is_shown = {
+		scope:actor = {
+			this = scope:recipient
+			NOT = { has_government = tribal_government }
+			NOT = { has_government = nomadic_government }
+			NOT = { has_government = anarchist_government }
+		}
+	}
+
+	can_be_picked_title = {
+		scope:target = {
+			OR = {
+				holder = scope:actor
+				holder.liege = scope:actor
+			}
+			is_capital_barony = no # we'll use the county in that case
+			trigger_if = {
+				limit = { tier <= tier_county }
+				title_province = {
+					OR = {
+						has_holding_type = castle_holding
+						has_holding_type = church_holding
+						has_holding_type = city_holding
+					}
+				}
+			}
+			trigger_else = {
+				custom_description = {
+					text = "feudalize_tribal_holding_interaction_title_not_county_or_below"
+					always = no
+				}
+			}
+		}
+	}
+
+	has_valid_target_showing_failures_only = {
+		scope:actor = {
+			culture = {
+				has_innovation = innovation_city_planning
+			}
+		}
+		scope:target = {
+			trigger_if = {
+				limit = { tier <= tier_county }
+				title_province = {
+					barony_controller = scope:actor
+					has_ongoing_construction = no
+				}
+			}
+		}
+	}
+
+	# Castle
+	send_option = {
+		is_valid = {
+			scope:target = {
+				title_province = {
+					NOT = { has_holding_type = castle_holding }
+				}
+			}
+		}
+		flag = feudalize_to_castle
+	}
+	# City
+	send_option = {
+		is_valid = {
+			scope:target = {
+				title_province = {
+					NOT = { has_holding_type = city_holding }
+				}
+			}
+		}
+		flag = feudalize_to_city
+	}
+	# Temple
+	send_option = {
+		is_valid = {
+			scope:target = {
+				title_province = {
+					NOT = { has_holding_type = church_holding }
+				}
+			}
+		}
+		flag = feudalize_to_temple
+	}
+
+	cost = {
+		gold = main_building_tier_1_cost
+	}
+
+	on_accept = {
+		scope:actor = {
+			send_interface_toast = {
+				title = convert_holding_type_interaction_notification
+
+				right_icon = scope:actor
+
+				if = {
+					limit = { exists = scope:target.title_province }
+
+					if = {
+						limit = {
+							scope:feudalize_to_city = yes
+						}
+						scope:target.title_province = {
+							set_holding_type = city_holding
+						}
+					}
+					else_if = {
+						limit = {
+							scope:feudalize_to_temple = yes
+						}
+						scope:target.title_province = {
+							set_holding_type = church_holding
+						}
+					}
+					else = {
+						scope:target.title_province = {
+							set_holding_type = castle_holding
+						}
+					}
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = -1000
 	}
 }

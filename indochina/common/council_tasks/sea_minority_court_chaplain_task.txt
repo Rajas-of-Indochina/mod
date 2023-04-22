@@ -238,6 +238,46 @@ task_conversion = {
 			}
 		}
 
+		### TFE county conversion changes
+		# Bonus for converting a province within the Empire to its Official Faith
+		if = {
+			limit = {
+				OR = {
+					exists = scope:councillor_liege.primary_title.var:official_imperial_faith
+					AND = {
+						exists = scope:councillor_liege.top_liege
+						exists = scope:councillor_liege.top_liege.primary_title.var:official_imperial_faith
+					}
+				}
+				OR = {
+					AND = {
+						exists = scope:councillor_liege.primary_title.var:official_imperial_faith
+						scope:councillor.faith = scope:councillor_liege.primary_title.var:official_imperial_faith
+					}
+					AND = {
+						exists = scope:councillor_liege.top_liege
+						exists = scope:councillor_liege.top_liege.primary_title.var:official_imperial_faith
+						scope:councillor.faith = scope:councillor_liege.top_liege.primary_title.var:official_imperial_faith
+					}
+				}
+			}
+			multiply = {
+				value = 1.1
+				desc = COURT_CHAPLAIN_CONVERSION_OFFICIAL_IMPERIAL_FAITH_EMPIRE
+			}
+		}
+		# Eranshar bonus
+		if = {
+			limit = {
+				scope:councillor_liege = {
+					vassal_contract_has_flag = eranshar_special_contracts_religious_enforcment
+				}
+			}
+			add = {
+				value = 30
+			}
+		}
+
 		# Because the task needs to complete 3 times with the minority system
 		multiply = 3
 

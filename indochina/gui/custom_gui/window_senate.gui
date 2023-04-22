@@ -1,0 +1,1386 @@
+types senatewidgets {
+    type senatewindow = window {
+		layer = middle
+		movable = yes
+		size = {1100 783}
+		parentanchor = center
+		position = { 1500 100 }
+		datacontext = "[GetPlayer]"
+		visible = "[GetVariableSystem.Exists('senate_window')]"
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+			using = Sound_WindowHide_Standard
+			using = Window_Position_MainTab_Hide
+			trigger_when = "[IsRightWindowOpen]"
+			alpha = 0
+		}
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			using = Sound_WindowShow_Standard
+			using = Window_Position_MainTab
+			on_start = "[GetVariableSystem.Set( 'senate_view', 'all' )]"
+			on_start = "[GetScriptedGui('senate_music').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			alpha = 1
+		}
+
+    	margin_widget = {
+    		size = { 100% 100% }
+    		margin = { 0 26 }
+
+    		background = {
+    			texture = "gfx/interface/illustrations/custom/senateconcept.dds"
+    			spriteborder = { 18 18 }
+    			texture_density = 2
+
+    			modify_texture = {
+    				name = "overlay"
+    				texture = "gfx/interface/component_overlay/overlay_effect.dds"
+    				spriteType = Corneredstretched
+    				spriteborder = { 0 0 }
+    				blend_mode = overlay
+    			}
+    		}
+
+    		vbox = {
+    			layoutpolicy_horizontal = expanding
+
+    			vbox = {
+    				layoutpolicy_horizontal = expanding
+					margin_right = 20
+					margin_left = 20
+
+    				header_pattern = {
+    					layoutpolicy_horizontal = expanding
+
+    					blockoverride "header_text"
+    					{
+    						text = "ITALIAN_SENATE_HEADER"
+    					}
+
+    					blockoverride "button_close"
+    					{
+    						onclick = "[GetVariableSystem.Toggle('senate_window')]"
+    					}
+    					
+    				}
+    			}
+
+    			vbox = {
+    				layoutpolicy_horizontal = expanding
+    				layoutpolicy_vertical = expanding
+					margin_top = -75
+					margin_right = 50
+					margin_left = 30
+					margin_bottom = 75
+    				ignoreinvisible = yes
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						vbox = {
+							layoutpolicy_horizontal = expanding
+    						layoutpolicy_vertical = expanding
+							spacer = {
+								size = {5 100}
+							}
+							text_label_center = {
+								text = "SENATE_TASKS_TITLE"
+								default_format = "#high"
+                   				using = Font_Size_Big
+							}
+							scrollbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								blockoverride "scrollbox_content"
+								{
+									vbox = {
+										ignoreinvisible = yes
+										vbox = {
+											visible = "[Not( Or(EqualTo_string(GetGlobalVariable( 'italy_senate_tasks' ).GetFlagName, 'convert_culture'), Or(EqualTo_string(GetGlobalVariable( 'italy_senate_tasks' ).GetFlagName, 'building'), Or(EqualTo_string(GetGlobalVariable( 'italy_senate_tasks' ).GetFlagName, 'conquer'), EqualTo_string(GetGlobalVariable( 'italy_senate_tasks' ).GetFlagName, 'convert_faith') ) ) ) )]"
+											text_label_center = {
+												text = "SENATE_NO_TASKS"
+												default_format = "#high"
+												using = Font_Size_Medium
+											}
+										}
+										vbox = {
+											visible = "[EqualTo_string(GetGlobalVariable( 'italy_senate_tasks' ).GetFlagName, 'convert_culture')]"
+											vbox = {
+												background = {
+													texture = "gfx/interface/illustrations/holding_types/city_mena.dds"
+													margin_right = 100
+													margin_left = 100
+													alpha = 0.3
+													modify_texture = {
+														name = "mask"
+														texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+														spriteType = Corneredstretched
+														spriteborder = { 0 0 }
+														blend_mode = alphamultiply
+													}
+												}
+												icon = {
+													texture = "gfx/interface/icons/scheme_types/icon_scheme_culture.dds"
+													size = {80 80}
+												}
+												text_label_center = {
+													text = "SENATE_TASK_CULTURE"
+													default_format = "#high"
+													using = Font_Size_Big
+												}
+											}
+											text_single = {
+												text = "SENATE_TASK_CULTURE_DESC"
+												default_format = "#high"
+											}
+										}
+										vbox = {
+											visible = "[EqualTo_string(GetGlobalVariable( 'italy_senate_tasks' ).GetFlagName, 'convert_faith')]"
+											vbox = {
+												background = {
+													texture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+													margin_right = 100
+													margin_left = 100
+													alpha = 0.3
+													modify_texture = {
+														name = "mask"
+														texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+														spriteType = Corneredstretched
+														spriteborder = { 0 0 }
+														blend_mode = alphamultiply
+													}
+												}
+												icon = {
+													texture = "gfx/interface/icons/casus_bellis/religious_war.dds"
+												}
+												text_label_center = {
+													text = "SENATE_TASK_FAITH"
+													default_format = "#high"
+													using = Font_Size_Big
+												}
+											}
+											text_single = {
+												text = "SENATE_TASK_FAITH_DESC"
+												default_format = "#high"
+											}
+										}
+										vbox = {
+											visible = "[EqualTo_string(GetGlobalVariable( 'italy_senate_tasks' ).GetFlagName, 'conquer')]"
+											vbox = {
+												background = {
+													texture = "gfx/interface/illustrations/decisions/decision_invite_knights.dds"
+													margin_right = 100
+													margin_left = 100
+													alpha = 0.3
+													modify_texture = {
+														name = "mask"
+														texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+														spriteType = Corneredstretched
+														spriteborder = { 0 0 }
+														blend_mode = alphamultiply
+													}
+												}
+												icon = {
+													texture = "gfx/interface/icons/icon_kill.dds"
+												}
+												text_label_center = {
+													text = "SENATE_TASK_CONQUER"
+													default_format = "#high"
+													using = Font_Size_Big
+												}
+											}
+											text_single = {
+												text = "SENATE_TASK_CONQUER_DESC"
+												default_format = "#high"
+											}
+										}
+										vbox = {
+											visible = "[EqualTo_string(GetGlobalVariable( 'italy_senate_tasks' ).GetFlagName, 'building')]"
+											vbox = {
+												background = {
+													texture = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+													alpha = 0.3
+													modify_texture = {
+														name = "mask"
+														texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+														spriteType = Corneredstretched
+														spriteborder = { 0 0 }
+														blend_mode = alphamultiply
+													}
+												}
+												icon = {
+													texture = "gfx/interface/icons/icon_holding_city.dds"
+												}
+												text_label_center = {
+													text = "SENATE_TASK_BUILDING"
+													default_format = "#high"
+													using = Font_Size_Big
+												}
+											}
+											text_single = {
+												text = "SENATE_TASK_BUILDING_DESC"
+												default_format = "#high"
+											}
+										}
+									}
+								}
+							}
+						}
+						spacer = {
+							size = {50 0}
+						}
+						vbox = {
+							spacer = {
+								size = {5 100}
+							}
+							text_label_center = {
+								text = "SENATE_CONTRACTS_TITLE"
+								default_format = "#high"
+                   				using = Font_Size_Big
+							}
+							spacer = {
+								size = {5 10}
+							}
+							text_label_center = {
+								text = "Senate_Administrative_Powers"
+                   				using = Font_Size_Medium
+							}
+							hbox = {
+								background = {
+									using = Background_Area_Dark
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_admin_min')]"
+									size = { 150 50 }
+									text = "SENATE_MINIMUM_ADMIN"
+									down = "[EqualTo_string(GetGlobalVariable( 'italy_senate_admin' ).GetFlagName, 'minimum')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'italy_senate_admin' ).GetFlagName, 'minimum')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_MINIMUM_ADMIN_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_admin_min').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_admin_taxing')]"
+									size = { 150 50 }
+									text = "SENATE_TAXING_RIGHTS"
+									down = "[EqualTo_string(GetGlobalVariable( 'italy_senate_admin' ).GetFlagName, 'taxing_rights')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'italy_senate_admin' ).GetFlagName, 'taxing_rights')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_TAXING_ADMIN_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_admin_taxing').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_admin_absolute')]"
+									size = { 150 50 }
+									text = "SENATE_ABSOLUTE_ADMIN"
+									down = "[EqualTo_string(GetGlobalVariable( 'italy_senate_admin' ).GetFlagName, 'absolute')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'italy_senate_admin' ).GetFlagName, 'absolute')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_ABSOLUTE_ADMIN_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_admin_absolute').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+							}
+							spacer = {
+								size = {10 5}
+							}
+							text_label_center = {
+								text = "Senate_Military_Powers"
+                   				using = Font_Size_Medium
+							}
+							hbox = {
+								background = {
+									using = Background_Area_Dark
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_mil_exclusion')]"
+									size = { 150 50 }
+									text = "SENATE_EXCLUSION"
+									down = "[EqualTo_string(GetGlobalVariable( 'italy_senate_military' ).GetFlagName, 'exclusion')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'italy_senate_military' ).GetFlagName, 'exclusion')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_EXCLUSION_MIL_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_mil_exclusion').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_mil_regular')]"
+									size = { 150 50 }
+									text = "SENATE_REGULAR"
+									down = "[EqualTo_string(GetGlobalVariable( 'italy_senate_military' ).GetFlagName, 'regular')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'italy_senate_military' ).GetFlagName, 'regular')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_REGULAR_MIL_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_mil_regular').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_mil_retinue')]"
+									size = { 150 50 }
+									text = "SENATE_RETINUE"
+									down = "[EqualTo_string(GetGlobalVariable( 'italy_senate_military' ).GetFlagName, 'retinue')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'italy_senate_military' ).GetFlagName, 'retinue')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_RETINUE_MIL_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_mil_retinue').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+							}
+							spacer = {
+								size = {10 5}
+							}
+							text_label_center = {
+								text = "Senate_Legislation_Powers"
+                   				using = Font_Size_Medium
+							}
+							hbox = {
+								background = {
+									using = Background_Area_Dark
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_legislation_no')]"
+									size = { 150 50 }
+									text = "SENATE_NO_RIGHTS"
+									down = "[EqualTo_string(GetGlobalVariable( 'italy_senate_legistlation' ).GetFlagName, 'no_legislation')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'italy_senate_legistlation' ).GetFlagName, 'no_legislation')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_NO_LEGISLATION_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_legislation_no').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_legislation_regular')]"
+									size = { 150 50 }
+									text = "SENATE_REGULAR_RIGHTS"
+									down = "[EqualTo_string(GetGlobalVariable( 'italy_senate_legistlation' ).GetFlagName, 'regular')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'italy_senate_legistlation' ).GetFlagName, 'regular')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_REGULAR_LEGISLATION_ADMIN_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_legislation_regular').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_legislation_absolute')]"
+									size = { 150 50 }
+									text = "SENATE_ABSOLUTE_RIGHTS"
+									down = "[EqualTo_string(GetGlobalVariable( 'italy_senate_legistlation' ).GetFlagName, 'absolute')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'italy_senate_legistlation' ).GetFlagName, 'absolute')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_ABSOLUTE_LEGISLATION_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_legislation_absolute').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+							}
+						}
+					}
+					spacer = {
+						size = {0 30}
+					}
+					divider_light = {
+						layoutpolicy_horizontal = expanding
+					}
+					text_label_center = {
+						text = "SENATE_FACTIONS_MAIN_TITLE"
+						default_format = "#high"
+						using = Font_Size_Big
+					}
+    				scrollarea = {
+
+    					scrollbar_horizontal = {
+							using = Scrollbar_Horizontal
+						}
+						scrollbarpolicy_vertical = always_off
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						scrollwidget = {	
+							vbox = {
+								hbox = {
+									ignoreinvisible = yes
+									button_standard = {
+										text = "SENATE_GO_BACK"
+										size = {200 100}
+										onclick = "[GetVariableSystem.Set( 'senate_view', 'all' )]"
+										visible = "[Or(Or(GetVariableSystem.HasValue( 'senate_view', 'aristocrat' ), GetVariableSystem.HasValue( 'senate_view', 'populist' )), GetVariableSystem.HasValue( 'senate_view', 'traditionalist' ))]"
+									}
+									vbox = {
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+										text_label_center = {
+											text = "SENATE_FACTIONS_TITLE"
+											default_format = "#high"
+										}
+										icon = {
+											texture = "gfx/interface/icons/traits/training_senator.dds"
+											size = {100 100}
+											
+										}
+										text_label_center = {
+											text = "SENATE_FACTIONS_PARTY_SIZE"
+											default_format = "#high"
+										}
+									}
+									spacer = {
+										size = {80 0}
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+									}
+									vbox = {
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+										text_label_center = {
+											text = "SENATE_ARISTOCRAT_TITLE"
+											default_format = "#high"
+										}
+										button = {
+											texture = "gfx/interface/icons/senate/aristocrats.dds"
+											#text = "SENATE_ARISTOCRAT_TOOLTIP"
+											size = {100 100}
+											tooltip = "SENATE_ARISTOCRAT_TOOLTIP"
+											onclick = "[GetVariableSystem.Set( 'senate_view', 'aristocrat' )]"
+											
+										}
+										text_label_center = {
+											text = "SENATE_ARISTOCRAT_DESC"
+											default_format = "#high"
+										}
+									}
+									spacer = {
+										size = {50 0}
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+									}
+									vbox = {
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+										text_label_center = {
+											text = "SENATE_POPULIST_TITLE"
+											default_format = "#high"
+										}
+										button = {
+											texture = "gfx/interface/icons/senate/populists.dds"
+											size = {100 100}
+											#text = "SENATE_POPULIST_TOOLTIP"
+											tooltip = "SENATE_POPULIST_TOOLTIP"
+											onclick = "[GetVariableSystem.Set( 'senate_view', 'populist' )]"
+											
+										}
+										text_label_center = {
+											text = "SENATE_POPULIST_DESC"
+											default_format = "#high"
+										}
+									}
+									spacer = {
+										size = {50 0}
+									}
+									vbox = {
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+										text_label_center = {
+											text = "SENATE_TRADITIONALIST_TITLE"
+											default_format = "#high"
+										}
+										button = {
+											texture = "gfx/interface/icons/senate/traditionalist.dds"
+											size = {100 100}
+											#text = "SENATE_TRADITIONALIST_TOOLTIP"
+											tooltip = "SENATE_TRADITIONALIST_TOOLTIP"
+											onclick = "[GetVariableSystem.Set( 'senate_view', 'traditionalist' )]"
+											
+										}
+										text_label_center = {
+											text = "SENATE_TRADITIONALIST_DESC"
+											default_format = "#high"
+										}
+									}
+									hbox = {
+										datamodel = "[GetGlobalList('aristocratic_senate_italy')]"
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'aristocrat' )]"
+										item = {
+											flowcontainer = {
+												direction = vertical
+												ignoreinvisible = yes
+												datacontext = "[Scope.GetCharacter]"
+					
+												portrait_shoulders = {
+													blockoverride "portrait_texture" {
+														portrait_texture = "[Character.GetPortrait('environment_shoulders', 'camera_shoulders', 'senate', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]"
+													}
+												}
+												
+												flowcontainer = {
+													direction = horizontal
+													ignoreinvisible = yes
+													datacontext = "[Scope.GetCharacter]"
+													######################Idealogy###########################
+													icon = {
+														texture = "gfx/interface/icons/senate/loyalist.dds"
+														size = {40 40}
+														tooltip = "SENATE_LOYALIST"
+														visible = "[Character.MakeScope.Var('loyalist_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/unloyal.dds"
+														size = {40 40}
+														tooltip = "SENATE_DISLOYAL"
+														visible = "[Character.MakeScope.Var('disloyal_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/pragmatic.dds"
+														size = {40 40}
+														tooltip = "SENATE_PRAGMATIC"
+														visible = "[Character.MakeScope.Var('pragmatic_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/gloryhound.dds"
+														size = {40 40}
+														tooltip = "SENATE_GLORYHOUND"
+														visible = "[Character.MakeScope.Var('gloryhound_senate').IsSet]"
+													}
+													#######################Rank###############################
+													icon = {
+														texture = "gfx/interface/icons/traits/low_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('low_senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/high_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('high_senator'))]"
+													}
+												}
+												
+												
+											}
+										}
+									}
+									hbox = {
+										datamodel = "[GetGlobalList('traditionalist_senate_italy')]"
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'traditionalist' )]"
+										item = {
+											flowcontainer = {
+												direction = vertical
+												ignoreinvisible = yes
+												datacontext = "[Scope.GetCharacter]"
+					
+												portrait_shoulders = {
+													blockoverride "portrait_texture" {
+														portrait_texture = "[Character.GetPortrait('environment_shoulders', 'camera_shoulders', 'senate', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]"
+													}
+												}
+												
+												flowcontainer = {
+													direction = horizontal
+													ignoreinvisible = yes
+													datacontext = "[Scope.GetCharacter]"
+													icon = {
+														texture = "gfx/interface/icons/senate/loyalist.dds"
+														size = {40 40}
+														tooltip = "SENATE_LOYALIST"
+														visible = "[Character.MakeScope.Var('loyalist_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/unloyal.dds"
+														size = {40 40}
+														tooltip = "SENATE_DISLOYAL"
+														visible = "[Character.MakeScope.Var('disloyal_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/pragmatic.dds"
+														size = {40 40}
+														tooltip = "SENATE_PRAGMATIC"
+														visible = "[Character.MakeScope.Var('pragmatic_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/gloryhound.dds"
+														size = {40 40}
+														tooltip = "SENATE_GLORYHOUND"
+														visible = "[Character.MakeScope.Var('gloryhound_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/low_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('low_senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/high_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('high_senator'))]"
+													}
+												}
+												
+												
+											}
+										}
+									}
+									hbox = {
+										datamodel = "[GetGlobalList('populist_senate_italy')]"
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'populist' )]"
+										item = {
+											flowcontainer = {
+												direction = vertical
+												ignoreinvisible = yes
+												datacontext = "[Scope.GetCharacter]"
+					
+												portrait_shoulders = {
+													blockoverride "portrait_texture" {
+														portrait_texture = "[Character.GetPortrait('environment_shoulders', 'camera_shoulders', 'senate', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]"
+													}
+												}
+												flowcontainer = {
+													direction = horizontal
+													ignoreinvisible = yes
+													datacontext = "[Scope.GetCharacter]"
+													icon = {
+														texture = "gfx/interface/icons/senate/loyalist.dds"
+														size = {40 40}
+														tooltip = "SENATE_LOYALIST"
+														visible = "[Character.MakeScope.Var('loyalist_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/unloyal.dds"
+														size = {40 40}
+														tooltip = "SENATE_DISLOYAL"
+														visible = "[Character.MakeScope.Var('disloyal_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/pragmatic.dds"
+														size = {40 40}
+														tooltip = "SENATE_PRAGMATIC"
+														visible = "[Character.MakeScope.Var('pragmatic_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/gloryhound.dds"
+														size = {40 40}
+														tooltip = "SENATE_GLORYHOUND"
+														visible = "[Character.MakeScope.Var('gloryhound_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/low_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('low_senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/high_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('high_senator'))]"
+													}
+												}
+												
+												
+												
+											}
+										}
+									}
+								}
+							}
+    					}
+    				}
+    			}
+    		}
+    	}
+    }
+	type senatewindow_eastern = window {
+		layer = middle
+		movable = yes
+		size = {1100 783}
+		parentanchor = center
+		position = { 1500 100 }
+		datacontext = "[GetPlayer]"
+		visible = "[GetVariableSystem.Exists('senate_window_eastern')]"
+	
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+			using = Sound_WindowHide_Standard
+			using = Window_Position_MainTab_Hide
+			trigger_when = "[IsRightWindowOpen]"
+			alpha = 0
+		}
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			using = Sound_WindowShow_Standard
+			using = Window_Position_MainTab
+			on_start = "[GetVariableSystem.Set( 'senate_view', 'all' )]"
+			on_start = "[GetScriptedGui('senate_music').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+			alpha = 1
+		}
+	
+		margin_widget = {
+			size = { 100% 100% }
+			margin = { 0 26 }
+	
+			background = {
+				texture = "gfx/interface/illustrations/custom/senateconcept.dds"
+				spriteborder = { 18 18 }
+				texture_density = 2
+	
+				modify_texture = {
+					name = "overlay"
+					texture = "gfx/interface/component_overlay/overlay_effect.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 0 0 }
+					blend_mode = overlay
+				}
+			}
+	
+			vbox = {
+				layoutpolicy_horizontal = expanding
+	
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					margin_right = 20
+					margin_left = 20
+	
+					header_pattern = {
+						layoutpolicy_horizontal = expanding
+	
+						blockoverride "header_text"
+						{
+							text = "EASTERN_SENATE_HEADER"
+						}
+	
+						blockoverride "button_close"
+						{
+							onclick = "[GetVariableSystem.Toggle('senate_window_eastern')]"
+						}
+						
+					}
+				}
+	
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					margin_top = -75
+					margin_right = 50
+					margin_left = 30
+					margin_bottom = 75
+					ignoreinvisible = yes
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							spacer = {
+								size = {5 100}
+							}
+							text_label_center = {
+								text = "SENATE_TASKS_TITLE"
+								default_format = "#high"
+								   using = Font_Size_Big
+							}
+							scrollbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								blockoverride "scrollbox_content"
+								{
+									vbox = {
+										ignoreinvisible = yes
+										vbox = {
+											visible = "[Not( Or(EqualTo_string(GetGlobalVariable( 'eastern_senate_tasks' ).GetFlagName, 'convert_culture'), Or(EqualTo_string(GetGlobalVariable( 'eastern_senate_tasks' ).GetFlagName, 'building'), Or(EqualTo_string(GetGlobalVariable( 'eastern_senate_tasks' ).GetFlagName, 'conquer'), EqualTo_string(GetGlobalVariable( 'eastern_senate_tasks' ).GetFlagName, 'convert_faith') ) ) ) )]"
+											text_label_center = {
+												text = "SENATE_NO_TASKS"
+												default_format = "#high"
+												using = Font_Size_Medium
+											}
+										}
+										vbox = {
+											visible = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_tasks' ).GetFlagName, 'convert_culture')]"
+											vbox = {
+												background = {
+													texture = "gfx/interface/illustrations/holding_types/city_mena.dds"
+													margin_right = 100
+													margin_left = 100
+													alpha = 0.3
+													modify_texture = {
+														name = "mask"
+														texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+														spriteType = Corneredstretched
+														spriteborder = { 0 0 }
+														blend_mode = alphamultiply
+													}
+												}
+												icon = {
+													texture = "gfx/interface/icons/scheme_types/icon_scheme_culture.dds"
+													size = {80 80}
+												}
+												text_label_center = {
+													text = "SENATE_TASK_CULTURE_EASTERN"
+													default_format = "#high"
+													using = Font_Size_Big
+												}
+											}
+											text_single = {
+												text = "SENATE_TASK_CULTURE_DESC_EASTER"
+												default_format = "#high"
+											}
+										}
+										vbox = {
+											visible = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_tasks' ).GetFlagName, 'convert_faith')]"
+											vbox = {
+												background = {
+													texture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+													margin_right = 100
+													margin_left = 100
+													alpha = 0.3
+													modify_texture = {
+														name = "mask"
+														texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+														spriteType = Corneredstretched
+														spriteborder = { 0 0 }
+														blend_mode = alphamultiply
+													}
+												}
+												icon = {
+													texture = "gfx/interface/icons/casus_bellis/religious_war.dds"
+												}
+												text_label_center = {
+													text = "SENATE_TASK_FAITH_EASTERN"
+													default_format = "#high"
+													using = Font_Size_Big
+												}
+											}
+											text_single = {
+												text = "SENATE_TASK_FAITH_DESC_EASTER"
+												default_format = "#high"
+											}
+										}
+										vbox = {
+											visible = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_tasks' ).GetFlagName, 'conquer')]"
+											vbox = {
+												background = {
+													texture = "gfx/interface/illustrations/decisions/decision_invite_knights.dds"
+													margin_right = 100
+													margin_left = 100
+													alpha = 0.3
+													modify_texture = {
+														name = "mask"
+														texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+														spriteType = Corneredstretched
+														spriteborder = { 0 0 }
+														blend_mode = alphamultiply
+													}
+												}
+												icon = {
+													texture = "gfx/interface/icons/icon_kill.dds"
+												}
+												text_label_center = {
+													text = "SENATE_TASK_CONQUER_EASTERN"
+													default_format = "#high"
+													using = Font_Size_Big
+												}
+											}
+											text_single = {
+												text = "SENATE_TASK_CONQUER_DESC_EASTER"
+												default_format = "#high"
+											}
+										}
+										vbox = {
+											visible = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_tasks' ).GetFlagName, 'building')]"
+											vbox = {
+												background = {
+													texture = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+													alpha = 0.3
+													modify_texture = {
+														name = "mask"
+														texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+														spriteType = Corneredstretched
+														spriteborder = { 0 0 }
+														blend_mode = alphamultiply
+													}
+												}
+												icon = {
+													texture = "gfx/interface/icons/icon_holding_city.dds"
+												}
+												text_label_center = {
+													text = "SENATE_TASK_BUILDING_EASTERN"
+													default_format = "#high"
+													using = Font_Size_Big
+												}
+											}
+											text_single = {
+												text = "SENATE_TASK_BUILDING_DESC_EASTER"
+												default_format = "#high"
+											}
+										}
+									}
+								}
+							}
+						}
+						spacer = {
+							size = {50 0}
+						}
+						vbox = {
+							spacer = {
+								size = {5 100}
+							}
+							text_label_center = {
+								text = "SENATE_CONTRACTS_TITLE"
+								default_format = "#high"
+								   using = Font_Size_Big
+							}
+							spacer = {
+								size = {5 10}
+							}
+							text_label_center = {
+								text = "Senate_Administrative_Powers"
+								   using = Font_Size_Medium
+							}
+							hbox = {
+								background = {
+									using = Background_Area_Dark
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_admin_min_eastern')]"
+									size = { 150 50 }
+									text = "SENATE_MINIMUM_ADMIN"
+									down = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_admin' ).GetFlagName, 'minimum')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'eastern_senate_admin' ).GetFlagName, 'minimum')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_MINIMUM_ADMIN_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_admin_min_eastern').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_admin_taxing_eastern')]"
+									size = { 150 50 }
+									text = "SENATE_TAXING_RIGHTS"
+									down = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_admin' ).GetFlagName, 'taxing_rights')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'eastern_senate_admin' ).GetFlagName, 'taxing_rights')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_TAXING_ADMIN_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_admin_taxing_eastern').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_admin_absolute_eastern')]"
+									size = { 150 50 }
+									text = "SENATE_ABSOLUTE_ADMIN"
+									down = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_admin' ).GetFlagName, 'absolute')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'eastern_senate_admin' ).GetFlagName, 'absolute')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_ABSOLUTE_ADMIN_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_admin_absolute_eastern').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+							}
+							spacer = {
+								size = {10 5}
+							}
+							text_label_center = {
+								text = "Senate_Military_Powers"
+								   using = Font_Size_Medium
+							}
+							hbox = {
+								background = {
+									using = Background_Area_Dark
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_mil_exclusion_eastern')]"
+									size = { 150 50 }
+									text = "SENATE_EXCLUSION"
+									down = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_military' ).GetFlagName, 'exclusion')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'eastern_senate_military' ).GetFlagName, 'exclusion')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_EXCLUSION_MIL_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_mil_exclusion_eastern').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_mil_regular_eastern')]"
+									size = { 150 50 }
+									text = "SENATE_REGULAR"
+									down = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_military' ).GetFlagName, 'regular')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'eastern_senate_military' ).GetFlagName, 'regular')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_REGULAR_MIL_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_mil_regular_eastern').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_mil_retinue_eastern')]"
+									size = { 150 50 }
+									text = "SENATE_RETINUE"
+									down = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_military' ).GetFlagName, 'retinue')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'eastern_senate_military' ).GetFlagName, 'retinue')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_RETINUE_MIL_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_mil_retinue_eastern').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+							}
+							spacer = {
+								size = {10 5}
+							}
+							text_label_center = {
+								text = "Senate_Legislation_Powers"
+								   using = Font_Size_Medium
+							}
+							hbox = {
+								background = {
+									using = Background_Area_Dark
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_legislation_no_eastern')]"
+									size = { 150 50 }
+									text = "SENATE_NO_RIGHTS"
+									down = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_legistlation' ).GetFlagName, 'no_legislation')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'eastern_senate_legistlation' ).GetFlagName, 'no_legislation')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_NO_LEGISLATION_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_legislation_no_eastern').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_legislation_regular_eastern')]"
+									size = { 150 50 }
+									text = "SENATE_REGULAR_RIGHTS"
+									down = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_legistlation' ).GetFlagName, 'regular')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'eastern_senate_legistlation' ).GetFlagName, 'regular')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_REGULAR_LEGISLATION_ADMIN_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_legislation_regular_eastern').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+								spacer = {
+									size = {10 5}
+								}
+								button_letter = {
+									datacontext = "[GetScriptedGui('senate_contract_legislation_absolute_eastern')]"
+									size = { 150 50 }
+									text = "SENATE_ABSOLUTE_RIGHTS"
+									down = "[EqualTo_string(GetGlobalVariable( 'eastern_senate_legistlation' ).GetFlagName, 'absolute')]"
+									enabled = "[And(Not(EqualTo_string(GetGlobalVariable( 'eastern_senate_legistlation' ).GetFlagName, 'absolute')), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+									tooltip = "SENATE_ABSOLUTE_LEGISLATION_TOOLTIP"
+									onclick = "[GetScriptedGui('senate_contract_legislation_absolute_eastern').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}
+							}
+						}
+					}
+					spacer = {
+						size = {0 30}
+					}
+					divider_light = {
+						layoutpolicy_horizontal = expanding
+					}
+					text_label_center = {
+						text = "SENATE_FACTIONS_MAIN_TITLE"
+						default_format = "#high"
+						using = Font_Size_Big
+					}
+					scrollarea = {
+	
+						scrollbar_horizontal = {
+							using = Scrollbar_Horizontal
+						}
+						scrollbarpolicy_vertical = always_off
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						scrollwidget = {	
+							vbox = {
+								hbox = {
+									ignoreinvisible = yes
+									button_standard = {
+										text = "SENATE_GO_BACK"
+										size = {200 100}
+										onclick = "[GetVariableSystem.Set( 'senate_view', 'all' )]"
+										visible = "[Or(Or(GetVariableSystem.HasValue( 'senate_view', 'aristocrat' ), GetVariableSystem.HasValue( 'senate_view', 'populist' )), GetVariableSystem.HasValue( 'senate_view', 'traditionalist' ))]"
+									}
+									vbox = {
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+										text_label_center = {
+											text = "SENATE_FACTIONS_TITLE"
+											default_format = "#high"
+										}
+										icon = {
+											texture = "gfx/interface/icons/traits/training_senator.dds"
+											size = {100 100}
+											
+										}
+										text_label_center = {
+											text = "SENATE_FACTIONS_PARTY_SIZE"
+											default_format = "#high"
+										}
+									}
+									spacer = {
+										size = {80 0}
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+									}
+									vbox = {
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+										text_label_center = {
+											text = "SENATE_ARISTOCRAT_TITLE"
+											default_format = "#high"
+										}
+										button = {
+											texture = "gfx/interface/icons/senate/aristocrats.dds"
+											#text = "SENATE_ARISTOCRAT_TOOLTIP"
+											size = {100 100}
+											tooltip = "SENATE_ARISTOCRAT_TOOLTIP_EASTERN"
+											onclick = "[GetVariableSystem.Set( 'senate_view', 'aristocrat' )]"
+											
+										}
+										text_label_center = {
+											text = "SENATE_ARISTOCRAT_DESC_EASTERN"
+											default_format = "#high"
+										}
+									}
+									spacer = {
+										size = {50 0}
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+									}
+									vbox = {
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+										text_label_center = {
+											text = "SENATE_POPULIST_TITLE"
+											default_format = "#high"
+										}
+										button = {
+											texture = "gfx/interface/icons/senate/populists.dds"
+											size = {100 100}
+											#text = "SENATE_POPULIST_TOOLTIP"
+											tooltip = "SENATE_POPULIST_TOOLTIP_EASTERN"
+											onclick = "[GetVariableSystem.Set( 'senate_view', 'populist' )]"
+											
+										}
+										text_label_center = {
+											text = "SENATE_POPULIST_DESC_EASTERN"
+											default_format = "#high"
+										}
+									}
+									spacer = {
+										size = {50 0}
+									}
+									vbox = {
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'all' )]"
+										text_label_center = {
+											text = "SENATE_TRADITIONALIST_TITLE"
+											default_format = "#high"
+										}
+										button = {
+											texture = "gfx/interface/icons/senate/traditionalist.dds"
+											size = {100 100}
+											#text = "SENATE_TRADITIONALIST_TOOLTIP"
+											tooltip = "SENATE_TRADITIONALIST_TOOLTIP_EASTERN"
+											onclick = "[GetVariableSystem.Set( 'senate_view', 'traditionalist' )]"
+											
+										}
+										text_label_center = {
+											text = "SENATE_TRADITIONALIST_DESC_EASTERN"
+											default_format = "#high"
+										}
+									}
+									hbox = {
+										datamodel = "[GetGlobalList('aristocratic_senate_eastern')]"
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'aristocrat' )]"
+										item = {
+											flowcontainer = {
+												direction = vertical
+												ignoreinvisible = yes
+												datacontext = "[Scope.GetCharacter]"
+					
+												portrait_shoulders = {
+													blockoverride "portrait_texture" {
+														portrait_texture = "[Character.GetPortrait('environment_shoulders', 'camera_shoulders', 'senate', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]"
+													}
+												}
+												
+												flowcontainer = {
+													direction = horizontal
+													ignoreinvisible = yes
+													datacontext = "[Scope.GetCharacter]"
+													######################Idealogy###########################
+													icon = {
+														texture = "gfx/interface/icons/senate/loyalist.dds"
+														size = {40 40}
+														tooltip = "SENATE_LOYALIST"
+														visible = "[Character.MakeScope.Var('loyalist_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/unloyal.dds"
+														size = {40 40}
+														tooltip = "SENATE_DISLOYAL"
+														visible = "[Character.MakeScope.Var('disloyal_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/pragmatic.dds"
+														size = {40 40}
+														tooltip = "SENATE_PRAGMATIC"
+														visible = "[Character.MakeScope.Var('pragmatic_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/gloryhound.dds"
+														size = {40 40}
+														tooltip = "SENATE_GLORYHOUND"
+														visible = "[Character.MakeScope.Var('gloryhound_senate').IsSet]"
+													}
+													#######################Rank###############################
+													icon = {
+														texture = "gfx/interface/icons/traits/low_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('low_senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/high_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('high_senator'))]"
+													}
+												}
+												
+												
+											}
+										}
+									}
+									hbox = {
+										datamodel = "[GetGlobalList('traditionalist_senate_eastern')]"
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'traditionalist' )]"
+										item = {
+											flowcontainer = {
+												direction = vertical
+												ignoreinvisible = yes
+												datacontext = "[Scope.GetCharacter]"
+					
+												portrait_shoulders = {
+													blockoverride "portrait_texture" {
+														portrait_texture = "[Character.GetPortrait('environment_shoulders', 'camera_shoulders', 'senate', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]"
+													}
+												}
+												
+												flowcontainer = {
+													direction = horizontal
+													ignoreinvisible = yes
+													datacontext = "[Scope.GetCharacter]"
+													icon = {
+														texture = "gfx/interface/icons/senate/loyalist.dds"
+														size = {40 40}
+														tooltip = "SENATE_LOYALIST"
+														visible = "[Character.MakeScope.Var('loyalist_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/unloyal.dds"
+														size = {40 40}
+														tooltip = "SENATE_DISLOYAL"
+														visible = "[Character.MakeScope.Var('disloyal_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/pragmatic.dds"
+														size = {40 40}
+														tooltip = "SENATE_PRAGMATIC"
+														visible = "[Character.MakeScope.Var('pragmatic_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/gloryhound.dds"
+														size = {40 40}
+														tooltip = "SENATE_GLORYHOUND"
+														visible = "[Character.MakeScope.Var('gloryhound_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/low_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('low_senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/high_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('high_senator'))]"
+													}
+												}
+												
+												
+											}
+										}
+									}
+									hbox = {
+										datamodel = "[GetGlobalList('populist_senate_eastern')]"
+										visible = "[GetVariableSystem.HasValue( 'senate_view', 'populist' )]"
+										item = {
+											flowcontainer = {
+												direction = vertical
+												ignoreinvisible = yes
+												datacontext = "[Scope.GetCharacter]"
+					
+												portrait_shoulders = {
+													blockoverride "portrait_texture" {
+														portrait_texture = "[Character.GetPortrait('environment_shoulders', 'camera_shoulders', 'senate', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]"
+													}
+												}
+												flowcontainer = {
+													direction = horizontal
+													ignoreinvisible = yes
+													datacontext = "[Scope.GetCharacter]"
+													icon = {
+														texture = "gfx/interface/icons/senate/loyalist.dds"
+														size = {40 40}
+														tooltip = "SENATE_LOYALIST"
+														visible = "[Character.MakeScope.Var('loyalist_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/unloyal.dds"
+														size = {40 40}
+														tooltip = "SENATE_DISLOYAL"
+														visible = "[Character.MakeScope.Var('disloyal_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/pragmatic.dds"
+														size = {40 40}
+														tooltip = "SENATE_PRAGMATIC"
+														visible = "[Character.MakeScope.Var('pragmatic_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/senate/gloryhound.dds"
+														size = {40 40}
+														tooltip = "SENATE_GLORYHOUND"
+														visible = "[Character.MakeScope.Var('gloryhound_senate').IsSet]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/low_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('low_senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('senator'))]"
+													}
+													icon = {
+														texture = "gfx/interface/icons/traits/high_senator.dds"
+														scale = 0.5
+														visible = "[Character.HasTrait(GetTrait('high_senator'))]"
+													}
+												}
+												
+												
+												
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

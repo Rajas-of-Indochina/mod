@@ -1,0 +1,737 @@
+﻿#On actions about titles
+
+# All on-actions in this file provide scope:transfer_type unless otherwise noted
+# scope:transfer_type has the following permutations:
+# flag:conquest
+# flag:conquest_holy_war
+# flag:conquest_claim
+# flag:conquest_populist
+# flag:inheritance
+# flag:abdication
+# flag:destroyed
+# flag:created
+# flag:usurped
+# flag:granted
+# flag:revoked
+# flag:election
+# flag:independency
+# flag:returned
+# flag:leased_out
+# flag:lease_revoked
+# flag:faction_demand
+# flag:swear_fealty
+
+# A title is destroyed
+# root = the holder before destruction
+# scope:landed_title = the title that is being destroyed
+# Does *not* provide scope:transfer_type
+on_title_destroyed = {
+	on_actions = { TFE_on_title_destroyed }
+}
+
+TFE_on_title_destroyed = {
+	effect = {
+		if = {
+			limit = { scope:landed_title.tier = tier_empire }
+			save_scope_as = current_title
+			every_religion_global = {
+				every_faith = {
+					limit = { religious_head_title = scope:current_title }
+					remove_religious_head_title = yes
+				}
+			}
+		}
+	}
+}
+
+# A title is transferred to a new character
+# root = the new holder
+# scope:title = the title that changes hands
+# scope:previous_holder = previous holder. Might be dead
+on_title_gain = {
+	on_actions = { TFE_on_title_gain }
+}
+
+TFE_on_title_gain = {
+	#events = {
+	#	tfe_title_event.0001
+	#}
+	effect = {
+		#imperial cult goes away if u ain't same faith
+		if = {
+			limit = {
+				has_government = imperial_cult_government
+				NOT = {
+					AND = {
+						faith = { has_doctrine = doctrine_imperial_head }
+						highest_held_title_tier = tier_empire
+					}
+				}
+			}
+			change_government = imperial_government
+		}
+		if = {
+			limit = {
+				scope:title = {
+					tier = tier_county
+					has_county_modifier = monument_gardens
+				}
+			}
+			scope:previous_holder = {
+				remove_character_modifier = monument_gardens_char
+			}
+			add_character_modifier = monument_gardens_char
+
+		}
+		if = {
+			limit = {
+				scope:title = {
+					tier = tier_county
+					has_county_modifier = monument_fences
+				}
+			}
+			scope:previous_holder = {
+				remove_character_modifier = monument_fences_char
+			}
+			add_character_modifier = monument_fences_char
+
+		}
+		if = {
+			limit = {
+				scope:title = {
+					tier = tier_county
+					has_county_modifier = statue_marble
+				}
+			}
+			scope:previous_holder = {
+				remove_character_modifier = statue_char_marble
+			}
+			add_character_modifier = statue_char_marble
+
+		}
+		if = {
+			limit = {
+				scope:title = {
+					tier = tier_county
+					has_county_modifier = statue_limestone
+				}
+			}
+			scope:previous_holder = {
+				remove_character_modifier = statue_char_limestone
+			}
+			add_character_modifier = statue_char_limestone
+
+		}
+		if = {
+			limit = {
+				scope:title = {
+					tier = tier_county
+					has_county_modifier = statue_stone
+				}
+			}
+			scope:previous_holder = {
+				remove_character_modifier = statue_char_stone
+			}
+			add_character_modifier = statue_char_stone
+
+		}
+		if = {
+			limit = {
+				scope:title = {
+					tier = tier_county
+					has_county_modifier = statue_copper
+				}
+			}
+			scope:previous_holder = {
+				remove_character_modifier = statue_char_copper
+			}
+			add_character_modifier = statue_char_copper
+
+		}
+		if = {
+			limit = {
+				scope:title = { is_holy_order = yes }
+				NOT = { has_trait = order_member }
+				has_government = holy_order_government
+			}
+			add_trait = order_member
+		}
+
+
+		if = {
+			limit = {
+				exists = scope:previous_holder
+				scope:title.tier = tier_county
+				NOT = {
+					has_government = legion_government
+				}
+				OR = {
+					scope:transfer_type = flag:conquest
+					scope:transfer_type = flag:conquest_holy_war
+					scope:transfer_type = flag:conquest_claim
+					scope:transfer_type = flag:conquest_populist
+					scope:transfer_type = flag:abdication
+					scope:transfer_type = flag:usurped
+					scope:transfer_type = flag:revoked
+					scope:transfer_type = flag:faction_demand
+				}
+			}
+			every_ruler = {
+				limit = {
+					ruler_can_use_legions_no_primary_title_tier = yes
+					has_variable_list = legion_counties
+				}
+				remove_list_variable = {
+					name = legion_counties
+					target = scope:title
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:previous_holder
+				scope:previous_holder = {
+					ruler_can_use_legions_no_primary_title_tier = yes
+				}
+				scope:title.tier = tier_county
+			}
+			scope:previous_holder = {
+				if = {
+					limit = {
+						has_variable_list = legion_county_available
+					}
+					remove_list_variable = {
+						name = legion_county_available
+						target = scope:title
+					}
+				}
+			}
+		}
+		if = {
+			limit = { ruler_can_use_legions = yes }
+			every_held_county = {
+				limit = {
+					AND = {
+						NOT = {
+							THIS = root.capital_county
+						}
+						NOT = {
+							root = {
+								is_target_in_variable_list = {
+									name = legion_county_available
+									target = PREV
+								}
+							}
+						}
+					}
+				}
+				save_temporary_scope_as = legion_tmp
+				root = {
+					add_to_variable_list = {
+						name = legion_county_available
+						target = scope:legion_tmp
+					}
+				}
+			}
+			every_realm_county = {
+				limit = {
+					holder = {
+						has_government = legion_government
+					}
+					NOT = {
+						root = {
+							is_target_in_variable_list = {
+								name = legion_counties
+								target = PREV
+							}
+						}
+					}
+				}
+				save_temporary_scope_as = new_legion_tmp
+				root = {
+					add_to_variable_list = {
+						name = legion_counties
+						target = scope:new_legion_tmp
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				scope:title = {
+					has_variable = prae_guard
+				}
+				OR = {
+					scope:transfer_type = flag:conquest
+					scope:transfer_type = flag:conquest_holy_war
+					scope:transfer_type = flag:conquest_claim
+					scope:transfer_type = flag:conquest_populist
+					scope:transfer_type = flag:abdication
+					scope:transfer_type = flag:usurped
+					scope:transfer_type = flag:revoked
+					scope:transfer_type = flag:faction_demand
+				}
+			}
+			remove_variable = prae_guard
+		}
+
+		if = {
+			limit = {
+				exists = scope:previous_holder
+				scope:previous_holder = {
+					exists = var:mil_comp
+				}
+				OR = {
+					NOT = {
+						has_variable = mil_comp
+					}
+					AND = {
+						has_variable = mil_comp
+						var:mil_comp < scope:previous_holder.var:mil_comp
+					}
+				}
+			}
+			set_variable = {
+				name = mil_comp
+				value = scope:previous_holder.var:mil_comp
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:previous_holder
+				scope:previous_holder = {
+					exists = var:civic_comp
+				}
+				OR = {
+					NOT = {
+						has_variable = civic_comp
+					}
+					AND = {
+						has_variable = civic_comp
+						var:civic_comp < scope:previous_holder.var:civic_comp
+					}
+				}
+			}
+			set_variable = {
+				name = civic_comp
+				value = scope:previous_holder.var:civic_comp
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:previous_holder
+				scope:previous_holder = {
+					exists = var:diplo_comp
+				}
+				OR = {
+					NOT = {
+						has_variable = diplo_comp
+					}
+					AND = {
+						has_variable = diplo_comp
+						var:diplo_comp < scope:previous_holder.var:diplo_comp
+					}
+				}
+			}
+			set_variable = {
+				name = diplo_comp
+				value = scope:previous_holder.var:diplo_comp
+			}
+		}
+
+		if = {
+			limit = {
+				exists = scope:previous_holder
+				scope:previous_holder = {
+					exists = var:cal_authority
+				}
+				NOT = {
+					has_variable = cal_authority
+				}
+			}
+			set_variable = {
+				name = cal_authority
+				value = scope:previous_holder.var:cal_authority
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:previous_holder
+				scope:previous_holder = {
+					exists = var:zakah_balance
+				}
+				NOT = {
+					has_variable = zakah_balance
+				}
+			}
+			set_variable = {
+				name = zakah_balance
+				value = scope:previous_holder.var:zakah_balance
+			}
+		}
+
+		if = {
+			limit = {
+				exists = scope:previous_holder
+				scope:transfer_type = flag:granted
+				scope:previous_holder = {
+					has_government = caliphate_government
+				}
+			}
+
+			if = {
+				limit = {
+					scope:previous_holder = {
+						has_religion = religion:islam_religion
+					}
+				}
+
+				change_government = muslim_government
+			}
+			else = {
+				change_government = clan_government
+			}
+		}
+	}
+}
+
+# A title is inherited by a character
+# root = the new holder
+# scope:title = the title that changes hands
+# scope:previous_holder = previous holder. Should be dead
+on_title_gain_inheritance = {
+	on_actions = { TFE_on_title_gain_inheritance }
+}
+
+TFE_on_title_gain_inheritance = {
+	effect = {
+		if = {
+			limit = {
+				AND = {
+					scope:previous_holder = {
+						ruler_can_use_legions_no_primary_title_tier = yes
+					}
+					scope:title.tier > tier_county
+				}
+			}
+			every_held_county = {
+				limit = {
+					AND = {
+						NOT = {
+							THIS = root.capital_county
+						}
+						NOT = {
+							root = {
+								is_target_in_variable_list = {
+								  name = legion_county_available
+								  target = prev
+								}
+							}
+						}
+					}
+				}
+				save_temporary_scope_as = legion_tmp
+				root = {
+					add_to_variable_list = {
+						name = legion_county_available
+						target = scope:legion_tmp
+					}
+				}
+			}
+			every_realm_county = {
+				limit = {
+					holder = {
+						has_government = legion_government
+					}
+					NOT = {
+						root = {
+							is_target_in_variable_list = {
+							  name = legion_counties
+							  target = prev
+							}
+						}
+					}
+				}
+				save_temporary_scope_as = new_legion_tmp
+				root = {
+					add_to_variable_list = {
+						name = legion_counties
+						target = scope:new_legion_tmp
+					}
+				}
+			}
+		}
+	}
+}
+
+# A title is usurped by a character
+# root = the new holder
+# scope:title = the title that changes hands
+# scope:previous_holder = previous holder. Shouldn't be dead
+on_title_gain_usurpation = {
+	on_actions = { TFE_on_title_gain_usurpation }
+}
+
+TFE_on_title_gain_usurpation = {
+	effect = {
+		if = {
+			limit = {
+				AND = {
+					scope:previous_holder = {
+						ruler_can_use_legions_no_primary_title_tier = yes
+					}
+					scope:title.tier > tier_county
+				}
+			}
+			every_held_county = {
+				limit = {
+					AND = {
+						NOT = {
+							THIS = root.capital_county
+						}
+						NOT = {
+							root = {
+								is_target_in_variable_list = {
+								  name = legion_county_available
+								  target = prev
+								}
+							}
+						}
+					}
+				}
+				save_temporary_scope_as = legion_tmp
+				root = {
+					add_to_variable_list = {
+						name = legion_county_available
+						target = scope:legion_tmp
+					}
+				}
+			}
+			every_realm_county = {
+				limit = {
+					holder = {
+						has_government = legion_government
+					}
+					NOT = {
+						root = {
+							is_target_in_variable_list = {
+							  name = legion_counties
+							  target = prev
+							}
+						}
+					}
+				}
+				save_temporary_scope_as = new_legion_tmp
+				root = {
+					add_to_variable_list = {
+						name = legion_counties
+						target = scope:new_legion_tmp
+					}
+				}
+			}
+		}
+	}
+}
+
+# A title change makes the character rank up in the landed tiers (eg Duke -> King)
+# root = character ranking up
+# scope:title = old primary title
+on_rank_up = { # Will not fire during history execution or for dying characters
+	on_actions = { TFE_on_rank_up }
+}
+
+TFE_on_rank_up = {
+	effect = {
+		if = {
+			limit = {
+				ruler_can_use_legions_no_primary_title_tier = yes
+				trigger_if = {
+					limit = {
+						exists = scope:title
+					}
+					scope:title = {
+						tier = tier_county
+					}
+				}
+				primary_title.tier > tier_county
+			}
+			every_held_county = {
+				limit = {
+					NOT = {
+						THIS = root.capital_county
+					}
+				}
+				save_temporary_scope_as = legion_tmp
+				root = {
+					add_to_variable_list = {
+						name = legion_county_available
+						target = scope:legion_tmp
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				AND = {
+					has_government = roman_government
+					primary_title.tier > tier_county
+					is_independent_ruler = no
+					top_liege = {
+						OR = {
+							has_government = imperial_government
+							has_government = imperial_cult_government
+						}
+					}
+				}
+			}
+			change_government = imperial_government
+			if = {
+				limit = {
+					AND = {
+						capital_county = {
+							title_province = {
+								has_holding_type = estate_holding
+							}
+						}
+						NOT = {
+							any_held_title = {
+								AND = {
+									tier = tier_county
+									title_province = {
+										has_holding_type = castle_holding
+									}
+								}
+							}
+						}
+					}
+				}
+				capital_county = {
+					title_province = {
+						set_holding_type = castle_holding
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					AND = {
+						capital_county = {
+							title_province = {
+								has_holding_type = estate_holding
+							}
+						}
+						any_held_title = {
+							AND = {
+								tier = tier_county
+								title_province = {
+									has_holding_type = castle_holding
+								}
+							}
+						}
+					}
+				}
+				random_held_title = {
+					limit = {
+						AND = {
+							tier = tier_county
+							title_province = {
+								has_holding_type = castle_holding
+							}
+						}
+					}
+					save_scope_as = new_capital_office
+					prev = {
+						set_realm_capital = scope:new_capital_office
+					}
+				}
+			}
+		}
+	}
+}
+
+on_rank_down = {
+	on_actions = { TFE_on_rank_down }
+}
+
+TFE_on_rank_down = {
+	effect = {
+		if = {
+			limit = {
+				AND = {
+					has_government = imperial_government
+					primary_title.tier = tier_county
+					is_independent_ruler = no
+					top_liege = {
+						OR = {
+							has_government = imperial_government
+							has_government = imperial_cult_government
+						}
+					}
+				}
+			}
+			change_government = roman_government
+			if = {
+				limit = {
+					AND = {
+						NOT = {
+							capital_county = {
+								title_province = {
+									has_holding_type = estate_holding
+								}
+							}
+						}
+						NOT = {
+							any_held_title = {
+								AND = {
+									tier = tier_county
+									title_province = {
+										has_holding_type = estate_holding
+									}
+								}
+							}
+						}
+					}
+				}
+				capital_county = {
+					title_province = {
+						set_holding_type = estate_holding
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					AND = {
+						NOT = {
+							capital_county = {
+								title_province = {
+									has_holding_type = estate_holding
+								}
+							}
+						}
+						any_held_title = {
+							AND = {
+								tier = tier_county
+								title_province = {
+									has_holding_type = estate_holding
+								}
+							}
+						}
+					}
+				}
+				random_held_title = {
+					limit = {
+						AND = {
+							tier = tier_county
+							title_province = {
+								has_holding_type = estate_holding
+							}
+						}
+					}
+					save_scope_as = new_capital_office
+					prev = {
+						set_realm_capital = scope:new_capital_office
+					}
+				}
+			}
+		}
+	}
+}

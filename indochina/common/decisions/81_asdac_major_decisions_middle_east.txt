@@ -1,0 +1,149 @@
+﻿#Create Turkish culture
+embrace_turkish_culture_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+
+	ai_check_interval = 120
+
+	desc = embrace_turkish_culture_decision_desc
+
+	is_shown = {
+		#NOT = { has_royal_court = yes }
+		has_culture = culture:turkish
+		capital_province = {
+			geographical_region = world_asia_minor
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:embrace_turkish_culture_decision
+			}
+		}
+	}
+
+	is_valid = {
+		prestige_level >= 2
+		custom_description = {
+			text = capital_in_asia_minor_region_tooltip
+			capital_province = {
+				geographical_region = world_asia_minor
+			}
+		}
+		highest_held_title_tier >= tier_kingdom
+		sub_realm_size >= 20
+	}
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+		is_available_adult = yes
+		is_independent_ruler = yes
+	}
+
+	effect = {
+		add_prestige = 150
+		set_culture = culture:ottoman_turkish
+		every_vassal_or_below = {
+			custom = embrace_turkish_culture_vassals_custom
+			limit = {
+				culture = culture:turkish
+				capital_province = {
+					geographical_region = world_asia_minor
+				}
+			}
+			set_culture = culture:ottoman_turkish
+			every_courtier = {
+				limit = {
+					culture = culture:turkish
+				}
+				set_culture = culture:ottoman_turkish
+			}
+		}
+		every_courtier_or_guest = {
+			custom = embrace_turkish_culture_courtiers_custom
+			limit = {
+				culture = culture:turkish
+			}
+			set_culture = culture:ottoman_turkish
+		}
+		every_county = {
+			custom = embrace_turkish_culture_counties_custom
+			limit = {
+				culture = culture:turkish
+				title_province = {
+					geographical_region = world_asia_minor
+				}
+			}
+			set_county_culture = culture:ottoman_turkish
+		}
+		culture:ottoman_turkish = {
+			reset_culture_creation_date = yes
+			get_all_innovations_from = culture:turkish
+			get_all_innovations_from = culture:greek
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+
+
+#claim_zaydi_imamate_decision = {
+#	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+#
+#	desc = claim_zaydi_imamate_decision_desc
+#	selection_tooltip = claim_zaydi_imamate_decision_tooltip
+#	major = yes
+#
+#	ai_check_interval = 120
+#
+#	is_shown = {
+#		is_ruler = yes
+#		is_landed = yes
+#		faith = faith:zayidi
+#		NOT = { faith = { exists = religious_head } }
+#		highest_held_title_tier > 2
+#	}
+#
+#	is_valid = {
+#		completely_controls = title:c_sanaa
+#		piety_level >= high_piety_level
+#	}
+#
+#	is_valid_showing_failures_only = {
+#		is_capable_adult = yes
+#		is_imprisoned = no
+#		is_independent_ruler = yes
+#	}
+#
+#	effect = {
+#		claim_zaydi_imamate_scripted_effect = yes
+#		#custom_tooltip = restore_sunni_caliphate_decision_effect_tooltip
+#		#show_as_tooltip = {
+#			#claim_zaydi_imamate_scripted_effect = yes
+#		#}
+#		#trigger_event = {
+#			#id = middle_east_decisions.0003
+#		#}
+#	}
+#
+#	ai_potential = {
+#		always = yes
+#	}
+#
+#	ai_will_do = { #Always do it when possible.
+#		base = 100
+#		ai_value_modifier = {
+#			ai_zeal = 1.0
+#		}
+#		modifier = {
+#			factor = 0
+#			has_trait = cynical
+#		}
+#	}
+#}

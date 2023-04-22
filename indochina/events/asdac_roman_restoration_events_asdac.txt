@@ -1,0 +1,90 @@
+﻿namespace = asdac_roman_restoration
+##################################################
+# Restoring the Byzantine Empire
+##################################################
+asdac_roman_restoration.1001 = {
+	type = character_event
+	title = asdac_roman_restoration.1001.t
+	desc = asdac_roman_restoration.1001.desc
+	theme = realm
+	left_portrait = {
+		character = scope:scoped_emperor
+		animation = personality_honorable
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		save_scope_as = scoped_emperor
+		create_byzantine_empire_scripted_effect = yes
+	}
+	option = {
+		name = asdac_roman_restoration.1001.a
+	}
+}
+
+asdac_roman_restoration.2001 = {
+	type = character_event
+	title = roman_restoration.0001.t
+	desc = {
+		desc = roman_restoration.0001.desc.intro
+		first_valid = {
+			# Doing it as the Greeks.
+			triggered_desc = {
+				trigger = {
+					root.culture = culture:greek
+				}
+				desc = roman_restoration.0001.desc.greeks
+			}
+			# Doing it as somebody else.
+			triggered_desc = {
+				trigger = {
+					NOT = {
+						root.culture = culture:greek
+					}
+				}
+				desc = roman_restoration.0001.desc.other
+			}
+		}
+		first_valid = {
+			# Doing it as Christians.
+			triggered_desc = {
+				trigger = {
+					NOT = {
+						faith.religion = faith:hellenic_pagan.religion
+					}
+				}
+				desc = roman_restoration.0001.desc.christians
+			}
+			# Doing it as Hellenics
+			triggered_desc = {
+				trigger = {
+					faith.religion = faith:hellenic_pagan.religion
+				}
+				desc = roman_restoration.0001.desc.hellenics
+			}
+		}
+	}
+	theme = realm
+	left_portrait = {
+		character = scope:scoped_emperor
+		animation = personality_honorable
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		save_scope_as = scoped_emperor
+		create_roman_empire_latin_scripted_effect = yes
+	}
+	option = {
+		name = roman_restoration.0001.a
+		set_nickname_effect = { NICKNAME = nick_the_glorious }
+		# Send narrative fluff to other players (if any).
+		every_player = {
+			limit = {
+				NOT = { this = root }
+				is_within_diplo_range = { CHARACTER = root }
+			}
+			trigger_event = roman_restoration.0002
+		}
+	}
+}

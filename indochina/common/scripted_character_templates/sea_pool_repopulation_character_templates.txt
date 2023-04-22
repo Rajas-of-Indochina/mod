@@ -4,7 +4,7 @@ pool_repopulate_local_flavor = {
 	gender_female_chance = root_faith_dominant_gender_adjusted_female_chance #because council gender is doctrine dependent
 	random_traits = yes
 	faith = root.faith
-	
+
 	random_culture = {
 		culture:ashkenazi = {
 			trigger = {
@@ -215,19 +215,19 @@ pool_repopulate_local_flavor = {
 			}
 		}
 	}
-	
+
 	learning = {
 		min_guest_template_skill max_guest_template_skill
 	}
-	
+
 	stewardship = {
 		min_guest_template_skill max_guest_template_skill
 	}
-	
+
 	diplomacy = {
 		min_guest_template_skill max_guest_template_skill
 	}
-	
+
 	random_traits_list = {
 		education_learning_3 = { weight = { base = 10 } }
 		education_learning_4 = { weight = { base = 20 } }
@@ -250,7 +250,7 @@ pool_repopulate_local_flavor = {
 		diplomat = {}
 	}
 	dynasty = none
-	
+
 	after_creation = {
 		if = {
 			limit = {
@@ -553,7 +553,7 @@ pool_repopulate_local_flavor = {
 				}
 			}
 		}
-		
+
 		# Learn flavorful & appropriate languages
 		if = {
 			limit = {
@@ -563,7 +563,7 @@ pool_repopulate_local_flavor = {
 					culture = culture:somali
 				}
 			}
-			
+
 			if = {
 				limit = {
 					NOT = {
@@ -576,12 +576,12 @@ pool_repopulate_local_flavor = {
 				}
 			}
 		}
-		
+
 		if = {
 			limit = {
 				culture = culture:assyrian
 			}
-			
+
 			if = {
 				limit = {
 					NOT = {
@@ -594,7 +594,7 @@ pool_repopulate_local_flavor = {
 				}
 			}
 		}
-		
+
 		if = { # Guaranteed warriors
 			limit = {
 				OR = {
@@ -709,5 +709,54 @@ pool_repopulate_local_flavor = {
 				}
 			}
 		}
+	}
+}
+
+pool_sea_game_start_stewardship = {
+	age = { 20 40 }
+	gender_female_chance = liege_faith_dominant_gender_adjusted_female_chance #because steward gender is doctrine dependent
+	random_traits = yes
+	culture = scope:liege.culture
+	faith = scope:liege.faith
+	stewardship = {
+		min_guest_template_skill max_guest_template_skill
+	}
+	random_traits_list = {
+		education_stewardship_1 = { weight = { base = 35 } }
+		education_stewardship_2 = { weight = { base = 35 } }
+		education_stewardship_3 = { weight = { base = 20 } }
+		education_stewardship_4 = { weight = { base = 10 } }
+	}
+	random_traits_list = {
+		count = { 0 1 }
+		architect = {}
+		administrator = {}
+		avaricious = {}
+		temperate = {}
+		greedy = {}
+		just = {}
+		stubborn = {}
+		ambitious = {}
+	}
+	dynasty = none
+	after_creation = {
+		random = {
+			chance = 1
+			
+			add_trait = poet
+			
+			modifier = {
+				add = 10
+				culture = { has_cultural_parameter = poet_trait_more_common }
+			}
+			modifier = {
+				add = 5
+				OR = {
+					culture = { has_cultural_pillar = heritage_north_germanic }
+					religion = religion:germanic_religion
+				}
+			}
+		}
+		set_interesting_traits_and_modifiers_effect = yes
 	}
 }

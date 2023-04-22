@@ -1,0 +1,102 @@
+﻿
+namespace = asdac_bookmark
+
+#1187
+###Henry isn't as cool as Richard so we kill him
+asdac_bookmark.1001 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		this = character:204500 #Henry
+		is_ai = yes
+		exists = player_heir
+		player_heir = character:204510 #Richard
+	}
+
+	immediate = {
+		death = {
+			death_reason = death_ill
+		}
+	}
+}
+###Saladin will fight for Islam
+asdac_bookmark.1101 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		this = character:226000 #Saladin
+		is_ai = yes
+	}
+
+	immediate = {
+		start_war = {
+			casus_belli = religious_war
+			target = title:c_jerusalem.holder
+			target_title = title:d_palestine
+		}
+	}
+}
+
+#1204
+###Temujin epic
+asdac_bookmark.2001 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		this = character:125501 #Temujin
+		is_ai = yes
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				game_start_date = 1204.5.16
+			}
+			trigger_event = {
+				id = mongol_invasion.0001
+				days = { 365 730 }
+			}
+		} else_if = {
+			limit = {
+				game_start_date = 1187.1.1
+			}
+			trigger_event = {
+				id = mongol_invasion.0001
+				days = { 3650 7300 }
+			}
+		}
+	}
+}
+asdac_bookmark.2002 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		this = character:125501 #Temujin
+		is_ai = no
+		game_start_date = 1204.5.16
+	}
+
+	immediate = {
+		trigger_event = {
+			id = central_asia.0001
+		}
+		set_global_variable = {
+			name = mongols_have_appeared
+			value = yes
+		}
+	}
+}
+asdac_bookmark.3001 = {
+	type = empty
+	hidden = yes
+
+	immediate = {
+		title:d_angria = {
+			set_coa = k_saxon_electorate
+		}
+	}
+}
