@@ -1,4 +1,4 @@
-version="2.7.2"
+version="3.0.0"
 tags={
 	"Historical"
 	"Map"
