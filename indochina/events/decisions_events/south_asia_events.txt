@@ -2001,3 +2001,192 @@ south_asia.0043 = {
 		}
 	}
 }
+
+# Unify the Nasrani
+south_asia.0044 = {
+	type = character_event
+	title = south_asia.0044.t
+	desc = south_asia.0044.desc
+	theme = faith
+	left_portrait = {
+		character = ROOT
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = "mx_epic_sacral_moment"
+		unite_nasrani_decision_effect = yes
+	}
+
+	# Alright, you've united the Indian Christians.
+	# Now pick which church to be in communion with if any.
+	# Your choices: Nestorian, Catholic, Orthodox, or our own church
+
+	option = {
+		name = chaldean_nasrani
+		faith:indian_catholic = {
+			remove_doctrine = tenet_communal_identity
+			add_doctrine = tenet_rite
+			remove_doctrine = doctrine_no_head
+			add_doctrine = doctrine_spiritual_head
+			set_religious_head_title = title:d_patriarchate_in_the_east
+		}
+	}
+	option = {
+		name = catholic_nasrani
+		faith:indian_catholic = {
+			remove_doctrine = tenet_communal_identity
+			add_doctrine = tenet_rite
+			remove_doctrine = tenet_adaptive
+			add_doctrine = tenet_communion
+			remove_doctrine = doctrine_no_head
+			add_doctrine = doctrine_spiritual_head
+			set_religious_head_title = title:k_papal_state
+		}
+	}
+	option = {
+		name = orthodox_nasrani
+		faith:indian_catholic = {
+			remove_doctrine = tenet_communal_identity
+			add_doctrine = tenet_rite
+			remove_doctrine = tenet_adaptive
+			add_doctrine = tenet_pentarchy
+			remove_doctrine = doctrine_no_head
+			add_doctrine = doctrine_spiritual_head
+			set_religious_head_title = title:k_orthodox
+		}
+	}
+	option = {
+		name = independent_nasrani
+		trigger_event = south_asia.0045
+	}
+
+	option = {
+		name = debug
+		trigger = {
+			debug_only = yes
+		}
+	}
+}
+
+# have to grant the head of faith title in a separate event. At least this gives me an excuse to let you pick temporal or spiritual 
+south_asia.0045 = {
+	type = character_event
+	title = south_asia.0045.t
+	desc = south_asia.0045.desc
+	theme = faith
+	left_portrait = {
+		character = scope:scoped_ruler
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:new_priest
+		animation = happiness
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_faith_conversion"
+		save_scope_as = scoped_ruler
+		if = { # Check if Temporal first.
+			limit = {
+				faith = { has_doctrine = doctrine_temporal_head }
+			}
+			save_scope_as = new_priest
+		}
+		else_if = { # Pick your chaplain first.
+			limit = {
+				exists = cp:councillor_court_chaplain
+				cp:councillor_court_chaplain = { faith = scope:scoped_ruler.faith }
+			}
+			if = {
+				limit = {
+					root.faith = { has_doctrine = doctrine_no_head }
+				}
+				hidden_effect = {
+					root.faith = { remove_doctrine = doctrine_no_head }
+					root.faith = { add_doctrine = doctrine_spiritual_head }
+				}
+			}
+			cp:councillor_court_chaplain = { save_scope_as = new_priest }
+		}
+		else = {
+			hidden_effect = {
+				create_character = {
+					employer = root
+					template = religious_leader_character
+					random_traits = no
+					save_scope_as = new_priest
+					dynasty = generate
+				}
+			}
+			scope:new_priest = {
+				add_trait = education_learning_3
+				add_trait = zealous
+				add_trait = intellect_good_1
+				random_list = {
+					1 = { add_trait = lustful }
+					1 = { add_trait = chaste }
+					1 = { add_trait = wrathful }
+					1 = { add_trait = diligent }
+					1 = { add_trait = impatient }
+					1 = { add_trait = arrogant }
+					1 = { add_trait = humble }
+					1 = { add_trait = gregarious }
+				}
+				random_list = {
+					1 = { add_trait = honest }
+					1 = { add_trait = ambitious }
+					1 = { add_trait = just }
+					1 = { add_trait = cynical }
+					1 = { add_trait = zealous }
+					1 = { add_trait = compassionate }
+					1 = { add_trait = stubborn }
+				}
+			}
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		root.faith.religious_head_title = {
+			change_title_holder = {
+				holder = scope:new_priest
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+
+	option = {
+		name = middle_east_decisions.0007.a
+		faith = {
+			change_fervor = {
+				value = 10
+				desc = fervor_gain_priesthood_recreated
+			}
+		}
+		if = { # Vassalize if possible/needed.
+			limit = {
+				highest_held_title_tier > scope:new_priest.highest_held_title_tier
+				NOT = { scope:new_priest = { any_liege_or_above = { this = root } } }
+			}
+			create_title_and_vassal_change = {
+				type = created
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			scope:new_priest = {
+				change_liege = {
+					liege = root
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+			assign_councillor_type = {
+				type = councillor_court_chaplain
+				target = scope:new_priest
+			}			
+		}
+	}
+}
