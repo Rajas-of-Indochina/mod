@@ -8,6 +8,12 @@ has_graphical_korean_culture_group_trigger = {
 has_graphical_yamato_culture_group_trigger = {
 	has_building_gfx = yamato_building_gfx
 }
+has_graphical_korean_culture_group_trigger = {
+	has_building_gfx = korean_building_gfx
+}
+has_graphical_tibetan_culture_group_trigger = {
+	has_building_gfx = tibetan_building_gfx
+}
 
 has_graphical_burma_region_trigger = {
 	trigger_if = {
@@ -162,6 +168,46 @@ has_graphical_japan_region_trigger = {
 			}
 			location.province_owner.capital_province = {
 				geographical_region = graphical_japan
+			}
+		}
+		trigger_else = { always = yes }
+	}
+	trigger_else = { always = yes }
+}
+
+has_graphical_korea_region_trigger = {
+	trigger_if = {
+		limit = {
+			exists = capital_province
+		}
+		capital_province = {
+			geographical_region = graphical_korea
+		}
+	}
+	trigger_else_if = {
+		limit = {
+			NOT = { exists = capital_province }
+		}
+		trigger_if = {
+			limit = { exists = host.capital_province }
+			host.capital_province = {
+				geographical_region = graphical_korea
+			}
+		}
+		trigger_else_if = {
+			limit = {
+				exists = liege.capital_province
+			}
+			liege.capital_province = {
+				geographical_region = graphical_korea
+			}
+		}
+		trigger_else_if = {
+			limit = {
+				exists = location.province_owner.capital_province
+			}
+			location.province_owner.capital_province = {
+				geographical_region = graphical_korea
 			}
 		}
 		trigger_else = { always = yes }
