@@ -107,6 +107,32 @@
 					}
 				}
 			}
+			if = { # Catalyst for breaking truces with infidels as the dominant religion
+				limit = {
+					any_character_struggle = {
+						involvement = involved
+						activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+							CATALYST = catalyst_dominant_break_infidel_truce
+							CHAR = scope:defender
+						}
+					}
+					is_dominant_religion = yes
+					NOT = { scope:defender.religion = scope:attacker.religion }
+				}				
+				every_character_struggle = {
+					involvement = involved
+					limit = {
+						activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+							CATALYST = catalyst_dominant_break_infidel_truce
+							CHAR = scope:defender
+						}
+					}
+					activate_struggle_catalyst = {
+						catalyst = catalyst_dominant_break_infidel_truce
+						character = scope:attacker
+					}
+				}
+			}
 		}
 	}
 	if = {

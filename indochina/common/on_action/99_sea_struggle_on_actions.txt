@@ -31,12 +31,20 @@ setup_dominance_variables = {
 on_title_gain = {
 	on_actions = {
 		india_struggle_title_gain
+		india_struggle_title_usurp
+	}
+}
+
+on_vassal_gained = {
+	on_actions = {
+		india_struggle_vassal_gain
 	}
 }
 
 on_character_faith_change = {
 	on_actions = {
 		india_struggle_faith_change
+		india_struggle_character_conversion
 	}
 }
 
@@ -57,6 +65,97 @@ india_struggle_title_gain = {
 	}
 }
 
+india_struggle_title_usurp = {
+	trigger = {
+		# Only care about struggle region
+		OR = {
+			scope:title.title_province = { geographical_region = india_struggle_region }
+			scope:title.title_capital_county.title_province = { geographical_region = india_struggle_region }
+		}
+		NOT = { root.religion = scope:previous_holder.religion }
+		root = { is_dominant_religion = yes }
+		scope:transfer_type = flag:usurped
+
+		root = {
+			any_character_struggle = {
+				involvement = involved
+				activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+					CATALYST = catalyst_dominant_usurp_infidel_title
+					CHAR = root
+				}
+			}
+		}
+	}
+	effect = {
+		root = {
+			every_character_struggle = {
+				involvement = involved
+				limit = {
+					activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+						CATALYST = catalyst_dominant_usurp_infidel_title
+						CHAR = root
+					}
+				}
+				activate_struggle_catalyst = {
+					catalyst = catalyst_dominant_usurp_infidel_title
+					character = root
+				}
+			}
+		}
+	}
+}
+
+india_struggle_vassal_gain = {
+	trigger = {
+		# Vassal used to be independent
+		NOT = { exists = scope:old_liege }
+		root = {
+			any_character_struggle = {
+				involvement = involved
+				activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+					CATALYST = catalyst_dominant_vassalize_infidel_count
+					CHAR = scope:vassal
+				}
+			}
+		}
+		NOT = { root.religion = scope:vassal.religion }
+	}
+	effect = {
+		root = {
+			every_character_struggle = {
+				involvement = involved
+				limit = {
+					activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+						CATALYST = catalyst_dominant_vassalize_infidel_count
+						CHAR = scope:vassal
+					}
+				}
+				switch = {
+					trigger = scope:vassal.highest_held_title_tier
+					tier_county = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_dominant_vassalize_infidel_count
+							character = root
+						}
+					}
+					tier_duchy = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_dominant_vassalize_infidel_count
+							character = root
+						}
+					}
+					tier_kingdom = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_dominant_vassalize_infidel_count
+							character = root
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 india_struggle_faith_change = {
 	trigger = {
 		OR = {
@@ -69,10 +168,38 @@ india_struggle_faith_change = {
 	}
 }
 
+india_struggle_character_conversion = {
+	trigger = {
+		NOT = {scope:old_faith.religion = root.religion}
+		any_character_struggle = {
+			involvement = involved
+			is_struggle_type = indian_struggle
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_phase = struggle_india_dominance
+				}
+				is_dominant_religion = yes
+			}
+			every_character_struggle = {
+				involvement = involved
+				activate_struggle_catalyst = {
+					catalyst = catalyst_dominant_character_convert
+					character = ROOT
+				}
+			}
+		}
+	}
+}
+
 naturally_unlock_sikhism = {
 	# If Sikhism is ignored then it may unlock naturally as long as there's a Sikh ruler or county
 	trigger = {
-		has_global_variable = global_var:sikhism_ignored
+		has_global_variable = sikhism_ignored
 		OR = {
 			any_county = { faith = faith:sikhism }
 			any_ruler = { faith = faith:sikhism }
