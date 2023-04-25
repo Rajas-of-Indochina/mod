@@ -1,0 +1,168 @@
+﻿
+# This trigger is used when offering the player a choice between two stress outlets for a stress threshold event.
+# The stress threshold event will add character flags from this list, based on a character's personality and relevance to the event, until two have been selected.
+has_two_stress_threshold_options = {
+	calc_true_if = {
+		amount >= 2
+
+		has_character_flag = stress_threshold_option_drunkard
+		has_character_flag = stress_threshold_option_hashishiyah
+		has_character_flag = stress_threshold_option_betel_chewer
+		has_character_flag = stress_threshold_option_rakish
+		has_character_flag = stress_threshold_option_reclusive
+		has_character_flag = stress_threshold_option_irritable
+		has_character_flag = stress_threshold_option_flagellant
+		has_character_flag = stress_threshold_option_profligate
+		has_character_flag = stress_threshold_option_improvident
+		has_character_flag = stress_threshold_option_contrite
+		has_character_flag = stress_threshold_option_comfort_eater
+		has_character_flag = stress_threshold_option_inappetetic
+		has_character_flag = stress_threshold_option_journaller
+		has_character_flag = stress_threshold_option_confider
+		has_character_flag = stress_threshold_option_athletic
+		has_character_flag = stress_threshold_option_conversion
+		has_character_flag = stress_threshold_option_depression
+	}
+}
+
+# Check if the player already has two stress coping traits ( we don't want to give any more than that! )
+has_two_stress_coping_traits_trigger = {
+	calc_true_if = {
+		amount >= 2
+		has_trait = drunkard
+		has_trait = hashishiyah
+		has_trait = betel_chewer
+		has_trait = rakish
+		has_trait = reclusive
+		has_trait = irritable
+		has_trait = flagellant
+		has_trait = profligate
+		has_trait = improvident
+		has_trait = contrite
+		has_trait = comfort_eater
+		has_trait = inappetetic
+		has_trait = journaller
+		has_trait = confider
+		has_trait = athletic
+	}
+}
+
+has_a_stress_coping_trait_trigger = {
+	OR = {
+		has_trait = drunkard
+		has_trait = hashishiyah
+		has_trait = betel_chewer
+		has_trait = rakish
+		has_trait = reclusive
+		has_trait = irritable
+		has_trait = flagellant
+		has_trait = profligate
+		has_trait = improvident
+		has_trait = contrite
+		has_trait = comfort_eater
+		has_trait = inappetetic
+		has_trait = journaller
+		has_trait = confider
+		has_trait = athletic
+	}
+}
+
+can_be_drunkard = {
+	is_adult = yes
+	NOR = { # Can not be Temperate or already have a Substance Abuse trait.
+		has_trait = drunkard
+		has_trait = hashishiyah
+		has_trait = temperate
+		has_trait = betel_chewer
+	}
+	faith = { # Can not be Muslim ( some Muslims did actually drink, but ideally we want Muslims to be Hashishiyahs instead of Drunkards because it is more thematic).
+		NOT = {
+			religion_tag = islam_religion
+		}
+	}
+}
+
+can_be_hashishiyah = {
+	is_adult = yes
+	NOR = { # Can not be Temperate or already have a Substance Abuse trait.
+		has_trait = drunkard
+		has_trait = hashishiyah
+		has_trait = temperate
+		has_trait = betel_chewer
+	}
+
+	OR = {
+		# Muslims always have access to Hashish...
+		faith = {
+			religion_tag = islam_religion
+		}
+		# Otherwise you must not be located in Europe (where Hashish was relatively unknown until modern times.)
+		AND = {
+			OR = {
+				AND = {
+					exists = capital_province
+					capital_province = {
+						save_temporary_scope_as = my_home_province
+					}
+				}
+				AND = {
+					exists = liege
+					exists = liege.capital_province
+					liege = {
+						capital_province = {
+							save_temporary_scope_as = my_home_province
+						}
+					}
+				}
+			}
+			scope:my_home_province = {
+				NOR = {
+					geographical_region = world_europe
+					geographical_region = world_southeast_asia
+					geographical_region = world_papua_new_guinea
+				}
+			}
+		}
+	}
+}
+
+can_be_betel_chewer = {
+	is_adult = yes
+	NOR = { # Can not be Temperate or already have a Substance Abuse trait.
+		has_trait = drunkard
+		has_trait = hashishiyah
+		has_trait = temperate
+		has_trait = betel_chewer
+	}
+
+	OR = {
+		AND = {
+			OR = {
+				AND = {
+					exists = capital_province
+					capital_province = {
+						save_temporary_scope_as = my_home_province
+					}
+				}
+				AND = {
+					exists = liege
+					exists = liege.capital_province
+					liege = {
+						capital_province = {
+							save_temporary_scope_as = my_home_province
+						}
+					}
+				}
+			}
+			scope:my_home_province = {
+				OR = {
+					geographical_region = world_annam
+					geographical_region = world_india
+					geographical_region = world_burma
+					geographical_region = world_southeast_asia
+					geographical_region = world_papua_new_guinea
+				}
+			}
+		}
+	}
+}
