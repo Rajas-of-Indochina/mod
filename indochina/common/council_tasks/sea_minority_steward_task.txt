@@ -764,32 +764,37 @@ task_promote_minority = {
 					has_realm_law = religious_minority_status_2
 				}
 			}
-			OR = {
-				AND = {
+			custom_tooltip = {
+				text = must_have_different_faith_or_culture_to_promote_tt
+
+				OR = {
 					# Has minorities that aren't your own faith
-					county_has_minority_faith_trigger = yes
-					OR = {
-						any_in_list = {
-							variable = faith_minorities_large
-							NOT = { THIS = scope:councillor_liege.faith }
-						}
-						any_in_list = {
-							variable = faith_minorities_small
-							NOT = { THIS = scope:councillor_liege.faith }
+					AND = {
+						county_has_minority_faith_trigger = yes
+						OR = {
+							any_in_list = {
+								variable = faith_minorities_large
+								NOT = { THIS = scope:councillor_liege.faith }
+							}
+							any_in_list = {
+								variable = faith_minorities_small
+								NOT = { THIS = scope:councillor_liege.faith }
+							}
 						}
 					}
-				}
-				AND = {
+
 					#...Or aren't your own culture
-					county_has_minority_culture_trigger = yes
-					OR = {
-						any_in_list = {
-							variable = culture_minorities_large
-							NOT = { THIS = scope:councillor_liege.faith }
-						}
-						any_in_list = {
-							variable = culture_minorities_small
-							NOT = { THIS = scope:councillor_liege.faith }
+					AND = {
+						county_has_minority_culture_trigger = yes
+						OR = {
+							any_in_list = {
+								variable = culture_minorities_large
+								NOT = { THIS = scope:councillor_liege.faith }
+							}
+							any_in_list = {
+								variable = culture_minorities_small
+								NOT = { THIS = scope:councillor_liege.faith }
+							}
 						}
 					}
 				}
