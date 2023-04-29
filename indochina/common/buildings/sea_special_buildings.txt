@@ -664,6 +664,117 @@ pura_besakih_01 = {
 }
 
 ##########
+# Phrathat Phanom
+##########
+
+phrathat_phanom_01 = {# Phrathat Phanom
+	construction_time = very_slow_construction_time
+
+	asset = {
+		type = pdxmesh
+		name = "building_special_prambanan_temple_mesh"
+	}
+
+	type_icon = "icon_sea_phrathat_phanom_initial.dds"
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+
+	is_enabled = {
+		custom_description = {
+			text = buddhist_or_tai_requirement
+			scope:holder = {
+				OR = {
+					faith = { religion_tag = buddhism_religion }
+					faith = { religion_tag = tai_religion }
+				}
+			}
+		}
+	}
+	next_building = phrathat_phanom_02
+
+	cost_gold = 3000
+
+	character_modifier = {
+		clergy_opinion = 5
+		different_faith_opinion = 5
+		different_faith_county_opinion_mult = -0.10
+		same_faith_opinion = 5
+		monthly_county_control_change_factor = 0.05
+	}
+	county_modifier = {
+		tax_mult = 0.2
+	}
+	province_modifier = {
+		monthly_income = 2
+	}
+
+	ai_value = {
+		base = 100
+	}
+
+	type = special
+}
+phrathat_phanom_02 = {# Phrathat Phanom
+	construction_time = very_slow_construction_time
+
+	asset = {
+		type = pdxmesh
+		name = "building_special_prambanan_temple_mesh"
+	}
+
+	type_icon = "icon_sea_phrathat_phanom_rebuilt.dds"
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	can_construct = {
+		scope:holder = {
+			culture = {
+				has_innovation = innovation_cranes
+			}
+		}
+	}
+
+	is_enabled = {
+		custom_description = {
+			text = phrathat_phanom_trigger
+			scope:holder = {
+				OR = {
+					faith = { religion_tag = buddhism_religion }
+					faith = { religion_tag = tai_religion }
+				}
+			}
+		}
+	}
+
+	cost_gold = 3000
+
+	character_modifier = {
+		clergy_opinion = 5
+		different_faith_opinion = 5
+		different_faith_county_opinion_mult = -0.10
+		same_faith_opinion = 5
+		monthly_county_control_change_factor = 0.05
+	}
+	county_modifier = {
+		tax_mult = 0.2
+		development_growth_factor = 0.2
+		development_growth = 0.1
+	}
+	province_modifier = {
+		monthly_income = 2
+	}
+
+	ai_value = {
+		base = 100
+	}
+
+	type = special
+}
+
+##########
 # Gold Mines
 ##########
 
