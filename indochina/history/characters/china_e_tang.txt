@@ -800,13 +800,70 @@ tangv029 = { # Xuanzhou
 	827.1.1 = { birth = yes }
 	870.1.1 = { death = yes }
 }
-tangv030 = { # Wulao
-	name = "Yu"
-	religion = "shangqing"
-	culture = "han"
 
-	840.1.1 = { birth = yes }
-	870.1.1 = { death = yes }
+pangjuzhi = { #龐舉直 Pang Juzhi. In 869.10.15 killed by 張玄稔. (資治通鑑/卷251)
+	dynasty = tang_d08 #Pang
+	name = "Juzhi"
+	religion = shangqing # ?
+	culture = han
+	#birth date unknown
+	801.1.1 = {
+		birth = yes
+	}
+	869.10.15 = {
+		death = yes
+	}
+}
+tangv030 = { #龐勛 Pang Xun. In 868.7.23 rose in rebellion. In 868.10.29 declared himself 兵馬留後 after taking Shizhou. In 868.11.5 took over 徐州. Died in 869.10.14. In 869.10.15 徐州 was retaken (資治通鑑/卷251)
+	dynasty = tang_d08 #Pang
+	name = "Xun"
+	religion = shangqing # ?
+	culture = han
+	father = pangjuzhi
+
+	trait = education_martial_4
+	trait = wrathful
+	trait = ambitious
+	trait = education_martial_prowess_3
+	trait = brave
+
+	#birth date unknown
+	823.1.1 = {
+		birth = yes
+	}
+	867.1.1 = { #868.7.23
+		add_pressed_claim = title:d_xusi_china
+		add_pressed_claim = title:c_xuzhou_xu_china
+
+		effect = {
+			#庞勋起义，戍卒返乡
+
+			add_gold = 2000
+			add_trait = peasant_leader
+			spawn_army = {
+				name = event_troop_default_name
+				levies = 4000
+				location = province:11788
+				origin = province:11788
+			}
+
+			# Troops that goes away
+			spawn_army = {
+				name = event_troop_default_name
+				levies = 1800
+				men_at_arms = {
+					type = armored_footmen
+					stacks = 2
+				}
+				location = province:11788
+				origin = province:11788
+				inheritable = no
+			}
+		}
+	}
+	869.10.14 = {
+		death = { death_reason = death_accident_drowning }
+	}
 }
 tangv031 = { # Jingnan
 	name = "Yifu"
