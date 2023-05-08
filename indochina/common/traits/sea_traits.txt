@@ -8,28 +8,31 @@
 @neg_compat_low = -5
 
 
-austronesian_tattoo = {
-	ruler_designer_cost = 0
-
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					NOT = { exists = this }
-				}
-				desc = trait_smallpox_desc
-			}
-			desc = trait_smallpox_character_desc
-		}
-	}
-}
-
 transgender = {
+	potential = {
+		# must be one of the cultures where this is an extant concept
+	}
+
 	shown_in_ruler_designer = yes
 
 	random_creation = 0.3
 
-	name = trait_transgender
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = this
+
+					# kathoey
+					# bakla
+					# bayot
+					# ???
+				}
+			}
+		}
+	}
+
+
 	desc = {
 		first_valid = {
 			triggered_desc = {
@@ -231,49 +234,163 @@ betel_chewer = { # Substance Abuse (Betel)
 	}
 }
 
-# Brahman
-# Ksatriya
-# Vaishya
-
-# Slave
-
 slave = {
+	fame = yes
+	diplomacy = -2
 
+	opposites = {
+		freed_slave
+	}
+
+	ruler_designer_cost = 0
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_slave_desc
+			}
+			desc = trait_slave_character_desc
+		}
+	}
 }
 
 freed_slave = {
+	fame = yes
+	diplomacy = -1
 
+	opposites = {
+		slave
+	}
+
+	ruler_designer_cost = 0
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_freed_slave_desc
+			}
+			desc = trait_freed_slave_character_desc
+		}
+	}
 }
 
 adopted = {
+	fame = yes
 	diplomacy = -1
+
+	ruler_designer_cost = 0
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_adopted_desc
+			}
+			desc = trait_adopted_character_desc
+		}
+	}
 }
 
 brahmin = {
-	diplomacy = 1
-	learning = 1
-	martial = -1
-
 	same_faith_opinion = 10
+	monthly_learning_lifestyle_xp_gain_mult = 0.1
 
-	compatibility = {
-		brahmin = @pos_compat_low
+	opposites = {
+		kshatriya
+		vaishya
+		shudra
+	}
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_brahmin_desc
+			}
+			desc = trait_brahmin_character_desc
+		}
 	}
 }
-ksatriya = {
-	martial = 1
-	stewardship = 1
-	intrigue = -1
 
-	compatibility = {
-		ksatriya = @pos_compat_low
+kshatriya = {
+	inherit_chance = 100
+	inherit_from_real_father = no
+	monthly_martial_lifestyle_xp_gain_mult = 0.1
+
+	opposites = {
+		brahmin
+		vaishya
+		shudra
+	}
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_kshatriya_desc
+			}
+			desc = trait_kshatriya_character_desc
+		}
 	}
 }
+
 vaishya = {
-	stewardship = 2
-	learning = -1
+	inherit_chance = 100
+	inherit_from_real_father = no
+	monthly_stewardship_lifestyle_xp_gain_mult = 0.1
+	vassal_opinion = -10
 
-	compatibility = {
-		vaishya = @pos_compat_low
+	opposites = {
+		brahmin
+		kshatriya
+		shudra
+	}
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_vaishya_desc
+			}
+			desc = trait_vaishya_character_desc
+		}
+	}
+}
+
+shudra = {
+	inherit_chance = 100
+	inherit_from_real_father = no
+	vassal_opinion = -20
+
+	opposites = {
+		brahmin
+		kshatriya
+		vaishya
+	}
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_shudra_desc
+			}
+			desc = trait_shudra_character_desc
+		}
 	}
 }
