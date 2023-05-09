@@ -29,6 +29,36 @@ create_artifact_emerald_buddha = {
 	}
 }
 
+create_artifact_heirloom_seal = {
+	# Get the character the artifact is being made for.
+	$OWNER$ = { save_scope_as = owner }
+	# Not really used, but if we don't set the scopes we get errors in the feature selection
+	set_artifact_rarity_illustrious = yes
+
+	# Create the artifact
+	create_artifact = {
+		name = heirloom_seal_name
+		description = heirloom_seal_description
+		template = general_unique_template
+		type = regalia_simple
+		visuals = heirloom_seal
+		wealth = scope:wealth
+		quality = scope:quality
+		history = {
+			type = created_before_history
+		}
+		modifier = heirloom_seal_modifier
+		save_scope_as = newly_created_artifact
+		decaying = no
+	}
+
+	scope:newly_created_artifact = {
+		set_variable = { name = historical_unique_artifact value = yes }
+		set_variable = heirloom_seal
+		save_scope_as = epic
+	}
+}
+
 create_artifact_laguna_copperplate = {
 	# Get the character the artifact is being made for.
 	$OWNER$ = { save_scope_as = owner }
