@@ -349,14 +349,22 @@ tradition_confucian_philosophy = {
 	can_pick = {
 		has_cultural_pillar = heritage_chinese
 		NOT = { any_in_list = { list = traits this = flag:tradition_sinicized_culture } }
+		NOT = { any_in_list = { list = traits this = flag:tradition_mystical_ancestors } }
 	}
 
 	parameters = {
+		# From Mystical Ancestors
+		cannot_disherit = yes
+		landing_house_members_gives_renown = yes
+		piety_penalty_for_revoking_titles_from_house_members = yes
+
 		innovation_from_learning_traits = yes
 		vassals_more_likely_accept_punishments = yes
 		unlock_bureaucracy_param = yes
 	}
 	character_modifier = {
+		dynasty_opinion = 10
+
 		monthly_learning_lifestyle_xp_gain_mult = 0.1
 		monthly_stewardship_lifestyle_xp_gain_mult = 0.1
 		tyranny_gain_mult = 0.25
@@ -904,5 +912,59 @@ tradition_sinicized_culture = {
 			}
 			multiply = 0
 		}
+	}
+}
+
+tradition_walled_villages = {
+	category = realm
+
+	layers = {
+		0 = martial
+		1 = western
+		4 = city.dds
+	}
+
+	can_pick = {
+		any_parent_culture = { has_cultural_tradition = tradition_walled_villages }
+		NOT = { any_in_list = { list = traits this = flag:tradition_castle_keepers } }
+		NOT = { any_in_list = { list = traits this = flag:tradition_stalwart_defenders } }
+	}
+
+	parameters = {
+		# Castle Keepers
+		castle_fortifications_increase = yes
+		castle_grant_prestige = yes
+		architect_trait_prestige = yes
+		ai_more_likely_to_castle = yes
+		ai_more_likely_to_fortify = yes
+
+		# Stalwart Defenders
+		can_end_defensive_wars_earlier = yes
+		more_fame_for_successful_defensive_wars = yes
+		more_gold_for_successful_defensive_wars = yes
+	}
+	character_modifier = {
+		castle_holding_holding_build_speed = 0.1
+		castle_holding_holding_build_gold_cost = 0.2
+
+		defender_advantage = 5
+	}
+	province_modifier = {
+		garrison_size = 0.25
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
 	}
 }
