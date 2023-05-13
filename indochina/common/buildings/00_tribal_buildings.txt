@@ -115,6 +115,8 @@ tribe_01 = {
 	province_modifier = {
 		monthly_income = poor_building_tax_tier_1
 		fort_level = 1
+		stationed_maa_damage_mult = normal_maa_damage_tier_2
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_2
 	}
 
 	province_terrain_modifier = {
@@ -142,10 +144,13 @@ tribe_01 = {
 	}
 	## END SEA ##
 
+	next_building = tribe_02
+
 	type_icon = "icon_building_longhouses.dds"
 
 	ai_value = {
 		base = 1
+		ai_tier_1_building_modifier = yes
 	}
 }
 
@@ -193,8 +198,8 @@ tribe_02 = {
 		illustration = @holding_illustration_indian
 		soundeffect = { soundeffect = "event:/SFX/Ambience/3DMapEmitters/Holdings/City/tribal_city" soundparameter = { "Tier" = 0 } }
 	}
+
 	## Vanilla ##
-	## Vanilla
 	asset = {
 		type = pdxmesh
 		names = {
@@ -250,7 +255,6 @@ tribe_02 = {
 		scope:holder = {
 			culture = { has_innovation = innovation_plenary_assemblies }
 		}
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_3_cost
@@ -263,6 +267,8 @@ tribe_02 = {
 	province_modifier = {
 		monthly_income = poor_building_tax_tier_3
 		fort_level = 2
+		stationed_maa_damage_mult = normal_maa_damage_tier_4
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_4
 	}
 
 	province_terrain_modifier = {
@@ -274,7 +280,7 @@ tribe_02 = {
 	province_terrain_modifier = {
 		parameter = coastal_holdings_give_defensive_bonus
 		is_coastal = yes
-		defender_holding_advantage = 2
+		defender_holding_advantage = 3
 	}
 
 	## SEA ##
@@ -289,8 +295,6 @@ tribe_02 = {
 		tax_mult = thalassocratic_non_coastal_holdings_value
 	}
 	## END SEA ##
-
-	type_icon = "icon_building_longhouses.dds"
 
 	ai_value = {
 		base = 1
@@ -398,7 +402,6 @@ tribe_03 = {
 		scope:holder = {
 			culture = { has_innovation = innovation_battlements }
 		}
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_3_cost
@@ -411,6 +414,8 @@ tribe_03 = {
 	province_modifier = {
 		monthly_income = poor_building_tax_tier_5
 		fort_level = 3
+		stationed_maa_damage_mult = normal_maa_damage_tier_6
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_6
 	}
 
 	province_terrain_modifier = {
@@ -543,7 +548,6 @@ tribe_04 = {
 		scope:holder = {
 			culture = { has_innovation = innovation_hoardings }
 		}
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_3_cost
@@ -555,6 +559,8 @@ tribe_04 = {
 	province_modifier = {
 		monthly_income = poor_building_tax_tier_7
 		fort_level = 4
+		stationed_maa_damage_mult = normal_maa_damage_tier_8
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_8
 	}
 
 	province_terrain_modifier = {
@@ -589,15 +595,13 @@ tribe_04 = {
 
 longhouses_01 = {
 	construction_time = slow_construction_time
+	effect_desc = longhouses_effect_desc
 
 	is_enabled = {
 		building_requirement_tribal = yes
 	}
 	can_construct_potential = {
 		has_building_or_higher = tribe_01
-	}
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_1_cost
@@ -624,6 +628,7 @@ longhouses_01 = {
 
 longhouses_02 = {
 	construction_time = slow_construction_time
+	effect_desc = longhouses_effect_desc
 
 	is_enabled = {
 		building_requirement_tribal = yes
@@ -635,7 +640,6 @@ longhouses_02 = {
 		scope:holder = {
 			culture = { has_innovation = innovation_barracks }
 		}
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_2_cost
@@ -659,15 +663,13 @@ longhouses_02 = {
 
 war_camps_01 = {
 	construction_time = slow_construction_time
+	effect_desc = tournament_cost_effect_desc
 
 	is_enabled = {
 		building_requirement_tribal = yes
 	}
 	can_construct_potential = {
 		has_building_or_higher = tribe_01
-	}
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_1_cost
@@ -678,12 +680,15 @@ war_camps_01 = {
 	character_modifier = {
 		knight_limit = 1
 		knight_effectiveness_mult = 0.1
-		skirmishers_damage_mult = 0.04
-		skirmishers_toughness_mult = 0.02
-		heavy_infantry_damage_mult = 0.04
-		heavy_infantry_toughness_mult = 0.02
-		archer_cavalry_damage_mult = 0.04
-		archer_cavalry_toughness_mult = 0.02
+	}
+
+	province_modifier = {
+		stationed_skirmishers_damage_mult = high_maa_damage_tier_1
+		stationed_skirmishers_toughness_mult = normal_maa_toughness_tier_1
+		stationed_heavy_infantry_damage_mult = high_maa_damage_tier_1
+		stationed_heavy_infantry_toughness_mult = normal_maa_toughness_tier_1
+		stationed_archer_cavalry_damage_mult = high_maa_damage_tier_1
+		stationed_archer_cavalry_toughness_mult = normal_maa_toughness_tier_1
 	}
 
 	next_building = war_camps_02
@@ -698,6 +703,7 @@ war_camps_01 = {
 
 war_camps_02 = {
 	construction_time = slow_construction_time
+	effect_desc = tournament_cost_effect_desc
 
 	is_enabled = {
 		building_requirement_tribal = yes
@@ -709,7 +715,6 @@ war_camps_02 = {
 		scope:holder = {
 			culture = { has_innovation = innovation_barracks }
 		}
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_2_cost
@@ -720,12 +725,15 @@ war_camps_02 = {
 	character_modifier = {
 		knight_limit = 2
 		knight_effectiveness_mult = 0.2
-		skirmishers_damage_mult = 0.08
-		skirmishers_toughness_mult = 0.04
-		heavy_infantry_damage_mult = 0.08
-		heavy_infantry_toughness_mult = 0.04
-		archer_cavalry_damage_mult = 0.08
-		archer_cavalry_toughness_mult = 0.04
+	}
+
+	province_modifier = {
+		stationed_skirmishers_damage_mult = high_maa_damage_tier_2
+		stationed_skirmishers_toughness_mult = normal_maa_toughness_tier_2
+		stationed_heavy_infantry_damage_mult = high_maa_damage_tier_2
+		stationed_heavy_infantry_toughness_mult = normal_maa_toughness_tier_2
+		stationed_archer_cavalry_damage_mult = high_maa_damage_tier_2
+		stationed_archer_cavalry_toughness_mult = normal_maa_toughness_tier_2
 	}
 
 	ai_value = {
@@ -744,9 +752,6 @@ palisades_01 = {
 	can_construct_potential = {
 		has_building_or_higher = tribe_01
 	}
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = yes
-	}
 
 	cost_prestige = expensive_building_tier_1_cost
 	cost_gold = tribal_building_tier_1_cost
@@ -758,11 +763,11 @@ palisades_01 = {
 		fort_level = normal_building_fort_level_tier_1
 	}
 
-	character_modifier = {
-		archers_damage_mult = 0.04
-		archers_toughness_mult = 0.02
-		pikemen_damage_mult = 0.04
-		pikemen_toughness_mult = 0.02
+	province_modifier = {
+		stationed_archers_damage_mult = high_maa_damage_tier_1
+		stationed_archers_toughness_mult = normal_maa_toughness_tier_1
+		stationed_pikemen_damage_mult = high_maa_damage_tier_1
+		stationed_pikemen_toughness_mult = normal_maa_toughness_tier_1
 	}
 
 	next_building = palisades_02
@@ -788,7 +793,6 @@ palisades_02 = {
 		scope:holder = {
 			culture = { has_innovation = innovation_motte }
 		}
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_2_cost
@@ -801,11 +805,11 @@ palisades_02 = {
 		fort_level = normal_building_fort_level_tier_2
 	}
 
-	character_modifier = {
-		archers_damage_mult = 0.08
-		archers_toughness_mult = 0.04
-		pikemen_damage_mult = 0.08
-		pikemen_toughness_mult = 0.04
+	province_modifier = {
+		stationed_archers_damage_mult = high_maa_damage_tier_2
+		stationed_archers_toughness_mult = normal_maa_toughness_tier_2
+		stationed_pikemen_damage_mult = high_maa_damage_tier_2
+		stationed_pikemen_toughness_mult = normal_maa_toughness_tier_2
 	}
 
 	ai_value = {
@@ -823,9 +827,6 @@ market_villages_01 = {
 	}
 	can_construct_potential = {
 		has_building_or_higher = tribe_01
-	}
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_1_cost
@@ -859,7 +860,6 @@ market_villages_02 = {
 		scope:holder = {
 			culture = { has_innovation = innovation_city_planning }
 		}
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_2_cost
@@ -887,7 +887,6 @@ tribal_shrines_01 = {
 		has_building_or_higher = tribe_01
 	}
 	can_construct_showing_failures_only = {
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_1_cost
@@ -923,7 +922,6 @@ tribal_shrines_02 = {
 		scope:holder = {
 			culture = { has_innovation = innovation_city_planning }
 		}
-		building_requirement_tribal = yes
 	}
 
 	cost_prestige = expensive_building_tier_2_cost
@@ -938,109 +936,5 @@ tribal_shrines_02 = {
 
 	ai_value = {
 		base = 1
-	}
-}
-
-nomadic_pastures_01 = {
-	construction_time = quick_construction_time
-
-	is_enabled = {
-		scope:holder = {
-			has_government = nomadic_government
-		}
-	}
-	can_construct_potential = {
-		has_building_or_higher = tribe_01
-	}
-
-	can_construct_showing_failures_only = {
-		scope:holder = {
-			has_government = nomadic_government
-		}
-		OR = {
-			terrain = farmlands
-			terrain = plains
-			terrain = steppe
-			terrain = hills
-			terrain = oasis
-			terrain = floodplains
-
-			#TODO these should have a reduced effect
-			terrain = drylands
-			terrain = wetlands
-			#terrain = desert
-		}
-	}
-
-	cost_prestige = expensive_building_tier_1_cost
-	cost_gold = tribal_building_tier_1_cost
-
-	character_modifier = {
-		archer_cavalry_max_size_add = 1
-		light_cavalry_max_size_add = 1
-
-		archer_cavalry_damage_mult = 0.02
-		archer_cavalry_toughness_mult = 0.02
-		light_cavalry_damage_mult = 0.03
-		light_cavalry_toughness_mult = 0.03
-	}
-
-	next_building = nomadic_pastures_02
-
-	type_icon = "icon_building_nomadic_holding_empty.dds"
-
-	ai_value = {
-		base = 100
-	}
-}
-
-nomadic_pastures_02 = {
-	construction_time = quick_construction_time
-
-	is_enabled = {
-		scope:holder = {
-			has_government = nomadic_government
-		}
-	}
-	can_construct_potential = {
-		has_building_or_higher = tribe_01
-	}
-
-	can_construct_showing_failures_only = {
-		scope:holder = {
-			has_government = nomadic_government
-		}
-		OR = {
-			terrain = farmlands
-			terrain = plains
-			terrain = steppe
-			terrain = hills
-			terrain = oasis
-			terrain = floodplains
-
-			#TODO these should have a reduced effect
-			terrain = drylands
-			terrain = wetlands
-			#terrain = desert
-		}
-	}
-
-	cost_prestige = expensive_building_tier_2_cost
-	cost_gold = tribal_building_tier_2_cost
-
-	character_modifier = {
-		archer_cavalry_max_size_add = 2
-		light_cavalry_max_size_add = 2
-
-		archer_cavalry_damage_mult = 0.04
-		archer_cavalry_toughness_mult = 0.04
-		light_cavalry_damage_mult = 0.06
-		light_cavalry_toughness_mult = 0.06
-	}
-
-	type_icon = "icon_building_pastures.dds"
-
-	ai_value = {
-		base = 100
 	}
 }
