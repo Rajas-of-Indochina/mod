@@ -581,6 +581,46 @@ roa_headgear_base = {
 		}
 	}
 
+	roa_tai_no_headgear = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template =  no_headgear
+				range = { 0 1 }
+			}
+		}
+		weight = {
+			base = 0
+			modifier = { # Tai duchy and below got no helmet
+				add = 55
+				exists = this
+				highest_held_title_tier <= tier_duchy
+				NOR = {
+					AND = {
+						exists = primary_spouse
+						primary_spouse = {
+							highest_held_title_tier > tier_duchy
+						}
+					}
+					AND = {
+						has_government = republic_government
+						primary_title.tier > 1
+					}
+					AND = { is_ruler = yes has_government = theocracy_government }
+				}
+				portrait_tai_clothing_spouse_trigger = yes
+			}
+			modifier = { # Tai kids shouldn't wear mongkuts
+				add = 60
+				AND = {
+					scope:age < 16
+					portrait_tai_clothing_trigger = yes
+				}
+			}
+		}
+	}
+
 	roa_tai_royalty = {
 		dna_modifiers = {
 			accessory = {
