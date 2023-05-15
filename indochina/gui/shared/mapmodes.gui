@@ -4,7 +4,7 @@
 		ignoreinvisible = yes
 
 		button_round  = {
-			visible = "[CanChangeMapMode]"
+			visible = "[And( Not(IsGameViewOpen('barbershop')), CanChangeMapMode )]"
 			name = "map_mode_simple_realms_button"
 			onclick = "[SetMapMode('simple_realms')]"
 			raw_text = "Srlm"
@@ -12,7 +12,7 @@
 		}
 
 		button_round  = {
-			visible = "[CanChangeMapMode]"
+			visible = "[And( Not(IsGameViewOpen('barbershop')), CanChangeMapMode )]"
 			name = "map_mode_terrain_button"
 			onclick = "[SetMapMode('terrain')]"
 			raw_text = "Ter"
@@ -20,7 +20,7 @@
 		}
 
 		button_round  = {
-			visible = "[CanChangeMapMode]"
+			visible = "[And( Not(IsGameViewOpen('barbershop')), CanChangeMapMode )]"
 			name = "map_mode_baronies_button"
 			onclick = "[SetMapMode('baronies')]"
 			raw_text = "Bar"
@@ -28,7 +28,7 @@
 		}
 
 		button_round  = {
-			visible = "[CanChangeMapMode]"
+			visible = "[And( Not(IsGameViewOpen('barbershop')), CanChangeMapMode )]"
 			name = "map_mode_realm_areas_button"
 			onclick = "[SetMapMode('realm_areas')]"
 			raw_text = "Area"
@@ -36,7 +36,7 @@
 		}
 
 		button_round  = {
-			visible = "[CanChangeMapMode]"
+			visible = "[And( Not(IsGameViewOpen('barbershop')), CanChangeMapMode )]"
 			name = "map_mode_diplomacy_button"
 			onclick = "[SetMapMode('diplomacy')]"
 			raw_text = "Diplo"
@@ -44,21 +44,21 @@
 		}
 
 		button_round  = {
-			visible = "[CanChangeMapMode]"
+			visible = "[And( Not(IsGameViewOpen('barbershop')), CanChangeMapMode )]"
 			onclick = "[SetMapMode('debug_character_pools')]"
 			raw_text = "Pools"
 			raw_tooltip = "Character Pools"
 		}
 
 		button_round  = {
-			visible = "[CanChangeMapMode]"
+			visible = "[And( Not(IsGameViewOpen('barbershop')), CanChangeMapMode )]"
 			onclick = "[SetMapMode('debug_ai_war_coordinator_targets')]"
 			raw_text = "AI"
 			raw_tooltip = "AI War Coordinator targets"
 		}
 
 		button_round  = {
-			visible = "[CanChangeMapMode]"
+			visible = "[And( Not(IsGameViewOpen('barbershop')), CanChangeMapMode )]"
 			onclick = "[SetMapMode('debug_visual_regions')]"
 			raw_text = "Reg"
 			raw_tooltip = "Visual Geographical Regions"
@@ -79,13 +79,6 @@
 			margin_top = -12
 			margin_right = 10
 			color = { 0.15 0.15 0.15 0.75 }
-		}
-
-		state = {
-			name = custom_map_mode_initialize
-			trigger_on_create = yes
-			trigger_when = "[And(Not(GameHasMultiplePlayers), And( Not(InDebugMode), And( CanChangeMapMode, And( IsDefaultGUIMode, And( Or( IsMapMode('realms'), IsMapMode('baronies') ), GetScriptedGui('custom_map_mode_initialize').IsValid(GuiScope.End) ) ) ) ) )]"
-			on_start = "[GetScriptedGui('custom_map_mode_initialize').Execute(GuiScope.End)]"
 		}
 
 		flowcontainer = {
@@ -212,7 +205,7 @@
 		icon_button_mapmode = {
 			name = "map_mode_realms_button"
 			position = { 0 25 }
-			size = { 50 50 }
+			size = { 38 38 }
 			visible = "[CanChangeMapMode]"
 
 			blockoverride 'mm_datacontext'
@@ -227,7 +220,7 @@
 			}
 			blockoverride "mm_icon"
 			{
-				size = { 50 50 }
+				size = { 38 38 }
 			}
 
 			blockoverride "mm_glow"
@@ -376,7 +369,6 @@
 			                block "mm_icon" {}
 			            }
 			        }
-
 				}
 
 				icon_button_mapmode = {
@@ -411,6 +403,22 @@
 					}
 				}
 
+				icon_button_mapmode = {
+					name = "map_mode_houses_button"
+					size = { 32 32 }
+					parentanchor = vcenter
+
+					blockoverride 'mm_datacontext'
+					{
+						datacontext = "[GetMapMode('houses')]"
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_4"
+					}
+				}
+
 				widget = {
 					parentanchor = vcenter
 					size = {32 32}
@@ -429,138 +437,14 @@
 			}
 		}
 
-		flowcontainer = {
-			visible = "[GetVariableSystem.Exists( 'mapmodes_expand' )]"
-			visible_at_creation = no
+		flowcontainer_additional_mapmodes = {
 			parentanchor = top|right
 			widgetanchor = bottom|right
-			position = { -0 25 }
-			margin = { 22 10 }
-			alwaystransparent = no
-			filter_mouse = all
-
-			state = {
-				name = _mouse_hierarchy_leave
-				on_finish = "[GetVariableSystem.Toggle( 'mapmodes_expand' )]"
-			}
-
-			state = {
-				name = _show
-				using = Animation_FadeIn_Quick
-			}
-
-			state = {
-				name = _hide
-				using = Animation_FadeOut_Standard
-			}
-
-			flowcontainer = {
-				direction = vertical
-				margin = { 10 5 }
-				ignoreinvisible = yes
-
-				background = {
-					using = Background_Area_Dark
-				}
-
-				text_single = {
-					parentanchor = hcenter
-					text = "ADDITIONAL_MAPMODES"
-					default_format = "#medium;italic"
-					margin_bottom = 5
-					max_width = 110
-				}
-
-				button_tertiary = {
-					name = "minorities_map"
-					visible = "[CanChangeMapMode]"
-					parentanchor = hcenter
-
-					size = { 110 25 }
-					onclick = "[SetMapMode('debug_character_pools')]"
-					onclick = "[GetScriptedGui('minorities_map').Execute(GuiScope.End)]"
-					down = "[And( GetScriptedGui('minorities_map').IsShown(GuiScope.End), IsMapMode('debug_character_pools') )]"
-					enabled = "[And(Not(IsObserver), GetScriptedGui('minorities_map').IsValid(GuiScope.End))]"
-
-					text = "MINORITIES_MAP_NAME"
-
-					tooltip = "MINORITIES_MAP_TOOLTIP"
-					using = tooltip_ws
-				}
-
-				mm_text_button = {
-					name = "map_mode_houses_button"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode( 'houses' )]"
-					}
-					shortcut = "map_mode_5"
-				}
-
-				mm_text_button = {
-					name = "map_mode_government_button"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode( 'government' )]"
-					}
-					shortcut = "map_mode_5"
-				}
-
-				mm_text_button = {
-					name = "county_development"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode( 'county_development' )]"
-					}
-					shortcut = "map_mode_13"
-				}
-
-				mm_text_button = {
-					name = "simple_terrain"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode( 'simple_terrain' )]"
-					}
-					shortcut = "map_mode_12"
-				}
-
-				mm_text_button = {
-					name = "map_mode_counties_button"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode( 'dejure_counties' )]"
-					}
-					shortcut = "map_mode_6"
-				}
-
-				mm_text_button = {
-					name = "map_mode_court_languages_button"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode('court_languages')]"
-					}
-					blockoverride 'visible'
-					{
-						visible = "[And( HasDlcFeature( 'royal_court' ), CanChangeMapMode )]"
-					}
-					shortcut = "map_mode_7"
-				}
-
-				mm_text_button = {
-					name = "players"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode( 'players' )]"
-					}
-					blockoverride 'visible'
-					{
-						visible = "[And( Or(GameHasMultiplePlayers, InDebugMode), CanChangeMapMode)]"
-					}
-					shortcut = "map_mode_8"
-				}
-			}
+			position = { 20 21 }
 		}
-	}
+
+
+	} # type map_modes = widget {...}
 
 	type mm_text_button = button_tertiary {
 		name = "players"
@@ -574,13 +458,181 @@
 		}
 
 		parentanchor = hcenter
-		size = { 110 25 }
+		size = { 159 25 }
 
 		onclick = "[SetMapMode( MapMode.GetKey )]"
+		alwaystransparent = "[IsMapMode( MapMode.GetKey )]"
+
 		text = "[MapMode.GetName]"
 		tooltip = "[MapMode.GetDesc]"
 
 		using = tooltip_ws
+
+		button_expand = {
+			visible = "[IsMapMode( MapMode.GetKey )]"
+
+			size = { 15	15 }
+			parentanchor = left|vcenter
+
+			alwaystransparent = yes
+		}
+
+		button_expand = {
+			visible = "[IsMapMode( MapMode.GetKey )]"
+			mirror = horizontal
+
+			size = { 15	15 }
+			parentanchor = right|vcenter
+
+			alwaystransparent = yes
+		}
+	}
+
+	type flowcontainer_additional_mapmodes = flowcontainer {
+
+		visible = "[GetVariableSystem.Exists( 'mapmodes_expand' )]"
+		visible_at_creation = no
+
+		margin = { 22 10 }
+		alwaystransparent = no
+		filter_mouse = all
+
+		state = {
+			name = _mouse_hierarchy_leave
+			on_finish = "[GetVariableSystem.Toggle( 'mapmodes_expand' )]"
+		}
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Standard
+		}
+
+		flowcontainer = {
+			direction = vertical
+			margin = { 10 5 }
+			ignoreinvisible = yes
+
+			background = {
+				using = Background_Area_Dark
+			}
+
+			text_single = {
+				parentanchor = hcenter
+				text = "ADDITIONAL_MAPMODES"
+				default_format = "#medium"
+				margin_bottom = 5
+				max_width = 110
+			}
+
+			block "mapmodes_insert_before"
+			{
+
+			}
+
+			mm_text_button = {
+				name = "map_mode_government_button"
+				blockoverride 'datacontext'
+				{
+					datacontext = "[GetMapMode( 'government' )]"
+				}
+				shortcut = "map_mode_5"
+			}
+
+
+			mm_text_button = {
+				name = "map_mode_court_languages_button"
+				blockoverride 'datacontext'
+				{
+					datacontext = "[GetMapMode('court_languages')]"
+				}
+				blockoverride 'visible'
+				{
+					visible = "[And( HasDlcFeature( 'royal_court' ), CanChangeMapMode )]"
+				}
+				shortcut = "map_mode_7"
+			}
+
+			mm_text_button = {
+				name = "players"
+				blockoverride 'datacontext'
+				{
+					datacontext = "[GetMapMode( 'players' )]"
+				}
+				blockoverride 'visible'
+				{
+					visible = "[And( Or(GameHasMultiplePlayers, InDebugMode), CanChangeMapMode)]"
+				}
+				shortcut = "map_mode_8"
+			}
+
+			widget ={
+				size = {0 4}
+			}
+
+			divider_light = {
+				min_width = 100
+				parentanchor = hcenter
+			}
+			widget ={
+				size = {0 4}
+			}
+
+			mm_text_button = {
+				name = "map_mode_counties_button"
+				blockoverride 'datacontext'
+				{
+					datacontext = "[GetMapMode( 'dejure_counties' )]"
+				}
+				shortcut = "map_mode_6"
+			}
+
+			mm_text_button = {
+				name = "economy_buildings"
+				blockoverride 'datacontext'
+				{
+					datacontext = "[GetMapMode( 'economy_buildings' )]"
+				}
+				shortcut = "map_mode_14"
+			}
+
+			mm_text_button = {
+				name = "county_development"
+				blockoverride 'datacontext'
+				{
+					datacontext = "[GetMapMode( 'county_development' )]"
+				}
+				shortcut = "map_mode_13"
+			}
+
+			mm_text_button = {
+				name = "county_control"
+				blockoverride 'datacontext'
+				{
+					datacontext = "[GetMapMode( 'county_control' )]"
+				}
+				shortcut = "map_mode_15"
+			}
+
+			mm_text_button = {
+				name = "simple_terrain"
+				blockoverride 'datacontext'
+				{
+					datacontext = "[GetMapMode( 'simple_terrain' )]"
+				}
+				shortcut = "map_mode_12"
+			}
+
+
+
+
+
+
+		}
 	}
 
 	type mini_map_mode = widget {
@@ -657,46 +709,13 @@
 			}
 		}
 
-		flowcontainer = {
-			visible = "[GetVariableSystem.Exists( 'mapmodes_expand' )]"
+		flowcontainer_additional_mapmodes = {
 			parentanchor = top|right
 			widgetanchor = bottom|right
-			position = { 10 0 }
-			alwaystransparent = no
-			filter_mouse = all
+			position = { 31 10 }
 
-			state = {
-				name = _mouse_hierarchy_leave
-				on_finish = "[GetVariableSystem.Toggle( 'mapmodes_expand' )]"
-			}
-
-			state = {
-				name = _show
-				using = Animation_FadeIn_Quick
-			}
-
-			state = {
-				name = _hide
-				using = Animation_FadeOut_Standard
-			}
-
-			flowcontainer = {
-				direction = vertical
-				margin = { 10 5 }
-				ignoreinvisible = yes
-
-				background = {
-					using = Background_Area_Dark
-				}
-
-				text_single = {
-					parentanchor = hcenter
-					text = "ADDITIONAL_MAPMODES"
-					default_format = "#medium;italic"
-					margin_bottom = 5
-					max_width = 110
-				}
-
+			blockoverride "mapmodes_insert_before"
+			{
 				mm_text_button = {
 					name = "map_mode_dejure_duchies_button"
 					blockoverride 'datacontext'
@@ -724,68 +743,18 @@
 					shortcut = "map_mode_11"
 				}
 
-				mm_text_button = {
-					name = "map_mode_government_button"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode( 'government' )]"
-					}
-					shortcut = "map_mode_5"
+				widget ={
+					size = {0 4}
 				}
 
-				mm_text_button = {
-					name = "county_development"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode( 'county_development' )]"
-					}
-					shortcut = "map_mode_13"
+				divider_light = {
+					min_width = 100
+					parentanchor = hcenter
 				}
-
-				mm_text_button = {
-					name = "simple_terrain"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode( 'simple_terrain' )]"
-					}
-					shortcut = "map_mode_12"
-				}
-
-				mm_text_button = {
-					name = "map_mode_counties_button"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode( 'dejure_counties' )]"
-					}
-					shortcut = "map_mode_6"
-				}
-
-				mm_text_button = {
-					name = "map_mode_court_languages_button"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode('court_languages')]"
-					}
-					blockoverride 'visible'
-					{
-						visible = "[And( HasDlcFeature( 'royal_court' ), CanChangeMapMode )]"
-					}
-					shortcut = "map_mode_7"
-				}
-
-				mm_text_button = {
-					name = "players"
-					blockoverride 'datacontext'
-					{
-						datacontext = "[GetMapMode( 'players' )]"
-					}
-					blockoverride 'visible'
-					{
-						visible = "[And( Or(GameHasMultiplePlayers, InDebugMode), CanChangeMapMode)]"
-					}
-					shortcut = "map_mode_8"
+				widget ={
+					size = {0 4}
 				}
 			}
 		}
-	}
+	} # type mini_map_mode = widget {...}
 }
