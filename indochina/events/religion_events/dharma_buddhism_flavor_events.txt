@@ -3756,6 +3756,16 @@ dharma_buddhism.202 = {# Mahayana Boddhisattvas
 #     	   Visiting Nalanda		      #
 #									  #
 #######################################
+
+# If the player exits the travel planning UI, this event fires reseting the decision cooldown and removing variables
+dharma_buddhism.399 = {
+	hidden = yes
+	immediate = {
+		remove_decision_cooldown = dharma_visit_nalanda
+		remove_character_flag = planning_an_activity
+	}
+}
+
 dharma_buddhism.300 = {# Decide to Visit Nalanda
 	type = character_event
 	title = dharma_buddhism.300.t
@@ -3770,27 +3780,32 @@ dharma_buddhism.300 = {# Decide to Visit Nalanda
 	}
 
 	immediate = {
-		title:b_pataliputra = { save_scope_as = nalanda_location }
+		title:b_pataliputra.title_province = { save_scope_as = nalanda_location }
 		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
 	}
 
+	option = {# I shall go
+		name = dharma_buddhism.300.go
+
+		start_travel_plan = {
+			destination = scope:nalanda_location
+			on_travel_planner_cancel_event = dharma_buddhism.399
+			on_arrival_event = dharma_buddhism.301
+			on_arrival_destinations = all_but_last
+		}
+	}
 	option = {# I shall stay
 		name = dharma_buddhism.300.stay
 		hidden_effect = {
 			remove_decision_cooldown = dharma_visit_nalanda
 			remove_character_flag = planning_an_activity
 		}
-	}
-	option = {# I shall go
-		name = dharma_buddhism.300.go
-		scope:nalanda_location = {
-			title_province = {
-				spawn_activity = {
-					owner = root
-					type = activity_dharma_visit_nalanda
-				}
-			}
+		ai_chance = {
+			base = 0
 		}
 	}
 }
@@ -3812,6 +3827,14 @@ dharma_buddhism.301 = {# Arriving at Nalanda
 		add_piety = miniscule_piety_value
 	}
 	after = {
+		save_scope_as = activity
+		set_variable = {
+			name = dharma_nalanda_event_counter
+			value = 0
+		}
+		current_travel_plan = {
+			delay_travel_plan = { days = 60 }
+		}
 		dharma_set_up_next_nalanda_event_effect = { DAYS = 10 }
 	}
 }
@@ -5288,21 +5311,5 @@ dharma_buddhism.316 = {# Returning Home
 
 	option = {
 		name = dharma_buddhism.316.home
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-
-	after = {
-		trigger_event = { id = dharma_buddhism.317 days = 10 }
 	}
 }
-dharma_buddhism.317 = {# Misc cleanup
-	hidden = yes
-	immediate = {
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
-

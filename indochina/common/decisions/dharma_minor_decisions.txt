@@ -1,4 +1,85 @@
-﻿#######################################
+﻿
+# TODO: Combine these into one decision, and possibly make a generic Visit University decision (activity?)
+# Also need to account for if your capital is one of these places
+dharma_visit_nalanda = {# Go to Nalanda
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_pilgrimage.dds"
+	desc = dharma_visit_nalanda_desc
+	selection_tooltip = dharma_visit_nalanda_tooltip
+	cooldown = { days = dharma_learning_visit_cooldown_time }
+
+	is_shown = {
+		religion = { is_in_family = rf_eastern }
+		holds_landed_title = yes
+	}
+
+	is_valid = {
+
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		location = capital_province
+	}
+
+	effect = {
+		custom_tooltip = dharma_visit_nalanda_tooltip
+		trigger_event = dharma_buddhism.300
+	}
+
+	ai_check_interval = 60
+	cooldown = { months = 60 }
+
+	ai_potential = {
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+dharma_visit_sharada_peeth = {# Go to Sharada Peeth
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_pilgrimage.dds"
+	desc = dharma_visit_sharada_peeth_desc
+	selection_tooltip = dharma_visit_sharada_peeth_tooltip
+	cooldown = { days = dharma_learning_visit_cooldown_time }
+
+	is_shown = {
+		religion = { is_in_family = rf_eastern }
+		holds_landed_title = yes
+		OR = {
+			capital_province = { geographical_region = world_india }
+			capital_province = { geographical_region = world_tibet }
+			capital_province = { geographical_region = ghw_region_afghanistan }
+			capital_province = { geographical_region = world_burma }
+		}
+	}
+
+	is_valid = {
+
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		location = capital_province
+	}
+
+	effect = {
+		custom_tooltip = dharma_visit_sharada_peeth_tooltip
+		trigger_event = dharma_hinduism.300
+	}
+	ai_check_interval = 60
+	cooldown = { months = 60 }
+
+	ai_potential = {
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+#######################################
 # General Decisions
 #######################################
 
@@ -296,53 +377,6 @@ dharma_vedic_animal_sacrifice = {# Hindu Animal Sacrifice
 		}
 	}
 }
-dharma_visit_sharada_peeth = {# Go to Sharada Peeth
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_pilgrimage.dds"
-	desc = dharma_visit_sharada_peeth_desc
-	selection_tooltip = dharma_visit_sharada_peeth_tooltip
-	cooldown = { days = dharma_learning_visit_cooldown_time }
-
-	is_shown = {
-		religion = { is_in_family = rf_eastern }
-		holds_landed_title = yes
-		OR = {
-			capital_province = { geographical_region = world_india }
-			capital_province = { geographical_region = world_tibet }
-			capital_province = { geographical_region = ghw_region_afghanistan }
-			capital_province = { geographical_region = world_burma }
-		}
-	}
-
-	is_valid = {
-		religion = { is_in_family = rf_eastern }
-		holds_landed_title = yes
-		OR = {
-			capital_province = { geographical_region = world_india }
-			capital_province = { geographical_region = world_tibet }
-			capital_province = { geographical_region = ghw_region_afghanistan }
-			capital_province = { geographical_region = world_burma }
-		}
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_visit_sharada_peeth_tooltip
-		trigger_event = dharma_hinduism.300
-	}
-	ai_check_interval = 60
-
-	ai_potential = {
-		is_at_war = no
-		stress >= 75
-	}
-
-	ai_will_do = {
-		base = 100
-	}
-}
 dharma_attend_diwali_festival = {# Attend Diwali festival
 	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
 	ai_check_interval = 24
@@ -610,42 +644,6 @@ buddhist_retreat_decision = {# Go on a Buddhist Retreat
 	ai_check_interval = 60
 	cooldown = { months = 36 }
 
-
-	ai_potential = {
-		is_at_war = no
-		stress >= 75
-	}
-
-	ai_will_do = {
-		base = 100
-	}
-}
-dharma_visit_nalanda = {# Go to Nalanda
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_pilgrimage.dds"
-	desc = dharma_visit_nalanda_desc
-	selection_tooltip = dharma_visit_nalanda_tooltip
-	cooldown = { days = dharma_learning_visit_cooldown_time }
-
-	is_shown = {
-		religion = { is_in_family = rf_eastern }
-		holds_landed_title = yes
-	}
-
-	is_valid = {
-		religion = { is_in_family = rf_eastern }
-		holds_landed_title = yes
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_visit_nalanda_tooltip
-		trigger_event = dharma_buddhism.300
-	}
-
-	ai_check_interval = 60
 
 	ai_potential = {
 		is_at_war = no

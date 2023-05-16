@@ -1341,96 +1341,48 @@ dharma_vedic_aditi_animal_sacrifice_effect = {
 # Visting Places Effects
 #######################################
 dharma_set_up_next_nalanda_event_effect = {# Visiting Nalanda
+	if = {
+		limit = {
+			scope:activity.var:dharma_nalanda_event_counter < 5
+		}
+		trigger_event = {
+			on_action = dharma_nalanda_journey_events
+			days = $DAYS$
+		}
+	}
+	else = {
+		trigger_event = {
+			on_action = dharma_nalanda_visit_over_events
+			days = $DAYS$
+		}
+	}
 	scope:activity = {
 		change_variable = {
 			name = dharma_nalanda_event_counter
 			add = 1
 		}
 	}
-	save_scope_value_as = {
-		name = event_counter
-		value = scope:activity.var:dharma_nalanda_event_counter
-	}
-	if = {
-		limit = { # TODO: Is any fallback handling needed in an else here?
-			exists = scope:activity
-		}
-		if = {
-			limit = {
-				scope:activity.var:dharma_nalanda_event_counter <= 5
-			}
-			trigger_event = {
-				on_action = dharma_nalanda_journey_events
-				days = $DAYS$
-			}
-		}
-		else = {
-			if = { #For event background
-				limit = { scope:activity.var:dharma_nalanda_visit_done = no }
-				scope:activity = {
-					set_variable = {
-						name = dharma_nalanda_visit_done
-						value = yes
-					}
-				}
-			}
-			trigger_event = {
-				on_action = dharma_nalanda_visit_over_events
-				days = $DAYS$
-			}
-		}
-		scope:activity = {
-			change_variable = {
-				name = dharma_nalanda_event_counter
-				add = 1
-			}
-		}
-	}
 }
 dharma_set_up_next_sharada_peeth_event_effect = {# Visiting Sharada Peeth
+	if = {
+		limit = {
+			scope:activity.var:dharma_sharada_peeth_event_counter < 5
+		}
+		trigger_event = {
+			on_action = dharma_sharada_peeth_visit_events
+			days = $DAYS$
+		}
+	}
+	else = {
+		trigger_event = {
+			on_action = dharma_sharada_peeth_visit_over_events
+			days = $DAYS$
+		}
+	}
 	scope:activity = {
 		change_variable = {
 			name = dharma_sharada_peeth_event_counter
 			add = 1
-		}
-	}
-	save_scope_value_as = {
-		name = event_counter
-		value = scope:activity.var:dharma_sharada_peeth_event_counter
-	}
-	if = {
-		limit = { # TODO: Is any fallback handling needed in an else here?
-			exists = scope:activity
-		}
-		if = {
-			limit = {
-				scope:activity.var:dharma_sharada_peeth_event_counter <= 5
-			}
-			trigger_event = {
-				on_action = dharma_sharada_peeth_visit_events
-				days = $DAYS$
-			}
-		}
-		else = {
-			if = { #For event background
-				limit = { scope:activity.var:dharma_sharada_peeth_visit_done = no }
-				scope:activity = {
-					set_variable = {
-						name = dharma_sharada_peeth_visit_done
-						value = yes
-					}
-				}
-			}
-			trigger_event = {
-				on_action = dharma_sharada_peeth_visit_over_events
-				days = $DAYS$
-			}
-		}
-		scope:activity = {
-			change_variable = {
-				name = dharma_sharada_peeth_event_counter
-				add = 1
-			}
 		}
 	}
 }
