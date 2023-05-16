@@ -193,7 +193,10 @@
 				title = modify_vassal_contract_interaction_notification
 				right_icon = scope:recipient
 				# Add tyranny for each level increased. Can spend one hook to avoid one level of tyranny hit.
-				add_tyranny = vassal_obligation_increase_tyranny_gain
+				if = {
+					limit = { NOT = { has_government = chinese_government } }
+					add_tyranny = vassal_obligation_increase_tyranny_gain
+				}
 				if = {
 					limit = { vassal_obligation_increase_tyranny_gain != 0 }
 					stress_impact = {
