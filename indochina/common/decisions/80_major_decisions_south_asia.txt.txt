@@ -1,8 +1,16 @@
-﻿#######################################
-# General Decisions
-#######################################
-become_chakravarti_decision = {# Uniting India
+﻿###DECISIONS LIST###
 
+##
+#Become Chakravarti
+#Become Lord/Lady of the Sacred River
+#Declare Bene Israel
+##
+
+
+##########
+#Become Chakravarti
+# by Petter Vilberg
+become_chakravarti_decision = {
 	picture = "gfx/interface/illustrations/decisions/dharma_decision_chakravatin.dds"
 	major = yes
 	title = {
@@ -182,10 +190,15 @@ become_chakravarti_decision = {# Uniting India
 		base = 100
 	}
 }
-take_stewardship_of_the_sacred_river_decision = {# Become Lord/Lady of the Sacred River
+
+##########
+#Become Lord/Lady of the Sacred River
+# by Petter Vilberg
+take_stewardship_of_the_sacred_river_decision = {
 	picture = "gfx/interface/illustrations/decisions/dharma_decision_sacred_rivers.dds"
 	major = yes
 	ai_check_interval = 120
+
 	desc = take_stewardship_of_the_sacred_river_decision_desc
 
 	is_shown = {
@@ -291,7 +304,104 @@ take_stewardship_of_the_sacred_river_decision = {# Become Lord/Lady of the Sacre
 		base = 100
 	}
 }
-spread_theravada_faith_decision = {# Spread the Theravada Faith
+
+##########
+#Declare Bene Israel
+# by James Beaumont
+form_bene_israel_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	major = yes
+
+	desc = form_bene_israel_decision_desc
+	selection_tooltip = form_bene_israel_decision_tooltip
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		faith = faith:malabarism
+		highest_held_title_tier = tier_duchy
+		capital_province = { geographical_region = world_india }
+
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:form_bene_israel_decision
+			}
+		}
+	}
+
+	is_valid = {
+		has_title = title:d_chera_nadu
+		has_title = title:d_konkana
+		completely_controls = title:d_chera_nadu
+		completely_controls = title:d_konkana
+		custom_description = {
+			text = malabarism_religious_head_exists_tt
+			subject = this
+			faith = { exists = religious_head }
+		}
+		piety_level >= 3
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+		is_independent_ruler = yes
+	}
+
+	cost = {
+		piety = {
+			value = medium_piety_value
+		}
+		gold = {
+			value = medium_gold_value
+		}
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:form_bene_israel_decision
+		}
+
+		save_scope_as = founder
+
+		show_as_tooltip = {
+			unite_bene_israel_effect = yes
+		}
+
+		trigger_event = south_asia.0021 #I formed Bene Israel
+
+		every_player = {
+			limit = {
+				NOT = { this = scope:founder }
+				top_liege = {
+					OR = {
+						this = scope:founder
+						any_neighboring_and_across_water_top_liege_realm_owner = { this = scope:founder }
+					}
+				}
+			}
+			trigger_event = south_asia.0022
+		}
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+######################################
+##	Establish the Theravada Faith	##
+##									##
+##			by Nick Meredith		##
+##			in memory of RDH		##
+######################################
+
+spread_theravada_faith_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
 	major = yes
 	title = spread_theravada_faith_decision
