@@ -88,6 +88,15 @@ select_local_animal_effect = {
 					}
 					set_variable = { name = animal_type value = flag:bison }
 				}
+				10 = { # Gaurs
+					trigger = {
+						scope:animal_location = { hunt_animal_gaur_trigger = yes }
+						NOT = { exists = scope:small_local_game }
+						NOT = { exists = scope:dangerous_local_game }
+						NOT = { exists = scope:prowling_local_game }
+					}
+					set_variable = { name = animal_type value = flag:gaur }
+				}
 				10 = { # Wolf, Hyena, Lynx
 					trigger = {
 						NOT = { exists = scope:harmless_local_game }
@@ -366,6 +375,13 @@ hunt_activity_standard_game_effect = {
 				NOT = { exists = scope:small_local_game }
 			}
 			set_variable = { name = animal_type value = flag:bison }
+		}
+		10 = { # Gaurs
+			trigger = {
+				$PROVINCE$ = { hunt_animal_gaur_trigger = yes }
+				NOT = { exists = scope:small_local_game }
+			}
+			set_variable = { name = animal_type value = flag:gaur }
 		}
 		5 = { # Fox
 			trigger = {
@@ -1016,6 +1032,10 @@ hunt_animal_wound_effect = {
 			increase_wounds_effect = { REASON = bison }
 		}
 		else_if = {
+			limit = { $VARIABLE$ = flag:gaur }
+			increase_wounds_effect = { REASON = gaur }
+		}
+		else_if = {
 			limit = { $VARIABLE$ = flag:aurochs }
 			increase_wounds_effect = { REASON = aurochs }
 		}
@@ -1100,6 +1120,10 @@ hunt_animal_death_effect = {
 		else_if = {
 			limit = { $VAR$ = flag:bison }
 			death = { death_reason = death_bison }
+		}
+		else_if = {
+			limit = { $VAR$ = flag:gaur }
+			death = { death_reason = death_gaur }
 		}
 		else_if = {
 			limit = { $VAR$ = flag:aurochs }
@@ -1871,6 +1895,7 @@ animal_artifact_wealth_quality_effect = {
 				limit = {
 					OR = {
 						scope:owner.var:animal_type ?= flag:bison
+						scope:owner.var:animal_type ?= flag:gaur
 						scope:owner.var:animal_type ?= flag:aurochs
 						scope:owner.var:animal_type ?= flag:stag
 						scope:owner.var:animal_type ?= flag:reindeer
@@ -3069,6 +3094,9 @@ hunt_animal_from_death_effect = {
 			}
 			death_bison = {
 				$TARGET$ = { set_variable = { name = animal_type value = flag:bison } }
+			}
+			death_gaur = {
+				$TARGET$ = { set_variable = { name = animal_type value = flag:gaur } }
 			}
 			death_aurochs = {
 				$TARGET$ = { set_variable = { name = animal_type value = flag:aurochs } }
