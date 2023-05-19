@@ -318,120 +318,6 @@ select_personal_deity_buddhist_decision = {# Buddhist Gods and Goddesses
 #######################################
 # Hindu Decisions
 #######################################
-dharma_attend_diwali_festival = {# Attend Diwali festival
-	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
-	ai_check_interval = 24
-	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
-	desc = dharma_attend_diwali_festival_desc
-
-	is_shown = {
-		is_ruler = yes
-		is_landed = yes
-		religion = religion:hinduism_religion
-	}
-
-	is_valid = {
-		religion = religion:hinduism_religion
-		custom_tooltip = {
-			text = dharma_decision_diwali_month_requirement
-			OR = {
-				current_month >= 10
-				current_month <= 11
-			}
-
-		}
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_attend_diwali_festival_tooltip
-		trigger_event = { id = dharma_festivals.100 }
-	}
-
-	cost = {
-		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
-	}
-
-	ai_potential = {
-		short_term_gold > medium_gold_value
-	}
-
-	ai_will_do = {
-		base = 50
-	}
-}
-dharma_attend_navaratri_festival = {# Attend Navaratri festival
-	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
-	ai_check_interval = 24
-	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
-	desc = dharma_attend_navaratri_festival_desc
-
-	is_shown = {
-		is_ruler = yes
-		is_landed = yes
-		OR = {# must be a shakti worshiper or your spouse must be a shakti worship
-			faith = faith:kalikula_shaktism
-			faith = faith:srikula_shaktism
-			AND = {
-				religion = { is_in_family = rf_eastern }
-				any_spouse = {
-					OR = {
-						faith = faith:kalikula_shaktism
-						faith = faith:srikula_shaktism
-					}
-				}
-			}
-		}
-	}
-
-	is_valid = {
-		OR = {# must be a shakti worshiper or your spouse must be a shakti worship
-			faith = faith:kalikula_shaktism
-			faith = faith:srikula_shaktism
-			AND = {
-				religion = { is_in_family = rf_eastern }
-				any_spouse = {
-					OR = {
-						faith = faith:kalikula_shaktism
-						faith = faith:srikula_shaktism
-					}
-				}
-			}
-		}
-		custom_tooltip = {
-			text = dharma_decision_navaratri_month_requirement
-			OR = {
-				current_month >= 9
-				current_month <= 10
-			}
-
-		}
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_attend_navaratri_festival_tooltip
-		trigger_event = { id = dharma_festivals.125 }
-	}
-
-	cost = {
-		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
-	}
-
-	ai_potential = {
-		short_term_gold > medium_gold_value
-	}
-
-	ai_will_do = {
-		base = 50
-	}
-}
 select_personal_deity_hinduism_decision = {# select a personal deity
 	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
 
@@ -901,6 +787,7 @@ dharma_attend_mahamastakabhisheka_festival = {# Jain Mahamastakabhisheka festiva
 	desc = dharma_attend_mahamastakabhisheka_festival_desc
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:jainism_religion
@@ -956,6 +843,7 @@ dharma_attend_paryushana_festival = {# Jain Paryushana festival
 	}
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:jainism_religion
@@ -1001,6 +889,7 @@ dharma_attend_mahavir_kalyanak_festival = {# Jain  Mahavir Janma Kalyanak festiv
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:jainism_religion
@@ -1042,6 +931,122 @@ dharma_attend_mahavir_kalyanak_festival = {# Jain  Mahavir Janma Kalyanak festiv
 #######################################
 # Cultural Festival Decisions
 #######################################
+dharma_attend_diwali_festival = {# Attend Diwali festival
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_diwali_festival_desc
+
+	is_shown = {
+		always = no
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:hinduism_religion
+	}
+
+	is_valid = {
+		religion = religion:hinduism_religion
+		custom_tooltip = {
+			text = dharma_decision_diwali_month_requirement
+			OR = {
+				current_month >= 10
+				current_month <= 11
+			}
+
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_diwali_festival_tooltip
+		trigger_event = { id = dharma_festivals.100 }
+	}
+
+	cost = {
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_navaratri_festival = {# Attend Navaratri festival
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_navaratri_festival_desc
+
+	is_shown = {
+		always = no
+		is_ruler = yes
+		is_landed = yes
+		OR = {# must be a shakti worshiper or your spouse must be a shakti worship
+			faith = faith:kalikula_shaktism
+			faith = faith:srikula_shaktism
+			AND = {
+				religion = { is_in_family = rf_eastern }
+				any_spouse = {
+					OR = {
+						faith = faith:kalikula_shaktism
+						faith = faith:srikula_shaktism
+					}
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		OR = {# must be a shakti worshiper or your spouse must be a shakti worship
+			faith = faith:kalikula_shaktism
+			faith = faith:srikula_shaktism
+			AND = {
+				religion = { is_in_family = rf_eastern }
+				any_spouse = {
+					OR = {
+						faith = faith:kalikula_shaktism
+						faith = faith:srikula_shaktism
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			text = dharma_decision_navaratri_month_requirement
+			OR = {
+				current_month >= 9
+				current_month <= 10
+			}
+
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_navaratri_festival_tooltip
+		trigger_event = { id = dharma_festivals.125 }
+	}
+
+	cost = {
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
 dharma_attend_losar_festival = {# Attend Tibetan New Year Losar
 	picture = "gfx/interface/illustrations/decisions/dharma_losar_festival.dds"
 	ai_check_interval = 24
@@ -1050,6 +1055,7 @@ dharma_attend_losar_festival = {# Attend Tibetan New Year Losar
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		custom_tooltip = {
@@ -1111,6 +1117,7 @@ dharma_attend_pongal_festival = {# Attend Pongal festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		has_culture	 = culture:tamil
@@ -1156,6 +1163,7 @@ dharma_attend_thaipusam_festival = {# Attend Thaipusam festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {
@@ -1213,6 +1221,7 @@ dharma_attend_ratha_yatra_festival = {# Attend Ratha Yatra festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:hinduism_religion
@@ -1261,6 +1270,7 @@ dharma_attend_thingyan_festival = {# Attend Thingyan festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		culture = { has_cultural_pillar = heritage_burman }
@@ -1304,6 +1314,7 @@ dharma_attend_chhath_festival = {# Attend Chhath festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {
@@ -1358,6 +1369,7 @@ dharma_attend_gangaur_festival = {# Attend Gangaur festival
 	desc = dharma_attend_gangaur_festival_desc
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:hinduism_religion
@@ -1406,6 +1418,7 @@ dharma_attend_tet_festival = {# Attend Tet festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {
@@ -1457,6 +1470,7 @@ dharma_attend_kate_festival = {# Attend kate festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {
@@ -1508,6 +1522,7 @@ dharma_attend_choul_festival = {# Attend Choul Chnam Themy festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {
@@ -1557,6 +1572,7 @@ dharma_attend_songkran_festival = {# Attend Songkran festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {
