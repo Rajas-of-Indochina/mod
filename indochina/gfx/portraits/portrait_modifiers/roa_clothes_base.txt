@@ -50,27 +50,15 @@ roa_clothes = { # The lowest priority group of clothes with triggers based on ra
 			}
 		}
 		outfit_tags = { china_commoner_outfit }
-		weight = {
-			base = 0
-			modifier = {
-				add = 20
-				highest_held_title_tier < tier_county
-				NOR = {
-					AND = {
-						exists = primary_spouse
-						primary_spouse = {
-							highest_held_title_tier > tier_county
-						}
-					}
-					AND = {
-						has_government = republic_government
-						primary_title.tier > 1
-					}
-					has_government = theocracy_government
-				}
-				portrait_chinese_clothing_trigger = yes
-			}
-		}
+        weight = {
+            base = 0
+            modifier = {
+                add = 20
+                portrait_commoner_clothing_trigger = {
+                    CULTURE_INPUT = chinese
+                }
+            }
+        }
 	}
 	chinese_low_nobles = {
 		dna_modifiers = {
@@ -93,43 +81,17 @@ roa_clothes = { # The lowest priority group of clothes with triggers based on ra
 				template = body_shape_average_clothed
 			}
 		}
-		weight = {
-			base = 0
-			modifier = {
-				add = 50
-				OR = {
-					AND = {
-						highest_held_title_tier = tier_county
-						NOR = {
-							# has_dynasty = no
-							AND = {
-								has_government = republic_government
-								primary_title.tier > 1
-							}
-							has_government = theocracy_government
-						}
-						portrait_chinese_clothing_trigger = yes
-					}
-					AND = {
-						exists = primary_spouse
-						is_ruler = no
-						primary_spouse = {
-							highest_held_title_tier = tier_county
-							NOR = {
-								# has_dynasty = no
-								AND = {
-								has_government = republic_government
-									primary_title.tier > 1
-								}
-								has_government = theocracy_government
-							}
-							portrait_chinese_clothing_trigger = yes
-						}
-					}
-				}
-
-			}
-		}
+        outfit_tags = { chinese_low_nobility_clothes }
+        weight = {
+            base = 0
+            court_fashion_level_4_modifier = { INPUT_PARAMETER = chinese }
+            modifier = {
+                add = 51
+                portrait_low_nobles_clothing_trigger = {
+                    CULTURE_INPUT = chinese
+                }
+            }
+        }
 	}
 	chinese_high_nobles = {
 		dna_modifiers = {
@@ -152,42 +114,17 @@ roa_clothes = { # The lowest priority group of clothes with triggers based on ra
 				template = body_shape_average_clothed
 			}
 		}
-		weight = {
-			base = 0
-			modifier = {
-				add = 50
-				OR = {
-					AND = {
-						OR = {
-							highest_held_title_tier > tier_county
-							AND = {
-								has_government = republic_government
-								primary_title.tier > 1
-							}
-							has_government = theocracy_government
-						}
-						NOT = { has_government = mercenary_government } # Blocked for mercenaries
-						portrait_chinese_clothing_trigger = yes
-					}
-					AND = {
-						exists = primary_spouse
-						is_ruler = no
-						primary_spouse = {
-							OR = {
-								highest_held_title_tier > tier_county
-								AND = {
-									has_government = republic_government
-									primary_title.tier > 1
-								}
-								has_government = theocracy_government
-							}
-							portrait_chinese_clothing_trigger = yes
-						}
-					}
-				}
-
-			}
-		}
+        outfit_tags = { chinese_high_nobility_clothes }
+        weight = {
+            base = 0
+            court_fashion_level_5_modifier = { INPUT_PARAMETER = chinese }
+            modifier = {
+                add = 50
+                portrait_high_nobles_clothing_trigger = {
+                    CULTURE_INPUT = chinese
+                }
+            }
+        }
 	}
 	chinese_imperial_clothes = {
 		dna_modifiers = {
@@ -210,6 +147,7 @@ roa_clothes = { # The lowest priority group of clothes with triggers based on ra
 				template = body_shape_average_clothed
 			}
 		}
+		outfit_tags = { chinese_imperial_clothes }
 		weight = {
 			base = 0
 			modifier = {
