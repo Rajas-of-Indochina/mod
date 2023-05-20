@@ -32,8 +32,78 @@ dharma_visit_nalanda = {# Go to Nalanda
 		is_at_war = no
 	}
 
+	# desc is only shown in debug AI watch window
 	ai_will_do = {
-		base = 100
+		value = 0
+		if = {
+			limit = {
+				ai_energy < 0
+			}
+			add = {
+				add = ai_energy
+				desc = "ai_energy"
+			}
+		}
+		if = {
+			limit = { short_term_gold >= major_gold_value }
+			add = {
+				value = 30
+				desc = "Got gold to burn"
+			}
+		}
+		if = {
+			limit = { piety_level <= 2 }
+			add = {
+				value = 20
+				desc = "Has low piety level"
+			}
+		}
+		if = {
+			limit = { has_trait = zealous }
+			add = {
+				value = 20
+				desc = "Has Zealous"
+			}
+		}
+		if = {
+			limit = { has_trait = humble }
+			add = {
+				value = 10
+				desc = "Has Humble"
+			}
+		}
+		if = {
+			limit = {
+				ai_zeal > 0
+				piety < 0
+			}
+			add = {
+				value = 10
+				desc = "Zealous wants above 0 piety"
+			}
+		}
+		if = {
+			limit = {
+				is_independent_ruler = no
+				has_vassal_stance = zealot
+			}
+			add = {
+				value = 10
+				desc = zealot
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = cynical
+					any_secret = { secret_type = secret_non_believer }
+				}
+			}
+			add = {
+				value = -30
+				desc = "Is cynical or non-believer"
+			}
+		}
 	}
 }
 dharma_visit_sharada_peeth = {# Go to Sharada Peeth
@@ -72,8 +142,78 @@ dharma_visit_sharada_peeth = {# Go to Sharada Peeth
 		is_at_war = no
 	}
 
+	# desc is only shown in debug AI watch window
 	ai_will_do = {
-		base = 100
+		value = 0
+		if = {
+			limit = {
+				ai_energy < 0
+			}
+			add = {
+				add = ai_energy
+				desc = "ai_energy"
+			}
+		}
+		if = {
+			limit = { short_term_gold >= major_gold_value }
+			add = {
+				value = 30
+				desc = "Got gold to burn"
+			}
+		}
+		if = {
+			limit = { piety_level <= 2 }
+			add = {
+				value = 20
+				desc = "Has low piety level"
+			}
+		}
+		if = {
+			limit = { has_trait = zealous }
+			add = {
+				value = 20
+				desc = "Has Zealous"
+			}
+		}
+		if = {
+			limit = { has_trait = humble }
+			add = {
+				value = 10
+				desc = "Has Humble"
+			}
+		}
+		if = {
+			limit = {
+				ai_zeal > 0
+				piety < 0
+			}
+			add = {
+				value = 10
+				desc = "Zealous wants above 0 piety"
+			}
+		}
+		if = {
+			limit = {
+				is_independent_ruler = no
+				has_vassal_stance = zealot
+			}
+			add = {
+				value = 10
+				desc = zealot
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = cynical
+					any_secret = { secret_type = secret_non_believer }
+				}
+			}
+			add = {
+				value = -30
+				desc = "Is cynical or non-believer"
+			}
+		}
 	}
 }
 
