@@ -1,49 +1,10 @@
 ﻿feudalize_tribal_holding_interaction_cost = {
-
-	value = 400
+	value = 300
 	if = {
 		limit = {
-			title_province = { has_holding_type = tribal_holding }
+			is_ai = yes
+			capital_province = { has_holding_type = tribal_holding }
 		}
-		add = -100
-
-		if = {
-			limit = {
-				title_province = { has_building = tribe_02 }
-			}
-
-			add = -100
-		}
-		else_if = {
-			limit = {
-				title_province = { has_building = tribe_03 }
-			}
-
-			add = -200
-		}
-		else_if = {
-			limit = {
-				title_province = { has_building = tribe_04 }
-			}
-
-			add = -250
-		}
+		add = -150
 	}
-	if = {
-		limit = {
-			title_province = { has_holding_type = estate_holding }
-		}
-		add = {
-			value = -250
-			desc = HAS_ESTATE_HOLDING
-		}
-
-	}
-	subtract = {
-		value = scope:target.development_level
-		multiply = 2
-		max = 50
-		desc = FEUDALIZE_DEV_DISCOUNT
-	}
-	min = 0
 }
