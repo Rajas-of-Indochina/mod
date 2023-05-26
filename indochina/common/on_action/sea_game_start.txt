@@ -7,7 +7,7 @@ on_game_start = {
         add_right_to_rule_doctrines_on_game_start
         add_disloyal_subjects_tradition_on_game_start
         assign_nanzhao_state
-        acculturate_kirghiz_vassals
+        acculturate_steppelads
     }
 }
 
@@ -280,7 +280,7 @@ indian_struggle_on_game_start = {
 
 #####
 
-acculturate_kirghiz_vassals = {
+acculturate_steppelads = {
     effect = {
         if = {
             limit = {
@@ -327,6 +327,29 @@ acculturate_kirghiz_vassals = {
                 }
             }
         }
+
+        if = {
+            limit = {
+                game_start_date <= 1030.1.1
+            }
+            culture:cuman = {
+                every_culture_county = {
+                    set_county_culture = culture:qangli
+                }
+            }
+            every_ruler = {
+                limit = { culture = culture:cuman }
+                every_vassal_or_below = {
+                    limit = { culture = culture:cuman }
+                    set_culture = culture:qangli
+                }
+                every_courtier_or_guest = {
+                    limit = { culture = culture:cuman }
+                    set_culture = culture:qangli
+                }
+            }
+        }
+
     }
 }
 
