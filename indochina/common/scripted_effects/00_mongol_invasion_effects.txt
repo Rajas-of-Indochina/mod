@@ -1,5 +1,45 @@
 ﻿@creatable_successor_empire_county_threshold = 15
 
+subjugate_realm_effect = {
+	$VICTIM$ = {
+		if = {
+			limit = {
+				NOR = {
+					any_held_title = { this = title:e_mongol_empire }
+					any_liege_or_above = { any_held_title = { this = title:e_mongol_empire } }
+				}
+				#capital_county.empire = title:e_tibet
+			}
+
+			create_title_and_vassal_change = {
+				type = conquest
+				save_scope_as = change
+				add_claim_on_loss = yes
+			}
+			every_held_title = {
+				limit = { tier = tier_county }
+				change_title_holder_include_vassals = {
+					holder = title:e_mongol_empire.holder
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+
+			create_title_and_vassal_change = {
+				type = conquest
+				save_scope_as = change_two
+				add_claim_on_loss = yes
+			}
+			every_vassal = {
+				change_liege = {
+					liege = title:e_mongol_empire.holder
+					change = scope:change_two
+				}
+			}
+			resolve_title_and_vassal_change = scope:change_two
+		}
+	}
+}
 
 # Give a suitable County to Genghis
 give_temujin_land_effect = {
@@ -840,9 +880,6 @@ mongol_war_target_evaluation_and_declaration_effect = {
 	# Select a new target
 	random_neighboring_top_liege_realm_owner = {
 		limit = {
-			# We need a special way of dealing with China
-			NOT = { primary_title = title:e_celestia_china }
-
 			NOT = { is_allied_to = scope:mongol_emperor }
 			NOT = { this = scope:mongol_emperor }
 			NOT = { top_liege = scope:mongol_emperor }
@@ -6592,12 +6629,12 @@ break_up_mongol_empire_effect = { # Intended to run in the Mongol Emperor's scop
 		name = mongol_empire_was_broken_up
 		value = yes
 	}
-	scope:successor_1 = {
-		trigger_event = {
-			id = mongol_invasion.9999
-			days = 1
-		}
-	}
+#	scope:successor_1 = {
+#		trigger_event = {
+#			id = mongol_invasion.9999
+#			days = 1
+#		}
+#	}
 	
 	# Assign appropriate De Jure, so that the successors do not switch away from their empires immediately
 	if = {
