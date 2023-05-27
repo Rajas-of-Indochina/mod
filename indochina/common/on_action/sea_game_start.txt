@@ -13,6 +13,7 @@ on_game_start = {
 
 on_game_start_after_lobby = {
     on_actions = {
+        iberian_struggle_on_game_start
         # indian_struggle_on_game_start
         # tibetan_struggle_on_game_start
         # chinese_struggle_on_game_start
@@ -248,6 +249,21 @@ ruler_popup_events = {
 
 ######
 
+iberian_struggle_on_game_start = {
+    # Going here because we overwrote `history/titles/k_andalusia.txt` and starting it in history is STUPID ANYWAY AUUUGH
+    effect = {
+        if = {
+            limit = {
+                has_dlc_feature = the_fate_of_iberia
+                game_start_date >= 718.1.1
+            }
+            start_struggle = {
+                struggle_type = iberian_struggle
+                start_phase = struggle_iberia_phase_opportunity # TODO: We should add phase changes in History to get two different entry point
+            }
+        }
+    }
+}
 tibetan_struggle_on_game_start = {
     effect = {
         if = {
