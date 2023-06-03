@@ -5,28 +5,13 @@ namespace = sea_gov_event
 sea_gov_event.0001 = {
 	hidden = yes
 
-	trigger = {
-		has_government = mandala_government
-		any_targeting_faction = {
-			faction_is_type = independence_faction
-		}
-	}
-
 	immediate = {
-		save_scope_as = previous_holder
+		save_scope_as = sender
 
-		every_targeting_faction = {
-			limit = { faction_is_type = independence_faction }
-			every_faction_member = {
-				# After a few days, declare independence via event
-				save_scope_as = sender
-
-				root.primary_heir = {
-					trigger_event = {
-						id = sea_gov_event.0002
-						days = { 5 21 }
-					}
-				}
+		this.liege = {
+			trigger_event = {
+				id = sea_gov_event.0002
+				days = { 5 21 }
 			}
 		}
 	}

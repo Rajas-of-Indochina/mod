@@ -25,7 +25,8 @@
 
 #	Everything is set for the bout to begin!
 sea_headhunting.0001 = {
-	type = duel_event
+	type = character_event
+	window = duel_event
 	title = sea_headhunting.0001.t
 	desc = {
 		desc = sea_headhunting.0001.desc.intro
@@ -41,7 +42,7 @@ sea_headhunting.0001 = {
 		character = scope:recipient
 		scripted_animation = duel_wield_weapon
 	}
-	override_background = { event_background = terrain_scope }
+	override_background = { reference = terrain_scope }
 
 	trigger = {
 		# If, for any reason, scope:recipient has died or been imprisoned, then the bout is cancelled.
@@ -240,7 +241,7 @@ sea_headhunting.0041 = {
 		character = scope:recipient
 		animation = shock
 	}
-	override_background = { event_background = terrain_scope }
+	override_background = { reference = terrain_scope }
 
 	trigger = {
 		# Juuuust need to double-check that they're actually alive.
@@ -299,10 +300,17 @@ sea_headhunting.0041 = {
 			}
 		}
 
-		change_trait_rank = {
-			trait = lifestyle_headhunter
-			rank = 1
-			max = 3
+		if = {
+			limit = {
+				has_trait = lifestyle_headhunter
+			}
+			add_trait_xp = {
+				trait = lifestyle_headhunter
+				value = 10
+			}
+		}
+		else = {
+			add_trait = lifestyle_headhunter
 		}
 
 		# No stress for single-option events.
@@ -331,7 +339,7 @@ sea_headhunting.0111 = {
 		character = scope:actor
 		animation = shock
 	}
-	override_background = { event_background = terrain_scope }
+	override_background = { reference = terrain_scope }
 
 	trigger = {
 		# Juuuust need to double-check that they're actually alive.
@@ -388,10 +396,17 @@ sea_headhunting.0111 = {
 			}
 		}
 
-		change_trait_rank = {
-			trait = lifestyle_headhunter
-			rank = 1
-			max = 3
+		if = {
+			limit = {
+				has_trait = lifestyle_headhunter
+			}
+			add_trait_xp = {
+				trait = lifestyle_headhunter
+				value = 10
+			}
+		}
+		else = {
+			add_trait = lifestyle_headhunter
 		}
 
 		ai_chance = {

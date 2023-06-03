@@ -5,30 +5,39 @@ crown_authority = {
 	default = crown_authority_1
 	cumulative = yes
 	flag = realm_law
-
+	
 	crown_authority_0 = {
 		modifier = {
-			direct_vassal_opinion = 10
-			#feudal_government_tax_contribution_mult = -0.1
-			#vassal_levy_contribution_mult = -0.1
+			barons_and_minor_landholders_opinion = 20
+			glory_hound_opinion = 10
+			parochial_opinion = 10
+			courtly_opinion = 5
 		}
+		flag = uses_crown_authority
 
 		can_keep = { realm_law_use_crown_authority = yes }
-		can_have = { realm_law_use_crown_authority = yes }
-	}
 
+		on_pass = {
+			# Remove modifiers.
+			remove_law_related_modifiers_effect = yes
+		}
+	}
+	
 	crown_authority_1 = {
 		modifier = {
-			direct_vassal_opinion = -10
-			#feudal_government_tax_contribution_mult = 0.1
-			#vassal_levy_contribution_mult = 0.1
+			barons_and_minor_landholders_opinion = -30
+			glory_hound_opinion = -15
+			parochial_opinion = -15
+			courtly_opinion = -5
+			minority_opinion = -10
 		}
+		flag = uses_crown_authority
 		flag = title_revocation_allowed
 		flag = vassal_retraction_allowed
 		flag = can_change_partition_succession_laws
+		flag = diarchs_want_to_subsidise_without_this_flag
 
 		can_keep = { realm_law_use_crown_authority = yes }
-		can_have = { realm_law_use_crown_authority = yes }
 
 		can_pass = {
 			trigger_if = {
@@ -46,7 +55,7 @@ crown_authority = {
 			}
 			root.culture = { has_innovation = innovation_plenary_assemblies }
 		}
-
+		
 		pass_cost = {
 			prestige = {
 				if = {
@@ -60,7 +69,7 @@ crown_authority = {
 				}
 			}
 		}
-
+		
 		on_pass = {
 			# Increment cooldown breaker tally, if appropriate.
 			calculate_authority_cooldown_break_effect = yes
@@ -69,6 +78,8 @@ crown_authority = {
 				name = crown_authority_cooldown
 				years = @crown_authority_cooldown_years
 			}
+			# Remove modifiers.
+			remove_law_related_modifiers_effect = yes
 		}
 
 		ai_will_do = {
@@ -77,52 +88,26 @@ crown_authority = {
 				value = 1
 			}
 		}
-		should_start_with = {
-			AND = {
-				OR = {
-					has_government = feudal_government
-					has_government = clan_government
-				}
-				OR = {
-					AND = {
-						game_start_date > 1100.1.1
-						game_start_date < 1300.1.1
-					}
-					AND = {
-						game_start_date > 1300.1.1
-						OR = {
-							has_title = title:k_england
-							has_title = title:k_hungary
-						}
-					}
-				}
-				NOT = {
-					has_title = title:e_hre
-					has_title = title:e_byzantium
-					has_title = title:e_chagatai
-					has_title = title:e_mongolia
-					has_title = title:e_golden_horde
-					has_title = title:e_white_horde
-					has_title = title:e_ilkhanate
-					has_title = title:e_mongol_empire
-				}
-			}
-		}
 	}
-
+	
 	crown_authority_2 = {
 		modifier = {
-			direct_vassal_opinion = -10
-			feudal_government_tax_contribution_mult = 0.1
+			barons_and_minor_landholders_opinion = -10
+			glory_hound_opinion = -10
+			parochial_opinion = -10
+			courtly_opinion = -5
+			zealot_opinion = -10
+			minority_opinion = -10
+			vassal_tax_mult = 0.1
 			vassal_levy_contribution_mult = 0.1
 		}
+		flag = uses_crown_authority
 		flag = vassal_internal_wars_banned
 		flag = vassal_refusal_is_treason
 		flag = can_change_succession_laws
 		flag = titles_cannot_leave_realm_on_succession # Hardcoded flag
-
+		
 		can_keep = { realm_law_use_crown_authority = yes }
-		can_have = { realm_law_use_crown_authority = yes }
 
 		can_pass = {
 			trigger_if = {
@@ -154,7 +139,7 @@ crown_authority = {
 				}
 			}
 		}
-
+		
 		on_pass = {
 			# Increment cooldown breaker tally, if appropriate.
 			calculate_authority_cooldown_break_effect = yes
@@ -163,6 +148,8 @@ crown_authority = {
 				name = crown_authority_cooldown
 				years = @crown_authority_cooldown_years
 			}
+			# Remove modifiers.
+			remove_law_related_modifiers_effect = yes
 		}
 
 		ai_will_do = {
@@ -171,40 +158,25 @@ crown_authority = {
 				value = 1
 			}
 		}
-		should_start_with = {
-			AND = {
-				OR = {
-					has_government = feudal_government
-					has_government = clan_government
-				}
-				game_start_date > 1300.1.1
-			}
-			NOT = {
-				has_title = title:e_hre
-				has_title = title:e_byzantium
-				has_title = title:e_chagatai
-				has_title = title:e_mongolia
-				has_title = title:e_golden_horde
-				has_title = title:e_white_horde
-				has_title = title:e_ilkhanate
-				has_title = title:e_mongol_empire
-				has_title = title:k_england
-				has_title = title:k_hungary
-			}
-		}
 	}
-
+	
 	crown_authority_3 = {
 		modifier = {
-			direct_vassal_opinion = -20
-			feudal_government_tax_contribution_mult = 0.25
+			barons_and_minor_landholders_opinion = -20
+			glory_hound_opinion = -25
+			parochial_opinion = -25
+			courtly_opinion = -10
+			zealot_opinion = -20
+			minority_opinion = -30
+			vassal_tax_mult = 0.25
 			vassal_levy_contribution_mult = 0.25
 		}
+		flag = uses_crown_authority
 		flag = vassal_all_wars_banned
 		flag = can_designate_heirs
-
+		flag = max_authority_level
+		
 		can_keep = { realm_law_use_crown_authority = yes }
-		can_have = { realm_law_use_crown_authority = yes }
 
 		can_pass = {
 			has_realm_law = crown_authority_2
@@ -220,7 +192,7 @@ crown_authority = {
 			}
 			root.culture = { has_innovation = innovation_royal_prerogative }
 		}
-
+		
 		pass_cost = {
 			prestige = {
 				if = {
@@ -231,7 +203,7 @@ crown_authority = {
 				}
 			}
 		}
-
+		
 		on_pass = {
 			# Increment cooldown breaker tally, if appropriate.
 			calculate_authority_cooldown_break_effect = yes
@@ -240,6 +212,8 @@ crown_authority = {
 				name = crown_authority_cooldown
 				years = @crown_authority_cooldown_years
 			}
+			# Remove modifiers.
+			remove_law_related_modifiers_effect = yes
 		}
 	}
 }
@@ -248,21 +222,37 @@ tribal_authority = {
 	default = tribal_authority_1
 	cumulative = yes
 	flag = realm_law
-
+	
 	tribal_authority_0 = {
-		modifier = { direct_vassal_opinion = 10 }
+		modifier = {
+			glory_hound_opinion = 10
+			parochial_opinion = 10
+			courtly_opinion = 5
+		}
+		flag = uses_tribal_authority
+		flag = imprisonment_toggle_enable
 
 		can_keep = { realm_law_use_tribal_authority = yes }
-		can_have = { realm_law_use_tribal_authority = yes }
 		#Imprisonment is disabled if you have this law. Script is in the interaction, currently in 00_prison_interactions.
-	}
 
+		on_pass = {
+			# Remove modifiers.
+			remove_law_related_modifiers_effect = yes
+		}
+	}
+	
 	tribal_authority_1 = {
-		modifier = { direct_vassal_opinion = -10 }
+		modifier = {
+			glory_hound_opinion = -15
+			parochial_opinion = -15
+			courtly_opinion = -5
+			minority_opinion = -10
+		}
+		flag = uses_tribal_authority
 		flag = can_change_succession_laws
+		flag = imprisonment_toggle_on
 
 		can_keep = { realm_law_use_tribal_authority = yes }
-		can_have = { realm_law_use_tribal_authority = yes }
 
 		can_pass = {
 			trigger_if = {
@@ -279,7 +269,7 @@ tribal_authority = {
 				}
 			}
 		}
-
+		
 		pass_cost = {
 			prestige = {
 				if = {
@@ -293,7 +283,7 @@ tribal_authority = {
 				}
 			}
 		}
-
+		
 		on_pass = {
 			# Increment cooldown breaker tally, if appropriate.
 			calculate_authority_cooldown_break_effect = yes
@@ -302,6 +292,8 @@ tribal_authority = {
 				name = tribal_authority_cooldown
 				years = @tribal_authority_cooldown_years
 			}
+			# Remove modifiers.
+			remove_law_related_modifiers_effect = yes
 		}
 
 		ai_will_do = {
@@ -310,24 +302,23 @@ tribal_authority = {
 				value = 1
 			}
 		}
-		should_start_with = {
-			AND = {
-				has_government = tribal_government
-				game_start_date > 1100.1.1
-				game_start_date < 1300.1.1
-			}
-		}
-
 	}
-
+	
 	tribal_authority_2 = {
-		modifier = { direct_vassal_opinion = -10 }
+		modifier = {
+			glory_hound_opinion = -10
+			parochial_opinion = -10
+			courtly_opinion = -5
+			zealot_opinion = -10
+			minority_opinion = -10
+		}
+		flag = uses_tribal_authority
 		flag = title_revocation_allowed
 		flag = vassal_retraction_allowed
-
+		flag = diarchs_want_to_subsidise_without_this_flag
+		
 		can_keep = { realm_law_use_tribal_authority = yes }
-		can_have = { realm_law_use_tribal_authority = yes }
-
+		
 		can_pass = {
 			trigger_if = {
 				limit = {
@@ -357,7 +348,7 @@ tribal_authority = {
 				}
 			}
 		}
-
+		
 		on_pass = {
 			# Increment cooldown breaker tally, if appropriate.
 			calculate_authority_cooldown_break_effect = yes
@@ -366,6 +357,8 @@ tribal_authority = {
 				name = tribal_authority_cooldown
 				years = @tribal_authority_cooldown_years
 			}
+			# Remove modifiers.
+			remove_law_related_modifiers_effect = yes
 		}
 
 		ai_will_do = {
@@ -374,22 +367,23 @@ tribal_authority = {
 				value = 1
 			}
 		}
-		should_start_with = {
-			AND = {
-				has_government = tribal_government
-				game_start_date > 1300.1.1
-			}
-		}
 	}
-
+	
 	tribal_authority_3 = {
-		modifier = { direct_vassal_opinion = -20 }
+		modifier = {
+			glory_hound_opinion = -25
+			parochial_opinion = -25
+			courtly_opinion = -10
+			zealot_opinion = -20
+			minority_opinion = -30
+		}
+		flag = uses_tribal_authority
+		flag = max_authority_level
 		#Settling is disabled unless you have this law. Script is in the decisions, currently in 80_major_decisions.
 		#Reforming pagan religions (but not creating other faiths) is disabled unless you have this law. Script is in the reformation prereqs, currently in 00_rules.
-
+		
 		can_keep = { realm_law_use_tribal_authority = yes }
-		can_have = { realm_law_use_tribal_authority = yes }
-
+		
 		can_pass = {
 			has_realm_law = tribal_authority_2
 			custom_description = {
@@ -403,9 +397,9 @@ tribal_authority = {
 					}
 			}
 		}
-
+		
 		pass_cost = { prestige = increase_tribal_authority_prestige_cost }
-
+		
 		on_pass = {
 			# Increment cooldown breaker tally, if appropriate.
 			calculate_authority_cooldown_break_effect = yes
@@ -414,12 +408,18 @@ tribal_authority = {
 				name = tribal_authority_cooldown
 				years = @tribal_authority_cooldown_years
 			}
+			# Remove modifiers.
+			remove_law_related_modifiers_effect = yes
 		}
 
 		ai_will_do = {
 			if = {
 				limit = { has_realm_law = tribal_authority_2 }
 				value = 1
+			}
+			if = { # Genghis is fundamentally uninterested in settling as feudal, and doesn't care for the additional -20 vassal opinion!
+				limit = { has_title = title:e_mongol_empire }
+				value = -10
 			}
 		}
 	}

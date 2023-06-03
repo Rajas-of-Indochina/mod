@@ -82,7 +82,7 @@ window = {
 
 			blockoverride "illustration_texture"
 			{
-				texture = "[Illustration.GetTextureForFaith( FaithWindow.GetFaith )]"
+				texture = "[Illustration.GetTexture( FaithWindow.GetFaith.MakeScope )]"
 				spriteType = stretched
 				fittype = centercrop
 				alpha = 0.35
@@ -194,7 +194,9 @@ window = {
 							visible = "[Not(ObjectsEqual( GetPlayer.GetFaith, Faith.Self ))]"
 							size = { -10 0 }
 						}
+
 						##### Changed from Vanilla ^^^^^
+						expand = {}
 
 						vbox = {
 							layoutpolicy_vertical = expanding
@@ -203,7 +205,6 @@ window = {
 							spacing = 1
 
 							text_single = {
-								minimumsize = { 0 100 }
 								name = "your_faith"
 								visible = "[ObjectsEqual( GetPlayer.GetFaith, Faith.Self )]"
 								text = "FAITH_VIEW_YOUR_FAITH"
@@ -418,7 +419,7 @@ window = {
 								}
 
 								widget = {
-									size = { 250 70 }
+									size = { 250 40 }
 
 									vbox = {
 										dynamicgridbox = {
@@ -477,7 +478,7 @@ window = {
 								}
 
 								widget = {
-									size = { 250 70 }
+									size = { 250 40 }
 									vbox = {
 										dynamicgridbox = {
 											name = "virtues_grid"
@@ -893,7 +894,7 @@ window = {
 					minimumsize = { 240 0 }
 					visible = "[NotEqualTo_uint32( Faith.GetID, GetPlayer.GetFaith.GetID )]"
 					text = "FAITH_CONVERSION_CONVERT"
-					onclick = "[OpenFaithConversionWindow( Faith.GetID )]"
+					onclick = "[ToggleGameViewData( 'faith_conversion', Faith.GetID )]"
 
 					using = tooltip_nw
 				}
@@ -903,7 +904,7 @@ window = {
 					minimumsize = { 240 0 }
 					visible = "[And( ObjectsEqual(Faith.Self, GetPlayer.GetFaith ), GetVariableSystem.HasValue( 'faith_view_tabs', 'beliefs' ))]"
 					text = "CREATE_REFORM_FAITH_TEXT"
-					onclick = "[OpenFaithCreationWindow( Faith.GetID )]"
+					onclick = "[OpenGameViewData( 'faith_creation', Faith.GetID )]"
 					tooltip = "CREATE_REFORM_FAITH_TOOLTIP"
 
 					using = tooltip_nw
@@ -959,7 +960,7 @@ window = {
 			background = {
 				alpha = 0.5
 				fittype = end
-				texture = "[Illustration.GetTextureForFaith( FaithWindow.GetFaith )]"
+				texture = "[Illustration.GetTexture( FaithWindow.GetFaith.MakeScope )]"
 
 				modify_texture = {
 					mirror = vertical
@@ -1296,7 +1297,7 @@ window = {
 
 							state = {
 								name = _mouse_click
-								on_finish = "[DefaultOnFaithClick(Faith.GetID)]"
+								on_finish = "[OpenGameViewData( 'faith', Faith.GetID )]"
 							}
 
 							background = {
@@ -1305,7 +1306,7 @@ window = {
 							}
 
 							divider_light = {
-								alpha = "[Select_float(GreaterThan_int32(Faith.GetNumberOfCountiesOfFaith,'(int32)0'), '(float)1.0','(float)0.5'))]"
+								alpha = "[Select_float(GreaterThan_int32(Faith.GetNumberOfCountiesOfFaith,'(int32)0'), '(float)1.0','(float)0.5')]"
 								size = { 100% 3 }
 								parentanchor = bottom
 								position = { 0 1 }
@@ -1313,7 +1314,7 @@ window = {
 
 							hbox = {
 								margin = { 10 5 }
-								alpha = "[Select_float(GreaterThan_int32(Faith.GetNumberOfCountiesOfFaith,'(int32)0'), '(float)1.0','(float)0.5'))]"
+								alpha = "[Select_float(GreaterThan_int32(Faith.GetNumberOfCountiesOfFaith,'(int32)0'), '(float)1.0','(float)0.5')]"
 
 								icon = {
 									name = "faith_icon"
@@ -1483,8 +1484,9 @@ types FaithShared
 
 types FaithWindow
 {
-	type widget_doctrine_item = widget {
+	type widget_doctrine_item = margin_widget {
 		size = { 210 53 }
+		#margin = {5 5}
 		block "wdi_context"
 		{
 			datacontext = "[GuiFaithDoctrineItem.GetDoctrine]"
@@ -1499,6 +1501,7 @@ types FaithWindow
 		}
 
 		hbox = {
+			parentanchor = center
 			name = "faith_list_item"
 			block "tooltip" { #### current solution as to not display 2 different tooltips for special doctrines
 				tooltip = "FAITH_WINDOW_DOCTRINE_TOOLTIP_WITH_FAITH"

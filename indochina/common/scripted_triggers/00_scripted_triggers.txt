@@ -189,11 +189,11 @@ is_dangerous_faction_trigger = {
 			faction_leader = { is_ai = no } # For now human factions are always dangerous
 		}
 
-		AND = {
+		AND = { 
 			faction_is_type = peasant_faction
 			months_until_max_discontent <= 12
 		}
-		AND = {
+		AND = { 
 			NOT = { faction_is_type = peasant_faction }
 			discontent_per_month > 0
 		}
@@ -225,7 +225,7 @@ basic_allowed_to_imprison_character_trigger = { #Only to be used in is_shown for
 	}
 }
 
-allowed_to_imprison_character_trigger = {
+advanced_allowed_to_imprison_character_trigger = {
 	save_temporary_scope_as = allowed_imprisoner
 	$CHARACTER$ = {
 		save_temporary_scope_as = allowed_prisoner
@@ -254,6 +254,11 @@ allowed_to_imprison_character_trigger = {
 			}
 		}
 	}
+}
+
+allowed_to_imprison_character_trigger = {
+	# We separate these out so that diarchs can imprison characters they aren't liege over.
+	advanced_allowed_to_imprison_character_trigger = { CHARACTER = $CHARACTER$ }
 	basic_allowed_to_imprison_character_trigger = { CHARACTER = $CHARACTER$ }
 }
 
@@ -312,178 +317,30 @@ vassal_contract_can_be_modified_trigger = {
 	custom_description = {
 		text = vassal_contract_can_be_modified
 		vassal_contract_has_modifiable_obligations = yes
-		vassal_contract_is_blocked_from_modification = no
+		vassal_contract_is_blocked_from_modification = no	
 	}
 }
 
-# Requires local_var:<obligation_type> to be set for feudal obligations
-# WHO = Who's contract levels are being checked
 has_changed_contract_obligation_trigger = {
-	$WHO$ = { save_temporary_scope_as = obligation_check }
-	custom_description = {
-		text = "modify_vassal_contract_select_different_obligation_level"
-		OR = {
-			trigger_if = {
-				limit = {
-					scope:obligation_check = {
-						OR = {
-							has_government = imperial_government
-							has_government = imperial_cult_government
-							has_government = roman_government
-							has_government = autocratic_government
-							has_government = legion_government
-						}
-					}
-				}
-				OR = {
-					local_var:imperial_government_taxes != scope:obligation_check.vassal_contract_obligation_level:imperial_government_taxes
-					local_var:imperial_government_levies != scope:obligation_check.vassal_contract_obligation_level:imperial_government_levies
-
-				}
+	trigger_if = {
+		limit = { 
+			scope:recipient = { government_has_flag = government_is_feudal }
+		}
+		custom_description = {
+			text = "modify_vassal_contract_select_different_obligation_level"
+			list_size = {
+				name = changed_obligations
+				value > 0
 			}
-			trigger_else_if = {
-				limit = {
-					scope:obligation_check = {
-						has_government = tribal_government
-					}
-				}
-				local_var:roman_contracts != scope:obligation_check.vassal_contract_obligation_level:roman_contracts
+		}
+	}
+	trigger_else = {
+		custom_description = {
+			text = "modify_non_feudal_vassal_contract_select_different_obligation_level"
+			list_size = {
+				name = changed_obligations
+				value > 0
 			}
-			trigger_else_if = {
-				limit = {
-					scope:obligation_check = {
-						has_government = eranshar_government
-					}
-				}
-				OR = {
-					local_var:eranshar_centralization != scope:obligation_check.vassal_contract_obligation_level:eranshar_centralization
-					local_var:eranshar_scutage != scope:obligation_check.vassal_contract_obligation_level:eranshar_scutage
-				}
-			}
-
-			trigger_if = {
-				limit = {
-					scope:obligation_check = {
-						has_government = caliphate_government
-					}
-				}
-				local_var:caliphate_centralization != scope:obligation_check.vassal_contract_obligation_level:caliphate_centralization
-			}
-
-			trigger_if = {
-				limit = {
-					scope:obligation_check = {
-						OR = {
-							has_government = eranshar_government
-						}
-					}
-				}
-				local_var:eranshar_special_contracts != scope:obligation_check.vassal_contract_obligation_level:eranshar_special_contracts
-
-			}
-
-			trigger_if = {
-				limit = {
-					scope:obligation_check = {
-						has_government = muslim_government
-					}
-				}
-				OR = {
-					local_var:islamic_taxes != scope:obligation_check.vassal_contract_obligation_level:islamic_taxes
-					local_var:islamic_levies != scope:obligation_check.vassal_contract_obligation_level:islamic_levies
-					local_var:dynastic_autonomy != scope:obligation_check.vassal_contract_obligation_level:dynastic_autonomy
-					local_var:caliphate_zakah_rights != scope:obligation_check.vassal_contract_obligation_level:caliphate_zakah_rights
-					local_var:special_contract_iqta != scope:obligation_check.vassal_contract_obligation_level:special_contract_iqta
-					local_var:succession_rights_iqta != scope:obligation_check.vassal_contract_obligation_level:succession_rights_iqta
-				}
-			}
-
-			trigger_if = {
-				limit = {
-					scope:obligation_check = {
-						has_government = clan_government
-					}
-				}
-				OR = {
-					local_var:iqta_special_rights != scope:obligation_check.vassal_contract_obligation_level:iqta_special_rights
-					local_var:ghazi_special_rights != scope:obligation_check.vassal_contract_obligation_level:ghazi_special_rights
-					local_var:marriage_favor_rights != scope:obligation_check.vassal_contract_obligation_level:marriage_favor_rights
-					local_var:war_declaration_rights != scope:obligation_check.vassal_contract_obligation_level:war_declaration_rights
-					local_var:council_rights != scope:obligation_check.vassal_contract_obligation_level:council_rights
-					local_var:title_revocation_rights != scope:obligation_check.vassal_contract_obligation_level:title_revocation_rights
-					local_var:religious_rights != scope:obligation_check.vassal_contract_obligation_level:religious_rights
-				}
-			}
-
-			trigger_if = {
-				limit = {
-					scope:obligation_check = {
-						OR = {
-							has_government = feudal_government
-							has_government = imperial_government
-							has_government = imperial_cult_government
-							has_government = roman_government
-							has_government = autocratic_government
-							has_government = legion_government
-						}
-					}
-				}
-				local_var:special_contract != scope:obligation_check.vassal_contract_obligation_level:special_contract
-			}
-
-			trigger_if = {
-				limit = {
-					scope:obligation_check = {
-						OR = {
-							has_government = city_state_government
-							has_government = feudal_government
-						}
-					}
-				}
-				OR = {
-					local_var:feudal_government_taxes != scope:obligation_check.vassal_contract_obligation_level:feudal_government_taxes
-					local_var:feudal_government_levies != scope:obligation_check.vassal_contract_obligation_level:feudal_government_levies
-				}
-			}
-
-			trigger_if = {
-				limit = {
-					scope:obligation_check = {
-						OR = {
-							has_government = feudal_government
-							has_government = clan_government
-						}
-					}
-				}
-				OR = {
-					local_var:religious_rights != scope:obligation_check.vassal_contract_obligation_level:religious_rights
-					local_var:fortification_rights != scope:obligation_check.vassal_contract_obligation_level:fortification_rights
-					local_var:coinage_rights != scope:obligation_check.vassal_contract_obligation_level:coinage_rights
-					local_var:succession_rights != scope:obligation_check.vassal_contract_obligation_level:succession_rights
-					local_var:war_declaration_rights != scope:obligation_check.vassal_contract_obligation_level:war_declaration_rights
-					local_var:council_rights != scope:obligation_check.vassal_contract_obligation_level:council_rights
-					local_var:title_revocation_rights != scope:obligation_check.vassal_contract_obligation_level:title_revocation_rights
-				}
-			}
-
-			trigger_if = {
-				limit = {
-					scope:obligation_check = {
-						has_government = chinese_government
-					}
-				}
-				local_var:chinese_administration_type != scope:obligation_check.vassal_contract_obligation_level:chinese_administration_type
-			}
-			trigger_if = {
-				limit = {
-					scope:obligation_check = {
-						has_government = chinese_government
-					}
-				}
-				local_var:chinese_centralization_level != scope:obligation_check.vassal_contract_obligation_level:chinese_centralization_level
-			}
-
-			local_var:jizya_special_rights != scope:obligation_check.vassal_contract_obligation_level:jizya_special_rights
 		}
 	}
 }
@@ -506,9 +363,9 @@ can_touch_someone_trigger = {
 
 		#circumstancial
 		has_trait = incapable
-		has_trait = wounded
+		has_trait = wounded 
 		has_trait = maimed
-		has_trait = typhus
+		has_trait = typhus 
 
 		# gout happens mostly in the foot, but as someone with inflammatory arthritis, I hate handshakes when my fingers are aching
 		has_trait = gout_ridden
@@ -524,16 +381,16 @@ is_spouse_or_romantic_partner_of_root = {
 }
 terrible_sum_of_all_skills_trigger = {
 	sum_of_all_skills_value <= sum_of_all_skills_threshold_terrible
-}
+} 
 poor_sum_of_all_skills_trigger = {
 	sum_of_all_skills_value <= sum_of_all_skills_threshold_poor
-}
+} 
 average_sum_of_all_skills_trigger = {
 	sum_of_all_skills_value <= sum_of_all_skills_threshold_average
-}
+} 
 good_sum_of_all_skills_trigger = {
 	sum_of_all_skills_value <= sum_of_all_skills_threshold_good
-}
+} 
 excellent_sum_of_all_skills_trigger = {
 	sum_of_all_skills_value <= sum_of_all_skills_threshold_excellent
 }

@@ -1,258 +1,166 @@
-﻿#######################################
-# General Decisions
-#######################################
-
-go_on_pilgrimage_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
-	ai_check_interval = 60
-
-	sort_order = 64
-
-	desc = go_on_pilgrimage_decision_desc
-	selection_tooltip = go_on_pilgrimage_decision_tooltip
-
-	cooldown = { years = pilgrimage_cooldown_year_amount }
+﻿
+# TODO: Combine these into one decision, and possibly make a generic Visit University decision (activity?)
+# Also need to account for if your capital is one of these places
+dharma_visit_nalanda = {# Go to Nalanda
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_pilgrimage.dds"
+	desc = dharma_visit_nalanda_desc
+	selection_tooltip = dharma_visit_nalanda_tooltip
 
 	is_shown = {
-		is_landed = yes
-		believes_in_pilgrimage_trigger = yes
+		religion = { is_in_family = rf_eastern }
+		holds_landed_title = yes
+	}
+
+	is_valid = {
+
 	}
 
 	is_valid_showing_failures_only = {
 		is_available_adult = yes
+		location = capital_province
+	}
+
+	effect = {
+		custom_tooltip = dharma_visit_nalanda_tooltip
+		trigger_event = dharma_buddhism.300
+	}
+
+	ai_check_interval = 60
+	cooldown = { months = 60 }
+
+	ai_potential = {
 		is_at_war = no
 	}
 
-	effect = {
-		custom_tooltip = pilgrimage_effect_1
-		custom_tooltip = pilgrimage_effect_2
-		if = { #What is the minimum you will have to pay?
-			limit = {
-				faith = {
-					any_holy_site = {
-						squared_distance = {
-							target = root.capital_province
-							value <= short_pilgrimage_max_length
-						}
-					}
-				}
-			}
-			custom_tooltip = pilgrimage_effect_3
-		}
-		else_if = {
-			limit = {
-				faith = {
-					any_holy_site = {
-						squared_distance = {
-							target = root.capital_province
-							value <= medium_pilgrimage_max_length
-						}
-					}
-				}
-			}
-			custom_tooltip = pilgrimage_effect_4
-		}
-		else_if = {
-			limit = {
-				faith = {
-					any_holy_site = {
-						squared_distance = {
-							target = root.capital_province
-							value <= long_pilgrimage_max_length
-						}
-					}
-				}
-			}
-			custom_tooltip = pilgrimage_effect_5
-		}
-		else = {
-			custom_tooltip = pilgrimage_effect_6
-		}
-		if = {
-			limit = { has_trait = ill }
-			custom_tooltip = line_break
-			custom_tooltip = pilgrimage_illness_warning
-		}
-		if = {
-			limit = { is_ai = yes }
-			trigger_event = pilgrimage.0999
-		}
-		if = {# Jain Pilgrimages
-			limit = { religion = religion:jainism_religion }
-			trigger_event = pilgrimage.0004
-		}
-		else_if = {# Hindu Pilgrimages
-			limit = { religion = religion:hinduism_religion }
-			trigger_event = pilgrimage.0006
-		}
-		else_if = {# Buddhist Pilgrimages
-			limit = { religion = religion:buddhism_religion }
-			trigger_event = pilgrimage.0030
-		}
-		else = {# Everyone Else
-			trigger_event = pilgrimage.0001
-		}
-	}
-
-	ai_potential = {
-		is_landed = yes
-		is_available_adult = yes
-		short_term_gold > pilgrimage_minimum_cost
-	}
-
+	# desc is only shown in debug AI watch window
 	ai_will_do = {
-		base = 20
+		base = 0
+
 		modifier = {
-			add = -100
-			NOT = { short_term_gold >= pilgrimage_medium_extra_cost }
+			ai_energy < 0
+			add = ai_energy
 		}
 		modifier = {
+			short_term_gold >= major_gold_value
 			add = 30
-			short_term_gold >= pilgrimage_long_extra_cost
 		}
 		modifier = {
-			add = 20
 			piety_level <= 2
-		}
-		modifier = {
 			add = 20
-			has_trait = zealous
 		}
 		modifier = {
+			has_trait = zealous
 			add = 20
-			has_trait = zealous
-			NOT = { has_trait = pilgrim }
 		}
 		modifier = {
-			add = -30
-			has_trait = cynical
+			has_trait = humble
+			add = 10
 		}
 		modifier = {
+			ai_zeal > 0
+			piety < 0
+			add = 10
+		}
+		modifier = {
+			is_independent_ruler = no
+			has_vassal_stance = zealot
+
+			add = 10
+		}
+		modifier = {
+			OR = {
+				has_trait = cynical
+				any_secret = { secret_type = secret_non_believer }
+			}
 			add = -30
-			has_trait = pilgrim
 		}
 	}
 }
-
-start_hunt_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_activity.dds"
-	ai_check_interval = 60
-
-	cost = {
-		gold = {
-			add = standard_activity_cost
-			divide = 1.5
-			if = {
-				limit = {
-					has_character_flag = free_hunt
-				}
-				multiply = 0
-			}
-
-		}
-	}
-
-	cooldown = { days = standard_hunting_cooldown_time }
+dharma_visit_sharada_peeth = {# Go to Sharada Peeth
+	picture = "gfx/interface/illustrations/decisions/dharma_decision_pilgrimage.dds"
+	desc = dharma_visit_sharada_peeth_desc
+	selection_tooltip = dharma_visit_sharada_peeth_tooltip
 
 	is_shown = {
-		is_landed = yes
-		highest_held_title_tier > tier_barony
-		NOT = {
-			religion = religion:jainism_religion
+		religion = { is_in_family = rf_eastern }
+		holds_landed_title = yes
+		OR = {
+			capital_province = { geographical_region = world_india }
+			capital_province = { geographical_region = world_tibet }
+			capital_province = { geographical_region = ghw_region_afghanistan }
+			capital_province = { geographical_region = world_burma }
 		}
 	}
+
 	is_valid = {
-		NOT = {
-			religion = religion:jainism_religion
-		}
+
 	}
 
 	is_valid_showing_failures_only = {
 		is_available_adult = yes
+		location = capital_province
 	}
 
 	effect = {
-		custom_tooltip = start_hunt_decision_go_on_hunt
-
-		hidden_effect = {
-			if = {
-				limit = {
-					has_character_flag = free_hunt
-				}
-				remove_character_flag = free_hunt
-			}
-		}
-
-		#Stress loss
-		if = {
-			limit = {
-				has_trait = lazy
-			}
-			custom_tooltip = start_hunt_decision_stress_lazy
-		}
-		else = {
-			stress_impact = {
-				base = hunt_stress_loss_value
-				craven = activity_stress_gain_impact
-				diligent = activity_stress_loss_impact
-				athletic = activity_stress_loss_impact
-				sadistic = activity_stress_loss_impact
-				brave = activity_stress_loss_impact
-				hunter_1 = activity_stress_loss_impact
-				hunter_2 = activity_stress_loss_impact
-				hunter_3 = activity_stress_loss_impact
-				generous = activity_stress_loss_impact
-			}
-		}
-
-		custom_tooltip = start_hunt_decision_prestige
-
-		hidden_effect = {
-			random_sub_realm_barony = {
-				title_province = {
-					spawn_activity = {
-						type = activity_hunt
-						owner = root
-					}
-				}
-			}
-		}
+		custom_tooltip = dharma_visit_sharada_peeth_tooltip
+		trigger_event = dharma_hinduism.300
 	}
+	ai_check_interval = 60
+	cooldown = { months = 60 }
 
 	ai_potential = {
-		short_term_gold > standard_activity_cost
+		is_at_war = no
 	}
 
+	# desc is only shown in debug AI watch window
 	ai_will_do = {
-		base = 35
-
-		ai_value_modifier = {
-			ai_energy = 1
-			ai_greed = -0.5
-			ai_compassion = -0.5
-		}
+		base = 0
 
 		modifier = {
+			ai_energy < 0
+			add = ai_energy
+		}
+		modifier = {
+			short_term_gold >= major_gold_value
+			add = 30
+		}
+		modifier = {
+			piety_level <= 2
+			add = 20
+		}
+		modifier = {
+			has_trait = zealous
+			add = 20
+		}
+		modifier = {
+			has_trait = humble
 			add = 10
-			has_trait_rank = {
-				trait = education_martial
-				rank > 0
-			}
 		}
 		modifier = {
+			ai_zeal > 0
+			piety < 0
 			add = 10
-			has_trait_rank = {
-				trait = education_martial
-				rank > 2
-			}
 		}
-
 		modifier = {
-			add = 35
-			stress > low_stress
+			is_independent_ruler = no
+			has_vassal_stance = zealot
+
+			add = 10
+		}
+		modifier = {
+			OR = {
+				has_trait = cynical
+				any_secret = { secret_type = secret_non_believer }
+			}
+			add = -30
 		}
 	}
 }
+
+#######################################
+# General Decisions
+#######################################
+
 dharma_raise_hero_stone_decision = {
 	title = dharma_raise_hero_stone_decision_name
 	picture = "gfx/interface/illustrations/decisions/fp1_decision_raise_runestone.dds"
@@ -488,226 +396,6 @@ select_personal_deity_buddhist_decision = {# Buddhist Gods and Goddesses
 #######################################
 # Hindu Decisions
 #######################################
-dharma_vedic_animal_sacrifice = {# Hindu Animal Sacrifice
-	picture = "gfx/interface/illustrations/decisions/decision_vedic_sacrifice.dds"
-	ai_check_interval = 24
-	cooldown = { days = 1825 } #3650 1825
-	desc = dharma_vedic_animal_sacrifice_desc
-
-	is_shown = {
-		is_ruler = yes
-		is_landed = yes
-		OR = {
-			faith = faith:shrautism
-			faith = faith:kalikula_shaktism
-			faith = faith:trika_shaivism
-		}
-	}
-
-	is_valid = {
-		OR = {
-			faith = faith:shrautism
-			faith = faith:kalikula_shaktism
-			faith = faith:trika_shaivism
-		}
-		gold >= 50
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_vedic_animal_sacrifice_tooltip
-		custom_tooltip = dharma_vedic_animal_sacrifice_costs_tooltip
-		trigger_event = dharma_hinduism.011
-	}
-
-	ai_potential = {
-		short_term_gold > 50
-	}
-
-	ai_will_do = {
-		base = 40
-		modifier = {
-			add = 10
-			has_trait = ambitious
-		}
-		modifier = {
-			add = 10
-			has_trait = zealous
-		}
-		modifier = {
-			add = -10
-			has_trait = cynical
-		}
-		modifier = {
-			add = -10
-			has_trait = lazy
-		}
-	}
-}
-dharma_visit_sharada_peeth = {# Go to Sharada Peeth
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_pilgrimage.dds"
-	desc = dharma_visit_sharada_peeth_desc
-	selection_tooltip = dharma_visit_sharada_peeth_tooltip
-	cooldown = { days = dharma_learning_visit_cooldown_time }
-
-	is_shown = {
-		religion = { is_in_family = rf_eastern }
-		holds_landed_title = yes
-		OR = {
-			capital_province = { geographical_region = world_india }
-			capital_province = { geographical_region = world_tibet }
-			capital_province = { geographical_region = ghw_region_afghanistan }
-			capital_province = { geographical_region = world_burma }
-		}
-	}
-
-	is_valid = {
-		religion = { is_in_family = rf_eastern }
-		holds_landed_title = yes
-		OR = {
-			capital_province = { geographical_region = world_india }
-			capital_province = { geographical_region = world_tibet }
-			capital_province = { geographical_region = ghw_region_afghanistan }
-			capital_province = { geographical_region = world_burma }
-		}
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_visit_sharada_peeth_tooltip
-		trigger_event = dharma_hinduism.300
-	}
-	ai_check_interval = 60
-
-	ai_potential = {
-		is_at_war = no
-		stress >= 75
-	}
-
-	ai_will_do = {
-		base = 100
-	}
-}
-dharma_attend_diwali_festival = {# Attend Diwali festival
-	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
-	ai_check_interval = 24
-	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
-	desc = dharma_attend_diwali_festival_desc
-
-	is_shown = {
-		is_ruler = yes
-		is_landed = yes
-		religion = religion:hinduism_religion
-	}
-
-	is_valid = {
-		religion = religion:hinduism_religion
-		custom_tooltip = {
-			text = dharma_decision_diwali_month_requirement
-			OR = {
-				current_month >= 10
-				current_month <= 11
-			}
-
-		}
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_attend_diwali_festival_tooltip
-		trigger_event = { id = dharma_festivals.100 }
-	}
-
-	cost = {
-		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
-	}
-
-	ai_potential = {
-		short_term_gold > medium_gold_value
-	}
-
-	ai_will_do = {
-		base = 50
-	}
-}
-dharma_attend_navaratri_festival = {# Attend Navaratri festival
-	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
-	ai_check_interval = 24
-	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
-	desc = dharma_attend_navaratri_festival_desc
-
-	is_shown = {
-		is_ruler = yes
-		is_landed = yes
-		OR = {# must be a shakti worshiper or your spouse must be a shakti worship
-			faith = faith:kalikula_shaktism
-			faith = faith:srikula_shaktism
-			AND = {
-				religion = { is_in_family = rf_eastern }
-				any_spouse = {
-					OR = {
-						faith = faith:kalikula_shaktism
-						faith = faith:srikula_shaktism
-					}
-				}
-			}
-		}
-	}
-
-	is_valid = {
-		OR = {# must be a shakti worshiper or your spouse must be a shakti worship
-			faith = faith:kalikula_shaktism
-			faith = faith:srikula_shaktism
-			AND = {
-				religion = { is_in_family = rf_eastern }
-				any_spouse = {
-					OR = {
-						faith = faith:kalikula_shaktism
-						faith = faith:srikula_shaktism
-					}
-				}
-			}
-		}
-		custom_tooltip = {
-			text = dharma_decision_navaratri_month_requirement
-			OR = {
-				current_month >= 9
-				current_month <= 10
-			}
-
-		}
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_attend_navaratri_festival_tooltip
-		trigger_event = { id = dharma_festivals.125 }
-	}
-
-	cost = {
-		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
-	}
-
-	ai_potential = {
-		short_term_gold > medium_gold_value
-	}
-
-	ai_will_do = {
-		base = 50
-	}
-}
 select_personal_deity_hinduism_decision = {# select a personal deity
 	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
 
@@ -871,42 +559,6 @@ buddhist_retreat_decision = {# Go on a Buddhist Retreat
 		base = 100
 	}
 }
-dharma_visit_nalanda = {# Go to Nalanda
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_pilgrimage.dds"
-	desc = dharma_visit_nalanda_desc
-	selection_tooltip = dharma_visit_nalanda_tooltip
-	cooldown = { days = dharma_learning_visit_cooldown_time }
-
-	is_shown = {
-		religion = { is_in_family = rf_eastern }
-		holds_landed_title = yes
-	}
-
-	is_valid = {
-		religion = { is_in_family = rf_eastern }
-		holds_landed_title = yes
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_visit_nalanda_tooltip
-		trigger_event = dharma_buddhism.300
-	}
-
-	ai_check_interval = 60
-
-	ai_potential = {
-		is_at_war = no
-		stress >= 75
-	}
-
-	ai_will_do = {
-		base = 100
-	}
-}
 dharma_attend_vesak_festival = {# Attend Vesak festival
 	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
 	ai_check_interval = 24
@@ -953,126 +605,126 @@ dharma_attend_vesak_festival = {# Attend Vesak festival
 		base = 50
 	}
 }
-dharma_adopt_mahayana_school = {# Follow a Mahayana Buddhist School
-	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds"
-	ai_check_interval = 96
-	cooldown = { months = 36 }
-	desc = dharma_adopt_mahayana_school_desc
-
-	is_shown = {
-		faith = faith:mahayana
-		is_ruler = yes
-		is_landed = yes
-	}
-
-	is_valid = {
-		has_perk = faithful_perk
-		faith = faith:mahayana
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_adopt_mahayana_school_tooltip
-		trigger_event = dharma_buddhism.050
-	}
-
-	ai_potential = {
-		piety >= minor_piety_value
-		NOR = {
-			has_trait = buddhist_school_pure_land
-			has_trait = buddhist_school_yogachara
-			has_trait = buddhist_school_madhyamaka
-			has_trait = buddhist_school_chan
-		}
-	}
-
-	ai_will_do = {
-		base = 40
-		modifier = {
-			add = 40
-			has_trait = theologian
-		}
-		modifier = {
-			add = 10
-			has_trait = scholar
-		}
-		modifier = {
-			add = 10
-			has_trait = zealous
-		}
-		modifier = {
-			add = -10
-			has_trait = cynical
-		}
-		modifier = {
-			add = -10
-			has_trait = lazy
-		}
-	}
-}
-dharma_adopt_tibetan_school = {# Follow a Tibetan Buddhist School
-	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds"
-	ai_check_interval = 96
-	cooldown = { months = 36 }
-	desc = dharma_adopt_tibetan_school_desc
-
-	is_shown = {
-		faith = faith:lamaism
-		is_ruler = yes
-		is_landed = yes
-	}
-
-	is_valid = {
-		has_perk = faithful_perk
-		faith = faith:mahayana
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		custom_tooltip = dharma_adopt_tibetan_school_tooltip
-		trigger_event = dharma_buddhism.051
-	}
-
-	ai_potential = {
-		piety >= minor_piety_value
-		NOR = {
-			has_trait = buddhist_school_nyingma
-			has_trait = buddhist_school_kadam
-			has_trait = buddhist_school_sakya
-			has_trait = buddhist_school_kagyu
-		}
-	}
-
-	ai_will_do = {
-		base = 40
-		modifier = {
-			add = 40
-			has_trait = theologian
-		}
-		modifier = {
-			add = 10
-			has_trait = scholar
-		}
-		modifier = {
-			add = 10
-			has_trait = zealous
-		}
-		modifier = {
-			add = -10
-			has_trait = cynical
-		}
-		modifier = {
-			add = -10
-			has_trait = lazy
-		}
-	}
-}
+#dharma_adopt_mahayana_school = {# Follow a Mahayana Buddhist School
+#	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds"
+#	ai_check_interval = 96
+#	cooldown = { months = 36 }
+#	desc = dharma_adopt_mahayana_school_desc
+#
+#	is_shown = {
+#		faith = faith:mahayana
+#		is_ruler = yes
+#		is_landed = yes
+#	}
+#
+#	is_valid = {
+#		has_perk = faithful_perk
+#		faith = faith:mahayana
+#	}
+#
+#	is_valid_showing_failures_only = {
+#		is_available_adult = yes
+#	}
+#
+#	effect = {
+#		custom_tooltip = dharma_adopt_mahayana_school_tooltip
+#		trigger_event = dharma_buddhism.050
+#	}
+#
+#	ai_potential = {
+#		piety >= minor_piety_value
+#		NOR = {
+#			has_trait = buddhist_school_pure_land
+#			has_trait = buddhist_school_yogachara
+#			has_trait = buddhist_school_madhyamaka
+#			has_trait = buddhist_school_chan
+#		}
+#	}
+#
+#	ai_will_do = {
+#		base = 40
+#		modifier = {
+#			add = 40
+#			has_trait = theologian
+#		}
+#		modifier = {
+#			add = 10
+#			has_trait = scholar
+#		}
+#		modifier = {
+#			add = 10
+#			has_trait = zealous
+#		}
+#		modifier = {
+#			add = -10
+#			has_trait = cynical
+#		}
+#		modifier = {
+#			add = -10
+#			has_trait = lazy
+#		}
+#	}
+#}
+#dharma_adopt_tibetan_school = {# Follow a Tibetan Buddhist School
+#	picture = "gfx/interface/illustrations/decisions/decision_buddhist_meditation.dds"
+#	ai_check_interval = 96
+#	cooldown = { months = 36 }
+#	desc = dharma_adopt_tibetan_school_desc
+#
+#	is_shown = {
+#		faith = faith:lamaism
+#		is_ruler = yes
+#		is_landed = yes
+#	}
+#
+#	is_valid = {
+#		has_perk = faithful_perk
+#		faith = faith:mahayana
+#	}
+#
+#	is_valid_showing_failures_only = {
+#		is_available_adult = yes
+#	}
+#
+#	effect = {
+#		custom_tooltip = dharma_adopt_tibetan_school_tooltip
+#		trigger_event = dharma_buddhism.051
+#	}
+#
+#	ai_potential = {
+#		piety >= minor_piety_value
+#		NOR = {
+#			has_trait = buddhist_school_nyingma
+#			has_trait = buddhist_school_kadam
+#			has_trait = buddhist_school_sakya
+#			has_trait = buddhist_school_kagyu
+#		}
+#	}
+#
+#	ai_will_do = {
+#		base = 40
+#		modifier = {
+#			add = 40
+#			has_trait = theologian
+#		}
+#		modifier = {
+#			add = 10
+#			has_trait = scholar
+#		}
+#		modifier = {
+#			add = 10
+#			has_trait = zealous
+#		}
+#		modifier = {
+#			add = -10
+#			has_trait = cynical
+#		}
+#		modifier = {
+#			add = -10
+#			has_trait = lazy
+#		}
+#	}
+#}
 #######################################
 # Jain Decisions
 #######################################
@@ -1213,6 +865,7 @@ dharma_attend_mahamastakabhisheka_festival = {# Jain Mahamastakabhisheka festiva
 	desc = dharma_attend_mahamastakabhisheka_festival_desc
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:jainism_religion
@@ -1268,6 +921,7 @@ dharma_attend_paryushana_festival = {# Jain Paryushana festival
 	}
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:jainism_religion
@@ -1313,6 +967,7 @@ dharma_attend_mahavir_kalyanak_festival = {# Jain  Mahavir Janma Kalyanak festiv
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:jainism_religion
@@ -1354,6 +1009,122 @@ dharma_attend_mahavir_kalyanak_festival = {# Jain  Mahavir Janma Kalyanak festiv
 #######################################
 # Cultural Festival Decisions
 #######################################
+dharma_attend_diwali_festival = {# Attend Diwali festival
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_diwali_festival_desc
+
+	is_shown = {
+		always = no
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:hinduism_religion
+	}
+
+	is_valid = {
+		religion = religion:hinduism_religion
+		custom_tooltip = {
+			text = dharma_decision_diwali_month_requirement
+			OR = {
+				current_month >= 10
+				current_month <= 11
+			}
+
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_diwali_festival_tooltip
+		trigger_event = { id = dharma_festivals.100 }
+	}
+
+	cost = {
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+dharma_attend_navaratri_festival = {# Attend Navaratri festival
+	picture = "gfx/interface/illustrations/decisions/decision_buddhist_retreat.dds"
+	ai_check_interval = 24
+	cooldown = { days = 365 } # It is an annual festival but let this only happen every couple of years
+	desc = dharma_attend_navaratri_festival_desc
+
+	is_shown = {
+		always = no
+		is_ruler = yes
+		is_landed = yes
+		OR = {# must be a shakti worshiper or your spouse must be a shakti worship
+			faith = faith:kalikula_shaktism
+			faith = faith:srikula_shaktism
+			AND = {
+				religion = { is_in_family = rf_eastern }
+				any_spouse = {
+					OR = {
+						faith = faith:kalikula_shaktism
+						faith = faith:srikula_shaktism
+					}
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		OR = {# must be a shakti worshiper or your spouse must be a shakti worship
+			faith = faith:kalikula_shaktism
+			faith = faith:srikula_shaktism
+			AND = {
+				religion = { is_in_family = rf_eastern }
+				any_spouse = {
+					OR = {
+						faith = faith:kalikula_shaktism
+						faith = faith:srikula_shaktism
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			text = dharma_decision_navaratri_month_requirement
+			OR = {
+				current_month >= 9
+				current_month <= 10
+			}
+
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dharma_attend_navaratri_festival_tooltip
+		trigger_event = { id = dharma_festivals.125 }
+	}
+
+	cost = {
+		gold = { value = medium_gold_value } # need the gold to celebrate the festivities
+	}
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
 dharma_attend_losar_festival = {# Attend Tibetan New Year Losar
 	picture = "gfx/interface/illustrations/decisions/dharma_losar_festival.dds"
 	ai_check_interval = 24
@@ -1362,6 +1133,7 @@ dharma_attend_losar_festival = {# Attend Tibetan New Year Losar
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		custom_tooltip = {
@@ -1423,6 +1195,7 @@ dharma_attend_pongal_festival = {# Attend Pongal festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		has_culture	 = culture:tamil
@@ -1468,6 +1241,7 @@ dharma_attend_thaipusam_festival = {# Attend Thaipusam festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {
@@ -1525,6 +1299,7 @@ dharma_attend_ratha_yatra_festival = {# Attend Ratha Yatra festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:hinduism_religion
@@ -1573,6 +1348,7 @@ dharma_attend_thingyan_festival = {# Attend Thingyan festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		culture = { has_cultural_pillar = heritage_burman }
@@ -1616,6 +1392,7 @@ dharma_attend_chhath_festival = {# Attend Chhath festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {
@@ -1670,6 +1447,7 @@ dharma_attend_gangaur_festival = {# Attend Gangaur festival
 	desc = dharma_attend_gangaur_festival_desc
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:hinduism_religion
@@ -1718,6 +1496,7 @@ dharma_attend_tet_festival = {# Attend Tet festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {
@@ -1769,6 +1548,7 @@ dharma_attend_kate_festival = {# Attend kate festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {
@@ -1820,6 +1600,7 @@ dharma_attend_choul_festival = {# Attend Choul Chnam Themy festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {
@@ -1869,6 +1650,7 @@ dharma_attend_songkran_festival = {# Attend Songkran festival
 
 
 	is_shown = {
+		always = no
 		is_ruler = yes
 		is_landed = yes
 		OR = {

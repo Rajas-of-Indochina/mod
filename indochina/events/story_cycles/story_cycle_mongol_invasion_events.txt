@@ -4,7 +4,7 @@
 
 ### Spawn Temujin, aka Genghis Khan, with the associated story...
 mongol_invasion.0001 = {
-	type = empty
+	scope = none
 	hidden = yes
 
 	trigger = {
@@ -12,14 +12,6 @@ mongol_invasion.0001 = {
 			any_player = {
 				THIS = culture:mongol.culture_head
 				realm_size >= 100
-			}
-		}
-		NOT = {
-			has_global_variable = mongols_have_appeared
-		}
-		NOT = {
-			character:125501 = {
-				is_ai = no
 			}
 		}
 	}
@@ -31,10 +23,6 @@ mongol_invasion.0001 = {
 		scope:temujin = {
 			save_scope_as = story_owner # Do I really need to do this? Isn't it set automatically?
 			create_story = story_mongol_invasion
-		}
-		set_global_variable = {
-			name = mongols_have_appeared
-			value = yes
 		}
 	}
 }
@@ -504,7 +492,9 @@ mongol_invasion.2101 = {
 			# More likely for Altaic group to join the big 'un
 			modifier = {
 				add = 300
-				culture = { has_cultural_pillar = heritage_mongolic }
+				culture = {
+				  	has_cultural_parameter = heritage_group_altaic
+				}
 			}
 			# More likely if you're just a count
 			modifier = {
@@ -710,6 +700,48 @@ mongol_invasion.9999 = {
 	}
 
 	immediate = {
+
+	# Final cleanup
+		if = {
+			limit = {
+				exists = title:e_mongol_empire.holder
+			}
+			title:e_mongol_empire.holder = {
+				if = {
+					limit = {
+						any_held_title = {
+							tier = tier_county
+						}
+					}
+					create_title_and_vassal_change = {
+						type = granted
+						save_scope_as = title_change_cleanup
+						add_claim_on_loss = no
+					}
+					every_vassal_or_below = {
+						change_liege = {
+							liege = scope:mongolia_ruler
+							change = scope:title_change_cleanup
+						}
+					}
+					every_held_title = {
+						limit = {
+							tier = tier_county
+						}
+						add_to_list = mongol_final_cleanup
+					}
+					every_in_list = {
+						list = mongol_final_cleanup
+						change_title_holder = {
+							holder = scope:mongolia_ruler
+							change = scope:title_change_cleanup
+							take_baronies = yes
+						}
+					}
+					resolve_title_and_vassal_change = scope:title_change_cleanup
+				}
+			}
+		}
 		if = {
 			limit = {
 				any_held_title = {

@@ -7,20 +7,25 @@ on_game_start = {
         add_right_to_rule_doctrines_on_game_start
         add_disloyal_subjects_tradition_on_game_start
         assign_nanzhao_state
-        acculturate_kirghiz_vassals
+        acculturate_steppelads
+
+        # Struggles
+        iberian_struggle_on_game_start
+        # indian_struggle_on_game_start
+        # tibetan_struggle_on_game_start
+        # chinese_struggle_on_game_start
     }
 }
 
 on_game_start_after_lobby = {
     on_actions = {
-        # indian_struggle_on_game_start
-        # tibetan_struggle_on_game_start
-        # chinese_struggle_on_game_start
         ruler_popup_events
         sea_set_cultural_acceptance
         on_yearly_assign_culture_faith
         sea_historical_artifacts
         set_tai_language
+        # assign_varnas
+        set_court_languages
 
         # Chinese gov setup
         sea_historical_chinese_vassal_contracts
@@ -246,6 +251,21 @@ ruler_popup_events = {
 
 ######
 
+iberian_struggle_on_game_start = {
+    # Going here because we overwrote `history/titles/k_andalusia.txt` and starting it in history is STUPID ANYWAY AUUUGH
+    effect = {
+        if = {
+            limit = {
+                has_dlc_feature = the_fate_of_iberia
+                game_start_date >= 718.1.1
+            }
+            start_struggle = {
+                struggle_type = iberian_struggle
+                start_phase = struggle_iberia_phase_opportunity # TODO: We should add phase changes in History to get two different entry point
+            }
+        }
+    }
+}
 tibetan_struggle_on_game_start = {
     effect = {
         if = {
@@ -278,7 +298,7 @@ indian_struggle_on_game_start = {
 
 #####
 
-acculturate_kirghiz_vassals = {
+acculturate_steppelads = {
     effect = {
         if = {
             limit = {
@@ -325,6 +345,29 @@ acculturate_kirghiz_vassals = {
                 }
             }
         }
+
+        if = {
+            limit = {
+                game_start_date <= 1030.1.1
+            }
+            culture:cuman = {
+                every_culture_county = {
+                    set_county_culture = culture:qangli
+                }
+            }
+            every_ruler = {
+                limit = { culture = culture:cuman }
+                every_vassal_or_below = {
+                    limit = { culture = culture:cuman }
+                    set_culture = culture:qangli
+                }
+                every_courtier_or_guest = {
+                    limit = { culture = culture:cuman }
+                    set_culture = culture:qangli
+                }
+            }
+        }
+
     }
 }
 
@@ -414,6 +457,13 @@ sea_historical_artifacts = {
                     create_artifact_laguna_copperplate = { OWNER = this }
                 }
             }
+
+            if = {
+                limit = { current_date <= 907.1.1 }
+                title:e_celestia_china.holder = {
+                    create_artifact_heirloom_seal = { OWNER = this }
+                }
+            }
         }
     }
 }
@@ -438,8 +488,8 @@ sea_historical_chinese_vassal_contracts = {
     effect = {
         title:e_celestia_china.holder = {
             if = {
-                limit = { NOT = { has_realm_law = bureaucratic_authority_1 } }
-                add_realm_law_skip_effects = bureaucratic_authority_1
+                limit = { NOT = { has_realm_law = bureaucratic_authority_2 } }
+                add_realm_law_skip_effects = bureaucratic_authority_2
             }
 
             if = {
@@ -500,7 +550,7 @@ sea_historical_chinese_vassal_contracts = {
                     limit = {
                         tier = tier_county
                         NOT = { this = scope:liege.capital_county }
-
+                        NOT = { this = title:c_luoyang_china }
                     }
 
                     save_scope_as = title
@@ -575,6 +625,186 @@ sea_historical_chinese_vassal_contracts = {
                     }
                 }
             }
+        }
+    }
+}
+
+#####
+
+assign_varnas = {
+    effect = {
+        every_ruler = {
+            limit = {
+                capital_county.title_province = { geographical_region = world_india }
+                OR = {
+                    religion = religion:hinduism_religion
+                    religion = religion:buddhism_religion
+                    religion = religion:jainism_religion
+                }
+                if = {
+                    limit = {
+                        NOR = {
+                            has_trait = brahmin
+                            has_trait = kshatriya
+                            has_trait = vaishya
+                            has_trait = shudra
+                        }
+                    }
+                    add_trait = kshatriya
+
+                    every_close_family_member = {
+                        limit = {
+                            NOR = {
+                                has_trait = brahmin
+                                has_trait = kshatriya
+                                has_trait = vaishya
+                                has_trait = shudra
+                            }
+                        }
+                        add_trait = kshatriya
+                    }
+                    every_spouse = {
+                        limit = {
+                            NOR = {
+                                has_trait = brahmin
+                                has_trait = kshatriya
+                                has_trait = vaishya
+                                has_trait = shudra
+                            }
+                        }
+                        add_trait = kshatriya
+                    }
+                }
+            }
+        }
+        religion:hinduism_religion = {
+            every_faith = {
+                every_faith_character = {
+                    if = {
+                        limit = {
+                            NOR = {
+                                has_trait = brahmin
+                                has_trait = kshatriya
+                                has_trait = vaishya
+                                has_trait = shudra
+                            }
+                            has_council_position = councillor_court_chaplain
+                        }
+                        add_trait = brahmin
+
+                        every_close_family_member = {
+                            limit = {
+                                NOR = {
+                                    has_trait = brahmin
+                                    has_trait = kshatriya
+                                    has_trait = vaishya
+                                    has_trait = shudra
+                                }
+                            }
+                            add_trait = brahmin
+                        }
+                    }
+                    else_if = {
+                        limit = {
+                            is_ruler = yes
+                            NOR = {
+                                has_trait = brahmin
+                                has_trait = kshatriya
+                                has_trait = vaishya
+                                has_trait = shudra
+                            }
+                        }
+                        add_trait = kshatriya
+
+                        every_close_family_member = {
+                            limit = {
+                                NOR = {
+                                    has_trait = brahmin
+                                    has_trait = kshatriya
+                                    has_trait = vaishya
+                                    has_trait = shudra
+                                }
+                            }
+                            add_trait = kshatriya
+                        }
+                        every_spouse = {
+                            limit = {
+                                NOR = {
+                                    has_trait = brahmin
+                                    has_trait = kshatriya
+                                    has_trait = vaishya
+                                    has_trait = shudra
+                                }
+                            }
+                            add_trait = kshatriya
+                        }
+                    }
+                    else_if = {
+                        limit = {
+                            NOR = {
+                                has_trait = brahmin
+                                has_trait = kshatriya
+                                has_trait = vaishya
+                                has_trait = shudra
+                            }
+                            is_lowborn = no
+                        }
+                        add_trait = vaishya
+
+                        every_close_family_member = {
+                            limit = {
+                                NOR = {
+                                    has_trait = brahmin
+                                    has_trait = kshatriya
+                                    has_trait = vaishya
+                                    has_trait = shudra
+                                }
+                            }
+                            add_trait = vaishya
+                        }
+                    }
+                    else_if = {
+                        limit = {
+                            NOR = {
+                                has_trait = brahmin
+                                has_trait = kshatriya
+                                has_trait = vaishya
+                                has_trait = shudra
+                            }
+                        }
+                        add_trait = shudra
+
+                        every_close_family_member = {
+                            limit = {
+                                NOR = {
+                                    has_trait = brahmin
+                                    has_trait = kshatriya
+                                    has_trait = vaishya
+                                    has_trait = shudra
+                                }
+                            }
+                            add_trait = shudra
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+set_court_languages = {
+    effect = {
+        if = {
+            limit = { exists = title:k_nanzhao.holder }
+            title:k_nanzhao.holder = { set_court_language = language_chinese }
+        }
+        if = {
+            limit = { exists = title:e_dai_viet.holder }
+            title:e_dai_viet.holder = { set_court_language = language_chinese }
+        }
+        if = {
+            limit = { exists = title:k_annam.holder }
+            title:k_annam.holder = { set_court_language = language_chinese }
         }
     }
 }

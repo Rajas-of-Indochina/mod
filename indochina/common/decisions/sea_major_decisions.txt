@@ -272,7 +272,9 @@ found_angkor_wat_decision = {
 
 	is_shown = {
 		capital_county = title:c_aninditapura
-		#title:c_aninditapura.title_province = { NOT = { has_holding_type = cow_metropolis_holding } }
+		title:c_aninditapura.title_province = {
+			has_special_building_slot = no
+		}
 		culture = { has_cultural_tradition = tradition_angkorian_architecture }
 	}
 
@@ -312,99 +314,5 @@ found_angkor_wat_decision = {
 
 	ai_potential = {
 		always = no
-	}
-}
-
-# Lets you actually take on the Chinese government type provided you meet the requirements
-adopt_chinese_government_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	major = yes
-	desc = adopt_chinese_government_decision_desc
-	
-	ai_check_interval = 36
-
-	is_shown = {
-		NOT = {
-			has_government = chinese_government
-			has_government = anarchist_government
-		}
-		unlock_bureaucracy_trigger = yes
-	}
-
-	is_valid = {
-		trigger_if = {
-			limit = {
-				is_independent_ruler = yes
-			}
-			OR = {	
-				title:e_celestia_china = {
-					any_in_de_jure_hierarchy = {
-						holder = ROOT
-						tier >= tier_kingdom
-					}
-				}
-				AND = {
-					highest_held_title_tier >= tier_kingdom
-					any_realm_county = {
-						percent >= 0.25
-						title_province.geographical_region = world_china
-					}
-					capital_province.geographical_region = world_china
-				}
-				culture = { has_cultural_parameter = unlock_bureaucracy_param }
-				religion = religion:taoism_religion
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_government = tribal_government
-			}
-			OR = {
-				has_realm_law = tribal_authority_1
-				has_realm_law = tribal_authority_2
-				has_realm_law = tribal_authority_3
-			}
-			custom_description = {
-				text = recent_conversion_to_tribalism
-				NOT = { has_character_flag = just_converted_to_tribalism }
-			}
-		}
-		trigger_else_if = {
-			limit = {
-				has_government = nomadic_government
-			}
-			OR = {
-				has_realm_law = nomadic_authority_1
-				has_realm_law = nomadic_authority_2
-				has_realm_law = nomadic_authority_3
-			}
-		}
-	}
-
-	cost = {
-		prestige = 150
-	}
-
-	effect = {
-		trigger_event = major_decisions.0001
-		save_scope_as = actor
-		adopt_bureaucracy_effect = yes
-		hidden_effect = {
-			every_vassal = {
-				trigger_event = {
-					id = major_decisions.0002
-					days = 3
-				}
-			}
-		}
-	}
-
-	ai_potential = {
-		always = yes
-	}
-
-	ai_will_do = {
-		base = 100
-		
 	}
 }

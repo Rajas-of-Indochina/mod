@@ -14,9 +14,7 @@ feudalize_tribal_holding_interaction = {
 	is_shown = {
 		scope:actor = {
 			this = scope:recipient
-			NOT = { has_government = tribal_government }
-			NOT = { has_government = nomadic_government }
-			NOT = { has_government = anarchist_government }
+			NOT = { government_has_flag = government_is_tribal }
 		}
 	}
 
@@ -93,6 +91,13 @@ feudalize_tribal_holding_interaction = {
 	}
 	# City
 	send_option = {
+		is_shown = {
+			scope:target = {
+				title_province = {
+					has_holding_type = tribal_holding
+				}
+			}
+		}
 		is_valid = {
 			scope:target = {
 				title_province = {
@@ -104,6 +109,13 @@ feudalize_tribal_holding_interaction = {
 	}
 	# Temple
 	send_option = {
+		is_shown = {
+			scope:target = {
+				title_province = {
+					has_holding_type = tribal_holding
+				}
+			}
+		}
 		is_valid = {
 			scope:target = {
 				title_province = {
@@ -115,7 +127,7 @@ feudalize_tribal_holding_interaction = {
 	}
 
 	cost = {
-		gold = scope:actor.feudalize_tribal_holding_interaction_cost
+		gold = scope:target.feudalize_tribal_holding_interaction_cost
 	}
 
 	on_accept = {
@@ -315,6 +327,7 @@ convert_holding_type_interaction = {
 	# Castle
 	send_option = {
 		is_valid = {
+			exists = scope:target.title_province
 			scope:target = {
 				title_province = {
 					NOT = { has_holding_type = castle_holding }
@@ -326,6 +339,7 @@ convert_holding_type_interaction = {
 	# City
 	send_option = {
 		is_valid = {
+			exists = scope:target.title_province
 			scope:target = {
 				title_province = {
 					NOT = { has_holding_type = city_holding }
@@ -337,6 +351,7 @@ convert_holding_type_interaction = {
 	# Temple
 	send_option = {
 		is_valid = {
+			exists = scope:target.title_province
 			scope:target = {
 				title_province = {
 					NOT = { has_holding_type = church_holding }

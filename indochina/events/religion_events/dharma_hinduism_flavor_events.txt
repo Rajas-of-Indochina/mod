@@ -15,7 +15,7 @@ dharma_hinduism.001 = {# Hindu ascetic comes to visit
 	desc = dharma_hinduism.001.desc
 	theme = faith
 	override_background = {
-		event_background = throne_room
+		reference = throne_room
 	}
 	left_portrait = {
 		character = root
@@ -41,7 +41,7 @@ dharma_hinduism.002 = {# Tell me more, Hindu ascetic
 	desc = dharma_hinduism.002.desc
 	theme = faith
 	override_background = {
-		event_background = india_shrine
+		reference = india_shrine
 	}
 	left_portrait = {
 		character = root
@@ -76,7 +76,7 @@ dharma_hinduism.003 = {# Doing Yoga with the Monk
 	desc = dharma_hinduism.003.desc
 	theme = faith
 	override_background = {
-		event_background = india_shrine
+		reference = india_shrine
 	}
 	left_portrait = {
 		character = root
@@ -101,7 +101,7 @@ dharma_hinduism.004 = {# Meditating with the Monk
 	desc = dharma_hinduism.004.desc
 	theme = faith
 	override_background = {
-		event_background = india_shrine
+		reference = india_shrine
 	}
 	left_portrait = {
 		character = root
@@ -129,7 +129,7 @@ dharma_hinduism.006 = {# Local Hindu temple asks for donations
 	desc = dharma_hinduism.006.desc
 	theme = faith
 	override_background = {
-		event_background = forest_temple
+		reference = forest_temple
 	}
 	left_portrait = {
 		character = root
@@ -158,7 +158,7 @@ dharma_hinduism.007 = {# Local Hindu Temple wants a new Murti statue
 	desc = dharma_hinduism.007.desc
 	theme = faith
 	override_background = {
-		event_background = forest_temple
+		reference = forest_temple
 	}
 	left_portrait = {
 		character = root
@@ -187,7 +187,7 @@ dharma_hinduism.008 = {# Recieving Prasada
 	desc = dharma_hinduism.008.desc
 	theme = faith
 	override_background = {
-		event_background = forest_temple
+		reference = forest_temple
 	}
 	left_portrait = {
 		character = root
@@ -214,7 +214,7 @@ dharma_hinduism.009 = {# Chanting the Gods mantras
 	desc = dharma_hinduism.009.desc
 	theme = faith
 	override_background = {
-		event_background = forest_temple
+		reference = forest_temple
 	}
 	left_portrait = {
 		character = root
@@ -240,7 +240,7 @@ dharma_hinduism.010 = {# Studying the Vedas at the Temple
 	desc = dharma_hinduism.010.desc
 	theme = faith
 	override_background = {
-		event_background = forest_temple
+		reference = forest_temple
 	}
 	left_portrait = {
 		character = root
@@ -263,285 +263,6 @@ dharma_hinduism.010 = {# Studying the Vedas at the Temple
 	}
 }
 #######################################
-# Animal Sacrifices
-#######################################
-dharma_hinduism.011 = {# Animal sacrifice - What type of Animals
-	type = character_event
-	title = dharma_hinduism.011.t
-	desc = dharma_hinduism.011.desc
-	theme = faith
-	override_background = {
-		event_background = india_shrine
-	}
-
-	left_portrait = {
-		character = root
-		animation = personality_rational
-	}
-
-	immediate = {
-		capital_province = { save_scope_as = capital_province } #For loc.
-		add_character_flag = planning_an_activity
-	}
-
-	option = {# Goat
-		name = dharma_hinduism.011.a
-		remove_short_term_gold = 20
-		custom_tooltip = dharma_hinduism.011.tooltip
-		add_character_flag = dharma_animal_sacrifice_goat
-		scope:capital_province = {
-			spawn_activity = {
-				owner = root
-				type = activity_vedic_animal_sacrifice
-			}
-		}
-	}
-	option = {# Water Buffalo
-		name = dharma_hinduism.011.b
-		trigger = {
-			OR = {
-				is_ai = no
-				gold >= 100
-			}
-		}
-		remove_short_term_gold = 30
-		custom_tooltip = dharma_hinduism.011.tooltip
-		add_character_flag = dharma_animal_sacrifice_buffalo
-		# Choose appropriate location
-		scope:capital_province = {
-			spawn_activity = {
-				owner = root
-				type = activity_vedic_animal_sacrifice
-			}
-		}
-	}
-	option = {# Horses
-		name = dharma_hinduism.011.c
-		trigger = {
-			OR = {
-				is_ai = no
-				gold >= 150
-			}
-		}
-		remove_short_term_gold = 40
-		custom_tooltip = dharma_hinduism.011.tooltip
-		add_character_flag = dharma_animal_sacrifice_horse
-		scope:capital_province = {
-			spawn_activity = {
-				owner = root
-				type = activity_vedic_animal_sacrifice
-			}
-		}
-	}
-}
-dharma_hinduism.012 = {# Animal sacrifice - How Grand of a ceremony
-	type = character_event
-	title = dharma_hinduism.012.t
-	desc = dharma_hinduism.012.desc
-	theme = faith
-	override_background = {
-		event_background = india_shrine
-	}
-	left_portrait = {
-		character = root
-		animation = personality_rational
-	}
-
-	option = { # Small
-		name = dharma_hinduism.012.a
-		remove_short_term_gold = 50
-		custom_tooltip = dharma_hinduism.012.tooltip
-		add_character_flag = dharma_animal_sacrifice_small
-	}
-	option = { # Medium
-		name = dharma_hinduism.012.b
-		trigger = {
-			OR = {
-				is_ai = no
-				gold >= 100
-			}
-		}
-		remove_short_term_gold = 100
-		custom_tooltip = dharma_hinduism.012.tooltip
-		add_character_flag = dharma_animal_sacrifice_medium
-	}
-	option = { # Large
-		name = dharma_hinduism.012.c
-		trigger = {
-			OR = {
-				is_ai = no
-				gold >= 150
-			}
-		}
-		remove_short_term_gold = 150
-		custom_tooltip = dharma_hinduism.012.tooltip
-		add_character_flag = dharma_animal_sacrifice_large
-	}
-
-	after = {
-		trigger_event = {
-			id = dharma_hinduism.013
-			days = 1
-		}
-	}
-}
-dharma_hinduism.013 = {# Sacrifice time
-	type = character_event
-	title = dharma_hinduism.013.t
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					has_faith = faith:kalikula_shaktism
-				}
-				desc = dharma_hinduism.013.desc.shakti
-			}
-			triggered_desc = {
-				trigger = {
-					has_faith = faith:shrautism
-				}
-				desc = dharma_hinduism.013.desc.vedic
-			}
-		}
-	}
-	theme = faith
-	override_background = {
-		event_background = india_shrine
-	}
-
-	right_portrait = {
-		character = root
-		animation = personality_zealous
-	}
-
-	option = {# High God
-		name = dharma_hinduism.013.a
-		if = {
-			limit = {
-				OR = {
-					faith = faith:kalikula_shaktism
-					faith = faith:trika_shaivism
-				}
-			}
-			dharma_vedic_devi_animal_sacrifice_effect = yes
-		}
-		else = {
-			dharma_vedic_indra_animal_sacrifice_effect = yes
-		}
-	}
-	option = {# War God
-		name = dharma_hinduism.013.b
-		trigger = {
-			NOT = { faith = faith:shrautism	}
-		}
-		dharma_vedic_durga_animal_sacrifice_effect = yes
-	}
-	option = {# Wealth God
-		name = dharma_hinduism.013.c
-		if = {
-			limit = {
-				OR = {
-					faith = faith:kalikula_shaktism
-					faith = faith:trika_shaivism
-				}
-			}
-			dharma_vedic_lakshmi_animal_sacrifice_effect = yes
-		}
-		else = {
-			dharma_vedic_bhaga_animal_sacrifice_effect = yes
-		}
-	}
-	option = {# Household God
-		name = dharma_hinduism.013.d
-		if = {
-			limit = {
-				OR = {
-					faith = faith:kalikula_shaktism
-					faith = faith:trika_shaivism
-				}
-			}
-			dharma_vedic_parvati_animal_sacrifice_effect = yes
-		}
-		else = {
-			dharma_vedic_agni_animal_sacrifice_effect = yes
-		}
-	}
-	option = {# Knowledge God
-		name = dharma_hinduism.013.e
-		if = {
-			limit = {
-				OR = {
-					faith = faith:kalikula_shaktism
-					faith = faith:trika_shaivism
-				}
-			}
-			dharma_vedic_saraswati_animal_sacrifice_effect = yes
-		}
-		else = {
-			dharma_vedic_brhaspati_animal_sacrifice_effect = yes
-		}
-	}
-	option = {# Fertility God
-		name = dharma_hinduism.013.f
-		trigger = {
-			NOT = { faith = faith:kalikula_shaktism	}
-		}
-		dharma_vedic_aditi_animal_sacrifice_effect = yes
-	}
-
-	after = {
-		if = {
-			limit = {
-				has_character_flag = dharma_animal_sacrifice_small
-			}
-			remove_character_flag = dharma_animal_sacrifice_small
-		}
-		if = {
-			limit = {
-				has_character_flag = dharma_animal_sacrifice_medium
-			}
-			remove_character_flag = dharma_animal_sacrifice_medium
-		}
-		if = {
-			limit = {
-				has_character_flag = dharma_animal_sacrifice_large
-			}
-			remove_character_flag = dharma_animal_sacrifice_large
-		}
-		if = {
-			limit = {
-				has_character_flag = dharma_animal_sacrifice_goat
-			}
-			remove_character_flag = dharma_animal_sacrifice_goat
-		}
-		if = {
-			limit = {
-				has_character_flag = dharma_animal_sacrifice_buffalo
-			}
-			remove_character_flag = dharma_animal_sacrifice_buffalo
-		}
-		if = {
-			limit = {
-				has_character_flag = dharma_animal_sacrifice_horse
-			}
-			remove_character_flag = dharma_animal_sacrifice_horse
-		}
-		trigger_event = {
-			id = dharma_hinduism.014
-			days = 1
-		}
-	}
-
-}
-dharma_hinduism.014 = {# Misc cleanup
-	hidden = yes
-	immediate = {
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
-#######################################
 #									  #
 #      	  Hindu Philosophy			  #
 #									  #
@@ -552,7 +273,7 @@ dharma_hinduism.050 = {# Picking a Philosophy
 	desc = dharma_hinduism.050.desc
 	theme = faith
 	override_background = {
-		event_background = tibetan_temple
+		reference = tibetan_temple
 	}
 	left_portrait = {
 		character = root
@@ -618,7 +339,7 @@ dharma_hinduism.051 = {# Picking a Philosophy - Vedanta
 	desc = dharma_hinduism.051.desc
 	theme = faith
 	override_background = {
-		event_background = tibetan_temple
+		reference = tibetan_temple
 	}
 	left_portrait = {
 		character = root
@@ -680,7 +401,7 @@ dharma_hinduism.052 = {# Ramanuja creates the Vishishtadvaita
 	desc = dharma_hinduism.052.desc
 	theme = faith
 	override_background = {
-		event_background = tibetan_temple
+		reference = tibetan_temple
 	}
 	left_portrait = {
 		character = root
@@ -724,7 +445,7 @@ dharma_hinduism.053 = {# Madhvacharya creates the Dvaita Vedanta
 	desc = dharma_hinduism.053.desc
 	theme = faith
 	override_background = {
-		event_background = tibetan_temple
+		reference = tibetan_temple
 	}
 	left_portrait = {
 		character = root
@@ -767,13 +488,23 @@ dharma_hinduism.053 = {# Madhvacharya creates the Dvaita Vedanta
 #      Visiting Sharada Peeth		  #
 #									  #
 #######################################
+
+# If the player exits the travel planning UI, this event fires reseting the decision cooldown and removing variables
+dharma_hinduism.399 = {
+	hidden = yes
+	immediate = {
+		remove_decision_cooldown = dharma_visit_sharada_peeth
+		remove_character_flag = planning_an_activity
+	}
+}
+
 dharma_hinduism.300 = {# Decide to Visit Sharada Peeth
 	type = character_event
 	title = dharma_hinduism.300.t
 	desc = dharma_hinduism.300.desc
 	theme = faith
 	override_background = {
-		event_background = throne_room
+		reference = throne_room
 	}
 	left_portrait = {
 		character = root
@@ -781,27 +512,32 @@ dharma_hinduism.300 = {# Decide to Visit Sharada Peeth
 	}
 
 	immediate = {
-		title:b_srinagara = { save_scope_as = sharada_peeth_location }
+		title:b_srinagara.title_province = { save_scope_as = sharada_peeth_location }
 		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 30
+		}
 	}
 
+	option = {# I shall go
+		name = dharma_hinduism.300.go
+
+		start_travel_plan = {
+			destination = scope:sharada_peeth_location
+			on_travel_planner_cancel_event = dharma_hinduism.399
+			on_arrival_event = dharma_hinduism.301
+			on_arrival_destinations = all_but_last
+		}
+	}
 	option = {# I shall stay
 		name = dharma_hinduism.300.stay
 		hidden_effect = {
 			remove_decision_cooldown = dharma_visit_sharada_peeth
 			remove_character_flag = planning_an_activity
 		}
-	}
-	option = {# I shall go
-		name = dharma_hinduism.300.go
-		scope:sharada_peeth_location = {
-			title_province = {
-				spawn_activity = {
-					owner = root
-					type = activity_dharma_visit_sharada_peeth
-				}
-			}
+		ai_chance = {
+			base = 0
 		}
 	}
 }
@@ -811,7 +547,7 @@ dharma_hinduism.301 = {# Arriving at Sharada Peeth
 	desc = dharma_hinduism.301.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_mountain_temple
+		reference = dharma_mountain_temple
 	}
 	left_portrait = {
 		character = root
@@ -823,6 +559,14 @@ dharma_hinduism.301 = {# Arriving at Sharada Peeth
 		add_piety = miniscule_piety_value
 	}
 	after = {
+		save_scope_as = activity
+		set_variable = {
+			name = dharma_sharada_peeth_event_counter
+			value = 0
+		}
+		current_travel_plan = {
+			delay_travel_plan = { days = 60 }
+		}
 		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
 	}
 }
@@ -833,7 +577,7 @@ dharma_hinduism.302 = {# Visiting the Library
 	desc = dharma_hinduism.302.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_temple_interior
+		reference = dharma_temple_interior
 	}
 	left_portrait = {
 		character = root
@@ -931,7 +675,7 @@ dharma_hinduism.303 = {# Meditating with the Monks
 	desc = dharma_hinduism.303.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_mountain_temple
+		reference = dharma_mountain_temple
 	}
 	left_portrait = {
 		character = root
@@ -970,7 +714,7 @@ dharma_hinduism.304 = {# Vegetarian v non-vegetiarian
 	desc = dharma_hinduism.304.desc
 	theme = faith
 	override_background = {
-		event_background = forest_temple
+		reference = forest_temple
 	}
 	left_portrait = {
 		character = root
@@ -1011,7 +755,7 @@ dharma_hinduism.305 = {# Cosmopolitan Experince
 	desc = dharma_hinduism.305.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_mountain_temple
+		reference = dharma_mountain_temple
 	}
 	left_portrait = {
 		character = root
@@ -1063,7 +807,7 @@ dharma_hinduism.306 = {# Theological Debate
 	desc = dharma_hinduism.306.desc
 	theme = faith
 	override_background = {
-		event_background = india_shrine
+		reference = india_shrine
 	}
 	left_portrait = {
 		character = root
@@ -1132,9 +876,7 @@ dharma_hinduism.306 = {# Theological Debate
 		stress_impact = {
 			scholar = minor_stress_impact_loss
 			theologian = minor_stress_impact_loss
-			mystic_1 = minor_stress_impact_loss
-			mystic_2 = minor_stress_impact_loss
-			mystic_3 = minor_stress_impact_loss
+			lifestyle_mystic = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			shy = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -1187,9 +929,7 @@ dharma_hinduism.306 = {# Theological Debate
 		stress_impact = {
 			scholar = minor_stress_impact_loss
 			theologian = minor_stress_impact_loss
-			mystic_1 = minor_stress_impact_loss
-			mystic_2 = minor_stress_impact_loss
-			mystic_3 = minor_stress_impact_loss
+			lifestyle_mystic = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			shy = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -1242,9 +982,7 @@ dharma_hinduism.306 = {# Theological Debate
 		stress_impact = {
 			scholar = minor_stress_impact_loss
 			theologian = minor_stress_impact_loss
-			mystic_1 = minor_stress_impact_loss
-			mystic_2 = minor_stress_impact_loss
-			mystic_3 = minor_stress_impact_loss
+			lifestyle_mystic = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			shy = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -1344,9 +1082,7 @@ dharma_hinduism.306 = {# Theological Debate
 		stress_impact = {
 			scholar = minor_stress_impact_loss
 			theologian = minor_stress_impact_loss
-			mystic_1 = minor_stress_impact_loss
-			mystic_2 = minor_stress_impact_loss
-			mystic_3 = minor_stress_impact_loss
+			lifestyle_mystic = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			shy = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -1398,9 +1134,7 @@ dharma_hinduism.306 = {# Theological Debate
 		stress_impact = {
 			scholar = minor_stress_impact_loss
 			theologian = minor_stress_impact_loss
-			mystic_1 = minor_stress_impact_loss
-			mystic_2 = minor_stress_impact_loss
-			mystic_3 = minor_stress_impact_loss
+			lifestyle_mystic = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			shy = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -1452,9 +1186,7 @@ dharma_hinduism.306 = {# Theological Debate
 		stress_impact = {
 			scholar = minor_stress_impact_loss
 			theologian = minor_stress_impact_loss
-			mystic_1 = minor_stress_impact_loss
-			mystic_2 = minor_stress_impact_loss
-			mystic_3 = minor_stress_impact_loss
+			lifestyle_mystic = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			shy = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -1466,9 +1198,7 @@ dharma_hinduism.306 = {# Theological Debate
 		stress_impact = {
 			scholar = minor_stress_impact_gain
 			theologian = minor_stress_impact_gain
-			mystic_1 = minor_stress_impact_gain
-			mystic_2 = minor_stress_impact_gain
-			mystic_3 = minor_stress_impact_gain
+			lifestyle_mystic = minor_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 			shy = minor_stress_impact_loss
 			humble = minor_stress_impact_loss
@@ -1484,7 +1214,7 @@ dharma_hinduism.307 = {# Mystical learning
 	desc = dharma_hinduism.307.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_temple_interior
+		reference = dharma_temple_interior
 	}
 	left_portrait = {
 		character = root
@@ -1583,7 +1313,7 @@ dharma_hinduism.308 = {# Philosophical Debate
 	desc = dharma_hinduism.308.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_mountain_temple
+		reference = dharma_mountain_temple
 	}
 	left_portrait = {
 		character = root
@@ -1644,9 +1374,7 @@ dharma_hinduism.308 = {# Philosophical Debate
 		stress_impact = {
 			scholar = minor_stress_impact_loss
 			theologian = minor_stress_impact_loss
-			mystic_1 = minor_stress_impact_loss
-			mystic_2 = minor_stress_impact_loss
-			mystic_3 = minor_stress_impact_loss
+			lifestyle_mystic = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			shy = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -1690,9 +1418,7 @@ dharma_hinduism.308 = {# Philosophical Debate
 		stress_impact = {
 			scholar = minor_stress_impact_loss
 			theologian = minor_stress_impact_loss
-			mystic_1 = minor_stress_impact_loss
-			mystic_2 = minor_stress_impact_loss
-			mystic_3 = minor_stress_impact_loss
+			lifestyle_mystic = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			shy = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -1736,9 +1462,7 @@ dharma_hinduism.308 = {# Philosophical Debate
 		stress_impact = {
 			scholar = minor_stress_impact_loss
 			theologian = minor_stress_impact_loss
-			mystic_1 = minor_stress_impact_loss
-			mystic_2 = minor_stress_impact_loss
-			mystic_3 = minor_stress_impact_loss
+			lifestyle_mystic = minor_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			shy = minor_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -1989,9 +1713,7 @@ dharma_hinduism.308 = {# Philosophical Debate
 		stress_impact = {
 			scholar = minor_stress_impact_gain
 			theologian = minor_stress_impact_gain
-			mystic_1 = minor_stress_impact_gain
-			mystic_2 = minor_stress_impact_gain
-			mystic_3 = minor_stress_impact_gain
+			lifestyle_mystic = minor_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 			shy = minor_stress_impact_loss
 			humble = minor_stress_impact_loss
@@ -2008,7 +1730,7 @@ dharma_hinduism.309 = {# Taking home a book
 	desc = dharma_hinduism.309.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_mountain_temple
+		reference = dharma_mountain_temple
 	}
 	left_portrait = {
 		character = root
@@ -2076,7 +1798,7 @@ dharma_hinduism.310 = {# Medical learning
 	desc = dharma_hinduism.310.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_temple_interior
+		reference = dharma_temple_interior
 	}
 	left_portrait = {
 		character = root
@@ -2101,7 +1823,10 @@ dharma_hinduism.310 = {# Medical learning
 		hidden_effect = {
 			if = {
 				limit = {
-					NOT = { has_trait = physician_3 }
+					has_trait_xp = {
+						trait = lifestyle_physician
+						value < 100
+					}
 				}
 				random = {
 					chance = 05
@@ -2176,7 +1901,7 @@ dharma_hinduism.311 = {# Language Learning
 	desc = dharma_hinduism.311.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_mountain_temple
+		reference = dharma_mountain_temple
 	}
 	left_portrait = {
 		character = root
@@ -2292,7 +2017,7 @@ dharma_hinduism.312 = {# Learning to love to read
 	desc = dharma_hinduism.312.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_temple_interior
+		reference = dharma_temple_interior
 	}
 	left_portrait = {
 		character = root
@@ -2353,7 +2078,7 @@ dharma_hinduism.313 = {# Religious Experince
 	desc = dharma_hinduism.313.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_mountain_temple
+		reference = dharma_mountain_temple
 	}
 	left_portrait = {
 		character = root
@@ -2395,7 +2120,7 @@ dharma_hinduism.314 = {# Studying Hindu Philosophy
 	desc = dharma_hinduism.314.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_temple_interior
+		reference = dharma_temple_interior
 	}
 	left_portrait = {
 		character = root
@@ -2417,14 +2142,14 @@ dharma_hinduism.314 = {# Studying Hindu Philosophy
 		}
 		exists = scope:activity
 		NOT = {
-			exists = scope:activity.var:had_dharma_buddhism_314
+			exists = scope:activity.var:had_dharma_hinduism_314
 		}
 	}
 
 	immediate = {
 		scope:activity = {
 			set_variable = {
-				name = had_dharma_buddhism_314
+				name = had_dharma_hinduism_314
 				value = yes
 			}
 		}
@@ -2477,9 +2202,7 @@ dharma_hinduism.314 = {# Studying Hindu Philosophy
 		stress_impact = {
 			scholar = minor_stress_impact_gain
 			theologian = minor_stress_impact_gain
-			mystic_1 = minor_stress_impact_gain
-			mystic_2 = minor_stress_impact_gain
-			mystic_3 = minor_stress_impact_gain
+			lifestyle_mystic = minor_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 			shy = minor_stress_impact_loss
 			humble = minor_stress_impact_loss
@@ -2491,7 +2214,7 @@ dharma_hinduism.314 = {# Studying Hindu Philosophy
 			limit = { exists = scope:increase_mystic }
 			clear_saved_scope = increase_mystic
 		}
-		dharma_set_up_next_nalanda_event_effect = { DAYS = 10 }
+		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
 	}
 }
 dharma_hinduism.315 = {# Recieving an education
@@ -2500,7 +2223,7 @@ dharma_hinduism.315 = {# Recieving an education
 	desc = dharma_hinduism.315.desc
 	theme = faith
 	override_background = {
-		event_background = dharma_temple_interior
+		reference = dharma_temple_interior
 	}
 	left_portrait = {
 		character = root
@@ -2555,14 +2278,14 @@ dharma_hinduism.315 = {# Recieving an education
 		dharma_set_up_next_sharada_peeth_event_effect = { DAYS = 10 }
 	}
 }
-# Returning from Nalanda
+# Returning from Sharada Peeth
 dharma_hinduism.316 = {# Returning Home
 	type = character_event
 	title = dharma_hinduism.316.t
 	desc = dharma_hinduism.316.desc
 	theme = faith
 	override_background = {
-		event_background = throne_room
+		reference = throne_room
 	}
 	left_portrait = {
 		character = root
@@ -2571,18 +2294,6 @@ dharma_hinduism.316 = {# Returning Home
 
 	option = {
 		name = dharma_hinduism.316.home
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-
-	after = {
-		trigger_event = { id = dharma_hinduism.317 days = 10 }
-	}
-}
-dharma_hinduism.317 = {# Misc cleanup
-	hidden = yes
-	immediate = {
 		scope:activity = {
 			complete_activity = yes
 		}
