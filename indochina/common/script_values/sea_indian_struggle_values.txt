@@ -625,3 +625,29 @@ standard_truce_duration_days = {
 	}
 }
 
+grand_trunk_cost = {
+	value = 10
+	every_realm_county = {
+		desc = ""
+		limit = {
+			title_province = {geographical_region = custom_grand_trunk_road}
+		}
+		add = 1
+		if = {
+			limit = { county_control <= high_county_control_limit }
+			add = 1
+		}
+		if = {
+			limit = { county_control <= low_county_control_limit }
+			add = 1
+		}
+		every_county_province = {
+			limit = { has_holding = no }
+			add = 1
+		}
+	}
+	if = {
+		limit = { dynasty = { has_dynasty_modifier = india_grand_trunk_protectors } }
+		value = 0
+	}
+}

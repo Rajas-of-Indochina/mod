@@ -862,3 +862,137 @@ unite_nasrani_decision = {
 		trigger_event = south_asia.0044
 	}
 }
+
+protect_grand_trunk_road = {
+	desc = protect_grand_trunk_road_desc
+	selection_tooltip = protect_grand_trunk_road_tooltip
+	picture = "gfx/interface/illustrations/decisions/fp2_decision_struggle_opening.dds"
+	sort_order = 300
+
+	is_shown = {
+		any_realm_county = {
+			title_province= {
+				OR = {
+					geographical_region = world_kabulistan
+					geographical_region = world_india_bengal
+					geographical_region = world_india_rajastan
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		any_realm_province = { geographical_region = custom_grand_trunk_road }
+	}
+
+	effect = {
+		hidden_effect = {
+			every_county_in_region = {
+				region = custom_grand_trunk_road
+				limit = {
+					holder.top_liege = root
+				}
+				change_county_control = {
+					value = 0.2
+					multiply = development_level
+					min = 1
+				}
+				if = {
+					limit = {dynasty = { has_dynasty_modifier = india_grand_trunk_protectors }}
+					add_county_modifier = {
+						modifier = india_grand_trunk_road_enhanced
+						years = 10
+					}
+				}
+				else = {
+					add_county_modifier = {
+						modifier = india_grand_trunk_road
+						years = 10
+					}
+				}
+			}
+		}
+		custom_tooltip = every_in_grand_trunk
+		custom_tooltip = grand_trunk_control_gain
+		show_as_tooltip = {
+			if = {
+				limit = {dynasty = { has_dynasty_modifier = india_grand_trunk_protectors }}
+				add_county_modifier = {
+					modifier = india_grand_trunk_road_enhanced
+					years = 10
+				}
+			}
+			else = {
+				add_county_modifier = {
+					modifier = india_grand_trunk_road
+					years = 10
+				}
+			}
+		}
+	}
+
+	cooldown = { years = 10 }
+
+	cost = {
+		gold = grand_trunk_cost
+		prestige = {
+			value = grand_trunk_cost
+			multiply = 0.5
+		}
+	}
+}
+
+restore_grand_trunk_road = {
+	desc = restore_grand_trunk_road_desc
+	selection_tooltip = restore_grand_trunk_road_tooltip
+	picture = "gfx/interface/illustrations/decisions/fp2_decision_struggle_opening.dds"
+	major = yes
+
+	is_shown = {
+		any_realm_county = {
+			title_province= {
+				OR = {
+					geographical_region = world_kabulistan
+					geographical_region = world_india_bengal
+					geographical_region = world_india_rajastan
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		completely_controls_region = custom_grand_trunk_road
+		OR = {
+			highest_held_title_tier >= tier_empire
+			AND = {
+				highest_held_title_tier >= tier_kingdom
+				prestige_level >= very_high_prestige_level
+			}
+		}
+	}
+
+	cost = {
+		gold = monumental_gold_value
+		prestige = massive_prestige_value
+	}
+
+	effect = {
+		dynasty = {
+			add_dynasty_modifier = {
+				modifier = india_grand_trunk_protectors
+			}
+			add_dynasty_prestige = monumental_dynasty_prestige_value
+		}
+		custom_tooltip = free_grand_trunk_protection
+		hidden_effect = {
+			every_county_in_region = {
+				region = custom_grand_trunk_road
+				add_county_modifier = { modifier = india_grand_trunk_permabonus}
+			}
+		}
+		custom_tooltip = every_in_grand_trunk
+		show_as_tooltip = {
+			add_county_modifier = { modifier = india_grand_trunk_permabonus}
+		}
+	}
+}
