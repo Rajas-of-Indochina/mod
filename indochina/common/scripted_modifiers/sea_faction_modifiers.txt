@@ -701,7 +701,7 @@ common_faction_modifiers = {
 	# +/- 40 join weight at -/+100 opinion
 	opinion_modifier = {
 		who = root
-		opinion_target = $FACTION_TARGET$
+		opinion_target = $FACTION_TARGET$ 
 		multiplier = $OPINION_MULTIPLIER$
 		max = $MAX_OPINION$
 	}
@@ -712,7 +712,7 @@ common_faction_modifiers = {
 		HOSTILE_BASE_VALUE = 50
 		EVIL_BASE_VALUE = 100
 		BASE_FAITH = faith
-		TARGET_FAITH = $FACTION_TARGET$.faith
+		TARGET = $FACTION_TARGET$
 	}
 
 	# +25 join chance per sin, -25 join chance per virtue
@@ -736,6 +736,7 @@ common_faction_modifiers = {
 
 	# Difficulty Settings
 	modifier = { # Easy
+		desc = "FACTION_REASON_DIFFICULTY_EASY"
 		add = -50
 		has_game_rule = easy_difficulty
 		$FACTION_TARGET$ = {
@@ -743,6 +744,7 @@ common_faction_modifiers = {
 		}
 	}
 	modifier = { # Very Easy
+		desc = "FACTION_REASON_DIFFICULTY_VERY_EASY"
 		add = -150
 		has_game_rule = very_easy_difficulty
 		$FACTION_TARGET$ = {
@@ -752,14 +754,17 @@ common_faction_modifiers = {
 
 	# Realm Stability Settings
 	modifier = {
+		desc = "FACTION_REASON_GAME_RULE_REALM_STABILITY_LESSER"
 		add = 50
 		has_game_rule = lesser_realm_stability
 	}
 	modifier = {
+		desc = "FACTION_REASON_GAME_RULE_REALM_STABILITY_HIGHER"
 		add = -50
 		has_game_rule = higher_realm_stability
 	}
 	modifier = {
+		desc = "FACTION_REASON_GAME_RULE_REALM_STABILITY_EXTREME"
 		add = -100
 		has_game_rule = extreme_realm_stability
 	}
@@ -769,6 +774,7 @@ common_faction_modifiers = {
 		add = -10000
 		years_from_game_start < 1
 		$FACTION_TARGET$.primary_title.tier = tier_duchy
+		desc = "FACTION_REASON_GAME_START_DUCHY"
 	}
 
 	modifier = {
@@ -776,20 +782,15 @@ common_faction_modifiers = {
 		years_from_game_start < 5
 		$FACTION_TARGET$.primary_title.tier = tier_kingdom
 
+		desc = "FACTION_REASON_GAME_START_KINGDOM"
 	}
 
 	modifier = {
 		add = -10000
 		years_from_game_start < 10
 		$FACTION_TARGET$.primary_title.tier = tier_empire
-	}
 
-	modifier = {
-		add = 50
-		any_character_struggle = {
-			involvement = involved
-			has_struggle_phase_parameter = factions_more_common
-		}
+		desc = "FACTION_REASON_GAME_START_EMPIRE"
 	}
 }
 
