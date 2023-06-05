@@ -1,4 +1,124 @@
 ﻿
+tradition_agrarian = {
+	category = realm
+
+	layers = {
+		0 = steward
+		1 = indian
+		4 = farmland.dds
+	}
+
+	can_pick = {
+		custom_tooltip = {
+			text = culture_in_farmlands_or_floodplains_terrain_desc
+			any_culture_county = {
+				any_county_province = {
+					OR = {
+						terrain = farmlands
+						terrain = floodplains
+						terrain = plains
+					}
+				}
+			}
+		}
+	}
+
+	parameters = {
+		content_trait_more_common = yes
+		martial_education_worse_outcomes = yes
+		hard_working_traits_more_valued = yes
+	}
+	character_modifier = {
+		men_at_arms_recruitment_cost = 0.25
+		prowess = -2
+		floodplains_travel_danger = floodplains_medium_danger_reduction
+	}
+	county_modifier = {
+		farmlands_development_growth_factor = 0.3
+		farmlands_construction_gold_cost = -0.1
+		floodplains_development_growth_factor = 0.3
+		floodplains_construction_gold_cost = -0.1
+		plains_development_growth_factor = 0.3
+		plains_construction_gold_cost = -0.1
+		farmlands_levy_size = 0.1
+		floodplains_levy_size = 0.1
+		plains_levy_size = 0.1
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					culture_pillar:ethos_bellicose = { is_in_list = traits }
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = culture_not_bellicose
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							count >= 5
+							any_county_province = {
+								OR = {
+									terrain = farmlands
+									terrain = floodplains
+									terrain = plains
+								}
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = culture_in_farmlands_or_floodplains_terrain_count_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							count >= 2
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+									terrain = farmlands
+									terrain = floodplains
+									terrain = plains
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+		if = {
+			limit = {
+				scope:character = {
+					government_has_flag = government_is_tribal
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
 tradition_angkorian_architecture = {
 	category = realm
 
