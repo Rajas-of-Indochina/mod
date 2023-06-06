@@ -1,8 +1,16 @@
 ﻿@minority_law_cooldown_years = 5
 
+# flag = religious_minorities_may_grow
+# flag = religious_minorities_may_migrate
+# flag = cultural_minorities_may_grow
+# flag = cultural_minorities_may_migrate
+# flag = may_convert_faith
+# flag = may_convert_culture
+# flag = unlock_expel_religious_minorities
+# flag = unlock_expel_cultural_minorities
+
 religious_minority_status_law = {
 	default = religious_minority_status_2
-	cumulative = yes
 	flag = religion_culture_law
 	flag = religion_law
 
@@ -14,6 +22,9 @@ religious_minority_status_law = {
 			different_faith_opinion = 10
 			clergy_opinion = -10
 		}
+
+		flag = religious_minorities_may_grow
+		flag = religious_minorities_may_migrate
 
 		can_have = { NOT = { has_government = anarchist_government } }
 		can_keep = { NOT = { has_government = anarchist_government } }
@@ -58,17 +69,17 @@ religious_minority_status_law = {
 	religious_minority_status_2 = {
 
 		modifier = {
-			different_faith_opinion = -10
-			clergy_opinion = 10
+			#different_faith_opinion = -10
+			#clergy_opinion = 10
 		}
 
 		flag = may_convert_faith
-		# Minorities should not grow in this realm
-
-		should_start_with = { always = yes }
+		flag = religious_minorities_may_migrate
 
 		can_have = { NOT = { has_government = anarchist_government } }
 		can_keep = { NOT = { has_government = anarchist_government } }
+
+		should_start_with = { always = yes }
 
 		can_pass = {
 			OR = {
@@ -140,11 +151,11 @@ religious_minority_status_law = {
 			clergy_opinion = 10
 		}
 
+		flag = may_convert_faith
 		flag = unlock_expel_religious_minorities
 
 		can_have = { NOT = { has_government = anarchist_government } }
 		can_keep = { NOT = { has_government = anarchist_government } }
-		# Minorities should not spread to this realm
 
 		can_pass = {
 			has_realm_law = religious_minority_status_2
@@ -187,7 +198,6 @@ religious_minority_status_law = {
 
 cultural_minority_status_law = {
 	default = cultural_minority_status_2
-	cumulative = yes
 	flag = religion_culture_law
 	flag = culture_law
 
@@ -199,6 +209,9 @@ cultural_minority_status_law = {
 			different_culture_opinion = 10
 			same_culture_opinion = -5
 		}
+
+		flag = cultural_minorities_may_grow
+		flag = cultural_minorities_may_migrate
 
 		can_have = { NOT = { has_government = anarchist_government } }
 		can_keep = { NOT = { has_government = anarchist_government } }
@@ -243,12 +256,12 @@ cultural_minority_status_law = {
 	cultural_minority_status_2 = {
 
 		modifier = {
-			different_culture_opinion = -10
-			same_culture_opinion = 5
+			#different_culture_opinion = -10
+			#same_culture_opinion = 5
 		}
 
 		flag = may_convert_culture
-		# Minorities should not grow in this realm
+		flag = cultural_minorities_may_migrate
 
 		should_start_with = { always = yes }
 
@@ -325,8 +338,8 @@ cultural_minority_status_law = {
 			same_culture_opinion = 5
 		}
 
+		flag = may_convert_culture
 		flag = unlock_expel_cultural_minorities
-		# Minorities should not spread to this realm
 
 		can_have = { NOT = { has_government = anarchist_government } }
 		can_keep = { NOT = { has_government = anarchist_government } }
