@@ -30,11 +30,15 @@
 @elephant = "gfx/interface/icons/culture_innovations/innovation_elephant.dds"
 @special_maa_01 = "gfx/interface/icons/culture_innovations/innovation_special_maa_01.dds"
 @special_maa_02 = "gfx/interface/icons/culture_innovations/innovation_special_maa_02.dds"
+@asian_maa_01 = "gfx/interface/icons/culture_innovations/asian_maa_1.dds"
+
+# "borrowed" from Arquebus Mod"
+@rocketry = "gfx/interface/icons/culture_innovations/innovation_rocketry.dds"
 
 innovation_repeating_crossbow = {
 	group = culture_group_regional
 	culture_era = culture_era_tribal
-	region = world_innovation_repeating_crossbow
+	region = world_chinese_technology
 	icon = @special_maa_02
 
 	unlock_maa = chu_ko_nu
@@ -57,7 +61,7 @@ innovation_highland_horse_breeding = {
 	group = culture_group_regional
 	culture_era = culture_era_tribal
 	region = world_innovation_highland_horse_breeding
-	icon = @special_maa_01
+	icon = @asian_maa_01
 
 	unlock_maa = nangchen_cavalry
 
@@ -66,52 +70,7 @@ innovation_highland_horse_breeding = {
 
 ## Added by Huanglukuzhu
 
-innovation_bu_ren_armor = {
-	group = culture_group_regional
-	culture_era = culture_era_early_medieval
-	icon = @weapons_and_armor_02
-	region = world_northern_china
-
-	maa_upgrade = {
-		type = pikemen
-		toughness = 4
-	}
-	maa_upgrade = {
-		type = heavy_infantry
-		toughness = 4
-	}	
-
-	flag = global_regional
-}
-
-innovation_mongolian_horse = {
-	group = culture_group_regional
-	culture_era = culture_era_tribal
-	icon = @special_maa_01
-	region = world_steppe_east
-
-	maa_upgrade = {
-		type = heavy_cavalry
-		pursuit = 5
-	}
-	maa_upgrade = {
-		type = light_cavalry
-		pursuit = 5
-	}
-	maa_upgrade = {
-		type = archer_cavalry
-		pursuit = 5
-	}
-	character_modifier = {
-		movement_speed = 0.05
-	}	
-
-	flag = global_regional
-}
-
-
-
-innovation_luo_huan_armour = {
+innovation_iron_pogoda = {
 	group = culture_group_regional
 	culture_era = culture_era_early_medieval
 	icon = @knight
@@ -127,20 +86,23 @@ innovation_luo_huan_armour = {
 	flag = global_maa
 }
 
-innovation_battlefield_rockets = {
+innovation_huo_che = {
 	group = culture_group_regional
 	culture_era = culture_era_renaissance
-	icon = @special_maa_02
+	icon = @rocketry
 	potential = { 		
 		OR = {
 			# Cultural Pillars
 			has_cultural_pillar = heritage_chinese
 			has_cultural_pillar = heritage_korean
-		}
-	}	
+		}		
+	}
+	can_progress = { 
+		has_innovation = innovation_rocket_launcher
+	}
 
 	unlock_maa = wasp_nests
-	
+
 	flag = global_regional	
 	flag = global_maa
 }
