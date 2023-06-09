@@ -32,6 +32,10 @@
 @special_maa_02 = "gfx/interface/icons/culture_innovations/innovation_special_maa_02.dds"
 
 @highland_agriculture = "gfx/interface/icons/culture_innovations/highland_agriculture.dds"
+@chemistry = "gfx/interface/icons/culture_innovations/innovation_gunpowder.dds"
+# "borrowed" from Arquebus Mod"
+@handgonne = "gfx/interface/icons/culture_innovations/innovation_handgonne.dds"
+@firelancer = "gfx/interface/icons/culture_innovations/innovation_firelance.dds"
 
 ## Regional ##
 
@@ -72,12 +76,14 @@ innovation_highland_agriculture = {
 	flag = tribal_era_regional
 }
 
+## Early Medieval ##
+
 ## High Medieval ##
 
 innovation_fire_lances = {
 	group = culture_group_military
 	culture_era = culture_era_high_medieval
-	icon = @raised_banner
+	icon = @firelancer
 
 	unlock_maa = fire_lances
 
@@ -98,28 +104,10 @@ innovation_fire_lances = {
 
 ## Late Medieval ##
 
-innovation_advanced_fire_lances = {
-	group = culture_group_military
-	culture_era = culture_era_late_medieval
-	icon = @raised_banner
-
-	can_progress = {
-		has_innovation = innovation_fire_lances
-	}
-
-	maa_upgrade = {
-		type = fire_lances
-		damage = 8
-	}
-
-	flag = global_regular
-	flag = late_medieval_era_regular
-}
-
 innovation_hand_cannons = {
 	group = culture_group_military
 	culture_era = culture_era_late_medieval
-	icon = @misc_inventions
+	icon = @handgonne
 
 	unlock_maa = hand_cannons
 
@@ -133,6 +121,131 @@ innovation_hand_cannons = {
 		}
 	}
 
+	flag = global_regular
+	flag = late_medieval_era_regular
+}
+
+## Added by Huanglukuzhu
+
+innovation_luo_huan_armour = {
+	group = culture_group_regional
+	culture_era = culture_era_early_medieval
+	icon = @weapons_and_armor_02
+	region = world_northern_china
+
+	maa_upgrade = {
+		type = pikemen
+		toughness = 3
+	}
+	maa_upgrade = {
+		type = heavy_infantry
+		toughness = 3
+	}	
+
+	flag = global_regional
+	flag = tribal_era_regional
+}
+
+innovation_mongolian_horse_breed = {
+	group = culture_group_regional
+	culture_era = culture_era_tribal
+	icon = @special_maa_01
+	region = world_steppe_east
+
+	maa_upgrade = {
+		type = heavy_cavalry
+		pursuit = 5
+	}
+	maa_upgrade = {
+		type = light_cavalry
+		pursuit = 5
+	}
+	maa_upgrade = {
+		type = archer_cavalry
+		pursuit = 5
+	}
+	character_modifier = {
+		movement_speed = 0.05
+	}	
+
+	flag = global_regional
+	flag = tribal_era_regional
+}
+innovation_pole_sword = {
+	group = culture_group_regional
+	culture_era = culture_era_early_medieval
+	region = world_east_southeast_asia_technology
+	icon = @weapons_and_armor_01
+
+	character_modifier = {
+		pikemen_damage_mult = 0.15
+	}		
+
+	flag = global_regional
+	flag = early_medieval_era_regional
+}
+innovation_advanced_fire_lances = {
+	group = culture_group_regional
+	culture_era = culture_era_late_medieval
+	region = world_europe
+	icon = @raised_banner
+
+	can_progress = {
+		has_innovation = innovation_fire_lances
+	}
+
+	maa_upgrade = {
+		type = fire_lances
+		damage = 8
+	}
+
+	flag = global_regional
+	flag = late_medieval_era_regional
+}
+innovation_rocket_launcher = {
+	group = culture_group_regional
+	culture_era = culture_era_late_medieval
+	region = world_east_asian_technology
+	icon = @misc_inventions
+
+	can_progress = {
+		has_innovation = innovation_fire_lances
+	}
+
+	maa_upgrade = {
+		type = archer			# The base MaA type to upgrade
+		damage = 4
+		siege_value = 0.1
+	}
+
+	flag = global_regional
+	flag = late_medieval_era_regional
+}
+innovation_greek_fire = {
+	group = culture_group_regional
+	culture_era = culture_era_early_medieval
+	region = world_old_roman_technology
+	icon = @misc_inventions
+
+	character_modifier = { 
+		additional_fort_level = 1
+		skirmishers_damage_mult = 0.1
+	}
+
+	flag = global_regional
+	flag = early_medieval_era_regional
+}
+innovation_early_chemistry = {
+	group = culture_group_military
+	culture_era = culture_era_late_medieval
+	icon = @chemistry
+
+	character_modifier = { 
+		siege_phase_time = -0.1 
+		siege_weapon_siege_value_add = 0.1
+		skirmishers_siege_value_add = 0.1
+	}
+	
 	flag = global_regular
 	flag = late_medieval_era_regular
 }

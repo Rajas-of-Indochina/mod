@@ -30,11 +30,15 @@
 @elephant = "gfx/interface/icons/culture_innovations/innovation_elephant.dds"
 @special_maa_01 = "gfx/interface/icons/culture_innovations/innovation_special_maa_01.dds"
 @special_maa_02 = "gfx/interface/icons/culture_innovations/innovation_special_maa_02.dds"
+@asian_maa_01 = "gfx/interface/icons/culture_innovations/asian_maa_1.dds"
+
+# "borrowed" from Arquebus Mod"
+@rocketry = "gfx/interface/icons/culture_innovations/innovation_rocketry.dds"
 
 innovation_repeating_crossbow = {
 	group = culture_group_regional
 	culture_era = culture_era_tribal
-	region = world_innovation_repeating_crossbow
+	region = world_chinese_technology
 	icon = @special_maa_02
 
 	unlock_maa = chu_ko_nu
@@ -57,9 +61,48 @@ innovation_highland_horse_breeding = {
 	group = culture_group_regional
 	culture_era = culture_era_tribal
 	region = world_innovation_highland_horse_breeding
-	icon = @special_maa_01
+	icon = @asian_maa_01
 
 	unlock_maa = nangchen_cavalry
 
+	flag = global_maa
+}
+
+## Added by Huanglukuzhu
+
+innovation_iron_pogoda = {
+	group = culture_group_regional
+	culture_era = culture_era_early_medieval
+	icon = @knight
+	can_progress = { 
+		has_innovation = innovation_arched_saddle
+		has_innovation = innovation_bu_ren_armor
+		has_innovation = innovation_mongolian_horse
+		}
+		
+	unlock_maa = iron_pogoda
+	
+	flag = global_regional
+	flag = global_maa
+}
+
+innovation_huo_che = {
+	group = culture_group_regional
+	culture_era = culture_era_renaissance
+	icon = @rocketry
+	potential = { 		
+		OR = {
+			# Cultural Pillars
+			has_cultural_pillar = heritage_chinese
+			has_cultural_pillar = heritage_korean
+		}		
+	}
+	can_progress = { 
+		has_innovation = innovation_rocket_launcher
+	}
+
+	unlock_maa = wasp_nests
+
+	flag = global_regional	
 	flag = global_maa
 }
