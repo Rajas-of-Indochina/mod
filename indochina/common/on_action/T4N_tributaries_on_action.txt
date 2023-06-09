@@ -227,7 +227,10 @@ quarterly_trib_housekeeping_pulse = {
 
                 if = { # Remove trib relationship if the target is dead
                     limit = {
-                        is_alive = no
+                        OR = {
+                            is_alive = no
+                            scope:suzerain = this
+                        }
                     }
                     scope:suzerain = {
                         remove_list_variable = { name = permanent_tributaries target = prev }
