@@ -1203,3 +1203,121 @@ tradition_horses_like_clouds = { # Horse archery + guerrilla combat tradition of
 
 	ai_will_do = { value = 100 }
 }
+
+tradition_jungle_warfare = {
+	category = combat
+
+	layers = {
+		0 = martial
+		1 = indian
+		4 = jungle.dds
+	}
+
+	is_shown = { #Replaced by Bush Hunting
+		NOR = {
+			has_cultural_pillar = heritage_akan
+			has_cultural_pillar = heritage_yoruba
+			has_cultural_tradition = tradition_bush_hunting
+			has_cultural_tradition = tradition_jungle_warriors
+			has_cultural_tradition = tradition_adaptive_skirmishing
+		}
+		any_parent_culture = {
+			has_cultural_tradition = tradition_jungle_warfare
+		}
+	}
+
+	can_pick = {
+		culture_not_pacifistic_trigger = yes
+		custom_description = {
+			text = culture_in_jungle_desc
+			any_culture_county = {
+				any_county_province = {
+					terrain = jungle
+				}
+			}
+		}
+	}
+	parameters = {
+		unlock_maa_sumpitan = yes
+		jungle_stalker_trait_more_common = yes
+		jungle_trait_bonuses = yes
+		can_recruit_jungle_specialist = yes
+	}
+	character_modifier = {
+		skirmishers_damage_mult = 0.05
+		skirmishers_toughness_mult = 0.1
+		skirmishers_maintenance_mult = -0.05
+		archers_damage_mult = 0.1
+		archers_toughness_mult = 0.05
+		archers_maintenance_mult = -0.05
+		enemy_terrain_advantage = -0.25
+		heavy_cavalry_damage_mult = -0.1
+		heavy_cavalry_toughness_mult = -0.05
+		heavy_infantry_damage_mult = -0.1
+		heavy_infantry_toughness_mult = -0.05
+		jungle_travel_danger = jungle_medium_danger_reduction
+	}
+	province_modifier = {
+		jungle_levy_size = 0.1
+		jungle_supply_limit_mult = 0.25
+	}
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								terrain = jungle
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = jungle_percentage_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							percent >= 0.2
+							culture = scope:character.culture
+							any_county_province = {
+								terrain = jungle
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}
