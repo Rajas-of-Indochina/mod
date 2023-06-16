@@ -1239,7 +1239,12 @@ dharma_hinduism.307 = {# Mystical learning
 		hidden_effect = {
 			if = {
 				limit = {
-					NOT = { has_trait = mystic_3 }
+					NOT = {
+						has_trait_xp = {
+							trait = lifestyle_mystic
+							value >= 100
+						}
+					}
 				}
 				random = {
 					chance = 05
@@ -1270,9 +1275,9 @@ dharma_hinduism.307 = {# Mystical learning
 					add_prestige = minor_prestige_gain
 					if = {
 						limit = { exists = scope:increase_mystic }
-						change_trait_rank = {
+						add_trait_xp = {
 							trait = lifestyle_mystic
-							rank = 1
+							value = 10 #TODO_CD_EP2 standardize
 						}
 					}
 				}
