@@ -900,6 +900,41 @@ language_gondi = {# Gondi Languages
 	color = gond
 }
 
+language_kurukh = {
+	type = language
+	is_shown = {
+		language_is_shown_trigger = {
+			LANGUAGE = language_kurukh
+		}
+	}
+	parameters = {
+		language_group_north_dravidian = yes
+		language_family_dravidian = yes
+		language_union_indian = yes
+	}
+	ai_will_do = {
+		value = 10
+		if = {
+			limit = { has_cultural_pillar = language_kurukh }
+			multiply = same_language_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_group_north_dravidian }
+			multiply = same_language_group_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_family_dravidian }
+			multiply = same_language_family_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_union_indian }
+			multiply = same_language_union_choice_factor
+		}
+	}
+
+	color = gond
+}
+
 # Tibetan Languages
 language_tibetan = {
 	type = language
@@ -1187,6 +1222,36 @@ language_pyu = {
 		value = 10
 		if = {
 			limit = { has_cultural_pillar = language_pyu }
+			multiply = same_language_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_group_tibeto_burman }
+			multiply = same_language_group_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_family_sino_tibetan }
+			multiply = same_language_family_choice_factor
+		}
+	}
+
+	color = pyu
+}
+
+language_newari = {
+	type = language
+	is_shown = {
+		language_is_shown_trigger = {
+			LANGUAGE = language_newari
+		}
+	}
+	parameters = {
+		language_group_tibeto_burman = yes
+		language_family_sino_tibetan = yes
+	}
+	ai_will_do = {
+		value = 10
+		if = {
+			limit = { has_cultural_pillar = language_newari }
 			multiply = same_language_choice_factor
 		}
 		else_if = {
