@@ -33,6 +33,13 @@
 
 @highland_agriculture = "gfx/interface/icons/culture_innovations/highland_agriculture.dds"
 @chemistry = "gfx/interface/icons/culture_innovations/innovation_gunpowder.dds"
+@firebomb = "gfx/interface/icons/culture_innovations/fire_bomb.dds"
+@special_coin_01 = "gfx/interface/icons/culture_innovations/coin_1.dds"
+@arab_tech_01 = "gfx/interface/icons/culture_innovations/arab_study.dds"
+@arab_tech_02 = "gfx/interface/icons/culture_innovations/arab_math.dds"
+@horse_breeding = "gfx/interface/icons/culture_innovations/horse_breeding.dds"
+@fullbodyarmour = "gfx/interface/icons/culture_innovations/full_body_armour.dds"
+
 # "borrowed" from Arquebus Mod"
 @handgonne = "gfx/interface/icons/culture_innovations/innovation_handgonne.dds"
 @firelancer = "gfx/interface/icons/culture_innovations/innovation_firelance.dds"
@@ -149,7 +156,7 @@ innovation_luo_huan_armour = {
 innovation_mongolian_horse_breed = {
 	group = culture_group_regional
 	culture_era = culture_era_tribal
-	icon = @special_maa_01
+	icon = @horse_breeding
 	region = world_steppe_east
 
 	maa_upgrade = {
@@ -171,19 +178,19 @@ innovation_mongolian_horse_breed = {
 	flag = global_regional
 	flag = tribal_era_regional
 }
-innovation_pole_sword = {
-	group = culture_group_regional
+innovation_polearms = {
+	group = culture_group_military
 	culture_era = culture_era_early_medieval
-	region = world_east_southeast_asia_technology
 	icon = @weapons_and_armor_01
 
 	character_modifier = {
 		pikemen_damage_mult = 0.15
 	}		
 
-	flag = global_regional
-	flag = early_medieval_era_regional
+	flag = global_regular
+	flag = early_medieval_era_regular
 }
+
 innovation_advanced_fire_lances = {
 	group = culture_group_regional
 	culture_era = culture_era_late_medieval
@@ -208,12 +215,8 @@ innovation_rocket_launcher = {
 	region = world_east_asian_technology
 	icon = @misc_inventions
 
-	can_progress = {
-		has_innovation = innovation_fire_lances
-	}
-
 	maa_upgrade = {
-		type = archer			# The base MaA type to upgrade
+		type = archer
 		damage = 4
 		siege_value = 0.1
 	}
@@ -249,3 +252,114 @@ innovation_early_chemistry = {
 	flag = global_regular
 	flag = late_medieval_era_regular
 }
+
+innovation_greek_classics = {
+	group = culture_group_regional
+	culture_era = culture_era_tribal
+	region = world_old_roman_technology
+	icon = @administration_2
+
+	character_modifier = {
+		cultural_head_fascination_mult = 0.10
+		monthly_learning_lifestyle_xp_gain_mult = 0.1
+	}
+	
+	flag = global_regional
+	flag = tribal_era_regional
+}
+
+innovation_medieval_geometry = {
+	group = culture_group_regional
+	culture_era = culture_era_early_medieval
+	region = ghw_region_near_east
+	icon = @arab_tech_01
+
+	character_modifier = {
+		church_holding_holding_build_speed = -0.10
+		church_holding_holding_build_gold_cost = -0.05
+		castle_holding_holding_build_speed = -0.10
+		castle_holding_holding_build_gold_cost = -0.05
+	}
+	
+	flag = global_regional
+	flag = early_medieval_era_regional
+}
+
+innovation_science_of_religion = {
+	group = culture_group_regional
+	culture_era = culture_era_high_medieval
+	region = world_middle_east_persia
+	icon = @arab_tech_01
+	
+	custom = convert_speed_from_innovation
+	
+	flag = global_regional
+	flag = high_medieval_era_regional
+}
+
+innovation_sandalwood_groves = {
+	group = culture_group_regional
+	culture_era = culture_era_early_medieval
+	region = world_southeast_asia
+	icon = @arab_tech_01
+	
+	character_modifier = {
+		monthly_piety_gain_mult = 0.2
+	}
+	province_modifier = {
+		forest_tax_mult = 0.05
+		taiga_tax_mult = 0.05
+		jungle_tax_mult = 0.05
+	}
+	
+	flag = global_regional
+	flag = early_medieval_era_regional
+}
+
+innovation_hindu_arabic_numberal_india = {
+	group = culture_group_regional
+	culture_era = culture_era_tribal
+	region = world_india
+	icon = @arab_tech_02
+
+	character_modifier= {
+		development_growth_factor = 0.1
+        domain_tax_mult = 0.05
+	}
+}
+
+innovation_japanese_fire_bomb = {
+	group = culture_group_regional
+	culture_era = culture_era_renaissance
+	region = world_japan
+	icon = @firebomb
+	
+	can_progress = {
+		has_innovation = innovation_rocket_launcher
+	}	
+
+	character_modifier= {
+		controlled_province_advantage = 4
+		additional_fort_level = 2
+	}
+	flag = global_regional
+}
+
+innovation_gothic_plate_armour = {
+	group = culture_group_regional
+	culture_era = culture_era_renaissance
+	region = world_europe
+	icon = @fullbodyarmour
+	
+	can_progress = {
+		has_innovation = innovation_plate_armor
+	}	
+
+	character_modifier = {
+		knight_effectiveness_mult = 0.15
+		heavy_cavalry_toughness_mult = 0.1
+	}
+	flag = global_regional
+}
+
+
