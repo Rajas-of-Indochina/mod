@@ -1000,20 +1000,46 @@ indo_greek_culture_decision_effect = {
 	culture:indo_greek = {
 		reset_culture_creation_date = yes
 	}
-
-	every_sub_realm_county = {
-		limit = {
-			OR = {
-				culture = { has_cultural_pillar = heritage_indo_aryan }
-				culture = { has_cultural_pillar = language_greek }
+	custom_tooltip = {
+		text = yavana_counties_conversion_tt
+		every_realm_county = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+					culture = { has_cultural_pillar = heritage_byzantine }
+					culture = { has_cultural_pillar = language_greek }
+				}
+			}
+			random = {
+				chance = 40
+				set_county_culture = culture:indo_greek
+				modifier = {
+					add = development_level
+				}
 			}
 		}
-		hidden_effect = {	
-			random_list = {
-				40 = {
-					set_county_culture = culture:indo_greek
+	}
+	custom_tooltip = {
+		text = yavana_vassal_conversion_tt
+		every_vassal_or_below = {
+			limit = {
+				is_ai = yes
+				OR = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+					culture = { has_cultural_pillar = heritage_byzantine }
+					culture = { has_cultural_pillar = language_greek }
 				}
-				60 = {}
+			}
+			random_list = {
+				1 = {
+					set_culture = culture:indo_greek
+					opinion_modifier = {
+						opinion_target = ROOT
+						who = THIS
+						multiplier = 0.1
+					}
+				}
+				1 = {}
 			}
 		}
 	}

@@ -482,15 +482,21 @@ restore_indo_greek_kingdom_decision = {
 	ai_check_interval = 120
 
 	is_shown = {
-		# capital_county.title_province = {
-		# 	geographical_region = custom_indo_greek_kingdom
-		# }
+		capital_county.title_province = {
+			geographical_region = custom_indo_greek_kingdom
+		}
 		# Need to have a cultural or religious tie to the Hellenes:
 		OR = {
 			has_religion = religion:hellenism_religion
 			culture = culture:greek
 			culture = {
 				any_parent_culture = { this = culture:greek }
+			}
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_yavanarajya
 			}
 		}
 	}
@@ -572,6 +578,99 @@ restore_indo_greek_kingdom_decision = {
 					#Always available
 				}
 			}
+		}
+		hidden_effect = {
+			trigger_event = south_asia.0042
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_yavanarajya
+			}
+		}
+	}
+}
+
+indo_greek_culture_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	major = yes
+	desc = indo_greek_culture_decision_desc
+	ai_check_interval = 120
+
+	is_shown = {
+		capital_county.title_province = {
+			OR = {
+				# gotte be kinda sorta near historical indo-greek lands
+				geographical_region = world_india_rajastan
+				geographical_region = custom_indo_greek_kingdom
+			}
+		}
+		OR = {
+			# Needs to be either Indo-Aryan or have some kind of Greek cultural roots
+			culture = { has_cultural_pillar = heritage_indo_aryan }
+			culture = { any_parent_or_above = { this = culture:greek } }
+			culture = { has_cultural_pillar = language_greek }
+			# Or at least speek Greek
+			knows_language = language_greek
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_yavana_culture
+			}
+		}
+	}
+
+	is_valid = {
+		# Famous
+		prestige_level >= 3
+		# Speeks Greek
+		knows_language = language_greek
+		# Greeks (or post-greeks) and Indo-Aryans coexist within your realm
+		OR = {
+			AND = {
+				any_powerful_vassal = {
+					culture = {
+						OR = {
+							this = culture:greek
+							any_parent_or_above = { this = culture:greek }
+							culture = { has_cultural_pillar = language_greek }
+						}
+					}
+				}
+				any_powerful_vassal = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+				}
+			}
+			AND = {
+				any_sub_realm_county = {
+					culture = {
+						OR = {
+							this = culture:greek
+							any_parent_or_above = { this = culture:greek }
+							culture = { has_cultural_pillar = language_greek }
+						}
+					}
+				}
+				any_sub_realm_county = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_at_peace_adult = yes
+	}
+
+	effect = {
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_yavana_culture
+			}
+			trigger_event = south_asia.0043
+		}
+		show_as_tooltip = {
+			indo_greek_culture_decision_effect = yes
 		}
 	}
 }
