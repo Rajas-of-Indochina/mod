@@ -323,11 +323,18 @@ form_bene_israel_decision = {
 		faith = faith:malabarism
 		highest_held_title_tier = tier_duchy
 		capital_province = { geographical_region = world_india }
-
+		
 		NOT = {
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
 				target = flag:form_bene_israel_decision
+			}
+		}
+		
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:unite_nasrani_decision
 			}
 		}
 	}
@@ -367,14 +374,12 @@ form_bene_israel_decision = {
 			target = flag:form_bene_israel_decision
 		}
 
-		save_scope_as = founder
-
 		show_as_tooltip = {
 			unite_bene_israel_effect = yes
 		}
 
 		trigger_event = south_asia.0021 #I formed Bene Israel
-
+		
 		every_player = {
 			limit = {
 				NOT = { this = scope:founder }
@@ -393,6 +398,97 @@ form_bene_israel_decision = {
 		base = 100
 	}
 }
+
+unite_nasrani_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	desc = unite_nasrani_decision_desc
+	selection_tooltip = unite_nasrani_decision_tooltip
+	major = yes
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			religion = religion:christianity_religion
+			any_realm_county = { religion = religion:christianity_religion }
+			any_realm_county = {
+				custom_description = {
+					text = has_christian_minority_tt
+					OR = {
+						any_in_list = {
+							variable = faith_minorities_large
+							religion = religion:christianity_religion 
+						}
+						any_in_list = {
+							variable = faith_minorities_small
+							religion = religion:christianity_religion
+						}
+					}
+				}
+			}
+		}
+		capital_county.title_province.geographical_region = world_india_deccan
+		highest_held_title_tier = tier_duchy
+		
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:form_bene_israel_decision
+			}
+		}
+		
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:unite_nasrani_decision
+			}
+		}
+	}
+
+	is_valid = {
+		religion = religion:christianity_religion
+		piety_level >= 3
+		AND = {
+			completely_controls = title:d_chera_nadu
+			completely_controls = title:d_konkana
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		piety = {
+			value = major_prestige_value
+		}
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:unite_nasrani_decision
+		}
+		faith = {
+			save_scope_as = old_faith
+		}
+		if = {
+			limit = {
+				NOT = { faith = faith:indian_catholic }
+			}
+			set_character_faith_with_conversion = faith:indian_catholic
+		}
+		save_scope_as = founder
+		show_as_tooltip = {
+			unite_nasrani_decision_effect = yes
+		}
+		trigger_event = south_asia.0044
+	}
+}
+
 
 ######################################
 ##	Establish the Theravada Faith	##
