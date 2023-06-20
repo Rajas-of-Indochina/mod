@@ -323,11 +323,18 @@ form_bene_israel_decision = {
 		faith = faith:malabarism
 		highest_held_title_tier = tier_duchy
 		capital_province = { geographical_region = world_india }
-
+		
 		NOT = {
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
 				target = flag:form_bene_israel_decision
+			}
+		}
+		
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:unite_nasrani_decision
 			}
 		}
 	}
@@ -367,14 +374,12 @@ form_bene_israel_decision = {
 			target = flag:form_bene_israel_decision
 		}
 
-		save_scope_as = founder
-
 		show_as_tooltip = {
 			unite_bene_israel_effect = yes
 		}
 
 		trigger_event = south_asia.0021 #I formed Bene Israel
-
+		
 		every_player = {
 			limit = {
 				NOT = { this = scope:founder }
@@ -393,6 +398,97 @@ form_bene_israel_decision = {
 		base = 100
 	}
 }
+
+unite_nasrani_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	desc = unite_nasrani_decision_desc
+	selection_tooltip = unite_nasrani_decision_tooltip
+	major = yes
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			religion = religion:christianity_religion
+			any_realm_county = { religion = religion:christianity_religion }
+			any_realm_county = {
+				custom_description = {
+					text = has_christian_minority_tt
+					OR = {
+						any_in_list = {
+							variable = faith_minorities_large
+							religion = religion:christianity_religion 
+						}
+						any_in_list = {
+							variable = faith_minorities_small
+							religion = religion:christianity_religion
+						}
+					}
+				}
+			}
+		}
+		capital_county.title_province.geographical_region = world_india_deccan
+		highest_held_title_tier = tier_duchy
+		
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:form_bene_israel_decision
+			}
+		}
+		
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:unite_nasrani_decision
+			}
+		}
+	}
+
+	is_valid = {
+		religion = religion:christianity_religion
+		piety_level >= 3
+		AND = {
+			completely_controls = title:d_chera_nadu
+			completely_controls = title:d_konkana
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		piety = {
+			value = major_prestige_value
+		}
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:unite_nasrani_decision
+		}
+		faith = {
+			save_scope_as = old_faith
+		}
+		if = {
+			limit = {
+				NOT = { faith = faith:indian_catholic }
+			}
+			set_character_faith_with_conversion = faith:indian_catholic
+		}
+		save_scope_as = founder
+		show_as_tooltip = {
+			unite_nasrani_decision_effect = yes
+		}
+		trigger_event = south_asia.0044
+	}
+}
+
 
 ######################################
 ##	Establish the Theravada Faith	##
@@ -470,5 +566,207 @@ spread_theravada_faith_decision = {
 
 	ai_will_do = {
 		base = 100
+	}
+}
+
+# Re-establish Yavanarajya
+restore_indo_greek_kingdom_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	major = yes
+	desc = restore_indo_greek_kingdom_decision_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		capital_county.title_province = {
+			geographical_region = custom_indo_greek_kingdom
+		}
+		# Need to have a cultural or religious tie to the Hellenes:
+		OR = {
+			has_religion = religion:hellenism_religion
+			culture = culture:greek
+			culture = {
+				any_parent_culture = { this = culture:greek }
+			}
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_yavanarajya
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		prestige_level >= 4
+		# # Must be of the right religion: Buddhist, Zoroastrian, Hindu or Greco-Roman
+		OR = {
+			has_religion = religion:hellenism_religion
+			has_religion = religion:zoroastrianism_religion
+			has_religion = religion:buddhism_religion
+			has_religion = religion:hinduism_religion
+		}
+		# # Must have Greek roots, and either Byzantine or Indo-aryan heritage
+		OR = {
+			culture = culture:greek
+			culture = {
+				any_parent_culture = { this = culture:greek }
+				OR = {
+					has_cultural_pillar = heritage_byzantine
+					has_cultural_pillar = heritage_indo_aryan
+				}
+			}
+		}
+		OR = {
+			# Greco-bactria was kinda the predecessor to the Indo-Greek Kingdom
+			highest_held_title_tier <= tier_kingdom
+			has_title = title:e_bactria
+		}
+		completely_controls_region = custom_indo_greek_kingdom_heartland
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_at_peace_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = indo_greek_de_jure_tt
+		}
+		hidden_effect = {
+			indo_greek_de_jure_effect = yes
+		}
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+		}
+		title:e_indo_greek_kingdom = {
+			change_title_holder = {
+				holder = ROOT
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		show_as_tooltip = {
+			reform_indo_hellenism_effect = yes
+			custom_tooltip = reform_indo_hellenism.desc
+			random_list = {
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.buddhist
+					greco_buddhism_effect = yes
+				}
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.hindu
+					greco_hinduism_effect = yes
+				}
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.zoroastrian
+					greco_zoroastrianism_effect = yes
+				}
+				100 = {
+					show_chance = no
+					desc = reform_indo_hellenism.default
+					indo_greek_flexibility = yes
+					#Always available
+				}
+			}
+		}
+		hidden_effect = {
+			trigger_event = south_asia.0042
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_yavanarajya
+			}
+		}
+	}
+}
+
+indo_greek_culture_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	major = yes
+	desc = indo_greek_culture_decision_desc
+	ai_check_interval = 120
+
+	is_shown = {
+		capital_county.title_province = {
+			OR = {
+				# gotte be kinda sorta near historical indo-greek lands
+				geographical_region = world_india_rajastan
+				geographical_region = custom_indo_greek_kingdom
+			}
+		}
+		OR = {
+			# Needs to be either Indo-Aryan or have some kind of Greek cultural roots
+			culture = { has_cultural_pillar = heritage_indo_aryan }
+			culture = { any_parent_or_above = { this = culture:greek } }
+			culture = { has_cultural_pillar = language_greek }
+			# Or at least speek Greek
+			knows_language = language_greek
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_yavana_culture
+			}
+		}
+	}
+
+	is_valid = {
+		# Famous
+		prestige_level >= 3
+		# Speeks Greek
+		knows_language = language_greek
+		# Greeks (or post-greeks) and Indo-Aryans coexist within your realm
+		OR = {
+			AND = {
+				any_powerful_vassal = {
+					culture = {
+						OR = {
+							this = culture:greek
+							any_parent_or_above = { this = culture:greek }
+							culture = { has_cultural_pillar = language_greek }
+						}
+					}
+				}
+				any_powerful_vassal = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+				}
+			}
+			AND = {
+				any_sub_realm_county = {
+					culture = {
+						OR = {
+							this = culture:greek
+							any_parent_or_above = { this = culture:greek }
+							culture = { has_cultural_pillar = language_greek }
+						}
+					}
+				}
+				any_sub_realm_county = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_at_peace_adult = yes
+	}
+
+	effect = {
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_restored_yavana_culture
+			}
+			trigger_event = south_asia.0043
+		}
+		show_as_tooltip = {
+			indo_greek_culture_decision_effect = yes
+		}
 	}
 }

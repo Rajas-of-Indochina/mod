@@ -253,7 +253,6 @@ convert_whole_realm_to_feudalism_effect = {
 #####
 
 adopt_bureaucracy_effect = {
-	change_government = chinese_government
 
 	##Sort out new laws.
 	if = {
@@ -263,6 +262,27 @@ adopt_bureaucracy_effect = {
 				has_government = nomadic_government
 			}
 		}
+		capital_county = {
+			every_county_province = {
+				if = {
+					limit = { has_holding_type = tribal_holding }
+					set_holding_type = castle_holding
+					add_province_modifier = {
+						modifier = converted_to_feudal_county_modifier
+						years = 10
+					}
+				}
+			}
+		}
+		change_government = chinese_government
+		#Start off crown authorities.
+		if = {
+			limit = {highest_held_title_tier = tier_empire}
+			add_realm_law_skip_effects = bureaucratic_authority_0
+		}
+		else = {
+			add_realm_law_skip_effects = bureaucratic_vassal_authority_0
+		}		
 		custom_tooltip = all_holding_will_change
 		hidden_effect = {
 			#Nuke tribal authorities.
@@ -282,20 +302,6 @@ adopt_bureaucracy_effect = {
 				limit = { has_realm_law = tribal_authority_3 }
 				remove_realm_law = tribal_authority_3
 			}
-			#Start off crown authorities.
-			if = {
-				limit = {
-					has_government = mandala_government
-					NOT = { has_realm_law = mandala_authority_0 }
-				}
-				add_realm_law_skip_effects = mandala_authority_0
-			}
-			else_if = {
-				limit = {
-					NOT = { has_realm_law = crown_authority_0 }
-				}
-				add_realm_law_skip_effects = crown_authority_0
-			}
 		}
 	}
 
@@ -310,7 +316,6 @@ adopt_bureaucracy_effect = {
 					has_government = nomadic_government
 				}
 			}
-			change_government = chinese_government
 			#Nuke tribal authorities.
 			if = {
 				limit = { has_realm_law = tribal_authority_0 }
@@ -328,10 +333,8 @@ adopt_bureaucracy_effect = {
 				limit = { has_realm_law = tribal_authority_3 }
 				remove_realm_law = tribal_authority_3
 			}
-		}
-		capital_county = {
-			every_county_province = {
-				barony = {
+			capital_county = {
+				every_county_province = {
 					if = {
 						limit = { has_holding_type = tribal_holding }
 						set_holding_type = castle_holding
@@ -342,6 +345,8 @@ adopt_bureaucracy_effect = {
 					}
 				}
 			}
+			change_government = chinese_government
+			add_realm_law_skip_effects = bureaucratic_authority_0
 		}
 	}
 }
@@ -898,5 +903,243 @@ unsettle_nomadic_realm_effect = {
 				add_realm_law_skip_effects = nomadic_authority_0
 			}
 		}
+	}
+}
+reform_indo_hellenism_effect = {
+	faith:indo_hellenism = {
+		#Remove conversion block
+		remove_variable = block_conversion_till_decision_taken
+		# And you are organizing this faith
+		set_variable = { name = has_been_reformed }
+		remove_doctrine = unreformed_faith_doctrine
+	}
+
+	set_character_faith_with_conversion = faith:indo_hellenism
+}
+
+greco_buddhism_effect = {
+	faith:indo_hellenism = {
+		remove_doctrine = tenet_adaptive
+		add_doctrine = tenet_dharmic_pacifism
+		add_doctrine = doctrine_right_to_rule_rajadharma
+		add_doctrine = special_doctrine_is_buddhist_faith
+	}
+}
+
+greco_hinduism_effect = {
+	faith:indo_hellenism = {
+		remove_doctrine = tenet_adaptive
+		add_doctrine = tenet_monasticism
+		add_doctrine = doctrine_right_to_rule_rajadharma
+		add_doctrine = special_doctrine_is_hinduism_faith
+		add_doctrine = sampradaya_vaishnavism_doctrine
+	}
+}
+
+greco_zoroastrianism_effect = {
+	faith:indo_hellenism = {
+		remove_doctrine = tenet_adaptive
+		add_doctrine = tenet_sky_burials
+		add_doctrine = doctrine_right_to_rule_divine
+		remove_doctrine = doctrine_no_head
+		add_doctrine = doctrine_spiritual_head
+	}
+	if = {
+		limit = {
+			can_create_head_of_faith_title_trigger = { FAITH = faith:indo_hellenism }
+		}
+		faith:indo_hellenism = {
+			save_scope_as = faith
+		}
+		create_head_of_faith_title_effect = yes
+	}
+}
+
+indo_greek_flexibility = {
+	faith:indo_hellenism = {
+		add_doctrine = doctrine_right_to_rule_divine
+		add_doctrine = tenet_unreformed_syncretism
+	}
+}
+
+indo_greek_de_jure_effect = {
+	title:k_sindh = {
+		add_to_temporary_list = igk
+	}
+	title:k_punjab = {
+		add_to_temporary_list = igk
+	}
+	title:k_kashmir = {
+		add_to_temporary_list = igk
+	}
+	title:k_makran = {
+		add_to_temporary_list = igk
+	}
+	title:k_kabulistan = {
+		add_to_temporary_list = igk
+	}
+
+	every_in_list = {
+		list = igk
+		limit = {
+			OR = {
+				this = title:k_sindh
+				this = title:k_punjab
+				this.holder = ROOT
+				ROOT = {
+					completely_controls = PREV
+				}
+			}
+		}
+		set_de_jure_liege_title = title:e_indo_greek_kingdom
+	}
+}
+
+indo_greek_culture_decision_effect = {
+	set_culture = culture:indo_greek
+	culture:indo_greek = {
+		reset_culture_creation_date = yes
+	}
+	custom_tooltip = {
+		text = yavana_counties_conversion_tt
+		every_realm_county = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+					culture = { has_cultural_pillar = heritage_byzantine }
+					culture = { has_cultural_pillar = language_greek }
+				}
+			}
+			random = {
+				chance = 40
+				set_county_culture = culture:indo_greek
+				modifier = {
+					add = development_level
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		text = yavana_vassal_conversion_tt
+		every_vassal_or_below = {
+			limit = {
+				is_ai = yes
+				OR = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+					culture = { has_cultural_pillar = heritage_byzantine }
+					culture = { has_cultural_pillar = language_greek }
+				}
+			}
+			random_list = {
+				1 = {
+					set_culture = culture:indo_greek
+					opinion_modifier = {
+						opinion_target = ROOT
+						who = THIS
+						multiplier = 0.1
+					}
+				}
+				1 = {}
+			}
+		}
+	}
+}
+
+unite_nasrani_decision_effect = {
+	add_prestige = major_prestige_gain
+	add_piety = major_piety_gain
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_nasrani = {
+		change_title_holder = {
+			holder = scope:founder
+			change = scope:title_change
+		}
+		set_de_jure_liege_title = title:e_dravida
+	}
+	resolve_title_and_vassal_change = scope:title_change
+
+	title:d_chera_nadu = { set_de_jure_liege_title = title:k_nasrani }
+	title:d_konkana = { set_de_jure_liege_title = title:k_nasrani }
+	if = {
+		limit = {
+			title:d_sinhala = { holder = root }
+		}
+		title:d_sinhala = { set_de_jure_liege_title = title:k_nasrani }
+	}
+	if = {
+		limit = {
+			title:d_pandya_nadu = { holder = root }
+		}
+		title:d_pandya_nadu = { set_de_jure_liege_title = title:k_nasrani }
+	}
+	every_held_title = {
+		limit = {
+			tier = tier_barony
+			is_holy_site_of = faith:indian_catholic
+		}
+		county = { set_county_faith = faith:indian_catholic }
+	}
+	every_realm_county = {
+		limit = {
+			NOT = {
+				any_in_de_jure_hierarchy = { is_holy_site_of = faith:indian_catholic }
+			}
+		}
+		save_scope_as = scope:county
+		promote_faith_minority_effect = { FAITH = faith:indian_catholic }
+	}
+}
+
+unite_bene_israel_effect = {
+	add_prestige = major_prestige_gain
+	add_piety = major_piety_gain
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_bene_israel = {
+		change_title_holder = {
+			holder = scope:founder
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+
+	title:d_chera_nadu = { set_de_jure_liege_title = title:k_bene_israel }
+	title:d_konkana = { set_de_jure_liege_title = title:k_bene_israel }
+	if = {
+		limit = {
+			title:d_lata = { holder = root }
+		}
+		title:d_lata = { set_de_jure_liege_title = title:k_bene_israel }
+	}
+	if = {
+		limit = {
+			title:d_nasikya = { holder = root }
+		}
+		title:d_nasikya = { set_de_jure_liege_title = title:k_bene_israel }
+	}
+	random_held_title = {
+		limit = {
+			tier = tier_barony
+			is_holy_site_of = faith:malabarism
+		}
+		county = { set_county_culture = culture:kochinim }
+		county = { set_county_faith = faith:malabarism }
+	}
+	every_realm_county = {
+		limit = {
+			NOT = {
+				any_in_de_jure_hierarchy = { is_holy_site_of = faith:malabarism }
+			}
+		}
+		save_scope_as = scope:county
+		promote_faith_minority_effect = { FAITH = faith:malabarism }
+		promote_culture_minority_effect = { CULTURE = culture:kochinim }
 	}
 }

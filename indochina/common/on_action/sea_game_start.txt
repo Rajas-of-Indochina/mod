@@ -8,6 +8,8 @@ on_game_start = {
         add_disloyal_subjects_tradition_on_game_start
         assign_nanzhao_state
         acculturate_steppelads
+        holy_site_fix
+        lock_indo_greek
 
         # Struggles
         iberian_struggle_on_game_start
@@ -15,6 +17,12 @@ on_game_start = {
         # tibetan_struggle_on_game_start
         # chinese_struggle_on_game_start
     }
+}
+
+lock_indo_greek = {
+	effect = {
+		faith:indo_hellenism = { set_variable = { name = block_conversion_till_decision_taken } }
+	}
 }
 
 on_game_start_after_lobby = {
@@ -805,6 +813,21 @@ set_court_languages = {
         if = {
             limit = { exists = title:k_annam.holder }
             title:k_annam.holder = { set_court_language = language_chinese }
+        }
+    }
+}
+
+holy_site_fix = {
+    effect = {
+        every_religion_global = {
+            every_faith = {
+                every_holy_site = {
+                    limit = { title_province = { has_holding = no } }
+                    title_province = {
+                        set_holding_type = church_holding
+                    }
+                }
+            }
         }
     }
 }

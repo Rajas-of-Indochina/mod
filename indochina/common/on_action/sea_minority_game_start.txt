@@ -2,6 +2,7 @@
 	on_actions = {
 		initialize_minorities
 		set_minorities_game_start
+		setup_indian_christian_minorities
 	}
 }
 
@@ -1692,6 +1693,23 @@ initial_spawn_minority_courtiers = {
 		every_ruler = {
 			trigger_event = { on_action = spawn_large_minority_characters }
 			trigger_event = { on_action = spawn_small_minority_characters }
+		}
+	}
+}
+
+setup_indian_christian_minorities = {
+	effect = {
+		every_county = {
+			limit = {
+				OR = {
+					duchy = title:d_chera_nadu
+					duchy = title:d_sinhala
+				}
+			}
+			add_to_variable_list = {
+				name = faith_minorities_small
+				target = faith:indian_catholic
+			}
 		}
 	}
 }
