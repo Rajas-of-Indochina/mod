@@ -34,6 +34,7 @@
 @asian_army = "gfx/interface/icons/culture_innovations/army_asia.dds"
 # "borrowed" from Arquebus Mod"
 @rocketry = "gfx/interface/icons/culture_innovations/innovation_rocketry.dds"
+@arquebus_cultural = "gfx/interface/icons/culture_innovations/innovation_arquebus_cultural.dds"
 
 innovation_repeating_crossbow = {
 	group = culture_group_regional
@@ -86,11 +87,32 @@ innovation_iron_pogoda = {
 	flag = global_maa
 }
 
+innovation_bed_crossbow = {
+	group = culture_group_regional
+	culture_era = culture_era_early_medieval
+	region = world_bed_crossbow_technology
+	icon = @siege_weapons
+
+	unlock_maa = bed_crossbow
+
+	flag = global_regional	
+	flag = global_maa
+}
+
+# EAST ASIA
+
 innovation_hwacha = {
 	group = culture_group_regional
 	culture_era = culture_era_renaissance
-	region = world_chinese_technology	
 	icon = @rocketry
+	
+	potential = {
+		OR = {
+			# Cultural Pillars
+			has_cultural_pillar = heritage_chinese
+			has_cultural_pillar = heritage_korean
+		}
+	}	
 	
 	can_progress = { 
 		has_innovation = innovation_rocket_launcher
@@ -102,14 +124,209 @@ innovation_hwacha = {
 	flag = global_maa
 }
 
-innovation_bed_crossbow = {
+# TURK
+
+innovation_janissary = {
 	group = culture_group_regional
-	culture_era = culture_era_early_medieval
-	region = world_bed_crossbow_technology
-	icon = @siege_weapons
+	culture_era = culture_era_renaissance
+	icon = @arquebus_cultural
+	
+	potential = {
+		OR = {
+			# Cultural Pillars
+			has_cultural_pillar = heritage_turkic
+		}
+		NOT = {
+			# Cultures
+			this = culture:cuman
+			this = culture:khazar
+			this = culture:bolghar
+			this = culture:bashkir
+			this = culture:avar
+			this = culture:karluk
+			this = culture:kimek
+			this = culture:kipchak
+			this = culture:laktan
+			this = culture:kirghiz
+			this = culture:uyghur
+			this = culture:yughur
+			this = culture:uriankhai
+			this = culture:chuvash
+		}
+	}
+	
+	can_progress = {
+		has_innovation = innovation_arquebus
+	}
 
-	unlock_maa = bed_crossbow
+	character_modifier = {
+		levy_reinforcement_rate_different_faith = 0.1
+	}
 
-	flag = global_regional	
+	unlock_maa = janissary
+
+	flag = global_regional
+	flag = global_maa
+}
+
+# IBERIAN
+innovation_tercio = {
+	group = culture_group_regional
+	culture_era = culture_era_renaissance
+	icon = @arquebus_cultural
+	
+	potential = {
+		OR = {
+			# Cultural Pillars
+			has_cultural_pillar = heritage_iberian
+		}
+		NOT = {
+			# Cultures
+			this = culture:suebi
+			this = culture:visigothic
+			this = culture:galician
+			this = culture:andalusian
+		}
+	}
+	
+	can_progress = {
+		has_innovation = innovation_arquebus
+	}
+
+	maa_upgrade = {
+		type = pikemen
+		damage = 5
+		toughness = 10
+	}
+
+	unlock_maa = tercio
+
+	flag = global_regional
+	flag = global_maa
+}
+
+# WEST GERMANIC/GOIDELIC
+innovation_yeoman_arquebusier = {
+	group = culture_group_regional
+	culture_era = culture_era_renaissance
+	icon = @arquebus_cultural
+	
+	potential = {
+		OR = {
+			# Cultural Pillars
+			has_cultural_pillar = heritage_west_germanic
+			has_cultural_pillar = heritage_goidelic
+			has_cultural_pillar = heritage_brythonic
+		}
+		NOT = {
+			# Cultures
+			this = culture:anglo_saxon
+			this = culture:old_saxon
+			this = culture:laktan
+			this = culture:gaelic
+			this = culture:pictish
+			this = culture:breton
+			this = culture:cumbrian
+		}
+	}
+	
+	can_progress = {
+		has_innovation = innovation_arquebus
+	}
+
+	unlock_maa = yeoman_arquebusier
+
+	flag = global_regional
+	flag = global_maa
+}
+
+# BALTIC/WEST SLAVIC
+innovation_baltic_gunner = {
+	group = culture_group_regional
+	culture_era = culture_era_renaissance
+	icon = @arquebus_cultural
+	
+	potential = {
+		OR = {
+			# Cultural Pillars
+			has_cultural_pillar = heritage_baltic
+			has_cultural_pillar = heritage_west_slavic
+		}
+		NOT = {
+			# Cultures
+			this = culture:latgalian
+			this = culture:polabian
+			this = culture:slovien
+			this = culture:carantanian
+		}
+	}
+	
+	can_progress = {
+		required_year_greater_or_equal_trigger = { YEAR = 1325 }
+		has_innovation = innovation_arquebus
+	}
+
+	unlock_maa = baltic_gunner
+
+	flag = global_regional
+	flag = global_maa
+}
+
+# EAST SLAVIC
+innovation_pishchal = {
+	group = culture_group_regional
+	culture_era = culture_era_renaissance
+	icon = @arquebus_cultural
+	
+	potential = {
+		OR = {
+			# Cultural Pillars
+			has_cultural_pillar = heritage_east_slavic
+		}
+		NOT = {
+			# Cultures
+			this = culture:ilmenian
+			this = culture:severian
+		}
+	}
+	
+	can_progress = {
+		required_year_greater_or_equal_trigger = { YEAR = 1325 }
+		has_innovation = innovation_arquebus
+	}
+
+	unlock_maa = pishchal
+
+	flag = global_regional
+	flag = global_maa
+}
+
+# CENTRAL GERMANIC
+innovation_reiter = {
+	group = culture_group_regional
+	culture_era = culture_era_renaissance
+	icon = @arquebus_cultural
+	
+	potential = {
+		OR = {
+			# Cultural Pillars
+			has_cultural_pillar = heritage_central_germanic
+		}
+		NOT = {
+			# Cultures
+			this = culture:saxon
+			this = culture:frisian
+			this = culture:german
+		}
+	}
+	
+	can_progress = {
+		required_year_greater_or_equal_trigger = { YEAR = 1325 }
+		has_innovation = innovation_arquebus
+	}
+
+	unlock_maa = reiter
+
+	flag = global_regional
 	flag = global_maa
 }

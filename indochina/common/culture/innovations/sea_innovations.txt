@@ -317,7 +317,7 @@ innovation_sandalwood_groves = {
 	flag = early_medieval_era_regional
 }
 
-innovation_hindu_arabic_numberal_india = {
+innovation_hindu_arabic_numberal = {
 	group = culture_group_regional
 	culture_era = culture_era_tribal
 	region = world_india
@@ -329,12 +329,49 @@ innovation_hindu_arabic_numberal_india = {
 	}
 }
 
+innovation_gothic_plate_armour = {
+	group = culture_group_regional
+	culture_era = culture_era_renaissance
+	icon = @fullbodyarmour
+
+	potential = {
+		OR = {
+			# Cultural Pillars
+			heritage_latin
+			heritage_frankish
+
+			# Cultures
+			this = culture:english
+			this = culture:portuguese
+			this = culture:castilian
+			this = culture:aragonese
+		}
+	}	
+
+	can_progress = {
+		has_innovation = innovation_plate_armor
+	}
+
+	character_modifier = {
+		knight_effectiveness_mult = 0.15
+		heavy_cavalry_toughness_mult = 0.1
+	}
+	flag = global_regional
+}
+
 innovation_japanese_fire_bomb = {
 	group = culture_group_regional
 	culture_era = culture_era_renaissance
-	region = world_japan
 	icon = @firebomb
-	
+
+	potential = {
+		OR = {
+			# Cultural Pillars
+			has_cultural_pillar = heritage_yamato
+			has_cultural_pillar = heritage_ryukyu
+		}
+	}
+
 	can_progress = {
 		has_innovation = innovation_rocket_launcher
 	}	
@@ -342,23 +379,6 @@ innovation_japanese_fire_bomb = {
 	character_modifier= {
 		controlled_province_advantage = 4
 		additional_fort_level = 2
-	}
-	flag = global_regional
-}
-
-innovation_gothic_plate_armour = {
-	group = culture_group_regional
-	culture_era = culture_era_renaissance
-	region = world_europe
-	icon = @fullbodyarmour
-	
-	can_progress = {
-		has_innovation = innovation_plate_armor
-	}	
-
-	character_modifier = {
-		knight_effectiveness_mult = 0.15
-		heavy_cavalry_toughness_mult = 0.1
 	}
 	flag = global_regional
 }
