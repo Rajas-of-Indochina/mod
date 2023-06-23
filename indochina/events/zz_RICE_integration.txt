@@ -1,0 +1,1545 @@
+﻿namespace = normandy
+namespace = sus
+
+# Add Norse and Asatru minorities in Normandy
+normandy.0041 = {
+	type = character_event
+	title = normandy.0041.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:rollo
+				}
+				desc = normandy.0041.desc.rollo
+			}
+			desc = normandy.0041.desc # Defaults to French King's perspective
+		}
+	}
+	theme = RICE_theme_normandy_castle
+	override_icon = { reference = "gfx/interface/icons/event_types/type_diplomacy.dds" }
+	
+	left_portrait = {
+		character = scope:charles
+		animation = war_over_tie
+	}
+	
+	right_portrait = {
+		character = scope:rollo
+		animation = personality_callous
+	}
+
+	immediate = {
+		custom_tooltip = establish_norman_culture_decision_effect.tt.2
+		
+		# Summary of above hidden effects to inform players of the decision's impact.
+		show_as_tooltip = {
+			custom_tooltip = establish_norman_culture_decision_effect.tt
+			culture:norman = {
+				get_all_innovations_from = scope:old_culture_1
+				get_all_innovations_from = scope:old_culture_2
+			}
+			scope:charles = {
+				pay_short_term_gold = {
+					target = scope:rollo
+					gold = medium_gold_value
+				}
+			}
+			scope:rollo = {
+				add_prestige = 500
+				set_culture = culture:norman
+				add_character_flag = converted_culture_this_lifetime
+				get_title = title:c_rouen
+				get_title = title:d_normandy
+				if = {
+					limit = {
+						scope:rollo = {
+							has_character_flag = RICE_normandy_rollo_did_convert_flag
+						}
+					}
+					set_character_faith_with_conversion = scope:charles.faith
+				}
+				dynasty = {
+					add_dynasty_modifier = {
+						modifier = RICE_normandy_rollo_family_equivalent
+					}
+				}
+			}
+		}
+
+	}
+	
+	option = { # ok
+		name = normandy.0041.a
+		trigger = {
+			root = scope:charles
+		}
+	}
+	
+	option = { # ok
+		name = normandy.0041.b
+		trigger = {
+			root = scope:charles
+			is_ai = no
+		}
+		set_player_character = scope:rollo
+		# scope:rollo = {
+		# 	trigger_event = normandy.0001
+		# }
+	}
+	
+	option = { # ok
+		name = normandy.0041.c
+		trigger = {
+			root = scope:rollo
+		}
+	}
+
+	after = {
+		# if = {
+		# 	limit = {
+		# 		exists = scope:original_liege
+		# 	}
+		# 	# Notify original liege
+		# 	scope:original_liege = {
+		# 		trigger_event = normandy.0042
+		# 	}
+		# }
+		if = {
+			limit = {				
+				scope:rollo = {
+					has_character_flag = RICE_normandy_rollo_did_convert_flag
+				}
+			}
+			scope:rollo = {
+				remove_character_flag = RICE_normandy_rollo_did_convert_flag
+			}
+		}
+		scope:rollo = {
+			trigger_event = normandy.0001
+			every_sub_realm_county = {
+				save_scope_as = rollo_county
+				add_culture_minority_effect = { COUNTY = scope:rollo_county CULTURE = scope:rollo_old_culture SIZE = small }
+				if = {
+					limit = {				
+						scope:rollo = {
+							NOT = { has_character_flag = RICE_normandy_rollo_did_convert_flag }
+						}
+					}					
+					add_faith_minority_effect = { COUNTY = scope:rollo_county FAITH = scope:rollo_old_faith SIZE = small }
+				}
+			}
+		}
+		# Notification event rulers other than Rollo or Charles equivalents
+		every_ruler = {
+			limit = {
+				NOT = { this = scope:rollo }
+				NOT = { this = scope:charles }
+				OR = {
+					AND = {
+						exists = scope:original_liege
+						this = scope:original_liege
+					}
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							#OR = {
+								geographical_region = world_europe
+								#geographical_region = world_europe_west
+								#geographical_region = world_europe_north
+								#geographical_region = world_europe_south_italy
+							#}
+						}
+					}
+				}
+			}
+			trigger_event = normandy.0042
+		}		
+	}
+
+}
+
+######################################################################################
+# 
+# MERCHANT COURTIER SPAWN
+# 
+# sus.0030-sus.0049 reserved
+# 
+######################################################################################
+
+
+# Trans-Saharan Arab Merchant offers services or at least a good deal (can spawn anywhere [GetGeographicalRegion('world_africa').GetName])
+sus.0030 = {
+	type = character_event
+	title = sus.0030.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_modifier = RICE_sus_currently_trans_saharan_networking
+				}
+				desc = sus.0030.desc.intro_networker
+			}		
+			triggered_desc = {
+				trigger = {
+					NOT = { has_character_modifier = RICE_sus_currently_trans_saharan_networking }
+				}
+				desc = sus.0030.desc.intro_normal
+			}			
+		}
+		desc = sus.0030.desc
+	}
+	
+	theme = stewardship_wealth_focus
+	override_background = { reference = throne_room }
+	
+	
+	left_portrait = {
+		character = scope:RICE_trans_saharan_merchant_spawn
+		animation = steward
+	}
+	
+	trigger = {
+		capital_province = {
+			geographical_region = world_africa
+		}
+		NOT = { has_character_flag = RICE_trans_saharan_guaranteed_spawn }
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.7
+			capital_province = {
+				geographical_region = ghw_region_subsahelian_africa
+			}			
+		}
+		modifier = {
+			add = -0.4
+			has_character_flag = RICE_trans_saharan_already_spawned_merchant
+		}
+		modifier = {
+			add = -0.1
+			AND = {
+				is_ruler = yes
+				has_government = tribal_government
+			}
+		}
+		modifier = {
+			add = 1.1
+			dynasty = {
+				has_dynasty_perk = RICE_trans_saharan_trade_legacy_1
+			}
+		}
+		modifier = {
+			add = 1.1
+			culture = { has_cultural_tradition = tradition_RICE_gold_dust_traders }
+		}
+		modifier = {
+			add = 0.75
+			has_character_flag = RICE_trans_saharan_networking_boost_tiny
+		}
+		modifier = {
+			add = 1
+			has_character_flag = RICE_trans_saharan_networking_boost_small
+		}
+		modifier = {
+			add = 1.33
+			has_character_flag = RICE_trans_saharan_networking_boost_medium
+		}
+		modifier = {
+			add = 1.66
+			has_character_flag = RICE_trans_saharan_networking_boost_large
+		}
+		modifier = {
+			add = 2
+			has_character_flag = RICE_trans_saharan_networking_boost_huge
+		}
+	}
+
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		add_character_flag = RICE_trans_saharan_already_spawned_merchant
+
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = world_innovation_camels
+					OR = {
+						culture = { has_cultural_pillar = heritage_arabic }
+						AND = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							culture = { has_cultural_pillar = heritage_kemetic }
+						}
+						AND = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							culture = { has_cultural_pillar = heritage_semitic }
+						}
+						AND = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							culture = { has_cultural_pillar = heritage_levantine }
+						}
+					}
+				}
+			}
+			every_county_in_region = {
+				region = world_innovation_camels
+				limit = {
+					OR = {
+						culture = { has_cultural_pillar = heritage_arabic }
+						AND = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							culture = { has_cultural_pillar = heritage_kemetic }
+						}
+						AND = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							culture = { has_cultural_pillar = heritage_semitic }
+						}
+						AND = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							culture = { has_cultural_pillar = heritage_levantine }
+						}
+					}
+				}
+				add_to_list = merchant_counties
+			}
+			random_in_list = {
+				list = merchant_counties
+				save_scope_as = home_county
+			}
+			create_character = {
+				location = root.location
+				template = RICE_trans_saharan_merchant_template
+				save_scope_as = RICE_trans_saharan_merchant_spawn
+				culture = scope:home_county.culture
+				faith = scope:home_county.faith
+			}
+		}
+
+		# Backup in case no such county can be found
+		else = {
+			if = {
+				limit = {
+					has_global_variable = RICE_game_started_on_TFE_start_date
+				}
+				random_list = {
+					# Egyptian
+					# Bedouin
+					10 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:kemitic
+							faith = faith:nicene
+						}				
+					}
+					10 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:aegyptian
+							faith = faith:nicene
+						}				
+					}
+					10 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:bedouin
+							faith = faith:arabic_pagan
+						}				
+					}
+					10 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:aramean
+							faith = faith:nicene
+						}				
+					}
+				}
+			}
+			else = {
+				random_list = {
+					# Maghreb
+					# Andalusian
+					# Egyptian
+					# Levantine
+					# Bedouin
+					# Yemeni
+					15 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:maghrebi
+							faith = faith:ashari
+						}			
+					}
+					5 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:maghrebi
+							faith = faith:ibadi
+						}				
+					}
+					20 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:andalusian
+							faith = faith:muwalladi
+						}				
+					}
+					5 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:egyptian
+							faith = faith:coptic
+						}				
+					}
+					15 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:egyptian
+							faith = faith:ismaili
+						}				
+					}
+					20 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:levantine
+							faith = faith:ashari
+						}				
+					}
+					20 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:bedouin
+							faith = faith:ashari
+						}				
+					}
+					20 = {
+						create_character = {
+							location = root.location
+							template = RICE_trans_saharan_merchant_template
+							save_scope_as = RICE_trans_saharan_merchant_spawn
+							culture = culture:yemeni
+							faith = faith:ashari
+						}				
+					}
+				}
+			}
+		}
+
+		hidden_effect = {
+			scope:RICE_trans_saharan_merchant_spawn = {
+				RICE_sus_determine_merchant_skill_effect = yes
+			}
+		}
+	}
+
+	# Okay
+	option = {
+		name = sus.0030.a
+		add_prestige = -150
+		pay_short_term_gold = {
+			target = scope:RICE_trans_saharan_merchant_spawn
+			gold = medium_gold_value
+		}
+		add_courtier = scope:RICE_trans_saharan_merchant_spawn
+		add_character_modifier = {
+			modifier = RICE_sus_trade_deal_arab_merchants
+			years = 10
+		}
+		random_realm_county = {
+			if = {
+				limit = { NOT = { culture = scope:RICE_trans_saharan_merchant_spawn.culture } }
+				save_scope_as = county
+				promote_culture_minority_effect = {
+					CULTURE = scope:RICE_trans_saharan_merchant_spawn.culture
+				}
+			}
+		}
+		hidden_effect = {
+			random = {
+				chance = 50
+				RICE_generate_small_family = { CHARACTER = scope:RICE_trans_saharan_merchant_spawn }
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 10
+				has_trait = greedy
+			}
+			modifier = {
+				add = 10
+				has_trait = ambitious
+			}
+		}
+	}
+
+	# Don't stay, but create a trade deal
+	option = {
+		name = sus.0030.b
+		pay_short_term_gold = {
+			target = scope:RICE_trans_saharan_merchant_spawn
+			gold = medium_gold_value
+		}
+		add_character_modifier = {
+			modifier = RICE_sus_trade_deal_arab_merchants
+			years = 10
+		}
+		hidden_effect = {
+			random = {
+				chance = 75
+				scope:RICE_trans_saharan_merchant_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 40
+			modifier = {
+				add = 10
+				has_trait = greedy
+			}
+			modifier = {
+				add = 10
+				has_trait = ambitious
+			}
+		}
+	}
+
+	# Not interested
+	option = {
+		name = sus.0030.c
+		hidden_effect = {
+			random = {
+				chance = 75
+				scope:RICE_trans_saharan_merchant_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 25
+		}
+	}
+	
+	after = {
+		if = {
+			limit = {
+				has_character_modifier = RICE_sus_currently_trans_saharan_networking
+			}
+			RICE_sus_clean_up_trans_saharan_merchant_effect = yes
+		}
+	}
+}
+
+
+
+# Trans-Saharan West African Merchant offers services or at least a good deal (can spawn anywhere [GetGeographicalRegion('world_africa').GetName])
+sus.0031 = {
+	type = character_event
+	title = sus.0031.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_modifier = RICE_sus_currently_trans_saharan_networking
+				}
+				desc = sus.0030.desc.intro_networker
+			}		
+			triggered_desc = {
+				trigger = {
+					NOT = { has_character_modifier = RICE_sus_currently_trans_saharan_networking }
+				}
+				desc = sus.0030.desc.intro_normal
+			}			
+		}
+		desc = sus.0031.desc
+	}
+	
+	theme = stewardship_wealth_focus
+	override_background = { reference = throne_room }
+	
+	
+	left_portrait = {
+		character = scope:RICE_trans_saharan_merchant_spawn
+		animation = steward
+	}
+	
+	trigger = {
+		capital_province = {
+			geographical_region = world_africa
+		}
+		NOT = { has_character_flag = RICE_trans_saharan_guaranteed_spawn }
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.7
+			capital_province = {
+				geographical_region = ghw_region_subsahelian_africa
+			}			
+		}
+		modifier = {
+			add = -0.4
+			has_character_flag = RICE_trans_saharan_already_spawned_merchant
+		}
+		modifier = {
+			add = -0.1
+			AND = {
+				is_ruler = yes
+				has_government = tribal_government
+			}
+		}
+		modifier = {
+			add = 1.1
+			dynasty = {
+				has_dynasty_perk = RICE_trans_saharan_trade_legacy_1
+			}
+		}
+		modifier = {
+			add = 1.1
+			culture = { has_cultural_tradition = tradition_RICE_gold_dust_traders }
+		}
+		modifier = {
+			add = 0.75
+			has_character_flag = RICE_trans_saharan_networking_boost_tiny
+		}
+		modifier = {
+			add = 1
+			has_character_flag = RICE_trans_saharan_networking_boost_small
+		}
+		modifier = {
+			add = 1.33
+			has_character_flag = RICE_trans_saharan_networking_boost_medium
+		}
+		modifier = {
+			add = 1.66
+			has_character_flag = RICE_trans_saharan_networking_boost_large
+		}
+		modifier = {
+			add = 2
+			has_character_flag = RICE_trans_saharan_networking_boost_huge
+		}
+	}
+
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		add_character_flag = RICE_trans_saharan_already_spawned_merchant
+		
+
+
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = RICE_west_africa_trade_region
+					OR = {
+						culture_has_west_african_heritage_pillar_trigger = yes
+						culture_has_east_african_heritage_pillar_trigger = yes
+						culture_has_central_african_heritage_pillar_trigger = yes
+					}
+				}
+			}
+			every_county_in_region = {
+				region = RICE_west_africa_trade_region
+				limit = {
+					OR = {
+						culture_has_west_african_heritage_pillar_trigger = yes
+						culture_has_east_african_heritage_pillar_trigger = yes
+						culture_has_central_african_heritage_pillar_trigger = yes
+					}
+				}
+				add_to_list = merchant_counties
+			}
+			random_in_list = {
+				list = merchant_counties
+				save_scope_as = home_county
+			}
+			create_character = {
+				location = root.location
+				template = RICE_trans_saharan_merchant_template
+				save_scope_as = RICE_trans_saharan_merchant_spawn
+				culture = scope:home_county.culture
+				faith = scope:home_county.faith
+			}
+		}
+
+		# Backup in case no such county can be found
+		else = {
+			random_list = {
+				# Malinke
+				# Soninke
+				# Serer
+				# Wolof
+				# Hausa
+				# Kanuri
+				10 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:malinke
+						faith = faith:west_african_pagan
+					}				
+				}
+				10 = {
+					trigger = {
+						NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+					}
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:malinke
+						faith = faith:ashari
+					}				
+				}
+				10 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:soninke
+						faith = faith:west_african_bidu_pagan
+					}				
+				}
+				10 = {
+					trigger = {
+						NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+					}
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:soninke
+						faith = faith:ashari
+					}				
+				}
+				20 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:serer
+						faith = faith:west_african_roog_pagan
+					}				
+				}
+				20 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:wolof
+						faith = faith:west_african_roog_pagan
+					}				
+				}
+				15 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:hausa
+						faith = faith:west_african_bori_pagan
+					}				
+				}
+				5 = {
+					trigger = {
+						NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+					}
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:hausa
+						faith = faith:ashari
+					}				
+				}
+				15 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:kanuri
+						faith = faith:west_african_bori_pagan
+					}				
+				}
+				5 = {
+					trigger = {
+						NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+					}
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:kanuri
+						faith = faith:ashari
+					}				
+				}
+			}
+		}
+
+
+
+		hidden_effect = {
+			scope:RICE_trans_saharan_merchant_spawn = {
+				RICE_sus_determine_merchant_skill_effect = yes
+			}
+		}
+	}
+
+	# Okay
+	option = {
+		name = sus.0030.a
+		add_prestige = -150
+		pay_short_term_gold = {
+			target = scope:RICE_trans_saharan_merchant_spawn
+			gold = medium_gold_value
+		}
+		add_courtier = scope:RICE_trans_saharan_merchant_spawn
+		add_character_modifier = {
+			modifier = RICE_sus_trade_deal_west_african_merchants
+			years = 10
+		}
+		random_realm_county = {
+			if = {
+				limit = { NOT = { culture = scope:RICE_trans_saharan_merchant_spawn.culture } }
+				save_scope_as = county
+				promote_culture_minority_effect = {
+					CULTURE = scope:RICE_trans_saharan_merchant_spawn.culture
+				}
+			}
+		}
+		hidden_effect = {
+			random = {
+				chance = 50
+				RICE_generate_small_family = { CHARACTER = scope:RICE_trans_saharan_merchant_spawn }
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 10
+				has_trait = greedy
+			}
+			modifier = {
+				add = 10
+				has_trait = ambitious
+			}
+		}
+	}
+
+	# Don't stay, but create a trade deal
+	option = {
+		name = sus.0030.b
+		pay_short_term_gold = {
+			target = scope:RICE_trans_saharan_merchant_spawn
+			gold = medium_gold_value
+		}
+		add_character_modifier = {
+			modifier = RICE_sus_trade_deal_west_african_merchants
+			years = 10
+		}
+		hidden_effect = {
+			random = {
+				chance = 75
+				scope:RICE_trans_saharan_merchant_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 40
+			modifier = {
+				add = 10
+				has_trait = greedy
+			}
+			modifier = {
+				add = 10
+				has_trait = ambitious
+			}
+		}
+	}
+
+	# Not interested
+	option = {
+		name = sus.0030.c
+		hidden_effect = {
+			random = {
+				chance = 75
+				scope:RICE_trans_saharan_merchant_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 25
+		}
+	}
+	
+	after = {
+		if = {
+			limit = {
+				has_character_modifier = RICE_sus_currently_trans_saharan_networking
+			}
+			RICE_sus_clean_up_trans_saharan_merchant_effect = yes
+		}
+	}
+}
+
+
+
+
+# Trans-Saharan Berber Merchant offers services or at least a good deal (can spawn anywhere [GetGeographicalRegion('world_africa').GetName])
+sus.0032 = {
+	type = character_event
+	title = sus.0032.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_modifier = RICE_sus_currently_trans_saharan_networking
+				}
+				desc = sus.0030.desc.intro_networker
+			}		
+			triggered_desc = {
+				trigger = {
+					NOT = { has_character_modifier = RICE_sus_currently_trans_saharan_networking }
+				}
+				desc = sus.0030.desc.intro_normal
+			}			
+		}
+		desc = sus.0032.desc
+	}
+	
+	theme = stewardship_wealth_focus
+	override_background = { reference = throne_room }
+	
+	
+	left_portrait = {
+		character = scope:RICE_trans_saharan_merchant_spawn
+		animation = steward
+	}
+	
+	trigger = {
+		capital_province = {
+			geographical_region = world_africa
+		}
+		NOT = { has_character_flag = RICE_trans_saharan_guaranteed_spawn }
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.7
+			capital_province = {
+				geographical_region = ghw_region_subsahelian_africa
+			}			
+		}
+		modifier = {
+			add = -0.4
+			has_character_flag = RICE_trans_saharan_already_spawned_merchant
+		}
+		modifier = {
+			add = -0.1
+			AND = {
+				is_ruler = yes
+				has_government = tribal_government
+			}
+		}
+		modifier = {
+			add = 1.1
+			dynasty = {
+				has_dynasty_perk = RICE_trans_saharan_trade_legacy_1
+			}
+		}
+		modifier = {
+			add = 1.1
+			culture = { has_cultural_tradition = tradition_RICE_gold_dust_traders }
+		}
+		modifier = {
+			add = 0.75
+			has_character_flag = RICE_trans_saharan_networking_boost_tiny
+		}
+		modifier = {
+			add = 1
+			has_character_flag = RICE_trans_saharan_networking_boost_small
+		}
+		modifier = {
+			add = 1.33
+			has_character_flag = RICE_trans_saharan_networking_boost_medium
+		}
+		modifier = {
+			add = 1.66
+			has_character_flag = RICE_trans_saharan_networking_boost_large
+		}
+		modifier = {
+			add = 2
+			has_character_flag = RICE_trans_saharan_networking_boost_huge
+		}
+	}
+
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		add_character_flag = RICE_trans_saharan_already_spawned_merchant
+
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = world_africa
+					culture = {
+						has_cultural_pillar = heritage_berber
+					}
+				}
+			}
+			every_county_in_region = {
+				region = world_africa
+				limit = {
+					culture = {
+						has_cultural_pillar = heritage_berber
+					}
+				}
+				add_to_list = merchant_counties
+			}
+			random_in_list = {
+				list = merchant_counties
+				save_scope_as = home_county
+			}
+			create_character = {
+				location = root.location
+				template = RICE_trans_saharan_merchant_template
+				save_scope_as = RICE_trans_saharan_merchant_spawn
+				culture = scope:home_county.culture
+				faith = scope:home_county.faith
+			}
+		}
+
+		# Backup in case no such county can be found
+		else = {
+			random_list = {
+				# Butr
+				# Baranis
+				15 = {
+					trigger = {
+						NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+					}
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:butr
+						faith = faith:ashari
+					}				
+				}
+				5 = {
+					trigger = {
+						NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+					}
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:butr
+						faith = faith:ibadi
+					}				
+				}
+				15 = {
+					trigger = {
+						NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+					}
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:baranis
+						faith = faith:ashari
+					}				
+				}
+				5 = {
+					trigger = {
+						NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+					}
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:baranis
+						faith = faith:ibadi
+					}				
+				}
+				10 = {
+					trigger = {
+						has_global_variable = RICE_game_started_on_TFE_start_date
+					}
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:garamantian
+						faith = faith:amazigh_pagan
+					}				
+				}
+				10 = {
+					trigger = {
+						has_global_variable = RICE_game_started_on_TFE_start_date
+					}
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:maurian
+						faith = faith:amazigh_pagan
+					}				
+				}
+				10 = {
+					trigger = {
+						has_global_variable = RICE_game_started_on_TFE_start_date
+					}
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:gaetulian
+						faith = faith:amazigh_pagan
+					}				
+				}
+			}
+		}
+
+
+		hidden_effect = {
+			scope:RICE_trans_saharan_merchant_spawn = {
+				RICE_sus_determine_merchant_skill_effect = yes
+			}
+		}
+	}
+
+	# Okay
+	option = {
+		name = sus.0030.a
+		add_prestige = -150
+		pay_short_term_gold = {
+			target = scope:RICE_trans_saharan_merchant_spawn
+			gold = medium_gold_value
+		}
+		add_courtier = scope:RICE_trans_saharan_merchant_spawn
+		add_character_modifier = {
+			modifier = RICE_sus_trade_deal_berber_merchants
+			years = 10
+		}
+		random_realm_county = {
+			if = {
+				limit = { NOT = { culture = scope:RICE_trans_saharan_merchant_spawn.culture } }
+				save_scope_as = county
+				promote_culture_minority_effect = {
+					CULTURE = scope:RICE_trans_saharan_merchant_spawn.culture
+				}
+			}
+		}
+		hidden_effect = {
+			random = {
+				chance = 50
+				RICE_generate_small_family = { CHARACTER = scope:RICE_trans_saharan_merchant_spawn }
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 10
+				has_trait = greedy
+			}
+			modifier = {
+				add = 10
+				has_trait = ambitious
+			}
+		}
+	}
+
+	# Don't stay, but create a trade deal
+	option = {
+		name = sus.0030.b
+		pay_short_term_gold = {
+			target = scope:RICE_trans_saharan_merchant_spawn
+			gold = medium_gold_value
+		}
+		add_character_modifier = {
+			modifier = RICE_sus_trade_deal_berber_merchants
+			years = 10
+		}
+		hidden_effect = {
+			random = {
+				chance = 75
+				scope:RICE_trans_saharan_merchant_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 40
+			modifier = {
+				add = 10
+				has_trait = greedy
+			}
+			modifier = {
+				add = 10
+				has_trait = ambitious
+			}
+		}
+	}
+
+	# Not interested
+	option = {
+		name = sus.0030.c
+		hidden_effect = {
+			random = {
+				chance = 75
+				scope:RICE_trans_saharan_merchant_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 25
+		}
+	}
+	
+	after = {
+		if = {
+			limit = {
+				has_character_modifier = RICE_sus_currently_trans_saharan_networking
+			}
+			RICE_sus_clean_up_trans_saharan_merchant_effect = yes
+		}
+	}
+	
+}
+
+
+
+# Trans-Saharan Jewish Merchant offers services or at least a good deal (can spawn anywhere [GetGeographicalRegion('world_africa').GetName])
+sus.0033 = {
+	type = character_event
+	title = sus.0033.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_modifier = RICE_sus_currently_trans_saharan_networking
+				}
+				desc = sus.0030.desc.intro_networker
+			}		
+			triggered_desc = {
+				trigger = {
+					NOT = { has_character_modifier = RICE_sus_currently_trans_saharan_networking }
+				}
+				desc = sus.0030.desc.intro_normal
+			}			
+		}
+		desc = sus.0033.desc
+	}
+	
+	theme = stewardship_wealth_focus
+	override_background = { reference = throne_room }
+	
+	
+	left_portrait = {
+		character = scope:RICE_trans_saharan_merchant_spawn
+		animation = steward
+	}
+	
+	trigger = {
+		capital_province = {
+			geographical_region = world_africa
+		}
+		NOT = { has_character_flag = RICE_trans_saharan_guaranteed_spawn }
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.7
+			capital_province = {
+				geographical_region = ghw_region_subsahelian_africa
+			}			
+		}
+		modifier = {
+			add = -0.4
+			has_character_flag = RICE_trans_saharan_already_spawned_merchant
+		}
+		modifier = {
+			add = -0.1
+			AND = {
+				is_ruler = yes
+				has_government = tribal_government
+			}
+		}
+		modifier = {
+			add = 1.1
+			dynasty = {
+				has_dynasty_perk = RICE_trans_saharan_trade_legacy_1
+			}
+		}
+		modifier = {
+			add = 1.1
+			culture = { has_cultural_tradition = tradition_RICE_gold_dust_traders }
+		}
+		modifier = {
+			add = 0.75
+			has_character_flag = RICE_trans_saharan_networking_boost_tiny
+		}
+		modifier = {
+			add = 1
+			has_character_flag = RICE_trans_saharan_networking_boost_small
+		}
+		modifier = {
+			add = 1.33
+			has_character_flag = RICE_trans_saharan_networking_boost_medium
+		}
+		modifier = {
+			add = 1.66
+			has_character_flag = RICE_trans_saharan_networking_boost_large
+		}
+		modifier = {
+			add = 2
+			has_character_flag = RICE_trans_saharan_networking_boost_huge
+		}
+	}
+
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		add_character_flag = RICE_trans_saharan_already_spawned_merchant
+
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = custom_roman_full_borders
+					religion = religion:judaism_religion
+					culture = { has_cultural_pillar = heritage_israelite }
+				}
+			}
+			every_county_in_region = {
+				region = custom_roman_full_borders
+				limit = {
+					religion = religion:judaism_religion
+					culture = { has_cultural_pillar = heritage_israelite }
+				}
+				add_to_list = merchant_counties
+			}
+			random_in_list = {
+				list = merchant_counties
+				save_scope_as = home_county
+			}
+			create_character = {
+				location = root.location
+				template = RICE_trans_saharan_merchant_template
+				save_scope_as = RICE_trans_saharan_merchant_spawn
+				culture = scope:home_county.culture
+				faith = scope:home_county.faith
+			}
+		}
+
+		# Backup in case no such county can be found
+		else = {
+			random_list = {
+				# Ashkenazi
+				# Sephardi
+				# Mustaarabi
+				15 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:ashkenazi
+						faith = faith:rabbinism
+					}				
+				}
+				5 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:ashkenazi
+						faith = faith:karaism
+					}				
+				}
+				15 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:sephardi
+						faith = faith:rabbinism
+					}				
+				}
+				5 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:sephardi
+						faith = faith:karaism
+					}				
+				}
+				45 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:bavlim
+						faith = faith:rabbinism
+					}				
+				}
+				15 = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:bavlim
+						faith = faith:karaism
+					}				
+				}
+			}
+		}
+
+
+		hidden_effect = {
+			scope:RICE_trans_saharan_merchant_spawn = {
+				RICE_sus_determine_merchant_skill_effect = yes
+			}
+		}
+	}
+
+	# Okay
+	option = {
+		name = sus.0030.a
+		add_prestige = -150
+		pay_short_term_gold = {
+			target = scope:RICE_trans_saharan_merchant_spawn
+			gold = medium_gold_value
+		}
+		add_courtier = scope:RICE_trans_saharan_merchant_spawn
+		add_character_modifier = {
+			modifier = RICE_sus_trade_deal_jewish_merchants
+			years = 10
+		}
+		random_realm_county = {
+			if = {
+				limit = { NOT = { culture = scope:RICE_trans_saharan_merchant_spawn.culture } }
+				save_scope_as = county
+				promote_culture_minority_effect = {
+					CULTURE = scope:RICE_trans_saharan_merchant_spawn.culture
+				}
+			}
+		}
+		hidden_effect = {
+			random = {
+				chance = 50
+				RICE_generate_small_family = { CHARACTER = scope:RICE_trans_saharan_merchant_spawn }
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 10
+				has_trait = greedy
+			}
+			modifier = {
+				add = 10
+				has_trait = ambitious
+			}
+		}
+	}
+
+	# Don't stay, but create a trade deal
+	option = {
+		name = sus.0030.b
+		pay_short_term_gold = {
+			target = scope:RICE_trans_saharan_merchant_spawn
+			gold = medium_gold_value
+		}
+		add_character_modifier = {
+			modifier = RICE_sus_trade_deal_jewish_merchants
+			years = 10
+		}
+		hidden_effect = {
+			random = {
+				chance = 75
+				scope:RICE_trans_saharan_merchant_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 40
+			modifier = {
+				add = 10
+				has_trait = greedy
+			}
+			modifier = {
+				add = 10
+				has_trait = ambitious
+			}
+		}
+	}
+
+	# Not interested
+	option = {
+		name = sus.0030.c
+		hidden_effect = {
+			random = {
+				chance = 75
+				scope:RICE_trans_saharan_merchant_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 25
+		}
+	}
+	
+	after = {
+		if = {
+			limit = {
+				has_character_modifier = RICE_sus_currently_trans_saharan_networking
+			}
+			RICE_sus_clean_up_trans_saharan_merchant_effect = yes
+		}
+	}
+}

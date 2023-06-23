@@ -1,0 +1,76 @@
+﻿yearly_global_pulse = {
+	on_actions = {
+		create_north_american_minorities_pulse
+	}
+}
+
+# Not actually an override but still putting it here because it's RICE-related
+create_north_american_minorities_pulse = {
+	trigger = {
+		has_global_variable = RICE_greenland_ending_integration
+	}
+	effect = {
+		random_culture_global = {
+			limit = {
+				OR = {
+					this = culture:icelandic
+					has_cultural_pillar = heritage_inuit
+					has_cultural_pillar = heritage_paleo_inuit
+					has_cultural_pillar = heritage_iroquoian
+					has_cultural_pillar = heritage_algonquian
+					trigger_if = {
+						limit = { exists = character:RICE_greenlandic_deity_0001 }
+						this = character:RICE_greenlandic_deity_0001.culture
+					}
+					trigger_else = {
+						this = culture:greenlandic
+					}
+					trigger_if = {
+						limit = { exists = character:RICE_greenlandic_deity_0002 }
+						this = character:RICE_greenlandic_deity_0002.culture
+					}					
+				}
+			}
+			save_scope_as = north_atlantic_culture
+		}
+		random_religion_global = {
+			limit = {
+				OR = {
+					this = religion:algonquian_religion
+					this = religion:inuit_religion
+					this = religion:iroquoian_religion
+				}			
+			}
+			random_faith = {
+				save_scope_as = north_atlantic_faith
+			}
+		}
+		random_county_in_region = {
+			region = RICE_greenland_struggle_region
+			save_scope_as = county
+			random_list = {
+				5 = {
+					promote_culture_minority_effect = { CULTURE = scope:north_atlantic_culture }
+					holder = {
+						send_interface_message = {
+							title = north_atlantic_minority_culture
+							custom_tooltip = north_atlantic_minority_culture_desc
+							right_icon = scope:county
+						}
+					}
+				}
+				5 = {
+					promote_faith_minority_effect = { FAITH = scope:north_atlantic_faith }
+					holder = {
+						send_interface_message = {
+							title = north_atlantic_minority_faith
+							custom_tooltip = north_atlantic_minority_faith_desc
+							right_icon = scope:county
+						}
+					}
+				}
+				90 = {}
+			}
+		}
+	}
+}
