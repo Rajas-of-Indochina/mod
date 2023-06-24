@@ -1,5 +1,6 @@
 ﻿
 namespace = minorities
+namespace = faith_conversion #This is just to overwrite the capital conversion effect
 
 scripted_effect expel_religious_minorities_effect = {
 	# Lose or gain piety
@@ -1192,6 +1193,124 @@ minorities.2003 = {
 		# option to chicken out
 		cp:councillor_steward = {
 			set_council_task = { task_type = task_collect_taxes }
+		}
+	}
+}
+
+# Vanilla override
+faith_conversion.0001 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				primary_title.tier > tier_barony
+				exists = capital_county
+				capital_county.faith = scope:old_faith
+			}
+			capital_county = {
+				save_scope_as = county
+				set_county_faith = root.faith
+				if = {
+					limit = { county_has_specific_large_minority_faith_trigger = { FAITH = root.faith } }
+					remove_list_variable = {
+						name = faith_minorities_large
+						target = root.faith
+					}
+				}
+				if = {
+					limit = { county_has_specific_small_minority_faith_trigger = { FAITH = root.faith } }
+					remove_list_variable = {
+						name = faith_minorities_small
+						target = root.faith
+					}
+				}
+				if = {
+					limit = {
+						scope:old_faith = {
+							faith_hostility_level = {
+								target = root.faith
+								value >= faith_hostile_level
+							}
+						}
+					}
+					add_faith_minority_effect = {
+						FAITH = scope:old_faith
+						COUNTY = scope:county
+						SIZE = large
+					}
+				}
+				else_if = {
+					limit = {
+						scope:old_faith = {
+							faith_hostility_level = {
+								target = root.faith
+								value >= faith_astray_level
+							}
+						}
+					}
+					add_faith_minority_effect = {
+						FAITH = scope:old_faith
+						COUNTY = scope:county
+						SIZE = small
+					}
+				}
+			}
+		}
+		every_vassal = {
+			limit = {
+				primary_title.tier > tier_barony
+				faith = ROOT.faith
+				exists = capital_county
+				capital_county.faith = ROOT.faith
+			}
+			capital_county = {
+				save_scope_as = county
+				if = {
+					limit = { county_has_specific_large_minority_faith_trigger = { FAITH = root.faith } }
+					remove_list_variable = {
+						name = faith_minorities_large
+						target = root.faith
+					}
+				}
+				if = {
+					limit = { county_has_specific_small_minority_faith_trigger = { FAITH = root.faith } }
+					remove_list_variable = {
+						name = faith_minorities_small
+						target = root.faith
+					}
+				}
+				if = {
+					limit = {
+						scope:old_faith = {
+							faith_hostility_level = {
+								target = root.faith
+								value >= faith_hostile_level
+							}
+						}
+					}
+					add_faith_minority_effect = {
+						FAITH = scope:old_faith
+						COUNTY = scope:county
+						SIZE = large
+					}
+				}
+				else_if = {
+					limit = {
+						scope:old_faith = {
+							faith_hostility_level = {
+								target = root.faith
+								value >= faith_astray_level
+							}
+						}
+					}
+					add_faith_minority_effect = {
+						FAITH = scope:old_faith
+						COUNTY = scope:county
+						SIZE = small
+					}
+				}
+			}
 		}
 	}
 }
