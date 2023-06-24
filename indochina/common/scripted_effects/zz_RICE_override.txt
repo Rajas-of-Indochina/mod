@@ -1098,3 +1098,121 @@ RICE_tarim_basin_bring_indic_artisans_effect = {
 	}
 	do_silk_road_migration_effect = { REGION = RICE_silk_road_india }
 }
+
+# Creates minorities of the old culture in the newly Tuareg counties
+RICE_tuareg_emergence_effect = {
+	add_prestige = 1000
+	if = {
+		limit = {
+			exists = dynasty
+		}
+		dynasty = {
+			add_dynasty_prestige = 250
+		}
+	}
+	culture:tuareg = {
+		get_all_innovations_from = root.culture
+		reset_culture_creation_date = yes
+	}
+	RICE_make_tuareg_effect = yes
+	every_realm_county = {
+		custom = RICE_every_berber_county
+		limit = {
+			OR = {
+				culture = { has_cultural_pillar = heritage_berber }
+				this = capital_province.county
+			}
+		}
+		save_scope_as = scope:county
+		culture = { save_scope_as = old_culture }
+		set_county_culture = culture:tuareg
+		promote_culture_minority_effect = { CULTURE = scope:old_culture }
+	}
+}
+
+# Downgrades Jewish minorities in Granada if pogrom happens.
+RICE_granada_tensions_end_in_tragedy_effect = {
+	set_global_variable = {
+		name = RICE_granada_pogrom_happened_like_historically
+		value = yes
+	}
+	title:c_granada = {
+		change_development_progress_with_overflow = -50
+		remove_county_modifier = RICE_granada_garnata_al_yahud_tensions
+		save_scope_as = county
+		add_county_modifier = {
+			modifier = RICE_granada_pogrom_happened
+			years = 20
+		}
+		every_in_list = {
+			limit = { religion = religion:judaism_religion }
+			variable = faith_minorities_small
+			scope:county = {
+				remove_list_variable = {
+					name = faith_minorities_small
+					target = PREV
+				}
+			}
+		}
+		every_in_list = {
+			limit = { religion = religion:judaism_religion }
+			variable = faith_minorities_large
+			scope:county = {
+				remove_list_variable = {
+					name = faith_minorities_large
+					target = PREV
+				}
+				add_to_variable_list = {
+					name = faith_minorities_small
+					target = PREV
+				}
+			}
+		}
+		every_in_list = {
+			limit = { has_cultural_pillar = heritage_israelite }
+			variable = culture_minorities_small
+			scope:county = {
+				remove_list_variable = {
+					name = culture_minorities_small
+					target = PREV
+				}
+			}
+		}
+		every_in_list = {
+			limit = { has_cultural_pillar = heritage_israelite }
+			variable = culture_minorities_large
+			scope:county = {
+				remove_list_variable = {
+					name = culture_minorities_large
+					target = PREV
+				}
+				add_to_variable_list = {
+					name = culture_minorities_small
+					target = PREV
+				}
+			}
+		}
+	}
+	scope:yusuf = {
+		death = {
+			death_reason = death_beaten_by_mob
+		}
+	}
+	hidden_effect = {
+		every_courtier_or_guest = {
+			limit = {
+				religion = religion:judaism_religion
+			}
+			random_list = {
+				60 = {				
+					death = {
+						death_reason = death_beaten_by_mob
+					}
+				}
+				40 = {
+					move_to_pool = yes
+				}
+			}
+		}
+	}
+}

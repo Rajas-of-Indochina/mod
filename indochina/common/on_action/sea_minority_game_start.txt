@@ -3,6 +3,7 @@
 		initialize_minorities
 		set_minorities_game_start
 		setup_indian_christian_minorities
+		setup_RICE_minorities
 	}
 }
 
@@ -1725,6 +1726,66 @@ setup_indian_christian_minorities = {
 			add_to_variable_list = {
 				name = faith_minorities_small
 				target = faith:indian_catholic
+			}
+		}
+	}
+}
+
+
+
+setup_RICE_minorities = {
+	trigger = {
+		has_global_variable = is_RICE_loaded_global_variable
+	}
+	effect = {
+		every_county_in_region = {
+			region = RICE_pamir_region
+			save_scope_as = county
+			promote_culture_minority_effect = { CULTURE = culture:burusho }
+		}
+		every_county_in_region = {
+			region = RICE_pamir_full_region
+			save_scope_as = county
+			promote_culture_minority_effect = { CULTURE = culture:nuristani }
+			promote_faith_minority_effect = { FAITH = faith:nuristani_pagan }
+		}
+		every_county_in_region = {
+			region = RICE_brahui_region
+			save_scope_as = county
+			promote_culture_minority_effect = { CULTURE = culture:brahui }
+		}
+		title:c_socotra = {
+			save_scope_as = county
+			if = {
+				limit = { current_date <= 1000.1.1 }
+				promote_faith_minority_effect = { FAITH = faith:arabic_pagan }
+				promote_faith_minority_effect = { FAITH = faith:south_arabian_pagan }
+			}
+			promote_faith_minority_effect = { FAITH = faith:malagasy_pagan }
+			promote_faith_minority_effect = { FAITH = faith:shona_pagan }
+			promote_culture_minority_effect = { CULTURE = culture:malagasy }
+			promote_culture_minority_effect = { CULTURE = culture:shona }
+			promote_culture_minority_effect = { CULTURE = culture:swahili }
+		}
+		title:c_zabid = {
+			save_scope_as = county
+			if = {
+				limit = { current_date <= 1000.1.1 }
+				promote_culture_minority_effect = { CULTURE = culture:himyarite }
+			}
+		}
+		title:c_taizz = {
+			save_scope_as = county
+			if = {
+				limit = { current_date <= 1000.1.1 }
+				promote_culture_minority_effect = { CULTURE = culture:himyarite }
+			}
+		}
+		title:c_mandab = {
+			save_scope_as = county
+			if = {
+				limit = { current_date <= 1000.1.1 }
+				promote_culture_minority_effect = { CULTURE = culture:himyarite }
 			}
 		}
 	}
