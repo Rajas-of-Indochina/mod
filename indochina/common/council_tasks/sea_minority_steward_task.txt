@@ -181,6 +181,31 @@ task_promote_culture = {
 				desc = fp2_struggle_hostility_culture_conversion_task_desc
 			}
 		}
+		# Faster conversion for native american cultures if the county has a modifier from
+		# the Indigienous Sovereignty ending of the Greenland Struggle
+		if = {
+			limit = {
+				scope:councillor_liege.culture = {
+					OR = {
+						has_cultural_pillar = heritage_algonquian
+						has_cultural_pillar = heritage_iroquoian
+						has_cultural_pillar = heritage_paleo_inuit
+						has_cultural_pillar = heritage_inuit
+					}
+				}
+				scope:county = {
+					OR = {
+						has_county_modifier = RICE_greenland_indigenous_social
+						has_county_modifier = RICE_greenland_indigenous_political
+						has_county_modifier = RICE_greenland_indigenous_military
+					}
+				}
+			}
+			multiply = {
+				value = fp2_struggle_hostility_conversion_value
+				desc = indigenous_sovereignty_ending_conversion_desc
+			}
+		}
 
 		# Because the task needs to complete 3 times with the minority system
 		multiply = 3

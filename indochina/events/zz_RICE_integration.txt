@@ -1,5 +1,116 @@
 ﻿namespace = normandy
 namespace = sus
+namespace = tarim_basin
+
+# NORMANDY STRUGGLE INTRO Just to shush errors
+normandy.0001 = { # Fullscreen Intro Event
+	type = character_event
+	window = fullscreen_event
+	title = normandy.0001.t
+	desc = {
+		first_valid = {
+			# If done through granting
+			triggered_desc = {
+				trigger = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_normandy_granted_to_norse_already
+					}
+				}
+				desc = normandy.0001.desc.RICE
+			}
+			# If done through other means
+			desc = normandy.0001.desc.vanilla
+		}
+	}
+	theme = diplomacy_foreign_affairs_focus
+	trigger = { # we need to prevent this from firing for all players when a new player joins in MP
+		is_ai = no
+		NOT = { has_character_flag = RICE_normandy_struggle_intro_event_flag }
+		OR = {
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_normandy_struggle
+			}
+			any_character_struggle = {
+				involvement = interloper
+				is_struggle_type = RICE_normandy_struggle
+			}
+		}
+ 	}
+	override_background = { reference = RICE_normandy_struggle_start }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	widgets = {
+		widget = {
+ 			gui = "event_window_widget_struggle_info"
+ 			container = "dynamic_content_widget"
+ 			controller = struggle_info
+ 			setup_scope = { struggle:RICE_normandy_struggle = { save_scope_as = struggle } }
+		}
+	}
+	immediate = {
+		play_music_cue = "mx_cue_combat_3"
+		add_character_flag = RICE_normandy_struggle_intro_event_flag
+		culture:norman = {
+			save_scope_as = norman
+		}
+		save_scope_value_as = {
+			name = start
+			value = yes
+		}
+		ordered_in_global_list = {
+			variable = RICE_normandy_rollo_list
+			save_scope_as = rollo
+		}
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_normandy_granted_to_norse_already
+				}
+			}
+			ordered_in_global_list = {
+				variable = RICE_normandy_charles_list
+				save_scope_as = charles
+			}
+		}
+	}
+
+	option = {
+		name = normandy.0001.a
+		trigger = {
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_normandy_struggle
+			}
+		}
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+
+	option = {
+		name = normandy.0001.b
+		trigger = {
+			any_character_struggle = {
+				involvement = interloper
+				is_struggle_type = RICE_normandy_struggle
+			}			
+		}
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+
+	after = {
+		# If you are Rollo
+		if = {
+			limit = {
+				has_character_modifier = RICE_normandy_rollo_modifier
+				NOT = { has_character_flag = RICE_normandy_rollo_concluding_event_done }
+			}
+			trigger_event = normandy.0086
+		}
+	}
+
+}
 
 # Add Norse and Asatru minorities in Normandy
 normandy.0041 = {
@@ -105,6 +216,17 @@ normandy.0041 = {
 		# 		trigger_event = normandy.0042
 		# 	}
 		# }
+		scope:rollo = {
+			trigger_event = normandy.0001
+			every_sub_realm_county = {
+				save_scope_as = rollo_county
+				add_culture_minority_effect = { COUNTY = scope:rollo_county CULTURE = scope:rollo_old_culture SIZE = small }
+				random = {
+					chance = 50
+					add_faith_minority_effect = { COUNTY = scope:rollo_county FAITH = scope:rollo_old_faith SIZE = small }
+				}
+			}
+		}
 		if = {
 			limit = {				
 				scope:rollo = {
@@ -113,21 +235,6 @@ normandy.0041 = {
 			}
 			scope:rollo = {
 				remove_character_flag = RICE_normandy_rollo_did_convert_flag
-			}
-		}
-		scope:rollo = {
-			trigger_event = normandy.0001
-			every_sub_realm_county = {
-				save_scope_as = rollo_county
-				add_culture_minority_effect = { COUNTY = scope:rollo_county CULTURE = scope:rollo_old_culture SIZE = small }
-				if = {
-					limit = {				
-						scope:rollo = {
-							NOT = { has_character_flag = RICE_normandy_rollo_did_convert_flag }
-						}
-					}					
-					add_faith_minority_effect = { COUNTY = scope:rollo_county FAITH = scope:rollo_old_faith SIZE = small }
-				}
 			}
 		}
 		# Notification event rulers other than Rollo or Charles equivalents
@@ -159,11 +266,245 @@ normandy.0041 = {
 
 }
 
+# Notify people about Rollo's arrival in Normandy (error shusher)
+normandy.0042 = {
+	type = character_event
+	title = normandy.0042.t
+	desc = normandy.0042.desc
+	theme = RICE_theme_normandy_castle
+	override_icon = { reference = "gfx/interface/icons/event_types/type_diplomacy.dds" }
+	
+	left_portrait = {
+		character = scope:charles
+		animation = war_over_tie
+	}
+	
+	right_portrait = {
+		character = scope:rollo
+		animation = personality_callous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_combat_3"
+	}
+	
+	option = { # Ok
+		name = normandy.0042.a
+		custom_tooltip = normandy.0042.tooltip.struggle_started
+		custom_tooltip = establish_norman_culture_decision_effect.tt
+		custom_tooltip = establish_norman_culture_decision_effect.tt.2
+		if = {
+			limit = {
+				exists = scope:original_liege
+				root = scope:original_liege
+			}
+			custom_tooltip = normandy.0042.tooltip.old_liege
+		}
+	}
+}
+
+# More error shushing
+# Rollo - concluding event
+normandy.0086 = {
+	type = character_event
+	title = normandy.0086.t
+	desc = normandy.0086.desc
+	theme = RICE_theme_normandy_castle
+
+	right_portrait = {
+		character = scope:rollo
+		animation = war_over_win
+	}
+
+	immediate = {
+		# if = {
+		# 	limit = {
+		# 		this = character:242
+		# 	}
+		# }
+		# character:242 = {
+		# 	is_landed = yes
+		# 	has_character_modifier = RICE_normandy_rollo_modifier
+		# 	has_character_flag = RICE_normandy_rollo_big_dream
+		# }
+		add_character_flag = RICE_normandy_rollo_concluding_event_done
+	}
+	
+	option = { # Religious
+		name = normandy.0086.a
+		add_piety = 200
+		if = {
+			limit = {
+				exists = dynasty
+			}
+			dynasty = {
+				add_dynasty_prestige = 250
+			}
+		}
+		random_list = {
+			30 = { }
+			40 = {
+				if = {
+					limit = {
+						has_trait = cynical
+					}
+					remove_trait = cynical
+				}
+				add_trait = zealous
+			}
+			15 = {
+				if = {
+					limit = {
+						has_trait = impatient
+					}
+					remove_trait = impatient
+				}
+				add_trait = patient
+			}
+			15 = {
+				if = {
+					limit = {
+						has_trait = ambitious
+					}
+					remove_trait = ambitious
+				}
+				add_trait = content
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0086.info
+			}
+		}
+	}
+	
+	option = { # Glory
+		name = normandy.0086.b
+		add_prestige = 200
+		if = {
+			limit = {
+				exists = dynasty
+			}
+			dynasty = {
+				add_dynasty_prestige = 250
+			}
+		}
+		random_list = {
+			30 = { }
+			40 = {
+				if = {
+					limit = {
+						has_trait = content
+					}
+					remove_trait = content
+				}
+				add_trait = ambitious
+			}
+			15 = {
+				if = {
+					limit = {
+						has_trait = generous
+					}
+					remove_trait = generous
+				}
+				add_trait = greedy
+			}
+			15 = {
+				if = {
+					limit = {
+						has_trait = compassionate
+					}
+					remove_trait = compassionate
+				}
+				add_trait = callous
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0086.info
+			}
+		}
+	}
+	
+	option = { # People
+		name = normandy.0086.c
+		add_prestige = 100
+		add_piety = 100
+		if = {
+			limit = {
+				exists = dynasty
+			}
+			dynasty = {
+				add_dynasty_prestige = 250
+			}
+		}
+		random_list = {
+			30 = { }
+			30 = {
+				if = {
+					limit = {
+						has_trait = arbitrary
+					}
+					remove_trait = arbitrary
+				}
+				add_trait = just
+			}
+			15 = {
+				if = {
+					limit = {
+						has_trait = callous
+					}
+					remove_trait = callous
+				}
+				if = {
+					limit = {
+						has_trait = sadistic
+					}
+					remove_trait = sadistic
+				}
+				add_trait = compassionate
+			}
+			15 = {
+				if = {
+					limit = {
+						has_trait = lazy
+					}
+					remove_trait = lazy
+				}
+				add_trait = diligent
+			}
+			10 = {
+				if = {
+					limit = {
+						has_trait = greedy
+					}
+					remove_trait = greedy
+				}
+				add_trait = generous
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0086.info
+			}
+		}
+	}
+
+}
+
 ######################################################################################
 # 
 # MERCHANT COURTIER SPAWN
-# 
-# sus.0030-sus.0049 reserved
+# Changes: Minority of merchant's culture now appears in a random realm county if you recruit them
 # 
 ######################################################################################
 
@@ -1542,4 +1883,258 @@ sus.0033 = {
 			RICE_sus_clean_up_trans_saharan_merchant_effect = yes
 		}
 	}
+}
+
+# Just here to shush errors.
+# Sinicization name event
+tarim_basin.0010 = {
+	type = character_event
+	title = tarim_basin.0010.t
+	desc = {
+		desc = tarim_basin.0010.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					game_start_date >= 755.1.1
+					game_start_date <= 950.1.1
+					current_date < 1000.1.1
+				}
+				desc = tarim_basin.0010.desc.867
+			}
+		}
+	}
+	theme = family
+	right_portrait = root
+
+	immediate = {
+		RICE_tarim_basin_sinicize_effect = yes
+	}
+	
+	#NAMING WIDGET
+	widgets = {
+		widget = {
+			gui = "event_window_widget_RICE_sinicize_name"
+			container = "dynamic_birth_name"
+			controller = name_character
+			setup_scope = {
+				root = { save_scope_as = name_character_target }
+			}
+		}
+	}
+
+	#Go ahead
+	option = {
+		name = tarim_basin.0010.a
+	}
+
+	#On second thought...
+	option = {
+		name = tarim_basin.0010.b
+		is_cancel_option = yes
+	}
+
+}
+
+
+# Silk Road community selected: Now does silk road minority spawning
+tarim_basin.0020 = {
+	type = character_event
+	title = tarim_basin.0020.t
+	desc = {
+		desc = tarim_basin.0020.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_silk_road_community_type = flag:east_asian
+				}
+				desc = tarim_basin.0020.desc.east_asian
+			}	
+			triggered_desc = {
+				trigger = {
+					var:RICE_silk_road_community_type = flag:steppe
+				}
+				desc = tarim_basin.0020.desc.steppe
+			}	
+			triggered_desc = {
+				trigger = {
+					var:RICE_silk_road_community_type = flag:middle_eastern
+				}
+				desc = tarim_basin.0020.desc.middle_eastern
+			}	
+			triggered_desc = {
+				trigger = {
+					var:RICE_silk_road_community_type = flag:himalayan
+				}
+				desc = tarim_basin.0020.desc.himalayan
+			}	
+			triggered_desc = {
+				trigger = {
+					var:RICE_silk_road_community_type = flag:indian
+				}
+				desc = tarim_basin.0020.desc.indian
+			}	
+		}
+	}
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = war_defender
+	}
+	
+	option = {
+		name = {
+			trigger = { var:RICE_silk_road_community_type = flag:east_asian }
+			text = tarim_basin.0020.option.east_asian
+		}
+		name = {
+			trigger = { var:RICE_silk_road_community_type = flag:steppe }
+			text = tarim_basin.0020.option.steppe
+		}
+		name = {
+			trigger = { var:RICE_silk_road_community_type = flag:middle_eastern }
+			text = tarim_basin.0020.option.middle_eastern
+		}
+		name = {
+			trigger = { var:RICE_silk_road_community_type = flag:himalayan }
+			text = tarim_basin.0020.option.himalayan
+		}
+		name = {
+			trigger = { var:RICE_silk_road_community_type = flag:indian }
+			text = tarim_basin.0020.option.indian
+		}
+		if = {
+			limit = {
+				var:RICE_silk_road_community_type = flag:east_asian
+			}
+			if = {
+				limit = {
+					exists = dynasty
+					dynasty = {
+						has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_3
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_east_asian_contacts
+					years = 20
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_east_asian_contacts
+					years = 10
+				}
+			}
+			custom_tooltip = tarim_basin.0020.tooltip.east_asian
+			do_silk_road_migration_effect = { REGION = world_china }
+		}
+		if = {
+			limit = {
+				var:RICE_silk_road_community_type = flag:steppe
+			}
+			if = {
+				limit = {
+					exists = dynasty
+					dynasty = {
+						has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_3
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_steppe_contacts
+					years = 20
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_steppe_contacts
+					years = 10
+				}
+			}
+			custom_tooltip = tarim_basin.0020.tooltip.steppe
+			do_silk_road_migration_effect = { REGION = RICE_silk_road_steppe }
+		}
+		if = {
+			limit = {
+				var:RICE_silk_road_community_type = flag:middle_eastern
+			}
+			if = {
+				limit = {
+					exists = dynasty
+					dynasty = {
+						has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_3
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_middle_eastern_contacts
+					years = 20
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_middle_eastern_contacts
+					years = 10
+				}
+			}
+			custom_tooltip = tarim_basin.0020.tooltip.middle_eastern
+			do_silk_road_migration_effect = { REGION = RICE_silk_road_middle_east }
+		}
+		if = {
+			limit = {
+				var:RICE_silk_road_community_type = flag:himalayan
+			}
+			if = {
+				limit = {
+					exists = dynasty
+					dynasty = {
+						has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_3
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_himalayan_contacts
+					years = 20
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_himalayan_contacts
+					years = 10
+				}
+			}
+			custom_tooltip = tarim_basin.0020.tooltip.himalayan
+			do_silk_road_migration_effect = { REGION = RICE_silk_road_himalayas }
+		}
+		if = {
+			limit = {
+				var:RICE_silk_road_community_type = flag:indian
+			}
+			if = {
+				limit = {
+					exists = dynasty
+					dynasty = {
+						has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_3
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_indian_contacts
+					years = 20
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_indian_contacts
+					years = 10
+				}
+			}
+			custom_tooltip = tarim_basin.0020.tooltip.indian
+			do_silk_road_migration_effect = { REGION = RICE_silk_road_india }
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_silk_road_community_type }
+			remove_variable = RICE_silk_road_community_type
+		}
+	}
+
 }

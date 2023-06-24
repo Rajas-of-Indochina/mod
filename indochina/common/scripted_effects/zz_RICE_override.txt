@@ -1,4 +1,6 @@
-﻿RICE_invite_norse_main_effect = {	
+﻿# Inviting the Norse or Normans now spawns Norse or Norman minorities.
+
+RICE_invite_norse_main_effect = {	
 	if = {
 		limit = {
 			var:RICE_norse_adventurer_type = flag:courtiers
@@ -182,7 +184,10 @@
 						}
 						save_scope_as = county
 						random_culture_global = {
-							limit = { has_cultural_pillar = heritage_north_germanic }
+							limit = {
+								has_cultural_pillar = heritage_north_germanic
+								culture_number_of_counties >= 1 # Needs to exist on-map
+							}
 							save_scope_as = norse_colonists
 						}
 						add_culture_minority_effect = {
@@ -769,6 +774,10 @@ RICE_invite_norman_main_effect = {
 	}
 }
 
+# Reclaming the Hephthalite Homeland now guarantees promotion of a minority of your culture in the region
+# instead of having a 33% chance to convert outright.
+# Should result in the same total amount of time to convert the whole area manually but feels more flavorful.
+
 RICE_pamir_reclaim_hephthalite_homeland_effect = {
 	#Create the title and make it primary
 	create_title_and_vassal_change = {
@@ -872,6 +881,11 @@ RICE_pamir_reclaim_hephthalite_homeland_effect = {
 	}
 }
 
+# Instead of just converting to Han culture, you now convert to a Han hybrid of your culture if it exists,
+# else convert to any chinese-heritage offshoot of your culture if one exists
+# Else convert to any culture that diverged from yours and has the Sinicized Culture tradition if one exists
+# else create a new divergent culture with the Sinicized Culture tradition added on.
+
 RICE_tarim_basin_sinicize_effect = {
 	# set_culture = culture:han
 	if = { # If there's a Han hybrid of our culture, switch to that
@@ -920,7 +934,7 @@ RICE_tarim_basin_sinicize_effect = {
 		}
 	}
 	else = {
-		# Or just diverge and create your own
+		# Or just diverge and create your own sinicized culture
 		custom_tooltip = CREATE_DIVERGENT_CULTURE_TT
 		hidden_effect = {
 			create_divergent_culture = yes
@@ -1015,4 +1029,72 @@ RICE_tarim_basin_sinicize_effect = {
 			}
 		}
 	}
+}
+
+# Silk Road effects: Now inviting these specialists to your realms spawns cultural and religious minorities!
+RICE_tarim_basin_steppe_troops_spawn_effect = {
+	spawn_army = {
+		levies = 100
+		men_at_arms = {
+			type = horse_archers
+			stacks = 1
+		}
+		men_at_arms = {
+			type = light_horsemen
+			stacks = 1
+		}
+		location = root.capital_province
+		uses_supply = yes
+		inheritable = no
+		name = RICE_tarim_basin_steppe_gift_event_troops
+	}
+	do_silk_road_migration_effect = { REGION = RICE_silk_road_steppe }
+}
+
+RICE_tarim_basin_himalayan_troops_spawn_effect = {
+	spawn_army = {
+		levies = 100
+		men_at_arms = {
+			type = light_footmen
+			stacks = 1
+		}
+		men_at_arms = {
+			type = mountaineer
+			stacks = 1
+		}
+		location = root.capital_province
+		uses_supply = yes
+		inheritable = no
+		name = RICE_tarim_basin_himalayan_gift_event_troops
+	}	
+	do_silk_road_migration_effect = { REGION = RICE_silk_road_himalayas }
+}
+
+RICE_tarim_basin_bring_chinese_specialists_effect = {
+	dynasty = { add_dynasty_prestige = 25 }
+	add_character_modifier = {
+		modifier = RICE_tarim_basin_east_asian_specialists
+		years = 10
+	}
+	do_silk_road_migration_effect = { REGION = world_china }
+}
+
+RICE_tarim_basin_bring_merchant_settlers_effect = {
+	add_prestige = 100
+	capital_county = {
+		add_county_modifier = {
+			modifier = RICE_tarim_basin_merchant_settlers
+			years = 10
+		}
+	}
+	do_silk_road_migration_effect = { REGION = RICE_silk_road_middle_east }
+}
+
+RICE_tarim_basin_bring_indic_artisans_effect = {
+	add_piety = 100
+	add_character_modifier = {
+		modifier = RICE_tarim_basin_indic_artisans
+		years = 10
+	}
+	do_silk_road_migration_effect = { REGION = RICE_silk_road_india }
 }
