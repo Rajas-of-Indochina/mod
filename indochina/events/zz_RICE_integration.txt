@@ -1,6 +1,7 @@
 ﻿namespace = normandy
 namespace = sus
 namespace = tarim_basin
+namespace = siberia
 
 # NORMANDY STRUGGLE INTRO Just to shush errors
 normandy.0001 = { # Fullscreen Intro Event
@@ -2138,4 +2139,240 @@ tarim_basin.0020 = {
 		}
 	}
 
+}
+
+### Override Siberian spawning (Evenk and Nivkh courtiers aren't notable in Manchuria because that's where they live)
+# Siberian Courtier Arrives
+siberia.0001 = {
+	type = character_event
+	title = siberia.0001.t
+	desc = {
+		desc = siberia.0001.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_evenk_maker
+				}
+				desc = siberia.0001.desc.evenk
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_nivkh_maker
+				}
+				desc = siberia.0001.desc.nivkh
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yakut_maker
+				}
+				desc = siberia.0001.desc.yakut
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yeniseian_maker
+				}
+				desc = siberia.0001.desc.yeniseian
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yukaghir_maker
+				}
+				desc = siberia.0001.desc.yukaghir
+			}
+		}
+	}
+	
+	theme = RICE_theme_pine_landscape
+	
+	left_portrait = {
+		character = root
+		animation = idle
+	}
+	right_portrait = {
+		character = scope:scope_RICE_siberian
+		animation = personality_honorable
+	}
+	
+	trigger = {	
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+		NOT = {
+			any_courtier = {
+				RICE_siberia_siberian_wanderer_trigger = yes
+			}		
+		}
+		#OR = {
+		#	is_ai = no
+		#	short_term_gold >= minor_gold_value
+		#}
+	}
+
+	immediate = {
+		random_list = {
+			10 = {
+				trigger = {
+					# Don't spawn Evenk and Nivkh event courtiers in Manchuria, they aren't unusual here
+					any_realm_county = {
+						count <= 0
+						geographical_region = world_manchuria
+					}
+				}
+				add_character_flag = RICE_siberia_evenk_maker
+				create_character = {
+					location = root.location
+					template = siberian_wanderer_character_template
+					save_scope_as = scope_RICE_siberian
+					culture = culture:evenk
+					faith = faith:bugaism
+				}			
+			}
+			10 = {
+				trigger = {
+					# Don't spawn Evenk and Nivkh event courtiers in Manchuria, they aren't unusual here
+					any_realm_county = {
+						count <= 0
+						geographical_region = world_manchuria
+					}
+				}
+				add_character_flag = RICE_siberia_nivkh_maker
+				create_character = {
+					location = root.location
+					template = siberian_wanderer_character_template
+					save_scope_as = scope_RICE_siberian
+					culture = culture:nivkh
+					faith = faith:yzng
+				}			
+			}
+			10 = {
+				add_character_flag = RICE_siberia_yakut_maker
+				create_character = {
+					location = root.location
+					template = siberian_wanderer_character_template
+					save_scope_as = scope_RICE_siberian
+					culture = culture:yakut
+					faith = faith:tengri_pagan
+				}			
+			}
+			10 = {
+				add_character_flag = RICE_siberia_yeniseian_maker
+				create_character = {
+					location = root.location
+					template = siberian_wanderer_character_template
+					save_scope_as = scope_RICE_siberian
+					culture = culture:yeniseian
+					faith = faith:siberian_pagan
+				}			
+			}
+			10 = {
+				add_character_flag = RICE_siberia_yukaghir_maker
+				create_character = {
+					location = root.location
+					template = siberian_wanderer_character_template
+					save_scope_as = scope_RICE_siberian
+					culture = culture:yukaghir
+					faith = faith:siberian_pagan
+				}			
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					scope:scope_RICE_siberian = {
+						culture = culture:evenk
+					}
+				}
+				scope:scope_RICE_siberian = {
+					add_character_modifier = {
+						modifier = RICE_siberia_evenk_wanderer
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:scope_RICE_siberian = {
+						culture = culture:nivkh
+					}
+				}
+				scope:scope_RICE_siberian = {
+					add_character_modifier = {
+						modifier = RICE_siberia_nivkh_wanderer
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:scope_RICE_siberian = {
+						culture = culture:yakut
+					}
+				}
+				scope:scope_RICE_siberian = {
+					add_character_modifier = {
+						modifier = RICE_siberia_yakut_wanderer
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:scope_RICE_siberian = {
+						culture = culture:yeniseian
+					}
+				}
+				scope:scope_RICE_siberian = {
+					add_character_modifier = {
+						modifier = RICE_siberia_yeniseian_wanderer
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:scope_RICE_siberian = {
+						culture = culture:yukaghir
+					}
+				}
+				scope:scope_RICE_siberian = {
+					add_character_modifier = {
+						modifier = RICE_siberia_yukaghir_wanderer
+					}
+				}
+			}
+		}
+	}
+
+	# Hire them
+	option = {
+		name = siberia.0001.a
+		pay_short_term_gold = {
+			target = scope:scope_RICE_siberian
+			gold = minor_gold_value
+		}
+		add_courtier = scope:scope_RICE_siberian
+		custom_tooltip = siberia.0001.courtier_effect.1
+		#custom_tooltip = siberia.0001.courtier_effect.2 - reindeer herd, no?
+		# add_character_flag = {
+		# 	flag = RICE_siberia_courtier_skill_delay # Make it so you won't get the skill boosts right away
+		# 	months = 16
+		# }
+	}
+
+	# Don't hire them
+	option = {
+		name = siberia.0001.b
+		hidden_effect = {
+			scope:scope_RICE_siberian = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+	
+	after = {
+		remove_character_flag = RICE_siberia_evenk_maker
+		remove_character_flag = RICE_siberia_nivkh_maker
+		remove_character_flag = RICE_siberia_yakut_maker
+		remove_character_flag = RICE_siberia_yeniseian_maker
+		remove_character_flag = RICE_siberia_yukaghir_maker
+	}
+	
 }

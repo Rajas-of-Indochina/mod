@@ -1216,3 +1216,97 @@ RICE_granada_tensions_end_in_tragedy_effect = {
 		}
 	}
 }
+
+RICE_spawn_north_atlantic_minority_effect = {
+	random_county_in_region = {
+		region = RICE_greenland_struggle_region
+		limit = {
+			# Don't bother spreading to a county that's already of the culture and faith
+			NAND = {
+				faith = scope:north_atlantic_faith
+				culture = scope:north_atlantic_culture
+			}
+		}
+		save_scope_as = county
+		random_list = {
+			15 = {
+				promote_culture_minority_effect = { CULTURE = scope:north_atlantic_culture }
+				promote_faith_minority_effect = { FAITH = scope:north_atlantic_faith }
+				holder = {
+					send_interface_message = {
+						title = north_atlantic_minority_culture_faith
+						custom_tooltip = north_atlantic_minority_culture_faith_desc
+						right_icon = scope:county
+					}
+					every_liege_or_above = {
+						send_interface_message = {
+							title = north_atlantic_minority_culture_faith
+							custom_tooltip = north_atlantic_minority_culture_faith_desc
+							right_icon = scope:county
+						}
+					}
+				}
+			}
+			85 = {}
+		}
+	}
+}
+
+RICE_spawn_siberian_minorities_effect = {
+	random_county = {
+		limit = { title_province = { RICE_is_in_siberian_region_courtier_spawn_trigger = yes } }
+		save_scope_as = county
+		random_list = {
+			10 = {
+				trigger = {
+					scope:county = {
+						NOT = {
+							title_province = {geographical_region = world_manchuria}
+						}
+					}
+				}
+				culture:evenk = { save_scope_as = siberian_culture }
+				faith:bugaism = { save_scope_as = siberian_faith }
+			}
+			10 = {
+				trigger = {
+					scope:county = {
+						NOT = {
+							title_province = {geographical_region = world_manchuria}
+						}
+					}
+				}
+				culture:nivkh = { save_scope_as = siberian_culture }
+				faith:yzng = { save_scope_as = siberian_faith }
+			}
+			10 = {
+				culture:yakut = { save_scope_as = siberian_culture }
+				faith:tengri_pagan = { save_scope_as = siberian_faith }
+			}
+			10 = {
+				culture:yeniseian = { save_scope_as = siberian_culture }
+				faith:siberian_pagan = { save_scope_as = siberian_faith }
+			}
+			10 = {
+				culture:yukaghir = { save_scope_as = siberian_culture }
+				faith:siberian_pagan = { save_scope_as = siberian_faith }
+			}
+		}
+		promote_culture_minority_effect = { CULTURE = scope:siberian_culture }
+		promote_faith_minority_effect = { FAITH = scope:siberian_faith }
+		scope:county.holder = {
+			send_interface_message = {
+				title = siberian_minority_title
+				custom_tooltip = siberian_minority_desc
+				right_icon = scope:county
+			}
+			every_liege_or_above = {
+				send_interface_message = {
+					title = siberian_minority_title
+					custom_tooltip = siberian_minority_desc
+					right_icon = scope:county
+				}
+			}
+		}
+	}
+}

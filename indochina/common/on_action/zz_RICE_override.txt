@@ -2,6 +2,7 @@
 	on_actions = {
 		create_north_american_minorities_pulse
 		rice_silk_road_migration_pulse
+		rice_siberian_minorities_pulse
 	}
 }
 
@@ -9,82 +10,185 @@
 create_north_american_minorities_pulse = {
 	trigger = {
 		has_global_variable = RICE_greenland_ending_integration
+		has_global_variable = is_RICE_loaded_global_variable
 	}
 	effect = {
-		random_culture_global = {
-			limit = {
-				OR = {
-					this = culture:icelandic
-					has_cultural_pillar = heritage_inuit
-					has_cultural_pillar = heritage_paleo_inuit
-					has_cultural_pillar = heritage_iroquoian
-					has_cultural_pillar = heritage_algonquian
-					trigger_if = {
-						limit = { exists = character:RICE_greenlandic_deity_0001 }
-						this = character:RICE_greenlandic_deity_0001.culture
-					}
-					trigger_if = {
-						limit = { exists = character:RICE_greenlandic_deity_0002 }
-						this = character:RICE_greenlandic_deity_0002.culture
-					}					
-				}
-			}
-			save_scope_as = north_atlantic_culture
-		}
-		random_religion_global = {
-			limit = {
-				OR = {
-					this = religion:algonquian_religion
-					this = religion:inuit_religion
-					this = religion:iroquoian_religion
-				}			
-			}
-			random_faith = {
-				save_scope_as = north_atlantic_faith
-			}
-		}
-		random_county_in_region = {
-			region = RICE_greenland_struggle_region
-			save_scope_as = county
-			random_list = {
-				5 = {
-					promote_culture_minority_effect = { CULTURE = scope:north_atlantic_culture }
-					holder = {
-						send_interface_message = {
-							title = north_atlantic_minority_culture
-							custom_tooltip = north_atlantic_minority_culture_desc
-							right_icon = scope:county
+		random_list = {
+			10 = {
+				# Algonquian culture and religion
+				random_culture_global = {
+					limit = { has_cultural_pillar = heritage_algonquian }
+					save_scope_as = north_atlantic_culture
+					religion:algonquian_religion = {
+						random_faith = {
+							save_scope_as = north_atlantic_faith
+							RICE_spawn_north_atlantic_minority_effect = yes
 						}
 					}
 				}
-				5 = {
-					promote_faith_minority_effect = { FAITH = scope:north_atlantic_faith }
-					holder = {
-						send_interface_message = {
-							title = north_atlantic_minority_faith
-							custom_tooltip = north_atlantic_minority_faith_desc
-							right_icon = scope:county
+			}
+			10 = {
+				# Inuit or Dorset culture and religion
+				random_culture_global = {
+					limit = {
+						OR = {
+							# Account for supplanting of Dorset by Thule
+							# If there are any on-map Dorset counties then the appearance of the Thule doesn't matter
+							AND = {
+								has_cultural_pillar = heritage_inuit
+								has_global_variable = RICE_greenland_inuit_are_here
+							}
+							AND = {
+								has_cultural_pillar = heritage_paleo_inuit
+								NOT = {
+									AND = {
+										has_global_variable = RICE_greenland_inuit_are_here
+										this = { culture_number_of_counties <= 0 }
+									}
+								}
+							}
+						}
+					}
+					save_scope_as = north_atlantic_culture
+					religion:inuit_religion = {
+						random_faith = {
+							save_scope_as = north_atlantic_faith
+							RICE_spawn_north_atlantic_minority_effect = yes
 						}
 					}
 				}
-				5 = {
-					promote_culture_minority_effect = { CULTURE = scope:north_atlantic_culture }
-					promote_faith_minority_effect = { FAITH = scope:north_atlantic_faith }
-					holder = {
-						send_interface_message = {
-							title = north_atlantic_minority_culture_faith
-							custom_tooltip = north_atlantic_minority_culture_faith_desc
-							right_icon = scope:county
+			}
+			10 = {
+				# Iroquoian culture and religion
+				random_culture_global = {
+					limit = { has_cultural_pillar = heritage_iroquoian }
+					save_scope_as = north_atlantic_culture
+					religion:iroquoian_religion = {
+						random_faith = {
+							save_scope_as = north_atlantic_faith
+							RICE_spawn_north_atlantic_minority_effect = yes
 						}
 					}
 				}
-				85 = {}
+			}
+			10 = {
+				# Norse culture and religion
+				random_culture_global = {
+					limit = {
+						has_cultural_pillar = heritage_north_germanic
+						trigger_if = {
+							limit = {
+								NOT = {
+									is_target_in_global_variable_list = {
+										name = unavailable_unique_decisions
+										target = flag:RICE_north_atlantic_iceland_formed_flag
+									}
+								}
+							}
+							# Account for Icelandic Founding
+							NOT = { this = culture:icelandic }
+						}
+						trigger_if = {
+							limit = {
+								NOT = {
+									has_global_variable_list = RICE_north_atlantic_erik_the_red
+									game_start_date >= 980.1.1
+								}
+							}
+							# Account for Greenlandic founding in later starts
+							NOT = { this = culture:greenlandic }
+						}
+						trigger_if = {
+							limit = {
+								NOT = { has_global_variable = norse_culture_split }
+							}
+							NOT = {
+								this = culture:danish
+								this = culture:swedish
+								this = culture:norwegian
+							}
+						}
+					}
+					save_scope_as = north_atlantic_culture
+					random_list = {
+						10 = {
+							faith:norse_pagan = {
+								save_scope_as = north_atlantic_faith
+								RICE_spawn_north_atlantic_minority_effect = yes
+							}
+						}
+						10 = {
+							faith:insular_celtic = {
+								save_scope_as = north_atlantic_faith
+								RICE_spawn_north_atlantic_minority_effect = yes
+							}
+						}
+						10 = {
+							faith:catholic = {
+								save_scope_as = north_atlantic_faith
+								RICE_spawn_north_atlantic_minority_effect = yes
+							}
+						}
+					}
+				}
+			}
+			10 = {
+				# Bretonic or Goidelic (RICE didn't add any celtic Pagans so we're gonna use Insular)
+				random_culture_global = {
+					limit = {
+						has_cultural_pillar = heritage_bretonic
+						has_cultural_pillar = heritage_goidelic
+					}
+					save_scope_as = north_atlantic_culture
+					faith:insular_celtic = {
+						save_scope_as = north_atlantic_faith
+						RICE_spawn_north_atlantic_minority_effect = yes
+					}
+				}
+			}
+			10 = {
+				# West Germanic (almost certainly just English and Scots, use Catholic)
+				random_culture_global = {
+					limit = {
+						has_cultural_pillar = heritage_west_germanic
+						trigger_if = {
+							# Account for old start dates while filtering out Old Saxon
+							limit = { current_date >= 867.1.1 }
+							NOT = { this = culture:old_saxon }
+						}
+						trigger_if = {
+							# Filter Scots until it's actually formed.
+							limit = { NOT = { has_global_variable = scottish_culture_creation } }
+							NOT = { this = culture:scottish }
+						}
+						trigger_if = {
+							# For the love of God why are so many Germanic cultures extinct or scripted formables
+							limit = {
+								NOT = {
+									is_target_in_global_variable_list = {
+										name = unavailable_unique_decisions
+										target = flag:embrace_english_culture_decision
+									}
+								}
+							}
+							NOT = { this = culture:english }
+						}
+					}
+					save_scope_as = north_atlantic_culture
+					faith:catholic = {
+						save_scope_as = north_atlantic_faith
+						RICE_spawn_north_atlantic_minority_effect = yes
+					}
+				}
 			}
 		}
 	}
 }
 
 rice_silk_road_migration_pulse = {
+	trigger = {
+		has_global_variable = is_RICE_loaded_global_variable
+	}
 	effect = {
 		# Pick first region
 		random_list = {
@@ -93,9 +197,6 @@ rice_silk_road_migration_pulse = {
 				random_county_in_region = {
 					region = RICE_silk_road_steppe
 					save_scope_as = source_county
-					weight = {
-						value  = development_level
-					}
 				}
 			}
 			10 = {
@@ -103,9 +204,6 @@ rice_silk_road_migration_pulse = {
 				random_county_in_region = {
 					region = RICE_silk_road_india
 					save_scope_as = source_county
-					weight = {
-						value = development_level
-					}
 				}
 			}
 			10 = {
@@ -113,9 +211,6 @@ rice_silk_road_migration_pulse = {
 				random_county_in_region = {
 					region = RICE_silk_road_himalayas
 					save_scope_as = source_county
-					weight = {
-						value = development_level
-					}
 				}
 			}
 			10 = {
@@ -123,9 +218,6 @@ rice_silk_road_migration_pulse = {
 				random_county_in_region = {
 					region = RICE_silk_road_middle_east
 					save_scope_as = source_county
-					weight = {
-						value = development_level
-					}
 				}
 			}
 			10 = {
@@ -133,30 +225,17 @@ rice_silk_road_migration_pulse = {
 				random_county_in_region = {
 					region = world_china
 					save_scope_as = source_county
-					weight = {
-						value = development_level
-					}
 				}
 			}
 		}
 		# Pick second region
 		random_list = {
 			10 = {
-				trigger = { NOT = { var:name = from_region value = flag:steppe } }
+				trigger = { NOT = { var:from_region = flag:steppe } }
 				random_county_in_region = {
 					region = RICE_silk_road_steppe
 					save_scope_as = county
 					non_neighbor_migration_effect = yes
-					weight = {
-						value = 100
-						subtract = development_level
-						multiply = {
-							value = 2
-							holder = {
-								has_modifier = RICE_tarim_basin_steppe_contacts
-							}
-						}
-					}
 				}
 			}
 			10 = {
@@ -165,16 +244,6 @@ rice_silk_road_migration_pulse = {
 					region = RICE_silk_road_india
 					save_scope_as = county
 					non_neighbor_migration_effect = yes
-					weight = {
-						value = 100
-						subtract = development_level
-						multiply = {
-							value = 2
-							holder = {
-								has_modifier = RICE_tarim_basin_indian_contacts
-							}
-						}
-					}
 				}
 			}
 			10 = {
@@ -183,16 +252,6 @@ rice_silk_road_migration_pulse = {
 					region = RICE_silk_road_himalayas
 					save_scope_as = county
 					non_neighbor_migration_effect = yes
-					weight = {
-						value = 100
-						subtract = development_level
-						multiply = {
-							value = 2
-							holder = {
-								has_modifier = RICE_tarim_basin_himalayan_contacts
-							}
-						}
-					}
 				}
 			}
 			10 = {
@@ -201,16 +260,6 @@ rice_silk_road_migration_pulse = {
 					region = RICE_silk_road_middle_east
 					save_scope_as = county
 					non_neighbor_migration_effect = yes
-					weight = {
-						value = 100
-						subtract = development_level
-						multiply = {
-							value = 2
-							holder = {
-								has_modifier = RICE_tarim_basin_middle_eastern_contacts
-							}
-						}
-					}
 				}
 			}
 			10 = {
@@ -219,18 +268,18 @@ rice_silk_road_migration_pulse = {
 					region = world_china
 					save_scope_as = county
 					non_neighbor_migration_effect = yes
-					weight = {
-						value = 100
-						subtract = development_level
-						multiply = {
-							value = 2
-							holder = {
-								has_modifier = RICE_tarim_basin_east_asian_contacts
-							}
-						}
-					}
 				}
 			}
 		}
+	}
+}
+
+# Spawn RICE siberian minorities over time
+rice_siberian_minorities_pulse = {
+	trigger = {
+		has_global_variable = is_RICE_loaded_global_variable
+	}
+	effect = {
+		RICE_spawn_siberian_minorities_effect = yes
 	}
 }
