@@ -1,4 +1,4 @@
-﻿
+
 # Override Vanilla
 
 #####
@@ -936,6 +936,29 @@ reform_indo_hellenism_effect = {
 	}
 
 	set_character_faith_with_conversion = faith:indo_hellenism
+	every_realm_county = {
+		limit = {
+			NOT = {faith = faith:indo_hellenism }
+			trigger_if = {
+				limit = { faith:indo_hellenism = { has_doctrine = special_doctrine_is_buddhist_faith } }
+				religion = religion:buddhism_religion
+			}
+			trigger_else_if = {
+				limit = { faith:indo_hellenism = { has_doctrine = special_doctrine_is_hinduism_faith } }
+				religion = religion:hinduism_religion
+			}
+			trigger_else_if = {
+				limit = { faith:indo_hellenism = { has_doctrine = doctrine_spiritual_head } } # Zoroastrian
+				religion = religion:zoroastrianism_religion
+			}
+		}
+		save_scope_as = county
+		add_faith_minority_effect = {
+			COUNTY = scope:county
+			FAITH = faith:indo_hellenism
+			SIZE = small
+		}
+	}
 }
 
 greco_buddhism_effect = {
