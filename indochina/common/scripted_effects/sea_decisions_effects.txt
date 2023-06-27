@@ -528,7 +528,14 @@ form_lanna_decision_effect = {
 				de_jure_liege = title:d_haripunjaya
 			}
 		}
+		save_scope_as = county
+		culture = { save_scope_as = old_culture }
 		set_county_culture = culture:lanna
+		add_culture_minority_effect = {
+			COUNTY = scope:county
+			CULTURE = scope:old_culture
+			SIZE = small
+		}
 	}
 }
 
@@ -617,7 +624,14 @@ form_ayutthaya_decision_effect = {
 				de_jure_liege = title:d_pribpri
 			}
 		}
+		save_scope_as = county
+		culture = { save_scope_as = old_culture }
 		set_county_culture = culture:siamese
+		add_culture_minority_effect = {
+			COUNTY = scope:county
+			CULTURE = scope:old_culture
+			SIZE = small
+		}
 	}
 }
 
@@ -705,7 +719,14 @@ form_lanxang_decision_effect = {
 				de_jure_liege = title:d_chantabuli
 			}
 		}
+		save_scope_as = county
+		culture = { save_scope_as = old_culture }
 		set_county_culture = culture:lao
+		add_culture_minority_effect = {
+			COUNTY = scope:county
+			CULTURE = scope:old_culture
+			SIZE = small
+		}
 	}
 }
 
@@ -1010,9 +1031,15 @@ indo_greek_culture_decision_effect = {
 					culture = { has_cultural_pillar = language_greek }
 				}
 			}
+			save_scope_as = county
 			random = {
 				chance = 40
 				set_county_culture = culture:indo_greek
+				add_culture_minority_effect = {
+					COUNTY = scope:county
+					CULTURE = culture:indo_greek
+					SIZE = small
+				}
 				modifier = {
 					add = development_level
 				}
@@ -1129,8 +1156,23 @@ unite_bene_israel_effect = {
 			tier = tier_barony
 			is_holy_site_of = faith:malabarism
 		}
-		county = { set_county_culture = culture:kochinim }
-		county = { set_county_faith = faith:malabarism }
+		county = {
+			save_scope_as = county
+			culture = { save_scope_as = old_culture }
+			faith = { save_scope_as = old_faith }
+			set_county_culture = culture:kochinim
+			set_county_faith = faith:malabarism
+			add_culture_minority_effect = {
+				COUNTY = scope:county
+				CULTURE = scope:old_culture
+				SIZE = small
+			}
+			add_faith_minority_effect = {
+				COUNTY = scope:county
+				FAITH = scope:old_faith
+				SIZE = small
+			}
+		}
 	}
 	every_realm_county = {
 		limit = {
