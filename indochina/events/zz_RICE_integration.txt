@@ -2,6 +2,7 @@
 namespace = sus
 namespace = tarim_basin
 namespace = siberia
+namespace = pamir
 
 # NORMANDY STRUGGLE INTRO Just to shush errors
 normandy.0001 = { # Fullscreen Intro Event
@@ -2375,4 +2376,420 @@ siberia.0001 = {
 		remove_character_flag = RICE_siberia_yukaghir_maker
 	}
 	
+}
+
+## Limit Burusho feud to counties with a Burusho population
+# Feud between two Burusho clans
+pamir.0216 = {
+	type = character_event
+	title = pamir.0216.t
+	desc = pamir.0216.desc
+	theme = martial_strategy_focus	
+	override_background = { reference = RICE_background_pamir_valley }
+	
+	left_portrait = {
+		character = root
+		animation = boredom
+	}
+	
+	trigger = {
+		RICE_pamir_in_pamir_region_trigger = yes
+		any_county_in_region = {
+			region = RICE_pamir_region
+			county_has_culture_or_minority_trigger = { CULTURE = culture:burusho }
+		}
+	}
+	
+	immediate = {
+		random_list = {
+			10 = {
+				modifier = {
+					add = -10
+					NAND = {
+						has_title = title:c_gilgit
+						title:c_gilgit = { county_has_culture_or_minority_trigger = { CULTURE = culture:burusho } }
+					}
+				}
+				title:c_gilgit = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NAND = {
+						has_title = title:c_yasin
+						title:c_gilgit = { county_has_culture_or_minority_trigger = { CULTURE = culture:burusho } }
+					}
+				}
+				title:c_yasin = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NAND = {
+						has_title = title:c_golaghmuli
+						title:c_gilgit = { county_has_culture_or_minority_trigger = { CULTURE = culture:burusho } }
+					}
+				}
+				title:c_golaghmuli = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NAND = {
+						has_title = title:c_chitral
+						title:c_gilgit = { county_has_culture_or_minority_trigger = { CULTURE = culture:burusho } }
+					}
+				}
+				title:c_chitral = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NAND = {
+						has_title = title:c_skardu
+						title:c_gilgit = { county_has_culture_or_minority_trigger = { CULTURE = culture:burusho } }
+					}
+				}
+				title:c_skardu = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NAND = {
+						has_title = title:c_shigar
+						title:c_gilgit = { county_has_culture_or_minority_trigger = { CULTURE = culture:burusho } }
+					}
+				}
+				title:c_shigar = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NAND = {
+						has_title = title:c_astore
+						title:c_gilgit = { county_has_culture_or_minority_trigger = { CULTURE = culture:burusho } }
+					}
+				}
+				title:c_astore = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NAND = {
+						has_title = title:c_allai
+						title:c_gilgit = { county_has_culture_or_minority_trigger = { CULTURE = culture:burusho } }
+					}
+				}
+				title:c_allai = {
+					save_scope_as = burusho_county
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = -0.2
+			has_trait = just
+		}
+		modifier = {
+			add = 0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = compassionate
+		}
+	}
+
+	option = { # Can't we do something?
+		name = pamir.0216.a
+		random_list = {
+			65 = {
+				modifier = {
+					add = 5
+					has_trait = arbitrary
+				}	
+				modifier = {
+					add = -5
+					has_trait = just
+				}	
+				modifier = {
+					add = 5
+					has_trait = lazy
+				}	
+				modifier = {
+					add = -5
+					has_trait = diligent
+				}	
+				modifier = {
+					add = 5
+					has_trait = trusting
+				}	
+				modifier = {
+					add = -5
+					has_trait = sadistic
+				}	
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = pamir.0216.toast.bad
+					scope:burusho_county = {
+						add_county_modifier = {
+							modifier = RICE_pamir_burusho_feud
+							years = 10
+						}		
+					}
+				}			
+			}
+			35 = {	
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = pamir.0216.toast.good
+					add_prestige = 100
+				}			
+			}
+		}
+	}
+
+	option = { # Use diplomacy to resolve (best)
+		name = pamir.0216.b
+		trigger = {
+			diplomacy >= decent_skill_rating
+		}
+		skill = diplomacy
+		random_list = {
+			20 = {
+				modifier = {
+					add = 3
+					has_trait = arbitrary
+				}	
+				modifier = {
+					add = -3
+					has_trait = just
+				}	
+				modifier = {
+					add = 3
+					has_trait = lazy
+				}	
+				modifier = {
+					add = -5
+					has_trait = diligent
+				}	
+				modifier = {
+					add = 3
+					has_trait = shy
+				}	
+				modifier = {
+					add = -3
+					has_trait = gregarious
+				}		
+				modifier = {
+					add = 3
+					has_trait = deceitful
+				}	
+				modifier = {
+					add = -3
+					has_trait = honest
+				}		
+				modifier = {
+					add = 3
+					has_trait = wrathful
+				}	
+				modifier = {
+					add = -3
+					has_trait = calm
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = pamir.0216.toast.bad
+					scope:burusho_county = {
+						add_county_modifier = {
+							modifier = RICE_pamir_burusho_feud
+							years = 10
+						}		
+					}
+				}			
+			}
+			80 = {	
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = pamir.0216.toast.good
+					add_prestige = 100
+				}			
+			}
+		}
+	}
+
+	option = { # Use cunning and trickery (okay)
+		name = pamir.0216.c
+		trigger = {
+			intrigue >= decent_skill_rating
+		}
+		skill = intrigue
+		random_list = {
+			30 = {
+				modifier = {
+					add = 3
+					has_trait = arbitrary
+				}	
+				modifier = {
+					add = -3
+					has_trait = just
+				}	
+				modifier = {
+					add = 3
+					has_trait = lazy
+				}	
+				modifier = {
+					add = -3
+					has_trait = diligent
+				}	
+				modifier = {
+					add = 3
+					has_trait = honest
+				}	
+				modifier = {
+					add = -3
+					has_trait = deceitful
+				}		
+				modifier = {
+					add = 3
+					has_trait = impatient
+				}	
+				modifier = {
+					add = -3
+					has_trait = patient
+				}		
+				modifier = {
+					add = 3
+					has_trait = wrathful
+				}	
+				modifier = {
+					add = -3
+					has_trait = calm
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = pamir.0216.toast.bad
+					scope:burusho_county = {
+						add_county_modifier = {
+							modifier = RICE_pamir_burusho_feud
+							years = 10
+						}		
+					}
+				}			
+			}
+			70 = {	
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = pamir.0216.toast.good
+					add_prestige = 100
+				}			
+			}
+		}
+	}
+
+	option = { # Use military threats (worst)
+		name = pamir.0216.d
+		trigger = {
+			martial >= decent_skill_rating
+		}
+		skill = martial
+		random_list = {
+			40 = {
+				modifier = {
+					add = 3
+					has_trait = lazy
+				}	
+				modifier = {
+					add = -3
+					has_trait = diligent
+				}	
+				modifier = {
+					add = 3
+					has_trait = deceitful
+				}	
+				modifier = {
+					add = -3
+					has_trait = honest
+				}		
+				modifier = {
+					add = 3
+					has_trait = craven
+				}	
+				modifier = {
+					add = -3
+					has_trait = brave
+				}		
+				modifier = {
+					add = 3
+					has_trait = cynical
+				}	
+				modifier = {
+					add = -3
+					has_trait = zealous
+				}		
+				modifier = {
+					add = 3
+					has_trait = forgiving
+				}	
+				modifier = {
+					add = -3
+					has_trait = vengeful
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = pamir.0216.toast.bad
+					scope:burusho_county = {
+						add_county_modifier = {
+							modifier = RICE_pamir_burusho_feud
+							years = 10
+						}		
+					}
+				}			
+			}
+			60 = {	
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = pamir.0216.toast.good
+					add_prestige = 100
+				}			
+			}
+		}
+	}
 }
