@@ -334,22 +334,17 @@ duchy_migration_cb = {
 						TITLE_TARGET = scope:target_title
 					}
 				}
-				# custom_tooltip = MIGRATION_TOOLTIP
+				custom_tooltip = MIGRATION_TOOLTIP
 				hidden_effect = {
-					if = {
-						limit = { has_variable = culture_province }
-						while = {
-							count = var:culture_province
-							random_in_list = {
-								list = titles_taken
-								random_in_de_jure_hierarchy = {
-									limit = {
-										tier = tier_county
-										NOT = { culture = scope:attacker.culture }
-									}
-									set_county_culture = scope:attacker.culture
-								}
-							}
+					every_realm_county = {
+						save_scope_as = county
+						if = {
+							limit = { NOT = { culture = scope:attacker.culture } }
+							promote_culture_minority_effect = { CULTURE = scope:attacker.culture }
+						}
+						if = {
+							limit = { NOT = { faith = scope:attacker.faith } }
+							promote_faith_minority_effect = { FAITH = scope:attacker.faith }
 						}
 					}
 				}
@@ -829,22 +824,17 @@ kingdom_migration_cb = {
 						TITLE_TARGET = scope:target_title
 					}
 				}
-				# custom_tooltip = MIGRATION_TOOLTIP
+				custom_tooltip = MIGRATION_TOOLTIP
 				hidden_effect = {
-					if = {
-						limit = { has_variable = culture_province }
-						while = {
-							count = var:culture_province
-							random_in_list = {
-								list = titles_taken
-								random_in_de_jure_hierarchy = {
-									limit = {
-										tier = tier_county
-										NOT = { culture = scope:attacker.culture }
-									}
-									set_county_culture = scope:attacker.culture
-								}
-							}
+					every_realm_county = {
+						save_scope_as = county
+						if = {
+							limit = { NOT = { culture = scope:attacker.culture } }
+							promote_culture_minority_effect = { CULTURE = scope:attacker.culture }
+						}
+						if = {
+							limit = { NOT = { faith = scope:attacker.faith } }
+							promote_faith_minority_effect = { FAITH = scope:attacker.faith }
 						}
 					}
 				}
@@ -981,4 +971,294 @@ kingdom_migration_cb = {
 	cb_name = NOMADIC_MIGRATION_CB_NAME
 
 	interface_priority = 100
+}
+
+beg_migration_cb = {
+	icon = invasion
+	group = conquest	#Switching this to event will render the CB invisible.
+	allowed_for_character = {
+		OR = {
+			scope:attacker.culture = { has_cultural_parameter = heritage_group_altaic }
+			scope:attacker.culture = { has_cultural_parameter = heritage_group_mongolic }
+		}
+		NOT = { has_character_flag = migrated_beg }
+	}
+	# allowed_for_character_display_regardless = {
+	# 	prestige_level >= 4
+	# 	custom_tooltip = {
+	# 		text = independent_or_powerful_vassal_tt
+	# 		OR = {
+	# 			is_independent_ruler = yes
+	# 			is_powerful_vassal = yes
+	# 		}
+	# 	}
+	# 	is_at_war = no
+	# }
+
+	allowed_against_character = {
+		#Realm must have at least some land in Hungary.
+		scope:defender = {
+			any_realm_county = {
+				OR = {
+					title_province = { geographical_region = custom_moldavia }
+					title_province = { geographical_region = custom_wallachia }
+					title_province = { geographical_region = custom_volhynia }
+				}
+			}
+		}
+	}
+
+	target_titles = all
+	should_show_war_goal_subview = yes
+	mutually_exclusive_titles = { always = yes }
+	target_title_tier = kingdom
+	target_de_jure_regions_above = yes
+	ignore_effect = change_title_holder
+	use_de_jure_wargoal_only = yes
+	combine_into_one = yes
+
+	#Configure war-score. This is a bit different to usual, focusing mostly on battles and almost not at all on back-capping the attacker, they're just gonna migrate away so they don't care about being occupied.
+
+	max_attacker_score_from_battles = 200
+	max_defender_score_from_battles = 200
+	max_defender_score_from_occupation = 25
+	max_attacker_score_from_occupation = 150
+	full_occupation_by_defender_gives_victory = no
+	landless_attacker_needs_armies = no
+	attacker_capital_gives_war_score = no
+
+	valid_to_start = {
+		#May only target Wallachia, Volhynia or Moldavia.
+		OR = {
+			scope:target = title:k_moldavia
+			scope:target = title:k_dacia
+			scope:target = title:k_galicia-volhynia
+		}
+		scope:target = {
+			NOT = { has_variable = beg_migration }
+		}
+	}
+
+	should_invalidate = {
+		NOT = {
+			any_in_list = {
+				list = target_titles
+				any_in_de_jure_hierarchy = {
+					tier = tier_county
+					holder = {
+						target_is_same_character_or_above = scope:defender
+					}
+				}
+			}
+		}
+		#Emperors do not deign to migrate. Plus it'll mess up title destruction.
+		scope:attacker = { highest_held_title_tier >= tier_empire }
+	}
+
+	on_invalidated = {
+		if = {
+			limit = { exists = scope:attacker.player_heir }
+			scope:attacker.player_heir = {
+				if = {
+					limit = {
+						culture = culture:mogyer
+						faith = { has_doctrine_parameter = unreformed }
+					}
+				}
+				#Give scope:attacker back their ability to declare a migration in the event of invalidation.
+				add_character_flag = undertaking_hungarian_migration
+			}
+		}
+	}
+
+	on_invalidated_desc = msg_invasion_war_invalidated_message
+	
+	on_declaration = {
+		on_declared_war = yes
+		#Give scope:attacker some armies to ensure success & use up their free invasion.
+		scope:attacker = {
+			add_character_flag = migrated_beg
+			#One army to conquer.
+			spawn_army = {
+				name = event_troop_default_name
+				levies = 1000
+				men_at_arms = {
+					type = horse_archers
+					stacks = 10
+				}
+				location = scope:attacker.capital_province
+				uses_supply = no
+				war = scope:war
+				inheritable = no
+			}
+			#And one army to hold.
+			spawn_army = {
+				name = event_troop_default_name
+				levies = 1000
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 10
+				}
+				location = scope:attacker.capital_province
+				uses_supply = no
+				inheritable = no
+			}
+		}
+	}
+
+	on_victory_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:attacker = { is_local_player = yes }
+				}
+				desc = hungarian_invasion_war_victory_desc_attacker
+			}
+			desc = hungarian_invasion_war_victory_desc
+		}
+		triggered_desc = {
+			trigger = {
+				scope:attacker = { is_local_player = yes }
+			}
+			desc = hungarian_invasion_war_warning_desc
+		}
+	}
+	
+	cost = {
+		prestige = 750
+	}
+	
+	on_victory = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		#EP2 accolade glory gain for winning against higher ranked enemy
+		scope:attacker = { accolade_attacker_war_end_glory_gain_high_effect = yes }
+		if = {
+			limit = {
+				scope:attacker = { is_independent_ruler = no }
+			}
+			create_title_and_vassal_change = {
+				type = independency
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			change_liege_or_become_independent = {
+				CHANGE = scope:change
+				VASSAL = scope:attacker
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		
+		scope:attacker = {
+			add_trait = immigrant_beg
+
+			
+
+			every_in_list = {
+				list = target_titles
+				save_scope_as = target_title
+			}
+
+			scope:target_title = { set_variable = beg_migration } #Prevents beg invasions of the target after a successful one
+			set_character_flag = migrated_beg
+
+			# Take all titles in the dejure kingdom held by the defender or their vassals
+			create_title_and_vassal_change = {
+				type = conquest
+				save_scope_as = change
+				add_claim_on_loss = yes
+			}
+			setup_invasion_cb = {
+				titles = target_titles
+				attacker = scope:attacker
+				defender = scope:defender
+				change = scope:change
+				take_occupied = no
+			}
+			resolve_title_and_vassal_change = scope:change
+
+			# Pick a new capital
+			if = {
+				limit = {
+					any_in_list = {
+						list = titles_taken
+						this = duchy.title_capital_county
+					}
+				}
+				random_in_list = {
+					list = titles_taken
+					limit = { this = duchy.title_capital_county }
+					save_temporary_scope_as = new_capital
+					scope:attacker = { set_realm_capital = scope:new_capital }
+				}
+			}
+			else = {
+				random_in_list = {
+					list = titles_taken
+					save_temporary_scope_as = new_capital
+					scope:attacker = { set_realm_capital = scope:new_capital }
+				}
+			}
+
+			create_title_and_vassal_change = {
+				type = usurped
+				save_scope_as = change
+				add_claim_on_loss = yes
+			}
+			scope:target_title = {
+				change_title_holder = {
+					holder = scope:attacker
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+
+			scope:attacker = {
+				every_in_list = {
+					list = target_titles
+					save_scope_as = target_title
+				}
+				hidden_effect = {
+					nomadic_migration_effect = {
+						INVADER = scope:attacker
+						TITLE_TARGET = scope:target_title
+					}
+				}
+				custom_tooltip = MIGRATION_TOOLTIP
+				hidden_effect = {
+					every_realm_county = {
+						save_scope_as = county
+						if = {
+							limit = { NOT = { culture = scope:attacker.culture } }
+							promote_culture_minority_effect = { CULTURE = scope:attacker.culture }
+						}
+						if = {
+							limit = { NOT = { faith = scope:attacker.faith } }
+							promote_faith_minority_effect = { FAITH = scope:attacker.faith }
+						}
+					}
+				}
+			}
+		}
+
+		
+
+		# Attacker gets Prestige Experience, Defender loses Prestige, all other participants gain Prestige based on their war contribution.
+		modify_all_participants_fame_values = {
+			WINNER = scope:attacker
+			LOSER = scope:defender
+			FAME_BASE = scope:cb_prestige_factor # Set by 'setup_invasion_cb'
+			IS_RELIGIOUS_WAR = no
+			WINNER_FAME_SCALE = 10
+			LOSER_FAME_SCALE = -10
+			WINNER_ALLY_FAME_SCALE = 10
+			LOSER_ALLY_FAME_SCALE = 10
+		}
+
+		# Truce
+		add_truce_attacker_victory_effect = yes
+
+		# FP1: note the victory for future memorialisation via stele (if applicable).
+		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
+	}
 }
