@@ -285,3 +285,109 @@ tradition_horse_lords = {
 		value = 100
 	}
 }
+
+tradition_artisans = {
+	category = societal
+
+	layers = {
+		0 = steward
+		1 = mena
+		4 = artisan.dds
+	}
+	
+	is_shown = {
+		has_dlc_feature = royal_court
+	}
+
+	can_pick = {
+		trigger_if = {
+			limit = {
+				OR = {
+					NOT = { exists = scope:replacing }
+					NOT = { scope:replacing = culture_tradition:tradition_keszthely_craftsmanship }
+				}
+			}
+			NOT = { has_cultural_tradition = tradition_keszthely_craftsmanship } # Don't wanna stack these
+		}
+	}
+
+	can_pick_for_hybridization = {
+		custom_tooltip = {
+			text = cannot_have_both_artisan_traditions
+			NOT = { # Only blocks monogamous to avoid duplicate warnings, but is blocked by polygamous
+				culture_tradition:tradition_keszthely_craftsmanship = { is_in_list = traits }
+			}
+		}
+	}
+	
+	parameters = {
+		improved_artisan_inspiration = yes
+		improved_weaver_inspiration = yes
+	}
+	county_modifier = {
+		build_gold_cost = -0.05
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_courtly = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_courtly_communal_or_spiritual_desc
+				}
+			}
+			if = {
+				limit = {
+					trigger_if = {
+						limit = {
+							scope:character = {
+								is_ai = no
+							}
+						}
+						NOT = {
+							any_ruler = {
+								count >= 3
+								culture = prev
+								primary_title.tier >= tier_county
+								OR = {
+									has_completed_inspiration = yes
+									any_courtier_or_guest = {
+										OR = {
+											has_completed_inspiration = yes
+											exists = inspiration
+										}
+									}
+								}
+							}
+						}
+					}
+					trigger_else = {
+						always = no
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = has_courtier_or_guest_with_inspiration_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+	}
+}

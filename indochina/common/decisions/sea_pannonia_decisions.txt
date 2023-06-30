@@ -36,7 +36,7 @@ restore_avar_khaganate_decision = {
 		prestige_level >= 3
 		trigger_if = {
 			limit = {
-				has_governent = nomadic_government
+				has_government = nomadic_government
 			}
 			has_realm_law = nomadic_authority_3
 		}
@@ -47,6 +47,9 @@ restore_avar_khaganate_decision = {
 			OR = {
 				has_realm_law = tribal_authority_2
 			}
+		}
+		trigger_else = {
+			always = yes
 		}
 		OR = {
 			religion = religion:christianity_religion
@@ -123,8 +126,8 @@ commission_castelli_craftsman = {
 			any_county_in_region = {
 				region = custom_carpathia
 				OR = {
-					county_has_specific_minority_culture_trigger = { CULTURE = culture:keszthely }
-					culture = culture:keszthely
+					county_has_minority_with_tradition_trigger = { TRADITION = tradition_keszthely_craftsmanship }
+					culture = { has_cultural_tradition = tradition_keszthely_craftsmanship }
 				}
 			}
 		}
@@ -434,11 +437,20 @@ commission_castelli_craftsman = {
 		add_prestige = minor_prestige_gain
 
 		culture = {
-			change_cultural_acceptance = {
-				target = culture:keszthely
-				value = {
-					value = root.highest_held_title_tier
-					subtract = 1
+			if = {
+				limit = {
+					NOR = {
+						this = culture:keszthely
+						any_parent_culture_or_above = { this = culture:keszthely }
+					}
+				}
+				change_cultural_acceptance = {
+					target = culture:keszthely
+					value = {
+						value = root.highest_held_title_tier
+						subtract = 1
+					}
+					desc = hired_castelli_craftsmen
 				}
 			}
 		}

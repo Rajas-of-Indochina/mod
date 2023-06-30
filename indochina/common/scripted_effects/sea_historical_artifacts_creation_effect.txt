@@ -77,3 +77,447 @@ create_artifact_laguna_copperplate = {
 		flag_as_trash_artifact = yes
 	}
 }
+
+get_artifact_quality_effect = {
+	if = {
+		limit = {
+			NOT = { exists = scope:quality }
+		}
+		# Some random variance is added so artifact quality isn't completely deterministic
+		if = {
+			limit = {
+				NOR = {
+					exists = scope:inspiration_owner
+					exists = scope:random_quality_bonus
+				}
+			}
+			random_list = {
+				20 = {
+					save_scope_value_as = {
+						name = random_quality_bonus
+						value = 4
+					} 
+				}
+				20 = {
+					save_scope_value_as = {
+						name = random_quality_bonus
+						value = 8
+					} 
+				}
+				20 = {
+					save_scope_value_as = {
+						name = random_quality_bonus
+						value = 12
+					} 
+				}
+				20 = {
+					save_scope_value_as = {
+						name = random_quality_bonus
+						value = 16
+					} 
+				}
+				20 = {
+					save_scope_value_as = {
+						name = random_quality_bonus
+						value = 20
+					} 
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = { exists = scope:random_inspired_skill_quality_bonus }
+			}
+			random_list = {
+				20 = {
+					save_scope_value_as = {
+						name = random_inspired_skill_quality_bonus
+						value = 0.5
+					} 
+				}
+				20 = {
+					save_scope_value_as = {
+						name = random_inspired_skill_quality_bonus
+						value = 1
+					} 
+				}
+				20 = {
+					save_scope_value_as = {
+						name = random_inspired_skill_quality_bonus
+						value = 2
+					} 
+				}
+				20 = {
+					save_scope_value_as = {
+						name = random_inspired_skill_quality_bonus
+						value = 2.5
+					} 
+				}
+				20 = {
+					save_scope_value_as = {
+						name = random_inspired_skill_quality_bonus
+						value = 3
+					} 
+				}
+			}
+			save_scope_value_as = {
+				name = random_quality_bonus
+				value = 0
+			}
+		}
+
+		# Calculate the final quality of the artifact
+		save_scope_value_as = {
+			name = quality
+			value = {
+				value = scope:random_quality_bonus
+
+				# Bonus Quality from the Court Owner's Amenities
+				if = {
+					limit = {
+						exists = court_owner
+						court_owner = {
+							has_royal_court = yes
+							amenity_level = { type = court_lodging_standards value > low_amenity_level }
+						}
+					}
+					if = {
+						limit = { court_owner = { amenity_level = { type = court_lodging_standards value >= max_amenity_level } } }
+						add = 10
+					}
+					else_if = {
+						limit = { court_owner = { amenity_level = { type = court_lodging_standards value >= very_high_amenity_level } } }
+						add = 8
+					}
+					else_if = {
+						limit = { court_owner = { amenity_level = { type = court_lodging_standards value >= high_amenity_level } } }
+						add = 6
+					}
+					else_if = {
+						limit = { court_owner = { amenity_level = { type = court_lodging_standards value >= medium_amenity_level } } }
+						add = 4
+					}
+					else = {
+						add = 2
+					}
+				}
+
+				# Bonus quality from Inspiration Owner
+				if = {
+					limit = { exists = scope:inspiration_owner }
+					scope:inspiration_owner = {
+						# Bonus quality from high skills, depending on inspiration type.
+						add = {	
+							if = {
+								limit = { ep1_character_had_or_has_inspiration_type_trigger = { TYPE = armor } }
+								value = armor_inspiration_average_skill_value
+							}
+							else_if = {
+								limit = { ep1_character_had_or_has_inspiration_type_trigger = { TYPE = weapon } }
+								value = weapon_inspiration_average_skill_value
+							}
+							else_if = {
+								limit = { ep1_character_had_or_has_inspiration_type_trigger = { TYPE = adventure } }
+								value = adventure_inspiration_average_skill_value
+							}
+							else_if = {
+								limit = { ep1_character_had_or_has_inspiration_type_trigger = { TYPE = smith } }
+								value = smith_inspiration_average_skill_value
+							}
+							else_if = {
+								limit = { ep1_character_had_or_has_inspiration_type_trigger = { TYPE = book } }
+								value = book_inspiration_average_skill_value
+							}
+							else_if = {
+								limit = { ep1_character_had_or_has_inspiration_type_trigger = { TYPE = weaver } }
+								value = weaver_inspiration_average_skill_value
+							}
+							else_if = {
+								limit = { ep1_character_had_or_has_inspiration_type_trigger = { TYPE = artisan } }
+								value = artisan_inspiration_average_skill_value
+							}
+							multiply = {
+								value = quality_bonus_per_skill_level_value
+								add = scope:random_inspired_skill_quality_bonus # Replaces the random_quality_bonus when an artifact is created by a character so that skill matters more
+							}
+						}
+
+						# Bonus quality from Cultural Traditions
+						if = {
+							limit = {
+								ep1_character_had_or_has_inspiration_type_trigger = { TYPE = weapon }
+								culture = { has_cultural_parameter = improved_weapon_inspiration }
+							}
+							add = 20
+						}
+						if = {
+							limit = {
+								ep1_character_had_or_has_inspiration_type_trigger = { TYPE = artisan }
+								culture = { has_cultural_parameter = improved_artisan_inspiration }
+							}
+							add = 20
+						}
+						if = {
+							limit = {
+								ep1_character_had_or_has_inspiration_type_trigger = { TYPE = weaver }
+								culture = { has_cultural_parameter = improved_weaver_inspiration }
+							}
+							add = 20
+						}
+						if = {
+							limit = {
+								culture = { has_cultural_parameter = enhanced_handicrafts }
+							}
+							add = 20
+						}
+
+						# Bonus quality from event outcomes involving the Inspiration Owner
+						if = {
+							limit = { exists = var:artifact_quality }
+							add = {
+								value = var:artifact_quality
+								multiply = 3
+							}
+						}
+
+						# Reduction on quality for 'local artisans', who should produce lower quality artifacts. Castelli are exempt from this.
+						if = {
+							limit = {
+								has_character_flag = local_artisan
+								NOT = { culture = { has_cultural_parameter = enhanced_handicrafts } }
+							}
+							add = -10
+						}
+						# Other inspiration owners get a small bonus in quality to help distinguish them from 'local artisans'
+						else = {
+							add = 20
+						}
+					}
+					
+					# Bonuses from Buildings
+					if = { #Smiths line
+						limit = {
+							exists = court_owner
+							court_owner = {
+								any_directly_owned_province = {
+									has_building_or_higher = smiths_05
+								}
+							}
+						}
+						court_owner = {
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = smiths_05
+								}
+								add = 2
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = smiths_06
+								}
+								add = 2
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = smiths_07
+								}
+								add = 2
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = smiths_08
+								}
+								add = 2
+							}
+						}
+					}
+					if = { #blacksmiths duchy building
+						limit = {
+							exists = court_owner
+							court_owner = {
+								any_directly_owned_province = {
+									has_building_or_higher = blacksmiths_01
+								}
+							}
+						}
+						court_owner = {
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = blacksmiths_01
+								}
+								add = 4
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = blacksmiths_02
+								}
+								add = 8
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = blacksmiths_03
+								}
+								add = 12
+							}
+						}
+					}
+					if = { #caravanserai line
+						limit = {
+							exists = court_owner
+							court_owner = {
+								any_directly_owned_province = {
+									has_building_or_higher = caravanserai_04
+								}
+							}
+						}
+						court_owner = {
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = caravanserai_04
+								}
+								add = 2
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = caravanserai_05
+								}
+								add = 2
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = caravanserai_06
+								}
+								add = 2
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = caravanserai_07
+								}
+								add = 2
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = caravanserai_08
+								}
+								add = 2
+							}
+						}
+					}
+					if = { #Wind Furnaces line
+						limit = {
+							exists = court_owner
+							court_owner = {
+								any_directly_owned_province = {
+									has_building_or_higher = wind_furnace_04
+								}
+							}
+							OR = {
+								ep1_character_had_or_has_inspiration_type_trigger = { TYPE = armor }
+								ep1_character_had_or_has_inspiration_type_trigger = { TYPE = weapon }
+							}
+						}
+						court_owner = {
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = wind_furnace_04
+								}
+								add = 6
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = wind_furnace_05
+								}
+								add = 4
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = wind_furnace_06
+								}
+								add = 4
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = wind_furnace_07
+								}
+								add = 4
+							}
+							every_directly_owned_province = {
+								limit = {
+									has_building_or_higher = wind_furnace_08
+								}
+								add = 4
+							}
+						}
+					}
+					if = { # Universities boost Book Inspirations
+						limit = {
+							exists = court_owner
+							court_owner = {
+								any_directly_owned_province = {
+									has_university_building_trigger = yes
+								}
+							}
+							ep1_character_had_or_has_inspiration_type_trigger = { TYPE = book }
+						}
+						add = 20
+					}
+					if = { # Special Mines boost things significantly
+						limit = {
+							exists = court_owner
+							court_owner = {
+								any_directly_owned_province = {
+									has_any_special_mine_trigger = yes
+								}
+							}
+							OR = {
+								ep1_character_had_or_has_inspiration_type_trigger = { TYPE = armor }
+								ep1_character_had_or_has_inspiration_type_trigger = { TYPE = weapon }
+								ep1_character_had_or_has_inspiration_type_trigger = { TYPE = smith }
+								ep1_character_had_or_has_inspiration_type_trigger = { TYPE = artisan }
+							}
+						}
+						add = 20
+					}
+				}
+
+				#If it is worth bringing home from an adventure it is not common.
+				if = {
+					limit = {
+						exists = scope:adventurer
+					}
+					add = 20
+				}
+				
+
+				# Family Epic base quality 
+				if = {
+					limit = {
+						exists = scope:owner
+						scope:owner = { has_variable = commission_epic_quality }
+					}
+					add = scope:owner.var:commission_epic_quality
+				}
+				# Old Ledger should not be too fancy (stewardship_wealth.1061)
+				if = {
+					limit = {
+						exists = scope:low_quality
+					}
+					max = 20
+				}
+
+				# Exotic Arms event
+				if = {
+					limit = { exists = scope:exotic_blade_quality }
+					if = {
+						limit = { scope:exotic_blade_quality = no }
+						max = 20
+					}
+					else = { max = 60 }
+				}
+
+				# Can't have negative quality
+				min = 1
+			}
+		}
+	}
+}
