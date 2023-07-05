@@ -12,6 +12,10 @@ permanent_tributary_war_cb = {
     war_name_base = perma_trib_war_m_b
     my_war_name_base = perma_trib_war_m_b
 
+    on_declaration = {
+        on_declared_war = yes
+    }
+
     allowed_against_character = {
         scope:defender = {
             is_at_war = no
@@ -111,24 +115,13 @@ permanent_tributary_war_cb = {
             }
         }
 
-        # Prestige for the attacker's war allies
-        add_from_contribution_attackers = {
-            prestige = {
-                value = major_prestige_value
-            }
-            opinion = {
-                modifier = contributed_in_war
-            }
-        }
-
-        # Prestige for the defender's war allies
-        add_from_contribution_defenders = {
-            prestige = {
-                value = major_prestige_value
-            }
-            opinion = {
-                modifier = contributed_in_war
-            }
+        # Allies on both sides get full prestige value for helping in the war, based on their war participation.
+        modify_allies_of_participants_fame_values = {
+            WINNER = scope:attacker
+            FAME_BASE = major_prestige_value
+            IS_RELIGIOUS_WAR = no
+            WINNER_ALLY_FAME_SCALE = 1
+            LOSER_ALLY_FAME_SCALE = 1
         }
 
         # Truce
@@ -148,7 +141,13 @@ permanent_tributary_war_cb = {
             desc = perma_trib_on_white_peace_desc
         }
     }
+
     on_white_peace = {
+        scope:attacker = { show_pow_release_message_effect = yes }
+
+        #EP2 accolade glory gain for doing ok against higher ranked enemy
+        scope:defender = { accolade_defender_war_end_glory_gain_low_effect = yes }
+
         # Prestige loss for the attacker
         scope:attacker = {
             add_prestige = {
@@ -161,20 +160,13 @@ permanent_tributary_war_cb = {
             }
         }
 
-        # Prestige for the attacker's war allies
-        add_from_contribution_attackers = {
-            prestige = minor_prestige_value
-            opinion = {
-                modifier = contributed_in_war
-            }
-        }
-
-        # Prestige for the defender's war allies
-        add_from_contribution_defenders = {
-            prestige = minor_prestige_value
-            opinion = {
-                modifier = contributed_in_war
-            }
+        # Allies on both sides get full prestige value for helping in the war, based on their war participation.
+        modify_allies_of_participants_fame_values = {
+            WINNER = scope:attacker # Not important as the scales are identical
+            FAME_BASE = minor_prestige_value
+            IS_RELIGIOUS_WAR = no
+            WINNER_ALLY_FAME_SCALE = 1
+            LOSER_ALLY_FAME_SCALE = 1
         }
 
         scope:defender = {
@@ -183,6 +175,7 @@ permanent_tributary_war_cb = {
             }
         }
 
+        # Truce
         add_truce_white_peace_effect = yes
     }
 
@@ -200,46 +193,45 @@ permanent_tributary_war_cb = {
         }
     }
     on_defeat = {
+        scope:attacker = { show_pow_release_message_effect = yes }
+
+        #EP2 accolade glory gain for winning against higher ranked enemy
+        scope:defender = { accolade_defender_war_end_glory_gain_med_effect = yes }
 
         # Prestige loss for the attacker
         scope:attacker = {
-            pay_short_term_gold = {
-                gold = 2
-                target = scope:defender
-                yearly_income = yes
+            pay_short_term_gold_reparations_effect = {
+                GOLD_VALUE = 3
             }
             add_prestige = {
-                value = medium_prestige_value
+                value = major_prestige_value
                 multiply = -1.0
             }
         }
 
-        # Prestige for Defender
+        # Prestige for the defender
         scope:defender = {
-            add_prestige = medium_prestige_value
-        }
-
-        # Prestige for the attacker's war allies
-        add_from_contribution_attackers = {
-            prestige = minor_prestige_value
-            opinion = {
-                modifier = contributed_in_war
+            add_prestige_war_defender_effect = {
+                PRESTIGE_VALUE = medium_prestige_value
             }
         }
 
-        # Prestige for the defender's war allies
-        add_from_contribution_defenders = {
-            prestige = minor_prestige_value
-            opinion = {
-                modifier = contributed_in_war
-            }
+        # Allies on both sides get full prestige value for helping in the war, based on their war participation.
+        modify_allies_of_participants_fame_values = {
+            WINNER = scope:defender
+            FAME_BASE = major_prestige_value
+            IS_RELIGIOUS_WAR = no
+            WINNER_ALLY_FAME_SCALE = 1
+            LOSER_ALLY_FAME_SCALE = 1
         }
-
-        add_truce_attacker_defeat_effect = yes
 
         scope:attacker = {
             save_temporary_scope_as = loser
         }
+
+        # Truce
+        add_truce_attacker_defeat_effect = yes
+
         on_lost_aggression_war_discontent_loss = yes
     }
 

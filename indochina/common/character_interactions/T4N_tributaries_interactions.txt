@@ -41,6 +41,12 @@ declare_war_interaction = {
                 text = "is_not_bankrupt"
                 gold > 0
             }
+            NOT = {
+                custom_description = {
+                    text = "is_in_an_activity"
+                    exists = involved_activity
+                }
+            }
             trigger_if = {
                 limit = {
                     culture = { has_cultural_parameter = cannot_attack_allies }
@@ -93,9 +99,9 @@ declare_war_interaction = {
                         scope:actor = {
                             AND = {
                                 OR = {
-                                    has_government = imperial_government
-                                    has_government = autocratic_government
-                                    has_government = legion_government
+                                    government_has_flag = government_is_imperial
+                                    government_has_flag = government_is_autocratic
+                                    government_has_flag = government_is_legion
                                 }
                                 is_independent_ruler = no
                                 liege = {
@@ -108,9 +114,9 @@ declare_war_interaction = {
                         scope:recipient = {
                             AND = {
                                 OR = {
-                                    has_government = imperial_government
-                                    has_government = autocratic_government
-                                    has_government = legion_government
+                                    government_has_flag = government_is_imperial
+                                    government_has_flag = government_is_autocratic
+                                    government_has_flag = government_is_legion
                                 }
                                 is_independent_ruler = no
                             }
@@ -130,25 +136,8 @@ declare_war_interaction = {
                     AND = {
                         is_independent_ruler = no
                         OR = {
-                            has_government = imperial_government
-                            has_government = autocratic_government
-                        }
-                    }
-                }
-            }
-        }
-        trigger_if = {
-            limit = {
-                scope:actor = {
-                    has_variable = my_suzerain
-                }
-            }
-            custom_tooltip = {
-                text = declare_war_target_is_suzerain
-                scope:actor = {
-                    NOT = {
-                        var:my_suzerain = {
-                            this = scope:recipient
+                            government_has_flag = government_is_imperial
+                            government_has_flag = government_is_autocratic
                         }
                     }
                 }
@@ -358,99 +347,43 @@ declare_war_interaction = {
 call_suzerain_to_war = {
     category = interaction_category_diplomacy
     use_diplomatic_range = no
-    desc = call_suzerain_to_war_desc
-    interface_priority = 60
-    interface = call_ally
-    special_interaction = call_ally_interaction
-    popup_on_receive = yes
-    pause_on_receive = yes
-
-    greeting = positive
-    notification_text = call_suzerain_notification
 
     is_shown = {
         scope:actor = { #put here every tributary type which should be able to call suzerain
-            is_at_war = yes
-            has_variable = my_suzerain
-            var:my_suzerain = {
-                this = scope:recipient
+            scope:recipient = {
+                is_tributary = yes
             }
+            is_at_war = yes
             NOT = { is_at_war_with = scope:recipient }
         }
-    }
-
-    has_valid_target = {
-        exists = scope:target
-    }
-
-    is_valid_showing_failures_only = {
-        #all hail jank, this is a only way i think i can achive that xD
-        NOT = {
+        scope:recipient = {
+            exists = var:suzerain
+        }
+        NOR = {
             scope:actor = {
-                has_variable = my_suzerain
-                any_war_ally = {
-                    this = var:my_suzerain
+                AND = {
+                    exists = var:my_suzerain
+                    any_war_ally = {
+                        this = var:my_suzerain
+                    }
                 }
-                var:my_suzerain = {
-                    is_target_in_variable_list = { name = permanent_tributaries target = prev }
-                }
+            }
+            scope:recipient = {
+                is_at_war_with = scope:actor
             }
         }
-    }
-
-    on_decline = {
-        #The war could theoretically end on the day the decline is sent
-        if = {
-            limit = {
-                exists = scope:target
-            }
-            scope:target = {
-                if = {
-                    limit = {
-                        is_defender = scope:actor
-                    }
-                    scope:actor = {
-                        add_opinion = {
-                            modifier = rejected_call_to_defensive_war
-                            target = scope:recipient
-                        }
-                        # This needs to go into a function (effect)
-                        scope:actor = {
-                            remove_variable = my_suzerain
-
-                            scope:recipient = {
-                                remove_list_variable = { name = permanent_tributaries target = prev }
-                            }
-                            scope:recipient = {
-                                remove_list_variable = { name = all_tributaries target = prev }
-                            }
-                        }
-                    }
-                    scope:recipient = {
-                        add_prestige_experience = massive_prestige_loss
-                        trigger_event = { id = tributaries.4 }
-                    }
-                }
-                hidden_effect = {
-                    if = {
-                        limit = {
-                            NOT = { was_called = scope:recipient }
-                        }
-                        set_called_to = scope:recipient
-                    }
-                }
-            }
+        custom_description = {
+            text = trib_type_allows_call_to_arms
+            exists = var:can_call_to_war_tributary
+            var:can_call_to_war_tributary = yes
         }
     }
 
     on_accept = {
-        scope:target = {
-            hidden_effect = {
-                set_called_to = scope:recipient
-            }
+        scope:actor = {
             if = {
                 limit = {
-                    is_attacker = scope:actor
+                    is_attacker = this
                 }
                 add_attacker = scope:recipient
             }
@@ -458,6 +391,11 @@ call_suzerain_to_war = {
                 add_defender = scope:recipient
             }
         }
+    }
+
+    ai_target_quick_trigger = {                         # Quick triggers for the ai_targets
+        adult = yes                                     # The target needs to be adult
+        prison = no                                     # Target must be in prison
     }
 
     ai_accept = {
@@ -642,6 +580,14 @@ call_suzerain_to_war = {
             factor = 0
 
         }
+
+        modifier = { # If the recipient is allied to both the attacker and the defender, the attacker shouldn't call
+            scope:target.casus_belli.primary_attacker = scope:actor
+            scope:target.casus_belli.primary_defender = {
+                is_allied_to = scope:recipient
+            }
+            factor = 0
+        }
     }
 }
 
@@ -650,6 +596,7 @@ ruler_offer_tribute_to_recipient = {
     category = interaction_category_diplomacy
     common_interaction = yes
     use_diplomatic_range = yes
+    icon = icon_gold
     desc = demand_tribute_interaction_desc
     notification_text = demand_tribute_interaction_notification
 
