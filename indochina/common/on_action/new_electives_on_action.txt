@@ -1,7 +1,111 @@
 ﻿on_game_start = {
 	on_actions = {
 		succexpstart
+		succexpstart867
+		succexpstartfrance867
+		succexpstartfranceCK
 	}
+}
+alemaniastart = {
+    trigger = {
+        OR = {
+            has_game_rule = all_succexp_his_events
+            AND = {
+                has_game_rule = ai_succexp_his_events
+                character:90107 = {
+                    is_ai = yes
+                }
+                character:90105 = {
+                    is_ai = yes
+                }
+                character:42018 = {
+                    is_ai = yes
+                }
+                character:42019 = {
+                    is_ai = yes
+                }
+            }
+        }
+    }
+    effect = {
+        character:90107 = {
+            trigger_event = {
+                id = historicsucc.001
+			    days = 3
+            }
+            add_character_modifier = louis_no_children_modifier
+        }
+        character:90105 = {
+            trigger_event = {
+                id = historicsucc.001
+			    days = 3
+            }
+        }
+        character:42018 = {
+            trigger_event = {
+                id = historicsucc.001
+			    days = 3
+            }
+        }
+        character:42019 = {
+            trigger_event = {
+                id = historicsucc.001
+			    days = 3
+            }
+        }
+    }
+}
+succexpstartfranceCK = {
+    trigger = {
+        current_date > 987.12.29
+    }
+    effect = {
+        add_to_global_variable_list = {
+            name = cokingship_list
+            target = title:k_france
+        }
+    }
+}
+succexpstartfrance867 = {
+    trigger = {
+        current_date > 866.12.31
+    }
+    effect = {
+        title:k_france = {
+            add_title_law = feudal_elective_succession_law
+        }
+    }
+}
+succexpstart867 = {
+    trigger = {
+        game_start_date = 867.1.1
+    }
+    effect = {
+        title:k_aquitaine = {
+            add_title_law = feudal_elective_succession_law
+        }
+        character:42018 = {
+            remove_trait = ill
+            add_trait = physique_bad_2
+        }
+		character:42021 = {
+            add_trait = devoted
+        }
+    }
+}
+eror_destyor_five = {
+    effect = {
+        set_global_variable = {
+			name = CE_is_loaded
+			value = yes
+		}
+		if = { #Error Destroyer 4000
+			limit = {
+				exists = global_var:CE_is_loaded
+			}
+			# Do nothing
+		}
+    }
 }
 succexpstart = {
     effect = {
@@ -9,11 +113,36 @@ succexpstart = {
             name = SE_is_loaded
             value = yes
         }
+        if = {
+            limit = { exists = title:e_byzantium.holder }
+            title:e_byzantium = {
+                add_title_law = imperial_elective_succession_law
+            }
+        }
+        if = {
+            limit = { exists = title:k_hungary.holder }
+            title:k_hungary = {
+                add_title_law = royal_elective_succession_law
+            }
+        }
+        if = {
+            limit = { exists = title:k_moravia.holder }
+            title:k_moravia = {
+                add_title_law = royal_elective_succession_law
+            }
+        }
+        if = {
+            limit = { exists = title:k_poland.holder }
+            title:k_poland = {
+                add_title_law = royal_elective_succession_law
+            }
+        }
         every_culture_global = {
             limit = {
-                has_cultural_tradition = tradition_horse_lords
-                NOT = {
+                has_cultural_parameter = heritage_group_altaic
+                NOR = {
                     this = culture:tuyuhun
+                    has_cultural_pillar = heritage_tungusic
                 }
             }
             add_innovation = innovation_kurultai
@@ -31,90 +160,316 @@ succexpstart = {
                     has_government = feudal_government
                     has_government = tribal_government
                 }
-                highest_held_title_tier >= tier_kingdom
+                highest_held_title_tier >= tier_county
             }
-            primary_title = {
+            this.primary_title = {
                 add_title_law = gaelic_elective_succession_law
             }
         }
         every_independent_ruler = {
             limit = {
                 culture = { has_cultural_parameter = witenagemot_succession_enabled }
-                highest_held_title_tier >= tier_kingdom
+                highest_held_title_tier >= tier_duchy
                 OR = {
                     has_government = feudal_government
                     has_government = tribal_government
                 }
             }
-            primary_title = {
+            this.primary_title = {
                 add_title_law = saxon_elective_succession_law
             }
         }
         every_independent_ruler = {
             limit = {
                 culture = { has_cultural_parameter = scandinavian_elective_enabled }
-                highest_held_title_tier >= tier_kingdom
+                highest_held_title_tier >= tier_duchy
                 OR = {
                     has_government = feudal_government
                     has_government = tribal_government
                 }
             }
-            primary_title = {
+            this.primary_title = {
                 add_title_law = scandinavian_elective_succession_law
             }
         }
         every_independent_ruler = {
             limit = {
                 OR = {
-                    religion = religion:baltic_religion
-                    religion = religion:west_african_religion
-                    religion = religion:akom_religion
-                    religion = religion:west_african_roog_religion
-                    religion = religion:west_african_orisha_religion
+                    this.religion = religion:baltic_religion
+                    this.religion = religion:west_african_religion
+                    this.religion = religion:akom_religion
+                    this.religion = religion:west_african_roog_religion
+                    this.religion = religion:west_african_orisha_religion
                 }
                 OR = {
                     has_government = feudal_government
                     has_government = tribal_government
                 }
-                faith = { has_doctrine = tenet_ancestor_worship }
                 highest_held_title_tier >= tier_duchy
+                faith = {
+                    has_doctrine = tenet_ancestor_worship
+                }
             }
-            primary_title = {
+            this.primary_title = {
                 add_title_law = eldership_elective_succession_law
             }
         }
         every_independent_ruler = {
             limit = {
-                OR = {
-                    culture = { has_cultural_pillar = heritage_mongolic }
-                    culture = { has_cultural_pillar = heritage_turkic }
+                culture = {
+                    has_innovation = innovation_kurultai
                 }
                 OR = {
                     has_government = tribal_government
                     has_government = nomadic_government
                 }
-                NOT = { primary_title = title:e_cumania }
-                highest_held_title_tier >= tier_kingdom
+                highest_held_title_tier >= tier_duchy
             }
-            primary_title = {
+            this.primary_title = {
                 add_title_law = kurultai_elective_succession_law
             }
         }
     }
 }
+yearly_playable_pulse = {
+    on_actions = {
+        succexpypp
+    }
+}
+succexpypp = {
+    trigger = {
+        is_ai = yes
+        highest_held_title_tier > 3
+        any_held_title = {
+            OR = {
+                has_title_law = saxon_elective_succession_law
+                has_title_law = scandinavian_elective_succession_law
+                has_title_law = gaelic_elective_succession_law
+                has_title_law = eldership_elective_succession_law
+                has_title_law = mahestan_elective_succession_law
+                has_title_law = kurultai_elective_succession_law
+            }
+            NOT = {
+                this = root.primary_title
+            }
+        }
+    }
+    effect = {
+        if = {
+            limit = {
+                highest_held_title_tier = 5
+            }
+            every_held_title = {
+                limit = {
+                    tier < 5
+                    OR = {
+                        has_title_law = saxon_elective_succession_law
+                        has_title_law = scandinavian_elective_succession_law
+                        has_title_law = gaelic_elective_succession_law
+                        has_title_law = eldership_elective_succession_law
+                        has_title_law = mahestan_elective_succession_law
+                        has_title_law = kurultai_elective_succession_law
+                    }
+                }
+                if = {
+                    limit = {
+                        has_title_law = saxon_elective_succession_law
+                    }
+                    clear_title_laws = yes
+                }
+                if = {
+                    limit = {
+                        has_title_law = kurultai_elective_succession_law
+                    }
+                    clear_title_laws = yes
+                }
+                if = {
+                    limit = {
+                        has_title_law = scandinavian_elective_succession_law
+                    }
+                    clear_title_laws = yes
+                }
+                if = {
+                    limit = {
+                        has_title_law = gaelic_elective_succession_law
+                    }
+                    clear_title_laws = yes
+                }
+                if = {
+                    limit = {
+                        has_title_law = eldership_elective_succession_law
+                    }
+                    clear_title_laws = yes
+                }
+                if = {
+                    limit = {
+                        has_title_law = mahestan_elective_succession_law
+                    }
+                    clear_title_laws = yes
+                }
+            }
+        }
+        else = {
+            every_held_title = {
+                limit = {
+                    tier < 4
+                    OR = {
+                        has_title_law = saxon_elective_succession_law
+                        has_title_law = scandinavian_elective_succession_law
+                        has_title_law = gaelic_elective_succession_law
+                        has_title_law = eldership_elective_succession_law
+                        has_title_law = mahestan_elective_succession_law
+                    }
+                }
+                if = {
+                    limit = {
+                        has_title_law = saxon_elective_succession_law
+                    }
+                    clear_title_laws = yes
+                }
+                if = {
+                    limit = {
+                        has_title_law = scandinavian_elective_succession_law
+                    }
+                    clear_title_laws = yes
+                }
+                if = {
+                    limit = {
+                        has_title_law = gaelic_elective_succession_law
+                    }
+                    clear_title_laws = yes
+                }
+                if = {
+                    limit = {
+                        has_title_law = eldership_elective_succession_law
+                    }
+                    clear_title_laws = yes
+                }
+                if = {
+                    limit = {
+                        has_title_law = mahestan_elective_succession_law
+                    }
+                    clear_title_laws = yes
+                }
+            }
+        }
+    }
+}
+yearly_global_pulse = {
+    on_actions = {
+        succexpygp
+    }
+}
+succexpygp = {
+    effect = {
+        every_in_global_list = {
+            variable = cokingship_list
+            limit = {
+                NOT = {
+                    has_title_law = feudal_elective_succession_law
+                }
+            }
+            remove_list_global_variable = {
+                name = cokingship_list
+                target = this
+            }
+        }
+    }
+}
+on_death = {
+	on_actions = {
+		alemania
+        succexpdeath
+	}
+}
+succexpdeath = {
+    trigger = {
+        any_held_title = {
+            OR = {
+                has_title_law = mahestan_elective_succession_law
+                has_title_law = imperial_elective_succession_law
+                AND = {
+                    has_title_law = feudal_elective_succession_law
+                    any_in_global_list = {
+                        variable  = cokingship_list
+                        this = prev
+                    }
+                }
+            }
+        }
+    }
+    effect = {
+        every_held_title = {
+            limit = {
+                OR = {
+                    has_title_law = mahestan_elective_succession_law
+                    has_title_law = imperial_elective_succession_law
+                    AND = {
+                        has_title_law = feudal_elective_succession_law
+                        any_in_global_list = {
+                            variable  = cokingship_list
+                            this = prev
+                        }
+                    }
+                }
+            }
+            save_scope_as = elective_title
+            every_title_heir = {
+                save_scope_as = title_candidates
+                if = {
+                    limit = {
+                        scope:elective_title = {
+                            place_in_line_of_succession = {
+                                target = scope:title_candidates
+                                value <= 3
+                            }
+                        }
+                    }
+                    add_unpressed_claim = scope:elective_title
+                }
+            }
+        }
+    }
+}
+alemania = {
+	trigger = {
+		this = character:90107
+        character:90107 = {
+            OR = {
+                has_game_rule = all_succexp_his_events
+                AND = {
+                    is_ai = yes
+                    has_game_rule = ai_succexp_his_events
+                }
+            }
+            NOT = {
+                has_title = title:e_france
+                has_title = title:e_hre
+            }
+            any_child = {
+                OR = {
+                    has_game_rule = all_succexp_his_events
+                    AND = {
+                        is_ai = yes
+                        has_game_rule = ai_succexp_his_events
+                    }
+                }
+            }
+        }
+	}
+	events = {
+		historicsucc.003
+	}
+}
 
-dummy = { #error destroyer 2000
+dummy = { #error destroyer 2001
     trigger = {
         exists = global_var:SE_is_loaded
     }
     effect = {
         set_global_variable = {
-            name = StA_is_loaded
-            value = flag:none
-        }
-        set_global_variable = {
-            name = StA_title_realm_law
-            value = flag:none
+            name = SE_is_loaded
+            value = yes
         }
     }
 }

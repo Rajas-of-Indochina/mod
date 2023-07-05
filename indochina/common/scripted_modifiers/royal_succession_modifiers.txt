@@ -1,4 +1,4 @@
-﻿elector_voting_pattern_circumstances_mahestan_elective_modifier = {
+﻿elector_voting_pattern_circumstances_royal_elective_modifier = {
 	##########################	Elector voting patterns (circumstances)	##########################
 	#Sexism
 	modifier = { #Gender weights
@@ -435,7 +435,7 @@
 	}
 	#Nepotism
 	modifier = {
-		add = 25
+		add = 20
 		desc = tooltip_feudal_elector_vote_dynasty
 		NOT = { this = scope:candidate }
 		exists = root.dynasty
@@ -446,7 +446,7 @@
 		}
 	}
 	modifier = {
-		add = 50
+		add = 30
 		desc = tooltip_feudal_elector_vote_relative
 		NOT = { this = scope:candidate }
 		scope:candidate = {
@@ -459,7 +459,7 @@
 		NOT = { this = scope:candidate }
 		scope:candidate = { is_child_of = root }
 		add = {
-			value = 70
+			value = 40
 			if = { #Current Ruler should tend to often pick one of his own children as potential heirs.
 				limit = { this = scope:holder }
 				add = 30
@@ -467,7 +467,7 @@
 		}
 	}
 	modifier = { #Elector AI should not pick current ruler's distant relatives
-		add = -200
+		add = -100
 		desc = tooltip_feudal_elector_vote_distant_relative
 		NOR = {
 			this = scope:candidate
@@ -560,71 +560,5 @@
 		desc = tooltip_feudal_elector_vote_weak_claimant
 		NOT = { this = scope:candidate }
 		scope:candidate = { has_weak_claim_on = scope:title }
-	}
-}
-elector_voting_pattern_prestige_piety_mahestan_elective_modifier = {
-	##########################	Elector voting patterns (prestige/piety)	##########################
-	#Prestige
-	modifier = {
-		desc = tooltip_feudal_elector_vote_prestige_negative
-		add = -20
-		NOT = { this = scope:candidate }
-		scope:candidate = { prestige_level < 1 }
-	}
-	modifier = {
-		desc = tooltip_feudal_elector_vote_prestige_positive
-		add = {
-			value = scope:candidate.prestige_level
-			subtract = 1
-			multiply = 5
-		}
-		NOT = { this = scope:candidate }
-		scope:candidate = { prestige_level >= 2 }
-	}
-	#Dynasty Prestige
-	modifier = {
-		desc = tooltip_feudal_elector_vote_dynasty_prestige
-		add = {
-			value = 20
-			if = {
-				limit = {
-					scope:candidate.dynasty = { dynasty_prestige_level >= 10 }
-				}
-				add = 20
-			}
-			if = {
-				limit = {
-					scope:candidate.dynasty = { dynasty_prestige_level >= 7 }
-				}
-				add = 20
-			}
-		}
-		NOT = { this = scope:candidate }
-		exists = scope:candidate.dynasty
-		scope:candidate.dynasty = {
-			dynasty_prestige_level >= 4
-		}
-	}
-	#Piety
-	modifier = { #More extreme for Mahestan Elective
-		desc = tooltip_feudal_elector_vote_piety_negative
-		scope:title = { has_title_law = mahestan_elective_succession_law }
-		add = -30
-		NOT = { this = scope:candidate }
-		ai_zeal > -30
-		scope:candidate = { piety_level < 1 }
-	}
-	modifier = { #More extreme for Mahestan Elective
-		desc = tooltip_feudal_elector_vote_piety_positive
-		scope:title = { has_title_law = mahestan_elective_succession_law }
-		add = {
-			value = scope:candidate.piety_level
-			subtract = 1
-			multiply = 10
-		}
-		NOT = { this = scope:candidate }
-		faith = scope:candidate.faith
-		ai_zeal > -30
-		scope:candidate = { piety_level >= 2 }
 	}
 }

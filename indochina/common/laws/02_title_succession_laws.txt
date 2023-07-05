@@ -1,0 +1,196 @@
+﻿title_succession_laws = {
+	#Byzantine Imperial Succession
+	imperial_elective_succession_law = {
+		can_have = {
+			culture = { has_cultural_tradition = tradition_byzantine_succession }
+			highest_held_title_tier = tier_empire
+		}
+		can_pass = {
+			can_change_title_law_trigger = yes
+			culture = { has_cultural_tradition = tradition_byzantine_succession }
+		}
+		can_title_have = {
+            can_title_have_law_general_trigger = yes
+        }
+		succession = {
+			order_of_succession = election
+			election_type = imperial_elective
+		}
+		flag = elective_succession_law
+		title_allegiance_opinion = 10
+		modifier = {
+			vassal_limit = 20
+		}
+		revoke_cost = {
+			prestige = change_hre_title_succession_law_prestige_cost
+		}
+		pass_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+	}
+
+	#Outremer Succession
+	outremer_elective_succession_law = {
+		can_have = {
+			OR = {
+				government_has_flag = government_is_feudal
+				government_has_flag = government_is_theocracy
+			}
+			highest_held_title_tier >= tier_kingdom
+		}
+		can_pass = {
+			can_change_title_law_trigger = yes
+			culture = { has_cultural_parameter = outremer_elective_successionn_enabled }
+		}
+		can_title_have = {
+			can_title_have_law_general_trigger = yes
+		}
+		succession = {
+			order_of_succession = election
+			election_type = outremer_elective
+		}
+		flag = elective_succession_law
+		title_allegiance_opinion = 5
+		revoke_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+		pass_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+	}
+
+	#CK2 Eldership Succession
+	eldership_elective_succession_law = {
+		can_have = {
+			OR = {
+				government_has_flag = government_is_feudal
+				government_has_flag = government_is_tribal
+			}
+			highest_held_title_tier >= tier_duchy
+			faith = {
+				has_doctrine = tenet_ancestor_worship
+			}
+		}
+		can_pass = {
+			can_change_title_law_trigger = yes
+			faith = {
+				has_doctrine = tenet_ancestor_worship
+			}
+		}
+		can_title_have = {
+			can_title_have_law_general_trigger = yes
+		}
+		succession = {
+			order_of_succession = election
+			election_type = eldership_elective
+		}
+		flag = elective_succession_law
+		title_allegiance_opinion = 5
+		revoke_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+		pass_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+	}
+
+	#Ancient Persian/Zoroastrian Elective
+	mahestan_elective_succession_law = {
+		can_have = {
+			OR = {
+				government_has_flag = government_is_feudal
+				government_has_flag = government_is_clan
+			}
+			highest_held_title_tier >= tier_kingdom
+			is_independent_ruler = yes
+			any_in_global_list = {
+				variable = unavailable_unique_decisions
+				this = flag:flag_became_saoshyant
+			}
+		}
+		can_pass = {
+			can_change_title_law_trigger = yes
+			has_religion = religion:zoroastrianism_religion
+		}
+		can_title_have = {
+			can_title_have_law_general_trigger = yes
+		}
+		modifier = {
+			vassal_limit = 10
+		}
+		succession = {
+			order_of_succession = election
+			election_type = mahestan_elective
+		}
+		flag = elective_succession_law
+		title_allegiance_opinion = 5
+		revoke_cost = {
+			prestige = change_hre_title_succession_law_prestige_cost
+		}
+		pass_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+	}
+	
+	#Royal Elective (A cultural specific Fuedal Elective that simulates power staying closer to the Dynasty at cost of Noble Opinion).
+	royal_elective_succession_law = {
+		can_have = {
+			government_has_flag = government_is_feudal
+			highest_held_title_tier >= tier_kingdom
+			NOR = { #Cultures have their special flavor.
+				culture = { has_cultural_parameter = witenagemot_succession_enabled }
+				culture = { has_cultural_parameter = scandinavian_elective_enabled }
+				culture = { has_cultural_parameter = outremer_elective_successionn_enabled }
+			}
+		}
+		can_pass = {
+			can_change_title_law_trigger = yes
+		}
+		can_title_have = {
+			can_title_have_law_general_trigger = yes
+		}
+		modifier = {
+			powerful_vassal_opinion = -15
+		}
+		succession = {
+			order_of_succession = election
+			election_type = royal_elective
+		}
+		flag = elective_succession_law
+		revoke_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+		pass_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+	}
+
+	#Mongol Elective (Kurultai).
+	kurultai_elective_succession_law = {
+		can_have = {
+			highest_held_title_tier >= tier_kingdom
+			culture = {
+				has_innovation = innovation_kurultai
+			}
+		}
+		can_pass = {
+			can_change_title_law_trigger = yes
+			government_has_flag = government_is_tribal
+		}
+		can_title_have = {
+			can_title_have_law_general_trigger = yes
+		}
+		succession = {
+			order_of_succession = election
+			election_type = kurultai_elective
+		}
+		flag = elective_succession_law
+		title_allegiance_opinion = 5
+		revoke_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+		pass_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+	}
+}

@@ -1,0 +1,97 @@
+﻿outremer_elective = {
+	candidates = {
+		add = {
+			type = holder_close_or_extended_family
+			limit = {
+				this.faith = faith:catholic
+				outremer_elective_potential_candidate_trigger = yes
+				highest_held_title_tier < tier_kingdom
+				NAND = {
+					exists = father.primary_title
+					NOT = {
+						father.primary_title = scope:title
+					}
+					father = {
+						highest_held_title_tier >= tier_kingdom
+					}
+					father.primary_title.current_heir = this
+				}
+				NAND = {
+					exists = mother.primary_title
+					NOT = {
+						mother.primary_title = scope:title
+					}
+					mother = {
+						highest_held_title_tier >= tier_kingdom
+					}
+					mother.primary_title.current_heir = this
+				}
+			}
+		}
+		add = {
+			type = holder_direct_vassals
+			limit = {
+				this.faith = faith:catholic
+				has_unelectable_outremer_government_trigger = no
+			}
+		}
+		add = {
+			type = title_dejure_vassals
+			limit = {
+				this.faith = faith:catholic
+				has_unelectable_outremer_government_trigger = no
+			}
+		}
+		add = {
+			type = title_claimants
+			limit = {
+				outremer_elective_potential_candidate_trigger = yes
+			}
+		}
+	}
+	electors = {
+		add = holder
+		add = {
+			type = holder_direct_vassals
+			limit = {
+				this.faith = faith:catholic
+				NOT = {
+					has_trait = excommunicated
+				}
+			}
+		}
+		add = {
+			type = title_dejure_vassals
+			limit = {
+				this.top_liege = scope:holder
+				this.faith = faith:catholic
+				NOT = {
+					has_trait = excommunicated
+				}
+			}
+		}
+	}
+	elector_vote_strength = {
+		base = 1
+		modifier = {
+			desc = tooltip_elective_current_ruler
+			add = 1
+			this = scope:holder
+		}
+		modifier = {
+			desc = tooltip_outremer_elective_vote_strength_high_court
+			add = 1
+			is_vassal_of = scope:holder
+		}
+	}
+	candidate_score = {
+		base = 0
+		elector_self_voting_pattern_feudal_elective_modifier = yes
+		holder_voting_pattern_feudal_elective_modifier = yes
+		elector_voting_pattern_circumstances_feudal_elective_modifier = yes
+		elector_voting_pattern_prestige_piety_feudal_elective_modifier = yes
+		elector_voting_pattern_traits_feudal_elective_modifier = yes
+		elector_voting_pattern_opinion_feudal_elective_modifier = yes
+		elector_voting_pattern_circumstances_outremer_elective_modifier = yes
+	}
+}

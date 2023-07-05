@@ -6,9 +6,26 @@
 # scope:holder_candidate scope - Favored Candidate, The title owner's candidate.
 # The voter will vote for the top score candidate calculated from this script.
 
-mahestan_elective = { #Mahestān (Elective for Zoroastrian Kings but we allow it for all non-Islamic faiths. Islamic will get their own flavor).
+feudal_elective = {
 	elector_vote_strength = {
 		base = 1
+		modifier = {
+			desc = tooltip_feudal_elective_co_king
+			add = 100
+			this = scope:holder
+			any_in_global_list = {
+				variable  = cokingship_list
+				this = scope:title
+			}
+		}
+		modifier = { #Sicilian Parliamentary Support
+			desc = tooltip_feudal_vote_strength_parliament
+			add = 1
+			is_landed = yes
+			exists = capital_county
+			capital_county.county_opinion > 25
+			capital_county = { exists = var:variable_sicilian_parliament_county }
+		}
 		modifier = { #Imperial Dignity
 			desc = tooltip_feudal_vote_strength_emperor_tier
 			add = 3
@@ -37,61 +54,24 @@ mahestan_elective = { #Mahestān (Elective for Zoroastrian Kings but we allow it
 			}
 			NOT = { this = scope:holder }
 			is_powerful_vassal = yes
+			liege = scope:holder
 		}
 		modifier = { #Clerical Influence
 			desc = tooltip_feudal_vote_strength_theocrat
 			add = 1
 			NOT = { this = scope:holder }
 			OR = {
-				has_government = theocracy_government
+				government_has_flag = government_is_theocracy
 				has_council_position = councillor_court_chaplain
 			}
 			faith = scope:holder.faith
 			faith = { has_doctrine = doctrine_theocracy_lay_clergy }
 			#TODO_CD:Possible trigger checking for investiture succession?
 		}
-		modifier = { #Current Shah gets an additional 2 votes.
-			desc = tooltip_elective_current_ruler
-			add = 2
-			this = scope:holder
-		}
-		modifier = { #Close Family
-			desc = tooltip_close_family_vote_strength
-			add = 2
-			AND = {
-				is_close_family_of = scope:holder
-				NOT = { this = scope:holder }
-			}
-		}
-		modifier = { #Extended Family
-			desc = tooltip_extended_family_vote_stength
-			add = 1
-			AND = {
-				is_extended_family_of = scope:holder
-				NOT = { this = scope:holder }
-			}
-		}
-		modifier = { #Clerical Influence through Vassals
-			desc = tooltip_vote_strength_clergy_influence_through_vassal
-			add = 1
-			any_learning_councillor = {
-				opinion = { target = root value > 0 }
-			}
-			NOT = { this = scope:holder }
-		}	
 	}
 	
 	electors = {
 		add = holder
-		add = {
-			type = holder_close_or_extended_family
-			limit = {
-				is_adult = yes
-				any_liege_or_above = {
-					this = scope:holder
-				}
-			}
-		}
 		add = {
 			type = title_dejure_vassals
 			limit = {
@@ -110,12 +90,15 @@ mahestan_elective = { #Mahestān (Elective for Zoroastrian Kings but we allow it
 						highest_held_title_tier >= 3
 					}
 				}
+				OR = { #Either de facto direct vassal, or independent ruler who is de jure vassal. (no sub-vassals)
+					is_vassal_of = scope:holder
+					is_independent_ruler = yes
+				}
 				any_held_title = { #Elector title must be a de jure vassal of the title being voted on; multi-Dukes (or similar) might have two duchies in multiple electoral domains, which they should be able to vote on. This is only valid for the highest-tier title (so a Duke-Elector who also owns a County which is an electoral title for another title does not get a vote from that county).
 					tier = root.highest_held_title_tier
 					exists = de_jure_liege
 					target_is_de_jure_liege_or_above = scope:title
 				}
-				is_vassal_of = scope:holder
 				this.faith = scope:holder.faith
 			}
 		}
@@ -168,11 +151,8 @@ mahestan_elective = { #Mahestān (Elective for Zoroastrian Kings but we allow it
 						primary_title.de_jure_liege.holder = scope:holder
 					}
 				}
-				is_incapable = no
-				is_adult = yes
-				this.faith = scope:holder.faith
 			}
-		}	
+		}
 	}
 
 	candidate_score = {
@@ -184,10 +164,10 @@ mahestan_elective = { #Mahestān (Elective for Zoroastrian Kings but we allow it
 		holder_voting_pattern_feudal_elective_modifier = yes
 
 		##########################	Elector voting patterns (circumstances)	##########################
-		elector_voting_pattern_circumstances_mahestan_elective_modifier = yes
+		elector_voting_pattern_circumstances_feudal_elective_modifier = yes
 
 		##########################	Elector voting patterns (prestige/piety)	##########################
-		elector_voting_pattern_prestige_piety_mahestan_elective_modifier = yes
+		elector_voting_pattern_prestige_piety_feudal_elective_modifier = yes
 
 		##########################	Elector voting patterns (traits)	##########################
 		elector_voting_pattern_traits_feudal_elective_modifier = yes
@@ -199,8 +179,28 @@ mahestan_elective = { #Mahestān (Elective for Zoroastrian Kings but we allow it
 	#scope:candidate = Candidate, scope:title = Title, scope:holder_candidate = Candidate currently selected by ruler.
 	candidates = {
 		add = {
-			type = holder_dynasty
+			type = holder_direct_vassals
 			limit = {
+				feudal_elective_potential_landed_candidate_trigger = yes
+			}
+		}
+		add = {
+			type = title_dejure_vassals
+			limit = {
+				is_independent_ruler = yes #De jure vassals of the title who are not de facto vassals of the current ruler.
+				feudal_elective_potential_landed_candidate_trigger = yes
+			}
+		}
+		add = {
+			type = title_claimants
+			limit = {
+				feudal_elective_potential_landless_claimant_candidate_trigger = yes
+			}
+		}
+		add = {
+			type = holder_close_or_extended_family
+			limit = {
+				is_close_family_of = scope:holder
 				feudal_elective_potential_landless_dynastic_candidate_trigger = yes
 			}
 		}
