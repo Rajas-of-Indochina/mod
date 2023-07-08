@@ -1626,6 +1626,13 @@ demote_random_culture_minority_effect = {
 				name = culture_minorities_small
 				target = scope:culture_to_demote
 			}
+			if = {
+				limit = {
+					scope:culture_to_delete = culture:brahui
+					has_modifier = RICE_pamir_brahui_tribes
+				}
+				remove_county_modifier = RICE_pamir_brahui_tribes
+			}
 		}
 	}
 }
@@ -1965,4 +1972,33 @@ notify_recipient_of_culture_migration_effect = {
 			right_icon = scope:county
 		}
 	}
+}
+
+
+# $REGION$: A silk road region: steppe, india, himalayas, middle_east, east_asia
+# YOU NEED TO KEEP SPELLING AND CASE OR THIS WON'T WORK
+do_silk_road_migration_effect = {
+	random_held_title = {
+		limit = { tier = tier_county }
+		save_scope_as = county
+		random_county_in_region = {
+			region = $REGION$
+			save_scope_as = source_county
+		}
+		non_neighbor_migration_effect = yes
+	}
+}
+
+#scope:source_county
+#scope:county
+non_neighbor_migration_effect = {
+	if = {
+		limit = { NOT = { faith = scope:source_county.faith } }
+		promote_faith_minority_effect = { FAITH = scope:source_county.faith }
+	}
+	if = {
+		limit = { NOT = { culture = scope:source_county.culture } }
+		promote_culture_minority_effect = { CULTURE = scope:source_county.culture }
+	}
+	notify_characters_of_culture_faith_migration_effect = yes
 }

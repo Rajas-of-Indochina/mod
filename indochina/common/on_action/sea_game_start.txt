@@ -134,6 +134,13 @@ sea_set_cultural_acceptance = {
                 desc = cultural_acceptance_historical_relations
             }
         }
+        culture:cappadocian = {
+            change_cultural_acceptance = {
+                target = culture:greek
+                value = 100
+                desc = cultural_acceptance_historical_relations
+            }
+        }
     }
 }
 
@@ -495,15 +502,17 @@ set_tai_language = {
 sea_historical_chinese_vassal_contracts = {
     effect = {
         title:e_celestia_china.holder = {
-            if = {
-                limit = { NOT = { has_realm_law = bureaucratic_authority_2 } }
-                add_realm_law_skip_effects = bureaucratic_authority_2
-            }
 
             if = {
                 limit = {
                     game_start_date <= 900.1.1 # Tang Dynasty
                 }
+
+                if = {
+                    limit = { NOT = { has_realm_law = bureaucratic_authority_1 } }
+                    add_realm_law_skip_effects = bureaucratic_authority_1
+                }
+
                 # Set all vassals to military
                 every_vassal = {
                     limit = {
@@ -540,7 +549,11 @@ sea_historical_chinese_vassal_contracts = {
                 limit = {
                     game_start_date >= 960.1.1 # Song Dynasty
                 }
-                #
+
+                if = {
+                    limit = { NOT = { has_realm_law = bureaucratic_authority_2 } }
+                    add_realm_law_skip_effects = bureaucratic_authority_2
+                }
             }
         }
 
