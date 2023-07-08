@@ -11,7 +11,15 @@ task_promote_culture = {
 
 	effect_desc = {
 		desc = {
-			desc = task_promote_culture_effect_desc
+			triggered_desc = {
+				trigger = {
+					limit = { exists = scope:county }
+					scope:county = {
+						NOT = { culture = scope:councillor_liege.culture }
+					}
+				}
+				desc = task_promote_culture_effect_desc
+			}			
 			triggered_desc = {
 				trigger = {
 					trigger_if = {
@@ -31,6 +39,27 @@ task_promote_culture = {
 					trigger_else = { always = no }
 				}
 				desc = task_promote_culture_acceptance_effect_desc
+			}
+			triggered_desc = {
+				trigger = {
+					limit = { exists = scope:county }
+					scope:county = {
+						culture = scope:councillor_liege.culture
+						county_has_minority_culture_trigger = yes
+					}
+				}
+				desc = demote_a_minority_desc
+			}
+			triggered_desc = {
+				trigger = {
+					limit = { exists = scope:county }
+					scope:county = {
+						culture = scope:councillor_liege.culture
+						has_modifier = RICE_pamir_brahui_tribes
+						county_has_specific_small_minority_culture_trigger = { CULTURE = culture:brahui }
+					}
+				}
+				desc = RICE_evicting_brahui
 			}
 		}
 		desc = {
@@ -179,6 +208,31 @@ task_promote_culture = {
 			multiply = {
 				value = fp2_struggle_hostility_conversion_value
 				desc = fp2_struggle_hostility_culture_conversion_task_desc
+			}
+		}
+		# Faster conversion for native american cultures if the county has a modifier from
+		# the Indigienous Sovereignty ending of the Greenland Struggle
+		if = {
+			limit = {
+				scope:councillor_liege.culture = {
+					OR = {
+						has_cultural_pillar = heritage_algonquian
+						has_cultural_pillar = heritage_iroquoian
+						has_cultural_pillar = heritage_paleo_inuit
+						has_cultural_pillar = heritage_inuit
+					}
+				}
+				scope:county = {
+					OR = {
+						has_county_modifier = RICE_greenland_indigenous_social
+						has_county_modifier = RICE_greenland_indigenous_political
+						has_county_modifier = RICE_greenland_indigenous_military
+					}
+				}
+			}
+			multiply = {
+				value = fp2_struggle_hostility_conversion_value
+				desc = indigenous_sovereignty_ending_conversion_desc
 			}
 		}
 
