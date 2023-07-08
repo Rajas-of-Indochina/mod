@@ -1,5 +1,8 @@
 ﻿
 namespace = minorities
+namespace = faith_conversion #This is just to overwrite the capital conversion effect
+namespace = global_culture# To Overwrite Scottish scripted emergence
+namespace = yearly_saharan# Saharan Nomads
 
 scripted_effect expel_religious_minorities_effect = {
 	# Lose or gain piety
@@ -1199,6 +1202,907 @@ minorities.2003 = {
 		# option to chicken out
 		cp:councillor_steward = {
 			set_council_task = { task_type = task_collect_taxes }
+		}
+	}
+}
+
+# Clear faith minority on county faith change
+minorities.3001 = {
+	hidden = yes
+	scope = landed_title
+
+	trigger = {
+		county_has_specific_minority_faith_trigger = { FAITH = root.faith }
+	}
+
+	immediate = {
+		remove_list_variable = {
+			name = faith_minorities_large
+			target = root.faith
+		}
+		remove_list_variable = {
+			name = faith_minorities_small
+			target = root.faith
+		}
+	}
+}
+# Clear culture minority on county faith change
+minorities.3001 = {
+	hidden = yes
+	scope = landed_title
+
+	trigger = {
+		county_has_specific_minority_culture_trigger = { CULTURE = root.culture }
+	}
+
+	immediate = {
+		remove_list_variable = {
+			name = culture_minorities_large
+			target = root.culture
+		}
+		remove_list_variable = {
+			name = culture_minorities_small
+			target = root.culture
+		}
+	}
+}
+
+# Vanilla override
+faith_conversion.0001 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				primary_title.tier > tier_barony
+				exists = capital_county
+				capital_county.faith = scope:old_faith
+			}
+			capital_county = {
+				save_scope_as = county
+				set_county_faith = root.faith
+				if = {
+					limit = { county_has_specific_large_minority_faith_trigger = { FAITH = root.faith } }
+					remove_list_variable = {
+						name = faith_minorities_large
+						target = root.faith
+					}
+				}
+				if = {
+					limit = { county_has_specific_small_minority_faith_trigger = { FAITH = root.faith } }
+					remove_list_variable = {
+						name = faith_minorities_small
+						target = root.faith
+					}
+				}
+				if = {
+					limit = {
+						scope:old_faith = {
+							faith_hostility_level = {
+								target = root.faith
+								value >= faith_hostile_level
+							}
+						}
+					}
+					add_faith_minority_effect = {
+						FAITH = scope:old_faith
+						COUNTY = scope:county
+						SIZE = large
+					}
+				}
+				else_if = {
+					limit = {
+						scope:old_faith = {
+							faith_hostility_level = {
+								target = root.faith
+								value >= faith_astray_level
+							}
+						}
+					}
+					add_faith_minority_effect = {
+						FAITH = scope:old_faith
+						COUNTY = scope:county
+						SIZE = small
+					}
+				}
+			}
+		}
+		every_vassal = {
+			limit = {
+				primary_title.tier > tier_barony
+				faith = ROOT.faith
+				exists = capital_county
+				capital_county.faith = ROOT.faith
+			}
+			capital_county = {
+				save_scope_as = county
+				if = {
+					limit = { county_has_specific_large_minority_faith_trigger = { FAITH = root.faith } }
+					remove_list_variable = {
+						name = faith_minorities_large
+						target = root.faith
+					}
+				}
+				if = {
+					limit = { county_has_specific_small_minority_faith_trigger = { FAITH = root.faith } }
+					remove_list_variable = {
+						name = faith_minorities_small
+						target = root.faith
+					}
+				}
+				if = {
+					limit = {
+						scope:old_faith = {
+							faith_hostility_level = {
+								target = root.faith
+								value >= faith_hostile_level
+							}
+						}
+					}
+					add_faith_minority_effect = {
+						FAITH = scope:old_faith
+						COUNTY = scope:county
+						SIZE = large
+					}
+				}
+				else_if = {
+					limit = {
+						scope:old_faith = {
+							faith_hostility_level = {
+								target = root.faith
+								value >= faith_astray_level
+							}
+						}
+					}
+					add_faith_minority_effect = {
+						FAITH = scope:old_faith
+						COUNTY = scope:county
+						SIZE = small
+					}
+				}
+			}
+		}
+	}
+}
+
+#########################################################################
+# Converting Anglo-Saxon into Scottish									#
+# by Sean Hughes														#
+# global_culture.0031-0039												#
+#########################################################################
+
+global_culture.0031 = {
+	scope = none
+	hidden = yes
+	
+	immediate = {
+		# Save scopes for player notification events.
+		culture:anglo_saxon = { save_scope_as = anglo_saxon }
+		culture:scottish = {
+			# 'Hybridize' this culture by copying innovations from parent cultures. Leave traditions as defined in the database.
+			reset_culture_creation_date = yes
+			get_all_innovations_from = culture:anglo_saxon
+			get_all_innovations_from = culture:cumbrian
+
+			# Save scope for player notification events.
+			save_scope_as = scottish
+		}
+
+		# All Anglo-Saxon counties in Scotland will convert to Scots
+		culture:anglo_saxon = {
+			every_culture_county = {
+				limit = {
+					title_province = {
+						geographical_region = custom_scotland
+					}
+				}
+				add_to_list = anglo_saxon_counties
+			}
+		}
+		culture:gaelic = {
+			every_culture_county = {
+				limit = {
+					title_province = {
+						geographical_region = custom_scotland
+					}
+					holder = {
+						any_liege_or_above = { culture = culture:anglo_saxon }
+					}
+				}
+				add_to_list = anglo_saxon_counties
+			}
+		}
+
+		# Convert the Anglo-Saxon counties to Scots
+		every_in_list = {
+			list = anglo_saxon_counties
+			limit = {
+				# Same-culture players get an event informing them of their county's conversion *before* it happens (for their provinces only).
+				NOT = {
+					holder = {
+						OR = {
+							AND = {
+								is_ai = no
+								culture = culture:anglo_saxon
+								capital_province = { geographical_region = custom_scotland }
+							}
+							any_liege_or_above = {
+								is_ai = no
+								culture = culture:anglo_saxon
+								capital_province = { geographical_region = custom_scotland }
+							}
+						}
+					}
+				}
+			}
+			culture = {
+				save_scope_as = old_culture
+			}
+						
+			# All Anglo-Saxon counties in Scotland become Scots
+			convert_county_and_holder_if_in_region_effect = {
+				OLD_CULTURE = culture:anglo_saxon
+				NEW_CULTURE = culture:scottish
+				REGION = custom_scotland
+			}
+			convert_county_and_holder_if_in_region_effect = {
+				OLD_CULTURE = culture:gaelic
+				NEW_CULTURE = culture:scottish
+				REGION = custom_scotland
+			}
+			save_scope_as = county
+			promote_culture_minority_effect = { CULTURE = scope:old_culture }
+		}
+
+		every_county_in_region = {
+			region = custom_scotland
+			limit = {
+				NOT = { culture = culture:scottish }
+				NOT = {
+					holder = {
+						OR = {
+							AND = {
+								is_ai = no
+								culture = culture:anglo_saxon
+								capital_province = { geographical_region = custom_scotland }
+							}
+							any_liege_or_above = {
+								is_ai = no
+								culture = culture:anglo_saxon
+								capital_province = { geographical_region = custom_scotland }
+							}
+						}
+					}
+				}
+			}
+			save_scope_as = county
+			add_culture_minority_effect = {
+				CULTURE = culture:scottish
+				COUNTY = scope:county
+				SIZE = small
+			}
+		}
+
+		# Send the appropraite notification event to each player.
+		every_player = {
+			if = {
+				limit = {
+					culture = culture:anglo_saxon
+					capital_province = { geographical_region = custom_scotland }
+					any_sub_realm_county = {
+						culture = culture:anglo_saxon
+						title_province = {
+							geographical_region = custom_scotland
+						}
+					}
+				}
+				if = {
+					limit = {
+						NOT = {
+							any_liege_or_above = {
+								is_ai = no
+							}
+						}
+					}
+					trigger_event = global_culture.0032
+				}
+			}
+			else = {
+				if = {
+					limit = {
+						is_ai = no
+						save_temporary_scope_as = player
+						any_in_list = {
+							list = anglo_saxon_counties
+							holder = {
+								is_within_diplo_range = { CHARACTER = scope:player }
+							}
+						}
+					}
+					trigger_event = global_culture.0035
+				}
+			}
+		}
+	}
+}
+
+# If a player is strong enough, they can resist the culture flip for their sub-realm only.
+global_culture.0032 = {
+	type = character_event
+	title = global_culture.0032.t
+	desc = global_culture.0032.desc
+	theme = culture_change
+	left_portrait = root
+
+	immediate = {
+		# All of anglo_saxon turns scottish, there is no 'splitting'.
+		culture = { save_scope_as = old_culture }
+		culture:scottish = { save_scope_as = my_new_culture }
+	}
+
+	# Option 1 (Almost always the only option): Accept the culture conversion.
+	option = {
+		name = global_culture.0032.a
+		show_as_tooltip = {
+			set_culture = culture:scottish
+			every_in_list = {
+				list = anglo_saxon_counties
+				limit = {
+					holder.top_liege = root.top_liege
+				}
+				set_county_culture = culture:scottish
+			}
+		}
+		# Convert the Anglo-Saxon counties to Scots
+		every_in_list = {
+			list = anglo_saxon_counties
+			limit = {
+				holder.top_liege = root.top_liege
+			}
+			culture = {
+				save_scope_as = old_culture
+			}
+			# All Anglo-Saxon counties in Scotland become Scots
+			hidden_effect = {
+				convert_county_and_holder_if_in_region_effect = {
+					OLD_CULTURE = culture:anglo_saxon
+					NEW_CULTURE = culture:scottish
+					REGION = custom_scotland
+				}
+				convert_county_and_holder_if_in_region_effect = {
+					OLD_CULTURE = culture:gaelic
+					NEW_CULTURE = culture:scottish
+					REGION = custom_scotland
+				}
+				save_scope_as = county
+				promote_culture_minority_effect = { CULTURE = scope:old_culture }
+			}
+		}
+
+		hidden_effect = {
+			every_county_in_region = {
+				region = custom_scotland
+				limit = {
+					NOT = { culture = culture:scottish }
+					limit = {
+						holder.top_liege = root.top_liege
+					}
+				}
+				save_scope_as = county
+				add_culture_minority_effect = {
+					CULTURE = culture:scottish
+					COUNTY = scope:county
+					SIZE = small
+				}
+			}
+		}
+
+	}
+
+	# Option 2: I am strong enough to keep our old culture intact!
+	option = {
+		name = global_culture.0032.b
+
+		trigger = {
+			custom_description = {
+				text = controls_enough_culture_counties
+				any_in_list = {
+					list = anglo_saxon_counties
+					percent >= 0.8
+
+					OR = {
+						holder = root
+						holder = {
+							any_liege_or_above = {
+								this = root
+							}
+						}
+					}
+				}
+			}
+		}
+
+		show_as_unavailable = {
+			custom_description = {
+				text = controls_enough_culture_counties	
+				any_in_list = {
+					list = anglo_saxon_counties
+					percent < 0.8
+
+					OR = {
+						holder = root
+						holder = {
+							any_liege_or_above = {
+								this = root
+							}
+						}
+					}
+				}
+			}
+		}
+
+		custom_tooltip = global_culture.custom.keep_culture
+	}
+}
+
+
+#########################################################################
+# Converting Greek, Baranis, Lombard and Italian to Sicilian 			#
+# by Petter Vilberg														#
+# global_culture.3011-3012												#
+#########################################################################
+################################
+# Sicilian Spreads in Southern Italy
+# by Petter Vilberg
+# Updated by Henrik Lohmander for 1.5
+################################
+scripted_trigger global_culture_3011_valid_for_sicilian_culture_trigger = {
+	tier = tier_county
+	exists = holder
+	NOT = { exists = var:had_sicilian_county_conversion }
+	title_province = {
+		geographical_region = special_sicilian_culture_region
+	}
+	NOT = { culture = holder.culture }
+	culture = {
+		NOR = {
+			this = culture:sicilian
+			any_parent_culture_or_above = {
+				this = culture:sicilian
+			}
+		}
+		OR = {
+			has_cultural_pillar = heritage_latin
+			has_cultural_pillar = heritage_berber
+			has_cultural_pillar = heritage_byzantine
+			has_cultural_pillar = heritage_frankish
+			has_cultural_pillar = heritage_arabic
+		}
+	}
+}
+
+global_culture.3011 = {
+	type = character_event
+	title = global_culture.3011.t
+	desc = global_culture.3011.desc
+	theme = culture_change
+	left_portrait = root
+	
+	trigger = {
+		culture = {
+			NOT = { this = culture:sicilian }
+			OR = {
+				has_cultural_pillar = heritage_latin
+				has_cultural_pillar = heritage_berber
+				has_cultural_pillar = heritage_byzantine
+				has_cultural_pillar = heritage_frankish
+				has_cultural_pillar = heritage_arabic
+			}
+		}
+		any_held_title = {
+			global_culture_3011_valid_for_sicilian_culture_trigger = yes
+		}		
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 2
+			culture = culture:norman
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				global_culture_3011_valid_for_sicilian_culture_trigger = yes
+			}
+			weight = { # Try to approximate organic spread
+				base = 1
+				modifier = {
+					add = 4
+					any_neighboring_county = {
+						culture = culture:sicilian
+					}
+				}
+			}
+			save_scope_as = county_to_change
+			culture = {
+				save_scope_as = old_culture
+			}
+			set_variable = {
+				name = had_sicilian_county_conversion
+				value = yes
+			}
+		}
+		culture:sicilian = {
+			save_scope_as = sicilian # For loc
+		}
+		debug_log = "Converted a province to Sicilian from global_culture.3011"
+	}
+
+	option = {
+		name = global_culture.3011.a
+		scope:county_to_change = {
+			set_county_culture = culture:sicilian
+		}
+		add_culture_minority_effect = {
+			CULTURE = scope:old_culture
+			COUNTY = scope:county_to_change
+			SIZE = small
+		}
+		
+		add_culture_minority_effect = {
+			CULTURE = root.culture
+			COUNTY = scope:county_to_change
+			SIZE = small
+		}
+	}
+}
+
+##################################################
+# [Culture] Nomads Flock to [County]
+# by Ewan Cowhig Croft
+# 0021
+##################################################
+
+scripted_trigger appropriate_nomad_adjacent_county_trigger = {
+	#Located in an appropriate region.
+	title_province = { geographical_region = custom_sahara_proper }
+
+	#Does not already have an appropriate nomad culture.
+	NOT = { culture = { has_cultural_tradition = tradition_saharan_nomads } }
+}
+
+scripted_effect pick_nomad-appropriate_county_effect = {
+	random_in_list = {
+		list = $LIST$
+		save_scope_as = target_county
+
+		weight = {
+			base = 100
+			#Nomads like to control strategic oases.
+			modifier = {
+				add = 50
+				title_province = { terrain = oasis }
+			}
+			#This event is chiefly for nomad tribes moving into desert territory that they specialise in controlling, not more fertile drylands.
+			modifier = {
+				add = -50
+				title_province = { terrain = drylands }
+			}
+			#Provinces that grant more levies are preferred.
+			modifier = {
+				add = {
+					value = building_levies
+					multiply = 0.1
+				}
+			}
+			#Weight down higher development counties proportionally: both not the focus of the event, and less likely to be accepted by the player.
+			modifier = {
+				add = {
+					value = development_level
+					multiply = -1
+				}
+				development_level >= bad_development_level
+			}
+		}
+	}
+}
+
+#	#An appropriate local Saharan culture's nomads are flocking to one of your counties.
+#		by Ewan Cowhig Croft
+yearly_saharan.0021 = {
+	type = character_event
+	title = yearly_saharan.0021.t
+	desc = yearly_saharan.0021.desc
+	theme = stewardship
+	left_portrait = {
+		character = scope:nomad_leader
+		animation = personality_honorable
+	}
+	override_background = { reference = wilderness_desert }
+
+	trigger = {
+		is_available_at_peace_adult = yes
+		NOT = { has_character_flag = had_event_yearly_saharan_0021 }
+		any_held_title = {
+			tier = tier_county
+			appropriate_nomad_adjacent_county_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_yearly_saharan_0021
+			days = 3650
+		}
+
+		#Determine which county to use.
+		##Gather all potential counties, first up.
+		every_held_title = {
+			limit = {
+				tier = tier_county
+				appropriate_nomad_adjacent_county_trigger = yes
+			}
+			add_to_list = saharan_nomad_counties
+		}
+		##Then add any that already border a suitably-cultured county to a list.
+		every_in_list = {
+			list = saharan_nomad_counties
+			limit = {
+				any_neighboring_county = {
+					culture = {
+						has_cultural_tradition = tradition_saharan_nomads
+					}
+				}
+			}
+			add_to_list = prettified_saharan_nomad_county_spread
+		}
+		##If that list contains anything, sort the county that could use the most buff from it.
+		if = {
+			limit = {
+				any_in_list = {
+					list = prettified_saharan_nomad_county_spread
+					count >= 1
+				}
+			}
+			pick_nomad-appropriate_county_effect = { LIST = prettified_saharan_nomad_county_spread }
+		}
+		##If that list was empty, sort the county that could use the most buff from the original list.
+		else = {
+			pick_nomad-appropriate_county_effect = { LIST = saharan_nomad_counties }
+		}
+
+		#Flag which nomads we're dealing with.
+		##If in eastern Chad, the nomads are Zaghawa.
+		if = {
+			limit = {
+				scope:target_county = {
+					any_this_title_or_de_jure_above = {
+						OR = {
+							this = title:d_kawar
+							this = title:d_tibesti
+						}
+					}
+				}
+			}
+			save_scope_value_as = {
+				name = nomad_type
+				value = flag:zaghawa
+			}
+		}
+		##Otherwise, the nomads are Berbers.
+		else = {
+			save_scope_value_as = {
+				name = nomad_type
+				value = flag:butr
+			}
+		}
+
+		#Create a suitable nomad to be the face of the event.
+		if = {
+			limit = { scope:nomad_type = flag:zaghawa }
+			create_character = {
+				location = scope:target_county.title_province
+				template = saharan_clan_leader_character
+				faith = scope:target_county.faith
+				culture = culture:zaghawa
+				save_scope_as = nomad_leader
+			}
+		}
+		##This could technically be an ELSE, but having an ELSE_IF suppresses an error that would otherwise have to be fixed by making the script more fragile.
+		else_if = {
+			limit = { scope:nomad_type = flag:butr}
+			create_character = {
+				location = scope:target_county.title_province
+				template = saharan_clan_leader_character
+				faith = scope:target_county.faith
+				culture = culture:butr
+				save_scope_as = nomad_leader
+			}
+		}
+	}
+
+	#I'll even let you govern it!
+	option = {
+		name = yearly_saharan.0021.a
+		trigger = {
+			#Just make sure you can actually give it away.
+			any_held_title = {
+				tier = tier_county
+				count >= 2
+			}
+			#And that the nomads will be suitably vassalised to you.
+			highest_held_title_tier >= tier_duchy
+		}
+
+		#Give the leader the title.
+		create_title_and_vassal_change = {
+			type = granted
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:target_county = {
+			change_title_holder = {
+				holder = scope:nomad_leader
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		#And he likes you for it!
+		add_hook = {
+			type = loyalty_hook
+			target = scope:nomad_leader
+		}
+		scope:nomad_leader = {
+			add_opinion = {
+				target = root
+				modifier = loyal_servant
+			}
+		}
+
+		#Put that hook on cooldown to stop immediate revokes.
+		hidden_effect = {
+			use_hook = scope:nomad_leader
+		}
+
+		#Finally, the county gets a turbocharged nomad bonus & culture shift.
+		scope:target_county = {
+			culture = { save_scope_as = old_culture }
+			add_county_modifier = {
+				modifier = enthusiastic_nomad_settlement_saharan_modifier
+				years = 30
+			}
+			if = {
+				limit = { scope:nomad_type = flag:zaghawa }
+				set_county_culture = culture:zaghawa
+			}
+			else = { set_county_culture = culture:butr }
+			add_culture_minority_effect = {
+				CULTURE = scope:old_culture
+				COUNTY = scope:target_county
+				SIZE = large
+			}
+		}
+
+		stress_impact = { arrogant = minor_stress_impact_gain }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = 0.25
+				ai_energy = -0.25
+			}
+			modifier = {	#Weight down for stress.
+				add = -10
+				has_trait = arrogant
+			}
+		}
+	}
+
+	#Graciously accept!
+	option = {
+		name = yearly_saharan.0021.b
+
+		#The county gets a nomad bonus & culture shift.
+		scope:target_county = {
+			add_county_modifier = {
+				modifier = nomad_settlement_saharan_modifier
+				years = 30
+			}
+			if = {
+				limit = { scope:nomad_type = flag:zaghawa }
+				add_culture_minority_effect = {
+					CULTURE = culture:zaghawa
+					COUNTY = scope:target_county
+					SIZE = small
+				}
+			}
+			else = {
+				add_culture_minority_effect = {
+					CULTURE = culture:butr
+					COUNTY = scope:target_county
+					SIZE = small
+				}
+			}
+		}
+
+		stress_impact = { arrogant = miniscule_stress_impact_gain }
+		ai_chance = {
+			#The AI should never take this option: if they're small enough not to get Option A, they shouldn't wipe themselves out, and if they're large enough to receive it, they should pick that instead.
+			base = 0
+		}
+	}
+	
+	#Perhaps you would like to join me as a retainer instead?
+	option = {
+		name = yearly_saharan.0021.c
+		trigger = { short_term_gold >= minor_gold_value }
+
+		#Pay the laddo.
+		pay_short_term_gold = {
+			target = scope:nomad_leader
+			gold = minor_gold_value
+		}
+
+		#Move the guy to your court & setup a favourable relationship.
+		add_courtier = scope:nomad_leader
+		add_hook = {
+			type = favor_hook
+			target = scope:nomad_leader
+		}
+		reverse_add_opinion = {
+			target = scope:nomad_leader
+			modifier = grateful_opinion
+			opinion = 30
+		}
+		hidden_effect = { set_relation_potential_friend = scope:nomad_leader }
+
+		stress_impact = { shy = medium_stress_impact_gain }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 0.5
+				ai_sociability = -0.25
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = shy
+			}
+		}
+	}
+	
+	#Preposterous! Be gone!
+	option = {
+		name = yearly_saharan.0021.d
+
+		#The nomads are unhappy with your response.
+		scope:target_county = {
+			change_county_control = massive_county_control_loss
+			add_county_modifier = {
+				modifier = upset_local_nomads_saharan_modifier
+				years = 10
+			}
+		}
+
+		#... Aaaaaand one in particular.
+		hidden_effect = {
+			scope:nomad_leader = {
+				set_relation_potential_rival = root
+				move_to_pool = yes
+			}
+		}
+
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = -0.25
+				ai_compassion = -0.25
+			}
 		}
 	}
 }
