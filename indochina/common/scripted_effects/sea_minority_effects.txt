@@ -2002,3 +2002,34 @@ non_neighbor_migration_effect = {
 	}
 	notify_characters_of_culture_faith_migration_effect = yes
 }
+
+# This iterates over every county in the game
+# ONLY USE IT TO FIX MINORITIES WHILE DEBUGGING
+debug_fix_minorities = {
+	every_county = {
+		limit = {
+			county_has_specific_minority_culture_trigger = { CULTURE = this.culture }
+		}
+		remove_list_variable = {
+			name = culture_minorities_large
+			target = this.culture
+		}
+		remove_list_variable = {
+			name = culture_minorities_small
+			target = this.culture
+		}
+	}
+	every_county = {
+		limit = {
+			county_has_specific_minority_faith_trigger = { FAITH = this.faith }
+		}
+		remove_list_variable = {
+			name = faith_minorities_large
+			target = this.faith
+		}
+		remove_list_variable = {
+			name = faith_minorities_small
+			target = this.faith
+		}
+	}
+}
