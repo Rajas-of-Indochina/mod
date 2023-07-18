@@ -539,7 +539,14 @@ form_lanna_decision_effect = {
 				de_jure_liege = title:d_haripunjaya
 			}
 		}
+		save_scope_as = county
+		culture = { save_scope_as = old_culture }
 		set_county_culture = culture:lanna
+		add_culture_minority_effect = {
+			COUNTY = scope:county
+			CULTURE = scope:old_culture
+			SIZE = small
+		}
 	}
 }
 
@@ -628,7 +635,14 @@ form_ayutthaya_decision_effect = {
 				de_jure_liege = title:d_pribpri
 			}
 		}
+		save_scope_as = county
+		culture = { save_scope_as = old_culture }
 		set_county_culture = culture:siamese
+		add_culture_minority_effect = {
+			COUNTY = scope:county
+			CULTURE = scope:old_culture
+			SIZE = small
+		}
 	}
 }
 
@@ -716,7 +730,14 @@ form_lanxang_decision_effect = {
 				de_jure_liege = title:d_chantabuli
 			}
 		}
+		save_scope_as = county
+		culture = { save_scope_as = old_culture }
 		set_county_culture = culture:lao
+		add_culture_minority_effect = {
+			COUNTY = scope:county
+			CULTURE = scope:old_culture
+			SIZE = small
+		}
 	}
 }
 
@@ -926,6 +947,29 @@ reform_indo_hellenism_effect = {
 	}
 
 	set_character_faith_with_conversion = faith:indo_hellenism
+	every_realm_county = {
+		limit = {
+			NOT = {faith = faith:indo_hellenism }
+			trigger_if = {
+				limit = { faith:indo_hellenism = { has_doctrine = special_doctrine_is_buddhist_faith } }
+				religion = religion:buddhism_religion
+			}
+			trigger_else_if = {
+				limit = { faith:indo_hellenism = { has_doctrine = special_doctrine_is_hinduism_faith } }
+				religion = religion:hinduism_religion
+			}
+			trigger_else_if = {
+				limit = { faith:indo_hellenism = { has_doctrine = doctrine_spiritual_head } } # Zoroastrian
+				religion = religion:zoroastrianism_religion
+			}
+		}
+		save_scope_as = county
+		add_faith_minority_effect = {
+			COUNTY = scope:county
+			FAITH = faith:indo_hellenism
+			SIZE = small
+		}
+	}
 }
 
 greco_buddhism_effect = {
@@ -1021,9 +1065,15 @@ indo_greek_culture_decision_effect = {
 					culture = { has_cultural_pillar = language_greek }
 				}
 			}
+			save_scope_as = county
 			random = {
 				chance = 40
 				set_county_culture = culture:indo_greek
+				add_culture_minority_effect = {
+					COUNTY = scope:county
+					CULTURE = culture:indo_greek
+					SIZE = small
+				}
 				modifier = {
 					add = development_level
 				}
@@ -1140,8 +1190,23 @@ unite_bene_israel_effect = {
 			tier = tier_barony
 			is_holy_site_of = faith:malabarism
 		}
-		county = { set_county_culture = culture:kochinim }
-		county = { set_county_faith = faith:malabarism }
+		county = {
+			save_scope_as = county
+			culture = { save_scope_as = old_culture }
+			faith = { save_scope_as = old_faith }
+			set_county_culture = culture:kochinim
+			set_county_faith = faith:malabarism
+			add_culture_minority_effect = {
+				COUNTY = scope:county
+				CULTURE = scope:old_culture
+				SIZE = small
+			}
+			add_faith_minority_effect = {
+				COUNTY = scope:county
+				FAITH = scope:old_faith
+				SIZE = small
+			}
+		}
 	}
 	every_realm_county = {
 		limit = {
@@ -1152,5 +1217,108 @@ unite_bene_israel_effect = {
 		save_scope_as = scope:county
 		promote_faith_minority_effect = { FAITH = faith:malabarism }
 		promote_culture_minority_effect = { CULTURE = culture:kochinim }
+	}
+}
+
+form_stateless_confederation_duchy_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	if = {
+		# First we check if the realm county's duchy is free. If so, save that as the scope.
+		limit = { NOT = { exists = capital_county.duchy.holder } }
+		capital_county = { duchy = { save_scope_as = commune_title } }
+		scope:commune_title = {
+			change_title_holder = {
+				holder = ROOT
+				change = scope:change
+			}
+			add_title_law = anarchist_elective_succession_law
+		}
+	}
+	else = {
+		custom_tooltip = {
+			text = create_commune_title_tt
+			create_dynamic_title = {
+				tier = duchy
+				name = ANARCHIST_TITLE_NAME
+			}
+			scope:new_title = {
+				set_destroy_on_gain_same_tier = yes
+				set_no_automatic_claims = yes
+				set_can_be_named_after_dynasty = no
+				save_scope_as = commune_title
+			}
+			scope:commune_title = {
+				change_title_holder = {
+					holder = ROOT
+					change = scope:change
+				}
+				add_title_law = anarchist_elective_succession_law
+			}
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+	hidden_effect = {
+		if = {
+			limit = { scope:commune_title = { is_titular = yes } }
+			scope:commune_title = {
+				generate_coa = yes
+				set_color_from_title = root.capital_county
+			}
+		}
+	}
+	custom_tooltip = {
+		text = commune_handout_tt
+		every_held_title = {
+			limit = {
+				tier = tier_county
+				NOT = { THIS = ROOT.capital_county }
+			}
+			save_scope_as = title
+			create_character = {
+				location = scope:title.title_province
+				template = generic_peasant_character
+				faith = scope:title.faith
+				culture = scope:title.culture
+				save_scope_as = new_count
+			}
+			give_commune_county_effect = yes
+		}
+	}
+}
+
+# scope:new_count - Character to be given the county
+# scope:title - the county being handed off
+give_commune_county_effect = {
+	create_title_and_vassal_change = {
+		type = granted
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	scope:title = {
+		change_title_holder = {
+			holder = scope:new_count
+			change = scope:change
+			take_baronies = yes
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+
+	hidden_effect = {
+		scope:new_count = {
+			change_government = anarchist_government
+			add_realm_law_skip_effects = single_heir_dynasty_house
+		}
+	}
+
+	# Opinion boost for new vassal
+	scope:new_count = {
+		add_opinion = {
+			target = root
+			modifier = stateless_given_county_opinion
+		}
 	}
 }
