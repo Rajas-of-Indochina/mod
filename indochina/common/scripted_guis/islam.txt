@@ -123,3 +123,82 @@ zakah_modifier_dev = {
 		}
 	}
 }
+
+update_malayan_sultanate_faiths_list = {
+	scope = character
+	effect = {
+		clear_variable_list = islam_options
+		every_realm_county = {
+			limit = {
+				OR = {
+					religion = religion:islam_religion
+					any_in_list = {
+						variable = faith_minorities_large
+						religion = religion:islam_religion
+					}
+				}
+			}
+			faith = {
+				ROOT = {
+					if = {
+						limit = {
+							NOT = {
+								is_target_in_variable_list = {
+									name = islam_options
+									target = PREV
+								}
+							}
+						}
+					}
+					add_to_variable_list = {
+						name = islam_options
+						target = PREV
+					}
+				}
+			}
+			every_in_list = {
+				variable = faith_minorities_large
+				limit = {
+					ROOT = {
+						NOT = {
+							is_target_in_variable_list = {
+								name = islam_options
+								target = PREV
+							}
+						}
+					}
+					religion = religion:islam
+				}
+				ROOT = {
+					add_to_variable_list = {
+						name = islam_options
+						target = PREV
+					}
+				}
+			}
+		}
+	}
+}
+
+select_sultanate_faith = {
+	scope = character
+	saved_scopes = {
+		faith
+	}
+	effect = {
+		set_variable = {
+			name = faith_pick
+			value = scope:faith
+		}
+	}
+}
+
+clear_sultanate_faith = {
+	scope = character
+	is_valid = {
+		exists = var:faith_pick
+	}
+	effect = {
+		ROOT = { remove_variable = faith_pick }
+	}
+}

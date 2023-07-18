@@ -2,212 +2,74 @@
 namespace = maritime_southeast_asia
 
 scripted_effect fetch_islam_options = {
-	every_realm_county = {
-		limit = {
-			religion = religion:islam_religion
-			faith = {
-				NOT = { is_in_list = islam_options }
-				ROOT.faith = {
-					faith_hostility_level = {
-						target = PREV
-						value < 3
-					}
-				}
-			}
-		}
-		faith = { add_to_list = islam_options }
+	ROOT = { clear_variable_list = islam_options }
+	every_county_in_region = {
+		region = world_west_indian_ocean_region
+		add_to_list = counties
 	}
-	every_realm_county = {
-		limit = {
-			any_in_list = {
-				variable = faith_minorities_large
-
-				religion = religion:islam_religion
-				NOT = { is_in_list = islam_options }
-				ROOT.faith = {
-					faith_hostility_level = {
-						target = PREV
-						value < 3
-					}
-				}
-			}
-		}
-		every_in_list = {
-			variable = faith_minorities_large
-			limit = {
-				religion = religion:islam_religion
-				NOT = { is_in_list = islam_options }
-				ROOT.faith = {
-					faith_hostility_level = {
-						target = PREV
-						value < 3
-					}
-				}
-			}
-			add_to_list = islam_options
-		}
+	every_county_in_region = {
+		region = world_china_proper
+		add_to_list = counties
 	}
-	every_realm_county = {
-		limit = {
-			any_in_list = {
-				variable = faith_minorities_small
-
-				religion = religion:islam_religion
-				NOT = { is_in_list = islam_options }
-				ROOT.faith = {
-					faith_hostility_level = {
-						target = PREV
-						value < 3
-					}
-				}
-			}
-		}
-		every_in_list = {
-			variable = faith_minorities_small
-			limit = {
-				religion = religion:islam_religion
-				NOT = { is_in_list = islam_options }
-				ROOT.faith = {
-					faith_hostility_level = {
-						target = PREV
-						value < 3
-					}
-				}
-			}
-			add_to_list = islam_options
-		}
-	}
-	every_county = {
-		limit = {
-			OR = {
-				geographical_region = world_west_indian_ocean_region
-				holder.top_liege = {
-					has_title = title:e_celestia_china
-					NOT = { religion = religion:islam_religion }
-				}
-				is_coastal_county = yes
-			}
-			OR = {
-				AND = {
-					religion = religion:islam_religion
-					faith = {
-						NOT = { is_in_list = islam_options }
-						ROOT.faith = {
-							faith_hostility_level = {
-								target = PREV
-								value < 3
-							}
-						}
-					}
-				}
-				any_in_list = {
-					variable = faith_minorities_large
-
-					religion = religion:islam_religion
-					NOT = { is_in_list = islam_options }
-					ROOT.faith = {
-						faith_hostility_level = {
-							target = PREV
-							value < 3
-						}
-					}
-				}
-				any_in_list = {
-					variable = faith_minorities_small
-
-					religion = religion:islam_religion
-					NOT = { is_in_list = islam_options }
-					ROOT.faith = {
-						faith_hostility_level = {
-							target = PREV
-							value < 3
-						}
-					}
-				}
-			}
-		}
+	every_in_list = {
+		list = counties
 		if = {
 			limit = {
 				religion = religion:islam_religion
-				faith = {
-					NOT = { is_in_list = islam_options }
-					ROOT.faith = {
-						faith_hostility_level = {
-							target = PREV
-							value < 3
+
+			}
+			faith = {
+				ROOT = {
+					if = {
+						NOT = {
+							is_target_in_variable_list = {
+								name = islam_options
+								target = PREV
+							}
 						}
+					}
+					add_to_variable_list = {
+						name = islam_options
+						target = PREV
 					}
 				}
 			}
-			faith = { add_to_list = islam_options }
 		}
 		every_in_list = {
 			variable = faith_minorities_large
-			limit = {
-				religion = religion:islam_religion
-			}
-			if = {
-				limit = {NOT = { is_in_list = islam_options }}
-				add_to_list = islam_options
+			limit = { religion = religion:islam_religion }
+			ROOT = {
+				if = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = islam_options
+							target = PREV
+						}
+					}
+				}
+				add_to_variable_list = {
+					name = islam_options
+					target = PREV
+				}
 			}
 		}
 		every_in_list = {
 			variable = faith_minorities_small
-			limit = {
-				religion = religion:islam_religion
+			limit = { religion = religion:islam_religion }
+			ROOT = {
+				if = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = islam_options
+							target = PREV
+						}
+					}
+				}
+				add_to_variable_list = {
+					name = islam_options
+					target = PREV
+				}
 			}
-			if = {
-				limit = {NOT = { is_in_list = islam_options }}
-				add_to_list = islam_options
-			}
-		}	
-	}
-	if = {
-		limit = { list_size = { name = islam_options value >= 1 } }
-		ordered_in_list = {
-			list = islam_options
-			position = 0
-			save_scope_as = new_faith_1
-		}
-	}
-	if = {
-		limit = { list_size = { name = islam_options value >= 2 } }
-		ordered_in_list = {
-			list = islam_options
-			position = 1
-			save_scope_as = new_faith_2
-		}
-	}
-	if = {
-		limit = { list_size = { name = islam_options value >= 3 } }
-		ordered_in_list = {
-			list = islam_options
-			position = 2
-			save_scope_as = new_faith_3
-		}
-	}
-	if = {
-		limit = { list_size = { name = islam_options value >= 4 } }
-		ordered_in_list = {
-			list = islam_options
-			position = 3
-			save_scope_as = new_faith_4
-		}
-	}
-	if = {
-		limit = { list_size = { name = islam_options value >= 5 } }
-		ordered_in_list = {
-			list = islam_options
-			position = 4
-			save_scope_as = new_faith_5
-		}
-	}
-	if = {
-		limit = { list_size = { name = islam_options value >= 6 } }
-		ordered_in_list = {
-			list = islam_options
-			position = 5
-			save_scope_as = new_faith_6
 		}
 	}
 }
@@ -221,13 +83,13 @@ scripted_effect do_islamic_settlers_effect = {
 			random = {
 				chance = 15
 				modifier = {
-					add = {
+					multipy = {
 						value = development_level
 						multiply = {
-							value = 200
+							value = 125
 							subtract = development_level
 						}
-						divide = 125
+						divide = 25
 					}
 				}
 				save_scope_as = county
@@ -269,6 +131,64 @@ scripted_effect do_islamic_settlers_effect = {
 		}
 	}
 	custom_tooltip = invite_muslim_settler_effect_tt
+}
+
+scripted_effect fetch_sultanate_options = {
+	clear_variable_list = islam_options
+	every_realm_county = {
+		limit = {
+			OR = {
+				religion = religion:islam_religion
+				any_in_list = {
+					variable = faith_minorities_large
+					religion = religion:islam_religion
+				}
+			}
+		}
+		faith = {
+			if = {
+				limit = {
+					religion = religion:islam_religion
+				}
+				ROOT = {
+					if = {
+						limit = {
+							NOT = {
+								is_target_in_variable_list = {
+									name = islam_options
+									target = PREV
+								}
+							}
+						}
+					}
+					add_to_variable_list = {
+						name = islam_options
+						target = PREV
+					}
+				}
+			}
+		}
+		every_in_list = {
+			variable = faith_minorities_large
+			limit = {
+				ROOT = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = islam_options
+							target = PREV
+						}
+					}
+				}
+				religion = religion:islam_religion
+			}
+			ROOT = {
+				add_to_variable_list = {
+					name = islam_options
+					target = PREV
+				}
+			}
+		}
+	}
 }
 
 ### Copied from Unite Africa
@@ -550,156 +470,103 @@ maritime_southeast_asia.0008 = {
 	}
 
 	immediate = {
+		remove_variable = faith_pick
 		fetch_islam_options = yes
 	}
-
-	option = {
-		trigger = { exists = scope:new_faith_1 }
-		name = maritime_southeast_asia.0008.a
-		do_islamic_settlers_effect = { FAITH = scope:new_faith_1 }
-		add_piety = major_piety_loss
-		if = {
-			limit = {
-				culture = {
-					has_cultural_era_or_later = culture_era_late_medieval
-				}
-			}
-			add_gold = {
-				value = major_gold_value
-				multiply = -1
-			}
-		}
-		else = {
-			add_gold = {
-				value = massive_gold_value
-				multiply = -1
-			}
-		}
+	widget = {
+		gui = "sea_event_widget"
+		container = "custom_widgets_container"
 	}
-
-	option = {
-		trigger = { exists = scope:new_faith_2 }
-		name = maritime_southeast_asia.0008.b
-		do_islamic_settlers_effect = { FAITH = scope:new_faith_2 }
-		add_piety = major_piety_loss
-		if = {
-			limit = {
-				culture = {
-					has_cultural_era_or_later = culture_era_late_medieval
-				}
-			}
-			add_gold = {
-				value = major_gold_value
-				multiply = -1
-			}
-		}
-		else = {
-			add_gold = {
-				value = massive_gold_value
-				multiply = -1
-			}
-		}
-	}
-
-	option = {
-		trigger = { exists = scope:new_faith_3 }
-		name = maritime_southeast_asia.0008.c
-		do_islamic_settlers_effect = { FAITH = scope:new_faith_3 }
-		add_piety = major_piety_loss
-		if = {
-			limit = {
-				culture = {
-					has_cultural_era_or_later = culture_era_late_medieval
-				}
-			}
-			add_gold = {
-				value = major_gold_value
-				multiply = -1
-			}
-		}
-		else = {
-			add_gold = {
-				value = massive_gold_value
-				multiply = -1
-			}
-		}
-	}
-
-	option = {
-		trigger = { exists = scope:new_faith_4 }
-		name = maritime_southeast_asia.0008.d
-		do_islamic_settlers_effect = { FAITH = scope:new_faith_4 }
-		add_piety = major_piety_loss
-		if = {
-			limit = {
-				culture = {
-					has_cultural_era_or_later = culture_era_late_medieval
-				}
-			}
-			add_gold = {
-				value = major_gold_value
-				multiply = -1
-			}
-		}
-		else = {
-			add_gold = {
-				value = massive_gold_value
-				multiply = -1
-			}
-		}
-	}
-
-	option = {
-		trigger = { exists = scope:new_faith_5 }
-		name = maritime_southeast_asia.0008.e
-		do_islamic_settlers_effect = { FAITH = scope:new_faith_5 }
-		add_piety = major_piety_loss
-		if = {
-			limit = {
-				culture = {
-					has_cultural_era_or_later = culture_era_late_medieval
-				}
-			}
-			add_gold = {
-				value = major_gold_value
-				multiply = -1
-			}
-		}
-		else = {
-			add_gold = {
-				value = massive_gold_value
-				multiply = -1
-			}
-		}
-	}
-
-	option = {
-		trigger = { exists = scope:new_faith_6 }
-		name = maritime_southeast_asia.0008.f
-		do_islamic_settlers_effect = { FAITH = scope:new_faith_6 }
-		add_piety = major_piety_loss
-		if = {
-			limit = {
-				culture = {
-					has_cultural_era_or_later = culture_era_late_medieval
-				}
-			}
-			add_gold = {
-				value = major_gold_value
-				multiply = -1
-			}
-		}
-		else = {
-			add_gold = {
-				value = massive_gold_value
-				multiply = -1
-			}
-		}
-	}
-
+	
 	option = {
 		name = maritime_southeast_asia.0008.nevermind
-		remove_decision_cooldown = invite_islamic_settlers_decision
+		if = {
+			limit = { has_variable = faith_pick }
+			var:faith_pick = {
+				save_scope_as = faith
+			}
+			do_islamic_settlers_effect = { FAITH = scope:faith }
+			add_piety = major_piety_loss
+			if = {
+				limit = {
+					culture = {
+						has_cultural_era_or_later = culture_era_late_medieval
+					}
+				}
+				add_gold = major_gold_loss
+			}
+			else = {
+				add_gold = massive_gold_loss
+			}
+		}
+		else = {
+			remove_decision_cooldown = invite_islamic_settlers_decision
+		}
+	}
+
+	after = {
+		clear_variable_list = islam_options
+	}
+
+}
+
+# I am adopting Islam from my counties to form an Islamic Sultanate in Malaysia
+maritime_southeast_asia.0009 = {
+	type = character_event
+	title = maritime_southeast_asia.0009.t
+	desc = maritime_southeast_asia.0009.desc
+	theme = faith
+	left_portrait = {
+		character = ROOT
+		animation = personality_rational
+	}
+	immediate = {
+		remove_variable = faith_pick
+		fetch_sultanate_options = yes
+	}
+	widget = {
+		gui = "sea_event_widget"
+		container = "custom_widgets_container"
+	}
+
+	option = {
+		name = maritime_southeast_asia.0009.confirm
+		if = {
+			limit = { has_variable = faith_pick }
+			add_piety = medium_piety_loss
+			set_character_faith_with_conversion = var:faith_pick
+			if = {
+				limit = {
+					OR = {
+						has_government = clan_government
+						has_government = feudal_government
+						has_government = theocracy_government
+						has_government = republic_government
+						has_government = autocratic_government
+						has_government = city_state_government
+						has_government = mandala_government
+					}
+				}
+				change_government = muslim_government
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_government = tribal_government
+						has_government = anarchist_government
+						has_government = stateless_government
+					}
+				}
+				feudalize_into_islamic_effect = yes
+			}
+		}
+		else = {
+			custom_tooltip = maritime_southeast_asia.0009.cancel_tt
+		}
+	}
+
+	after = {
+		clear_variable_list = islam_options
 	}
 
 }
