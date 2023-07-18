@@ -2,7 +2,7 @@
 namespace = maritime_southeast_asia
 
 scripted_effect fetch_islam_options = {
-	ROOT = { clear_variable_list = islam_options }
+	ROOT = { clear_variable_list = faith_options }
 	every_county_in_region = {
 		region = world_west_indian_ocean_region
 		add_to_list = counties
@@ -23,13 +23,13 @@ scripted_effect fetch_islam_options = {
 					if = {
 						NOT = {
 							is_target_in_variable_list = {
-								name = islam_options
+								name = faith_options
 								target = PREV
 							}
 						}
 					}
 					add_to_variable_list = {
-						name = islam_options
+						name = faith_options
 						target = PREV
 					}
 				}
@@ -42,13 +42,13 @@ scripted_effect fetch_islam_options = {
 				if = {
 					NOT = {
 						is_target_in_variable_list = {
-							name = islam_options
+							name = faith_options
 							target = PREV
 						}
 					}
 				}
 				add_to_variable_list = {
-					name = islam_options
+					name = faith_options
 					target = PREV
 				}
 			}
@@ -60,13 +60,13 @@ scripted_effect fetch_islam_options = {
 				if = {
 					NOT = {
 						is_target_in_variable_list = {
-							name = islam_options
+							name = faith_options
 							target = PREV
 						}
 					}
 				}
 				add_to_variable_list = {
-					name = islam_options
+					name = faith_options
 					target = PREV
 				}
 			}
@@ -134,7 +134,7 @@ scripted_effect do_islamic_settlers_effect = {
 }
 
 scripted_effect fetch_sultanate_options = {
-	clear_variable_list = islam_options
+	clear_variable_list = faith_options
 	every_realm_county = {
 		limit = {
 			OR = {
@@ -155,14 +155,14 @@ scripted_effect fetch_sultanate_options = {
 						limit = {
 							NOT = {
 								is_target_in_variable_list = {
-									name = islam_options
+									name = faith_options
 									target = PREV
 								}
 							}
 						}
 					}
 					add_to_variable_list = {
-						name = islam_options
+						name = faith_options
 						target = PREV
 					}
 				}
@@ -174,7 +174,7 @@ scripted_effect fetch_sultanate_options = {
 				ROOT = {
 					NOT = {
 						is_target_in_variable_list = {
-							name = islam_options
+							name = faith_options
 							target = PREV
 						}
 					}
@@ -183,7 +183,7 @@ scripted_effect fetch_sultanate_options = {
 			}
 			ROOT = {
 				add_to_variable_list = {
-					name = islam_options
+					name = faith_options
 					target = PREV
 				}
 			}
@@ -470,19 +470,19 @@ maritime_southeast_asia.0008 = {
 	}
 
 	immediate = {
-		remove_variable = faith_pick
+		remove_variable = selected_faith
 		fetch_islam_options = yes
 	}
 	widget = {
-		gui = "sea_event_widget"
+		gui = "sea_select_faith_widget"
 		container = "custom_widgets_container"
 	}
 	
 	option = {
 		name = maritime_southeast_asia.0008.nevermind
 		if = {
-			limit = { has_variable = faith_pick }
-			var:faith_pick = {
+			limit = { has_variable = selected_faith }
+			var:selected_faith = {
 				save_scope_as = faith
 			}
 			do_islamic_settlers_effect = { FAITH = scope:faith }
@@ -505,7 +505,7 @@ maritime_southeast_asia.0008 = {
 	}
 
 	after = {
-		clear_variable_list = islam_options
+		clear_variable_list = faith_options
 	}
 
 }
@@ -521,20 +521,20 @@ maritime_southeast_asia.0009 = {
 		animation = personality_rational
 	}
 	immediate = {
-		remove_variable = faith_pick
+		remove_variable = selected_faith
 		fetch_sultanate_options = yes
 	}
 	widget = {
-		gui = "sea_event_widget"
+		gui = "sea_select_faith_widget"
 		container = "custom_widgets_container"
 	}
 
 	option = {
 		name = maritime_southeast_asia.0009.confirm
 		if = {
-			limit = { has_variable = faith_pick }
+			limit = { has_variable = selected_faith }
 			add_piety = medium_piety_loss
-			set_character_faith_with_conversion = var:faith_pick
+			set_character_faith_with_conversion = var:selected_faith
 			if = {
 				limit = {
 					OR = {
@@ -566,7 +566,7 @@ maritime_southeast_asia.0009 = {
 	}
 
 	after = {
-		clear_variable_list = islam_options
+		clear_variable_list = faith_options
 	}
 
 }
