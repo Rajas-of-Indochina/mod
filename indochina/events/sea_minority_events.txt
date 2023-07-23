@@ -338,84 +338,54 @@ scripted_effect setup_expel_religious_minorities_effect = {
 			county_is_religiously_protected_trigger = no
 			county_has_astray_or_worse_minority_faith_trigger = { FAITH = root.faith }
 		}
-
 		every_in_list = {
 			variable = faith_minorities_large
 			limit = {
-				root.faith = {
+				ROOT.faith = {
 					faith_hostility_level = {
-						target = prev
+						target = PREV
 						value >= faith_astray_level
 					}
 				}
+				NOT = {
+					ROOT = {
+						is_target_in_variable_list = {
+							name = faith_options
+							target = PREV
+						}
+					}
+				}
 			}
-			add_to_list = county_minorities
+			ROOT = {
+				add_to_variable_list = {
+					name = faith_options
+					target = PREV
+				}
+			}
 		}
 		every_in_list = {
 			variable = faith_minorities_small
 			limit = {
-				root.faith = {
+				ROOT.faith = {
 					faith_hostility_level = {
-						target = prev
+						target = PREV
 						value >= faith_astray_level
 					}
 				}
-			}
-			add_to_list = county_minorities
-		}
-
-		every_in_list = {
-			list = county_minorities
-			limit = {
 				NOT = {
-					is_in_list = listed_minorities
+					ROOT = {
+						is_target_in_variable_list = {
+							name = faith_options
+							target = PREV
+						}
+					}
 				}
 			}
-
-			if = {
-				limit = { NOT = { exists = scope:minority_1 } }
-				save_scope_as = minority_1
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_2 } }
-				save_scope_as = minority_2
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_3 } }
-				save_scope_as = minority_3
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_4 } }
-				save_scope_as = minority_4
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_5 } }
-				save_scope_as = minority_5
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_6 } }
-				save_scope_as = minority_6
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_7 } }
-				save_scope_as = minority_7
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_8 } }
-				save_scope_as = minority_8
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_9 } }
-				save_scope_as = minority_9
-				add_to_temporary_list = listed_minorities
+			ROOT = {
+				add_to_variable_list = {
+					name = faith_options
+					target = PREV
+				}
 			}
 		}
 	}
@@ -430,74 +400,46 @@ scripted_effect setup_expel_cultural_minorities_effect = {
 		every_in_list = {
 			variable = culture_minorities_large
 			limit = {
-				root.culture = {
+				ROOT.culture = {
 					NOT = { has_same_culture_heritage = prev }
 				}
+				ROOT = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = culture_options
+							target = PREV
+						}
+					}
+				}
 			}
-			add_to_list = county_minorities
+			ROOT = {
+				add_to_variable_list = {
+					name = culture_options
+					target = PREV
+				}
+			}
 		}
+
 		every_in_list = {
 			variable = culture_minorities_small
 			limit = {
-				root.culture = {
+				ROOT.culture = {
 					NOT = { has_same_culture_heritage = prev }
 				}
-			}
-			add_to_list = county_minorities
-		}
-
-		every_in_list = {
-			list = county_minorities
-			limit = {
-				NOT = {
-					is_in_list = listed_minorities
+				ROOT = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = culture_options
+							target = PREV
+						}
+					}
 				}
 			}
-
-			if = {
-				limit = { NOT = { exists = scope:minority_1 } }
-				save_scope_as = minority_1
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_2 } }
-				save_scope_as = minority_2
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_3 } }
-				save_scope_as = minority_3
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_4 } }
-				save_scope_as = minority_4
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_5 } }
-				save_scope_as = minority_5
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_6 } }
-				save_scope_as = minority_6
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_7 } }
-				save_scope_as = minority_7
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_8 } }
-				save_scope_as = minority_8
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_9 } }
-				save_scope_as = minority_9
-				add_to_temporary_list = listed_minorities
+			ROOT = {
+				add_to_variable_list = {
+					name = culture_options
+					target = PREV
+				}
 			}
 		}
 	}
@@ -510,68 +452,23 @@ scripted_effect setup_promote_religious_minorities_effect = {
 			limit = {
 				NOT = { THIS = scope:councillor_liege.faith }
 			}
-			add_to_list = county_minorities
+			ROOT = {
+				add_to_variable_list = {
+					name = faith_options
+					target = PREV
+				}
+			}
 		}
 		every_in_list = {
 			variable = faith_minorities_small
 			limit = {
 				NOT = { THIS = scope:councillor_liege.faith }
 			}
-			add_to_list = county_minorities
-		}
-
-		every_in_list = {
-			list = county_minorities
-			limit = {
-				NOT = {
-					is_in_list = listed_minorities
+			ROOT = {
+				add_to_variable_list = {
+					name = faith_options
+					target = PREV
 				}
-			}
-
-			if = {
-				limit = { NOT = { exists = scope:minority_1 } }
-				save_scope_as = minority_1
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_2 } }
-				save_scope_as = minority_2
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_3 } }
-				save_scope_as = minority_3
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_4 } }
-				save_scope_as = minority_4
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_5 } }
-				save_scope_as = minority_5
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_6 } }
-				save_scope_as = minority_6
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_7 } }
-				save_scope_as = minority_7
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_8 } }
-				save_scope_as = minority_8
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_9 } }
-				save_scope_as = minority_9
-				add_to_temporary_list = listed_minorities
 			}
 		}
 	}
@@ -584,75 +481,30 @@ scripted_effect setup_promote_culture_minorities_effect = {
 			limit = {
 				NOT = { THIS = scope:councillor_liege.culture }
 			}
-			add_to_list = county_minorities
+			ROOT = {
+				add_to_variable_list = {
+					name = culture_options
+					target = PREV
+				}
+			}
 		}
 		every_in_list = {
 			variable = culture_minorities_small
 			limit = {
 				NOT = { THIS = scope:councillor_liege.culture }
 			}
-			add_to_list = county_minorities
-		}
-
-		every_in_list = {
-			list = county_minorities
-			limit = {
-				NOT = {
-					is_in_list = listed_minorities
+			ROOT = {
+				add_to_variable_list = {
+					name = culture_options
+					target = PREV
 				}
-			}
-
-			if = {
-				limit = { NOT = { exists = scope:minority_1 } }
-				save_scope_as = minority_1
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_2 } }
-				save_scope_as = minority_2
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_3 } }
-				save_scope_as = minority_3
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_4 } }
-				save_scope_as = minority_4
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_5 } }
-				save_scope_as = minority_5
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_6 } }
-				save_scope_as = minority_6
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_7 } }
-				save_scope_as = minority_7
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_8 } }
-				save_scope_as = minority_8
-				add_to_temporary_list = listed_minorities
-			}
-			else_if = {
-				limit = { NOT = { exists = scope:minority_9 } }
-				save_scope_as = minority_9
-				add_to_temporary_list = listed_minorities
 			}
 		}
 	}
 }
 
 # Expel Cultural Minorities
-# First selection event
+# New and improved! Uses a single event!
 minorities.0001 = {
 	type = character_event
 	title = minorities.0001.t
@@ -662,143 +514,38 @@ minorities.0001 = {
 		character = root
 		animation = disapproval
 	}
+	widget = {
+		gui = "sea_select_culture_widget"
+		container = "custom_widgets_container"
+	}
 	theme = dread
 
 	immediate = {
+		remove_variable = selected_culture
+		clear_variable_list = culture_options
+		setup_expel_cultural_minorities_effect = yes
+	}
+	option = {
+		name = minorities.1001.confirm
 		if = {
-			limit = { NOT = { exists = scope:minority_1 } }
-			setup_expel_cultural_minorities_effect = yes
+			limit = {
+				has_variable = selected_culture
+			}
+			var:selected_culture = { save_scope_as = expelled_culture }
+			expel_cultural_minorities_effect = yes
+		}
+		else = {
+			custom_tooltip = minorities.1001.cancel
+			remove_variable = expelled_or_purged_peasants
 		}
 	}
-
-	option = {
-		trigger = { exists = scope:minority_1 }
-		name = minorities.0001.1
-
-		scope:minority_1 = { save_scope_as = expelled_culture }
-		expel_cultural_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_2 }
-		name = minorities.0001.2
-
-		scope:minority_2 = { save_scope_as = expelled_culture }
-		expel_cultural_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_3 }
-		name = minorities.0001.3
-
-		scope:minority_3 = { save_scope_as = expelled_culture }
-		expel_cultural_minorities_effect = yes
-	}
-
-	option = {
-		trigger = { exists = scope:minority_4 }
-		name = minorities.0001.next
-		trigger_event = minorities.0002
-	}
-	option = {
-		name = minorities.0001.cancel
-		remove_variable = expelled_or_purged_peasants
-	}
-}
-
-minorities.0002 = {
-	type = character_event
-	title = minorities.0002.t
-	desc = minorities.0002.desc
-
-	left_portrait = {
-		character = root
-		animation = disapproval
-	}
-	theme = dread
-
-	option = {
-		trigger = { exists = scope:minority_4 }
-		name = minorities.0002.4
-
-		scope:minority_4 = { save_scope_as = expelled_culture }
-		expel_cultural_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_5 }
-		name = minorities.0002.5
-
-		scope:minority_5 = { save_scope_as = expelled_culture }
-		expel_cultural_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_6 }
-		name = minorities.0002.6
-
-		scope:minority_6 = { save_scope_as = expelled_culture }
-		expel_cultural_minorities_effect = yes
-	}
-
-	option = {
-		trigger = { exists = scope:minority_7 }
-		name = minorities.0001.next
-		trigger_event = minorities.0003
-	}
-	option = {
-		trigger = { NOT = { exists = scope:minority_7 } }
-		name = minorities.0001.back
-		trigger_event = minorities.0001
-	}
-	option = {
-		name = minorities.0002.cancel
-		remove_variable = expelled_or_purged_peasants
-	}
-}
-
-minorities.0003 = {
-	type = character_event
-	title = minorities.0003.t
-	desc = minorities.0003.desc
-
-	left_portrait = {
-		character = root
-		animation = disapproval
-	}
-	theme = dread
-
-
-	option = {
-		trigger = { exists = scope:minority_7 }
-		name = minorities.0003.7
-
-		scope:minority_7 = { save_scope_as = expelled_culture }
-		expel_cultural_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_8 }
-		name = minorities.0003.8
-
-		scope:minority_8 = { save_scope_as = expelled_culture }
-		expel_cultural_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_9 }
-		name = minorities.0003.9
-
-		scope:minority_9 = { save_scope_as = expelled_culture }
-		expel_cultural_minorities_effect = yes
-	}
-
-	option = {
-		name = minorities.0001.next
-		trigger_event = minorities.0001
-	}
-	option = {
-		name = minorities.0003.cancel
-		remove_variable = expelled_or_purged_peasants
+	after = {
+		remove_variable = selected_culture
 	}
 }
 
 # Expel Religious Minorities
-# First selection event
+# New and improved! Uses a single event!
 minorities.1001 = {
 	type = character_event
 	title = minorities.1001.t
@@ -811,140 +558,34 @@ minorities.1001 = {
 	theme = dread
 
 	immediate = {
+		clear_variable_list = faith_options
+		remove_variable = selected_faith
+		setup_expel_religious_minorities_effect = yes
+	}
+	widget = {
+		gui = "sea_select_faith_widget"
+		container = "custom_widgets_container"
+	}
+	option = {
+		name = minorities.1001.confirm
 		if = {
-			limit = { NOT = { exists = scope:minority_1 } }
-			setup_expel_religious_minorities_effect = yes
+			limit = { has_variable = selected_faith }
+			var:selected_faith = { save_scope_as = expelled_faith }
+			expel_religious_minorities_effect = yes
+		}
+		else = {
+			custom_tooltip = minorities.1001.cancel
+			remove_variable = expelled_or_purged_peasants
 		}
 	}
-
-	option = {
-		trigger = { exists = scope:minority_1 }
-		name = minorities.1001.1
-
-		scope:minority_1 = { save_scope_as = expelled_faith }
-		expel_religious_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_2 }
-		name = minorities.1001.2
-
-		scope:minority_2 = { save_scope_as = expelled_faith }
-		expel_religious_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_3 }
-		name = minorities.1001.3
-
-		scope:minority_3 = { save_scope_as = expelled_faith }
-		expel_religious_minorities_effect = yes
-	}
-
-	option = {
-		trigger = { exists = scope:minority_4 }
-		name = minorities.1001.next
-		trigger_event = minorities.1002
-	}
-	option = {
-		name = minorities.1001.cancel
-		remove_variable = expelled_or_purged_peasants
-	}
-}
-
-minorities.1002 = {
-	type = character_event
-	title = minorities.1002.t
-	desc = minorities.1002.desc
-
-	left_portrait = {
-		character = root
-		animation = disapproval
-	}
-	theme = dread
-
-	option = {
-		trigger = { exists = scope:minority_4 }
-		name = minorities.1002.4
-
-		scope:minority_4 = { save_scope_as = expelled_faith }
-		expel_religious_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_5 }
-		name = minorities.1002.5
-
-		scope:minority_5 = { save_scope_as = expelled_faith }
-		expel_religious_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_6 }
-		name = minorities.1002.6
-
-		scope:minority_6 = { save_scope_as = expelled_faith }
-		expel_religious_minorities_effect = yes
-	}
-
-	option = {
-		trigger = { exists = scope:minority_7 }
-		name = minorities.1001.next
-		trigger_event = minorities.1003
-	}
-	option = {
-		trigger = { NOT = { exists = scope:minority_7 } }
-		name = minorities.1001.back
-		trigger_event = minorities.1001
-	}
-	option = {
-		name = minorities.1002.cancel
-		remove_variable = expelled_or_purged_peasants
-	}
-}
-
-minorities.1003 = {
-	type = character_event
-	title = minorities.1003.t
-	desc = minorities.1003.desc
-
-	left_portrait = {
-		character = root
-		animation = disapproval
-	}
-	theme = dread
-
-
-	option = {
-		trigger = { exists = scope:minority_7 }
-		name = minorities.1003.7
-
-		scope:minority_7 = { save_scope_as = expelled_faith }
-		expel_religious_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_8 }
-		name = minorities.1003.8
-
-		scope:minority_8 = { save_scope_as = expelled_faith }
-		expel_religious_minorities_effect = yes
-	}
-	option = {
-		trigger = { exists = scope:minority_9 }
-		name = minorities.1003.9
-
-		scope:minority_9 = { save_scope_as = expelled_faith }
-		expel_religious_minorities_effect = yes
-	}
-
-	option = {
-		name = minorities.1001.next
-		trigger_event = minorities.1001
-	}
-	option = {
-		name = minorities.1003.cancel
-		remove_variable = expelled_or_purged_peasants
+	after = {
+		clear_variable_list = faith_options
+		remove_variable = selected_faith
 	}
 }
 
 # Promote minorities
-# first selection event: Culture or faith?
+# New and Improved: Condensed to a single event with a special combined gui!
 minorities.2001 = {
 	type = character_event
 	title = minorities.2001.t
@@ -954,255 +595,65 @@ minorities.2001 = {
 		character = root
 		animation = personality_compassionate
 	}
-	theme = realm
 
-	option = {
-		name = minorities.2001.religion
-		# I want to promote a religious minority in this county
-		trigger = { scope:county = { county_has_minority_faith_trigger = yes } }
-		trigger_event = minorities.2002
-	}
-
-	option = {
-		name = minorities.2001.culture
-		# I want to promote a cultural minority in this county
-		trigger = { scope:county = { county_has_minority_culture_trigger = yes } }
-		trigger_event = minorities.2003
-	}
-
-	option = {
-		name = minorities.0001.cancel
-		# Chicken out
-		# also fallback for if something is broken and there is no minority here
-		cp:councillor_steward = {
-			set_council_task = { task_type = task_collect_taxes }
-		}
-	}
-}
-
-# Pick a religious minority
-minorities.2002 = {
-	type = character_event
-	title = minorities.2002.t
-	desc = minorities.2002.desc
-
-	left_portrait = {
-		character = root
-		animation = personality_compassionate
+	right_portrait = {
+		character = cp:councillor_steward
+		animation = personality_rational
 	}
 	theme = realm
 	immediate = {
 		setup_promote_religious_minorities_effect = yes
-	}
-	option = {
-		name = minorities.2002.a
-		trigger = { exists = scope:minority_1 }
-		scope:county = {
-			set_variable = {
-				name = faith_to_convert
-				value = scope:minority_1
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.b
-		trigger = { exists = scope:minority_2 }
-		scope:county = {
-			set_variable = {
-				name = faith_to_convert
-				value = scope:minority_2
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.c
-		trigger = { exists = scope:minority_3 }
-		scope:county = {
-			set_variable = {
-				name = faith_to_convert
-				value = scope:minority_3
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.d
-		trigger = { exists = scope:minority_4 }
-		scope:county = {
-			set_variable = {
-				name = faith_to_convert
-				value = scope:minority_4
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.e
-		trigger = { exists = scope:minority_5 }
-		scope:county = {
-			set_variable = {
-				name = faith_to_convert
-				value = scope:minority_5
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.f
-		trigger = { exists = scope:minority_6 }
-		scope:county = {
-			set_variable = {
-				name = faith_to_convert
-				value = scope:minority_6
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.g
-		trigger = { exists = scope:minority_7 }
-		scope:county = {
-			set_variable = {
-				name = faith_to_convert
-				value = scope:minority_7
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.h
-		trigger = { exists = scope:minority_8 }
-		scope:county = {
-			set_variable = {
-				name = faith_to_convert
-				value = scope:minority_8
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.i
-		trigger = { exists = scope:minority_9 }
-		scope:county = {
-			set_variable = {
-				name = faith_to_convert
-				value = scope:minority_9
-			}
-		}
-	}
-	option = {
-		name = minorities.0001.cancel
-		# option to chicken out
-		cp:councillor_steward = {
-			set_council_task = { task_type = task_collect_taxes }
-		}
-	}
-}
-
-# Pick a cultural minority
-minorities.2003 = {
-	type = character_event
-	title = minorities.2003.t
-	desc = minorities.2003.desc
-
-	left_portrait = {
-		character = root
-		animation = personality_compassionate
-	}
-	theme = realm
-	immediate = {
 		setup_promote_culture_minorities_effect = yes
-	}
-	option = {
-		name = minorities.2002.a
-		trigger = { exists = scope:minority_1 }
 		scope:county = {
-			set_variable = {
-				name = culture_to_convert
-				value = scope:minority_1
+			remove_variable = faith_to_convert
+			remove_variable = culture_to_convert
+		}
+	}
+	widget = {
+		gui = "sea_select_combined_widget"
+		container = "custom_widgets_container"
+	}
+
+	option = {
+		name = minorities.1001.confirm
+		if = {
+			limit = {
+				exists = var:selected_culture
+			}
+			var:selected_culture = { save_scope_as = selected_culture }
+			scope:county = {
+				set_variable = {
+					name = culture_to_convert
+					value = scope:selected_culture
+				}
+			}
+			custom_tooltip = task_promote_minority_effect_event_desc_culture
+		}
+		else_if = {
+			limit = {
+				exists = var:selected_faith
+			}
+			var:selected_faith = { save_scope_as = selected_faith }
+			scope:county = {
+				set_variable = {
+					name = faith_to_convert
+					value = scope:selected_faith
+				}
+			}
+			custom_tooltip = task_promote_minority_effect_event_desc_faith
+		}
+		else = {
+			custom_tooltip = minorities.0001.cancel
+			cp:councillor_steward = {
+				set_council_task = { task_type = task_collect_taxes }
 			}
 		}
 	}
-	option = {
-		name = minorities.2002.b
-		trigger = { exists = scope:minority_2 }
-		scope:county = {
-			set_variable = {
-				name = culture_to_convert
-				value = scope:minority_2
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.c
-		trigger = { exists = scope:minority_3 }
-		scope:county = {
-			set_variable = {
-				name = culture_to_convert
-				value = scope:minority_3
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.d
-		trigger = { exists = scope:minority_4 }
-		scope:county = {
-			set_variable = {
-				name = culture_to_convert
-				value = scope:minority_4
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.e
-		trigger = { exists = scope:minority_5 }
-		scope:county = {
-			set_variable = {
-				name = culture_to_convert
-				value = scope:minority_5
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.f
-		trigger = { exists = scope:minority_6 }
-		scope:county = {
-			set_variable = {
-				name = culture_to_convert
-				value = scope:minority_6
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.g
-		trigger = { exists = scope:minority_7 }
-		scope:county = {
-			set_variable = {
-				name = culture_to_convert
-				value = scope:minority_7
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.h
-		trigger = { exists = scope:minority_8 }
-		scope:county = {
-			set_variable = {
-				name = culture_to_convert
-				value = scope:minority_8
-			}
-		}
-	}
-	option = {
-		name = minorities.2002.i
-		trigger = { exists = scope:minority_9 }
-		scope:county = {
-			set_variable = {
-				name = culture_to_convert
-				value = scope:minority_9
-			}
-		}
-	}
-	option = {
-		name = minorities.0001.cancel
-		# option to chicken out
-		cp:councillor_steward = {
-			set_council_task = { task_type = task_collect_taxes }
-		}
+	after = {
+		clear_variable_list = faith_options
+		clear_variable_list = culture_options
+		remove_variable = selected_culture
+		remove_variable = selected_faith
 	}
 }
 
@@ -1227,7 +678,7 @@ minorities.3001 = {
 	}
 }
 # Clear culture minority on county faith change
-minorities.3001 = {
+minorities.3002 = {
 	hidden = yes
 	scope = landed_title
 
@@ -1584,9 +1035,7 @@ global_culture.0032 = {
 				region = custom_scotland
 				limit = {
 					NOT = { culture = culture:scottish }
-					limit = {
-						holder.top_liege = root.top_liege
-					}
+					holder.top_liege = root.top_liege
 				}
 				save_scope_as = county
 				add_culture_minority_effect = {

@@ -566,5 +566,58 @@ invite_islamic_settlers_decision = {
 	}
 }
 
-# Create Minang Culture
+establish_malayan_sultanate_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	desc = establish_malayan_sultanate_decision_desc
 
+	ai_check_interval = 36
+
+	is_shown = {
+		capital_county.title_province = {
+			geographical_region = world_greater_nusantara
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		any_realm_county = {
+			percent >= 0.6
+			OR = {
+				religion = religion:islam_religion
+				custom_tooltip = {
+					text = large_muslim_minority_tt
+					any_in_list = {
+						variable = faith_minorities_large
+						religion = religion:islam_religion
+					}
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		NOR = {
+			religion = religion:islam_religion
+			has_government = muslim_government
+		}
+	}
+
+	minimum_cost = {
+		piety = medium_piety_value
+	}
+
+	cooldown = {
+		years = 5 #Just to prevent spamming it for weirdness
+	}
+
+	effect = {
+		custom_tooltip = establish_malayan_sultanate_decision_convert_to_islam_tt
+		show_as_tooltip = {
+			change_government = muslim_government
+		}
+		trigger_event = maritime_southeast_asia.0009
+	}
+}
+
+# Create Minang Culture
