@@ -77,3 +77,57 @@ expel_religious_minority_decision = {
 		always = no
 	}
 }
+
+recruit_cultural_expert_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = recruit_cultural_expert_decision_desc
+
+	ai_check_interval = 36
+
+	is_shown = {
+		any_held_title = {
+			OR = {
+				NOT = { culture = ROOT.culture }
+				any_in_list = {
+					variable = culture_minorities_small
+					NOT = { THIS = ROOT.culture }
+				}
+				any_in_list = {
+					variable = culture_minorities_large
+					NOT = { THIS = ROOT.culture }
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		NOT = {
+			has_realm_law = cultural_minority_status_3
+		}
+	}
+
+	cooldown = {
+		years = 5
+	}
+
+	minimum_cost = {
+		gold = {
+			value = medium_gold_value
+			if = {
+				limit = {
+					OR = {
+						has_government = anarchist_government
+						has_realm_law = cultural_minority_status_1
+					}
+				}
+				multiply = 0.5
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = recruit_cultural_expert_decision_tt
+		custom_tooltip = cheaper_if_culturally_tolerant_tt
+		trigger_event = minorities.4001
+	}
+}
