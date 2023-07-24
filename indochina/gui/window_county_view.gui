@@ -194,155 +194,185 @@ window = {
 			margin = { 10 2 }
 			spacing = 6
 
-			hbox = {
-				datamodel = "[HoldingView.GetDeJureLieges]"
-
-				item = {
-					coa_title_tiny_crown = {
-						visible = "[GreaterThan_int32( Title.GetTierFrame, '(int32)3' )]"
-						using = tooltip_se
+			vbox = {
+				hbox = {
+					hbox = {
+						datamodel = "[HoldingView.GetDeJureLieges]"
+		
+						item = {
+							coa_title_tiny_crown = {
+								visible = "[GreaterThan_int32( Title.GetTierFrame, '(int32)3' )]"
+								using = tooltip_se
+							}
+						}
 					}
+		
+					# text_single = {
+					# 	text = "DE_JURE_HIERARCHY"
+					# 	default_format = "#low"
+					# 	layoutpolicy_horizontal = shrinking
+					# }
 				}
 			}
 
-			text_single = {
-				text = "DE_JURE_HIERARCHY"
-				default_format = "#low"
+			divider = {
+				layoutpolicy_vertical = expanding
+			}
+
+			vbox = {
+				spacing = 5
+				
+				text_single = {
+					raw_text = "[minority_cultures|E]:"
+					# margin_left = 10
+					default_format = "#high"
+					align = left
+				}
+				divider = { layoutpolicy_horizontal = expanding }
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					raw_text = "[minority_faiths|E]:"
+					# margin_left = 10
+					default_format = "#high"
+					align = left
+				}
 			}
 
 			expand = {}
 
-			hbox = {
-				name = "county_modifiers_grid"
-				datamodel = "[HoldingView.GetCountyModifiers]"
-
-				item = {
-					icon = {
-						size = { 30 30 }
-						texture = "[ModifierItem.GetIcon]"
-						using = tooltip_ne
-						tooltip = "[ModifierItem.GetTooltip]"
-					}
-				}
-			}
-
-			########################
-			### BEGIN MINORITIES ###
-			########################
-
-			hbox = {
-				name = "county_culture_minorities_small_grid"
-
-				datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_small')]"
-				visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_small')))]"
-
-				item = {
-					button = {
-						size = { 30 30 }
-
-						onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
-						texture = "gfx/interface/icons/modifiers/sea_culture_minority_small.dds"
-						using = tooltip_ne
-						tooltipwidget = {
-							culture_minorities_tooltip = {
-								blockoverride "minority_label"
-								{
-									text = "[minority_culture_small|E]"
+			vbox = {
+				########################
+				### BEGIN MINORITIES ###
+				########################
+	
+				hbox = {
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						name = "county_culture_minorities_small_grid"
+		
+						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_small')]"
+						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_small')))]"
+		
+						item = {
+							button = {
+								size = { 25 25 }
+		
+								onclick = "[DefaultOnCultureClick(Scope.Culture.GetID)]"
+								texture = "gfx/interface/icons/modifiers/sea_culture_minority_small.dds"
+								using = tooltip_ne
+								tooltipwidget = {
+									culture_minorities_tooltip = {
+										blockoverride "minority_label"
+										{
+											text = "[minority_culture_small|E]"
+										}
+									}
 								}
 							}
 						}
 					}
-				}
-			}
-
-			hbox = {
-				name = "county_faith_minorities_small_grid"
-
-				datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small')]"
-				visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small')))]"
-
-				item = {
-					button = {
-						size = { 30 30 }
-
-						onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
-						texture = "gfx/interface/icons/modifiers/sea_faith_minority_small.dds"
-						using = tooltip_ne
-						tooltipwidget = {
-							faith_minorities_tooltip = {
-								blockoverride "minority_label"
-								{
-									text = "[minority_faith_small|E]"
-								}
-							}
-						}
-
-						icon = {
-							name = "gold_negative_console_button_minus"
-							position = { 4 7 }
-							size = { 30 30 }
-							texture = "[Scope.Faith.GetIcon]"
-						}
-					}
-				}
-			}
-
-			hbox = {
-				name = "county_culture_minorities_large_grid"
-				datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_large')]"
-				visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_large')))]"
-
-				item = {
-					button = {
-						size = { 30 30 }
-						onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
-						texture = "gfx/interface/icons/modifiers/sea_culture_minority_large.dds"
-						using = tooltip_ne
-						tooltipwidget = {
-							culture_minorities_tooltip = {
-								blockoverride "minority_label"
-								{
-									text = "[minority_culture_large|E]"
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						name = "county_culture_minorities_large_grid"
+						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_large')]"
+						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_large')))]"
+		
+						item = {
+							button = {
+								size = { 25 25 }
+								onclick = "[DefaultOnCultureClick(Scope.Culture.GetID)]"
+								texture = "gfx/interface/icons/modifiers/sea_culture_minority_large.dds"
+								using = tooltip_ne
+								tooltipwidget = {
+									culture_minorities_tooltip = {
+										blockoverride "minority_label"
+										{
+											text = "[minority_culture_large|E]"
+										}
+									}
 								}
 							}
 						}
 					}
+					text_single = {
+						raw_text = "None"
+						visible = "[And(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_large')),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_small')))]"
+					}
 				}
-			}
-
-			hbox = {
-				name = "county_faith_minorities_large_grid"
-				datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')]"
-				visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')))]"
-
-				item = {
-					button = {
-						size = { 30 30 }
-						onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
-						texture = "gfx/interface/icons/modifiers/sea_faith_minority_large.dds"
-						using = tooltip_ne
-						tooltipwidget = {
-							faith_minorities_tooltip = {
-								blockoverride "minority_label"
-								{
-									text = "[minority_faith_large|E]"
+				divider = { layoutpolicy_horizontal = expanding }
+				hbox = {
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						name = "county_faith_minorities_small_grid"
+		
+						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small')]"
+						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small')))]"
+		
+						item = {
+							button = {
+								size = { 25 25 }
+		
+								onclick = "[DefaultOnFaithClick(Scope.Faith.GetID)]"
+								texture = "gfx/interface/icons/modifiers/sea_faith_minority_small.dds"
+								using = tooltip_ne
+								tooltipwidget = {
+									faith_minorities_tooltip = {
+										blockoverride "minority_label"
+										{
+											text = "[minority_faith_small|E]"
+										}
+									}
+								}
+		
+								icon = {
+									name = "gold_negative_console_button_minus"
+									position = { 0 7 }
+									size = { 25 25 }
+									texture = "[Scope.Faith.GetIcon]"
 								}
 							}
 						}
-
-						icon = {
-							name = "gold_negative_console_button_minus"
-							position = { 4 7 }
-							size = { 30 30 }
-							texture = "[Scope.Faith.GetIcon]"
+					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						name = "county_faith_minorities_large_grid"
+						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')]"
+						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')))]"
+		
+						item = {
+							button = {
+								size = { 25 25 }
+								onclick = "[DefaultOnFaithClick(Scope.Faith.GetID)]"
+								texture = "gfx/interface/icons/modifiers/sea_faith_minority_large.dds"
+								using = tooltip_ne
+								tooltipwidget = {
+									faith_minorities_tooltip = {
+										blockoverride "minority_label"
+										{
+											text = "[minority_faith_large|E]"
+										}
+									}
+								}
+		
+								icon = {
+									name = "gold_negative_console_button_minus"
+									position = { 0 7 }
+									size = { 25 25 }
+									texture = "[Scope.Faith.GetIcon]"
+								}
+							}
 						}
 					}
+					text_single = {
+						raw_text = "None"
+						visible = "[And(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small')))]"
+					}
 				}
+	
+				######################
+				### END MINORITIES ###
+				######################
 			}
-
-			######################
-			### END MINORITIES ###
-			######################
 
 			hbox = {
 				layoutpolicy_vertical = expanding
@@ -368,6 +398,34 @@ window = {
 							button_ignore = none
 							tooltip_enabled = "[Not(IsInteractionMenuOpenForCharacter(Character.GetID))]"
 						}
+					}
+				}
+			}
+		}
+
+		divider = {
+			layoutpolicy_horizontal = expanding
+			visible = "[Not(IsDataModelEmpty(HoldingView.GetCountyModifiers))]"
+		}
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			visible = "[Not(IsDataModelEmpty(HoldingView.GetCountyModifiers))]"
+			text_single = {
+				raw_text = "[county_modifiers|E]:"
+				margin_left = 10
+			}
+			expand = {
+			}
+			hbox = {
+				name = "county_modifiers_grid"
+				datamodel = "[HoldingView.GetCountyModifiers]"
+
+				item = {
+					icon = {
+						size = { 30 30 }
+						texture = "[ModifierItem.GetIcon]"
+						using = tooltip_se
+						tooltip = "[ModifierItem.GetTooltip]"
 					}
 				}
 			}
@@ -1520,7 +1578,8 @@ window = {
 				button_standard = {
 					datacontext = "[HoldingView.GetGUIHoldingBuilding]"
 					parentanchor = right
-					size = { 145 75 }
+					layoutpolicy_horizontal = expanding
+					size = { 145 30 } # DEMD
 					allow_outside = yes
 					onclick = "[GUIBuildingItem.OnClick]"
 					down = "[GUIBuildingItem.IsHighlighted]"
@@ -1528,16 +1587,17 @@ window = {
 					tooltip = "[GUIBuildingItem.GetTooltip]"
 
 					vbox = {
-						margin = { 4 1 }
+						margin = { 1 1 }
 
 						### Fort Info
 						hbox = {
-							visible = "[HoldingView.GetProvince.HasFort]"
 							layoutpolicy_horizontal = expanding
 							spacing = 10
 							margin_left = 2
 							margin_right = 2
-							margin_top = 2
+							ignoreinvisible = yes
+							#margin_top = 2 # DEMD
+							
 
 							vbox = {
 								layoutpolicy_horizontal = expanding
@@ -1545,12 +1605,42 @@ window = {
 								spacing = -4
 
 								hbox = {
+									icon_building = {
+										name = icon_holding_type
+										texture = "[HoldingView.GetHolding.GetType.GetTabIcon]"
+										size = {
+											20 20
+										}
+									}
+
+									text_single = {
+										visible = "[GUIBuildingItem.HasLevel]"
+										text = "[GUIBuildingItem.GetCurrentOrConstrucingBuilding.GetLevel]"
+										size = { 15 20 }
+										margin = { 5 0 }
+										margin_bottom = 3
+										fontsize = 15
+										default_format = "#low;bold"
+										align = center;nobaseline
+		
+										background = {
+											using = Background_Area_Dark
+										}
+		
+										background = {
+											using = Background_Area_Dark
+										}
+		
+										background = {
+											using = Background_Area_Dark
+										}
+									}
 									spacing = 2
 
 									icon = {
 										name = "icon_garrison"
 										texture = "gfx/interface/icons/icon_garrison.dds"
-										size = { 30 30 }
+										size = { 20 20 }
 									}
 
 									text_single = {
@@ -1566,7 +1656,7 @@ window = {
 									progressbar_standard_transparent = {
 										layoutpolicy_horizontal = expanding
 										
-										size = { 0 10 }
+										size = { 0 8 }
 										value = "[HoldingView.GetGarrisonRatio]"
 										direction = horizontal
 									}
@@ -1574,6 +1664,7 @@ window = {
 							}
 
 							hbox = {
+								visible = "[HoldingView.GetProvince.HasFort]"
 								spacing = 3
 								tooltip = "[Province.GetFortLevelTooltip]"
 
@@ -1594,34 +1685,6 @@ window = {
 						hbox = {
 							spacing = 2
 							margin_bottom = 2
-
-							text_single = {
-								text = "[HoldingView.GetHolding.GetPrimaryBuildingType.GetTypeName]"
-								align = nobaseline
-							}
-
-							text_single = {
-								visible = "[GUIBuildingItem.HasLevel]"
-								text = "[GUIBuildingItem.GetCurrentOrConstrucingBuilding.GetLevel]"
-								size = { 15 20 }
-								margin = { 5 0 }
-								margin_bottom = 3
-								fontsize = 15
-								default_format = "#low;bold"
-								align = center;nobaseline
-
-								background = {
-									using = Background_Area_Dark
-								}
-
-								background = {
-									using = Background_Area_Dark
-								}
-
-								background = {
-									using = Background_Area_Dark
-								}
-							}
 
 							warning_icon = {
 								name = "wrong_type"
@@ -1652,7 +1715,7 @@ window = {
 
 				flowcontainer = {
 					name = "buildings_grid_special"
-					parentanchor = right
+					parentanchor = lft
 					ignoreinvisible = yes
 					margin_right = -3
 
