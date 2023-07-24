@@ -964,7 +964,28 @@ scripted_effect apply_cultural_traits_effect = {
 		hidden_effect = {
 			add_trait = winter_soldier
 		}
-		custom_tooltip = recruit_winter_soldier_tt
+	}
+	if = {
+		limit = {
+			culture = {
+				OR = {
+					has_innovation = innovation_varangian_adventurers
+					has_cultural_parameter = rice_norman_adventurers
+				}
+				NOT = { has_cultural_era_or_later = culture_era_early_medieval }
+			}
+		}
+		hidden_effect = {
+			add_trait = adventurer
+		}
+		custom_tooltip = recruit_adventurer_tt
+	}
+	if = {
+		limit = { culture = { has_cultural_parameter = unlock_rice_silk_road_dynasty_legacy } }
+		hidden_effect = {
+			add_trait = RICE_silk_road_merchant
+		}
+		custom_tooltip = recruit_merchant_tt
 	}
 }
 
@@ -1049,6 +1070,22 @@ scripted_effect culture_specialist_tooltip_builder = {
 	if = {
 		limit = { var:selected_culture = { has_cultural_parameter = winter_soldier_trait_more_common } }
 		custom_tooltip = recruit_winter_soldier_tt
+	}
+	if = {
+		limit = {
+			var:selected_culture = {
+				OR = {
+					has_innovation = innovation_varangian_adventurers
+					has_cultural_parameter = rice_norman_adventurers
+				}
+				NOT = { has_cultural_era_or_later = culture_era_early_medieval }
+			}
+		}
+		custom_tooltip = recruit_adventurer_tt
+	}
+	if = {
+		limit = { var:selected_culture = { has_cultural_parameter = unlock_rice_silk_road_dynasty_legacy } }
+		custom_tooltip = recruit_merchant_tt
 	}
 }
 
@@ -1275,6 +1312,7 @@ minorities.4001 = {
 			create_cultural_specialist_effect = yes
 			scope:cultural_specialist = { apply_cultural_traits_effect = yes } 
 			recruit_courtier = scope:cultural_specialist
+			custom_tooltip = newline.desc
 			var:selected_culture = {
 				change_cultural_acceptance = {
 					value = 0.5

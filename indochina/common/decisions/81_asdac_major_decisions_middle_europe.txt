@@ -45,8 +45,25 @@ establish_norman_culture_decision = {
 
 	is_valid = {
 		culture = {
-			any_parent_culture_or_above = { this = culture:norse }
-			has_cultural_pillar = heritage_north_germanic
+			OR = {
+				this = culture:norse
+				AND = {
+					any_parent_culture_or_above = { this = culture:norse }
+					has_cultural_pillar = heritage_north_germanic
+				}
+			}
+		}
+		any_realm_county = {
+			limit = { duchy = title:d_normandy }
+			culture = {
+				OR = {
+					this = culture:french
+					AND = {
+						any_parent_culture_or_above = { this = culture:french }
+						has_cultural_pillar = heritage_frankish
+					}
+				}
+			}
 		}
 		completely_controls = title:d_normandy
 	}
