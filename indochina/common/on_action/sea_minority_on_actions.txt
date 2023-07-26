@@ -66,12 +66,59 @@ on_yearly_sea_minority_maintainance = {
 	effect = {
 		# Normal culture/faith spread
 		every_county = {
+			limit = {
+				any_title_to_title_neighboring_county = {
+					OR = {
+						NOT = { faith = scope:source_county.faith }
+						NOT = { culture = scope:source_county.culture }
+					}
+					holder = {
+						has_realm_law_flag = religious_minorities_may_migrate
+						has_realm_law_flag = cultural_minorities_may_migrate
+					}
+				}
+			}
 			save_scope_as = source_county
-			random = {
-				chance = 3
-				trigger_event = {
-					days = { 1 360 }
-					on_action = do_culture_faith_migration
+			random_neighboring_county = {
+				limit = {
+					OR = {
+						NOT = { faith = scope:source_county.faith }
+						NOT = { culture = scope:source_county.culture }
+					}
+					holder = {
+						has_realm_law_flag = religious_minorities_may_migrate
+						has_realm_law_flag = cultural_minorities_may_migrate
+					}
+				}
+				save_scope_as = county
+				random = {
+					chance = {
+						value = 3
+						multiply = {
+							value = 0
+							if = {
+								limit = { NOT = { scope:county.faith = scope:source_county.faith } }
+								add = scope:county.faith_minority_growth_factor
+							}
+							if = {
+								limit = { NOT = { scope:county.culture = scope:source_county.culture } }
+								add = scope:county.culture_minority_growth_factor
+							}
+							if = {
+								limit = {
+									scope:county.faith = scope:source_county.faith
+									scope:county.culture = scope:source_county.culture
+								}
+								divide = 2
+							}
+							min = 0
+							max = 1
+						}
+					}
+					trigger_event = {
+						days = { 1 360 }
+						on_action = do_culture_faith_migration
+					}
 				}
 			}
 		}
@@ -82,7 +129,10 @@ on_yearly_sea_minority_maintainance = {
 
 			save_scope_as = source_county
 			random = {
-				chance = 1
+				chance = {
+					value = 1
+					multiply = culture_minority_growth_factor
+				}
 				trigger_event = {
 					days = { 1 360 }
 					on_action = do_minority_culture_growth
@@ -96,7 +146,10 @@ on_yearly_sea_minority_maintainance = {
 
 			save_scope_as = source_county
 			random = {
-				chance = 1
+				chance = {
+					value = 1
+					multiply = faith_minority_growth_factor
+				}
 				trigger_event = {
 					days = { 1 360 }
 					on_action = do_minority_faith_growth

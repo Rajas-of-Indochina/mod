@@ -1641,44 +1641,15 @@ demote_random_culture_minority_effect = {
 
 # scope:source_county
 county_to_county_culture_faith_migration_effect = {
-	scope:source_county = {
-		if = {
-			limit = {
-				any_title_to_title_neighboring_county = {
-					OR = {
-						NOT = { faith = scope:source_county.faith }
-						NOT = { culture = scope:source_county.culture }
-					}
-					holder = {
-						has_realm_law_flag = religious_minorities_may_migrate
-						has_realm_law_flag = cultural_minorities_may_migrate
-					}
-				}
-			}
-			random_neighboring_county = {
-				limit = {
-					OR = {
-						NOT = { faith = scope:source_county.faith }
-						NOT = { culture = scope:source_county.culture }
-					}
-					holder = {
-						has_realm_law_flag = religious_minorities_may_migrate
-						has_realm_law_flag = cultural_minorities_may_migrate
-					}
-				}
-				save_scope_as = county
-				if = {
-					limit = { NOT = { faith = scope:source_county.faith } }
-					promote_faith_minority_effect = { FAITH = scope:source_county.faith }
-				}
-				if = {
-					limit = { NOT = { culture = scope:source_county.culture } }
-					promote_culture_minority_effect = { CULTURE = scope:source_county.culture }
-				}
-				notify_characters_of_culture_faith_migration_effect = yes
-			}
-		}
+	if = {
+		limit = { NOT = { faith = scope:source_county.faith } }
+		promote_faith_minority_effect = { FAITH = scope:source_county.faith }
 	}
+	if = {
+		limit = { NOT = { culture = scope:source_county.culture } }
+		promote_culture_minority_effect = { CULTURE = scope:source_county.culture }
+	}
+	notify_characters_of_culture_faith_migration_effect = yes
 }
 
 # scope:minority_culture
@@ -1987,7 +1958,32 @@ do_silk_road_migration_effect = {
 			region = $REGION$
 			save_scope_as = source_county
 		}
-		non_neighbor_migration_effect = yes
+		random = {
+			chance = {
+				value = 10
+				multiply = {
+					value = 0
+					if = {
+						limit = { NOT = { scope:county.faith = scope:source_county.faith } }
+						add = scope:county.faith_minority_growth_factor
+					}
+					if = {
+						limit = { NOT = { scope:county.culture = scope:source_county.culture } }
+						add = scope:county.culture_minority_growth_factor
+					}
+					if = {
+						limit = {
+							scope:county.faith = scope:source_county.faith
+							scope:county.culture = scope:source_county.culture
+						}
+						divide = 2
+					}
+					min = 0
+					max = 1
+				}
+			}
+			non_neighbor_migration_effect = yes
+		}
 	}
 }
 

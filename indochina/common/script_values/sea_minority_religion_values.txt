@@ -917,3 +917,84 @@ faith_conversion_cost_mult = {
 	}
 
 }
+
+faith_minority_growth_factor = {
+	# arithmetic approximation of a logarithmic function
+	value = 0
+	add = minority_growth_constant
+	add = {
+		value = 1
+		add = {
+			value = minority_growth_coefficient
+			multiply = num_county_followers
+			add = minority_growth_offset
+			divide = {
+				value = 1
+				add = {
+					value = minority_growth_coefficient
+					multiply = num_county_followers
+					add = minority_growth_offset
+					if = {
+						# Need an absolute value here
+						# and the inflection point is at 24 counties
+						limit = { num_county_followers < small_realm_size }
+						multiply = -1
+					}
+				}
+			}
+		}
+		divide = 2
+		min = 0
+		max = 1
+		desc = "Faith Size ([Faith.GetNumberOfCountiesOfFaith] counties)"
+	}
+	multiply = {
+		# x2 at zero Fervor, x0.5 at max fervor
+		value = 50
+		divide = fervor
+		desc = "[fervor|E]"
+	}
+	if = {
+		limit = { has_doctrine = doctrine_pluralism_pluralistic }
+		divide = {
+			value = 2
+			desc = "[GetFaithDoctrine('doctrine_pluralism_pluralistic').GetBaseName]"
+		}
+	}
+	else_if = {
+		limit = { has_doctrine = doctrine_pluralism_fundamentalist }
+		multiply = {
+			value = 2
+			desc = "[GetFaithDoctrine('doctrine_pluralism_pluralistic').GetBaseName]"
+		}
+	}
+	if = {
+		limit = {
+			has_doctrine = tenet_communal_identity
+		}
+		divide = {
+			value = 2
+			desc = "[GetFaithDoctrine('tenet_communal_identity').GetBaseName]"
+		}
+	}
+	if = {
+		limit = {
+			has_doctrine = tenet_adaptive
+		}
+		divide = {
+			value = 2
+			desc = "[GetFaithDoctrine('tenet_adaptive').GetBaseName]"
+		}
+	}
+	if = {
+		limit = {
+			has_doctrine_parameter = reincarnation_resistance_to_conversion
+		}
+		divide = {
+			value = 2
+			desc = "Reincarnation"
+		}
+	}
+	min = 0
+	max = 1
+}

@@ -14,3 +14,69 @@ culture_conversion_acceptance_impact = { #The smaller a culture is, the more ups
 		max = 5
 	}
 }
+
+GetNumberOfCultureCounties = {
+	value = culture_number_of_counties
+}
+
+culture_minority_growth_factor = {
+	# arithmetic approximation of a logarithmic function
+	value = 0
+	add = minority_growth_constant
+	add = {
+		value = 1
+		add = {
+			value = minority_growth_coefficient
+			multiply = culture_number_of_counties
+			add = minority_growth_offset
+			divide = {
+				value = 1
+				add = {
+					value = minority_growth_coefficient
+					multiply = culture_number_of_counties
+					add = minority_growth_offset
+					if = {
+						# Need an absolute value here
+						# and the inflection point is at 24 counties
+						limit = { culture_number_of_counties < medium_realm_size }
+						multiply = -1
+					}
+				}
+			}
+		}
+		divide = 2
+		min = 0
+		max = 1
+		desc = "Culture Size ([Culture.MakeScope.ScriptValue('GetNumberOfCultureCounties')])"
+	}
+	if = {
+		limit = {
+			OR = {
+				has_cultural_parameter = easier_to_hybridize
+				has_cultural_parameter = cheaper_to_hybridize
+				has_cultural_parameter = cheaper_convert_to_local_culture
+				has_cultural_tradition = tradition_xenophilic
+			}
+		}
+		multiply = {
+			value = 2
+			desc = "Malleable culture"
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_cultural_parameter = expensive_convert_to_local_culture
+				has_cultural_parameter = harder_to_hybridize
+				has_cultural_parameter = dislikes_marrying_outside_of_culture
+				has_cultural_tradition = tradition_ruling_caste
+			}
+		}
+		divide = {
+			value = 2
+			desc = "Xenophobic culture"
+		}
+	}
+	min = 0
+	max = 1
+}
