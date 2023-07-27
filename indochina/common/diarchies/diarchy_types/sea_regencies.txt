@@ -135,3 +135,81 @@ japanese_regency = {
 		stress_gain_mult = 0.3
 	}
 }
+
+mamluk_regency = {
+	start = { always = yes }
+	end = { always = no }
+
+	#Mandates
+	mandate = crush_dissent
+	mandate = strengthen_state
+	mandate = fill_coffers
+	# Aptitudes
+	aptitude_score = {
+		add = mandate_type_qualification:crush_dissent
+		add = mandate_type_qualification:strengthen_state
+		add = mandate_type_qualification:fill_coffers
+	}
+
+	# Scales of Power
+	## 000
+	power_level = {
+		swing = 0
+		parameter = dismissal_requires_gift
+		parameter = unlock_syphon_treasury_interaction
+		parameter = diarch_can_subsidise_liege_authority
+	}
+	## 020
+	power_level = {
+		swing = 20
+		parameter = unlock_shift_privileges_interaction
+		parameter = diarch_gets_a_free_change_on_vassal_contract
+		parameter = regency_cant_be_ended_above_this_point
+	}
+	## 040
+	power_level = {
+		swing = 40
+		parameter = unlock_legal_meddling_interaction
+		parameter = unlock_diarch_revoke_title_interaction
+		parameter = liege_pays_currency_surcharge_for_mundane_interactions_mild
+	}
+	## 60
+	power_level = {
+		swing = 60
+		parameter = unlock_diarch_retract_vassal_interaction
+		parameter = unlock_diarch_imprison_interaction
+		parameter = liege_pays_currency_surcharge_for_mundane_interactions_medium
+	}
+	## 080
+	power_level = {
+		swing = 80
+		parameter = liege_pays_currency_surcharge_for_mundane_interactions_major
+	}
+	## 95
+	power_level = {
+		swing = 95
+		parameter = liege_pays_currency_surcharge_for_mundane_interactions_massive
+		parameter = regents_can_try_to_overthrow_present_lieges
+		parameter = regents_can_try_to_overthrow_present_lieges_help
+		parameter = regent_can_force_liege_to_abdicate
+	}
+
+	power_level = {
+		swing = 0
+		hidden_parameter = diarchy_is_regency
+		hidden_parameter = diarchy_type_is_entrenched_regency
+	}
+
+	loyalty_score = { add = diarch_loyalty_score_type_regency_value }
+
+	liege_modifier = {
+		name = from_mamluk_diarch_martial_domain_bonus
+		domain_limit = 1
+		martial = 2
+		mercenary_hire_cost_mult = -0.06
+		scale = {
+			add = martial
+			divide = 6
+		}
+	}
+}
