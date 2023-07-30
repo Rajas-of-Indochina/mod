@@ -1441,3 +1441,96 @@ tradition_people_of_the_red_river = {
 		}
 	}
 }
+
+tradition_nasrani_partition = {
+	category = regional
+
+	layers = {
+		0 = learning
+		1 = indian
+		4 = crown.dds
+	}
+
+	parameters = {
+		can_enact_nasrani_partition_succession_law = yes
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:assyrian
+			this = {
+				any_parent_culture_or_above = { this = culture:assyrian }
+			}
+			this = {
+				any_parent_culture = { has_cultural_tradition = tradition_nasrani_partition }
+			}
+			scope:character.religion = religion:christianity_religion
+		}
+	}
+
+	can_pick = {
+		OR = {
+			this = culture:assyrian
+			this = {
+				any_parent_culture_or_above = { this = culture:assyrian }
+			}
+			this = {
+				any_parent_culture = { has_cultural_tradition = tradition_nasrani_partition }
+			}
+			scope:character.faith = { has_doctrine = special_doctrine_nasrani_partition_succession_law }
+		}
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					culture_pillar:ethos_bellicose = { is_in_list = traits }
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = culture_not_bellicose
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.1
+							religion = religion:christianity_religion
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = malabar_christian_population_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				scope:character.religion = religion:christianity_religion
+			}
+			add = scope:character.ai_zeal
+		}
+		if = {
+			limit = {
+				scope:character = {
+					has_government = mandala_government
+				}
+			}
+			multiply = 0
+		}
+	}
+}
