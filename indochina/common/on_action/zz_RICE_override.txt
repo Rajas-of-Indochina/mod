@@ -227,6 +227,140 @@ rice_silk_road_migration_pulse = {
 					save_scope_as = source_county
 				}
 			}
+			10 = {
+				set_variable = { name = from_region value = flag:east_africa }
+				random_county_in_region = {
+					region = world_africa_east
+					random_list = {
+						10 = {
+							save_scope_as = source_county
+						}
+						10 = {
+							random_list = {
+								15 = {
+									culture:makonde = {
+										save_scope_as = county_culture
+									}
+									faith:makonde_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								15 = {
+									culture:malagasy = {
+										save_scope_as = county_culture
+									}
+									faith:malagasy_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								15 = {
+									culture:mijikenda = {
+										save_scope_as = county_culture
+									}
+									faith:mijikenda_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								15 = {
+									culture:pokomo = {
+										save_scope_as = county_culture
+									}
+									faith:mijikenda_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								15 = {
+									culture:seuta = {
+										save_scope_as = county_culture
+									}
+									faith:mijikenda_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								15 = {
+									culture:sabaki = {
+										save_scope_as = county_culture
+									}
+									faith:mijikenda_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								15 = {
+									culture:ruvu = {
+										save_scope_as = county_culture
+									}
+									faith:mijikenda_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								15 = {
+									culture:shona = {
+										save_scope_as = county_culture
+									}
+									faith:shona_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								10 = {
+									culture:makua = {
+										save_scope_as = county_culture
+									}
+									faith:makua_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								10 = {
+									culture:tsonga = {
+										save_scope_as = county_culture
+									}
+									faith:tsonga_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								10 = {
+									culture:nguni = {
+										save_scope_as = county_culture
+									}
+									faith:nguni_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								10 = {
+									culture:sotho_tswana = {
+										save_scope_as = county_culture
+									}
+									faith:sotho_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								15 = {
+									culture:dahalo = {
+										save_scope_as = county_culture
+									}
+									faith:waaqism_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+								15 = {
+									culture:aweer = {
+										save_scope_as = county_culture
+									}
+									faith:waaqism_pagan = {
+										save_scope_as = county_faith
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			10 = {
+				set_variable = { name = from_region value = flag:southeast_asia }
+				random_county_in_region = {
+					region = world_africa_east
+					save_scope_as = source_county
+				}
+			}
 		}
 		# Pick second region
 		random_list = {
@@ -235,7 +369,21 @@ rice_silk_road_migration_pulse = {
 				random_county_in_region = {
 					region = RICE_silk_road_steppe
 					save_scope_as = county
-					non_neighbor_migration_effect = yes
+					if = {
+						limit = { exists = scope:source_county }
+						non_neighbor_migration_effect = yes
+					}
+					else = {
+						if = {
+							limit = { NOT = { faith = scope:county_faith } }
+							promote_faith_minority_effect = { FAITH = scope:county_faith }
+						}
+						if = {
+							limit = { NOT = { culture = scope:county_culture } }
+							promote_culture_minority_effect = { CULTURE = scope:county_culture }
+						}
+						notify_characters_of_fake_migration_effect = yes
+					}
 				}
 			}
 			10 = {
@@ -243,7 +391,21 @@ rice_silk_road_migration_pulse = {
 				random_county_in_region = {
 					region = RICE_silk_road_india
 					save_scope_as = county
-					non_neighbor_migration_effect = yes
+					if = {
+						limit = { exists = scope:source_county }
+						non_neighbor_migration_effect = yes
+					}
+					else = {
+						if = {
+							limit = { NOT = { faith = scope:county_faith } }
+							promote_faith_minority_effect = { FAITH = scope:county_faith }
+						}
+						if = {
+							limit = { NOT = { culture = scope:county_culture } }
+							promote_culture_minority_effect = { CULTURE = scope:county_culture }
+						}
+						notify_characters_of_fake_migration_effect = yes
+					}
 				}
 			}
 			10 = {
@@ -251,7 +413,21 @@ rice_silk_road_migration_pulse = {
 				random_county_in_region = {
 					region = RICE_silk_road_himalayas
 					save_scope_as = county
-					non_neighbor_migration_effect = yes
+					if = {
+						limit = { exists = scope:source_county }
+						non_neighbor_migration_effect = yes
+					}
+					else = {
+						if = {
+							limit = { NOT = { faith = scope:county_faith } }
+							promote_faith_minority_effect = { FAITH = scope:county_faith }
+						}
+						if = {
+							limit = { NOT = { culture = scope:county_culture } }
+							promote_culture_minority_effect = { CULTURE = scope:county_culture }
+						}
+						notify_characters_of_fake_migration_effect = yes
+					}
 				}
 			}
 			10 = {
@@ -259,7 +435,21 @@ rice_silk_road_migration_pulse = {
 				random_county_in_region = {
 					region = RICE_silk_road_middle_east
 					save_scope_as = county
-					non_neighbor_migration_effect = yes
+					if = {
+						limit = { exists = scope:source_county }
+						non_neighbor_migration_effect = yes
+					}
+					else = {
+						if = {
+							limit = { NOT = { faith = scope:county_faith } }
+							promote_faith_minority_effect = { FAITH = scope:county_faith }
+						}
+						if = {
+							limit = { NOT = { culture = scope:county_culture } }
+							promote_culture_minority_effect = { CULTURE = scope:county_culture }
+						}
+						notify_characters_of_fake_migration_effect = yes
+					}
 				}
 			}
 			10 = {
@@ -267,7 +457,51 @@ rice_silk_road_migration_pulse = {
 				random_county_in_region = {
 					region = world_china
 					save_scope_as = county
+					if = {
+						limit = { exists = scope:source_county }
+						non_neighbor_migration_effect = yes
+					}
+					else = {
+						if = {
+							limit = { NOT = { faith = scope:county_faith } }
+							promote_faith_minority_effect = { FAITH = scope:county_faith }
+						}
+						if = {
+							limit = { NOT = { culture = scope:county_culture } }
+							promote_culture_minority_effect = { CULTURE = scope:county_culture }
+						}
+						notify_characters_of_fake_migration_effect = yes
+					}
+				}
+			}
+			10 = {
+				trigger = { NOT = { var:from_region = flag:east_africa } }
+				random_county_in_region = {
+					region = world_africa_east
+					save_scope_as = county
 					non_neighbor_migration_effect = yes
+				}
+			}
+			10 = {
+				trigger = { NOT = { var:from_region = flag:southeast_asia } }
+				random_county_in_region = {
+					region = RICE_silk_road_SEA
+					save_scope_as = county
+					if = {
+						limit = { exists = scope:source_county }
+						non_neighbor_migration_effect = yes
+					}
+					else = {
+						if = {
+							limit = { NOT = { faith = scope:county_faith } }
+							promote_faith_minority_effect = { FAITH = scope:county_faith }
+						}
+						if = {
+							limit = { NOT = { culture = scope:county_culture } }
+							promote_culture_minority_effect = { CULTURE = scope:county_culture }
+						}
+						notify_characters_of_fake_migration_effect = yes
+					}
 				}
 			}
 		}
