@@ -517,3 +517,94 @@ rice_siberian_minorities_pulse = {
 		RICE_spawn_siberian_minorities_effect = yes
 	}
 }
+
+RICE_setup_magadha_flavor_pack_effect = {
+    title:c_magadha = {
+        add_county_modifier = {
+            modifier = RICE_magadha_rajgir_hot_springs_buddhist
+        }
+    }
+
+	if = {
+		limit = {
+			current_date > 1000.1.1
+		}	
+        title:c_magadha.holder = {
+            get_title = title:c_gaya
+        }
+	}
+
+    faith:mahayana = {
+        add_doctrine = rice_mahayana_canon_doctrine
+    }
+	faith:phat_giao = {
+		add_doctrine = rice_mahayana_canon_doctrine
+	}
+	faith:zenzong = {
+		add_doctrine = rice_mahayana_canon_doctrine
+	}
+
+    faith:theravada = {
+        add_doctrine = rice_theravada_canon_doctrine
+    }
+	
+	faith:vajrayana = {
+		add_doctrine = rice_vajrayana_canon_doctrine
+	}
+	faith:lamaism = { add_doctrine = rice_vajrayana_canon_doctrine }
+	faith:gelug = { add_doctrine = rice_vajrayana_canon_doctrine }
+	faith:sakya = { add_doctrine = rice_vajrayana_canon_doctrine }
+	faith:kagyu = { add_doctrine = rice_vajrayana_canon_doctrine }
+	faith:ari = {
+		add_doctrine = rice_vajrayana_canon_doctrine
+	}
+	faith:azhaliism = {
+		add_doctrine = rice_vajrayana_canon_doctrine
+	}
+	faith:pudgalavada = {
+		add_doctrine = rice_pudgalavada_canon_doctrine
+	}
+    if = {
+        limit = {
+            #is_tip_trigger = yes
+            exists = faith:vibhajyavada
+        }
+        faith:vibhajyavada = {
+            add_doctrine = rice_theravada_canon_doctrine
+        }
+    }
+    if = {
+        limit = {
+            #is_tip_trigger = yes
+            exists = faith:sarvastivada
+        }
+        faith:sarvastivada = {
+            add_doctrine = rice_mahayana_canon_doctrine
+        }
+    }
+    if = {
+        limit = {
+            #is_tip_trigger = yes
+            exists = faith:chan
+        }
+        faith:chan = {
+            add_doctrine = rice_mahayana_canon_doctrine
+        }
+    }
+    # Failsafe in case other mods add in other variations of Buddhism
+    religion:buddhism_religion = {
+        every_faith = {
+            limit = {
+                NOR = {
+                    has_doctrine = rice_mahayana_canon_doctrine
+                    has_doctrine = rice_theravada_canon_doctrine
+                    has_doctrine = rice_vajrayana_canon_doctrine
+                    has_doctrine = rice_pudgalavada_canon_doctrine
+                }
+            }
+            add_doctrine = rice_mahayana_canon_doctrine
+        }
+    }	
+
+
+}
