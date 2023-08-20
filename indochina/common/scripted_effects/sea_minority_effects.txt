@@ -1,4 +1,4 @@
-# Override Vanilla
+﻿# Override Vanilla
 # Allows hybridizing/diverging to work more smoothly with minorities
 expand_hybrid_culture_from_origin_point = {
 	every_title_to_title_neighboring_and_across_water_county = {
@@ -1362,6 +1362,7 @@ favour_the_countryside_basques_decision_righteous_path_scripted_effect = {
 # $SIZE$
 # $COUNTY$
 add_culture_minority_effect = {
+	$CULTURE$ = { save_scope_as = loc_culture }
 	$COUNTY$ = {
 		save_scope_as = loc_county # for loc
  		if = {
@@ -1377,14 +1378,15 @@ add_culture_minority_effect = {
 				target = $CULTURE$
 			}
 		}
-	}
-	$CULTURE$ = { save_scope_as = loc_culture }
-	if = {
-		limit = { is_target_in_variable_list = { name = culture_minorities_large target = $CULTURE$ } }
-		custom_tooltip = add_culture_minority_effect_large_tt
-	}
-	else = {
-		custom_tooltip = add_culture_minority_effect_small_tt
+
+		# Localization
+		if = {
+			limit = { is_target_in_variable_list = { name = culture_minorities_large target = $CULTURE$ } }
+			custom_tooltip = add_culture_minority_effect_large_tt
+		}
+		else = {
+			custom_tooltip = add_culture_minority_effect_small_tt
+		}
 	}
 }
 
