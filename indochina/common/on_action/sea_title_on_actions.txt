@@ -17,6 +17,9 @@ on_title_gain = {
 		sea_title_event.2000 # Create a new vassal when an anarchist gets a new title
 		sea_title_event.2002 # Auto-apply Stateless Elective
 	}
+	on_actions = {
+		on_china_reunited
+	}
 }
 
 # A title is inherited by a character
@@ -38,5 +41,91 @@ on_title_gain = {
 	on_actions = {
 		usurp_nanzhao_action
 		establish_dali_action
+	}
+}
+
+on_china_reunited = {
+	trigger = {
+		OR = {
+			AND = {
+				scope:title = title:e_zhongyuan
+				has_title = title:e_jiangnan
+			}
+			AND = {
+				scope:title = title:e_jiangnan
+				has_title = title:e_zhongyuan
+			}
+			if = {
+				limit = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:form_xiyu_decision
+					}
+				}
+				AND = {
+					scope:title = title:e_xiyu
+					has_title = title:e_zhongyuan
+					has_title = title:e_jiangnan
+				}
+			}
+		}
+	}
+	effect = {
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		title:e_celestia_china = {
+			change_title_holder = {
+				holder = root
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		title:k_yan_china = { set_de_jure_liege_title = title:e_celestia_china }
+		title:k_jin_china = { set_de_jure_liege_title = title:e_celestia_china }
+		title:k_zhao_china = { set_de_jure_liege_title = title:e_celestia_china }
+		title:k_qi_china = { set_de_jure_liege_title = title:e_celestia_china }
+		title:k_shu_china = { set_de_jure_liege_title = title:e_celestia_china }
+		title:k_han_china = { set_de_jure_liege_title = title:e_celestia_china }
+		title:k_chu_china = { set_de_jure_liege_title = title:e_celestia_china }
+		title:k_wu_china = { set_de_jure_liege_title = title:e_celestia_china }
+		title:k_yue_china = { set_de_jure_liege_title = title:e_celestia_china }
+		title:k_qianzhong_china = { set_de_jure_liege_title = title:e_celestia_china }
+		if = {
+			limit = {
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:form_xiyu_decision
+					}
+				}
+			}
+			title:k_longxi_china = { set_de_jure_liege_title = title:e_celestia_china }
+			title:k_qin_china = { set_de_jure_liege_title = title:e_celestia_china }
+			title:k_xia_china = { set_de_jure_liege_title = title:e_celestia_china }
+			title:k_xia = { set_de_jure_liege_title = title:e_celestia_china }
+		}
+		if = {
+			limit = {
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:form_nanyue_decision
+					}
+				}
+			}
+			title:k_nanyue_china = { set_de_jure_liege_title = title:e_celestia_china }
+			title:k_annam = { set_de_jure_liege_title = title:e_celestia_china }
+		}
+	}
+}
+
+NOT = {
+	is_target_in_global_variable_list = {
+		name = unavailable_unique_decisions
+		target = flag:form_nanyue_decision
 	}
 }

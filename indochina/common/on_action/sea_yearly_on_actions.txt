@@ -5,6 +5,7 @@
 		on_yearly_sea_culture_bisaya
 		###
 		on_yearly_assign_culture_faith
+		on_yearly_china_split
 		###
 		delay = { days = { 30 330 } }
 		start_nanzhao_collapse
@@ -176,6 +177,65 @@ start_nanzhao_collapse = {
 		else_if = {
 			limit = { title:k_nanzhao = { has_variable = dayining } }
 			trigger_event = nanzhao_collapse.3001
+		}
+	}
+}
+
+on_yearly_china_split = {
+	effect = {
+		if = {
+			limit = {
+				title:e_celestia_china = {
+					is_titular = no
+					NOT = { is_title_created = yes }
+					NOT = { recent_history = { years = 50 } }
+				}
+			}
+			# Zhongyuan (North China)
+			title:k_qin_china = { set_de_jure_liege_title = title:e_zhongyuan }
+			title:k_yan_china = { set_de_jure_liege_title = title:e_zhongyuan }
+			title:k_jin_china = { set_de_jure_liege_title = title:e_zhongyuan }
+			title:k_xia_china = { set_de_jure_liege_title = title:e_zhongyuan }
+			title:k_xia = { set_de_jure_liege_title = title:e_zhongyuan }
+			title:k_longxi_china = { set_de_jure_liege_title = title:e_zhongyuan }
+			title:k_zhao_china = { set_de_jure_liege_title = title:e_zhongyuan }
+			title:k_qi_china = { set_de_jure_liege_title = title:e_zhongyuan }
+
+			# Jiangnan (South China)
+			title:k_shu_china = { set_de_jure_liege_title = title:e_jiangnan }
+			title:k_han_china = { set_de_jure_liege_title = title:e_jiangnan }
+			title:k_chu_china = { set_de_jure_liege_title = title:e_jiangnan }
+			title:k_wu_china = { set_de_jure_liege_title = title:e_jiangnan }
+			title:k_yue_china = { set_de_jure_liege_title = title:e_jiangnan }
+			title:k_qianzhong_china = { set_de_jure_liege_title = title:e_jiangnan }
+			
+			# Nanyue has not been formed
+			if = {
+				limit = {
+					NOT = {
+						is_target_in_global_variable_list = {
+							name = unavailable_unique_decisions
+							target = flag:form_nanyue_decision
+						}
+					}
+				}
+				title:k_nanyue_china = { set_de_jure_liege_title = title:e_jiangnan }
+				title:k_annam = { set_de_jure_liege_title = title:e_jiangnan }
+			}
+
+			# Event for everyone in East Asia
+#			every_player = {
+#				limit = {
+#					OR = {
+#						geographical_region = world_east_asia
+#						geographical_region = world_steppe_east
+#					}
+#				}
+#				trigger_event = {
+#					id = china_split.0001
+#					days = 0
+#				}
+#			}
 		}
 	}
 }
