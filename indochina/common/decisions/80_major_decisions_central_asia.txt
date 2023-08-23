@@ -319,3 +319,85 @@ establish_yamagate_in_samarkand_decision = {
 		}
 	}
 }
+
+##########
+#End the Old Ways
+# by James Beaumont
+break_with_the_old_ways_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+
+	desc = break_with_the_old_ways_decision_desc
+	selection_tooltip = break_with_the_old_ways_decision_tooltip
+	major = yes
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		faith = faith:kabarism
+		NOT = {
+			faith:kabarism = {
+				has_variable = old_ways_been_broken
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		highest_held_title_tier > 3 #Only Kings and Emperors
+		custom_tooltip = {
+			text = hof_exists_tt
+			faith = { exists = religious_head }
+		}
+		trigger_if = {
+			limit = {
+				faith = { exists = religious_head }
+			}
+			is_liege_or_above_of = root.faith.religious_head
+		}
+	}
+
+	effect = {
+		trigger_event = religious_decision.0501
+		show_as_tooltip = {
+			root.faith = { remove_doctrine = unreformed_faith_doctrine }
+			random_list = {
+				100 = {
+					show_chance = no
+					desc = break_with_the_old_ways_decision.path_righteous
+					root.faith = { break_with_old_ways_become_chosen_people = yes }
+				}
+				100 = {
+					show_chance = no
+					desc = break_with_the_old_ways_decision.path_righteous
+					root.faith = { break_with_old_ways_become_righteous = yes }
+				}
+				100 = {
+					show_chance = no
+					desc = break_with_the_old_ways_decision.path_fundamentalist
+					root.faith = { break_with_old_ways_become_fundamentalist = yes }
+				}
+			}
+		}
+		hidden_effect = {
+			faith:kabarism = {
+				set_variable = old_ways_been_broken
+			}
+		}
+	}
+	
+	ai_potential = {
+		faith = faith:kabarism
+	}
+
+	ai_will_do = {
+		base = 100
+		modifier = {
+			factor = 0
+			has_trait = cynical
+		}
+	}
+}
