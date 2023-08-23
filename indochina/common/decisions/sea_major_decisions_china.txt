@@ -353,23 +353,26 @@ retake_xiyu_decision = {
 	is_shown = {
 		is_landed = yes
 		exists = capital_province
-		
-		OR = {
-			has_title = title:e_zhongyuan
-			has_title = title:e_jiangnan
-		}
-		
-		title:e_celestia_china = {
+		title:e_xiyu = {
 			NOT = {
 				any_in_de_jure_hierarchy = {
-					NOT = { this = title:e_celestia_china }
+					this = title:e_xiyu }
 					
 					exists = this
 				}
 			}
 		}
+		
+		OR = {
+			has_title = title:e_celestia_china
+			has_title = title:e_zhongyuan
+			has_title = title:e_jiangnan
+		}
 
-		NOT = { has_character_flag = flag_retake_xiyu_decision }
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:retake_xiyu_decision
+		}
 	}
 
 	is_valid = {	
@@ -417,7 +420,10 @@ retake_xiyu_decision = {
 #		}
 		
 		hidden_effect = {
-			add_character_flag = flag_retake_xiyu_decision
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:retake_xiyu_decision
+			}
 		}
 	}
 	
@@ -442,13 +448,7 @@ xiyu_china_march_decision = {
 	is_shown = {
 		is_landed = yes
 		exists = capital_province
-		
-		has_title = title:e_xiyu
-		NAND = { 
-			has_claim_on = title:e_zhongyuan 
-			has_claim_on = title:e_jiangnan 
-		}
-		
+
 		title:e_celestia_china = {
 			NOT = {
 				any_in_de_jure_hierarchy = {
@@ -457,6 +457,12 @@ xiyu_china_march_decision = {
 					exists = this
 				}
 			}
+		}
+		
+		has_title = title:e_xiyu
+		NAND = { 
+			has_claim_on = title:e_zhongyuan 
+			has_claim_on = title:e_jiangnan
 		}
 
 		NOT = { has_character_flag = flag_xiyu_china_march_decision }
@@ -476,6 +482,7 @@ xiyu_china_march_decision = {
 	}
 
 	effect = {
+
 		if = {
 			limit = {
 				exists = title:e_zhongyuan.holder
