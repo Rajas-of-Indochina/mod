@@ -169,32 +169,32 @@ RICE_invite_norse_main_effect = {
 					}
 				}
 			}
+		}
 
-			scope:capital = {
-				duchy = {
-					every_in_de_jure_hierarchy = {
+		scope:capital = {
+			duchy = {
+				every_in_de_jure_hierarchy = {
+					limit = {
+						tier = tier_county
+						holder = {
+							OR = {
+								this = scope:current_title.holder
+								is_vassal_or_below_of = scope:current_title.holder
+							}
+						}
+					}
+					save_scope_as = county
+					random_culture_global = {
 						limit = {
-							tier = tier_county
-							holder = {
-								OR = {
-									this = scope:current_title.holder
-									is_vassal_or_below_of = scope:current_title.holder
-								}
-							}
+							has_cultural_pillar = heritage_north_germanic
+							culture_number_of_counties >= 1 # Needs to exist on-map
 						}
-						save_scope_as = county
-						random_culture_global = {
-							limit = {
-								has_cultural_pillar = heritage_north_germanic
-								culture_number_of_counties >= 1 # Needs to exist on-map
-							}
-							save_scope_as = norse_colonists
-						}
-						add_culture_minority_effect = {
-							COUNTY = county
-							CULTURE = scope:norse_colonists
-							size = small
-						}
+						save_scope_as = norse_colonists
+					}
+					add_culture_minority_effect = {
+						COUNTY = county
+						CULTURE = scope:norse_colonists
+						SIZE = small
 					}
 				}
 			}
@@ -531,25 +531,25 @@ RICE_invite_norman_main_effect = {
 					}
 				}
 			}
+		}
 
-			scope:capital = {
-				duchy = {
-					every_in_de_jure_hierarchy = {
-						limit = {
-							tier = tier_county
-							holder = {
-								OR = {
-									this = scope:current_title.holder
-									is_vassal_or_below_of = scope:current_title.holder
-								}
+		scope:capital = {
+			duchy = {
+				every_in_de_jure_hierarchy = {
+					limit = {
+						tier = tier_county
+						holder = {
+							OR = {
+								this = scope:current_title.holder
+								is_vassal_or_below_of = scope:current_title.holder
 							}
 						}
-						save_scope_as = county
-						add_culture_minority_effect = {
-							COUNTY = county
-							CULTURE = culture:norman
-							size = small
-						}
+					}
+					save_scope_as = county
+					add_culture_minority_effect = {
+						COUNTY = county
+						CULTURE = culture:norman
+						SIZE = small
 					}
 				}
 			}

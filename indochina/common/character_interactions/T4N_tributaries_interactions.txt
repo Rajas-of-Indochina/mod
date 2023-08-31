@@ -89,43 +89,6 @@ declare_war_interaction = {
         }
         trigger_if = {
             limit = {
-                has_game_rule = imperial_war_disabled
-            }
-            custom_description = {
-                text = isnt_under_an_imperial_empire
-                NOT = {
-                    AND = {
-                        scope:actor = {
-                            AND = {
-                                OR = {
-                                    has_government = imperial_government
-                                    has_government = autocratic_government
-                                    has_government = legion_government
-                                }
-                                is_independent_ruler = no
-                                liege = {
-                                    any_vassal = {
-                                        THIS = scope:recipient
-                                    }
-                                }
-                            }
-                        }
-                        scope:recipient = {
-                            AND = {
-                                OR = {
-                                    has_government = imperial_government
-                                    has_government = autocratic_government
-                                    has_government = legion_government
-                                }
-                                is_independent_ruler = no
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        trigger_if = {
-            limit = {
                 scope:actor = {
                     is_ai = yes
                 }
@@ -1065,7 +1028,7 @@ free_tributary_interaction = {
         scope:recipient = {
             free_tributary_effect = yes
             add_truce_both_ways = {
-                character = character:actor
+                character = scope:actor
                 days = 365
                 name = TRUCE_BROKEN_TRIBUTARY
             }
