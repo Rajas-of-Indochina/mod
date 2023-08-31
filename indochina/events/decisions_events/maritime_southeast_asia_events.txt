@@ -21,6 +21,28 @@ scripted_effect fetch_islam_options = {
 			faith = {
 				ROOT = {
 					if = {
+						limit = {
+							NOT = {
+								is_target_in_variable_list = {
+									name = faith_options
+									target = PREV
+								}
+							}
+						}
+						add_to_variable_list = {
+							name = faith_options
+							target = PREV
+						}
+					}
+				}
+			}
+		}
+		every_in_list = {
+			variable = faith_minorities_large
+			limit = { religion = religion:islam_religion }
+			ROOT = {
+				if = {
+					limit = {
 						NOT = {
 							is_target_in_variable_list = {
 								name = faith_options
@@ -36,32 +58,16 @@ scripted_effect fetch_islam_options = {
 			}
 		}
 		every_in_list = {
-			variable = faith_minorities_large
-			limit = { religion = religion:islam_religion }
-			ROOT = {
-				if = {
-					NOT = {
-						is_target_in_variable_list = {
-							name = faith_options
-							target = PREV
-						}
-					}
-				}
-				add_to_variable_list = {
-					name = faith_options
-					target = PREV
-				}
-			}
-		}
-		every_in_list = {
 			variable = faith_minorities_small
 			limit = { religion = religion:islam_religion }
 			ROOT = {
 				if = {
-					NOT = {
-						is_target_in_variable_list = {
-							name = faith_options
-							target = PREV
+					limit = {
+						NOT = {
+							is_target_in_variable_list = {
+								name = faith_options
+								target = PREV
+							}
 						}
 					}
 				}
@@ -81,9 +87,9 @@ scripted_effect do_islamic_settlers_effect = {
 				county_is_religiously_protected_trigger = no
 			}
 			random = {
-				chance = 15
-				modifier = {
-					multipy = {
+				chance = {
+					base = 15
+					multiply = {
 						value = development_level
 						multiply = {
 							value = 125
