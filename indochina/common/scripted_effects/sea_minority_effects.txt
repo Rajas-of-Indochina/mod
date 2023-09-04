@@ -1412,6 +1412,223 @@ add_faith_minority_effect = {
 	}
 }
 
+add_slave_culture_minority_effect = {
+	$CULTURE$ = { save_scope_as = loc_culture }
+	$COUNTY$ = {
+		save_scope_as = loc_county
+		if = {
+			limit = { NOT = {culture = $CULTURE$} } # TODO: Add exception for same-culture serfs
+			add_to_variable_list = {
+				name = culture_minorities_slave
+				target = $CULTURE$
+			}
+		}
+	}
+
+	custom_tooltip = add_slave_culture_minority_tt
+}
+
+add_slave_faith_minority_effect = {
+	$FAITH$ = { save_scope_as = loc_faith }
+	$COUNTY$ = {
+		save_scope_as = loc_county
+		if = {
+			limit = { NOT = {faith = $FAITH$} }
+		}
+		add_to_variable_list = {
+			name = faith_minorities_slave
+			target = $FAITH$
+		}
+	}
+
+	custom_tooltip = add_slave_faith_minority_tt
+}
+
+# Root is a raiding army
+# scope:county is the county being raided
+raid_slave_effect = {
+	random = {
+		chance = {
+			value = 100
+			modifier = {
+				add = scope:county.development_level
+				divide = 2
+			}
+		}
+		if = {
+			limit = {
+				NOT = { scope:county.culture = scope:raider.culture }
+			}
+			if = {
+				limit = { has_variable = num_minorities }
+				change_variable = { name = num_minorities add = 1 }
+			}
+			else = {
+				set_variable = { name = num_minorities value = 1 }
+			}
+			add_to_variable_list = {
+				name = captured_slave_cultures
+				target = scope:county.culture
+			}
+			scope:county.culture = { save_scope_as = captured_culture }
+		}
+		if = {
+			limit = {
+				NOT = { scope:county.faith = scope:raider.faith }
+			}
+			if = {
+				limit = { has_variable = num_minorities }
+				change_variable = { name = num_minorities add = 1 }
+			}
+			else = {
+				set_variable = { name = num_minorities value = 1 }
+			}
+			add_to_variable_list = {
+				name = captured_slave_faiths
+				target = scope:county.faith
+			}
+			scope:county.faith = { save_scope_as = captured_faith }
+		}
+		scope:raider = {
+			send_interface_toast = {
+				type = event_generic_neutral
+				title = "Captured Slaves"
+				right_icon = scope:county
+				if = {
+					AND = {
+						exists = scope:captured_culture
+						exists = scope:captured_faith
+					}
+					custom_tooltip = "Captured [captured_culture.GetName] [captured_faith.GetName] slaves in [county.GetName]."
+				}
+				else_if = {
+					limit = { exists = scope:captured_culture }
+					custom_tooltip = "Captured [captured_culture.GetName] slaves in [county.GetName]."
+				}
+				else_if = {
+					limit = { exists = scope:captured_faith }
+					custom_tooltip = "Captured [captured_faith.GetName] slaves in [county.GetName]."
+				}
+			}
+		}
+	}
+}
+
+# Root is raiding army arriving home
+distribute_raid_slaves_effect = {
+	save_scope_as = army
+	every_in_list = {
+		variable = captured_slave_cultures
+		save_scope_as = slave_culture
+		scope:raider = {
+			if = {
+				limit = {
+					any_sub_realm_county = {
+						NOT = { county_has_specific_slave_culture_trigger = { CULTURE = scope:slave_culture } }
+					}
+				}
+				random_sub_realm_county = {
+					limit = { NOT = { county_has_specific_slave_culture_trigger = { CULTURE = scope:slave_culture } } }
+					add_slave_culture_minority_effect = { CULTURE = scope:slave_culture COUNTY = THIS }
+				}
+				#scope:army = {
+					remove_list_variable = {
+						name = captured_slave_cultures
+						target = scope:slave_culture
+					}
+					change_variable = {
+						name = num_minorities
+						subtract = 1
+					}
+				}
+			}
+		}
+		clear_saved_scope = slave_culture
+	}
+	every_in_list = {
+		variable = captured_slave_faiths
+		save_scope_as = slave_faith
+		scope:raider = {
+			if = {
+				limit = {
+					any_sub_realm_county = {
+						NOT = { county_has_specific_slave_faith_trigger = { FAITH = scope:slave_faith } }
+					}
+				}
+				random_sub_realm_county = {
+					limit = { NOT = { county_has_specific_slave_faith_trigger = { FAITH = scope:slave_faith } } }
+					add_slave_faith_minority_effect = { FAITH = scope:slave_faith COUNTY = THIS }
+				}
+				scope:army = {
+					remove_list_variable = {
+						name = captured_slave_faiths
+						target = scope:slave_faith
+					}
+					change_variable = {
+						name = num_minorities
+						subtract = 1
+					}
+				}
+			}
+		}
+		clear_saved_scope = slave_faith
+	}
+	scope:raider = {
+		send_interface_message = {
+			type = event_raid_good
+			title = "Raiders Return With Slaves"
+			right_icon = root.army_commander
+			desc = "Slaves have dispersed across your counties or sold off for a total of [ROOT.Var('num_minorities').GetValue|V0] [gold_i]."
+		}
+		add_gold = {
+			value = PREV.var:num_minorities
+			multiply = 5
+		}
+	}
+	clear_variable_list = captured_slave_cultures
+	clear_variable_list = captured_slave_faiths
+	set_variable = { name = num_minorities value = 0 }
+}
+
+
+promote_slave_culture_minority_effect = {
+	$COUNTY$ = {
+		if = {
+			limit = {
+				any_in_list = {
+					variable = culture_minorities_slave
+					THIS = $CULTURE$
+				}
+			}
+			remove_list_variable = {
+				name = culture_minorities_slave
+				target = $CULTURE$
+			}
+			save_scope_as = county
+			promote_culture_minority_effect = { CULTURE = $CULTURE$ }
+		}
+	}
+}
+
+promote_slave_faith_minority_effect = {
+	$COUNTY$ = {
+		if = {
+			limit = {
+				any_in_list = {
+					variable = faith_minorities_slave
+					THIS = $FAITH$
+				}
+			}
+			remove_list_variable = {
+				name = faith_minorities_slave
+				target = $FAITH$
+			}
+			save_scope_as = county
+			promote_faith_minority_effect = { FAITH = $FAITH$ }
+		}
+	}
+}
+
 # scope:county
 # $CULTURE$
 promote_culture_minority_effect = {

@@ -294,9 +294,32 @@ window = {
 							}
 						}
 					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						name = "county_culture_minorities_slave_grid"
+						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_slave')]"
+						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_slave')))]"
+		
+						item = {
+							button = {
+								size = { 25 25 }
+								onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
+								texture = "gfx/interface/icons/traits/slave.dds"
+								using = tooltip_ne
+								tooltipwidget = {
+									culture_minorities_tooltip = {
+										blockoverride "minority_label"
+										{
+											text = "[slave_minority|E]"
+										}
+									}
+								}
+							}
+						}
+					}
 					text_single = {
 						raw_text = "None"
-						visible = "[And(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_large')),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_small')))]"
+						visible = "[And(And(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_large')),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_small'))),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_slave')))]"
 					}
 				}
 				divider = { layoutpolicy_horizontal = expanding }
@@ -363,9 +386,39 @@ window = {
 							}
 						}
 					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						name = "county_faith_minorities_slave_grid"
+						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_slave')]"
+						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_slave')))]"
+		
+						item = {
+							button = {
+								size = { 25 25 }
+								onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
+								texture = "gfx/interface/icons/traits/slave.dds"
+								using = tooltip_ne
+								tooltipwidget = {
+									faith_minorities_tooltip = {
+										blockoverride "minority_label"
+										{
+											text = "[slave_minority|E]"
+										}
+									}
+								}
+		
+								icon = {
+									name = "gold_negative_console_button_minus"
+									position = { 0 7 }
+									size = { 25 25 }
+									texture = "[Scope.Faith.GetIcon]"
+								}
+							}
+						}
+					}
 					text_single = {
 						raw_text = "None"
-						visible = "[And(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small')))]"
+						visible = "[And(And(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small'))),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_slave')))]"
 					}
 				}
 

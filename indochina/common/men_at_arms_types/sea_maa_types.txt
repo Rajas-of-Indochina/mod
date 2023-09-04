@@ -1,4 +1,9 @@
-﻿
+﻿# standard costs
+@maa_buy_cost = 150
+@maa_low_maintenance_cost = 1.0
+@maa_high_maintenance_cost = 5.0
+@cultural_maa_extra_ai_score = 60 # Equivalent to having 6 extra regiments beyond what the code scoring would indicate (see NEGATIVE_SCORE_PER_EXISTING_REGIMENT)
+
 fire_lances = {
 	type = pikemen
 
@@ -82,3 +87,47 @@ hand_cannons = {
 #	stack = 100
 #	icon = crossbowmen
 #}
+
+mamluk_soldiers = {
+	type = heavy_infantry
+
+	damage = 40
+	toughness = 30
+	pursuit = 0
+	screen = 0
+
+	terrain_bonus = {
+		drylands = { pursuit = 20 }
+		plains = { pursuit = 20 }
+		steppe = { pursuit = 20 }
+		desert = { pursuit = 20 }
+	}
+
+	counters = {
+		pikemen = 1
+		heavy_cavalry = 1
+	}
+
+	buy_cost = {
+		gold = mamluks_recruitment_gold_cost
+		prestige = mamluks_recruitment_prestige_cost
+	}
+
+	low_maintenance_cost = {
+		gold = mamluks_low_maint_cost
+	}
+
+	high_maintenance_cost = {
+		gold = mamluks_high_maint_cost
+	}
+
+	stack = 100
+	ai_quality = { value = @cultural_maa_extra_ai_score }
+
+	can_recruit = {
+		OR = {
+			any_courtier = { has_trait = mamluk_commander }
+			any_vassal = { has_government = mamluk_government }
+		}
+	}
+}

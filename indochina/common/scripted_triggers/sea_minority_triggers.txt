@@ -52,6 +52,7 @@ county_has_minority_faith_trigger = {
 	OR = {
 		county_has_small_minority_faith_trigger = yes
 		county_has_large_minority_faith_trigger = yes
+		county_has_slave_faith_trigger = yes
 	}
 }
 county_has_small_minority_faith_trigger = {
@@ -68,11 +69,19 @@ county_has_large_minority_faith_trigger = {
         value > 0
     }
 }
+county_has_slave_faith_trigger = {
+	has_variable_list = faith_minorities_slave
+	variable_list_size = {
+        name = faith_minorities_slave
+        value > 0
+    }
+}
 
 county_has_minority_culture_trigger = {
 	OR = {
 		county_has_small_minority_culture_trigger = yes
 		county_has_large_minority_culture_trigger = yes
+		county_has_slave_culture_trigger = yes
 	}
 }
 county_has_small_minority_culture_trigger = {
@@ -88,6 +97,20 @@ county_has_large_minority_culture_trigger = {
         name = culture_minorities_large
         value > 0
     }
+}
+county_has_slave_culture_trigger = {
+	has_variable_list = culture_minorities_slave
+	variable_list_size = {
+        name = culture_minorities_slave
+        value > 0
+    }
+}
+
+county_has_any_slaves_trigger = {
+	OR = {
+		county_has_slave_culture_trigger = yes
+		county_has_slave_faith_trigger = yes
+	}
 }
 
 
@@ -172,6 +195,15 @@ county_has_astray_or_worse_minority_faith_trigger = {
 				}
 			}
 		}
+		any_in_list = {
+			variable = faith_minorities_slave
+			$FAITH$ = {
+				faith_hostility_level = {
+					target = prev
+					value >= faith_astray_level
+				}
+			}
+		}
 	}
 }
 
@@ -191,6 +223,12 @@ county_has_different_heritage_minority_culture_trigger = {
 				NOT = { has_same_culture_heritage = prev }
 			}
 		}
+		any_in_list = {
+			variable = culture_minorities_slave
+			$CULTURE$ = {
+				NOT = { has_same_culture_heritage = prev }
+			}
+		}
 	}
 }
 
@@ -201,6 +239,9 @@ county_has_specific_minority_faith_trigger = {
 			FAITH = $FAITH$
 		}
 		county_has_specific_small_minority_faith_trigger = {
+			FAITH = $FAITH$
+		}
+		county_has_specific_slave_faith_trigger = {
 			FAITH = $FAITH$
 		}
 	}
@@ -220,6 +261,14 @@ county_has_specific_small_minority_faith_trigger = {
 	}
 }
 
+county_has_specific_slave_faith_trigger = {
+	has_variable_list = faith_minorities_slave
+	is_target_in_variable_list = {
+		name = faith_minorities_slave
+		target = $FAITH$
+	}
+}
+
 # $CULTURE$
 county_has_culture_or_minority_trigger = {
 	OR = {
@@ -235,6 +284,9 @@ county_has_specific_minority_culture_trigger = {
 		county_has_specific_small_minority_culture_trigger = {
 			CULTURE = $CULTURE$
 		}
+		county_has_specific_slave_culture_trigger = {
+			CULTURE = $CULTURE$
+		}
 	}
 }
 county_has_specific_large_minority_culture_trigger = {
@@ -248,6 +300,13 @@ county_has_specific_small_minority_culture_trigger = {
 	has_variable_list = culture_minorities_small
 	is_target_in_variable_list = {
 		name = culture_minorities_small
+		target = $CULTURE$
+	}
+}
+county_has_specific_slave_culture_trigger = {
+	has_variable_list = culture_minorities_slave
+	is_target_in_variable_list = {
+		name = culture_minorities_slave
 		target = $CULTURE$
 	}
 }
