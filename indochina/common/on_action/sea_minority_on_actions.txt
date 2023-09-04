@@ -33,6 +33,10 @@ on_raid_loot_delivered = {
 	on_actions = { slave_dropoff_effect }
 }
 
+on_defeat_raid_army = {
+	on_actions = { raid_army_slave_escapes }
+}
+
 # County changes faith.
 # Root is the county title
 # scope:old_faith is the faith it used to have
@@ -437,12 +441,6 @@ minority_raid_effect = {
 }
 
 slave_dropoff_effect = {
-	trigger = {
-		OR = {
-			variable_list_size = { name = captured_slave_cultures value > 0 }
-			variable_list_size = { name = captured_slave_faiths value > 0 }
-		}
-	}
 	effect = {
 		distribute_raid_slaves_effect = yes
 	}
@@ -466,6 +464,68 @@ yearly_slave_pulse = {
 		every_sub_realm_county = {
 			limit = { county_has_any_slaves_trigger = yes }
 			change_development_progress = this.slave_dev_factor
+		}
+	}
+}
+
+raid_army_slave_escapes = {
+	trigger = {
+		OR = {
+			variable_list_size = { name = captured_slave_cultures value > 0 }
+			variable_list_size = { name = captured_slave_faiths value > 0 }
+		}
+	}
+	effect = {
+		location.duchy = { save_scope_as = escape_duchy }
+		every_in_list = {
+			variable = captured_slave_cultures
+			save_scope_as = culture
+			random_county = {
+				limit = { duchy = scope:escape_duchy }
+				save_scope_as = county
+				promote_culture_minority_effect = {
+					CULTURE = scope:culture
+				}
+			}
+			PREV = {
+				remove_list_variable = {
+					name = captured_slave_cultures
+					target = PREV
+				}
+				change_variable = { name = num_minorities subtract = 1 }
+			}
+			scope:raider = {
+				send_interface_message = {
+					title = "Escaped Slaves"
+					custom_tooltip = "[culture.GetName] slaves escape to [county.GetName]!"
+					right_icon = scope:county
+				}
+			}
+		}
+		every_in_list = {
+			variable = captured_slave_faiths
+			save_scope_as = faith
+			random_county = {
+				limit = { duchy = scope:escape_duchy }
+				save_scope_as = county
+				promote_faith_minority_effect = {
+					FAITH = scope:faith
+				}
+			}
+			PREV = {
+				remove_list_variable = {
+					name = captured_slave_cultures
+					target = PREV
+				}
+				change_variable = { name = num_minorities subtract = 1 }
+			}
+			scope:raider = {
+				send_interface_message = {
+					title = "Escaped Slaves"
+					custom_tooltip = "[faith.GetName] slaves escape to [county.GetName]!"
+					right_icon = scope:county
+				}
+			}
 		}
 	}
 }

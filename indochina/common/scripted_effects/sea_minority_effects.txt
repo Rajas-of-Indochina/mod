@@ -1450,14 +1450,20 @@ raid_slave_effect = {
 	random = {
 		chance = {
 			value = 100
-			modifier = {
-				add = scope:county.development_level
+			add = {
+				value = scope:county.development_level
 				divide = 2
 			}
 		}
 		if = {
 			limit = {
-				NOT = { scope:county.culture = scope:raider.culture }
+				NOT = {
+					scope:county.culture = scope:raider.culture
+					is_target_in_variable_list = {
+						name = captured_slave_cultures
+						target = scope:county.culture
+					}
+				}
 			}
 			if = {
 				limit = { has_variable = num_minorities }
@@ -1474,7 +1480,13 @@ raid_slave_effect = {
 		}
 		if = {
 			limit = {
-				NOT = { scope:county.faith = scope:raider.faith }
+				NOT = {
+					scope:county.faith = scope:raider.faith
+					is_target_in_variable_list = {
+						name = captured_slave_faiths
+						target = scope:county.faith
+					}
+				}
 			}
 			if = {
 				limit = { has_variable = num_minorities }
@@ -1495,9 +1507,11 @@ raid_slave_effect = {
 				title = "Captured Slaves"
 				right_icon = scope:county
 				if = {
-					AND = {
-						exists = scope:captured_culture
-						exists = scope:captured_faith
+					limit = {
+						AND = {
+							exists = scope:captured_culture
+							exists = scope:captured_faith
+						}
 					}
 					custom_tooltip = "Captured [captured_culture.GetName] [captured_faith.GetName] slaves in [county.GetName]."
 				}
@@ -1509,6 +1523,7 @@ raid_slave_effect = {
 					limit = { exists = scope:captured_faith }
 					custom_tooltip = "Captured [captured_faith.GetName] slaves in [county.GetName]."
 				}
+				else = {}
 			}
 		}
 	}
@@ -1516,22 +1531,31 @@ raid_slave_effect = {
 
 # Root is raiding army arriving home
 distribute_raid_slaves_effect = {
-	save_scope_as = army
 	every_in_list = {
 		variable = captured_slave_cultures
 		save_scope_as = slave_culture
 		scope:raider = {
 			if = {
 				limit = {
-					any_sub_realm_county = {
+					any_held_title = {
+						limit = { tier = tier_county }
 						NOT = { county_has_specific_slave_culture_trigger = { CULTURE = scope:slave_culture } }
 					}
 				}
-				random_sub_realm_county = {
-					limit = { NOT = { county_has_specific_slave_culture_trigger = { CULTURE = scope:slave_culture } } }
+				random_held_title = {
+					limit = {
+						tier = tier_county
+						NOT = { county_has_specific_slave_culture_trigger = { CULTURE = scope:slave_culture } }
+					}
 					add_slave_culture_minority_effect = { CULTURE = scope:slave_culture COUNTY = THIS }
+					save_scope_as = destination
 				}
-				#scope:army = {
+				send_interface_message = {
+					title = "Slaves dropped off"
+					custom_tooltip = "[slave_culture.GetName] slaves dropped off in [destination.GetName]"
+					right_icon = scope:destination
+				}
+				ROOT = {
 					remove_list_variable = {
 						name = captured_slave_cultures
 						target = scope:slave_culture
@@ -1551,15 +1575,25 @@ distribute_raid_slaves_effect = {
 		scope:raider = {
 			if = {
 				limit = {
-					any_sub_realm_county = {
+					any_held_title = {
+						limit = { tier = tier_county }
 						NOT = { county_has_specific_slave_faith_trigger = { FAITH = scope:slave_faith } }
 					}
 				}
-				random_sub_realm_county = {
-					limit = { NOT = { county_has_specific_slave_faith_trigger = { FAITH = scope:slave_faith } } }
+				random_held_title = {
+					limit = {
+						tier = tier_county
+						NOT = { county_has_specific_slave_faith_trigger = { FAITH = scope:slave_faith } }
+					}
 					add_slave_faith_minority_effect = { FAITH = scope:slave_faith COUNTY = THIS }
+					save_scope_as = destination
 				}
-				scope:army = {
+				send_interface_message = {
+					title = "Slaves dropped off"
+					custom_tooltip = "[slave_faith.GetName] slaves dropped off in [destination.GetName]"
+					right_icon = scope:destination
+				}
+				ROOT = {
 					remove_list_variable = {
 						name = captured_slave_faiths
 						target = scope:slave_faith
@@ -1581,7 +1615,7 @@ distribute_raid_slaves_effect = {
 			desc = "Slaves have dispersed across your counties or sold off for a total of [ROOT.Var('num_minorities').GetValue|V0] [gold_i]."
 		}
 		add_gold = {
-			value = PREV.var:num_minorities
+			value = ROOT.var:num_minorities
 			multiply = 5
 		}
 	}
