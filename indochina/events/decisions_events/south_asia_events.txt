@@ -2174,7 +2174,7 @@ south_asia.0045 = {
 				desc = fervor_gain_priesthood_recreated
 			}
 		}
-		if = { # Vassalize if possible/needed.
+		if = { # Vassalize if possible/needed. Will also make your new HoF your court chaplain
 			limit = {
 				highest_held_title_tier > scope:new_priest.highest_held_title_tier
 				NOT = { scope:new_priest = { any_liege_or_above = { this = root } } }
@@ -2190,7 +2190,12 @@ south_asia.0045 = {
 					change = scope:change
 				}
 			}
-			resolve_title_and_vassal_change = scope:change		
+			resolve_title_and_vassal_change = scope:change
+			assign_councillor_type = {
+				type = councillor_court_chaplain
+				remove_existing_councillor = yes
+				target = scope:new_priest
+			}	
 		}
 	}
 }
