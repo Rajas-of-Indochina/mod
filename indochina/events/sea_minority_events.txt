@@ -1194,6 +1194,63 @@ scripted_effect culture_specialist_tooltip_builder = {
 	}
 }
 
+scripted_effect setup_enclave_investment_effect = {
+	clear_variable_list = culture_options
+	clear_variable_list = faith_options
+	remove_variable = selected_culture
+	remove_variable = selected_faith
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			county_has_any_traders_trigger = yes
+		}
+		if = {
+			limit = { ROOT = { has_realm_law_flag = cultural_minorities_may_migrate } }
+			every_in_list = {
+				variable = culture_minorities_trader
+				limit = {
+					NOT = {
+						ROOT = {
+							is_target_in_variable_list = {
+								name = culture_options
+								target = PREV
+							}
+						}
+					}
+				}
+				ROOT = {
+					add_to_variable_list = {
+						name = culture_options
+						target = PREV
+					}
+				}
+			}
+		}
+		if = {
+			limit = { ROOT = { has_realm_law_flag = religious_minorities_may_migrate } }
+			every_in_list = {
+				variable = faith_minorities_trader
+				limit = {
+					NOT = {
+						ROOT = {
+							is_target_in_variable_list = {
+								name = faith_options
+								target = PREV
+							}
+						}
+					}
+				}
+				ROOT = {
+					add_to_variable_list = {
+						name = faith_options
+						target = PREV
+					}
+				}
+			}
+		}
+	}
+}
+
 # Expel Cultural Minorities
 # New and improved! Uses a single event!
 minorities.0001 = {
@@ -1457,6 +1514,104 @@ minorities.4001 = {
 		else = {
 			custom_tooltip = minorities.1001.cancel
 			remove_decision_cooldown = recruit_cultural_expert_decision
+		}
+	}
+}
+
+# Investing in enclaves
+minorities.5001 = {
+	type = character_event
+	title = minorities.5001.t
+	desc = minorities.5001.desc
+
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	theme = realm
+	immediate = {
+		setup_enclave_investment_effect = yes
+	}
+	widget = {
+		gui = "sea_select_combined_widget"
+		container = "custom_widgets_container"
+	}
+
+	option = {
+		name = minorities.1001.confirm
+		if = {
+			limit = {
+				exists = var:selected_culture
+			}
+			var:selected_culture = { save_scope_as = selected_culture }
+			every_held_title = {
+				limit = {
+					tier = tier_county
+					county_has_specific_free_minority_culture_trigger = { CULTURE = scope:selected_culture }
+				}
+				add_county_modifier = {
+					modifier = trade_enclave_modifier
+					years = 5
+				}
+
+				change_development_progress_with_overflow = 5
+				add_to_temporary_list = invested_counties
+			}
+			add_gold = {
+				every_in_list = {
+					list = invested_counties
+					add = {
+						value = this.development_level
+						multiply = -1
+					}
+				}
+			}
+			culture = {
+				change_cultural_acceptance = {
+					value = {
+						every_in_list = {
+							list = invested_counties
+							add = {
+								value = this.development_level
+								multiply = 0.01
+							}
+						}
+					}
+					target = scope:selected_culture
+					desc = enclave_investment_acceptance_tt
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				exists = var:selected_faith
+			}
+			var:selected_faith = { save_scope_as = selected_faith }
+			every_held_title = {
+				limit = {
+					tier = tier_county
+					county_has_specific_free_minority_faith_trigger = { FAITH = scope:selected_faith }
+				}
+				add_county_modifier = {
+					modifier = trade_enclave_modifier
+					years = 5
+				}
+				change_development_progress_with_overflow = 5
+				add_to_temporary_list = invested_counties
+			}
+			add_gold = {
+				every_in_list = {
+					list = invested_counties
+					add = {
+						value = this.development_level
+						multiply = -1
+					}
+				}
+			}
+		}
+		else = {
+			custom_tooltip = minorities.0001.cancel
+			remove_decision_cooldown = invest_in_trade_enclaves_decision
 		}
 	}
 }

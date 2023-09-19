@@ -1422,9 +1422,16 @@ add_slave_culture_minority_effect = {
 				name = culture_minorities_slave
 				target = $CULTURE$
 			}
-		}
+			add_county_modifier = {
+				modifier = slave_population_modifier
+				years = 5
+			}
+			#trigger_event = {
+			#	on_action = integrate_slave_culture_over_time
+			#	years = 5
+			#}
+		}		
 	}
-
 	custom_tooltip = add_slave_culture_minority_tt
 }
 
@@ -1434,13 +1441,20 @@ add_slave_faith_minority_effect = {
 		save_scope_as = loc_county
 		if = {
 			limit = { NOT = {faith = $FAITH$} }
-		}
-		add_to_variable_list = {
-			name = faith_minorities_slave
-			target = $FAITH$
-		}
+			add_to_variable_list = {
+				name = faith_minorities_slave
+				target = $FAITH$
+			}
+			add_county_modifier = {
+				modifier = slave_population_modifier
+				years = 5
+			}
+			trigger_event = {
+				on_action = integrate_slave_faith_over_time
+				years = 5
+			}
+		}	
 	}
-
 	custom_tooltip = add_slave_faith_minority_tt
 }
 
@@ -1450,10 +1464,18 @@ add_trader_culture_minority_effect = {
 		save_scope_as = loc_county
 		if = {
 			limit = { NOT = {faith = $CULTURE$} }
-		}
-		add_to_variable_list = {
-			name = culture_minorities_trader
-			target = $CULTURE$
+			add_to_variable_list = {
+				name = culture_minorities_trader
+				target = $CULTURE$
+			}
+			add_county_modifier = {
+				modifier = trade_enclave_modifier
+				years = 5
+			}
+			trigger_event = {
+				on_action = integrate_trader_culture_over_time
+				years = 5
+			}
 		}
 	}
 }
@@ -1464,10 +1486,18 @@ add_trader_faith_minority_effect = {
 		save_scope_as = loc_county
 		if = {
 			limit = { NOT = {faith = $FAITH$} }
-		}
-		add_to_variable_list = {
-			name = faith_minorities_trader
-			target = $FAITH$
+			add_to_variable_list = {
+				name = faith_minorities_trader
+				target = $FAITH$
+			}
+			add_county_modifier = {
+				modifier = trade_enclave_modifier
+				years = 5
+			}
+			trigger_event = {
+				on_action = integrate_trader_faith_over_time
+				years = 5
+			}
 		}
 	}
 }

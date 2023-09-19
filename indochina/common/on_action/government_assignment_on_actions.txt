@@ -5,6 +5,37 @@
 	}
 }
 
+on_rank_up = {
+	on_actions = {
+		mamluk_assign_government
+	}
+}
+
+mamluk_assign_government = {
+	trigger = {
+		has_trait = mamluk_commander
+		highest_held_title_tier > tier_barony #Don't really want Mamluk barons
+		NOT = { has_government = mamluk_government }
+	}
+	effect = {
+		change_government = mamluk_government
+		if = {
+			limit = {highest_held_title_tier >= tier_duchy}
+		}
+		primary_title = {
+			add_title_law = mamluk_elective_succession_law
+		}
+		every_held_title = {
+			limit = {
+				NOT = {
+					THIS = ROOT.primary_title
+				}
+			}
+			remove_title_law = mamluk_elective_succession_law
+		}
+	}
+}
+
 on_government_assign_start = {
 	effect = {
 		every_ruler = {

@@ -1,1 +1,263 @@
-﻿
+﻿elector_voting_pattern_circumstances_mamluk_elective_modifier = {
+	#Ageism
+	modifier = {
+		add = -30
+		desc = tooltip_feudal_elector_vote_baby
+		NOT = { this = scope:candidate }
+		scope:candidate = {
+			age < 5
+		}
+	}
+	modifier = {
+		desc = tooltip_feudal_elector_vote_child
+		NOT = { this = scope:candidate }
+		scope:candidate = {
+			age > 5
+			age < 16
+		}
+		add = {
+			subtract = 10
+			if = {
+				limit = {
+					age < 10
+				}
+				subtract = 15
+			}
+		}
+	}
+	modifier = { #Still too young for older rulers
+		add = -10
+		desc = tooltip_feudal_elector_vote_youngster
+		NOT = { this = scope:candidate }
+		age > 40
+		scope:candidate = {
+			age > 16
+			age < 25
+		}
+	}
+	modifier = { #Or too old for younger rulers.
+		add = -10
+		desc = tooltip_feudal_elector_vote_oldtimer
+		NOT = { this = scope:candidate }
+		age < 30
+		scope:candidate = {
+			age > 40
+			age < 50
+		}
+	}
+	modifier = { #Or simply too old overall.
+		add = -15
+		desc = tooltip_feudal_elector_vote_decrepit
+		NOT = { this = scope:candidate }
+		scope:candidate = { age > 50 }
+	}
+	#Culturism
+	modifier = {
+		desc = tooltip_feudal_elector_vote_fellow_culture
+		NOT = { this = scope:candidate }
+		root.culture = scope:candidate.culture
+		add = 20
+	}
+	modifier = {
+		desc = tooltip_feudal_elector_vote_stranger
+		scope:holder.culture = root.culture #Only a concern if Elector and current ruler share culture.
+		NOT = { root.culture = scope:candidate.culture }
+		culture = { has_same_culture_heritage = scope:candidate.culture }
+		NOT = { is_close_family_of = scope:candidate }
+		add = {
+			subtract = 30
+		}
+	}
+	modifier = {
+		desc = tooltip_feudal_elector_vote_foreigner
+		scope:holder.culture = root.culture #Only a concern if Elector and current ruler share culture.
+		NOT = { culture = { has_same_culture_heritage = scope:candidate.culture } }
+		NOT = { is_close_family_of = scope:candidate }
+		add = {
+			subtract = 60
+		}
+	}
+	modifier = { #Candidate is a foreigner's pet
+		desc = tooltip_feudal_elector_vote_strangers_pet
+		scope:candidate = {
+			this = scope:holder_candidate
+			NOT = { this.culture = root.culture }
+			culture = { has_same_culture_heritage = root.culture }
+			this.culture = scope:holder.culture
+		}
+		NOT = { is_close_family_of = scope:candidate }
+		add = {
+			subtract = 20
+		}
+	}
+	modifier = { #Candidate is a foreigner's pet
+		desc = tooltip_feudal_elector_vote_foreigners_pet
+		scope:candidate = {
+			this = scope:holder_candidate
+			NOT = { culture = { has_same_culture_heritage = root.culture } }
+			this.culture = scope:holder.culture
+		}
+		NOT = { is_close_family_of = scope:candidate }
+		add = {
+			subtract = 30
+		}
+	}
+	#Faithism
+	modifier = { #Accepted but different faith. (Buddhism vs Hinduism)
+		desc = tooltip_feudal_elector_vote_different_faith
+		NOT = { root.faith = scope:candidate.faith }
+		ai_zeal >= 0 #Does not care otherwise.
+		faith = {
+			faith_hostility_level = {
+				target = scope:candidate.faith
+				value = faith_fully_accepted_level
+			}
+		}
+		add = {
+			subtract = 25
+		}
+	}
+	modifier = { #Astray (Catholic vs Orthodox)
+		desc = tooltip_feudal_elector_vote_astray
+		NOT = { root.faith = scope:candidate.faith }
+		faith = {
+			faith_hostility_level = {
+				target = scope:candidate.faith
+				value = faith_astray_level
+			}
+		}
+		add = {
+			subtract = 50
+		}
+	}
+	modifier = { #Heretic (Catholic vs Cathar)
+		desc = tooltip_feudal_elector_vote_heretic
+		add = {
+			subtract = 100
+			if = { #Further increased by AI zeal.
+				limit = {
+					ai_zeal >= low_positive_zeal
+				}
+				subtract = 50
+			}
+			if = { #Further increased by AI zeal.
+				limit = {
+					ai_zeal >= medium_positive_zeal
+				}
+				subtract = 50
+			}
+			if = { #Further increased by AI zeal.
+				limit = {
+					ai_zeal >= high_positive_zeal
+				}
+				subtract = 50
+			}
+		}
+		NOT = { root.faith = scope:candidate.faith }
+		faith = {
+			faith_hostility_level = {
+				target = scope:candidate.faith
+				value = faith_hostile_level
+			}
+		}
+	}
+	modifier = { #Infidel (Catholic vs Ashari)
+		desc = tooltip_feudal_elector_vote_evil_heathen
+		add = {
+			subtract = 200
+			if = { #Further increased by AI zeal.
+				limit = {
+					ai_zeal >= low_positive_zeal
+				}
+				subtract = 75
+			}
+			if = { #Further increased by AI zeal.
+				limit = {
+					ai_zeal >= medium_positive_zeal
+				}
+				subtract = 75
+			}
+			if = { #Further increased by AI zeal.
+				limit = {
+					ai_zeal >= high_positive_zeal
+				}
+				subtract = 75
+			}
+		}
+		NOT = { root.faith = scope:candidate.faith }
+		faith = {
+			faith_hostility_level = {
+				target = scope:candidate.faith
+				value = faith_evil_level
+			}
+		}
+	}
+    # Mamluk preference
+    modifier = {
+        add = -15
+        desc = tooltip_not_mamluk
+        has_government = mamluk_government
+        scope:candidate = {
+            NOR = {
+                has_government = mamluk_government
+                has_trait = mamluk_commander
+            }
+        }
+    }
+    # Mamluk anti-dynasticism
+    modifier = {
+        add = -20
+        desc = tooltip_anti_dynastic
+        has_government = mamluk_government
+        scope:candidate = {
+            OR = {
+                dynasty = scope:holder.dynasty
+                is_close_family_of = scope:holder
+            }
+            # Unless it's *their* dynasty, that's different I prommy it's not the same
+            NOT = { scope:candidate.dynasty = root.dynasty }
+        }
+    }
+	# Mamluks respect military might
+	modifier = {
+		add = scope:candidate.martial
+		add = {
+			value = number_of_commander_traits
+			multiply = 3
+		}
+		desc = tooltip_mamluk_military_aptitude
+		has_government = mamluk_government
+		NOT = { THIS = scope:candidate }
+	}
+	modifier = {
+		add = {
+			value = scope:candidate.script_current_military_strength
+			divide = {
+				value = this.script_current_military_strength
+				min = 1
+			}
+			multiply = 50
+			min = 0
+			max = 50
+		}
+		desc = tooltip_mamluk_military_size
+	}
+	# Mamluks can enforce their pick by being scary mfs
+	modifier = {
+		add = {
+			value = scope:holder.dread
+			subtract = 10
+		}
+		desc = mamluk_dread_bonus
+		scope:candidate = { this = scope:holder_candidate }
+		NOR = {
+			this = scope:holder  #But not if it's me.
+			this = scope:candidate  #But not if it's me.
+		}
+		NOR = {
+			has_trait = lunatic #Don't care
+			has_trait = arbitrary #Don't care
+		}
+		scope:holder.dread > 10
+	}
+}

@@ -1,0 +1,75 @@
+﻿mamluk_elective = {
+    candidates = {
+        add = {
+            type = holder_close_or_extended_family
+            limit = {
+                feudal_elective_potential_landless_dynastic_candidate_trigger = yes
+                NOT = {is_wrong_gender_in_faith_trigger = { FAITH = scope:holder.faith }}
+            }
+        }
+        add = {
+            type = title_claimants
+            limit = {
+				feudal_elective_potential_landed_candidate_trigger = yes
+                NOT = {
+                    scope:holder = {
+                        any_close_or_extended_family_member = {
+                            exists = this
+                        }
+                    }
+                }
+                NOT = {is_wrong_gender_in_faith_trigger = { FAITH = scope:holder.faith }}
+            }
+        }
+        add = {
+            type = holder_direct_vassals
+            limit = {NOT = {is_wrong_gender_in_faith_trigger = { FAITH = scope:holder.faith }}}
+        }
+    }
+    electors = {
+        add = holder
+        add = {
+            type = holder_direct_vassals
+            limit = {
+                religion = scope:holder.religion
+            }
+        }
+    }
+    elector_vote_strength = {
+        base = 1
+        # The Mamluks justified their rule with military might
+        # So big armies and 
+        modifier = {
+            add = {
+                value = current_military_strength
+                divide = 100
+                round = yes
+            }
+            desc = mamluk_elective_army_size_tt
+        }
+        modifier = {
+            add = {
+                value = martial
+                divide = 5
+                round = yes
+            }
+            desc = mamluk_elective_martial_tt
+        }
+        modifier = {
+            add = {
+                value = 0
+                if = {
+                    limit = { has_trait = mamluk_commander }
+                    add = 5
+                }
+                add = number_of_commander_traits
+            }
+            desc = mamluk_elective_commander_traits_tt
+        }
+    }
+    candidate_score = {
+        elector_self_voting_pattern_feudal_elective_modifier = yes
+        holder_voting_pattern_feudal_elective_modifier = yes
+        elector_voting_pattern_circumstances_mamluk_elective_modifier = yes
+    }
+}

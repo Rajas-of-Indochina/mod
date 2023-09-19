@@ -254,3 +254,44 @@ recruit_cultural_expert_decision = {
 		trigger_event = minorities.4001
 	}
 }
+
+invest_in_trade_enclaves_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	desc = recruit_cultural_expert_decision_desc
+
+	ai_check_interval = 36
+
+	is_shown = {
+		OR = {
+			has_realm_law_flag = cultural_minorities_may_migrate
+			has_realm_law_flag = religious_minorities_may_migrate
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		debt_level <= -1
+		custom_tooltip = {
+			text = enclave_available_for_investment_tt
+			OR = {
+				AND = {
+					has_realm_law_flag = cultural_minorities_may_migrate
+					any_sub_realm_county = {
+						county_has_trader_culture_trigger = yes
+					}
+				}
+				AND = {
+					has_realm_law_flag = religious_minorities_may_migrate
+					any_sub_realm_county = {
+						county_has_trader_faith_trigger = yes
+					}
+				}
+			}
+		}
+	}
+
+	effect = {
+		trigger_event = minorities.5001
+	}
+
+	cooldown = { years = 5 }
+}
