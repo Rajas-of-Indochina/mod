@@ -1,4 +1,4 @@
-﻿# Override Vanilla
+# Override Vanilla
 # Allows hybridizing/diverging to work more smoothly with minorities
 expand_hybrid_culture_from_origin_point = {
 	every_title_to_title_neighboring_and_across_water_county = {
@@ -1444,6 +1444,34 @@ add_slave_faith_minority_effect = {
 	custom_tooltip = add_slave_faith_minority_tt
 }
 
+add_trader_culture_minority_effect = {
+	$CULTURE$ = { save_scope_as = loc_culture }
+	$COUNTY$ = {
+		save_scope_as = loc_county
+		if = {
+			limit = { NOT = {faith = $CULTURE$} }
+		}
+		add_to_variable_list = {
+			name = culture_minorities_trader
+			target = $CULTURE$
+		}
+	}
+}
+
+add_trader_faith_minority_effect = {
+	$FAITH$ = { save_scope_as = loc_faith }
+	$COUNTY$ = {
+		save_scope_as = loc_county
+		if = {
+			limit = { NOT = {faith = $FAITH$} }
+		}
+		add_to_variable_list = {
+			name = faith_minorities_trader
+			target = $FAITH$
+		}
+	}
+}
+
 # Root is a raiding army
 # scope:county is the county being raided
 raid_slave_effect = {
@@ -2451,6 +2479,36 @@ non_neighbor_migration_effect = {
 	notify_characters_of_culture_faith_migration_effect = yes
 }
 
+#scope:source_county
+#scope:county
+silk_road_trader_migration_effect = {
+	if = {
+		limit = { NOT = { faith = scope:source_county.faith } }
+		add_trader_faith_minority_effect = { COUNTY = scope:county FAITH = scope:source_county.culture }
+	}
+	if = {
+		limit = { NOT = { culture = scope:source_county.culture } }
+		add_trader_culture_minority_effect = { COUNTY = scope:county CULTURE = scope:source_county.culture }
+	}
+	notify_characters_of_culture_faith_migration_effect = yes
+}
+
+promote_trader_faith_minority_effect = {
+	remove_list_variable = {
+		name = faith_minorities_trader
+		target = $FAITH$
+	}
+	promote_faith_minority_effect = { FAITH = $FAITH$ }
+}
+
+promote_trader_culture_minority_effect = {
+	remove_list_variable = {
+		name = culture_minorities_trader
+		target = $CULTURE$
+	}
+	promote_culture_minority_effect = { CULTURE = $CULTURE$ }
+}
+
 # This iterates over every county in the game
 # ONLY USE IT TO FIX MINORITIES WHILE DEBUGGING
 debug_fix_minorities = {
@@ -2479,5 +2537,59 @@ debug_fix_minorities = {
 			name = faith_minorities_small
 			target = this.faith
 		}
+	}
+}
+
+debug_spawn_slaves = {
+	random_culture_global = {
+		limit = {
+			NOT = { THIS = ROOT.capital_county.culture }
+		}
+		save_scope_as = scoped_culture
+	}
+	random_religion_global = {
+		limit = {
+			any_faith = { NOT = { THIS = ROOT.capital_county.faith } }
+		}
+		random_faith = {
+			limit = { NOT = { THIS = ROOT.capital_county.faith } }
+			save_scope_as = scoped_faith
+		}
+	}
+	add_slave_culture_minority_effect = { COUNTY = ROOT.capital_county CULTURE = scope:scoped_culture }
+	add_slave_faith_minority_effect = { COUNTY = ROOT.capital_county FAITH = scope:scoped_faith }
+}
+
+debug_clear_slaves = {
+	capital_county = {
+		clear_variable_list = culture_minorities_slave
+		clear_variable_list = faith_minorities_slave
+	}
+}
+
+debug_spawn_traders = {
+	random_culture_global = {
+		limit = {
+			NOT = { THIS = ROOT.capital_county.culture }
+		}
+		save_scope_as = scoped_culture
+	}
+	random_religion_global = {
+		limit = {
+			any_faith = { NOT = { THIS = ROOT.capital_county.faith } }
+		}
+		random_faith = {
+			limit = { NOT = { THIS = ROOT.capital_county.faith } }
+			save_scope_as = scoped_faith
+		}
+	}
+	add_trader_culture_minority_effect = { COUNTY = ROOT.capital_county CULTURE = scope:scoped_culture }
+	add_trader_faith_minority_effect = { COUNTY = ROOT.capital_county FAITH = scope:scoped_faith }
+}
+
+debug_clear_traders = {
+	capital_county = {
+		clear_variable_list = culture_minorities_trader
+		clear_variable_list = faith_minorities_trader
 	}
 }

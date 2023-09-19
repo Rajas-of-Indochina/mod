@@ -1101,7 +1101,12 @@ RICE_tarim_basin_bring_indic_artisans_effect = {
 
 RICE_east_african_migration_effect = {
 	random_list = {
-		50 = { do_silk_road_migration_effect = { REGION = world_africa_east } }
+		50 = {
+			random_county_in_region = {
+				region = world_africa_east
+				save_scope_as = source_county
+			}
+		}
 		50 = {
 			random_list = {
 				15 = {
@@ -1218,7 +1223,20 @@ RICE_east_african_migration_effect = {
 				}
 			}
 			# We need to do a trick migration effect for the off-map migrations
-			fake_silk_road_migration_effect = yes
+			#fake_silk_road_migration_effect = yes
+		}
+		random_realm_county = {
+			if = {
+				limit = {
+					exists = scope:source_county
+				}
+				add_slave_culture_minority_effect = { CULTURE = scope:source_county.culture COUNTY = THIS }
+				add_slave_faith_minority_effect = { FAITH = scope:source_county.faith COUNTY = THIS }
+			}
+			else = {
+				add_slave_culture_minority_effect = { CULTURE = scope:county_culture COUNTY = THIS }
+				add_slave_faith_minority_effect = { FAITH = scope:county_faith COUNTY = THIS }
+			}
 		}
 	}
 }

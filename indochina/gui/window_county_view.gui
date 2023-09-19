@@ -317,9 +317,32 @@ window = {
 							}
 						}
 					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						name = "county_culture_minorities_trader_grid"
+						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_trader')]"
+						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_trader')))]"
+		
+						item = {
+							button = {
+								size = { 25 25 }
+								onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
+								texture = "gfx/interface/icons/icon_gold.dds"
+								using = tooltip_ne
+								tooltipwidget = {
+									culture_minorities_tooltip = {
+										blockoverride "minority_label"
+										{
+											text = "[trader_minority|E]"
+										}
+									}
+								}
+							}
+						}
+					}
 					text_single = {
 						raw_text = "None"
-						visible = "[And(And(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_large')),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_small'))),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_slave')))]"
+						visible = "[And(And(And(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_large')),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_small'))),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_slave'))),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_trader')))]"
 					}
 				}
 				divider = { layoutpolicy_horizontal = expanding }
@@ -416,9 +439,39 @@ window = {
 							}
 						}
 					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						name = "county_faith_minorities_trader_grid"
+						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_trader')]"
+						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_trader')))]"
+		
+						item = {
+							button = {
+								size = { 25 25 }
+								onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
+								texture = "gfx/interface/icons/icon_gold.dds"
+								using = tooltip_ne
+								tooltipwidget = {
+									faith_minorities_tooltip = {
+										blockoverride "minority_label"
+										{
+											text = "[trader_minority|E]"
+										}
+									}
+								}
+		
+								icon = {
+									name = "gold_negative_console_button_minus"
+									position = { 0 7 }
+									size = { 25 25 }
+									texture = "[Scope.Faith.GetIcon]"
+								}
+							}
+						}
+					}
 					text_single = {
 						raw_text = "None"
-						visible = "[And(And(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small'))),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_slave')))]"
+						visible = "[And(And(And(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small'))),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_slave'))),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_trader')))]"
 					}
 				}
 

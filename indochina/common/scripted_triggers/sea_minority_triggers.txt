@@ -76,6 +76,13 @@ county_has_slave_faith_trigger = {
         value > 0
     }
 }
+county_has_trader_faith_trigger = {
+	has_variable_list = faith_minorities_trader
+	variable_list_size = {
+		name = faith_minorities_trader
+		value > 0
+	}
+}
 
 county_has_minority_culture_trigger = {
 	OR = {
@@ -105,11 +112,25 @@ county_has_slave_culture_trigger = {
         value > 0
     }
 }
+county_has_trader_culture_trigger = {
+	has_variable_list = culture_minorities_trader
+	variable_list_size = {
+		name = culture_minorities_trader
+		value > 0
+	}
+}
+
 
 county_has_any_slaves_trigger = {
 	OR = {
 		county_has_slave_culture_trigger = yes
 		county_has_slave_faith_trigger = yes
+	}
+}
+county_has_any_traders_trigger = {
+	OR = {
+		county_has_trader_culture_trigger = yes
+		county_has_trader_faith_trigger = yes
 	}
 }
 
@@ -204,6 +225,49 @@ county_has_astray_or_worse_minority_faith_trigger = {
 				}
 			}
 		}
+		any_in_list = {
+			variable = faith_minorities_trader
+			$FAITH$ = {
+				faith_hostility_level = {
+					target = prev
+					value >= faith_astray_level
+				}
+			}
+		}
+	}
+}
+
+# $FAITH$
+county_has_expellable_faith_minority_trigger = {
+	county_has_minority_faith_trigger = yes
+	OR = {
+		any_in_list = {
+			variable = faith_minorities_small
+			$FAITH$ = {
+				faith_hostility_level = {
+					target = prev
+					value >= faith_astray_level
+				}
+			}
+		}
+		any_in_list = {
+			variable = faith_minorities_large
+			$FAITH$ = {
+				faith_hostility_level = {
+					target = prev
+					value >= faith_astray_level
+				}
+			}
+		}
+		any_in_list = {
+			variable = faith_minorities_trader
+			$FAITH$ = {
+				faith_hostility_level = {
+					target = prev
+					value >= faith_astray_level
+				}
+			}
+		}
 	}
 }
 
@@ -229,6 +293,37 @@ county_has_different_heritage_minority_culture_trigger = {
 				NOT = { has_same_culture_heritage = prev }
 			}
 		}
+		any_in_list = {
+			variable = culture_minorities_trader
+			$CULTURE$ = {
+				NOT = { has_same_culture_heritage = prev }
+			}
+		}
+	}
+}
+
+# $CULTURE$
+county_has_expellable_culture_minority_trigger = {
+	county_has_minority_culture_trigger = yes
+	OR = {
+		any_in_list = {
+			variable = culture_minorities_small
+			$CULTURE$ = {
+				NOT = { has_same_culture_heritage = prev }
+			}
+		}
+		any_in_list = {
+			variable = culture_minorities_large
+			$CULTURE$ = {
+				NOT = { has_same_culture_heritage = prev }
+			}
+		}
+		any_in_list = {
+			variable = culture_minorities_trader
+			$CULTURE$ = {
+				NOT = { has_same_culture_heritage = prev }
+			}
+		}
 	}
 }
 
@@ -242,6 +337,9 @@ county_has_specific_minority_faith_trigger = {
 			FAITH = $FAITH$
 		}
 		county_has_specific_slave_faith_trigger = {
+			FAITH = $FAITH$
+		}
+		county_has_specific_trader_faith_trigger = {
 			FAITH = $FAITH$
 		}
 	}
@@ -269,6 +367,14 @@ county_has_specific_slave_faith_trigger = {
 	}
 }
 
+county_has_specific_trader_faith_trigger = {
+	has_variable_list = faith_minorities_trader
+	is_target_in_variable_list = {
+		name = faith_minorities_trader
+		target = $FAITH$
+	}
+}
+
 # $CULTURE$
 county_has_culture_or_minority_trigger = {
 	OR = {
@@ -285,6 +391,9 @@ county_has_specific_minority_culture_trigger = {
 			CULTURE = $CULTURE$
 		}
 		county_has_specific_slave_culture_trigger = {
+			CULTURE = $CULTURE$
+		}
+		county_has_specific_trader_culture_trigger = {
 			CULTURE = $CULTURE$
 		}
 	}
@@ -307,6 +416,13 @@ county_has_specific_slave_culture_trigger = {
 	has_variable_list = culture_minorities_slave
 	is_target_in_variable_list = {
 		name = culture_minorities_slave
+		target = $CULTURE$
+	}
+}
+county_has_specific_trader_culture_trigger = {
+	has_variable_list = culture_minorities_trader
+	is_target_in_variable_list = {
+		name = culture_minorities_trader
 		target = $CULTURE$
 	}
 }

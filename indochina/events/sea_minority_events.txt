@@ -73,6 +73,15 @@ scripted_effect expel_religious_minorities_effect = {
 
 		if = {
 			limit = {
+				county_has_specific_trader_faith_trigger = { FAITH = scope:expelled_faith }
+			}
+			custom_tooltip = minorities.1000.expel_trader_tt
+			add_tyranny = 1
+			add_to_temporary_list = trader_minority_counties_siezed_from
+		}
+
+		if = {
+			limit = {
 				is_target_in_variable_list = {
 					name = faith_minorities_small
 					target = scope:expelled_faith
@@ -161,6 +170,13 @@ scripted_effect expel_religious_minorities_effect = {
 				multiply = 2
 			}
 		}
+		every_in_list = {
+			list = trader_minority_counties_siezed_from
+			add = {
+				value = this.development_level
+				multiply = 2
+			}
+		}
 	}
 }
 
@@ -232,6 +248,14 @@ scripted_effect expel_cultural_minorities_effect = {
 		}
 		save_scope_as = source_county
 
+		if = {
+			limit = {
+				county_has_specific_trader_culture_trigger = { CULTURE = scope:expelled_culture }
+			}
+			custom_tooltip = minorities.0000.expel_trader_tt
+			add_tyranny = 1
+			add_to_temporary_list = trader_minority_counties_siezed_from
+		}
 		if = {
 			limit = {
 				is_target_in_variable_list = {
@@ -329,6 +353,13 @@ scripted_effect expel_cultural_minorities_effect = {
 				multiply = 2
 			}
 		}
+		every_in_list = {
+			list = trader_minority_counties_siezed_from
+			add = {
+				value = this.development_level
+				multiply = 2
+			}
+		}
 	}
 }
 
@@ -365,6 +396,31 @@ scripted_effect setup_expel_religious_minorities_effect = {
 		}
 		every_in_list = {
 			variable = faith_minorities_small
+			limit = {
+				ROOT.faith = {
+					faith_hostility_level = {
+						target = PREV
+						value >= faith_astray_level
+					}
+				}
+				NOT = {
+					ROOT = {
+						is_target_in_variable_list = {
+							name = faith_options
+							target = PREV
+						}
+					}
+				}
+			}
+			ROOT = {
+				add_to_variable_list = {
+					name = faith_options
+					target = PREV
+				}
+			}
+		}
+		every_in_list = {
+			variable = faith_minorities_trader
 			limit = {
 				ROOT.faith = {
 					faith_hostility_level = {
@@ -442,6 +498,29 @@ scripted_effect setup_expel_cultural_minorities_effect = {
 				}
 			}
 		}
+
+		every_in_list = {
+			variable = culture_minorities_trader
+			limit = {
+				ROOT.culture = {
+					NOT = { has_same_culture_heritage = prev }
+				}
+				ROOT = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = culture_options
+							target = PREV
+						}
+					}
+				}
+			}
+			ROOT = {
+				add_to_variable_list = {
+					name = culture_options
+					target = PREV
+				}
+			}
+		}
 	}
 }
 
@@ -471,6 +550,18 @@ scripted_effect setup_promote_religious_minorities_effect = {
 				}
 			}
 		}
+		every_in_list = {
+			variable = faith_minorities_trader
+			limit = {
+				NOT = { THIS = scope:councillor_liege.faith }
+			}
+			ROOT = {
+				add_to_variable_list = {
+					name = faith_options
+					target = PREV
+				}
+			}
+		}
 	}
 }
 
@@ -490,6 +581,18 @@ scripted_effect setup_promote_culture_minorities_effect = {
 		}
 		every_in_list = {
 			variable = culture_minorities_small
+			limit = {
+				NOT = { THIS = scope:councillor_liege.culture }
+			}
+			ROOT = {
+				add_to_variable_list = {
+					name = culture_options
+					target = PREV
+				}
+			}
+		}
+		every_in_list = {
+			variable = culture_minorities_trader
 			limit = {
 				NOT = { THIS = scope:councillor_liege.culture }
 			}
@@ -1190,8 +1293,24 @@ minorities.2001 = {
 	}
 	theme = realm
 	immediate = {
-		setup_promote_religious_minorities_effect = yes
-		setup_promote_culture_minorities_effect = yes
+		if = {
+			limit = {
+				OR = {
+					has_realm_law = cultural_minority_status_1
+					has_realm_law = cultural_minority_status_2
+				}
+			}
+			setup_promote_culture_minorities_effect = yes
+		}
+		if = {
+			limit = {
+				OR = {
+					has_realm_law = religious_minority_status_1
+					has_realm_law = religious_minority_status_2
+				}
+			}
+			setup_promote_religious_minorities_effect = yes
+		}
 		scope:county = {
 			remove_variable = faith_to_convert
 			remove_variable = culture_to_convert

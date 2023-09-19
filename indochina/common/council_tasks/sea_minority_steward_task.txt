@@ -932,6 +932,13 @@ task_promote_minority = {
 								NOT = { THIS = scope:councillor_liege.faith }
 							}
 						}
+						# And needs to be tolerant enough to promote them
+						scope:councillor_liege = {
+							OR = {
+								has_realm_law = religious_minority_status_1
+								has_realm_law = religious_minority_status_2
+							}
+						}
 					}
 
 					#...Or aren't your own culture
@@ -945,6 +952,12 @@ task_promote_minority = {
 							any_in_list = {
 								variable = culture_minorities_small
 								NOT = { THIS = scope:councillor_liege.culture }
+							}
+						}
+						scope:councillor_liege = {
+							OR = {
+								has_realm_law = cultural_minority_status_1
+								has_realm_law = cultural_minority_status_2
 							}
 						}
 					}
@@ -970,6 +983,9 @@ task_promote_minority = {
 		scope:county = {
 			if = {
 				limit = { exists = scope:county.var:faith_to_convert }
+				if = {
+					limit = {}
+				}
 				promote_faith_minority_effect = { FAITH = scope:county.var:faith_to_convert }
 			}
 			else_if = {
