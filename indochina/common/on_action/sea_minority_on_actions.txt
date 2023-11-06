@@ -2,12 +2,7 @@
 yearly_global_pulse = {
 	on_actions = {
 		on_yearly_sea_minority_maintainance
-	}
-}
-
-on_yearly_playable = {
-	on_actions = {
-		yearly_slave_pulse
+		on_yearly_enclave_maintenance
 	}
 }
 
@@ -43,33 +38,6 @@ integrate_slave_culture_over_time = {
 		remove_list_variable = {
 			name = culture_minorities_slave
 			target = scope:loc_culture
-		}
-	}
-}
-
-integrate_slave_faith_over_time = {
-	effect = {
-		remove_list_variable = {
-			name = faith_minorities_slave
-			target = scope:loc_faith
-		}
-	}
-}
-
-integrate_trader_culture_over_time = {
-	effect = {
-		remove_list_variable = {
-			name = culture_minorities_trader
-			target = scope:loc_culture
-		}
-	}
-}
-
-integrate_trader_faith_over_time = {
-	effect = {
-		remove_list_variable = {
-			name = faith_minorities_trader
-			target = scope:loc_faith
 		}
 	}
 }
@@ -162,6 +130,82 @@ on_county_culture_change = {
 #		# get innovations from host culture
 #	}
 #}
+
+on_yearly_sea_minority_maintainance = {
+	effect = {
+		# Normal culture/faith spread
+		every_county = {
+			save_scope_as = source_county
+			random = {
+				chance = 3
+				trigger_event = {
+					days = { 1 360 }
+					on_action = do_culture_faith_migration
+				}
+			}
+		}
+
+		# Minority culture spread/growth
+		every_county = {
+			limit = { county_has_minority_culture_trigger = yes }
+
+			save_scope_as = source_county
+			random = {
+				chance = 1
+				trigger_event = {
+					days = { 1 360 }
+					on_action = do_minority_culture_growth
+				}
+			}
+		}
+
+		# Minority faith spread/growth
+		every_county = {
+			limit = { county_has_minority_faith_trigger = yes }
+
+			save_scope_as = source_county
+			random = {
+				chance = 1
+				trigger_event = {
+					days = { 1 360 }
+					on_action = do_minority_faith_growth
+				}
+			}
+		}
+
+		# get innovations from host culture
+	}
+}
+
+on_yearly_enclave_maintenance = {
+	effect = {
+		random = {
+			chance = 10
+			every_county = {
+				limit = { county_has_any_traders_trigger = yes }
+				save_scope_as = county
+				random_list = {
+					1 = {
+						trigger = { variable_list_size = { name = culture_minorities_trader value > 0 } }
+						random_in_list = {
+							variable = culture_minorities_trader
+							save_scope_as = enclave
+							integrate_trader_culture_minority_effect = yes
+						}
+					}
+					1 = {
+						trigger = { variable_list_size = { name = faith_minorities_trader value > 0 } }
+						random_in_list = {
+							variable = faith_minorities_trader
+							save_scope_as = enclave
+							integrate_trader_faith_minority_effect = yes
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 do_culture_faith_migration = {
 	effect = {
@@ -498,10 +542,7 @@ yearly_slave_pulse = {
 		# talented slave
 	}
 	effect = {
-		every_sub_realm_county = {
-			limit = { county_has_any_slaves_trigger = yes }
-			change_development_progress = this.slave_dev_factor
-		}
+
 	}
 }
 

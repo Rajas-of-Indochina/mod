@@ -1,4 +1,35 @@
-﻿
+﻿# Borrowed from Way of Kings
+# Faster version for smaller ranges
+save_8_bit_trigger_breakpoint_as = {
+	save_temporary_scope_value_as = {
+		name = tmp_testbit value = 0
+	}
+	increment_if = {TRIGGER = $TRIGGER$ NUM = 128}
+	increment_if = {TRIGGER = $TRIGGER$ NUM = 64}
+	increment_if = {TRIGGER = $TRIGGER$ NUM = 32}
+	increment_if = {TRIGGER = $TRIGGER$ NUM = 16}
+	increment_if = {TRIGGER = $TRIGGER$ NUM = 8}
+	increment_if = {TRIGGER = $TRIGGER$ NUM = 4}
+	increment_if = {TRIGGER = $TRIGGER$ NUM = 2}
+	increment_if = {TRIGGER = $TRIGGER$ NUM = 1}
+	save_temporary_scope_value_as = {
+		name = $NAME$
+		value = scope:tmp_testbit
+	}
+}
+
+cultural_acceptance_of_enclave = {
+	if = {
+		limit = {
+			save_8_bit_trigger_breakpoint_as = {
+				TRIGGER = cultural_acceptance_of_enclave_breakpoint_trigger
+				NAME = tmp_cultural_acceptance_of_enclave
+			}
+		}
+		add = scope:tmp_cultural_acceptance_of_enclave
+	}
+}
+
 culture_conversion_acceptance_impact = { #The smaller a culture is, the more upset it will be.
 	subtract = {
 		value = 1
@@ -16,6 +47,30 @@ culture_conversion_acceptance_impact = { #The smaller a culture is, the more ups
 }
 
 slave_dev_factor = {
+	value = 0
+	every_in_list = {
+		variable = culture_minorities_slave
+		add = 1
+	}
+	every_in_list = {
+		variable = faith_minorities_slave
+		add = 1
+	}
+}
+
+county_total_enclaves = {
+	value = 0
+	every_in_list = {
+		variable = culture_minorities_trader
+		add = 1
+	}
+	every_in_list = {
+		variable = faith_minorities_trader
+		add = 1
+	}
+}
+
+county_total_slaves = {
 	value = 0
 	every_in_list = {
 		variable = culture_minorities_slave

@@ -1422,14 +1422,7 @@ add_slave_culture_minority_effect = {
 				name = culture_minorities_slave
 				target = $CULTURE$
 			}
-			add_county_modifier = {
-				modifier = slave_population_modifier
-				years = 5
-			}
-			#trigger_event = {
-			#	on_action = integrate_slave_culture_over_time
-			#	years = 5
-			#}
+			update_slave_modifier_stacks_effect = yes
 		}		
 	}
 	custom_tooltip = add_slave_culture_minority_tt
@@ -1445,14 +1438,7 @@ add_slave_faith_minority_effect = {
 				name = faith_minorities_slave
 				target = $FAITH$
 			}
-			add_county_modifier = {
-				modifier = slave_population_modifier
-				years = 5
-			}
-			trigger_event = {
-				on_action = integrate_slave_faith_over_time
-				years = 5
-			}
+			update_slave_modifier_stacks_effect = yes
 		}	
 	}
 	custom_tooltip = add_slave_faith_minority_tt
@@ -1468,15 +1454,8 @@ add_trader_culture_minority_effect = {
 				name = culture_minorities_trader
 				target = $CULTURE$
 			}
-			add_county_modifier = {
-				modifier = trade_enclave_modifier
-				years = 5
-			}
-			trigger_event = {
-				on_action = integrate_trader_culture_over_time
-				years = 5
-			}
 		}
+		update_enclave_modifier_stacks_effect = yes
 	}
 }
 
@@ -1490,15 +1469,72 @@ add_trader_faith_minority_effect = {
 				name = faith_minorities_trader
 				target = $FAITH$
 			}
-			add_county_modifier = {
-				modifier = trade_enclave_modifier
-				years = 5
-			}
-			trigger_event = {
-				on_action = integrate_trader_faith_over_time
-				years = 5
-			}
 		}
+		update_enclave_modifier_stacks_effect = yes
+	}
+}
+
+
+# Scope:enclave is the culture enclave
+# scope:county is the county
+integrate_trader_culture_minority_effect = {
+	if = {{limit scope:county.culture = scope:enclave}}
+	else = {
+		remove_list_variable = {
+			name = culture_minorities_trader
+			target = scope:enclave
+		}
+		random = {
+			chance = 0
+			modifier = {
+				add = cultural_acceptance_of_enclave
+			}
+			promote_trader_culture_minority_effect = { CULTURE = scope:enclave }
+			scope:county = { change_development_progress = 25 }
+		}
+		update_enclave_modifier_stacks_effect = yes
+	}
+}
+
+integrate_trader_faith_minority_effect = {
+	if = {{limit scope:county.culture = scope:enclave}}
+	else = {
+		remove_list_variable = {
+			name = culture_minorities_trader
+			target = scope:enclave
+		}
+		random = {
+			chance = 0
+			modifier = {
+				add = {
+					value = 0
+					if = {
+						limit = { faith_hostility_level = { target = scope:county.faith value < 3 } }
+						add = 25
+					}
+					if = {
+						limit = { faith_hostility_level = { target = scope:county.faith value < 2 } }
+						add = 25
+					}
+					if = {
+						limit = { faith_hostility_level = { target = scope:county.faith value < 1 } }
+						add = 25
+					}
+				}
+			}
+			promote_trader_faith_minority_effect = { FAITH = scope:enclave }
+			scope:county = { change_development_progress = 25 }
+		}
+		update_enclave_modifier_stacks_effect = yes
+	}
+}
+
+# THIS: the county in question
+update_enclave_modifier_stacks_effect = {
+	remove_all_county_modifier_instances = trade_enclave_modifier
+	while = {
+		count = county_total_enclaves
+		add_county_modifier = trade_enclave_modifier
 	}
 }
 
@@ -1682,7 +1718,6 @@ distribute_raid_slaves_effect = {
 	set_variable = { name = num_minorities value = 0 }
 }
 
-
 promote_slave_culture_minority_effect = {
 	$COUNTY$ = {
 		if = {
@@ -1718,6 +1753,15 @@ promote_slave_faith_minority_effect = {
 			save_scope_as = county
 			promote_faith_minority_effect = { FAITH = $FAITH$ }
 		}
+	}
+}
+
+# THIS: the county in question
+update_slave_modifier_stacks_effect = {
+	remove_all_county_modifier_instances = slave_population_modifier
+	while = {
+		count = county_total_slaves
+		add_county_modifier = slave_population_modifier
 	}
 }
 
@@ -2594,6 +2638,7 @@ debug_clear_slaves = {
 	capital_county = {
 		clear_variable_list = culture_minorities_slave
 		clear_variable_list = faith_minorities_slave
+		update_slave_modifier_stacks_effect = yes
 	}
 }
 
@@ -2621,5 +2666,6 @@ debug_clear_traders = {
 	capital_county = {
 		clear_variable_list = culture_minorities_trader
 		clear_variable_list = faith_minorities_trader
+		update_enclave_modifier_stacks_effect = yes
 	}
 }
