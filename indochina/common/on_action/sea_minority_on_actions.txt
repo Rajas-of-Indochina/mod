@@ -1,4 +1,4 @@
-﻿
+
 yearly_global_pulse = {
 	on_actions = {
 		on_yearly_sea_minority_maintainance
@@ -179,29 +179,32 @@ on_yearly_sea_minority_maintainance = {
 
 on_yearly_enclave_maintenance = {
 	effect = {
-		random = {
-			chance = 10
-			every_county = {
-				limit = { county_has_any_traders_trigger = yes }
-				save_scope_as = county
-				random_list = {
-					1 = {
-						trigger = { variable_list_size = { name = culture_minorities_trader value > 0 } }
-						random_in_list = {
-							variable = culture_minorities_trader
-							save_scope_as = enclave
-							integrate_trader_culture_minority_effect = yes
-						}
-					}
-					1 = {
-						trigger = { variable_list_size = { name = faith_minorities_trader value > 0 } }
-						random_in_list = {
-							variable = faith_minorities_trader
-							save_scope_as = enclave
-							integrate_trader_faith_minority_effect = yes
-						}
+		random_county = {
+			limit = { county_has_any_traders_trigger = yes }
+			save_scope_as = county
+			random_list = {
+				1 = {
+					trigger = { variable_list_size = { name = culture_minorities_trader value > 0 } }
+					random_in_list = {
+						variable = culture_minorities_trader
+						save_scope_as = enclave_culture
 					}
 				}
+				1 = {
+					trigger = { variable_list_size = { name = faith_minorities_trader value > 0 } }
+					random_in_list = {
+						variable = faith_minorities_trader
+						save_scope_as = enclave_faith
+					}
+				}
+			}
+			if = {
+				limit = { exists = scope:enclave_culture }
+				integrate_trader_culture_minority_effect = { ENCLAVE = scope:enclave_culture }
+			}
+			else_if = {
+				limit = { exists = scope:enclave_faith }
+				integrate_trader_faith_minority_effect = { ENCLAVE = scope:enclave_faith }
 			}
 		}
 	}
@@ -528,21 +531,35 @@ slave_dropoff_effect = {
 }
 
 yearly_slave_pulse = {
-	trigger = {
-		any_sub_realm_county = {
-			county_has_any_slaves_trigger = yes
-		}
-	}
-	events = {
-		# TODO add events for slave stuff:
-		# Mistreated slaves demand compensation
-		# Slaves assimilate into local culture
-		# Impending Slave Revolt
-		# Slave religion/culture becoming popular with populace
-		# talented slave
-	}
 	effect = {
-
+		random_county = {
+			limit = { county_has_any_slaves_trigger = yes }
+			save_scope_as = county
+			random_list = {
+				1 = {
+					trigger = { variable_list_size = { name = culture_minorities_slave value > 0 } }
+					random_in_list = {
+						variable = culture_minorities_slave
+						save_scope_as = slave_culture
+					}
+				}
+				1 = {
+					trigger = { variable_list_size = { name = faith_minorities_slave value > 0 } }
+					random_in_list = {
+						variable = faith_minorities_slave
+						save_scope_as = slave_faith
+					}
+				}
+			}
+			if = {
+				limit = { exists = scope:slave_culture }
+				integrate_slave_culture_minority_effect = { SLAVE = scope:slave_culture }
+			}
+			else_if = {
+				limit = { exists = scope:slave_faith }
+				integrate_slave_faith_minority_effect = { SLAVE = scope:slave_faith }
+			}
+		}
 	}
 }
 

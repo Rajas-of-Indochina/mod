@@ -1,4 +1,4 @@
-# Override Vanilla
+﻿# Override Vanilla
 # Allows hybridizing/diverging to work more smoothly with minorities
 expand_hybrid_culture_from_origin_point = {
 	every_title_to_title_neighboring_and_across_water_county = {
@@ -1449,7 +1449,7 @@ add_trader_culture_minority_effect = {
 	$COUNTY$ = {
 		save_scope_as = loc_county
 		if = {
-			limit = { NOT = {faith = $CULTURE$} }
+			limit = { NOT = {culture = $CULTURE$} }
 			add_to_variable_list = {
 				name = culture_minorities_trader
 				target = $CULTURE$
@@ -1475,55 +1475,137 @@ add_trader_faith_minority_effect = {
 }
 
 
-# Scope:enclave is the culture enclave
+# $ENCLAVE$ is the culture enclave
 # scope:county is the county
 integrate_trader_culture_minority_effect = {
-	if = {{limit scope:county.culture = scope:enclave}}
+	if = {limit ={scope:county.culture = $ENCLAVE$}}
 	else = {
 		remove_list_variable = {
 			name = culture_minorities_trader
-			target = scope:enclave
+			target = $ENCLAVE$
 		}
 		random = {
 			chance = 0
 			modifier = {
-				add = cultural_acceptance_of_enclave
+				add = 10
+				$ENCLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 10
+					}
+				}
 			}
-			promote_trader_culture_minority_effect = { CULTURE = scope:enclave }
-			scope:county = { change_development_progress = 25 }
+			modifier = {
+				add = 10
+				$ENCLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 20
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$ENCLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 30
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$ENCLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 40
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$ENCLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 50
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$ENCLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 60
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$ENCLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 70
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$ENCLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 80
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$ENCLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 90
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$ENCLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 100
+					}
+				}
+			}
+			promote_trader_culture_minority_effect = { CULTURE = $ENCLAVE$ }
+			scope:county = { change_development_progress_with_overflow = minimal_development_progress_gain }
 		}
 		update_enclave_modifier_stacks_effect = yes
 	}
 }
 
 integrate_trader_faith_minority_effect = {
-	if = {{limit scope:county.culture = scope:enclave}}
+	if = {limit ={scope:county.faith = $ENCLAVE$}}
 	else = {
 		remove_list_variable = {
-			name = culture_minorities_trader
-			target = scope:enclave
+			name = faith_minorities_trader
+			target = $ENCLAVE$
 		}
 		random = {
-			chance = 0
+			chance = 10
 			modifier = {
-				add = {
-					value = 0
-					if = {
-						limit = { faith_hostility_level = { target = scope:county.faith value < 3 } }
-						add = 25
-					}
-					if = {
-						limit = { faith_hostility_level = { target = scope:county.faith value < 2 } }
-						add = 25
-					}
-					if = {
-						limit = { faith_hostility_level = { target = scope:county.faith value < 1 } }
-						add = 25
-					}
-				}
+				scope:county.faith = {faith_hostility_level = { target = $ENCLAVE$ value < 3 }}
+				add = 25
 			}
-			promote_trader_faith_minority_effect = { FAITH = scope:enclave }
-			scope:county = { change_development_progress = 25 }
+			modifier = {
+				scope:county.faith = {faith_hostility_level = { target = $ENCLAVE$ value < 2 }}
+				add = 25
+			}
+			modifier = {
+				scope:county.faith = {faith_hostility_level = { target = $ENCLAVE$ value < 1 }}
+				add = 25
+			}
+			promote_trader_faith_minority_effect = { FAITH = $ENCLAVE$ }
+			scope:county = { change_development_progress_with_overflow = minimal_development_progress_gain }
 		}
 		update_enclave_modifier_stacks_effect = yes
 	}
@@ -1762,6 +1844,140 @@ update_slave_modifier_stacks_effect = {
 	while = {
 		count = county_total_slaves
 		add_county_modifier = slave_population_modifier
+	}
+}
+
+integrate_slave_culture_minority_effect = {
+	if = {limit ={scope:county.culture = $SLAVE$}}
+	else = {
+		remove_list_variable = {
+			name = culture_minorities_slave
+			target = $SLAVE$
+		}
+		random = {
+			chance = 0
+			modifier = {
+				add = 10
+				$SLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 10
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$SLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 20
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$SLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 30
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$SLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 40
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$SLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 50
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$SLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 60
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$SLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 70
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$SLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 80
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$SLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 90
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				$SLAVE$ = {
+					cultural_acceptance = {
+						target = this.culture
+						value >= 100
+					}
+				}
+			}
+			promote_trader_culture_minority_effect = { CULTURE = $SLAVE$ }
+			scope:county = { change_development_progress_with_overflow = minimal_development_progress_gain }
+		}
+		update_slave_modifier_stacks_effect = yes
+	}
+}
+
+integrate_slave_faith_minority_effect = {
+	if = {limit ={scope:county.faith = $SLAVE$}}
+	else = {
+		remove_list_variable = {
+			name = faith_minorities_slave
+			target = $SLAVE$
+		}
+		random = {
+			chance = 10
+			modifier = {
+				scope:county.faith = {faith_hostility_level = { target = $SLAVE$ value < 3 }}
+				add = 25
+			}
+			modifier = {
+				scope:county.faith = {faith_hostility_level = { target = $SLAVE$ value < 2 }}
+				add = 25
+			}
+			modifier = {
+				scope:county.faith = {faith_hostility_level = { target = $SLAVE$ value < 1 }}
+				add = 25
+			}
+			promote_trader_faith_minority_effect = { FAITH = $SLAVE$ }
+			scope:county = { change_development_progress_with_overflow = minimal_development_progress_gain }
+		}
+		update_slave_modifier_stacks_effect = yes
 	}
 }
 
