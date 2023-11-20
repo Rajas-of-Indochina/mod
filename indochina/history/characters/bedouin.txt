@@ -20,6 +20,7 @@
 	trait = just
 	trait = zealous
 	trait = callous
+	trait = infertile #had only one single child, it seems 
 
 	#Other Traits
 	trait = sayyid
@@ -28,25 +29,37 @@
 	disallow_random_traits = yes
 	830.1.1 = {
 		birth = yes
+		effect = {
+			add_character_flag = has_scripted_appearance
+		}	
 	}
 	864.1.1 = {
 		give_nickname = nick_the_missionary	#Ascends to the throne of Daylam
+		dynasty_house = house_zaydid
 		effect = {
 			set_relation_friend = { reason = friend_generic_history target = character:163166 }	#Loyally supported by his brother throughout.
+			add_unpressed_claim = title:d_gurgan
+			set_relation_rival = { reason = rival_generic_history target = character:163161 }
 			#add_hook = {
 			#	target = character:163166
 			#	type = loyalty_hook
 			#}
+			if = {
+				limit = { has_fp3_dlc_trigger = yes }
+				add_trait = fp3_struggle_detractor
+			}
 		}
 	}
 	884.1.6 = {
-		death = yes
+		death = {
+			death_reason = death_ill
+		}
 	}
 }
 
 144060 = {
 	name = "Al-Mustarshid"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 3088
@@ -61,7 +74,7 @@
 
 144061 = {
 	name = "Al-Rashid"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 144060
@@ -76,7 +89,7 @@
 
 144062 = {
 	name = "Al-Muqtafi"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 3088
@@ -91,7 +104,7 @@
 
 144063 = {
 	name = "Al-Mustanjid"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 144062
@@ -106,7 +119,7 @@
 
 144064 = {
 	name = "Al-Mustadi"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 144063
@@ -730,7 +743,7 @@
 227000 = {
 	name = "Al-Nasir"
 	# AKA: Ahmad al
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	martial = 4
 	diplomacy = 7
 	intrigue = 5
@@ -753,7 +766,7 @@
 3080 = {
 	name = "Al-Ta_i"
 	# AKA: Abdul
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	martial = 6
 	diplomacy = 4
 	intrigue = 7
@@ -776,7 +789,7 @@
 3088 = {
 	name = "Al-Mustazhir"
 	# AKA: Ahmad al
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	martial = 4
 	diplomacy = 8
 	intrigue = 7
@@ -1744,7 +1757,7 @@
 
 33900 = {
 	name = "Abbas" # Muhammad's paternal half-uncle
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33924
@@ -1759,7 +1772,7 @@
 
 33901 = {
 	name = "Abdullah"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33900
@@ -1774,7 +1787,7 @@
 
 33902 = {
 	name = "Ali"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33901
@@ -1808,6 +1821,8 @@
 	religion = "ismaili"
 	culture = "bedouin"
 	father = 33910
+	trait = temperate #according to sources
+	trait = zealous
 	trait = sayyid
 	598.10.23 = {
 		birth = "598.10.23"
@@ -1816,7 +1831,9 @@
 		add_spouse = 33921 # Fatimah
 	}
 	661.2.28 = {
-		death = "661.2.28"
+		death = {
+			death_reason = death_murdered_by_religious_rebels #Ibn Muljam Moradi 
+		}
 	}
 }
 
@@ -1832,10 +1849,12 @@
 		birth = "626.1.8"
 	}
 	652.1.1 = {
-		add_spouse = 180638
+		add_spouse = 180638 # Shahrbanu, Sassanian princess (mythical, but works well)
 	}
 	680.10.10 = {
-		death = "680.10.10"
+		death = {
+			death_reason = death_battle #Karbala
+		}
 	}
 }
 
@@ -2078,7 +2097,7 @@
 
 34000 = {
 	name = "Muhammad"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33902
@@ -2093,7 +2112,7 @@
 
 34001 = {
 	name = "As-Saffah"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 34000
@@ -2425,6 +2444,22 @@
 		death = "1254.1.1"
 	}
 }
+
+
+34054 = {
+	name = "Shiha"
+	dynasty = 7296
+	religion = "ashari"
+	culture = "bedouin"
+	trait = sayyid
+	father = 34049
+	1150.1.1 = {
+		birth = "1150.1.1"
+	}
+	1240.1.1 = {
+		death = "1240.1.1"
+	}
+}
 ali_ibn_qatada = {
 	name = "Ali"
 	dynasty_house = house_qatadid
@@ -2506,7 +2541,20 @@ ali_ibn_qatada = {
 	}
 }
 
-
+34059 = {
+	name = "Djammaz"
+	dynasty = 7296
+	religion = "ashari"
+	culture = "bedouin"
+	father = 34054
+	trait = sayyid
+	1230.1.1 = {
+		birth = "1230.1.1"
+	}
+	1288.1.1 = {
+		death = "1288.1.1"
+	}
+}
 
 34060 = {
 	name = "Rumaitha"
@@ -8086,9 +8134,26 @@ ali_ibn_qatada = {
 	religion = "zayidi"
 	culture = "bedouin"
 	trait = sayyid
+	trait = education_martial_2
+	trait = generous
+	trait = zealous
+	trait = fickle
+	trait = poet
+	martial = 4
 	father = 163128
 	832.1.1 = {
 		birth = "832.1.1"
+	}
+	861.1.1 = {
+		give_nickname = nick_the_younger_missionary	
+		dynasty_house = house_zaydid
+
+		effect = {
+			if = {
+				limit = { has_fp3_dlc_trigger = yes }
+				add_trait = fp3_struggle_detractor
+			}
+		}
 	}
 	900.10.3 = {
 		death = "900.10.3"
@@ -9289,7 +9354,7 @@ ali_ibn_qatada = {
 
 188611 = {
 	name = "Abbas"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 188671
@@ -9304,7 +9369,7 @@ ali_ibn_qatada = {
 
 188612 = {
 	name = "Qutham" # governor of Yamamah
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 188611
@@ -9897,7 +9962,7 @@ ali_ibn_qatada = {
 
 188692 = {
 	name = "al-Harith"
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33901
@@ -9911,7 +9976,7 @@ ali_ibn_qatada = {
 
 188693 = {
 	name = "al-Sariyy"
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 188692
@@ -10358,7 +10423,7 @@ ali_ibn_qatada = {
 
 146060 = {
 	name = "Salih"
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33902
@@ -10373,7 +10438,7 @@ ali_ibn_qatada = {
 
 146061 = {
 	name = "Abdallah"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33902
@@ -10388,7 +10453,7 @@ ali_ibn_qatada = {
 
 146062 = {
 	name = "Al-Fadl"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 146060
@@ -10403,7 +10468,7 @@ ali_ibn_qatada = {
 
 146063 = {
 	name = "Ibrahim"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 146060
@@ -10418,7 +10483,7 @@ ali_ibn_qatada = {
 
 146064 = {
 	name = "Abd_al-Malik"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 146060
@@ -10433,7 +10498,7 @@ ali_ibn_qatada = {
 
 146065 = {
 	name = "Abdallah"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 146060
@@ -10448,7 +10513,7 @@ ali_ibn_qatada = {
 
 146066 = {
 	name = "Abd_ar-Rahman"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 146064
@@ -10640,7 +10705,7 @@ ali_ibn_qatada = {
 
 146126 = {
 	name = "Ibrahim"
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33902
@@ -10655,7 +10720,7 @@ ali_ibn_qatada = {
 
 146127 = {
 	name = "Abd_al-Bahhab"
-	dynasty = 101727
+	dynasty_house = house_abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 146126
@@ -10833,7 +10898,7 @@ ali_ibn_qatada = {
 }
 188667 = {
 	name = "Isa"
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33902
@@ -10847,7 +10912,7 @@ ali_ibn_qatada = {
 
 188668 = {
 	name = "Musa"
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33902
@@ -10862,7 +10927,7 @@ ali_ibn_qatada = {
 
 188669 = {
 	name = "Isa"
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 188668
@@ -10877,7 +10942,7 @@ ali_ibn_qatada = {
 
 188670 = {
 	name = "Ubaydallah"
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 188612
@@ -10892,7 +10957,7 @@ ali_ibn_qatada = {
 
 188671 = {
 	name = "Ubaydallah"
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33900
@@ -10908,7 +10973,7 @@ ali_ibn_qatada = {
 188672 = {
 	name = "Asma"
 	female = yes
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 33901
@@ -10923,7 +10988,7 @@ ali_ibn_qatada = {
 
 188673 = {
 	name = "Abdullah"
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 188671
@@ -10938,7 +11003,7 @@ ali_ibn_qatada = {
 
 188674 = {
 	name = "Ubaydallah" # made up name
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 188673
@@ -10953,7 +11018,7 @@ ali_ibn_qatada = {
 
 188675 = {
 	name = "Isa" # made up name
-	dynasty = 101727 # Abbasid
+	dynasty_house = house_abbasid # Abbasid
 	religion = "ashari"
 	culture = "bedouin"
 	father = 188673
@@ -10972,6 +11037,10 @@ ali_ibn_qatada = {
 	religion = "imami"
 	culture = "bedouin"
 	father = 188698
+	trait = brave
+	trait = generous
+	trait = education_learning_3
+	trait = scholar 
 	785.1.1 = {
 		birth = yes
 	}
@@ -13954,6 +14023,2259 @@ bedouin00162 = { #fictional governor of Hijaz
 	}
 }
 
+145708 = {
+	name = "MA_ni_"
+	dynasty = 1022252
+	religion = "ashari"
+	culture = "bedouin"
+	father = 145707
+	1072.1.1 = {
+		birth = "1074.1.1"
+	}
+	1127.1.1 = {
+		death = "1127.1.1"
+	}
+}
+
+145709 = {
+	name = "NizA_r"
+	dynasty = 1022252
+	religion = "ashari"
+	culture = "bedouin"
+	father = 145708
+	1107.1.1 = {
+		birth = "1107.1.1"
+	}
+	1169.1.1 = {
+		death = "1169.1.1"
+	}
+}
+
+145710 = {
+	name = "Ishaq"
+	dynasty = 1022252
+	religion = "ashari"
+	culture = "bedouin"
+	father = 145709
+	1144.1.1 = {
+		birth = "1144.1.1"
+	}
+	1203.1.1 = {
+		death = "1203.1.1"
+	}
+}
+
+145711 = {
+	name = "Sadiq"
+	dynasty = 1022252
+	religion = "ashari"
+	culture = "bedouin"
+	father = 145710
+	1170.1.1 = {
+		birth = "1170.1.1"
+	}
+	1229.1.1 = {
+		death = "1229.1.1"
+	}
+}
+
+145712 = {
+	name = "Hakam"
+	dynasty = 1022252
+	religion = "ashari"
+	culture = "bedouin"
+	father = 145711
+	1217.1.1 = {
+		birth = "1217.1.1"
+	}
+	1281.1.1 = {
+		death = "1281.1.1"
+	}
+}
+
+145713 = {
+	name = "Bishr"
+	dynasty = 1022252
+	religion = "ashari"
+	culture = "bedouin"
+	father = 145712
+	1245.1.1 = {
+		birth = "1245.1.1"
+	}
+	1296.1.1 = {
+		death = "1296.1.1"
+	}
+}
+
+145714 = {
+	name = "Rabi_a"
+	dynasty = 1022252
+	religion = "ashari"
+	culture = "bedouin"
+	father = 145713
+	1270.1.1 = {
+		birth = "1270.1.1"
+	}
+	1314.1.1 = {
+		death = "1314.1.1"
+	}
+}
+
+145715 = {
+	name = "Sadiq"
+	dynasty = 1022252
+	religion = "ashari"
+	culture = "bedouin"
+	father = 145714
+	1301.1.1 = {
+		birth = "1301.1.1"
+	}
+	1358.1.1 = {
+		death = "1358.1.1"
+	}
+}
+
+3212 = {
+	name = "Abbad" # Abbad ibn Muhammad, known as al-Mu'tadid, Emir of Seville (1042-1069) & Sheik of Sevilla (1042-1069), Moura (1044-1069), Niebla (1054-1069), Algeciras (1055-1069) & Cádiz (1068-1069)
+	dynasty = 594 # Banu Abbad Dynasty
+	martial = 8
+	diplomacy = 6
+	intrigue = 5
+	stewardship = 6
+	religion = muwalladi
+	culture = bedouin
+	trait = cynical
+	trait = gluttonous
+	trait = craven
+	trait = greedy
+	trait = ambitious
+	trait = education_martial_4
+
+	father = 73209 # Muhammad ibn Isma'il
+
+	1016.1.1 = {
+		birth = yes
+	}
+	1038.1.1 = {
+		add_spouse = 85009 # Kera ibn Muyahid (andalusian.txt)
+	}
+	1042.1.1 = {
+		name = "Al-Mu_tadid"
+	}
+	1069.2.7 = {
+		death = yes
+	}
+}
+
+3214 = {
+	name = "Muhammad" # Muhammad ibn Abbad, known as al-Mu'tamid, Emir of Seville (1069-1091), Sheik of Niebla (1053-1054 & 1069-1091), Silves (1063-1069 & 1070-1091), Algeciras & Seville (1069-1091), Cádiz (1069-1085), Cabra (1070-1091), Jaén (1074-1091) & Córdoba (1075)
+	dynasty = 594 # Banu Abbad Dynasty
+	martial = 5
+	diplomacy = 6
+	intrigue = 7
+	stewardship = 4
+	religion = muwalladi
+	culture = bedouin
+	trait = ambitious
+	trait = arbitrary
+	trait = cynical
+	trait = poet
+	trait = education_martial_2
+	disallow_random_traits = yes
+
+	father = 3212 # Emir al-Mu'tadid of Seville
+	mother = 85009 # Emira Kera ibn Muyahid (andalusian.txt)
+
+	1039.12.1 = {
+		birth = yes
+	}
+	1062.1.1 = {
+		add_spouse = 73211 # al-Rumaikiyya (andalusian.txt)
+	}
+	1069.2.7 = {
+		name = "Al-Mu_tamid"
+	}
+	1095.1.1 = {
+		death = yes
+	}
+}
+
+3914 = {
+	name = "Abd-al-Rahman" # Abd al-Rahman ibn Rashiq, known as Ibn Rasiq, Sheik of Murcia (1080-1098)
+	dynasty = 12208 # Banu Rasiq Dynasty
+	martial = 6
+	diplomacy = 8
+	intrigue = 4
+	stewardship = 6
+	religion = muwalladi
+	culture = bedouin
+	trait = cynical
+	trait = poet
+	trait = education_martial_2
+
+	father = 73248 # Rasiq
+	mother = 45028 # Ahu ibn Ahmad
+
+	1048.1.1 = {
+		birth = yes
+		employer = 3212 # Emir al-Mu'tadid of Seville
+	}
+	1098.1.1 = {
+		death = yes
+	}
+}
+
+45027 = {
+	name = "Ahmad" # Ahmad banu Tahir, Sheik of Murcia (1029-1063)
+	dynasty = 572 # Banu Tahir Dynasty
+	martial = 8
+	diplomacy = 5
+	intrigue = 8
+	stewardship = 6
+	religion = muwalladi
+	culture = bedouin
+	trait = greedy
+	trait = education_stewardship_2
+
+	973.1.1 = {
+		birth = yes
+	}
+	1063.1.1 = {
+		death = yes
+	}
+}
+
+45028 = {
+	name = "Ahu" # Ahu ibn Ahmad, wife of Rasiq (73234)
+	female = yes
+	dynasty = 572 # Banu Tahir Dynasty
+	martial = 8
+	diplomacy = 5
+	intrigue = 8
+	stewardship = 6
+	religion = muwalladi
+	culture = bedouin
+	trait = ill
+	trait = education_diplomacy_1
+
+	father = 45027 # Sheik Ahmad of Murcia
+
+	1030.1.1 = {
+		birth = yes
+	}
+	1067.1.1 = {
+		death = yes
+	}
+}
+
+73197 = {
+	name = "Yahaff" # Yahaff
+	dynasty = 12195 # Banu Yahaff Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_stewardship_1
+
+	1008.1.1 = {
+		birth = yes
+	}
+	1065.9.1 = {
+		employer = 3924 # Emir al-Ma'mun of Toledo
+	}
+	1067.1.1 = {
+		death = yes
+	}
+}
+
+73198 = {
+	name = "Abdallah" # Abdallah ibn Yahaff
+	dynasty = 12195 # Banu Yahaff Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_stewardship_2
+
+	father = 73197 # Yahaff
+
+	1030.1.1 = {
+		birth = yes
+	}
+	1065.9.1 = {
+		employer = 3924 # Emir al-Ma'Mun of Toledo
+	}
+	1086.1.1 = {
+		death = yes
+	}
+}
+
+73199 = {
+	name = "Ya_far" # Ya'far ibn Abdallah, Emir of Valencia (1092-1094) & Sheik of Castellon & Valencia (1092-1094)
+	dynasty = 12195 # Banu Yahaff Dynasty
+	religion = muwalladi
+	culture = bedouin
+
+	father = 73198 # Abdallah ibn Yahaff
+
+	1055.1.1 = {
+		birth = yes
+	}
+	1071.1.1 = {
+		trait = education_intrigue_1
+	}
+	1108.1.1 = {
+		death = yes
+	}
+}
+
+
+73209 = {
+	name = "Muhammad" # Muhammad ibn Isma'il, Emir of Seville (1023-1042) & Sheik of Seville (1023-1042)
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_martial_3
+
+	father = bedouin0192 # Isma'il ibn Abbad
+
+	990.1.1 = {
+		birth = yes
+	}
+	1042.1.1 = {
+		death = yes
+	}
+}
+
+
+73212 = {
+	name = "Butayna" # Butayna ibn Muhammad
+	female = yes
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+ 
+	father = 3214 # Emir al-Mu'tamid of Seville
+	mother = 73211 # Emira al-Rumaikiyya
+
+	1063.1.1 = {
+		birth = yes
+	}
+	1079.1.1 = {
+		trait = poet
+		trait = education_stewardship_3
+	}
+	1120.1.1 = {
+		death = yes
+	}
+}
+
+73213 = {
+	name = "Abbad" # Abbad ibn Muhammad, Sheik of Córdoba (1070-1075)
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+
+	father = 3214 # Emir al-Mu'tamid of Seville
+	mother = 73211 # Emira al Rumaikiyya
+
+	1062.1.1 = {
+		birth = yes
+	}
+	1075.1.1 = {
+		death = {
+			death_reason = death_murder
+		}
+	}
+}
+
+73214 = {
+	name = "al-Fath" # al-Fath ibn Muhammad, Sheik of Córdoba (1078-1091)
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+
+	father = 3214 # Emir al-Mu'tamid of Seville
+	mother = 73211 # Emira al-Rumaikiyya
+
+	1065.1.1 = {
+		birth = yes
+	}
+	1071.1.1 = {
+		trait = education_martial_2
+	}
+	1079.1.1 = {
+		add_spouse = 71373 # Zaïda
+	}
+	1091.3.26 = {
+		death = {
+			death_reason = death_battle
+		}
+	}
+}
+
+73215 = {
+	name = "al-Rashid" # al-Rashid ibn Muhammad
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+
+	father = 3214 # Emir al-Mu'tamid of Seville
+	mother = 73211 # Emira al-Rumaikiyya
+
+	1064.1.1 = {
+		birth = yes
+	}
+	1080.1.1 = {
+		trait = education_stewardship_2
+	}
+	1114.1.1 = {
+		death = yes
+	}
+}
+
+73217 = {
+	name = "al-Rebi" # al-Rebi ibn Muhammad
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_stewardship_1
+
+	father = 3214 # Emir al-Mu'tamid of Seville
+	mother = 73211 # Emira al-Rumaikiyya
+
+	1068.1.1 = {
+		birth = yes
+	}
+	1118.1.1 = {
+		death = yes
+	}
+}
+
+73218 = {
+	name = "al-Radi" # al-Radi ibn Muhammad, Sheik of Cádiz (1085-1091)
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_martial_2
+
+	father = 3214 # Emir al-Mu'tamid of Seville
+	mother = 73211 # Emira al-Rumaikiyya
+
+	1069.1.1 = {
+		birth = yes
+	}
+	1091.11.1 = {
+		death = {
+			death_reason = death_murder
+		}
+	}
+}
+
+73238 = {
+	name = "Abd-al-Rahman" # Abd al-Rahman ibn Muhammad
+	dynasty = 572 # Banu Tahir Dynasty
+	religion = muwalladi
+	culture = bedouin
+
+	father = 3910 # Emir Muhammad ibn Ahmad of Murcia
+
+	1055.1.1 = {
+		birth = yes
+	}
+	1071.1.1 = {
+		trait = education_stewardship_1
+	}
+	1109.1.1 = {
+		death = yes
+	}
+}
+
+73623 = {
+	name = "Ya_far"
+	dynasty = 599
+	religion = muwalladi
+	culture = bedouin
+	father = 73181
+	1135.1.1 = {
+		birth = "1135.1.1"
+	}
+	1180.1.1 = {
+		death = "1180.1.1"
+	}
+}
+
+73624 = {
+	name = "Yusuf"
+	dynasty = 599
+	religion = muwalladi
+	culture = bedouin
+	father = 73623
+	1162.1.1 = {
+		birth = "1162.1.1"
+	}
+	1221.1.1 = {
+		death = "1221.1.1"
+	}
+}
+
+73625 = {
+	name = "Muhammad"
+	dynasty = 599
+	religion = muwalladi
+	culture = bedouin
+	father = 73624
+	1186.1.1 = {
+		birth = "1186.1.1"
+	}
+	1228.1.1 = {
+		add_pressed_claim = title:d_valencia
+		add_pressed_claim = title:d_mallorca
+		add_pressed_claim = title:d_badajoz
+	}
+	1230.1.1 = {
+		remove_claim = title:d_mallorca
+	}
+	1230.3.19 = {
+		remove_claim = title:d_badajoz
+	}
+	1236.1.1 = {
+		remove_claim = title:d_valencia
+	}
+	1237.1.1 = {
+		add_pressed_claim = title:d_granada
+	}
+	1238.1.1 = {
+		death = "1238.1.1"
+	}
+}
+
+73626 = {
+	name = "Ali"
+	dynasty = 599
+	religion = muwalladi
+	culture = bedouin
+	father = 73624
+	1188.1.1 = {
+		birth = "1188.1.1"
+	}
+	1249.1.1 = {
+		death = "1249.1.1"
+	}
+}
+
+73627 = {
+	name = "Abu-Bakr"
+	dynasty = 599
+	religion = muwalladi
+	culture = bedouin
+	father = 73625
+	1223.1.1 = {
+		birth = "1223.1.1"
+	}
+	1238.1.1 = {
+		add_pressed_claim = title:d_granada
+	}
+	1238.7.1 = {
+		add_pressed_claim = title:d_murcia
+	}
+	1264.1.1 = {
+		remove_claim = title:d_murcia
+	}
+	1278.1.1 = {
+		death = "1278.1.1"
+	}
+}
+
+73628 = {
+	name = "Muhammad"
+	dynasty = 599
+	religion = muwalladi
+	culture = bedouin
+	father = 73625
+	1223.1.1 = {
+		birth = "1223.1.1"
+	}
+	1241.1.1 = {
+		add_pressed_claim = title:d_granada
+	}
+	1260.1.1 = {
+		death = "1260.1.1"
+	}
+}
+
+73629 = {
+	name = "Ya_far"
+	dynasty = 599
+	religion = muwalladi
+	culture = bedouin
+	father = 73628
+	1246.1.1 = {
+		birth = "1246.1.1"
+	}
+	1260.1.1 = {
+		add_pressed_claim = title:d_granada
+	}
+	1263.1.1 = {
+		death = "1263.1.1"
+	}
+}
+
+73630 = {
+	name = "Muhammad"
+	dynasty = 599
+	religion = muwalladi
+	culture = bedouin
+	father = 73629
+	1263.1.1 = {
+		birth = "1263.1.1"
+	}
+	1263.1.1 = {
+		add_pressed_claim = title:d_granada
+	}
+	1264.1.1 = {
+		death = "1264.1.1"
+	}
+}
+
+73641 = {
+	name = "Isma_il"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73642
+	1279.1.1 = {
+		birth = "1279.1.1"
+	}
+	1313.1.1 = {
+		add_spouse = 73649
+		add_pressed_claim = title:d_granada
+	}
+	1314.2.8 = {
+		remove_claim = title:d_granada
+	}
+	1325.1.1 = {
+		death = "1325.1.1"
+	}
+}
+
+73642 = {
+	name = "Faraj"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73654
+	1245.1.1 = {
+		birth = "1245.1.1"
+	}
+	1300.1.1 = {
+		death = "1300.1.1"
+	}
+}
+
+73643 = {
+	name = "Muhammad"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73642
+	1282.1.1 = {
+		birth = "1282.1.1"
+	}
+	1339.1.1 = {
+		death = "1339.1.1"
+	}
+}
+
+73644 = {
+	name = "Isma_il"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73643
+	1308.1.1 = {
+		birth = "1308.1.1"
+	}
+	1359.1.1 = {
+		death = "1359.1.1"
+	}
+}
+
+73645 = {
+	name = "Muhammad"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73644
+	1332.1.1 = {
+		birth = "1332.1.1"
+	}
+	1362.1.1 = {
+		death = "1362.1.1"
+	}
+}
+
+73646 = {
+	name = "Nasr"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73650
+	1287.11.2 = {
+		birth = "1287.11.2"
+	}
+	1322.11.16 = {
+		death = "1322.11.16"
+	}
+}
+
+73647 = {
+	name = "Muhammad"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73650
+	1257.8.15 = {
+		birth = "1257.8.15"
+	}
+	1314.1.21 = {
+		death = "1314.1.21"
+	}
+}
+
+73648 = {
+	name = "Fatima"
+	female = yes
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73647
+	1278.1.1 = {
+		birth = "1278.1.1"
+	}
+	1331.1.1 = {
+		death = "1331.1.1"
+	}
+}
+
+73649 = {
+	name = "Suraya"
+	female = yes
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	mother = 73648
+	1297.1.1 = {
+		birth = "1297.1.1"
+	}
+	1360.1.1 = {
+		death = "1360.1.1"
+	}
+}
+
+73650 = {
+	name = "Muhammad"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73651
+	1235.1.1 = {
+		birth = "1235.1.1"
+	}
+	1302.4.7 = {
+		death = "1302.4.7"
+	}
+}
+
+73651 = {
+	name = "Muhammad"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73653
+	1194.1.1 = {
+		birth = "1194.1.1"
+	}
+	1232.1.1 = {
+		add_pressed_claim = title:d_granada
+	}
+	1237.1.1 = {
+		remove_claim = title:d_granada
+		add_pressed_claim = title:d_murcia
+		add_pressed_claim = title:d_sevilla
+	}
+	1238.1.1 = {
+		remove_claim = title:d_sevilla
+	}
+	1266.1.1 = {
+		remove_claim = title:d_murcia
+	}
+	1273.1.1 = {
+		death = "1273.1.1"
+	}
+}
+
+73652 = {
+	name = "Yusuf"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73651
+	1238.1.1 = {
+		birth = "1238.1.1"
+	}
+	1295.1.1 = {
+		death = "1295.1.1"
+	}
+}
+
+73653 = {
+	name = "Nasr"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	1160.1.1 = {
+		birth = "1160.1.1"
+	}
+	1221.1.1 = {
+		death = "1221.1.1"
+	}
+}
+
+73654 = {
+	name = "Isma_il"
+	dynasty = 101904
+	religion = muwalladi
+	culture = bedouin
+	father = 73653
+	1210.1.1 = {
+		birth = "1210.1.1"
+	}
+	1274.1.1 = {
+		death = "1274.1.1"
+	}
+}
+
+487000 = {
+	name = "Yusuf"
+	dynasty = 101904
+	martial = 8
+	diplomacy = 5
+	intrigue = 5
+	stewardship = 6
+	religion = muwalladi
+	culture = bedouin
+	trait = arrogant
+	trait = lustful
+	trait = education_diplomacy_2
+	father = 73641
+	mother = 73649
+	1318.1.1 = {
+		birth = "1318.1.1"
+	}
+	1354.1.1 = {
+		death = "1354.1.1"
+	}
+}
+
+487001 = {
+	name = "Muhammad"
+	dynasty = 101904
+	martial = 7
+	diplomacy = 5
+	intrigue = 4
+	stewardship = 4
+	religion = muwalladi
+	culture = bedouin
+	trait = arrogant
+	trait = brave
+	father = 73641
+	1315.1.1 = {
+		birth = "1315.1.1"
+	}
+	1333.1.1 = {
+		death = "1333.1.1"
+	}
+}
+
+200214 = {
+	name = "Yahya" # Yahya ibn Muhammad
+	dynasty = 12290 # Banu Sajr Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	father = 73889 # Muhammad ibn Usama
+
+	878.1.1 = {
+		birth = yes
+	}
+	928.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0180 = {
+	name = "Aysun" # Aysun ibn Suelyman al-Arabí
+	dynasty = 1046005 # Suleyman al-Arabí Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_martial_2
+
+	father = 200049 # Walih Suleyman al-Arabi of Barcelona
+	mother = 200050 # Waliha Nadira
+
+	766.1.1 = {
+		birth = yes
+	}
+	785.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0181 = {
+	name = "Hashim" # Hashim ibn Abd al-Aziz
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = brave
+	trait = education_stewardship_3
+
+	father = 73968 # Abd al-Aziz ibn Hashim
+	mother = 73975 # Jahaira
+
+	840.1.1 = {
+		birth = yes
+	}
+	852.9.22 = {
+		employer = 73683 # Sultan Muhammad I of Andalusia
+		effect = {
+			add_trait = lifestyle_blademaster
+			add_trait_xp = {
+				trait = lifestyle_blademaster
+				value = {
+					integer_range = {
+						min = medium_lifestyle_random_xp_low
+						max = medium_lifestyle_random_xp_high
+					}
+				}
+			}
+		}
+	}
+	887.1.1 = {
+		death = {
+			death_reason = death_execution
+			killer = 73684 # Sultan al-Mundir I of Andalusia
+		}
+	}
+}
+
+bedouin0182 = {
+	name = "Ishaq" # Ishaq ibn Ibrahim, Sheik of Jaen (880-891 & 891-913)
+	dynasty = banu_attaf # Banu Attaf Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_3
+
+	father = bedouin0185 # Sheik Ibrahim ibn Attaf of Jaen
+
+	835.1.1 = {
+		birth = yes
+	}
+	852.9.22 = {
+		employer = 73683 # Sultan Muhammad I of Andalusia
+	}
+	913.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0183 = {
+	name = "al-Hussayn" # al-Hussayn Banu Attaf, Sheik of Jaen (756-785)
+	dynasty = banu_attaf # Banu Attaf Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_3
+
+	735.1.1 = {
+		birth = yes
+	}
+	785.1.1 = {
+		death = yes		
+	}
+}
+
+bedouin0184 = {
+	name = "Attaf" # Attaf ibn al-Hussayn, Sheik of Jaen (785-845)
+	dynasty = banu_attaf # Banu Attaf Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = bedouin0183 # Sheik al-Hussayn Banu Attaf of Jaen
+
+	765.1.1 = {
+		birth = yes
+	}
+	845.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0185 = {
+	name = "Ibrahim" # Ibrahim ibn Attaf, Sheik of Jaen (845-880)
+	dynasty = banu_attaf # Banu Attaf Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	father = bedouin0184 # Sheik Attaf ibn al-Husseyn of Jaen
+
+	805.1.1 = {
+		birth = yes
+	}
+	880.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0186 = {
+	name = "Sa_id" # Sa'id ibn Aslam
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	father = 73967 # Aslam ibn Abd al-Aziz
+
+	880.1.1 = {
+		birth = yes
+	}
+	935.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0187 = {
+	name = "Ahmad" # Ahmad ibn Sa'id
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = bedouin0186 # Sa'id ibn Aslam
+
+	910.1.1 = {
+		birth = yes
+	}
+	985.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0188 = {
+	name = "Aslam" # Aslam ibn Ahmad
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	father = bedouin0187 # Ahmad ibn Sa'id
+
+	935.1.1 = {
+		birth = yes
+	}
+	1004.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0189 = {
+	name = "Idris" # Idris ibn Ubayd Allah
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = 200039 # Ubayd Allah ibn Yahya
+	mother = 200040 # Samira
+
+	855.1.1 = {
+		birth = yes
+	}
+	905.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0190 = {
+	name = "Ubayd-Allah" # Ubayd Allah ibn Idris
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_martial_2
+
+	father = bedouin0189 # Idris ibn Ubayd Allah
+
+	871.1.1 = {
+		birth = yes
+	}
+	955.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0191 = {
+	name = "Idris" # Idris ibn Ubayd Allah
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_martial_2
+
+	father = bedouin0190 # Ubayd Allah ibn Idris
+
+	905.1.1 = {
+		birth = yes
+	}
+	983.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0192 = {
+	name = "Isma_il" # Isma'il ibn Abbad
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_stewardship_2
+
+	965.1.1 = {
+		birth = yes
+	}
+	1019.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0193 = {
+	name = "Isma_il" # Isma'il ibn Muhammad
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_martial_3
+
+	father = 73209 # Emir Muhammad ibn Isma'il of Seville
+
+	1011.1.1 = {
+		birth = yes
+	}
+	1039.10.5 = {
+		death = {
+			death_reason = death_battle
+			killer = 159496 # Sheik Yahya II of Malaga
+		}
+	}
+}
+
+bedouin0194 = {
+	name = "al-Qasim" # al-Qasim ibn Muhammad
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = 73209 # Emir Muhammad ibn Isma'il of Seville
+
+	1021.1.1 = {
+		birth = yes
+	}
+	1042.1.1 = {
+		employer = 3212 # Emir al-Mu'tadid of Seville
+	}
+	1071.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0195 = {
+	name = "Isma_il" # Isma'il ibn Abbad
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_intrigue_1
+
+	father = 3212 # Emir al-Mu'tadid of Seville
+	mother = 85009 # Emira Kera ibn Muyahid (andalusian.txt)
+
+	1037.1.1 = {
+		birth = yes
+	}
+	1061.1.1 = {
+		death = {
+			death_reason = death_murder_known
+			killer = 3212 # Emir al-Mu'tadid of Seville, his father
+		}
+	}
+}
+
+bedouin0196 = {
+	name = "Amir" # Amir ibn Abbad
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = 3212 # Emir al-Mu'tadid of Seville
+	mother = 85009 # Emira Kera ibn Muyahid (andalusian.txt)
+
+	1044.1.1 = {
+		birth = yes
+		employer = 3212 # Emir al-Mu'tadid of Seville
+	}
+	1094.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0197 = {
+	name = "Nasr" # Nasr ibn al-Fath
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_stewardship_1
+
+	father = 73214 # Sheik al-Fath of Cordoba
+	mother = 71373 # Sheikess Zaïda
+
+	1090.1.1 = {
+		birth = yes
+	}
+	1140.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0198 = {
+	name = "Hashim" # Hashim ibn Abd al-Yabbar
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = 73216 # Abd al-Yabbar ibn Muhammad
+
+	1088.1.1 = {
+		birth = yes
+	}
+	1138.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0199 = {
+	name = "Ayyub" # Ayyub ibn Attab, Sheik of Cadiz (991-1011)
+	dynasty = 100709 # Banu Nasr Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = 200032 # Sheik Attab ibn Harun of Cadiz
+
+	953.1.1 = {
+		birth = yes
+	}
+	1011.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0200 = {
+	name = "Habib" # Habib ibn Umayr
+	dynasty = 1046038 # Umayr ibn Sa'id al-Lajmi's Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = 168729 # Umar ibn Sa'id al-Lajmi
+	mother = 168721 # Sara Alamúndez (visigothic.txt)
+
+	761.1.1 = {
+		birth = yes
+	}
+	811.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0201 = {
+	name = "Muzayn" # Muzayn
+	dynasty = banu_muzayn # Banu Muzayn Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_stewardship_1
+
+	915.1.1 = {
+		birth = yes
+	}
+	965.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0202 = {
+	name = "Muhammad" # Muhammad ibn Muzayn
+	dynasty = banu_muzayn # Banu Muzayn Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = bedouin0201 # Muzayn
+
+	940.1.1 = {
+		birth = yes
+	}
+	990.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0203 = {
+	name = "Abu-Bakr" # Abu Bakr ibn Muhammad
+	dynasty = banu_muzayn # Banu Muzayn Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_martial_1
+
+	father = bedouin0202 # Muhammad ibn Muzayn
+
+	965.1.1 = {
+		birth = yes
+	}
+	1015.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0204 = {
+	name = "Isa" # Isa (I) ibn Abu Bakr, Sheik of Silves (1013-1041)
+	dynasty = banu_muzayn # Banu Muzayn Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_intrigue_2
+
+	father = bedouin0203 # Abu Bakr ibn Muhammad
+
+	990.8.30 = {
+		birth = yes
+	}
+	1041.8.30 = {
+		death = yes
+	}
+}
+
+bedouin0205 = {
+	name = "Muhammad" # Muhammad (I) Amad al-Dawla, Sheik of Silves (1041-1048)
+	dynasty = banu_muzayn # Banu Muzayn Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_martial_2
+
+	father = bedouin0204 # Sheik Isa I of Silves
+
+	1016.1.1 = {
+		birth = yes
+	}
+	1048.10.11 = {
+		death = yes
+	}
+}
+
+bedouin0206 = {
+	name = "Sa_id" # Sa'id ibn Muzayn
+	dynasty = banu_muzayn # Banu Muzayn Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = bedouin0201 # Muzayn
+
+	945.1.1 = {
+		birth = yes
+	}
+	995.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0207 = {
+	name = "Muhammad" # Muhammad ibn Sa'id
+	dynasty = banu_muzayn # Banu Muzayn Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_learning_1
+
+	father = bedouin0206 # Sa'id ibn Muzayn
+
+	970.1.1 = {
+		birth = yes
+	}
+	1020.1.1 = {
+		death = yes
+	}
+}
+
+bedouin0208 = {
+	name = "Isa" # Isa (II) al-Muzaffar, Sheik of Silves (1048-1054)
+	dynasty = banu_muzayn # Banu Muzayn Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_stewardship_3
+
+	father = bedouin0207 # Muhammad ibn Sa'id
+
+	995.1.1 = {
+		birth = yes
+	}
+	1054.1.1 = {
+		death = {
+			death_reason = death_battle
+			killer = 3912 # Emir al-Mu'tadid of Sevilla
+		}
+	}
+}
+
+bedouin0209 = {
+	name = "Muhammad" # Muhammad (II) al-Nasr, Sheik of Silves (1054-1058)
+	dynasty = banu_muzayn # Banu Muzayn Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_learning_2
+
+	father = bedouin0208 # Sheik Isa II of Silves
+
+	1020.1.1 = {
+		birth = yes
+	}
+	1058.6.25 = {
+		death = yes
+	}
+}
+
+bedouin0210 = {
+	name = "Isa" # Isa (III) al-Muzaffar, Sheik of Silves (1058-1063)
+	dynasty = banu_muzayn # Banu Muzayn Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = content
+	trait = education_diplomacy_1
+
+	father = bedouin0209 # Sheik Muhammad II of Silves
+
+	1040.1.1 = {
+		birth = yes
+	}
+	1063.1.1 = {
+		employer = 3212 # Emir al-Mu'tadid of Sevilla
+	}
+	1090.1.1 = {
+		death = yes
+	}
+}
+
+3910 = {
+	name = "Muhammad" # Muhammad ibn Ahmad, Emir of Murcia (1065-1079) & Sheik of Murcia (1063-1079)
+	dynasty = 572 # Banu Tahir Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = poet
+	trait = education_stewardship_2
+
+	father = 45027 # Sheik Ahmad Banu Tahir of Murcia
+
+	1020.1.1 = {
+		birth = yes
+	}
+	1114.1.1 = {
+		death = yes
+	}
+}
+
+45029 = {
+	name = "al-Mutadd" # al-Muttad ibn Muhammad, Sheik of Faro (1082-1091)
+	dynasty = 594 # Banu Abbad Dynasty
+	martial = 8
+	diplomacy = 6
+	intrigue = 5
+	stewardship = 6
+	religion = muwalladi
+	culture = bedouin
+	trait = deceitful
+	trait = calm
+
+	father = 3214 # Emir al-Mu'tamid of Seville
+	mother = 73211 # Emira al-Rumaikiyya (andalusian.txt)
+
+	1066.1.1 = {
+		birth = yes
+	}
+	1082.1.1 = {
+		trait = education_martial_2
+	}
+	1091.1.1 = {
+		death = {
+			death_reason = death_murder
+		}
+	}
+}
+
+73216 = {
+	name = "Abd-al-Yabbar" # Abd al-Yabbar ibn Muhammad
+	dynasty = 594 # Banu Abbad Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_stewardship_1
+ 
+	father = 3214 # Emir al-Mu'tamid of Seville
+	mother = 73211 # Emira al-Rumaikiyya (andalusian.txt)
+ 
+ 
+	1067.1.1 = {
+		birth = yes
+	}
+	1095.1.1 = {
+		death = yes
+	}
+}
+
+73248 = {
+	name = "Rasiq" # Rasiq, murcian general
+	dynasty = 12208 # Banu Rasiq Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = brave
+	trait = education_intrigue_1
+
+	1020.1.1 = {
+		birth = yes
+	}
+	1046.1.1 = {
+		add_spouse = 45028 # Ahu bint Ahmad
+	}
+	1063.1.1 = {
+		employer = 3910 # Emir Muhammad ibn Ahmad of Murcia
+	}
+	1069.1.1 = {
+		death = yes
+	}
+}
+
+73787 = {
+	name = "al-Fadl" # al-Fadl banu Amira, Sheik of Alcaraz & Murcia (777-813)
+	dynasty = 596 # Banu Amira Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_martial_2
+
+	750.1.1 = {
+		birth = yes
+	}
+	813.1.1 = {
+		death = yes
+	}
+}
+
+73788 = {
+	name = "Abd-al-Rahman" # Abd al-Rahman ibn al-Fadl, Sheik of Alcaraz & Murcia (813-842)
+	dynasty = 596 # Banu Amira Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_2
+
+	father = 73787 # Sheik al-Fadl banu Amira of Murcia
+
+	783.1.1 = {
+		birth = yes
+	}
+	842.1.1 = {
+		death = yes
+	}
+}
+
+73789 = {
+	name = "al-Fadl" # al-Fadl ibn al-Fadl, Sheik of Alcaraz (842-878)
+	dynasty = 596 # Banu Amira Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = 73787 # Sheik al-Fadl banu Amira of Murcia
+
+	813.9.1 = {
+		birth = yes # posthumous child of his father
+	}
+	839.1.1 = {
+		add_spouse = 73885 # Yasmin
+	}
+	878.1.1 = {
+		death = yes
+	}
+}
+
+73790 = {
+	name = "al-Sabbah" # al-Sabbah ibn Abd al-Rahman, Sheik of Murcia (842-907)
+	dynasty = 596 # Banu Amira Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_2
+
+	father = 73788 # Sheik Abd al-Rahman ibn al-Fadl of Murcia
+
+	800.1.1 = {
+		birth = yes
+	}
+	907.1.1 = {
+		death = yes #Died 107 years old
+	}
+}
+
+73791 = {
+	name = "Harun" # Harun ibn Abd al-Rahman
+	dynasty = 596 # Banu Amira Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_martial_1
+
+	father = 73788 # Sheik Abd al-Rahaman ibn al-Fadl of Murcia
+
+	817.1.1 = {
+		birth = yes
+	}
+	845.1.1 = {
+		add_spouse = 73884 # Jahaira
+	}
+	885.1.1 = {
+		death = yes
+	}
+}
+
+73792 = {
+	name = "Muhammad" # Muhammad ibn Harun, Sheik of Alcaraz & Murcia (907-918)
+	dynasty = 596 # Banu Amira Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	father = 73791 # Harun ibn Abd al-Rahman
+	mother = 73884 # Jahaira
+
+	847.1.1 = {
+		birth = yes
+	}
+	918.1.1 = {
+		death = yes
+	}
+}
+
+73793 = {
+	name = "Abd-al-Rahman" # Abd al-Rahman ibn al-Fadl, Sheik of Alcaraz (878-907)
+	dynasty = 596 # Banu Amira Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	father = 73789 # Sheik al-Fadl ibn al-Fadl of Alcaraz
+	mother = 73885
+
+	840.1.1 = {
+		birth = yes
+	}
+	907.1.1 = {
+		death = yes
+	}
+}
+
+73794 = {
+	name = "Amira" # Amira ibn al-Fadl
+	dynasty = 596 # Banu Amira Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = 73789 # Sheik al-Fadl ibn al-Fadl of Alcaraz
+	mother = 73885 # Sheika Yasmin
+
+	845.1.1 = {
+		birth = yes
+	}
+	897.1.1 = {
+		death = yes
+	}
+}
+
+73795 = {
+	name = "Tayyib" # Tayyib ibn Muhammad, Sheik of Alcaraz & Murcia (918-939)
+	dynasty = 596 # Banu Amira Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_stewardship_2
+
+	father = 73792 # Sheik Muhammad ibn Harun of Murcia
+
+	875.1.1 = {
+		birth = yes
+	}
+	939.1.1 = {
+		death = yes
+	}
+}
+
+73796 = {
+	name = "Abd-al-Rahman" # Abd al-Rahman ibn Tayyib, Sheik of Alcaraz & Murcia (939-978)
+	dynasty = 596 # Banu Amira Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_stewardship_1
+
+	father = 73795 # Sheik Tayyib ibn Muhammad of Murcia
+
+	915.1.1 = {
+		birth = yes
+	}
+	978.1.1 = {
+		death = yes
+	}
+}
+
+73797 = {
+	name = "Abdallah" # Abdallah ibn Abd al-Rahman, Sheik of Alcaraz & Murcia (978-985)
+	dynasty = 596 # Banu Amira Dynasty
+	religion = muwalladi
+	culture = bedouin
+	trait = education_stewardship_1
+
+	father = 73796 # Sheik Abd al-Rahman ibn Tayyib of Murcia
+
+	943.1.1 = {
+		birth = yes
+	}
+	1010.1.1 = {
+		death = yes
+	}
+}
+
+73884 = {
+	name = "Jahaira" # Jahaira, fictional wife of Harun ibn Abd al-Rahamn (73791)
+	female = yes
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	827.1.1 = {
+		birth = yes
+	}
+	892.1.1 = {
+		death = yes
+	}
+}
+
+73885 = {
+	name = "Yasmin" # Yasmin, fictional wife of Sheik al-Fadl ibn al-Fadl of Alcaraz (73789)
+	female = yes
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	820.1.1 = {
+		birth = yes
+	}
+	888.1.1 = {
+		death = yes
+	}
+}
+
+73887 = {
+	name = "Sajr" # Sajr ibn Abd al-Rahman
+	dynasty = 12290 # Banu Sajr Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	797.1.1 = {
+		birth = yes
+	}
+	850.1.1 = {
+		death = yes
+	}
+}
+
+73888 = {
+	name = "Usama" # Usama ibn Sajr
+	dynasty = 12290 # Banu Sajr Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_2
+
+	father = 73887 # Sajr ibn Abd al-Rahman
+
+	822.1.1 = {
+		birth = yes
+	}
+	850.1.1 = {
+		add_spouse = 73890 # Faghira
+	}
+	860.1.1 = {
+		employer = levantine0008 # Walih Muhammad ibn Wuhayd of Zaragoza
+	}
+	889.1.1 = {
+		death = yes
+	}
+}
+
+73889 = {
+	name = "Muhammad" # Muhammad ibn Usama
+	dynasty = 12290 # Banu Sajr Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_intrigue_1
+
+	father = 73888 # Usama ibn Sajr
+	mother = 73890 # Faghira
+
+	853.1.1 = {
+		birth = yes
+	}
+	900.1.1 = {
+		death = yes
+	}
+}
+
+73890 = {
+	name = "Faghira" # Faghira, fictional wife of Usama ibn Sajr (73888)
+	female = yes
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	833.1.1 = {
+		birth = yes
+	}
+	895.1.1 = {
+		death = yes
+	}
+}
+
+73941 = {
+	name = "Attab" # Attab ibn Nasr, Sheik of Cadiz (850-910)
+	dynasty = 100709 # Banu Nasr Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_2
+
+	814.1.1 = {
+		birth = yes
+	}
+	867.1.1 = {
+		add_spouse = 73942 # Rasa
+	}
+	910.1.1 = {
+		death = yes
+	}
+}
+
+73942 = {
+	name = "Rasa" # Rasa, fictional wife of Sheik Attb ibn Nasr of Cadiz
+	female = yes
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	850.1.1 = {
+		birth = yes
+	}
+	916.1.1 = {
+		death = yes
+	}
+}
+
+73967 = {
+	name = "Aslam" # Aslam ibn Abd al-Aziz
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_3
+
+	father = 73968 # Abd al-Aziz ibn Hashim
+	mother = 73975 # Jahaira
+
+	845.1.1 = {
+		birth = yes
+	}
+	852.9.22 = {
+		employer = 73683 # Sultan Muhammad I of Andalusia
+	}
+	931.1.1 = {
+		death = yes
+	}
+}
+
+73968 = {
+	name = "Abd-al-Aziz" # Abd al-Aziz ibn Hashim
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_2
+
+	father = 200033 # Hashim ibn Jalid
+
+	812.1.1 = {
+		birth = yes
+	}
+	838.1.1 = {
+		add_spouse = 73975 # Jahaira
+	}
+	852.9.22 = {
+		employer = 73683 # Sultan Muhammad I of Andalusia
+	}
+	887.1.1 = {
+		death = yes
+	}
+}
+
+73975 = {
+	name = "Jahaira" # Jahaira, fictional wife of Abd al-Aziz ibn Hashim (73968)
+	female = yes
+	religion = ashari
+	culture = bedouin
+
+	820.1.1 = {
+		birth = yes
+	}
+	870.1.1 = {
+		death = yes
+	}
+}
+
+168728 = {
+	name = "Isa" # Isa ibn Muzahim
+	dynasty = 1046037 # Isa ibn Muzahim Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_martial_2
+
+	710.1.1 = {
+		birth = yes
+	}
+	736.1.1 = {
+		add_spouse = 168721 # Sara Alamúndez (visigothic.txt)
+	}
+	760.1.1 = {
+		death = yes
+	}
+}
+
+168729 = {
+	name = "Umayr" # Umayr ibn Sa'id al-Lajmi
+	dynasty = 1046038 # Umayr ibn Sa'id al-Lajmi's Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	735.1.1 = {
+		birth = yes
+	}
+	760.1.1 = {
+		add_spouse = 168721 # Sara Alamúndez (visigothic.txt)
+	}
+	785.1.1 = {
+		death = yes
+	}
+}
+
+168731 = {
+	name = "Ibrahim" # Ibrahim ibn Isa
+	dynasty = 1046037 # Isa ibn Muzahim's Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	father = 168728 # Isa ibn Muzahim
+	mother = 168721 # Sara Alamúndez (visigothic.txt)
+
+	737.1.1 = {
+		birth = yes
+	}
+	790.1.1 = {
+		death = yes
+	}
+}
+
+168732 = {
+	name = "Ishaq" # Ishaq ibn Isa
+	dynasty = 1046037 # Isa ibn Muzahim's Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_martial_1
+
+	father = 168728 # Isa ibn Muzahim
+	mother = 168721 # Sara Alamúndez (visigothic.txt)
+
+	740.1.1 = {
+		birth = yes
+	}
+	797.1.1 = {
+		death = yes
+	}
+}
+
+200023 = {
+	name = "Abd-al-Aziz" # Abd al-Aziz ibn Musa
+	dynasty = 1046001 # Musa ibn Nusayr Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = 200024 # Musa ibn Nusayr
+
+	673.1.1 = {
+		birth = yes
+	}
+	714.1.1 = {
+		add_spouse = 200063 # Queen Egilona (visigothic.txt)
+	}
+	715.8.1 = {
+		death = yes
+	}
+}
+
+200024 = {
+	name = "Musa" # Musa ibn Nusayr, Conqueror of Spain
+	dynasty = 1046001 # Musa ibn Nusayr Dynasty
+	religion = ashari
+	culture = bedouin
+	martial = 10
+	trait = education_martial_4
+
+	640.1.1 = {
+		birth = yes
+	}
+	716.1.1 = {
+		death = yes
+	}
+}
+
+200032 = {
+	name = "Attab" # Attab ibn Harun, Sheik of Cadiz (923-991)
+	dynasty = 100709 # Banu Nasr Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_2
+
+	father = 73941 # Sheik Harun ibn Attab of Cadiz
+
+	923.1.1 = {
+		birth = yes
+	}
+	991.1.1 = {
+		death = yes
+	}
+}
+
+
+200033 = {
+	name = "Hashim" # Hashim ibn Jalid
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_2
+
+	father = 200034 # Jalid ibn Abdallah
+
+	788.1.1 = {
+		birth = yes
+	}
+	863.1.1 = {
+		death = yes
+	}
+}
+
+200034 = {
+	name = "Jalid" # Jalid ibn Abdallah
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_1
+
+	father = 200035 # Abdallah Banu Aslam
+	mother = 200037 # Abda
+
+	762.1.1 = {
+		birth = yes
+	}
+	837.1.1 = {
+		death = yes
+	}
+}
+
+200035 = {
+	name = "Abdallah" # Abdallah Banu Aslam
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	738.1.1 = {
+		birth = yes
+	}
+	760.1.1 = {
+		add_spouse = 200037 # Abda (visigothic.txt)
+	}
+	788.1.1 = {
+		death = yes
+	}
+}
+
+200036 = {
+	name = "Abdallah" # Abdallah ibn Jalid
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_martial_2
+
+	father = 200034 # Jalid ibn Abdallah
+
+	786.1.1 = {
+		birth = yes
+	}
+	861.1.1 = {
+		death = yes
+	}
+}
+
+200038 = {
+	name = "Yahya" # Yahya ibn Abdallah
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_intrigue_1
+
+	father = 200036 # Abdallah ibn Jalid
+
+	814.1.1 = {
+		birth = yes
+	}
+	864.1.1 = {
+		death = yes
+	}
+}
+
+200039 = {
+	name = "Ubayd-Allah" # Ubayd Allah ibn Yahya
+	dynasty = 12308 # Banu Aslam Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_martial_1
+
+	father = 200038 # Yahya ibn Abdallah
+
+	836.1.1 = {
+		birth = yes
+	}
+	854.1.1 = {
+		add_spouse = 200040 # Samira
+	}
+	912.1.1 = {
+		death = yes
+	}
+}
+
+200040 = {
+	name = "Samira" # Samira, wife of Ubayd Allah ibn Yahya (200039)
+	female = yes
+	religion = ashari
+	culture = bedouin
+	trait = education_stewardship_1
+
+	837.1.1 = {
+		birth = yes
+	}
+	887.1.1 = {
+		death = yes
+	}
+}
+
+200049 = {
+	name = "Suleyman" # Suleyman al-Arabí, Walih of Barcelona (769-780) & Sheik of Barcelona, Cerdaña, Empuries, Girona, Lleida & Tarragona
+	dynasty = 1046005 # Suleyman al-Arabí Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_2
+
+	740.1.1 = {
+		birth = yes
+	}
+	763.1.1 = {
+		add_spouse = 200050 # Nadira (visigothic.txt)
+	}
+	780.1.1 = {
+		death = yes
+	}
+}
+
+200051 = {
+	name = "Matruh" # Matruh ibn Suleyman al-Arabí, Walih of Barcelona (780-792) & Zaragoza (789-792) & Sheik of Barcelona, Cerdaña, Empuries, Girona, Lleida & Tarragona (780-792), Albarracín, Calatayud, Fraga & Zaragoza (789-792)
+	dynasty = 1046005 # Suleyman al-Arabí Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_martial_3
+
+	father = 200049 # Walih Suleyman al-Arabí of Barcelona
+	mother = 200050 # Waliha Nadira (visigothic.txt)
+
+	764.1.1 = {
+		birth = yes
+	}
+	792.1.1 = {
+		death = {
+			death_reason = death_murder_known
+			killer = 73799 # Walih Amrus ibn Yusuf of Toledo
+		}
+	}
+}
+
+200052 = {
+	name = "Sadun" # Sadun ibn Ruayn, Walih of Barcelona (792-800) & Sheik of Barcelona, Cerdaña, Empuries, Girona, Lleida & Tarragona (792-800)
+	dynasty = 1046006 # Sadun ibn Ruayn Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_intrigue_1
+
+	760.1.1 = {
+		birth = yes
+	}
+	800.1.1 = {
+		death = {
+			death_reason = death_disappearance
+		}
+	}
+}
+
+200202 = {
+	name = "Asima" # Asima ibn Abd al-Aziz, wife of Sheik Furtun ibn Qasi of Tudela (73809 - basque.txt)
+	female = yes
+	dynasty = 1046001 # Musa ibn Nusayr Dynasty
+	religion = ashari
+	culture = bedouin
+	trait = education_diplomacy_2
+
+	father = 200023 # Abd al-Aziz ibn Musa
+	mother = 200063 # Queen Egilona
+
+	715.1.1 = {
+		birth = yes
+	}
+	775.1.1 = {
+		death = yes
+	}
+}
+
+#formerly bedouin fictional rulers of Suakin
+
 145707 = {
 	name = "Bahram"
 	dynasty = 1022252
@@ -14076,5 +16398,975 @@ bedouin00162 = { #fictional governor of Hijaz
 	}
 	1358.1.1 = {
 		death = "1358.1.1"
+	}
+}
+
+####FP3 additions
+
+azariqa_0001 = { 
+	name = "Ibrahim" 
+	dynasty = 1042142 #Al-Tamimi
+	religion = azariqa
+	culture = bedouin
+	father = 188607 
+
+	763.12.1 = {
+		birth = yes
+	}
+	823.3.1 = {
+		death = {
+			death_reason = death_execution
+		}
+	}
+}
+
+azariqa_0002 = { 
+	name = "Wasil" 
+	dynasty = 1042142 #Al-Tamimi
+	religion = azariqa
+	culture = bedouin
+	father = azariqa_0001 
+
+	789.12.12 = {
+		birth = yes
+	}
+	853.5.2 = {
+		death = {
+			death_reason = death_battle
+		}
+	}
+}
+
+azariqa_0003 = { #Muhammad ibn Wasil, notorious Azariqa who in 870 took control of Fars
+	name = "Muhammad" 
+	dynasty = 1042142 
+	religion = azariqa
+	culture = bedouin
+	intrigue = 13
+	trait = education_martial_2
+	trait = ambitious
+	trait = gregarious 
+	trait = fickle
+	trait = organizer 
+	trait = adventurer
+	trait = scarred
+
+	father = azariqa_0002 
+
+	812.1.1 = {
+		birth = yes
+	}
+	866.1.1 = {
+		add_spouse = azariqa_0004
+	}
+	878.1.1 = {
+		death = yes #imprisoned by Ya'qub of the Saffarids 
+	}
+}
+
+azariqa_0004 = { 
+	name = "RonahI_" 
+	religion = azariqa
+	culture = kurdish
+	female = yes 
+
+	842.9.12 = {
+		birth = yes
+	}
+	899.1.1 = {
+		death = yes
+	}
+}
+
+###for more Azariqas, see the levantine.txt
+
+extra_bedouins_0002 = {
+	name = "Umar"
+	dynasty = 809
+	religion = "ashari"
+	culture = "bedouin"
+	father = 163098
+	845.9.4 = {
+		birth = yes
+	}
+	894.1.1 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0003 = { #see also his brother, extra_bedouins_0024
+	name = "al-Harith"
+	dynasty = 809
+	religion = "ashari"
+	culture = "bedouin"
+	father = 163098
+	848.7.14 = {
+		birth = yes
+	}
+	897.5.3 = {
+		death = {
+			death_reason = death_battle
+		}
+	}
+}
+
+extra_bedouins_0004 = {
+	name = "Hisham"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = 188697
+	820.4.3 = {
+		birth = yes
+	}
+	884.1.1 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0006 = {
+	name = "Ma_qal"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	685.3.3 = {
+		birth = yes
+	}
+	756.7.1 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0007 = {
+	name = "Ma_qal"
+	dynasty = 809 # Dulafid
+	religion = "ismaili"
+	culture = "bedouin"
+	father = 188698
+	trait = education_martial_2
+	trait = poet 
+	790.5.17 = {
+		birth = yes
+	}
+	865.1.23 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0008 = {
+	name = "Hisham"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = 188698
+	trait = education_martial_2
+ 	trait = forder
+	805.3.23 = {
+		birth = yes
+	}
+	866.1.1 = {
+		employer = 34014 #the caliph Mu'tazz 
+	}
+	870.1.1 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0009 = {
+	name = "Isa"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0006
+	730.5.1 = {
+		birth = yes
+	}
+	785.5.7 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0010 = {
+	name = "Ali"
+	dynasty = arabic_azd # Azdid
+	religion = "ashari"
+	culture = "bedouin"
+	715.3.1 = {
+		birth = yes
+	}
+	785.4.7 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0011 = {
+	name = "Sadaqa"
+	dynasty = arabic_azd # Azdid, arab lord of Urmiya 
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0010
+	trait = education_martial_3
+	775.10.1 = {
+		birth = yes
+	}
+	840.4.7 = {
+		death = {
+			death_reason = death_killed_by_khurramites
+		}
+	}
+}
+
+extra_bedouins_0012 = {
+	name = "Zorayq"
+	dynasty = arabic_azd # Azdid, arab lord of Urmiya 
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0011
+	803.10.3 = {
+		birth = yes
+	}
+	869.1.1 = {
+		death = yes
+	}
+}
+
+fictional_bedouins_0003 = { #fictional sheik, but the dynasty and location are accurate
+	name = "Sadaqa"
+	dynasty = arabic_azd # Azdid, arab lord of Urmiya 
+	religion = "ashari"
+	culture = "bedouin"
+	823.7.3 = {
+		birth = yes
+	}
+	852.1.1 = {
+		add_spouse = fictional_bedouins_0006
+	}
+	870.1.1 = {
+		death = yes
+	}
+}
+
+fictional_bedouins_0006 = { #fictional sheik, but the dynasty and location are accurate
+	name = "Azarmidokht"
+	religion = "khurramism"
+	culture = "persian"
+	female = yes
+	838.8.23 = {
+		birth = yes
+	}
+	920.1.1 = {
+		death = yes
+	}
+}
+
+fictional_bedouins_0018 = { #padding out the Kinda 
+	name = "Qais"
+	dynasty = bedouin_kinda
+	religion = ashari
+	culture = bedouin
+	780.3.10 = {
+		birth = yes
+	}
+	869.1.1 = {
+		death = yes
+	}
+}
+
+fictional_bedouins_0019 = { #padding out the Kinda 
+	name = "Maslama"
+	dynasty = bedouin_kinda
+	religion = ashari
+	culture = bedouin
+	father = fictional_bedouins_0018
+	801.3.10 = {
+		birth = yes
+	}
+	873.1.1 = {
+		death = yes
+	}
+}
+
+fictional_bedouins_0023 = { #padding out the Kinda 
+	name = "Abd-al-Wahhad"
+	dynasty = bedouin_kinda
+	religion = ashari
+	culture = bedouin
+	father = fictional_bedouins_0019
+	841.5.11 = {
+		birth = yes
+	}
+	880.1.1 = {
+		death = yes
+	} 
+}
+
+###The Tayy dynasty, governor of Azerbaijan in 873
+
+extra_bedouins_0016 = { #The Tayy dynasty of an unidentified estate called Nairiz, Azerbaijan
+	name = "Ali"
+	dynasty = 1042117 #Banu Tayy
+	religion = ashari
+	culture = bedouin
+	father = 188614 #Mirza Banu Tayy
+	742.2.25 = {
+		birth = yes
+	}
+	779.4.6 = {
+		death = {
+			death_reason = death_killed_by_khurramites
+		}
+	}
+}
+
+extra_bedouins_0017 = { #The Tayy dynasty of an unidentified estate called Nairiz, Azerbaijan
+	name = "Murr"
+	dynasty = 1042117 #Banu Tayy
+	religion = ashari
+	culture = bedouin
+	father = extra_bedouins_0016
+	757.12.25 = {
+		birth = yes
+	}
+	820.4.9 = {
+		death = {
+			death_reason = death_celebrated_man
+		}
+	}
+}
+
+extra_bedouins_0018 = { #The Tayy dynasty of an unidentified estate called Nairiz, Azerbaijan
+	name = "Ali"
+	dynasty = 1042117 #Banu Tayy
+	religion = ashari
+	culture = bedouin
+	father = extra_bedouins_0017
+	trait = poet
+	787.12.25 = {
+		birth = yes
+	}
+	820.4.9 = {
+		death = {
+			death_reason = death_execution
+			killer = 34007 #the caliph al-Ma'mum
+		}
+	}
+}
+
+fictional_bedouins_0026 = { #The Tayy dynasty of an unidentified estate called Nairiz, Azerbaijan
+	name = "Isa"
+	dynasty = 1042117 #Banu Tayy
+	religion = ashari
+	culture = bedouin
+	father = extra_bedouins_0017
+	trait = drunkard
+	803.11.13 = {
+		birth = yes
+	}
+	853.4.6 = {
+		death = {
+			death_reason = death_cancer
+		}
+	}
+}
+
+extra_bedouins_0019 = { #The Tayy dynasty of an unidentified estate called Nairiz, Azerbaijan
+	name = "Murr" #historical, but have not been able to find his name. Governor of Azerbaijan in 873. 
+	dynasty = 1042117 #Banu Tayy
+	religion = ashari
+	culture = bedouin
+	father = fictional_bedouins_0026
+	trait = education_stewardship_2
+	trait = honest
+	trait = shy
+	trait = pilgrim 
+	835.11.2 = {
+		birth = yes
+	}
+	890.4.6 = {
+		death = yes
+	}
+}
+
+
+###Banu Salema, rulers of Hamadan until the mid-9th century 
+
+extra_bedouins_0020 = { 
+	name = "Salema" 
+	dynasty = bedouin_salema #Banu Salema 
+	religion = ashari
+	culture = bedouin
+	590.7.2 = {
+		birth = yes
+	}
+	655.4.6 = {
+		death = {
+			death_reason = death_old_age
+		}
+	}
+}
+
+extra_bedouins_0021 = { #Amr Banu Salema, made governor of Hamadan by caliph Ali
+	name = "Amr" 
+	dynasty = bedouin_salema #Banu Salema 
+	religion = ashari
+	culture = bedouin
+	father = extra_bedouins_0020
+	625.11.2 = {
+		birth = yes
+	}
+	674.4.6 = {
+		death = {
+			death_reason = death_murdered_by_religious_rebels
+		}
+	}
+}
+
+fictional_bedouins_0027 = { #fictional, plugging the gap
+	name = "Ali" 
+	dynasty = bedouin_salema #Banu Salema 
+	religion = ismaili
+	culture = bedouin
+	father = extra_bedouins_0021
+	650.7.2 = {
+		birth = yes
+	}
+	690.4.3 = {
+		death = {
+			death_reason = death_stress
+		}
+	}
+}
+
+fictional_bedouins_0028 = { #fictional, plugging the gap
+	name = "Assad" 
+	dynasty = bedouin_salema #Banu Salema 
+	religion = ismaili
+	culture = bedouin
+	father = fictional_bedouins_0027
+	680.10.2 = {
+		birth = yes
+	}
+	757.6.3 = {
+		death = {
+			death_reason = death_old_age
+		}
+	}
+}
+
+fictional_bedouins_0029 = { #fictional, plugging the gap
+	name = "Abdul-Wahab" 
+	dynasty = bedouin_salema #Banu Salema 
+	religion = ismaili
+	culture = bedouin
+	father = fictional_bedouins_0028
+	710.10.2 = {
+		birth = yes
+	}
+	777.7.7 = {
+		death = {
+			death_reason = death_literalist_debate
+		}
+	}
+}
+
+fictional_bedouins_0031 = { #fictional, plugging the gap
+	name = "Alim" 
+	dynasty = bedouin_salema #Banu Salema 
+	religion = ismaili
+	culture = bedouin
+	father = fictional_bedouins_0029
+	740.10.10 = {
+		birth = yes
+	}
+	801.7.5 = {
+		death = {
+			death_reason = death_ill
+		}
+	}
+}
+
+extra_bedouins_0022 = { 
+	name = "Abd-al-Aziz" 
+	dynasty = bedouin_salema #Banu Salema 
+	religion = ismaili
+	culture = bedouin
+	father = fictional_bedouins_0031
+	776.3.27 = {
+		birth = yes
+	}
+	815.4.3 = {
+		death = {
+			death_reason = death_hunting_accident
+		}
+	}
+}
+
+extra_bedouins_0023 = { #fictional, plugging the gap
+	name = "Abu_l-Wafa_Muhammad" 
+	dynasty = bedouin_salema #Banu Salema 
+	religion = ismaili
+	culture = bedouin
+	father = extra_bedouins_0022
+	trait = education_learning_4
+	trait = poet
+	trait = cynical
+	808.3.15 = {
+		birth = yes
+	}
+	871.1.1 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0024 = { #historical, previously forgotten Dulafid scion
+	name = "Bakr"
+	dynasty = 809
+	religion = "ashari"
+	culture = "bedouin"
+	father = 163098
+	853.8.12 = {
+		birth = yes
+	}
+	910.1.1 = {
+		death = yes
+	}
+}
+
+
+##########The Numayrid dynasty, for FP3############
+
+extra_bedouins_0025 = { 
+	name = "SA_biq"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = fictional_bedouins_0040
+	930.1.1 = {
+		birth = yes
+	}
+	970.5.6 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0026 = { 
+	name = "WaththA_b"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0025
+	952.1.1 = {
+		birth = yes
+	}
+	1019.12.9 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0027 = { 
+	name = "Shabib"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0026
+	979.1.1 = {
+		birth = yes
+	}
+	1040.9.17 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0028 = { 
+	name = "Muta"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0026
+	989.1.1 = {
+		birth = yes
+	}
+	1056.1.1 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0029 = { 
+	name = "Utayr"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = fictional_bedouins_0039
+	966.1.1 = {
+		birth = yes
+	}
+	1030.1.1 = { #fictional date but year and killer is accurate
+		death = {
+			death_reason = death_battle
+			killer = 159147
+		}
+	}
+}
+
+extra_bedouins_0030 = { 
+	name = "Utayr" #fictional name, known to history as Ibn Utayr 
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0029
+	1004.1.1 = {
+		birth = yes
+	}
+	1066.1.1 = {
+		add_pressed_claim = title:c_raqqa
+		add_pressed_claim = title:c_rahba
+		effect = {
+			set_relation_nemesis = character:3822
+		}
+	}
+	1085.1.1 = { #speculative date, but some sources imply that he was still alive in 1083
+		death = yes
+	}
+}
+
+extra_bedouins_0031 = { #This seems to be a very interesting, powerful medieval woman, but unfortunately I didn't have time to research her history more within the scope of FP3. 
+	name = "Alawiyya"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0026
+	female = yes
+	trait = education_diplomacy_3
+	trait = ambitious
+	trait = shrewd 
+	trait = family_first
+	996.1.1 = {
+		birth = yes
+	}
+	1025.1.1 = {
+		add_spouse = 159271
+	}
+	1070.1.1 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0032 = { 
+	name = "Qawam"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0026
+	998.1.1 = {
+		birth = yes
+	}
+	1056.1.1 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0033 = { 
+	name = "Hasan"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0027
+	1020.1.1 = {
+		birth = yes
+	}
+	1056.1.1 = {
+		death = yes
+	}
+}
+
+extra_bedouins_0034 = { 
+	name = "Mani"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0027
+	1029.1.1 = {
+		birth = yes
+	}
+	1062.4.6 = { #historial date and death reason
+		death = {
+			death_reason = death_possessed
+		}
+	}
+}
+
+extra_bedouins_0035 = { 
+	name = "Ali"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0027
+	1061.1.1 = {
+		birth = yes
+	}
+	1066.1.1 = {
+		add_pressed_claim = title:c_raqqa
+		add_pressed_claim = title:c_rahba
+	}
+	1090.1.1 = { 
+		death = yes
+	}
+}
+
+extra_bedouins_0036 = { #circumstancially attested, but name unknown
+	name = "Khadija"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0033
+	female =  yes
+	1049.1.1 = {
+		birth = yes
+	}
+	1090.1.1 = { 
+		death = yes
+	}
+}
+
+extra_bedouins_0038 = { #circumstancially attested, but name unknown
+	name = "Qamara"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0034
+	female =  yes
+	1053.1.1 = {
+		birth = yes
+	}
+	1060.1.1 = {
+		effect = {
+			create_betrothal = character:3086 #the future caliph
+		}
+	}
+	1072.1.1 = { 
+		death = yes
+	}
+}
+
+extra_bedouins_0039 = { #circumstancially attested, but name unknown
+	name = "Noor"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0034
+	female =  yes
+	1057.1.1 = {
+		birth = yes
+	}
+	1090.1.1 = { 
+		death = yes
+	}
+}
+
+fictional_bedouins_0039 = { 
+	name = "Abbas"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	father = fictional_bedouins_0040
+	932.1.1 = {
+		birth = yes
+	}
+	989.5.19 = { 
+		death = {
+			death_reason = death_ill
+		}
+	}
+}
+
+fictional_bedouins_0040 = { 
+	name = "Amr"
+	dynasty = 1029036
+	religion = "ashari"
+	culture = "bedouin"
+	889.1.1 = {
+		birth = yes
+	}
+	933.11.10 = { 
+		death = {
+			death_reason = death_battle
+		}
+	}
+}
+
+
+############extra Hashimids / Zaydids, for FP3###################
+extra_bedouins_0037 = { #the only child of Hasan the Missionary, according to some sources. Claimed to have died at a young age. 
+	name = "Tanaz"
+	dynasty_house = house_zaydid
+	religion = "zayidi"
+	culture = "bedouin"
+	father = 45108
+	female =  yes
+	trait = sayyid
+	857.1.1 = {
+		birth = yes
+	}
+	869.1.1 = { 
+		death = yes
+	}
+}
+
+extra_dulafids_001 = {
+	name = "al-Aziz"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_bedouins_0002
+	866.1.1 = {
+		birth = yes
+	}
+	919.1.1 = {
+		death = yes
+	}
+}
+
+extra_dulafids_002 = {
+	name = "Muhammad"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = 163151
+	858.1.1 = {
+		birth = yes
+	}
+	907.1.1 = {
+		death = yes
+	}
+}
+
+extra_dulafids_003 = {
+	name = "Allakan"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_dulafids_002
+	889.1.1 = {
+		birth = yes
+	}
+	946.1.1 = {
+		death = yes
+	}
+}
+
+extra_dulafids_004 = {
+	name = "Jafar"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_dulafids_003
+	909.1.1 = {
+		birth = yes
+	}
+	961.1.1 = {
+		death = yes
+	}
+}
+
+extra_dulafids_005 = {
+	name = "Ahmad"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_dulafids_004
+	935.1.1 = {
+		birth = yes
+	}
+	987.1.1 = {
+		death = yes
+	}
+}
+
+extra_dulafids_006 = {
+	name = "Ali"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_dulafids_004
+	936.1.1 = {
+		birth = yes
+	}
+	984.1.1 = {
+		death = yes
+	}
+}
+
+extra_dulafids_007 = {
+	name = "al-Hasan"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_dulafids_006
+	977.1.1 = {
+		birth = yes
+	}
+	1031.1.1 = {
+		death = yes
+	}
+}
+
+extra_dulafids_008 = {
+	name = "al-Husayn"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_dulafids_006
+	978.1.1 = {
+		birth = yes
+	}
+	1055.1.1 = {
+		death = yes
+	}
+}
+
+extra_dulafids_009 = {
+	name = "Hibatallah"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_dulafids_006
+	976.1.1 = {
+		birth = yes
+	}
+	1038.1.1 = {
+		death = yes
+	}
+}
+
+extra_dulafids_010 = {
+	name = "Ali" # Ali ibn Makula
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_dulafids_009
+	trait = education_learning_3
+	trait = scholar
+	1030.1.1 = {
+		birth = yes
+	}
+	1066.1.1 = {
+		employer = 3084
+	}
+	1082.1.1 = {
+		death = yes
+	}
+}
+
+extra_dulafids_011 = {
+	name = "Abd-al-Wahhad"
+	dynasty = 809 # Dulafid
+	religion = "ashari"
+	culture = "bedouin"
+	father = extra_dulafids_005
+	964.1.1 = {
+		birth = yes
+	}
+	1026.1.1 = {
+		death = yes
 	}
 }
