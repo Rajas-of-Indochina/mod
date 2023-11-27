@@ -787,6 +787,7 @@
 						OR = { 
 							has_doctrine = doctrine_heretic_branch_zandik
 							has_doctrine = tenet_pastoral_isolation
+							has_doctrine = tenet_communal_possessions
 						}
 					}
 					desc = tenet_unrelenting_faith_zandik_name
@@ -2344,7 +2345,15 @@
 		}
 
 		is_shown = {
-			religion_tag = zunism_religion
+			OR = {
+				religion_tag = zunism_religion
+				religion_tag = hinduism_religion
+				religion_tag = hellenism_religion
+				religion_tag = kushitism_religion
+				religion_tag = yazidi_religion
+				religion_tag = baltic_religion
+
+			}
 		}
 
 		parameters = {
@@ -3137,10 +3146,14 @@
 	tenet_communal_possessions = {
 		icon = core_tenet_communism
 		is_shown = {
-			always = no
+			always = yes
 		}
 		can_pick = {
-			always = yes
+			# always = yes
+			NOT = {
+				has_doctrine = tenet_communion
+				has_doctrine = tenet_pursuit_of_power
+			}
 		}
 
 		piety_cost = {
