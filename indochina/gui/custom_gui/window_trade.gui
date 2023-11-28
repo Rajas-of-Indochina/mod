@@ -6,7 +6,7 @@ types tradewidgets {
         movable = no
         using = Window_Size_MainTab
         visible = "[GetVariableSystem.Exists('show_resource')]"
-        
+
 
         state = {
             name = _hide
@@ -29,14 +29,14 @@ types tradewidgets {
             margin_left = -40
             fittype = centercrop
         }
-        
+
 
         margin_widget = {
             size = { 100% 100% }
             margin = { 0 26 }
             margin_right = -20
-            
-            
+
+
             background = {
                 texture = "gfx/interface/component_tiles/tile_window_background_subwindow.dds"
                 spriteType = Corneredtiled
@@ -45,7 +45,7 @@ types tradewidgets {
                 margin_left = -20
                 margin_bottom = 20
                 texture_density = 2
-    
+
                 modify_texture = {
                     name = "overlay"
                     texture = "gfx/interface/component_overlay/overlay_effect.dds"
@@ -75,7 +75,7 @@ types tradewidgets {
                         }
                         expand = {}
                     }
-                } 
+                }
                 vbox = {
                     layoutpolicy_horizontal = expanding
                     layoutpolicy_vertical = expanding
@@ -95,10 +95,10 @@ types tradewidgets {
                                             datacontext = "[Scope.Province.GetTitle]"
                                             ignoreinvisible = yes
                                             margin = { -250 0}
-                                            
+
                                             coa_title_medium = {
                                             }
-                                            
+
                                             vbox = {
                                                 text_single = {
                                                     name = "trade_title"
@@ -113,7 +113,7 @@ types tradewidgets {
                                                     name = "trade_power_value"
                                                     raw_text = "Local [trade_power|E]: [Scope.ScriptValue('trade_node_strength')|1]/[Scope.Var('trade_node_cap').GetValue|1]"
                                                     using = Font_Size_Medium
-                                                }	
+                                                }
                                                 divider_light = {
                                                     layoutpolicy_horizontal = expanding
                                                 }
@@ -129,6 +129,32 @@ types tradewidgets {
                                             }
                                             spacer = {
                                                 size = {5 0}
+                                            }
+                                            icon = {
+                                                texture = "gfx/interface/icons/message_feed/money.dds"
+                                                visible = "[EqualTo_string(Scope.Province.GetHolding.GetType.GetKey,'trade_center_holding')]"
+                                                size = { 40 40 }
+                                                tooltipwidget = {
+                                                    widget = {
+                                                        using = DefaultTooltipBackground
+                                                        size = {200 100}
+                                                        vbox = {
+                                                            margin = { 15 10 }
+                                                            spacing = 10
+                                                            set_parent_size_to_minimum = yes
+                                                            minimumsize = { 150 0 }
+                                                            text_single = {
+                                                                layoutpolicy_horizontal = expanding
+                                                                text = "#T Trade Center#!"
+                                                                background = {
+                                                                    using = Background_Area
+                                                                    margin = { 10 0 }
+                                                                    margin_bottom = 5
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                             icon = {
                                                 texture = "gfx/interface/skinned/hud_maintab/maintab_trade_blocked.dds"

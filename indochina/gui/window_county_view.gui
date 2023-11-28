@@ -54,7 +54,7 @@ window = {
 		name = "window_content"
 		margin_right = 40
 		margin_top = 35
-		
+
 		datacontext = "[HoldingView.GetHolding]"
 		datacontext = "[HoldingView.GetProvince]"
 		datacontext = "[HoldingView.GetHolder]"
@@ -198,7 +198,7 @@ window = {
 				hbox = {
 					hbox = {
 						datamodel = "[HoldingView.GetDeJureLieges]"
-		
+
 						item = {
 							coa_title_tiny_crown = {
 								visible = "[GreaterThan_int32( Title.GetTierFrame, '(int32)3' )]"
@@ -206,7 +206,7 @@ window = {
 							}
 						}
 					}
-		
+
 					# text_single = {
 					# 	text = "DE_JURE_HIERARCHY"
 					# 	default_format = "#low"
@@ -221,7 +221,7 @@ window = {
 
 			vbox = {
 				spacing = 5
-				
+
 				text_single = {
 					raw_text = "[minority_cultures|E]:"
 					# margin_left = 10
@@ -244,19 +244,19 @@ window = {
 				########################
 				### BEGIN MINORITIES ###
 				########################
-	
+
 				hbox = {
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						name = "county_culture_minorities_small_grid"
-		
+
 						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_small')]"
 						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_small')))]"
-		
+
 						item = {
 							button = {
 								size = { 25 25 }
-		
+
 								onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
 								texture = "gfx/interface/icons/modifiers/sea_culture_minority_small.dds"
 								using = tooltip_ne
@@ -276,7 +276,7 @@ window = {
 						name = "county_culture_minorities_large_grid"
 						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_large')]"
 						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('culture_minorities_large')))]"
-		
+
 						item = {
 							button = {
 								size = { 25 25 }
@@ -304,14 +304,14 @@ window = {
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						name = "county_faith_minorities_small_grid"
-		
+
 						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small')]"
 						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small')))]"
-		
+
 						item = {
 							button = {
 								size = { 25 25 }
-		
+
 								onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
 								texture = "gfx/interface/icons/modifiers/sea_faith_minority_small.dds"
 								using = tooltip_ne
@@ -323,7 +323,7 @@ window = {
 										}
 									}
 								}
-		
+
 								icon = {
 									name = "gold_negative_console_button_minus"
 									position = { 0 7 }
@@ -338,7 +338,7 @@ window = {
 						name = "county_faith_minorities_large_grid"
 						datamodel = "[Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')]"
 						visible = "[Not(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')))]"
-		
+
 						item = {
 							button = {
 								size = { 25 25 }
@@ -353,7 +353,7 @@ window = {
 										}
 									}
 								}
-		
+
 								icon = {
 									name = "gold_negative_console_button_minus"
 									position = { 0 7 }
@@ -368,7 +368,7 @@ window = {
 						visible = "[And(IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_large')),IsDataModelEmpty(Province.GetCounty.GetTitle.MakeScope.GetList('faith_minorities_small')))]"
 					}
 				}
-	
+
 				######################
 				### END MINORITIES ###
 				######################
@@ -421,11 +421,12 @@ window = {
 				datamodel = "[HoldingView.GetCountyModifiers]"
 
 				item = {
-					icon = {
+					modifier_item_icon = {
 						size = { 30 30 }
-						texture = "[ModifierItem.GetIcon]"
-						using = tooltip_se
-						tooltip = "[ModifierItem.GetTooltip]"
+
+						blockoverride "icon_data" {
+							using = tooltip_ne
+						}
 					}
 				}
 			}
@@ -1424,12 +1425,13 @@ window = {
 						flipdirection = yes
 
 						item = {
-							icon = {
+							modifier_item_icon = {
 								size = { 30 30 }
-								alwaystransparent = no
-								texture = "[ModifierItem.GetIcon]"
-								using = tooltip_ne
-								tooltip = "[ModifierItem.GetTooltip]"
+
+								blockoverride "icon_data" {
+									using = tooltip_ne
+									alwaystransparent = no
+								}
 							}
 						}
 					}
@@ -1597,7 +1599,7 @@ window = {
 							margin_right = 2
 							ignoreinvisible = yes
 							#margin_top = 2 # DEMD
-							
+
 
 							vbox = {
 								layoutpolicy_horizontal = expanding
@@ -1622,15 +1624,15 @@ window = {
 										fontsize = 15
 										default_format = "#low;bold"
 										align = center;nobaseline
-		
+
 										background = {
 											using = Background_Area_Dark
 										}
-		
+
 										background = {
 											using = Background_Area_Dark
 										}
-		
+
 										background = {
 											using = Background_Area_Dark
 										}
@@ -1655,7 +1657,7 @@ window = {
 
 									progressbar_standard_transparent = {
 										layoutpolicy_horizontal = expanding
-										
+
 										size = { 0 8 }
 										value = "[HoldingView.GetGarrisonRatio]"
 										direction = horizontal
@@ -1920,7 +1922,7 @@ window = {
 													vbox = {
 														spacing = 5
 														layoutpolicy_horizontal = expanding
-														
+
 														text_single = {
 															layoutpolicy_horizontal = expanding
 															text = "[GUIPotentialBuildingItem.GetBuilding.GetTypeName]"
@@ -2792,9 +2794,9 @@ window = {
 	parentanchor = bottom|hcenter
 	position = { 40 -50 }
 	using = Animation_ShowHide_Quick
-	
+
 	using = Window_Background_Subwindow
-	
+
 	vbox = {
 		set_parent_size_to_minimum = yes
 		margin = { 4 4 }
