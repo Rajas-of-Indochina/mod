@@ -26,6 +26,14 @@ circassian_decision.1 = {
 		add_prestige = 100
 	}
 
+	ai_potential = {
+        NOT = { faith = faith:circassian_christianity }
+		culture = { this = culture:circassian }
+        religion = religion:christianity_religion
+		is_adult = yes
+		is_at_war = no
+	}
+
 	ai_will_do = {
 		base = 100
 	}
@@ -39,7 +47,7 @@ circassian_decision.2 = {
 
     desc = circassian_decision_2_desc
     selection_tooltip = circassian_decision_2_tooltip
-	ai_check_interval = 60
+	ai_check_interval = 36
 
     is_shown = {
         NOT = { faith = faith:khabzism }
@@ -49,6 +57,14 @@ circassian_decision.2 = {
 
     effect = {
 		set_character_faith_with_conversion = faith:khabzism
+	}
+
+	ai_potential = {
+        NOT = { faith = faith:khabzism }
+		culture = { this = culture:circassian }
+        religion = { is_in_family = rf_pagan }
+		is_adult = yes
+		is_at_war = no
 	}
 
 	ai_will_do = {
@@ -63,7 +79,7 @@ circassian_decision.3 = {
 
     desc = circassian_decision_3_desc
     selection_tooltip = circassian_decision_3_tooltip
-	ai_check_interval = 60
+	ai_check_interval = 36
 
     is_shown = {
         NOT = { faith = faith:nakh_pagan }
@@ -73,6 +89,14 @@ circassian_decision.3 = {
 
     effect = {
 		set_character_faith_with_conversion = faith:nakh_pagan
+	}
+
+	ai_potential = {
+        NOT = { faith = faith:nakh_pagan }
+		culture = { this = culture:nakh }
+        religion = { is_in_family = rf_pagan }
+		is_adult = yes
+		is_at_war = no
 	}
 
 	ai_will_do = {
@@ -87,7 +111,7 @@ circassian_decision.4 = {
 
     desc = circassian_decision_4_desc
     selection_tooltip = circassian_decision_4_tooltip
-	ai_check_interval = 60
+	ai_check_interval = 36
 
     is_shown = {
 		NOT = { faith = faith:alan_pagan }
@@ -97,6 +121,14 @@ circassian_decision.4 = {
 
     effect = {
 		set_character_faith_with_conversion = faith:alan_pagan
+	}
+
+	ai_potential = {
+		NOT = { faith = faith:alan_pagan }
+		culture = { this = culture:alan }
+        religion = { is_in_family = rf_pagan }
+		is_adult = yes
+		is_at_war = no
 	}
 
 	ai_will_do = {
@@ -111,7 +143,7 @@ circassian_decision.5 = {
 
     desc = circassian_decision_5_desc
     selection_tooltip = circassian_decision_5_tooltip
-	ai_check_interval = 60
+	ai_check_interval = 36
 
     is_shown = {
 		NOT = { faith = faith:apsuara }
@@ -127,7 +159,98 @@ circassian_decision.5 = {
 		set_character_faith_with_conversion = faith:apsuara
 	}
 
+	ai_potential = {
+		NOT = { faith = faith:apsuara }
+		OR = {
+			culture = {	this = culture:abkhaz }
+			culture = { this = culture:abasgi }
+			culture = { this = culture:afrabasgi }
+		}
+        religion = { is_in_family = rf_pagan }
+		is_adult = yes
+		is_at_war = no
+	}
+
 	ai_will_do = {
 		base = 100
+	}
+}
+
+circassian_decision.6 = {
+    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+
+    sort_order = 81
+
+    desc = circassian_decision_thamade_desc
+    selection_tooltip = circassian_decision_thamade_tooltip
+
+    is_shown = {
+		OR = {
+culture = { has_cultural_pillar = heritage_caucasian }
+		}
+    }
+
+is_valid = {
+       culture = { has_cultural_pillar = heritage_caucasian }
+        age > 55
+		prestige_level >=1
+        OR = {
+				has_trait = honest
+				has_trait = forgiving
+				has_trait = generous
+				has_trait = just
+				has_trait = patient
+				has_trait = compassionate
+    }
+NOT = {
+        OR = {
+				has_trait = sadistic
+				has_trait = greedy
+				has_trait = callous
+				has_trait = craven
+				has_trait = lustful
+				has_trait = lazy
+				has_trait = deceitful
+				has_trait = impatient
+				has_trait = shy
+				has_trait = paranoid
+				has_trait = intellect_bad
+				has_trait = intellect_bad_2
+				has_trait = intellect_bad_3
+				has_trait = torturer
+				has_trait = adulterer
+				has_trait = murderer
+				has_trait = deviant
+				has_trait = sodomite
+				has_trait = lunatic			
+				has_trait = kinslayer_1
+				has_trait = kinslayer_2
+				has_trait = kinslayer_3
+				has_trait = incestuous
+				has_trait = cannibal
+				has_trait = murderer
+				has_trait = drunkard
+				has_trait = flagellant
+				has_trait = contrite
+				has_trait = reclusive
+				has_trait = irritable
+				has_trait = rakish
+				has_trait = hashishiyah
+				has_trait = irritable
+				has_trait = incapable				
+    } 
+}
+    }
+
+    effect = {
+      add_trait = thamade
+    }
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
 	}
 }
