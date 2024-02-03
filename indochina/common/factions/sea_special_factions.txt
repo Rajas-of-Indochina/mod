@@ -111,7 +111,7 @@
 	can_county_join = {
 
 		# Tondrakian revolts don't happen to Tondrakian lords
-		NOT = { scope:target.faith = faith:tondrakian }
+		NOT = { scope:faction.faction_target= { faith = faith:tondrakian } }
 
 		OR = {
 			faith = faith:tondrakian
@@ -138,7 +138,7 @@
 		# General Faction immunity
 		custom_description = {
 			text = character_is_immune_to_factions
-			subject = scope:faction_target
+			subject = scope:target
 			NOT = { scope:target = { immune_to_factions_trigger = yes } }
 		}
 	}
@@ -179,15 +179,15 @@
 		# Based only off of Tondrakian relations, not actual county faith
 		compare_modifier = {
 			trigger = {
-				NOT = { this.title_province.culture = scope:faction.faction_target.culture }
-				this.title_province.culture = { has_same_culture_heritage = scope:faction.faction_target.culture }
+				NOT = { this.title_province.culture = scope:target.culture }
+				this.title_province.culture = { has_same_culture_heritage = scope:target.culture }
 			}
 			value = county_opinion
 			multiplier = -1.0
 		}
 		compare_modifier = {
 			trigger = {
-				NOT = { this.title_province.culture = { has_same_culture_heritage = scope:faction.faction_target.culture } }
+				NOT = { this.title_province.culture = { has_same_culture_heritage = scope:target.culture } }
 			}
 			value = county_opinion
 			multiplier = -3.0
@@ -198,32 +198,32 @@
 			HOSTILE_BASE_VALUE = faction_county_opinion_hostile
 			EVIL_BASE_VALUE = faction_county_opinion_evil
 			BASE_FAITH = faith:tondrakian
-			TARGET = scope:faction_target
+			TARGET = scope:target
 		}
 		pluralism_fundamentalism_modifier = {
 			ASTRAY_BASE_VALUE = faction_county_opinion_astray
 			HOSTILE_BASE_VALUE = faction_county_opinion_hostile
 			EVIL_BASE_VALUE = faction_county_opinion_evil
 			BASE_FAITH = faith:tondrakian
-			TARGET = scope:faction_target
+			TARGET = scope:target
 		}
 		
 		modifier = {
 			add = 100
-			scope:faction.faction_target = {has_realm_law = religious_minority_status_3}
+			scope:target = {has_realm_law = religious_minority_status_3}
 			desc = "[GetLaw('religious_minority_status_3').GetName]"
 		}
 		
 		modifier = {
 			add = 50
-			scope:faction.faction_target = {has_realm_law = religious_minority_status_2}
+			scope:target = {has_realm_law = religious_minority_status_2}
 			desc = "[GetLaw('religious_minority_status_2').GetName]"
 		}
 
 		# Greatly reduced chance for a character's capital county to form a faction against them (extra -25 opinion needed).
 		modifier = {
 			add = -200
-			this.title_province = scope:faction.faction_target.capital_province
+			this.title_province = scope:target.capital_province
 		}
 
 		liege_debt_modifier = {
@@ -235,9 +235,9 @@
 		modifier = {
 			add = 25
 			NOT = {
-				culture = scope:faction.faction_target.culture
+				culture = scope:target.culture
 			}
-			scope:faction.faction_target.culture = {
+			scope:target.culture = {
 				has_cultural_parameter = peasant_and_populist_factions_less_common
 			}
 		}
@@ -589,26 +589,39 @@
 		# Small multiplier for my neighbors already in the Faction
 		modifier = {
 			desc = "FACTION_REASON_NEIGHBORS"
+
+			scope:faction = {
+				any_faction_member = { #suppress the description printout if factor is 1
+					any_neighboring_realm_same_rank_owner = {
+						this = root
+					}
+				}
+			}
+
 			factor = {
 				value = 1
-		    	every_faction_member = {
-		    		if = {
-		    			limit = {
-			    			any_neighboring_realm_same_rank_owner = {
-			    				this = root
-			    			}
-						}
-		    			add = 0.25
-		    		}		
+				scope:faction = {
+			    	every_faction_member = {
+			    		if = {
+			    			limit = {
+				    			any_neighboring_realm_same_rank_owner = {
+				    				this = root
+				    			}
+							}
+			    			add = 0.25
+			    		}		
+			    	}
 		    	}
 	    	}
 	    }
 
-	     modifier = {
+	    modifier = {
 			desc = "FACTION_REASON_POWERFUL_VASSAL"
 	    	factor = 2
 			is_powerful_vassal_of = scope:faction.faction_target
 	    }
+
+	    struggle_faction_modifiers = yes
 	}
 
 	on_creation = {
@@ -871,3 +884,4 @@
 
 	multiple_targeting = yes
 }
+
