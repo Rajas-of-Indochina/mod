@@ -630,7 +630,7 @@ set_minorities_game_start = {
 			SIZE = small
 			COUNTY = title:c_lobdaburg
 		}
-	}
+		}
 
 		if = {
             limit = { game_start_date >= 1066.1.1 }
@@ -2347,6 +2347,59 @@ set_minorities_game_start = {
 				CULTURE = culture:burusho
 				SIZE = large
 				COUNTY = title:c_golaghmuli
+			}
+		}
+
+		# Tondrakians
+		if = {
+			limit = {
+				game_start_date >= 822.1.1
+				game_start_date <= 930.1.1
+			}
+			every_county = {
+				limit = {
+					OR = {
+						#d_vaspurakan
+						THIS = title:c_apahunik
+						THIS = title:c_turuberan
+						#d_mesopotamia
+						THIS = title:c_theodosiopolis
+						THIS = title:c_mesopotamia
+						#d_chaldia
+						THIS = title:c_satala
+					}
+				}
+				save_scope_as = tondrakian_county
+				add_faith_minority_effect = {
+					FAITH = faith:tondrakian
+					SIZE = large
+					COUNTY = scope:tondrakian_county
+				}
+				# add_county_modifier = {
+				# 	modifier = tondrakian_unrest_modifier
+				# }
+			}
+		}
+		# Tondrakians deported to Thrace
+		else_if = {
+			limit = {
+				game_start_date >= 930.1.1
+				game_start_date <= 1050.1.1
+			}
+			every_county = {
+				limit = {
+					duchy = title:d_thrace
+					NOT = { this = title:c_byzantion }
+				}
+				save_scope_as = tondrakian_county
+				add_faith_minority_effect = {
+					FAITH = faith:tondrakian
+					SIZE = large
+					COUNTY = scope:tondrakian_county
+				}
+				# add_county_modifier = {
+				# 	modifier = tondrakian_unrest_modifier
+				# }
 			}
 		}
 	}

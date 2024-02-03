@@ -84,7 +84,7 @@ scripted_effect expel_religious_minorities_effect = {
 				modifier = small_minority_expelled_modifier
 				years = 10
 			}
-
+			
 			# Remove minority from this county
 			remove_list_variable = {
 				name = faith_minorities_small
@@ -119,7 +119,7 @@ scripted_effect expel_religious_minorities_effect = {
 				modifier = large_minority_expelled_modifier
 				years = 10
 			}
-
+			
 			# Remove minority from this county
 			remove_list_variable = {
 				name = faith_minorities_large
@@ -1342,6 +1342,30 @@ minorities.4001 = {
 	}
 }
 
+# Communalist faith spreading through occupation
+# root is the occupant
+# scope:county is the county title
+# scope:barony is the barony title that got occupied
+# scope:previous_controller is the previous controller of the county
+# scope:war is the war causing the previous controller and the occupant to be hostile
+minorities.5001 = {
+	hidden = yes
+
+	trigger = {
+		scope:war = { using_cb = populist_war }
+		faith = { has_doctrine_parameter = communalist_faith_param }
+		joined_faction = {
+			var:faction_faith ?= PREV.faith
+		}
+	}
+
+	immediate = {
+		scope:county = {
+			promote_faith_minority_effect = { FAITH = root.faith }
+		}
+	}
+}
+
 # Vanilla override
 faith_conversion.0001 = {
 	hidden = yes
@@ -1457,6 +1481,12 @@ faith_conversion.0001 = {
 				}
 			}
 		}
+		# if = {
+		# 	limit = { faith = faith:tondrakian }
+		# 	every_realm_county = {
+		# 		remove_county_modifier = tondrakian_unrest_modifier
+		# 	}
+		# }
 	}
 }
 
