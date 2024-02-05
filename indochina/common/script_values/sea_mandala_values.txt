@@ -1,0 +1,127 @@
+﻿# The uppercase letters are intentional and critical
+# I had to do some fucked up GUI sorcery to make this shit work
+
+create_duchy_title_value = {
+	add = {
+		value = 250
+		desc = "BASE"
+	}
+	multiply = {
+	    value = 1
+	    if = {
+	        limit = { has_perk = ducal_conquest_perk } # Ducal Conquest
+	        subtract = {
+				value = 0.2
+				desc = ducal_conquest_perk
+			}
+	    }
+	    if = {
+	        limit = {
+	        	culture = { has_innovation = innovation_divine_right } # Divine Right
+	        }
+	        subtract = {
+				value = 0.2
+				desc = innovation_divine_right
+			}
+	    }
+	    if = {
+	        limit = { government_has_flag = government_is_tribal } # Tribal
+	        subtract = {
+				value = 0.5
+				desc = government_is_tribal
+			}
+	    }
+	    if = {
+	        limit = {
+	        	faith = { has_doctrine = tenet_pursuit_of_power } # Pursuit of Power
+	        }
+	        subtract = {
+				value = 0.5
+				desc = tenet_pursuit_of_power
+			}
+	    }
+	    if = {
+	    	limit = {
+	    		culture = { has_cultural_pillar = ethos_courtly } # Courtly
+	    	}
+	    	subtract = {
+				value = 0.15
+				desc = "$ethos_courtly_name$"
+			}
+	    }
+	    if = {
+	    	limit = {
+	    		culture = { has_cultural_tradition = tradition_legalistic } # Legalistic
+	    	}
+	    	subtract = {
+				value = 0.3
+				desc = tradition_legalistic
+			}
+	    }
+	    if = {
+	    	limit = {
+	    		dynasty = { has_dynasty_perk = law_legacy_2 } # Faithful Magistrates
+	    	}
+	    	subtract = {
+				value = 0.2
+				desc = law_legacy_2
+			}
+	    }
+	    min = {
+			value = 0.2 # 80% max discount from defines
+			desc = minimum
+		}
+	}
+}
+
+mandala_cost_Duchy = {
+	value = create_duchy_title_value
+	multiply = mandala_piety_factor
+}
+
+mandala_cost_Kingdom = {
+	value = create_kingdom_title_value
+	multiply = mandala_piety_factor
+}
+
+mandala_cost_Empire = {
+	value = create_empire_title_value
+	multiply = mandala_piety_factor
+}
+
+mandala_piety_factor = {
+	value = 1
+	add = {
+		value = 0
+		if = {
+			limit = {
+				piety_level = low_negative_piety_level
+			}
+			add = 0.2
+		}
+		if = {
+			limit = {
+				piety_level = low_piety_level
+			}
+			add = 0.1
+		}
+		if = {
+			limit = {
+				piety_level = highpiety_level
+			}
+			add = -0.1
+		}
+		if = {
+			limit = {
+				piety_level = very_high_piety_level
+			}
+			add = -0.2
+		}
+		if = {
+			limit = {
+				piety_level = max_piety_level
+			}
+			add = -0.3
+		}
+	}
+}

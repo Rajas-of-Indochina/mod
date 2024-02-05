@@ -1,4 +1,4 @@
-﻿### TITLE WINDOW
+### TITLE WINDOW
 
 window = {
 	name = "title_view_window"
@@ -622,29 +622,59 @@ window = {
 							expand = {}
 						}
 
-						hbox = {
+						vbox = {
+							layoutpolicy_vertical = expanding
 							layoutpolicy_horizontal = expanding
-							tooltip = "[TitleViewWindow.GetMinimumGoldTooltip]"
-
-							icon = {
-								name = "icon_yes"
-								visible = "[TitleViewWindow.HasEnoughGold]"
-								size = { 25 25 }
-								texture = "gfx/interface/icons/symbols/icon_check.dds"
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								tooltip = "[TitleViewWindow.GetMinimumGoldTooltip]"
+	
+								icon = {
+									name = "icon_yes"
+									visible = "[TitleViewWindow.HasEnoughGold]"
+									size = { 25 25 }
+									texture = "gfx/interface/icons/symbols/icon_check.dds"
+								}
+	
+								icon = {
+									name = "icon_no"
+									visible = "[Not(TitleViewWindow.HasEnoughGold)]"
+									size = { 25 25 }
+									texture = "gfx/interface/icons/symbols/icon_cross.dds"
+								}
+	
+								text_single = {
+									text = "[TitleViewWindow.GetMinimumGoldText]"
+								}
+	
+								expand = {}
 							}
+							hbox = {
+								datacontext = "[TitleViewWindow.GetTitle]"
+								datacontext = "[GetScriptedGui( 'mandala_create_title' )]"
+								visible = "[GetScriptedGui('is_mandala_sgui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								layoutpolicy_horizontal = expanding
 
-							icon = {
-								name = "icon_no"
-								visible = "[Not(TitleViewWindow.HasEnoughGold)]"
-								size = { 25 25 }
-								texture = "gfx/interface/icons/symbols/icon_cross.dds"
+								icon = {
+									name = "faith_icon_yes"
+									visible = "[ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'title', Title.MakeScope ).End )]"
+									size = { 25 25 }
+									texture = "gfx/interface/icons/symbols/icon_check.dds"
+								}
+
+								icon = {
+									name = "faith_icon_no"
+									visible = "[Not(ScriptedGui.IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'title', Title.MakeScope ).End ))]"
+									size = { 25 25 }
+									texture = "gfx/interface/icons/symbols/icon_cross.dds"
+								}
+
+								text_single = {
+									text = "[GetLocalPlayerPietyTextIcon]#V [GetPlayer.MakeScope.ScriptValue(Concatenate('mandala_cost_',Title.GetTierAsNameNoTooltip))|0]#!"
+								}
+
+								expand = {}
 							}
-
-							text_single = {
-								text = "[TitleViewWindow.GetMinimumGoldText]"
-							}
-
-							expand = {}
 						}
 
 						hbox = {
@@ -679,7 +709,9 @@ window = {
 					}
 
 					button_primary = {
-						enabled = "[TitleViewWindow.CanTitleBeCreated]"
+						datacontext = "[GetScriptedGui('mandala_create_title')]"
+						datacontext = "[TitleViewWindow.GetTitle]"
+						enabled = "[And(TitleViewWindow.CanTitleBeCreated,ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title', Title.MakeScope).End))]"
 						text = "TITLE_VIEW_CREATE_TITLE"
 						onclick = "[TitleViewWindow.CreateTitle]"
 						tooltip = "[TitleViewWindow.GetCreateTitleButtonTooltip]"

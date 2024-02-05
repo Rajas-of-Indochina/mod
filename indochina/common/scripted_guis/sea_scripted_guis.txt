@@ -1,4 +1,4 @@
-select_faith = {
+﻿select_faith = {
 	scope = character
 	saved_scopes = {
 		faith
@@ -60,5 +60,40 @@ clear_selected_scope = {
 	effect = {
 		remove_variable = selected_culture
 		remove_variable = selected_faith
+	}
+}
+
+is_mandala_sgui = {
+	scope = character
+	is_shown = {
+		has_government = mandala_government
+	}
+}
+
+mandala_create_title = {
+	scope = character
+	saved_scopes = {
+		title
+	}
+	is_valid = {
+		OR = {
+			AND = {
+				has_government = mandala_government
+				trigger_if = {
+					limit = { scope:title = { tier = tier_duchy } }
+					piety >= mandala_cost_Duchy
+				}
+				trigger_else_if = {
+					limit = { scope:title = { tier = tier_kingdom } }
+					piety >= mandala_cost_Kingdom
+				}
+				trigger_else_if = {
+					limit = { scope:title = { tier = tier_empire } }
+					piety >= mandala_cost_Empire
+				}
+				trigger_else = { always = yes }
+			}
+			NOT = { has_government = mandala_government }
+		}
 	}
 }

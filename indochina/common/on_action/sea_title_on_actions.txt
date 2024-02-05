@@ -38,5 +38,34 @@ on_title_gain = {
 	on_actions = {
 		usurp_nanzhao_action
 		establish_dali_action
+		mandala_piety_cost_effect
+	}
+}
+
+mandala_piety_cost_effect = {
+	trigger = {
+		scope:transfer_type = flag:created
+		has_government = mandala_government
+		scope:title = {
+			tier >= tier_duchy
+		}
+	}
+	effect = {
+		add_piety = {
+			value = 0
+			if = {
+				limit = { scope:title={tier = tier_duchy} }
+				add = mandala_cost_Duchy
+			}
+			else_if = {
+				limit = { scope:title={tier = tier_kingdom} }
+				add = mandala_cost_Kingdom
+			}
+			else_if = {
+				limit = { scope:title={tier = tier_empire} }
+				add = mandala_cost_Empire
+			}
+			multiply = -1
+		}
 	}
 }
