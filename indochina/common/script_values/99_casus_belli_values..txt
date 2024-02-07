@@ -54,7 +54,7 @@ common_cb_cost_multiplier_core = {
 			desc = CB_TRIBAL_COST
 		}
 	}
-
+	
 	# Clan Unity modifiers
 	if = {
 		limit = {
@@ -261,19 +261,6 @@ common_cb_piety_cost_multiplier_core = {
 			desc = "CB_ATTACKER_VASSAL_CONTRACT"
 		}
 	}
-	# Ghazi reduction
-	if = {
-		limit = {
-			scope:attacker = {
-				is_independent_ruler = no
-				vassal_contract_has_flag = vassal_contract_cheaper_religious_war
-			}
-		}
-		multiply = {
-			value = ghazi_religious_war_cost_reduction
-			desc = "CB_ATTACKER_VASSAL_CONTRACT"
-		}
-	}
 	# Someone in the target region sacrificed your HoF.
 	if = {
 		limit = {
@@ -301,6 +288,7 @@ common_cb_piety_cost_multiplier_sans_struggles = {
 common_cb_piety_cost_multiplier = {
 	value = common_cb_piety_cost_multiplier_core
 	# Struggle Multipliers
+	## Generic modifiers.
 	if = {
 		limit = {
 			scope:attacker = {
@@ -338,6 +326,20 @@ holy_war_cb_piety_cost_multiplier = {
 		multiply = {
 			value = 0.8
 			desc = CB_REDUCED_HOLY_WAR_COST
+		}
+	}
+
+	# Ghazi reduction
+	if = {
+		limit = {
+			scope:attacker = {
+				is_independent_ruler = no
+				vassal_contract_has_flag = vassal_contract_cheaper_religious_war
+			}
+		}
+		multiply = {
+			value = ghazi_religious_war_cost_reduction
+			desc = "CB_ATTACKER_VASSAL_CONTRACT"
 		}
 	}
 }
@@ -812,6 +814,7 @@ struggle_cb_phase_modifier_cost = {
 				scope:attacker = {
 					any_character_struggle = {
 						involvement = involved
+						is_struggle_type = iberian_struggle
 						is_struggle_phase = struggle_iberia_phase_hostility
 						is_secondary_character_involvement_either_trigger = { CHAR = scope:defender }
 					}
@@ -845,6 +848,7 @@ struggle_cb_phase_modifier_cost = {
 				scope:attacker = {
 					any_character_struggle = {
 						involvement = involved
+						is_struggle_type = iberian_struggle
 						is_struggle_phase = struggle_iberia_phase_opportunity
 						is_secondary_character_involvement_either_trigger = { CHAR = scope:defender }
 					}
@@ -878,6 +882,7 @@ struggle_cb_phase_modifier_cost = {
 				scope:attacker = {
 					any_character_struggle = {
 						involvement = involved
+						is_struggle_type = iberian_struggle
 						is_struggle_phase = struggle_iberia_phase_compromise
 						is_secondary_character_involvement_either_trigger = { CHAR = scope:defender }
 					}
@@ -910,6 +915,7 @@ struggle_cb_phase_modifier_cost = {
 				scope:attacker = {
 					any_character_struggle = {
 						involvement = involved
+						is_struggle_type = iberian_struggle
 						is_struggle_phase = struggle_iberia_phase_conciliation
 						is_secondary_character_involvement_either_trigger = { CHAR = scope:defender }
 					}
