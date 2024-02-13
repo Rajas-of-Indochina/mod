@@ -1,4 +1,4 @@
-﻿change_to_city_state = {
+change_to_city_state = {
 	picture = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
 	desc = change_to_city_state_desc
 	selection_tooltip = change_to_city_state_tooltip
@@ -770,4 +770,58 @@ restore_diplo_comp = {
 		base = 50
 	}
 	cost = { gold = { value = 500 } prestige = { value = 1000 } }
+}
+
+vassal_hof_court_chaplain_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	desc = vassal_hof_court_chaplain_decision_desc
+	selection_tooltip = vassal_hof_court_chaplain_decision_tooltip
+	ai_check_interval = 24
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+
+		exists = faith.religious_head
+
+		NOT = { root.faith.religious_head = { has_council_position = councillor_court_chaplain } }
+	}
+
+	is_valid = {
+		piety_level >= medium_piety_level
+
+		OR = {
+			has_usable_hook = faith.religious_head
+			faith.religious_head = {
+				opinion = {
+					target = ROOT
+					value >= high_positive_opinion
+				}
+			}
+			faith.religious_head = {
+				has_dread_level_towards = {
+					target = ROOT
+					level = 2
+				}
+			}
+		}
+	}
+
+	cost = {
+		piety = medium_piety_value
+	}
+
+	effect = {
+		assign_councillor_type = {
+			type = councillor_court_chaplain
+			remove_existing_councillor = yes
+			target = faith.religious_head
+		}
+		if = {
+			limit = { has_usable_hook = faith.religious_head }
+			use_hook = faith.religious_head
+		}
+	}
+
+	cooldown = { years = 5 }
 }
