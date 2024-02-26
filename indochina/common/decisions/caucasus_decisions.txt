@@ -16,8 +16,15 @@ circassian_decision.1 = {
 
     is_shown = {
         NOT = { faith = faith:circassian_christianity }
-		culture = { this = culture:circassian }
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+				}
         religion = religion:christianity_religion
+		OR = {
+			has_government	= tribal_government
+			has_government	= nomadic_government
+		}
     }
 
     effect = {
@@ -303,6 +310,61 @@ has_culture	= culture:circassian
 
 	ai_will_do = {
 		base = 0
+	}
+}
+
+circassian_decision.8 = {
+    picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+
+    sort_order = 81
+
+    desc = circassian_decision_eight_desc
+    selection_tooltip = circassian_decision_eight_tooltip
+
+    is_shown = {
+
+OR = {
+culture = {	this = culture:circassian }
+culture = {	this = culture:ubykh }
+	}
+	faith = faith:circassian_christianity
+    }
+
+
+is_valid = {
+	OR = {
+		culture = {	this = culture:circassian }
+		culture = {	this = culture:ubykh }
+			}
+faith = faith:circassian_christianity
+AND = {
+	custom_tooltip = {
+		text = circassiantribal_requirement
+NOT = {
+	has_government	= tribal_government
+}
+NOT = {
+	has_government	= nomadic_government
+}
+	}
+}
+		prestige_level >=2
+		piety_level	>=3
+    }
+
+    effect = {
+				custom_tooltip = {
+			text = christiancircassian_requirement
+trigger_event = {id = caucasianroa.1 }
+				}
+    }
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 50
 	}
 }
 
