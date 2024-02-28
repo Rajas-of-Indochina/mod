@@ -960,7 +960,7 @@ tradition_sinicized_culture = {
 		heritage_group_chinese = yes
 		heritage_family_east_asian = yes
 	}
-	
+
 	cost = {
 		prestige = {
 			add = {
@@ -985,10 +985,7 @@ tradition_sinicized_culture = {
 				limit = {
 					OR = {
 						culture_head = { has_court_language = language_chinese }
-						any_in_list = {
-							list = traits
-							this = flag:language_chinese
-						}
+						has_cultural_pillar = language_chinese
 					}
 				}
 				subtract = {
@@ -1133,17 +1130,17 @@ tradition_black_river_banners = { # Banners of the Black River for Tangut and pe
 	layers = { # no idea how this works, placeholder
 		0 = martial
 		1 = western
-		4 = diplomat.dds 
+		4 = diplomat.dds
 	}
 
 	is_shown = {
-		has_cultural_parameter = heritage_group_altaic
+		always = no
 	}
 	parameters = {
 		unlock_maa_iron_hawks = yes
-		# Will unlock exclusive Building buffs at Etzina 
+		# Will unlock exclusive Building buffs at Etzina
 	}
-	character_modifier = { # again, placeholder 
+	character_modifier = { # again, placeholder
 		attacker_advantage = 5
 		defender_advantage = 5
 		monthly_martial_lifestyle_xp_gain_mult = 0.1
@@ -1167,25 +1164,42 @@ tradition_black_river_banners = { # Banners of the Black River for Tangut and pe
 tradition_horses_like_clouds = { # Horse archery + guerrilla combat tradition of the Emishi people
 	category = regional
 
-	layers = { # no idea how this works, placeholder
+	layers = {
 		0 = martial
 		1 = western
 		4 = rider.dds
 	}
 
 	is_shown = {
-		has_cultural_parameter = heritage_ezo
+		has_cultural_pillar = heritage_ezo
 	}
+
+	can_pick = {
+		NOT = {
+			has_cultural_tradition = tradition_horse_lords
+		}
+	}
+
 	parameters = {
 		unlock_maa_horse_archers = yes
+		can_recruit_open_specialist = yes
+		unlock_horse_pastures_building = yes
+		steppe_hunt_success_chance = yes
 	}
-	character_modifier = { 
+
+	character_modifier = {
 		supply_duration = 0.5
 		movement_speed = 0.1
 		raid_speed = 0.25
-	}
-	county_modifier = {
 		defender_advantage = 5
+		character_travel_speed_mult = 0.2
+		character_travel_safety_mult = 0.2
+		steppe_travel_danger = steppe_high_danger_reduction
+		movement_speed_land_raiding = 0.3
+		hostile_county_attrition_raiding = -0.5
+	}
+
+	county_modifier = {
 		supply_limit_mult = 0.25
 	}
 
@@ -1337,7 +1351,7 @@ tradition_people_of_the_red_river = {
 
 	is_shown = {
 		has_cultural_pillar = heritage_vietic
-		NOT = { has_cultural_tradition = tradition_agarian }
+		NOT = { has_cultural_tradition = tradition_agrarian }
 	}
 	can_pick = {
 		custom_tooltip = {
@@ -1435,6 +1449,99 @@ tradition_people_of_the_red_river = {
 			limit = {
 				scope:character = {
 					government_has_flag = government_is_tribal
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
+tradition_nasrani_partition = {
+	category = regional
+
+	layers = {
+		0 = learning
+		1 = indian
+		4 = crown.dds
+	}
+
+	parameters = {
+		can_enact_nasrani_partition_succession_law = yes
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:assyrian
+			this = {
+				any_parent_culture_or_above = { this = culture:assyrian }
+			}
+			this = {
+				any_parent_culture = { has_cultural_tradition = tradition_nasrani_partition }
+			}
+			scope:character.religion = religion:christianity_religion
+		}
+	}
+
+	can_pick = {
+		OR = {
+			this = culture:assyrian
+			this = {
+				any_parent_culture_or_above = { this = culture:assyrian }
+			}
+			this = {
+				any_parent_culture = { has_cultural_tradition = tradition_nasrani_partition }
+			}
+			scope:character.faith = { has_doctrine = special_doctrine_nasrani_partition_succession_law }
+		}
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					culture_pillar:ethos_bellicose = { is_in_list = traits }
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = culture_not_bellicose
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.1
+							religion = religion:christianity_religion
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = malabar_christian_population_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				scope:character.religion = religion:christianity_religion
+			}
+			add = scope:character.ai_zeal
+		}
+		if = {
+			limit = {
+				scope:character = {
+					has_government = mandala_government
 				}
 			}
 			multiply = 0

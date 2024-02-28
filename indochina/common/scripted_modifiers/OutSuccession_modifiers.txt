@@ -1,0 +1,31 @@
+﻿elector_voting_pattern_circumstances_outremer_elective_modifier = {
+    modifier = {
+        desc = tooltip_outremer_elector_proximity_by_blood
+        scope:holder = {
+            any_close_family_member = {
+                this = scope:candidate
+            }
+        }
+        scope:candidate = {
+            NOR = {
+                AND = {
+                    exists = this.father.father
+                    this.father.father = scope:holder
+                }
+                AND = {
+                    exists = this.mother.father
+                    this.mother.father = scope:holder
+                }
+                AND = {
+                    exists = this.father.mother
+                    this.father.mother = scope:holder
+                }
+                AND = {
+                    exists = this.mother.mother
+                    this.mother.mother = scope:holder
+                }
+            }
+        }
+        add = 100
+    }
+}
