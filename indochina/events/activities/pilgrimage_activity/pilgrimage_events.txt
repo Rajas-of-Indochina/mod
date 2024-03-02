@@ -668,6 +668,11 @@ pilgrimage.1100 = {
 							death = { death_reason = death_drowned }
 							every_close_family_member = {
 								custom = every_family_member_tt
+								limit = {
+									NOT = {
+										this = root
+									}
+								}
 								add_opinion = {
 									target = root
 									modifier = accidentally_killed_family_opinion
@@ -890,53 +895,62 @@ pilgrimage.1110 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					exists = scope:shared_holy_site
-					scope:shared_holy_site = title:b_makka
-					scope:shared_holy_site = root.involved_activity.activity_location.barony
-					scope:shared_holy_site.county_controller.faith = scope:heathen_raider.faith
+					scope:shared_holy_site ?= {
+						this = title:b_makka
+						this = root.involved_activity.activity_location.barony
+						county.county_controller.religion = scope:heathen_raider.religion
+					}
 				}
 				desc = pilgrimage.1110.shared_target_heathen_hajj
 			}
 			triggered_desc = {
 				trigger = {
-					exists = scope:shared_holy_site
-					scope:shared_holy_site = title:b_makka
-					scope:shared_holy_site = root.involved_activity.activity_location.barony
-					scope:shared_holy_site.county_controller.faith = root.faith
+					scope:shared_holy_site ?= {
+						this = title:b_makka
+						this = root.involved_activity.activity_location.barony
+						county.county_controller.religion = root.religion
+						NOT = { county.county_controller.religion = scope:heathen_raider.religion }
+					}
 				}
 				desc = pilgrimage.1110.shared_target_controlled_hajj
 			}
 			triggered_desc = {
 				trigger = {
-					exists = scope:shared_holy_site
-					scope:shared_holy_site = title:b_jerusalem
-					scope:shared_holy_site = root.involved_activity.activity_location.barony
-					scope:shared_holy_site.county_controller.faith = scope:heathen_raider.faith
+					scope:shared_holy_site ?= {
+						this = title:b_jerusalem
+						this = root.involved_activity.activity_location.barony
+						county.county_controller.religion = scope:heathen_raider.religion
+					}
 				}
 				desc = pilgrimage.1110.shared_target_heathen_jerusalem
 			}
 			triggered_desc = {
 				trigger = {
-					exists = scope:shared_holy_site
-					scope:shared_holy_site = title:b_jerusalem
-					scope:shared_holy_site = root.involved_activity.activity_location.barony
-					scope:shared_holy_site.county_controller.faith = root.faith
+					scope:shared_holy_site ?= {
+						this = title:b_jerusalem
+						this = root.involved_activity.activity_location.barony
+						county.county_controller.religion = root.religion
+						NOT = { county.county_controller.religion = scope:heathen_raider.religion }
+					}
 				}
 				desc = pilgrimage.1110.shared_target_controlled_jerusalem
 			}
 			triggered_desc = {
 				trigger = {
-					exists = scope:shared_holy_site
-					scope:shared_holy_site = root.involved_activity.activity_location.barony
-					scope:shared_holy_site.county_controller.faith = scope:heathen_raider.faith
+					scope:shared_holy_site ?= {
+						this = root.involved_activity.activity_location.barony
+						county.county_controller.religion = scope:heathen_raider.religion
+					}
 				}
 				desc = pilgrimage.1110.shared_target_heathen
 			}
 			triggered_desc = {
 				trigger = {
-					exists = scope:shared_holy_site
-					scope:shared_holy_site = root.involved_activity.activity_location.barony
-					scope:shared_holy_site.county_controller.faith = root.faith
+					scope:shared_holy_site ?= {
+						this = root.involved_activity.activity_location.barony
+						county.county_controller.religion = root.religion
+						NOT = { county.county_controller.religion = scope:heathen_raider.religion }
+					}
 				}
 				desc = pilgrimage.1110.shared_target_controlled
 			}
@@ -1051,7 +1065,7 @@ pilgrimage.1110 = {
 				save_scope_as = victim_pilgrim_1
 			}
 			if = {
-				limit = { exists = scope:victim_pilgrim }
+				limit = { exists = scope:victim_pilgrim_1 }
 				random_entourage_character = {
 					limit = {
 						NOR = {
@@ -1079,20 +1093,9 @@ pilgrimage.1110 = {
 			}
 		}
 		# Does raider faith share the holy site?
-		scope:heathen_raider.faith = {
+		involved_activity.activity_location.barony = {
 			if = {
-				limit = {
-					any_holy_site = { this = root.involved_activity.activity_location.barony }
-				}
-				random_holy_site = {
-					limit = { this = root.involved_activity.activity_location.barony }
-					save_scope_as = shared_holy_site
-				}
-			}
-			else_if = {
-				limit = {
-					any_holy_site = { is_holy_site_of = root.faith }
-				}
+				limit = { is_holy_site_of = scope:heathen_raider.faith }
 				save_scope_as = shared_holy_site
 			}
 		}
@@ -1552,7 +1555,20 @@ scripted_trigger pilgrim_admire_temple_person_trigger = {
 	OR = {
 		has_trait = education_learning
 		has_trait = devoted
+		has_trait = theologian
 		is_clergy = yes
+	}
+	trigger_if = {
+		limit = {
+			faith = { has_doctrine_parameter = clergy_must_be_male }
+		}
+		is_male = yes
+	}
+	trigger_if = {
+		limit = {
+			faith = { has_doctrine_parameter = clergy_must_be_female }
+		}
+		is_female = yes
 	}
 }
 
@@ -3670,37 +3686,39 @@ pilgrimage.2010 = {
 	trigger = {
 		is_ai = no
 		NOT = { has_trait = lifestyle_mystic }
-		any_ruler = {
+		faith = {
+			any_faith_ruler = {
 			OR = {
 				pilgrimage_2010_mystic_ruler = yes
 				pilgrimage_2010_mystic_home_ruler = yes
 			}
 		}
+		}
 		is_location_valid_for_travel_event_on_land = yes
 	}
 	immediate = {
 		# Find our Mystic
-		if = {
-			limit = {
-				any_ruler = { pilgrimage_2010_mystic_ruler = yes }
-			}
-			random_ruler = {
-				limit = { pilgrimage_2010_mystic_ruler = yes }
-				save_scope_as = 2010_mystic
-			}
-		}
-		else = {
-			random_ruler = {
+		faith = {
+			if = {
 				limit = {
-					pilgrimage_2010_mystic_home_ruler = yes
+						any_faith_ruler = { pilgrimage_2010_mystic_ruler = yes }
 				}
-				save_scope_as = mystic_home_owner
+					random_faith_ruler = {
+					limit = { pilgrimage_2010_mystic_ruler = yes }
+					save_scope_as = 2010_mystic
+				}
 			}
-			create_character = {
-				template = default_mystic_character
-				location = scope:mystic_home_owner.capital_province
-				culture = scope:mystic_home_owner.culture
-				save_scope_as = 2010_mystic
+			else = {
+				random_faith_ruler = {
+					limit = { pilgrimage_2010_mystic_home_ruler = yes }
+					save_scope_as = mystic_home_owner
+				}
+				create_character = {
+					template = default_mystic_character
+					location = scope:mystic_home_owner.capital_province
+					culture = scope:mystic_home_owner.culture
+					save_scope_as = 2010_mystic
+				}
 			}
 		}
 		add_character_flag = in_pilgrimage_event_chain
@@ -4478,7 +4496,7 @@ pilgrimage.2021 = {
 				}
 			}
 		}
-		recruit_courtier = scope:thief_to_convert
+		add_courtier = scope:thief_to_convert
 		stress_impact = {
 			zealous = medium_stress_impact_gain
 			cynical = medium_stress_impact_loss
@@ -4495,7 +4513,12 @@ pilgrimage.2021 = {
 		}
 	}
 	after = {
-		current_travel_plan = { resume_travel_plan = yes }
+		if = {
+			limit = {
+				current_travel_plan ?= { is_paused = yes }
+			}
+			current_travel_plan = { resume_travel_plan = yes }
+		}
 	}
 }
 
@@ -4630,6 +4653,10 @@ pilgrimage.2030 = {
 				}
 			}
 		}
+		if = {
+			limit = { has_activity_intent = zealot_intent }
+			custom_tooltip = available_because_intent_tt
+		}
 		flavor = pilgrimage.2030.b.flavor
 		pious_type_option_effect = yes
 		add_piety = minor_piety_gain
@@ -4661,8 +4688,18 @@ pilgrimage.2030 = {
 	option = {
 		name = pilgrimage.2030.c
 		trigger = { has_activity_intent = reflection_intent }
+		custom_tooltip = available_because_intent_tt
 		bonus_to_all_types_effect = yes
 		add_piety = minor_piety_gain
+		if = {
+			limit = {
+				has_trait = lifestyle_mystic
+			}
+			add_trait_xp = {
+				trait = lifestyle_mystic
+				value = lifestyle_mystic_xp_gain_minor_value
+			}
+		}
 		stress_impact = {
 			base = minor_stress_impact_loss
 		}
@@ -4827,6 +4864,10 @@ pilgrimage.2040 = {
 				}
 			}
 		}
+		if = {
+			limit = { has_activity_intent = zealot_intent }
+			custom_tooltip = available_because_intent_tt
+		}
 		pious_type_option_effect = yes
 		add_piety = minor_piety_gain
 		ai_chance = {
@@ -4846,6 +4887,10 @@ pilgrimage.2040 = {
 				has_trait = lazy
 			}
 			NOT = { has_character_modifier = pilgrimage_chill_ship_modifier }
+		}
+		if = {
+			limit = { has_activity_intent = reflection_intent }
+			custom_tooltip = available_because_intent_tt
 		}
 		add_character_modifier = {
 			modifier = pilgrimage_chill_ship_modifier
@@ -4899,6 +4944,7 @@ pilgrimage.2050 = {
 	trigger = {
 		location = { is_sea_province = yes }
 	}
+	cooldown = { years = 30 }
 	immediate = {
 		# Create pilgrims
 		hidden_effect = {
@@ -4968,6 +5014,9 @@ pilgrimage.2050 = {
 				paranoid = minor_stress_impact_gain
 			}
 		}
+		scope:first_pilgrim = { add_to_court_and_entourage_effect = yes }
+		scope:second_pilgrim = { add_to_court_and_entourage_effect = yes }
+		scope:third_pilgrim = { add_to_court_and_entourage_effect = yes }
 		ai_chance = {
 			base = 100
 			modifier = {
@@ -5014,18 +5063,9 @@ pilgrimage.2050 = {
 					very_pious_type_option_effect = yes
 				}
 				#Keeping this outside of the toast so as to not cut off the toast
-				add_to_entourage_and_activity_but_not_court_effect = {
-					CHAR_TO_ADD = scope:first_pilgrim
-					NEW_COURT_OWNER = root
-				}
-				add_to_entourage_and_activity_but_not_court_effect = {
-					CHAR_TO_ADD = scope:second_pilgrim
-					NEW_COURT_OWNER = root
-				}
-				add_to_entourage_and_activity_but_not_court_effect = {
-					CHAR_TO_ADD = scope:third_pilgrim
-					NEW_COURT_OWNER = root
-				}
+				scope:first_pilgrim = { add_to_court_and_entourage_effect = yes }
+				scope:second_pilgrim = { add_to_court_and_entourage_effect = yes }
+				scope:third_pilgrim = { add_to_court_and_entourage_effect = yes }
 				scope:first_pilgrim = {
 					set_character_faith = root.faith
 				}
@@ -5049,6 +5089,9 @@ pilgrimage.2050 = {
 					left_icon = root
 					add_prestige = medium_prestige_loss
 				}
+				scope:first_pilgrim = { death = { death_reason = death_drowned } }
+				scope:second_pilgrim = { death = { death_reason = death_drowned } }
+				scope:third_pilgrim = { death = { death_reason = death_drowned } }
 			}
 		}
 		stress_impact = {
@@ -5073,6 +5116,9 @@ pilgrimage.2050 = {
 				}
 			}
 		}
+		scope:first_pilgrim = { death = { death_reason = death_drowned } }
+		scope:second_pilgrim = { death = { death_reason = death_drowned } }
+		scope:third_pilgrim = { death = { death_reason = death_drowned } }
 		stress_impact = {
 			paranoid = medium_stress_impact_loss
 			callous = medium_stress_impact_loss
@@ -5090,25 +5136,6 @@ pilgrimage.2050 = {
 				factor = 0
 			}
 		}
-	}
-	after = {
-		if = {
-			limit = { is_ai = yes }
-			trigger_event = {
-				id = pilgrimage.2051
-				days = 5
-			}
-		}
-	}
-}
-
-#Clean up event
-pilgrimage.2051 = {
-	hidden = yes
-	immediate = {
-		scope:first_pilgrim = { silent_disappearance_effect = yes }
-		scope:second_pilgrim = { silent_disappearance_effect = yes }
-		scope:third_pilgrim = { silent_disappearance_effect = yes }
 	}
 }
 
@@ -5185,6 +5212,7 @@ pilgrimage.2101 = {
 			has_trait = rakish
 		}
 		is_location_valid_for_travel_event_on_land = yes
+		might_cheat_on_every_partner_trigger = yes
 	}
 	immediate = {
 		add_character_flag = {
@@ -5988,7 +6016,7 @@ pilgrimage.2504 = {
 	#Hook/courtier option
 	option = {
 		name = pilgrimage.2504.b
-		recruit_courtier = scope:beggar
+		add_courtier = scope:beggar
 		scope:beggar = {
 			add_opinion = {
 				modifier = grateful_opinion
@@ -6700,6 +6728,15 @@ pilgrimage.3004 = {
 				value = 10 #TODO_CD_EP2 standardize MEDIUM
 			}
 		}
+		if = {
+			limit = {
+				has_trait = lifestyle_mystic
+			}
+			add_trait_xp = {
+				trait = lifestyle_mystic
+				value = lifestyle_mystic_xp_gain_minor_value
+			}
+		}
 		add_piety = major_piety_value
 		add_prestige = minor_prestige_value
 	}
@@ -6772,6 +6809,15 @@ pilgrimage.3102 = {
 		}
 		add_stress = minor_stress_loss
 		add_piety = minor_piety_gain
+		if = {
+			limit = {
+				has_trait = lifestyle_mystic
+			}
+			add_trait_xp = {
+				trait = lifestyle_mystic
+				value = lifestyle_mystic_xp_gain_minor_value
+			}
+		}
 		add_character_modifier = {
 			modifier = pilgrimage_worldly_modifier
 			years = 10
@@ -6957,8 +7003,16 @@ pilgrimage.3202 = {
 		current_travel_plan = {
 			delay_travel_plan = { months = 2 }
 		}
-		custom_tooltip = pilgrimage.3202.a.tt
 		add_learning_lifestyle_xp = major_lifestyle_xp
+		if = {
+			limit = {
+				has_trait = lifestyle_mystic
+			}
+			add_trait_xp = {
+				trait = lifestyle_mystic
+				value = lifestyle_mystic_xp_gain_minor_value
+			}
+		}
 		if = {
 			limit = {
 				has_trait = pilgrim
@@ -7651,7 +7705,13 @@ pilgrimage.3219 = {# Tiger Attack
 		hidden_effect = {
 			if = {
 				limit = {
-					NOT = { has_trait = hunter_3 }
+					NOT = {
+						has_trait_xp = {
+							trait = lifestyle_hunter
+							track = hunter
+							value >= 100
+						}
+					}
 				}
 				random = {
 					chance = 25
@@ -7683,9 +7743,14 @@ pilgrimage.3219 = {# Tiger Attack
 					add_prestige = minor_prestige_gain
 					if = {
 						limit = { exists = scope:increase_hunter }
-						change_trait_rank = {
+						# change_trait_rank = {
+						# 	trait = lifestyle_hunter
+						# 	rank = 1
+						# }
+						add_trait_xp = {
 							trait = lifestyle_hunter
-							rank = 1
+							track = hunter
+							value = 15
 						}
 					}
 				}
@@ -8031,7 +8096,7 @@ pilgrimage.6001 = {
 			}
 			trigger_event = {
 				id = pilgrimage.6006
-				days = { 10 20 }
+				days = 5
 			}
 		}
 		else_if = {
@@ -8061,7 +8126,7 @@ pilgrimage.6001 = {
 			}
 			trigger_event = {
 				id = pilgrimage.6007
-				days = { 5 15 }
+				days = 5
 			}
 		}
 		else = { # Fallback event
@@ -8441,7 +8506,14 @@ pilgrimage.6005 = {
 		worldly_type_option_effect = yes
 	}
 	after = {
-		current_travel_plan = { resume_travel_plan = yes }
+		if = {
+			limit = {
+				current_travel_plan ?= {
+					is_paused = yes
+				}
+			}
+			current_travel_plan = { resume_travel_plan = yes }
+		}
 	}
 }
 
@@ -8566,6 +8638,15 @@ pilgrimage.6007 = {
 	option = {
 		name = pilgrimage.6007.a
 		pious_type_option_effect = yes
+		if = {
+			limit = {
+				has_trait = lifestyle_mystic
+			}
+			add_trait_xp = {
+				trait = lifestyle_mystic
+				value = lifestyle_mystic_xp_gain_minor_value
+			}
+		}
 		scope:6007_healer = {
 			duel = {
 				skill = learning
@@ -8729,8 +8810,11 @@ pilgrimage.3101 = {
 		character = root
 		animation = personality_content
 	}
+
+	trigger = { exists = scope:activity }
+
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 		scope:activity = {
 			add_activity_log_entry = {
 				key = hajj_arrived_log
@@ -8860,7 +8944,7 @@ pilgrimage.4001 = {
 	trigger = {
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 		christian_saint_bone_creation_effect = yes
 	}
 	#Alright
@@ -8938,8 +9022,10 @@ pilgrimage.4002 = {
 					has_trait = celibate
 				}
 				is_attracted_to_gender_of = root
+				might_cheat_on_every_partner_trigger = yes
 			}
 			is_attracted_to_gender_of = scope:2010_mystic
+			might_cheat_on_every_partner_trigger = yes
 		}
 		had_sex_with_effect = {
 			CHARACTER = scope:2010_mystic
@@ -9260,7 +9346,7 @@ pilgrimage.5001 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_roma }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9308,7 +9394,7 @@ pilgrimage.5011 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_jerusalem }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9342,7 +9428,7 @@ pilgrimage.5021 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_byzantion }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9376,7 +9462,7 @@ pilgrimage.5031 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_alexandria }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9411,7 +9497,7 @@ pilgrimage.5101 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_sinai }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9446,7 +9532,7 @@ pilgrimage.5201 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_medina }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9481,7 +9567,7 @@ pilgrimage.5301 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_varanasi }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9515,7 +9601,7 @@ pilgrimage.5311 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_ayodhya }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9549,7 +9635,7 @@ pilgrimage.5321 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_mathura }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9583,7 +9669,7 @@ pilgrimage.5331 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_sthanisvara }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9617,7 +9703,7 @@ pilgrimage.5341 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_kanchipuram }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9651,7 +9737,7 @@ pilgrimage.5351 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_ujjayini }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9685,7 +9771,7 @@ pilgrimage.5361 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_dvaraka }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9721,7 +9807,7 @@ pilgrimage.5362 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_puri }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9755,7 +9841,7 @@ pilgrimage.5363 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_kumaon }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9789,7 +9875,7 @@ pilgrimage.5364 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_madurai }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9823,7 +9909,7 @@ pilgrimage.5365 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_tagadur }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9857,7 +9943,7 @@ pilgrimage.5366 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_nellore }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9891,7 +9977,7 @@ pilgrimage.5367 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_sthanisvara }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9925,7 +10011,7 @@ pilgrimage.5368 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_bhera }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9959,7 +10045,7 @@ pilgrimage.5369 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_madurai }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -9993,7 +10079,7 @@ pilgrimage.5370 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_cumbum }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10027,7 +10113,7 @@ pilgrimage.5371 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_somnath }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10061,7 +10147,7 @@ pilgrimage.5372 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_damin_i_koh }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10095,7 +10181,7 @@ pilgrimage.5373 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_kolhapur }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10129,7 +10215,7 @@ pilgrimage.5374 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_uraiyur }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10163,7 +10249,7 @@ pilgrimage.5375 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_kondana }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10197,7 +10283,7 @@ pilgrimage.5376 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_trikuta }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10231,7 +10317,7 @@ pilgrimage.5377 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_multan }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10265,7 +10351,7 @@ pilgrimage.5378 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_kataka }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10299,7 +10385,7 @@ pilgrimage.5379 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_kongu }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10333,7 +10419,7 @@ pilgrimage.5380 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_mataram }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10367,7 +10453,7 @@ pilgrimage.5381 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_bali_sea }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10404,7 +10490,7 @@ pilgrimage.5401 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_gaya }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10438,7 +10524,7 @@ pilgrimage.5411 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_kusinagara }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10475,7 +10561,7 @@ pilgrimage.5421 = {
 		scope:activity.activity_location.county = title:c_varanasi
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10513,7 +10599,7 @@ pilgrimage.5422 = {
 		scope:activity.activity_location.county = title:c_mithila
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10549,7 +10635,7 @@ pilgrimage.5423 = {
 		scope:activity.activity_location.county = title:c_sravasti
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10585,7 +10671,7 @@ pilgrimage.5424 = {
 		scope:activity.activity_location.county = title:c_vodamayutja
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10621,7 +10707,7 @@ pilgrimage.5425 = {
 		scope:activity.activity_location.county = title:c_phiti
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10657,7 +10743,7 @@ pilgrimage.5426 = {
 		scope:activity.activity_location.county = title:c_dagon
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10693,7 +10779,7 @@ pilgrimage.5428 = {
 		scope:activity.activity_location.county = title:c_thaton
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10729,7 +10815,7 @@ pilgrimage.5429 = {
 		scope:activity.activity_location.county = title:c_shazhou
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10765,7 +10851,7 @@ pilgrimage.5430 = {
 		scope:activity.activity_location.county = title:c_bamian
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10801,7 +10887,7 @@ pilgrimage.5431 = {
 		scope:activity.activity_location.county = title:c_lhasa
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10837,7 +10923,7 @@ pilgrimage.5432 = {
 		scope:activity.activity_location.county = title:c_amdo
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10873,7 +10959,7 @@ pilgrimage.5433 = {
 		scope:activity.activity_location.county = title:c_amdo
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10910,7 +10996,7 @@ pilgrimage.5501 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_radha }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -10988,7 +11074,7 @@ pilgrimage.5502 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_somnath }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -11022,7 +11108,7 @@ pilgrimage.5503 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_bhumilka }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -11056,7 +11142,7 @@ pilgrimage.5504 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_hastinapura }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -11090,7 +11176,7 @@ pilgrimage.5505 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_magadha }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -11124,7 +11210,7 @@ pilgrimage.5506 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_koppam }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -11158,7 +11244,7 @@ pilgrimage.5507 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_vidisa }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -11195,7 +11281,7 @@ pilgrimage.5601 = {
 	}
 	trigger = { scope:activity.activity_location.county = title:c_baduspan }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -11228,9 +11314,9 @@ pilgrimage.5901 = {
 		}
 		animation = happiness
 	}
-	trigger = { scope:activity.activity_location.county = title:c_brunswick }
+	trigger = { scope:activity.activity_location.county = title:c_paderborn }
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -11265,7 +11351,7 @@ pilgrimage.5911 = {
 		animation = happiness
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -11300,7 +11386,7 @@ pilgrimage.5921 = {
 		animation = happiness
 	}
 	immediate = {
-		play_music_cue = "pilgrimage_arrival_destination_cue"
+		play_music_cue = mx_cue_pilgrimage_arrival
 	}
 	#Alright
 	option = {
@@ -11371,7 +11457,9 @@ pilgrimage.6500 = {
 					has_trait = paranoid
 					has_trait = craven
 					has_trait = reclusive
+					has_trait = callous
 				}
+				is_adult = yes
 			}
 		}
 	}
@@ -12466,8 +12554,8 @@ pilgrimage.6532 = {
 		}
 		if = {
 			limit = { exists = scope:warning_character }
-			add_opinion = {
-				target = root
+			reverse_add_opinion = {
+				target = scope:warning_character
 				modifier = ignored_opinion
 				opinion = low_negative_opinion
 			}
@@ -12799,6 +12887,7 @@ scripted_trigger 6540_wares_vendor_trigger = {
 		has_trait = education_stewardship_2
 		has_trait = education_stewardship_3
 		has_trait = education_stewardship_4
+		has_trait = education_stewardship_5
 	}
 }
 
@@ -13069,6 +13158,10 @@ pilgrimage.6750 = {
 		character = root
 		animation = beg
 	}
+	widget = {
+		gui = "event_window_widget_activity_intent"
+		container = "custom_widgets_container"
+	}
 	#We don't really need a cooldown since it's once per character
 	trigger = {
 		has_dlc_feature = tours_and_tournaments
@@ -13225,7 +13318,23 @@ pilgrimage.6760 = {
 
 	trigger = {
 		faith.religion = religion:christianity_religion
-		location.county.holder.cp:councillor_court_chaplain.faith.religion ?= religion:christianity_religion
+		OR = {
+			NOR = {
+				faith = faith:orthodox
+				faith = faith:catholic
+			}
+			any_secret = { secret_type = secret_non_believer }
+		}
+		location.county.holder.cp:councillor_court_chaplain ?= {
+			faith.religion ?= religion:christianity_religion
+			OR = {
+				NOR = {
+					faith = faith:orthodox
+					faith = faith:catholic
+				}
+				any_secret = { secret_type = secret_non_believer }
+			}
+		}
 	}
 
 	immediate = {
@@ -13236,9 +13345,6 @@ pilgrimage.6760 = {
 		else = {
 			location.county.holder = {
 				ordered_courtier_or_guest = {
-					limit = {
-						NOT = { has_trait = cynical }
-					}
 					order_by = {
 						value = learning
 						if = {
@@ -13248,6 +13354,20 @@ pilgrimage.6760 = {
 						if = {
 							limit = { has_trait = zealous }
 							add = 20
+						}
+						if = {
+							limit = { has_trait = cynical }
+							add = -50
+						}
+						if = {
+							limit = {
+								NOR = {
+									faith = faith:orthodox
+									faith = faith:catholic
+								}
+								faith.religion ?= religion:christianity_religion
+							}
+							add = 100
 						}
 					}
 					save_scope_as = bishop_pilgrim
@@ -13770,10 +13890,12 @@ pilgrimage.6780 = {
 				any_court_position_holder = {
 					location = root.location
 					is_physically_able_adult = yes
+					is_available = yes
 				}
 				any_courtier_or_guest = {
-					has_any_high_skill_rating = yes
 					is_physically_able_adult = yes
+					has_any_high_skill_rating = yes
+					is_available = yes
 				}
 			}
 		}
@@ -14569,7 +14691,7 @@ pilgrimage.6810 = {
 	}
 	right_portrait = {
 		character = scope:bishop_pilgrim
-		animation = personality_greedy
+		animation = steward
 	}
 	lower_left_portrait = {
 		trigger = { exists = scope:my_heir }
@@ -14997,6 +15119,10 @@ pilgrimage.6830 = {
 		position = lower_center_portrait
 	}
 	cooldown = { years = 1 }
+	widget = {
+		gui = "event_window_widget_activity_intent"
+		container = "custom_widgets_container"
+	}
 	trigger = {
 		has_activity_intent = reflection_intent
 		NOT = { religion = religion:tengrism_religion }
@@ -15804,7 +15930,7 @@ pilgrimage.9001 = {
 			desc = pilgrimage.9001.desc
 		}
 	}
-	theme = travel_pilgrimage_return
+	theme = pilgrimage_return
 	override_background = { reference = relaxing_room }
 	left_portrait = {
 		character = root
@@ -15962,7 +16088,7 @@ pilgrimage.9010 = {
 			}
 		}
 	}
-	theme = travel_pilgrimage_return
+	theme = pilgrimage_return
 	override_background = {
 		trigger = {
 			NOR = {
@@ -16125,7 +16251,7 @@ pilgrimage.9100 = {
 			}
 		}
 	}
-	theme = travel_pilgrimage_return
+	theme = pilgrimage_return
 	override_background = { reference = market }
 	left_portrait = {
 		character = root

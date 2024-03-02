@@ -118,128 +118,156 @@ sea_global_culture.0001 = {
 	scope = none
 	hidden = yes
 
-	immediate = {
-		# Save scopes for player notification events.
-		culture:idaya = { save_scope_as = idaya }
-		culture:ilokano = {
-			# 'Diverge' this culture by copying innovations. Leave traditions as defined in the database.
-			reset_culture_creation_date = yes
-			get_all_innovations_from = culture:idaya
+		immediate = {
+			# Save scopes for player notification events.
+			culture:idaya = { save_scope_as = idaya }
+			culture:ilokano = {
+				# 'Diverge' this culture by copying innovations. Leave traditions as defined in the database.
+				reset_culture_creation_date = yes
+				get_all_innovations_from = culture:idaya
 
-			# Save scope for player notification events.
-			save_scope_as = ilokano
-		}
-		culture:ifugao = {
-			# 'Diverge' this culture by copying innovations. Leave traditions as defined in the database.
-			reset_culture_creation_date = yes
-			get_all_innovations_from = culture:idaya
-
-			# Save scope for player notification events.
-			save_scope_as = ifugao
-		}
-		culture:ibanag = {
-			# 'Diverge' this culture by copying innovations. Leave traditions as defined in the database.
-			reset_culture_creation_date = yes
-			get_all_innovations_from = culture:idaya
-
-			# Save scope for player notification events.
-			save_scope_as = ibanag
-
-		every_county = {
-			limit = {
-				# All Idaya counties in the Philippines will convert to the appropriate culture.
-				culture = culture:idaya
-				title_province = {
-					OR = {
-						geographical_region = world_philippines
-					}
-				}
+				# Save scope for player notification events.
+				save_scope_as = ilokano
 			}
-			add_to_list = idaya_counties
-		}
+			culture:ifugao = {
+				# 'Diverge' this culture by copying innovations. Leave traditions as defined in the database.
+				reset_culture_creation_date = yes
+				get_all_innovations_from = culture:idaya
 
-		# Convert the Idaya counties to the new culture.
-		every_in_list = {
-			list = idaya_counties
-			limit = {
-				# Same-culture players get an event informing them of their county's conversion *before* it happens (for their provinces only).
-				NOT = {
-					holder = {
-						OR = {
-							AND = {
-								is_ai = no
-								culture = culture:idaya
-							}
-							any_liege_or_above = {
-								is_ai = no
-								culture = culture:idaya
-							}
-						}
-					}
-				}
+				# Save scope for player notification events.
+				save_scope_as = ifugao
 			}
+			culture:ibanag = {
+				# 'Diverge' this culture by copying innovations. Leave traditions as defined in the database.
+				reset_culture_creation_date = yes
+				get_all_innovations_from = culture:idaya
 
-			# All Idaya counties/rulers in Ilocos/Pangasinan become Ilokano
-			convert_county_and_holder_if_in_region_effect = {
-				OLD_CULTURE = culture:idaya
-				NEW_CULTURE = culture:ilokano
-				REGION = custom_ilokano
-			}
+				# Save scope for player notification events.
+				save_scope_as = ibanag
 
-			# All Idaya counties/rulers in Cordillera region become Ifugao
-			convert_county_and_holder_if_in_region_effect = {
-				OLD_CULTURE = culture:idaya
-				NEW_CULTURE = culture:ifugao
-				REGION = custom_ifugao
-			}
-
-			# All Idaya counties/rulers in Cagayan Valley become Ibanag
-			convert_county_and_holder_if_in_region_effect = {
-				OLD_CULTURE = culture:idaya
-				NEW_CULTURE = culture:ibanag
-				REGION = custom_ibanag
-			}
-
-		}
-
-		# Send the appropraite notification event to each player.
-		every_player = {
-			if = {
+			every_county = {
 				limit = {
+					# All Idaya counties in the Philippines will convert to the appropriate culture.
 					culture = culture:idaya
-					any_sub_realm_county = {
-						culture = culture:idaya
-						title_province = {
+					title_province = {
+						OR = {
 							geographical_region = world_philippines
 						}
 					}
 				}
-				if = {
-					limit = {
-						NOT = {
-							any_liege_or_above = {
-								is_ai = no
+				add_to_list = idaya_counties
+			}
+
+			# Convert the Idaya counties to the new culture.
+			every_in_list = {
+				list = idaya_counties
+				limit = {
+					# Same-culture players get an event informing them of their county's conversion *before* it happens (for their provinces only).
+					NOT = {
+						holder = {
+							OR = {
+								AND = {
+									is_ai = no
+									culture = culture:idaya
+								}
+								any_liege_or_above = {
+									is_ai = no
+									culture = culture:idaya
+								}
 							}
 						}
 					}
-					trigger_event = sea_global_culture.0002
 				}
+
+				# All Idaya counties/rulers in Ilocos/Pangasinan become Ilokano
+				convert_county_and_holder_if_in_region_effect = {
+					OLD_CULTURE = culture:idaya
+					NEW_CULTURE = culture:ilokano
+					REGION = custom_ilokano
+				}
+				every_county_in_region = {
+					region = custom_ilokano
+					save_scope_as = county
+					add_culture_minority_effect = {
+						COUNTY = scope:county
+						CULTURE = culture:idaya
+						SIZE = large
+					}
+				}
+
+				# All Idaya counties/rulers in Cordillera region become Ifugao
+				convert_county_and_holder_if_in_region_effect = {
+					OLD_CULTURE = culture:idaya
+					NEW_CULTURE = culture:ifugao
+					REGION = custom_ifugao
+				}
+				every_county_in_region = {
+					region = custom_ifugao
+					save_scope_as = county
+					add_culture_minority_effect = {
+						COUNTY = scope:county
+						CULTURE = culture:idaya
+						SIZE = large
+					}
+				}
+
+				# All Idaya counties/rulers in Cagayan Valley become Ibanag
+				convert_county_and_holder_if_in_region_effect = {
+					OLD_CULTURE = culture:idaya
+					NEW_CULTURE = culture:ibanag
+					REGION = custom_ibanag
+				}
+				every_county_in_region = {
+					region = custom_ibanag
+					save_scope_as = county
+					add_culture_minority_effect = {
+						COUNTY = scope:county
+						CULTURE = culture:idaya
+						SIZE = large
+					}
+				}
+
 			}
-			#else = {
-			#	if = {
-			#		limit = {
-			#			is_ai = no
-			#			save_temporary_scope_as = player
-			#			any_in_list = {
-			#				list = idaya_counties
-			#				holder = {
-			#					is_within_diplo_range = { CHARACTER = scope:player }
-			#				}
-			#			}
-			#		}
-			#		trigger_event = sea_global_culture.0003
-			#	}
-			#}
+
+			# Send the appropraite notification event to each player.
+			every_player = {
+				if = {
+					limit = {
+						culture = culture:idaya
+						any_sub_realm_county = {
+							culture = culture:idaya
+							title_province = {
+								geographical_region = world_philippines
+							}
+						}
+					}
+					if = {
+						limit = {
+							NOT = {
+								any_liege_or_above = {
+									is_ai = no
+								}
+							}
+						}
+						trigger_event = sea_global_culture.0002
+					}
+				}
+				#else = {
+				#	if = {
+				#		limit = {
+				#			is_ai = no
+				#			save_temporary_scope_as = player
+				#			any_in_list = {
+				#				list = idaya_counties
+				#				holder = {
+				#					is_within_diplo_range = { CHARACTER = scope:player }
+				#				}
+				#			}
+				#		}
+				#		trigger_event = sea_global_culture.0003
+				#	}
+				#}
+			}
 		}
 	}
 }

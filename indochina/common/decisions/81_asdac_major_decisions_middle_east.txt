@@ -13,12 +13,12 @@ embrace_turkish_culture_decision = {
 		capital_province = {
 			geographical_region = world_asia_minor
 		}
-		NOT = {
-			is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:embrace_turkish_culture_decision
-			}
-		}
+		# NOT = {
+		# 	is_target_in_global_variable_list = {
+		# 		name = unavailable_unique_decisions
+		# 		target = flag:embrace_turkish_culture_decision
+		# 	}
+		# }
 	}
 
 	is_valid = {
@@ -65,15 +65,23 @@ embrace_turkish_culture_decision = {
 			}
 			set_culture = culture:ottoman_turkish
 		}
-		every_county = {
+		every_county_in_region = {
+			region = world_asia_minor
 			custom = embrace_turkish_culture_counties_custom
 			limit = {
-				culture = culture:turkish
-				title_province = {
-					geographical_region = world_asia_minor
+				OR = {
+					culture = culture:turkish
+					culture = culture:greek
 				}
 			}
+			save_scope_as = county
+			culture = {save_scope_as = old_culture }
 			set_county_culture = culture:ottoman_turkish
+			add_culture_minority_effect = {
+				CULTURE = scope:old_culture
+				COUNTY = scope:county
+				SIZE = large
+			}
 		}
 		culture:ottoman_turkish = {
 			reset_culture_creation_date = yes

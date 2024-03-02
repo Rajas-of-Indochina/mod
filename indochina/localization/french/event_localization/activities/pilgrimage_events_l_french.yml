@@ -3,7 +3,7 @@
  activity_pilgrimage:0 "Pèlerinage"
  activity_pilgrimage_desc:0 "$game_concept_pilgrimage_desc$"
  activity_pilgrimage_host_desc:0 "$BULLET_WITH_TAB$[piety|E][piety_i|E]\n$BULLET_WITH_TAB$Perte de [stress|El][stress_loss_i]\n[GetPlayer.Custom('GetPilgrimOrHajjiTrait')]"
- activity_pilgrimage_pilgrim_custom_host_desc:0 "$BULLET_WITH_TAB$[trait|E] ou [Concept('trait_level_track_xp','expérience')|E] du trait [GetTrait('pilgrim').GetName( GetNullCharacter )|l]"
+ activity_pilgrimage_pilgrim_custom_host_desc: "$BULLET_WITH_TAB$[trait|E] [GetTrait('pilgrim').GetName( GetNullCharacter )|l] ou [Concept('trait_level_track_xp','expérience')|E] pour ce trait"
  activity_pilgrimage_hajjaj_custom_host_desc:0 "$BULLET_WITH_TAB$[trait|E] [GetTrait('hajjaj').GetName( GetNullCharacter )|l]"
 
  activity_pilgrimage_selection_tooltip:1 "Entreprenez un [pilgrimage|El] pour prouver votre dévouement envers [GetPlayer.GetFaith.PantheonTerm]\n\nRécompenses attendues :\n$BULLET_WITH_TAB$[piety|E][piety_i|E]\n$BULLET_WITH_TAB$Perte de [stress|El][stress_loss_i]"
@@ -15,7 +15,7 @@
  activity_pilgrimage_province_unvisited_desc:0 "\n#positive_value + Lieu saint non visité#!"
  activity_pilgrimage_province_unique_desc:0 "\n#positive_value + Lieu saint unique de religion [GetPlayer.GetFaith.GetReligion.GetAdjectiveNoTooltip]#!"
  #Pros/Cons + Cost at the end
- activity_pilgrimage_province_desc:0 "C’est un bel endroit pour un pèlerinage"
+ activity_pilgrimage_province_desc: "Vous commencez un pèlerinage en [ROOT.Province.GetName]\nLa distance affecte les coûts et les récompenses"
  activity_pilgrimage_province_very_short_desc:0 "\n#positive_value + Très courte distance#!\n\nCoût supplémentaire : aucun"
  activity_pilgrimage_province_pretty_short_desc:0 "\n#positive_value + Courte distance#!\n#negative_value - Coût à peine plus élevé#!\n\nCoût supplémentaire : [SCOPE.ScriptValue('pilgrimage_length_cost_tier_1')|0][gold_i]"
  activity_pilgrimage_province_short_desc:0 "\n#positive_value ++ Distance relativement courte#!\n#negative_value -- Coût légèrement augmenté#!\n\nCoût supplémentaire : [SCOPE.ScriptValue('pilgrimage_length_cost_tier_2')|0][gold_i]"
@@ -24,6 +24,7 @@
  activity_pilgrimage_province_quite_far_desc:0 "\n#positive_value +++ Assez loin#!\n#negative_value --- Relativement coûteux#!\n\nCoût supplémentaire : [SCOPE.ScriptValue('pilgrimage_length_cost_tier_5')|0][gold_i]"
  activity_pilgrimage_province_very_far_desc:0 "\n#positive_value +++ Très loin#!\n#negative_value --- Coûteux#!\n\nCoût supplémentaire : [SCOPE.ScriptValue('pilgrimage_length_cost_tier_6')|0][gold_i]"
  activity_pilgrimage_province_extraordinarily_far_desc:0 "\n#positive_value +++ Extrêmement loin#!\n#negative_value --- Très coûteux#!\n\nCoût supplémentaire : [SCOPE.ScriptValue('pilgrimage_length_cost_tier_7')|0][gold_i]"
+ activity_pilgrimage_imaginary_friend_location_desc: "\n#positive_value +++ Honorer votre ami imaginaire#!"
  #Effects
  activity_pilgrimage_province_medium_mult_desc:0 "\n\n#bold Effets de l’organisation d’un [GetActivityType('activity_pilgrimage').GetName] ici#!\n$BULLET_WITH_TAB$Récompense d’activité en [piety|El] [piety_i|E] : #p +[EmptyScope.ScriptValue('medium_pilgrimage_piety_multiplier')|0]%#!"
  activity_pilgrimage_province_long_mult_desc:0 "\n\n#bold Effets de l’organisation d’un [GetActivityType('activity_pilgrimage').GetName] ici#!\n$BULLET_WITH_TAB$Récompense d’activité en [piety|El] [piety_i|E] : #p +[EmptyScope.ScriptValue('long_pilgrimage_piety_multiplier')|0]%#!"
@@ -129,7 +130,7 @@
 #Pomp Option
  pilgrimage_option_pomp:0 "Apparat"
  pilgrimage_pomp_humble:0 "Humble"
- pilgrimage_pomp_humble_desc:0 "$EFFECT_LIST_BULLET$ Vous n’amenez personne de votre [court|E], ce qui rend le [travel|El] dangereux\n$EFFECT_LIST_BULLET$ Vous rejoignez un groupe de [EmptyScope.ScriptValue('pilgrimage_entourage_pomp_humble_max_value')] pèlerins au hasard\n$EFFECT_LIST_BULLET$ Beaucoup plus de [piety|El] gagnée à l’achèvement\n\n#weak Le pèlerinage est un moment de contemplation silencieuse. Un simple groupe de pèlerins étrangers est donc le plus adapté.#!"
+ pilgrimage_pomp_humble_desc: "$EFFECT_LIST_BULLET$ Vous n’amenez personne de votre [court|E], ce qui rend le [travel|El] dangereux\n$EFFECT_LIST_BULLET$ Vous rejoignez un groupe de [EmptyScope.ScriptValue('pilgrimage_entourage_pomp_humble_max_value')] pèlerins au hasard\n$EFFECT_LIST_BULLET$ Plus de [piety|El] gagnée à l’achèvement\n\n#weak Le pèlerinage est un moment de contemplation silencieuse. Un simple groupe de pèlerins étrangers est donc le plus adapté.#!"
  pilgrimage_pomp_appropriate:0 "Approprié"
  pilgrimage_pomp_appropriate_desc:0 "$EFFECT_LIST_BULLET$ Vous amenez des gardes du corps ou de bons chevaliers, et peut-être un ami\n$EFFECT_LIST_BULLET$ Jusqu’à [EmptyScope.ScriptValue('pilgrimage_entourage_pomp_appropriate_max_value')] pèlerins au hasard rejoignent votre suite\n$EFFECT_LIST_BULLET$ La [piety|El] reçue à l’achèvement n’est pas affectée\n\n#weak Les routes sont dangereuses et le voyage est long. La pureté spirituelle est une chose, la témérité en est une autre.#!"
  pilgrimage_pomp_ceremonial:0 "Cérémoniel"
@@ -212,7 +213,7 @@
  pilgrimage.0041.t:0 "$pilgrimage.0040.t$ ?"
  pilgrimage.0041.desc:0 "Mon corps me lâche, mais mon esprit est fort. Dois-je remettre ma vie entre les mains [ROOT.Char.GetFaith.HealthGodNamePossessive] et poursuivre mon voyage vers [ROOT.Char.GetTravelPlan.GetData.GetNextDestination.GetProvince.GetNameNoTooltip] ?"
  pilgrimage.0041.a:0 "Je suis béni[ROOT.Char.Custom('FR_E')] par [ROOT.Char.GetFaith.HighGodName]."
- pilgrimage.0041.a.tt:0 "Votre [THIS.Char.GetInvolvedActivity.GetName|l] continuera"
+ pilgrimage.0041.a.tt: "Votre [THIS.Char.GetInvolvedActivity.GetShortName|l] continuera"
  pilgrimage.0041.b:0 "Non, c’est trop dangereux."
  #Invalidation because you bury old host back home
  pilgrimage.0042.t:0 "$pilgrimage_header$ un enterrement au pays"
@@ -312,7 +313,7 @@
  pilgrimage.1140.t:0 "$pilgrimage_header$ la sécurité par le nombre"
  pilgrimage.1140.desc:0 "Alors que nous traversons [ROOT.Char.GetCurrentLocation.GetCounty.GetTitle.GetNameNoTier], nous sommes abordés par [Select_CString(group_leader.IsFemale,'une roturière','un roturier')] d’origine [group_leader.GetCulture.GetName] qui affirme être le chef d’un groupe de pèlerins [ROOT.Char.GetFaith.GetAdherentNamePlural].\n\n« [Select_CString(ROOT.Char.IsFemale,'Bonne','Bon')] [ROOT.Char.GetTitleAsNameNoTooltip], nous sommes sur la route vers [destination.GetName] depuis des semaines, mais les lieux sont trop dangereux et nous manquons de provisions. »\n\n« Nous vous serions éternellement reconnaissants de votre aide. »"
  pilgrimage.1140.a:0 "Plus on est de fous, plus on rit !"
- pilgrimage.1140.a.tt:1 "[group_leader.GetFirstName] et jusqu’à trois autres personnes participeront à votre [ROOT.Char.GetInvolvedActivity.GetName|l]"
+ pilgrimage.1140.a.tt: "[group_leader.GetFirstName] et jusqu’à trois autres personnes participeront à votre [ROOT.Char.GetInvolvedActivity.GetShortName|l]"
  pilgrimage.1140.b:0 "Des [group_leader.GetCulture.GetCollectiveNounNoTooltip] ? Hors de question."
  pilgrimage.1140.b.flavor:0 "Ne jamais faire confiance à des [group_leader.GetCulture.GetCollectiveNounNoTooltip]."
  pilgrimage.1140.c:0 "Prenez un peu de monnaie, pour vos ennuis."
@@ -364,7 +365,7 @@
  pilgrimage.2008.a:1 "Si telle est la volonté [ROOT.Char.GetFaith.HighGodNamePossessive]."
  pilgrimage.2008.a.tt:0 "Voyager en étant [GetTrait('ill').GetName( GetPlayer )|l] pose de plus grands risques pour la santé"
  pilgrimage.2008.whole_of_body:0 "Cette petite toux va passer rapidement."
- pilgrimage.2008.court_physician:0 "[traveling_court_physician.Custom('FR_le_Char_Pi')|U][traveling_court_physician.GetTitledFirstName|U] me concocte quelque chose."
+ pilgrimage.2008.court_physician: "[traveling_court_physician.Custom('FR_le_Char_Pi')|U][traveling_court_physician.GetTitledFirstNameNoTooltip] me concocte quelque chose."
  #Develop pneumonia
  pilgrimage.2009.t:0 "$pilgrimage_header$ toux rauque"
  pilgrimage.2009.desc:0 "Ce voyage ne me réussit pas. Ma santé ne s’est pas améliorée grâce à ma quête pour obtenir la grâce [ROOT.Char.GetFaith.PantheonTerm3]. Elle s’est beaucoup aggravée. Je ne me souviens pas de ce que c’est que de respirer sans effort."
@@ -611,7 +612,7 @@
  pilgrimage.3202.desc.nature:0 "Notre arrogance a conduit beaucoup de gens à croire qu’ils étaient au-dessus de la nature, mais ils ont tort. Le monde naturel existe dans l’état le plus vrai et le plus pur."
  pilgrimage.3202.desc.end:0 "\n\nAlors que nous traversons une simple clairière, je suis frappé par le calme qui règne dans ce lieu. Pas de combat, pas de disputes... simplement une tranquillité dont jouissent les arbres et les buissons."
  pilgrimage.3202.a:0 "Passons un peu de temps ici à contempler notre univers."
- pilgrimage.3202.a.tt:1 "Votre [THIS.Char.GetInvolvedActivity.GetName|l] sera #N retardé de plusieurs mois#!"
+ pilgrimage.3202.a.tt: "Votre [THIS.Char.GetInvolvedActivity.GetShortName|l] sera #N retardé[THIS.Char.GetInvolvedActivity.Custom('FR_E_ActivityShort')] de plusieurs mois#!"
  pilgrimage.3202.b:0 "Dépêchons-nous, passons à l’action !"
  pilgrimage.3202.b.tt:0 "Vous atteindrez votre destination #P plusieurs semaines plus tôt#!"
 
@@ -648,10 +649,10 @@
  pilgrimage.4010.desc:0 "En prenant des raccourcis et en accélérant le rythme, mon cortège arrive enfin en [ROOT.Char.GetCurrentLocation.GetNameNoTooltip].\n\nLes devoirs sacrés de notre [ROOT.Char.GetInvolvedActivity.GetCurrentPhase.GetPhase.GetName|l] accomplis sans traîner, les serviteurs locaux m’informent que nous sommes prêts pour le retour."
  pilgrimage.4010.a:0 "Je... J’ai changé d’avis. Ce n’est pas correct."
  pilgrimage.4010.a.flavor:0 "Faire demi-tour maintenant serait un sacrilège !"
- pilgrimage.4010.a.tt:0 "Vous explorerez les lieux et resterez en [THIS.Char.GetCurrentLocation.GetCounty.GetTitle.GetNameNoTierNoTooltip] pour la durée normale\n$EFFECT_LIST_BULLET$La conclusion et les récompenses de votre [THIS.Char.GetInvolvedActivity.GetName|l] seront quand même affectées négativement"
+ pilgrimage.4010.a.tt: "Vous explorerez les lieux et resterez en [THIS.Char.GetCurrentLocation.GetCounty.GetTitle.GetNameNoTierNoTooltip] pour la durée normale\n$EFFECT_LIST_BULLET$La conclusion et les récompenses de votre [THIS.Char.GetInvolvedActivity.GetShortName|l] seront quand même affectées négativement"
  pilgrimage.4010.b:0 "Oui. Partons pour [ROOT.Char.GetTravelPlan.GetData.GetFinalDestination.GetProvince.GetNameNoTooltip]."
  pilgrimage.4010.b.flavor:0 "Ne tardons pas..."
- pilgrimage.4010.b.tt:0 "Votre [THIS.Char.GetInvolvedActivity.GetName|l] se termine et vous rentrez immédiatement."
+ pilgrimage.4010.b.tt: "Votre [THIS.Char.GetInvolvedActivity.GetShortName|l] se termine et vous rentrez immédiatement."
  #Bury old host at Destination
  pilgrimage.4020.t:0 "Memento mori"
  pilgrimage.4020.desc.intro:0 "Dès que nous arrivons en [ROOT.Char.GetCurrentLocation.GetNameNoTooltip], je prépare la cérémonie pour"
@@ -685,7 +686,7 @@
  ###Jewish
  #Mount Sinai
  pilgrimage.5101.t:0 "Sinaï et Horeb"
- pilgrimage.5101.desc:1 "[ROOT.Char.GetFaith.HighGodName|U] a d’abord parlé à Moïse au sommet du mont Sinaï sous la forme d’un buisson ardent. Plus tard, sur la même montagne, [ROOT.Char.GetFaith.HighGodNameSheHe|U] lui a remis les dix commandements qui constituent le fondement des doctrines abrahamiques.\n\nIl ne fait aucun doute que [ROOT.Char.GetFaith.HighGodName] favorise cet endroit et je me demande si [ROOT.Char.GetFaith.HighGodNameSheHe|U] me regarde depuis le ciel alors que je me tiens sur ces hauteurs sacrées..."
+ pilgrimage.5101.desc: "[ROOT.Char.GetFaith.HighGodName|U] a d’abord parlé à Moïse au sommet du mont Sinaï sous la forme d’un buisson ardent. Plus tard, sur la même montagne, [ROOT.Char.GetFaith.HighGodNameSheHe|U] lui a remis les dix commandements qui constituent le fondement des doctrines abrahamiques.\n\nIl ne fait aucun doute que cet endroit a les faveurs [ROOT.Char.GetFaith.HighGodNamePossessive] favorise et peut-être suis-je regardé[ROOT.Char.Custom('FR_E')] depuis le ciel alors que je me tiens sur ces hauteurs sacrées..."
  ###Muslim
  #Medina
  pilgrimage.5201.t:0 "L’hégire"
@@ -843,7 +844,7 @@
  pilgrimage.6750.a:0 "« Ici, je renais. »"
  pilgrimage.6750.b:0 "« Autant en profiter. »"
  #Theological Debate
- pilgrimage.6760.t:0 "La controverse de [ROOT.Char.GetCurrentLocation.GetCounty.GetTitle.GetNameNoTierNoTooltip]"
+ pilgrimage.6760.t: "La controverse de [ROOT.Char.GetCurrentLocation.GetNameNoTooltip]"
  pilgrimage.6760.desc.intro:0 "Alors que nous écoutons les prières du matin, [bishop_pilgrim.Custom('FR_le_Char_Pi')][bishop_pilgrim.GetTitledFirstName] et moi avons une discussion animée qui dévie rapidement sur des questions théologiques.\n\n"
  pilgrimage.6760.desc.christian:0 "« Il serait insensé de dire que 's’être fait chair' signifie que le Christ s’est inexplicablement fait homme à partir du Verbe, s’étant uni hypostatiquement. »\n\n« Mais, comme Nestorius lui-même l’a dit », rétorque [bishop_pilgrim.Custom('FR_le_Char_Pi')][bishop_pilgrim.GetTitledFirstName], « le Christ homme pourrait aussi être rendu divin, fils par la grâce et non par la nature »."
  pilgrimage.6760.a:0 "« Je n’écouterai pas ces absurdités blasphématoires ! »"
@@ -921,8 +922,8 @@
  pilgrimage.6840.a:0 "« S’il vous plaît, rendez mon [blessed_artifact.GetNameNoTooltip] plus pieux ! »"
  pilgrimage.6840.b:0 "« Que tout le monde voie la renommée de mon [blessed_artifact.GetNameNoTooltip] ! »"
  pilgrimage.6840.c:0 "J’ai mieux à faire avec mon or."
- pilgrimage.6840.a.tt:0 "Gagnez #positive_value +2 %#! de [piety|El] mensuelle"
- pilgrimage.6840.b.tt:0 "Gagnez [prestige_i|E]#positive_value +0,5 %#! de [prestige|El] mensuel"
+ pilgrimage.6840.a.tt: "Gagnez #positive_value +2 %#![piety_i|E] de [piety|El] mensuelle"
+ pilgrimage.6840.b.tt: "Gagnez [prestige_i|E]#positive_value +0,5 %#![prestige_i|E] de [prestige|El] mensuel"
  blessed_artifact_desc:0 "[blessed_artifact.GetDesc]\n\nL’objet brille d’une aura immaculée après avoir été béni dans le lieu saint de [holy_site_scope.GetNameNoTooltip]."
 
  ###Conclusion events
@@ -963,7 +964,7 @@
  pilgrimage.9001.t:0 "$pilgrimage_header$ le retour"
  pilgrimage.9001.desc_intro:0 "Le voyage a été long, mais je suis enfin chez moi. "
  pilgrimage.9001.desc_invalidated:0 "\n\nEn raison de malheureux événements, mon pèlerinage a connu une fin prématurée et je n’ai pas pu visiter [missed_holy_site.GetNameNoTooltip]. Ça m’embête, mais je m’en remets.\n\nJe ne peux qu’assumer que telle était la volonté [ROOT.Char.GetFaith.HighGodNameAlternatePossessive]"
- pilgrimage.9001.desc_buried_there:0 "Grâce à ma volonté d’achever le pèlerinage [old_pilgrimage_host.Custom('FR_du_Char_Pi')][old_pilgrimage_host.GetTitledFirstName], je peux désormais avoir l’esprit tranquille en sachant qu’[old_pilgrimage_host.Custom('FR_IlElle')] repose en paix dans le sanctuaire de [burial_location.GetNameNoTierNoTooltip].\n\nMes [ROOT.Char.GetFaith.AltPriestTermPlural] insistent sur le fait que ce voyage sacré a changé quelque chose en moi, que je puisse le voir moi-même ou non."
+ pilgrimage.9001.desc_buried_there: "Grâce à ma volonté d’achever le pèlerinage [old_pilgrimage_host.Custom('FR_du_Char_Pi')][old_pilgrimage_host.GetTitledFirstName], je peux désormais avoir l’esprit tranquille en sachant qu’[old_pilgrimage_host.Custom('FR_IlElle')] repose en paix dans le sanctuaire de [burial_location.GetNameNoTooltip].\n\nMes [ROOT.Char.GetFaith.AltPriestTermPlural] insistent sur le fait que ce voyage sacré a changé quelque chose en moi, que je puisse le voir moi-même ou non."
  pilgrimage.9001.desc:1 "Les [ROOT.Char.GetFaith.PriestNeuterPlural] ne me traitent plus de la même façon.\n\nJ’ai suivi le parcours d’un[ROOT.Char.Custom('FR_E')] saint[ROOT.Char.Custom('FR_E')] [ROOT.Char.GetWomanMan] et ils insistent sur le fait que cela a changé quelque chose en moi, que je puisse le voir ou non."
  pilgrimage.9001.a:0 "C’est bon d’être chez soi."
  pilgrimage.9001.a_invalidated:0 "Laissons les choses aller comme elles peuvent."
@@ -973,12 +974,12 @@
  pilgrimage.9010.desc.relation_family:0 "Nous arrivons en [ROOT.Char.GetCurrentLocation.GetNameNoTooltip] en fin d’après-midi et mes serviteurs prennent immédiatement les dispositions nécessaires pour que m[ROOT.Char.Custom2('FR_RelationToMeShort_OnA', SCOPE.sC('old_pilgrimage_host'))] repose en paix.\n\n"
  pilgrimage.9010.desc.relation_liked:0 "Nous arrivons en [ROOT.Char.GetCurrentLocation.GetNameNoTooltip] en fin d’après-midi et mes serviteurs prennent immédiatement les dispositions nécessaires pour que [Select_CString(old_pilgrimage_host.IsFemale,'ma chère','mon cher')] [old_pilgrimage_host.GetFirstName] repose en paix.\n\n"
  pilgrimage.9010.desc.relation_neutral:0 "Nous arrivons en [ROOT.Char.GetCurrentLocation.GetNameNoTooltip] en fin d’après-midi et mes serviteurs prennent immédiatement les dispositions nécessaires pour que [old_pilgrimage_host.Custom('FR_le_Char_Pi')][old_pilgrimage_host.GetTitledFirstName] repose en paix.\n\n"
- pilgrimage.9010.desc.turned_back_liked:0 "C’est le cœur lourd que je supervise les rituels et j’essaie de trouver un peu de réconfort dans le fait qu’[old_pilgrimage_host.Custom('FR_IlElle')] devait être proche [ROOT.Char.GetFaith.HighGodNamePossessive] quand [old_pilgrimage_host.Custom('FR_IlElle')] est mort[old_pilgrimage_host.Custom('FR_E')] sur le chemin qui mène au lieu saint de [previous_holy_site.GetNameNoTierNoTooltip].\n\nAprès tout, sur qui les puissances supérieures devraient-elles veiller si ce n’est sur des pèlerins ?"
+ pilgrimage.9010.desc.turned_back_liked: "C’est le cœur lourd que je supervise les rituels et j’essaie de trouver un peu de réconfort dans le fait qu’[old_pilgrimage_host.Custom('FR_IlElle')] devait être proche [ROOT.Char.GetFaith.HighGodNamePossessive] quand [old_pilgrimage_host.Custom('FR_IlElle')] est mort[old_pilgrimage_host.Custom('FR_E')] sur le chemin qui mène au lieu saint de [previous_holy_site.GetNameNoTooltip].\n\nAprès tout, sur qui les puissances supérieures devraient-elles veiller si ce n’est sur des pèlerins ?"
  pilgrimage.9010.desc.turned_back_neutral:0 "Alors que je m’habitue encore à mon nouveau pays et aux courtisans qui se bousculent pour gagner mes faveurs, ramener le corps [old_pilgrimage_host.Custom('FR_du_Char_Pi')][old_pilgrimage_host.GetTitledFirstName] prouve qu’[old_pilgrimage_host.Custom('FR_IlElle')] ne reviendra pas et que le trône est désormais mien."
- pilgrimage.9010.desc.there_and_back_liked:0 "Tout en pleurant sa disparition, je trouve du réconfort dans le fait que j’ai exaucé ses souhaits et achevé notre pèlerinage en [previous_holy_site.GetNameNoTierNoTooltip].\n\n[old_pilgrimage_host.Custom('FR_IlElle')|U] doit être content[old_pilgrimage_host.Custom('FR_E')], et cela m’arrache un timide sourire."
- pilgrimage.9010.desc.there_and_back_neutral:0 "Avoir voyagé jusqu’en [previous_holy_site.GetNameNoTierNoTooltip] et en être revenu[ROOT.Char.Custom('FR_E')] pour honorer les souhaits [old_pilgrimage_host.Custom('FR_du_Char_Pi')][old_pilgrimage_host.GetTitledFirstName] m’a donné de la crédibilité auprès de ses sujets, je veux dire des miens, et je commence à m’habituer à régner."
- pilgrimage.9010.desc.invalidated_pilgrimage_liked:0 "Je pleure sa disparition et je regrette de ne pas avoir pu l’enterrer en [previous_holy_site.GetNameNoTierNoTooltip]."
- pilgrimage.9010.desc.invalidated_pilgrimage_neutral:0 "Je suis légèrement contrarié[ROOT.Char.Custom('FR_E')] de ne pas avoir eu l’occasion de l’enterrer en [previous_holy_site.GetNameNoTierNoTooltip], mais au fond, [old_pilgrimage_host.Custom('FR_IlElle')] est maintenant en paix d’une manière ou d’une autre."
+ pilgrimage.9010.desc.there_and_back_liked: "Tout en pleurant sa disparition, je trouve du réconfort dans le fait que j’ai exaucé ses souhaits et achevé notre pèlerinage en [previous_holy_site.GetNameNoTooltip].\n\n[old_pilgrimage_host.Custom('FR_IlElle')|U] doit être content[old_pilgrimage_host.Custom('FR_E')], et cela m’arrache un timide sourire."
+ pilgrimage.9010.desc.there_and_back_neutral: "Avoir voyagé jusqu’en [previous_holy_site.GetNameNoTooltip] et en être revenu[ROOT.Char.Custom('FR_E')] pour honorer les souhaits [old_pilgrimage_host.Custom('FR_du_Char_Pi')][old_pilgrimage_host.GetTitledFirstName] m’a donné de la crédibilité auprès de ses sujets, je veux dire des miens, et je commence à m’habituer à régner."
+ pilgrimage.9010.desc.invalidated_pilgrimage_liked: "Je pleure sa disparition et je regrette de ne pas avoir pu l’enterrer en [previous_holy_site.GetNameNoTooltip]."
+ pilgrimage.9010.desc.invalidated_pilgrimage_neutral: "Je suis légèrement contrarié[ROOT.Char.Custom('FR_E')] de ne pas avoir eu l’occasion de l’enterrer en [previous_holy_site.GetNameNoTooltip], mais au fond, [old_pilgrimage_host.Custom('FR_IlElle')] est maintenant en paix d’une manière ou d’une autre."
  pilgrimage.9010.a:0 "[ROOT.Char.GetCurrentLocation.GetNameNoTooltip], un cœur, une maison."
  pilgrimage.9010.a_interrupted:0 "Au moins, nous sommes chez nous et en un seul morceau."
  pilgrimage.9010.a.flavor:0 "$pilgrimage.4020.a.flavor$"

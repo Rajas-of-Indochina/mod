@@ -1,0 +1,28 @@
+﻿# On actions for child birth and pregnancy notification events, triggered automatically by the game
+
+# called for the newborn child
+# scope:child is the new born character
+# scope:mother is the pregnant mother
+# scope:father is the family father (not the biological)
+# scope:real_father is the biological father
+# scope:is_bastard, true if a known bastard
+
+on_birth_child = {
+	on_actions = {
+		on_birth_child_co_emperor
+	}
+}
+
+on_birth_child_co_emperor = {
+	trigger = {
+		any_parent = {
+			has_court_position = succ_exp_co_emperor_court_position
+		}
+		culture = {
+			has_cultural_parameter = children_can_be_born_in_the_purple
+		}
+	}
+    effect = {
+        add_trait = born_in_the_purple
+    }
+}
