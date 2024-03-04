@@ -203,7 +203,6 @@ culture = { has_cultural_pillar = heritage_caucasian }
 
 is_valid = {
        culture = { has_cultural_pillar = heritage_caucasian }
-		NOT = { this = culture:georgian }
         age > 50
 		prestige_level >=1
         OR = {
@@ -313,6 +312,8 @@ has_culture	= culture:circassian
 	}
 }
 
+
+
 circassian_decision.8 = {
     picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
 
@@ -326,9 +327,15 @@ circassian_decision.8 = {
 OR = {
 culture = {	this = culture:circassian }
 culture = {	this = culture:ubykh }
+any_parent_culture = { 
+	OR = {
+		culture = {	this = culture:circassian }
+		culture = {	this = culture:ubykh } 
 	}
+}
+}
 	faith = faith:circassian_christianity
-    }
+  }
 
 
 is_valid = {
@@ -355,7 +362,7 @@ NOT = {
     effect = {
 				custom_tooltip = {
 			text = christiancircassian_requirement
-trigger_event = {id = caucasianroa.1 }
+trigger_event = { 	id = caucasianroa.001  delayed = yes }
 				}
     }
 
@@ -365,6 +372,85 @@ trigger_event = {id = caucasianroa.1 }
 
 	ai_will_do = {
 		base = 50
+	}
+}
+
+
+
+circassian_decision.9 = {   
+		picture = "gfx/interface/illustrations/decisions/decision_ubykhs.dds"
+	
+		sort_order = 81	
+	
+		desc = circassian_decision_nine_desc
+		selection_tooltip = circassian_decision_nine_tooltip
+	
+		is_shown = {
+			global_variable_list_size	= {
+				name = armenian_merchants
+				NOT = { 
+				value >= 1
+				}
+			}
+			OR = {
+				culture = {	this = culture:circassian }
+				culture = {	this = culture:ubykh }
+			}
+		}
+	
+		is_valid = {
+			OR = {
+				culture = {	this = culture:circassian }
+				culture = {	this = culture:ubykh }
+			}
+					OR = {	
+			stewardship >= 20
+			diplomacy >= 20
+					}
+			prestige >= 1000
+			current_year >= 1000
+		}
+	
+		effect = {
+			custom_tooltip = {
+				text = cherkesogai_customtooltip
+	trigger_event = {	id = caucasianroa.002 delayed = yes }
+			}
+	
+					capital_county = {
+						change_development_level = 1
+					}	
+					change_global_variable = {
+						name = armenian_merchants
+						add = 1
+					}
+		create_character = {
+			age = { 20 32 }
+			location = root.capital_province
+			gender_female_chance = root_faith_dominant_gender_female_chance
+			culture = armenian
+			faith = armenian_apostolic
+			random_traits = yes
+			trait = education_stewardship_3
+			stewardship = { 15 20 }
+		
+			dynasty = none
+			after_creation = { 
+				add_gold = { minor_gold_value medium_gold_value }
+				add_prestige = { minor_prestige_gain medium_prestige_gain }
+				add_piety = { minor_piety_gain medium_piety_gain }
+			}
+			after_creation = { 
+			save_scope_as = armenian_merchant
+			}
+		}	
+		
+		recruit_courtier = scope:armenian_merchant
+					
+		}
+	
+		ai_potential = { always = no }
+		ai_will_do = {	base = 0 
 	}
 }
 
