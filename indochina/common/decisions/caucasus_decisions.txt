@@ -6,7 +6,7 @@
 # Caucasian decisions by Patlichan, edited by Shautora.
 
 circassian_decision.1 = {
-    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+    picture = "gfx/interface/illustrations/decisions/decision_circassian_christianity.dds"
 
     sort_order = 81
 
@@ -48,7 +48,7 @@ circassian_decision.1 = {
 
 
 circassian_decision.2 = {
-    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+    picture = "gfx/interface/illustrations/decisions/decision_khabze.dds"
 
     sort_order = 81
 
@@ -184,7 +184,7 @@ circassian_decision.5 = {
 }
 
 circassian_decision.6 = {
-    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+    picture = "gfx/interface/illustrations/decisions/decision_thamade.dds"
 
     sort_order = 81
 
@@ -377,38 +377,49 @@ circassian_decision.8 = {
 
 
 
-circassian_decision.9 = {   
-		picture = "gfx/interface/illustrations/decisions/decision_ubykhs.dds"
+circassian_decision_armenians = {   
+		picture = "gfx/interface/illustrations/decisions/decision_cherkesogai.dds"
 	
 		sort_order = 81	
 	
 		desc = circassian_decision_nine_desc
 		selection_tooltip = circassian_decision_nine_tooltip
 	
-		is_shown = {
-			global_variable_list_size	= {
-				name = armenian_merchants
-				NOT = { 
-				value >= 1
-				}
+        is_shown = {
+			OR = {
+				culture = {	this = culture:circassian }
+				culture = {	this = culture:ubykh }
 			}
+        }
+	
+		is_valid = {
+			NOT = {	#You can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:circassian_decision_armenians
+			}
+		}
+			custom_tooltip = {
+				text = circassianubykh_customtooltip
 			OR = {
 				culture = {	this = culture:circassian }
 				culture = {	this = culture:ubykh }
 			}
 		}
-	
-		is_valid = {
-			OR = {
-				culture = {	this = culture:circassian }
-				culture = {	this = culture:ubykh }
-			}
 			OR = {	
 				stewardship >= 20
 				diplomacy >= 20
 			}
 			prestige >= 1000
+			custom_tooltip = {
+				text = yearthousand_customtooltip
 			current_year >= 1000
+			}
+		}
+
+		cost = {
+			gold = 200
+			prestige = 200
 		}
 	
 		effect = {
@@ -419,9 +430,13 @@ circassian_decision.9 = {
 			capital_county = {
 				change_development_level = 1
 			}	
-			change_global_variable = {
-				name = armenian_merchants
-				add = 1
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:circassian_decision_armenians
+			}
+			set_global_variable = {
+				name = circassian_decision_armenians
+				value = scope:traded
 			}
 			create_character = {
 				age = { 20 32 }
