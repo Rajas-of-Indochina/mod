@@ -1,0 +1,1535 @@
+types imperialpolicies {
+    type imperialpolicieswindow = window {
+            layer = middle
+            movable = yes
+            size = {1000 700}
+            parentanchor = vcenter|left
+			widgetanchor = vcenter|right
+			
+			using = Window_Movable
+			using = Window_Background
+			using = Window_Decoration
+            datacontext = "[GetPlayer]"
+            visible = "[Not(GetVariableSystem.HasValue( 'imperial_laws_view', 'main' ))]"
+            state = {
+                name = _hide
+                using = Animation_FadeOut_Quick
+                using = Sound_WindowHide_Standard
+                using = Window_Position_MainTab_Hide
+                alpha = 0
+            }
+            state = {
+                name = _show
+                using = Animation_FadeIn_Quick
+                using = Sound_WindowShow_Standard
+                using = Window_Position_MainTab
+                alpha = 1
+            }
+			
+			background = {
+				texture = "gfx/interface/illustrations/frontend/credits.dds"
+				alpha = 0.5
+				color = { 0.95 0.55 0.15 4 }
+				margin = { -32 -5 }
+				fittype = end
+
+				#fittype = centercrop
+				
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+					blend_mode = alphamultiply
+					mirror = vertical
+				}
+				using = Mask_Rough_Edges
+			}		
+            
+    
+            margin_widget = {
+                size = { 100% 100% }
+                margin = { 0 0 }
+    
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin_right = 50
+                    margin_left = 50
+					margin_bottom = 20
+					ignoreinvisible = yes
+
+                    vbox = {
+                        margin_right = -15
+                        margin_left = -15
+                        layoutpolicy_horizontal = expanding
+                        using = Window_Margins
+						visible = "[GetVariableSystem.HasValue( 'imperial_laws_view', 'martial' )]"
+    
+                        header_pattern = {
+                            layoutpolicy_horizontal = expanding
+    
+                            blockoverride "header_text"
+                            {
+                                text = "mil_law_policy_level_1"
+                            }
+    
+                            blockoverride "button_close"
+                            {
+                                texture = "gfx/interface/icons/flat_icons/window_back.dds"
+                                onclick = "[GetVariableSystem.Set( 'imperial_laws_view', 'main' )]"
+                                visible = "[Not(GetVariableSystem.HasValue( 'imperial_laws_view', 'main' ))]"
+                                tooltip = "SENATE_GO_BACK"
+                            }
+                            expand = {}
+                        }
+                    }
+					vbox = {
+                        margin_right = -15
+                        margin_left = -15
+                        layoutpolicy_horizontal = expanding
+                        using = Window_Margins
+						visible = "[GetVariableSystem.HasValue( 'imperial_laws_view', 'diplo' )]"
+    
+                        header_pattern = {
+                            layoutpolicy_horizontal = expanding
+    
+                            blockoverride "header_text"
+                            {
+                                text = "diplo_law_policy_level_1"
+                            }
+    
+                            blockoverride "button_close"
+                            {
+                                texture = "gfx/interface/icons/flat_icons/window_back.dds"
+                                onclick = "[GetVariableSystem.Set( 'imperial_laws_view', 'main' )]"
+                                visible = "[Not(GetVariableSystem.HasValue( 'imperial_laws_view', 'main' ))]"
+                                tooltip = "SENATE_GO_BACK"
+                            }
+                            expand = {}
+                        }
+                    }
+					vbox = {
+                        margin_right = -15
+                        margin_left = -15
+                        layoutpolicy_horizontal = expanding
+                        using = Window_Margins
+						visible = "[GetVariableSystem.HasValue( 'imperial_laws_view', 'civic' )]"
+    
+                        header_pattern = {
+                            layoutpolicy_horizontal = expanding
+    
+                            blockoverride "header_text"
+                            {
+                                text = "civic_law_policy"
+                            }
+    
+                            blockoverride "button_close"
+                            {
+                                texture = "gfx/interface/icons/flat_icons/window_back.dds"
+                                onclick = "[GetVariableSystem.Set( 'imperial_laws_view', 'main' )]"
+                                visible = "[Not(GetVariableSystem.HasValue( 'imperial_laws_view', 'main' ))]"
+                                tooltip = "SENATE_GO_BACK"
+                            }
+                            expand = {}
+                        }
+                    }
+                    scrollbox = {
+                        layoutpolicy_horizontal = expanding
+                        layoutpolicy_vertical = expanding
+                        
+                        blockoverride "scrollbox_content"
+                        {
+                            
+                            scrollarea = {
+                                
+                                scrollbar_horizontal = {
+                                    using = Scrollbar_Horizontal
+                                }
+                                
+                                scrollbarpolicy_vertical = always_off
+                                layoutpolicy_horizontal = expanding
+                                layoutpolicy_vertical = expanding
+                                scrollwidget = {
+                                    vbox = {
+										margin_bottom = 20
+                                        vbox = {
+                                            visible = "[GetVariableSystem.HasValue( 'imperial_laws_view', 'martial' )]"
+                                            Laws_new = {
+                                                blockoverride "visible" {
+                                                    visible = "[And(And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_mil' ), GuiLawGroup.IsAvailable ),GuiLawGroup.GetLawGroup.HasFlag( 'policy_mil' ))]"
+                                                }
+                                            }
+                                        }
+                                        vbox = {
+                                            visible = "[GetVariableSystem.HasValue( 'imperial_laws_view', 'civic' )]"
+                                            Laws_new = {
+                                                blockoverride "visible" {
+                                                    visible = "[And(And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_civic' ), GuiLawGroup.IsAvailable ),GuiLawGroup.GetLawGroup.HasFlag( 'policy_civic' ))]"
+                                                }
+                                            }
+                                        }
+                                        vbox = {
+                                            visible = "[GetVariableSystem.HasValue( 'imperial_laws_view', 'diplo' )]"
+                                            Laws_new = {
+                                                blockoverride "visible" {
+                                                    visible = "[And(And( GuiLawGroup.GetLawGroup.HasFlag( 'policy_diplo' ), GuiLawGroup.IsAvailable ),GuiLawGroup.GetLawGroup.HasFlag( 'policy_diplo' ))]"
+                                                }
+                                            }
+                                        }
+									}  
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+    }
+	type imperialenenactedecictswindow = window {
+		layer = middle
+		movable = yes
+		size = {700 450}
+		parentanchor = bottom|left
+		widgetanchor = bottom|right
+		
+		using = Window_Decoration
+		using = Window_Background
+		datacontext = "[GetPlayer]"
+		visible = "[And(GetVariableSystem.Exists('edicts_window'), GetVariableSystem.HasValue( 'imperial_laws_view', 'main' ))]"
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+			using = Sound_WindowHide_Standard
+			using = Window_Position_MainTab_Hide
+			alpha = 0
+		}
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			using = Sound_WindowShow_Standard
+			using = Window_Position_MainTab
+			alpha = 1
+		}
+		
+		margin_widget = {
+			size = { 100% 100% }
+			margin = { 0 12 }
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				margin_right = 50
+				margin_left = 50
+				margin_bottom = 20
+				ignoreinvisible = yes
+				vbox = {
+					margin_right = -15
+					margin_left = -15
+					layoutpolicy_horizontal = expanding
+					using = Window_Margins
+
+					header_pattern = {
+						layoutpolicy_horizontal = expanding
+
+						blockoverride "header_text"
+						{
+							text = "EDICTS"
+						}
+
+						blockoverride "button_close"
+						{
+							onclick = "[GetVariableSystem.Toggle('edicts_window')]"
+						}
+						expand = {}
+					}
+				}
+				scrollbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					
+					blockoverride "scrollbox_content"
+					{
+						
+						scrollarea = {
+							
+							scrollbar_horizontal = {
+								using = Scrollbar_Horizontal
+							}
+							
+							scrollbarpolicy_vertical = always_off
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							scrollwidget = {
+								hbox = {
+									edicts_can_enact = {}
+									
+								}  
+							}
+						}
+					}
+					
+				}
+				
+			}
+		}
+}
+    type Laws_new = vbox {
+		datamodel = "[MyRealmWindow.GetRealmLaws]"
+		ignoreinvisible = yes
+		item = {
+			hbox = {
+				datacontext = "[GuiLawGroup.GetLawGroup]"
+				block "visible" {
+					visible = "[And( And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_mil' ), GuiLawGroup.GetLawGroup.HasFlag( 'policy_level_1' )), GuiLawGroup.IsAvailable )]"
+				}
+				ignoreinvisible = yes
+				vbox = {
+					ignoreinvisible = yes
+
+					vbox = {
+						datamodel = "[MyRealmWindow.GetRealmLaws]"
+						vbox = {
+							datamodel = "[GuiLawGroup.GetLawGroup]"
+							hbox = {
+								datamodel = "[GuiLawGroup.GetLaws]"
+								item = {
+									hbox = {
+										datamodel = "[GuiLawGroup.GetLaws]"
+										
+										button = {
+											datacontext = "[GuiLaw.GetLaw]"
+											size = { 170 100 }
+											enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
+											visible = "[And(Not(GuiLawGroup.GetLawGroup.HasFlag( 'policy_5_buttons' )), GuiLawGroup.GetLawGroup.HasFlag( 'policy_level_1' ))]"
+											onclick = "[GuiLaw.Enact]"
+											tooltipwidget = { pass_law_tooltip = {} }
+											using = tooltip_below
+											
+											icon = {
+												visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_mil' ), Not(GuiLaw.IsEnacted))]"
+												texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/military_policy_focus_template_bronze.dds"
+												size = { 170 100 }
+												
+												modify_texture = {
+													name = "shimmer_available"
+													texture = "gfx/interface/component_effects/effect_shimmer.dds"
+													visible = "[GuiLaw.CanEnact]"
+													blend_mode = colordodge
+													translate_uv = { 1 1 }
+													alpha = 0.8
+												}
+												state = {
+													name = shimmer
+													next = pause
+													trigger_on_create = yes
+													delay = 0.5
+													bezier = { 0 0.9 1 0.4 }
+
+													modify_texture = {
+														name = "shimmer_available"
+														translate_uv = { 1 0.8 }
+														alpha = 0.5
+													}
+												}
+
+												state = {
+													name = pause
+													duration = 0.8
+													next = shimmer
+
+													modify_texture = {
+														name = "shimmer_available"
+														translate_uv = { -1 -1 }
+														alpha = 0.5
+													}
+												}
+											}
+												
+											icon = {
+												visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_civic' ), Not(GuiLaw.IsEnacted))]"
+												texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/civic_policy_focus_template_bronze.dds"
+												size = { 170 100 }
+												
+												modify_texture = {
+													name = "shimmer_available"
+													texture = "gfx/interface/component_effects/effect_shimmer.dds"
+													visible = "[GuiLaw.CanEnact]"
+													blend_mode = colordodge
+													translate_uv = { 1 1 }
+													alpha = 0.8
+												}
+												state = {
+													name = shimmer
+													next = pause
+													trigger_on_create = yes
+													delay = 0.5
+													bezier = { 0 0.9 1 0.4 }
+
+													modify_texture = {
+														name = "shimmer_available"
+														translate_uv = { 1 0.8 }
+														alpha = 0.5
+													}
+												}
+
+												state = {
+													name = pause
+													duration = 0.8
+													next = shimmer
+
+													modify_texture = {
+														name = "shimmer_available"
+														translate_uv = { -1 -1 }
+														alpha = 0.5
+													}
+												}
+											}
+											icon = {
+												visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_diplo' ), Not(GuiLaw.IsEnacted))]"
+												texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/diplomatic_policy_focus_template_bronze.dds"
+												size = { 170 100 }
+												
+												modify_texture = {
+													name = "shimmer_available"
+													texture = "gfx/interface/component_effects/effect_shimmer.dds"
+													visible = "[GuiLaw.CanEnact]"
+													blend_mode = colordodge
+													translate_uv = { 1 1 }
+													alpha = 0.8
+												}
+												state = {
+													name = shimmer
+													next = pause
+													trigger_on_create = yes
+													delay = 0.5
+													bezier = { 0 0.9 1 0.4 }
+
+													modify_texture = {
+														name = "shimmer_available"
+														translate_uv = { 1 0.8 }
+														alpha = 0.5
+													}
+												}
+
+												state = {
+													name = pause
+													duration = 0.8
+													next = shimmer
+
+													modify_texture = {
+														name = "shimmer_available"
+														translate_uv = { -1 -1 }
+														alpha = 0.5
+													}
+												}
+											}
+
+											icon = {
+												visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_mil' ), GuiLaw.IsEnacted)]"
+												texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/military_policy_focus_template.dds"
+												size = { 170 100 }
+											}
+											icon = {
+												visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_civic' ), GuiLaw.IsEnacted)]"
+												texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/civic_policy_focus_template.dds"
+												size = { 170 100 }
+											}
+											icon = {
+												visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_diplo' ), GuiLaw.IsEnacted)]"
+												texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/diplomatic_policy_focus_template.dds"
+												size = { 170 100 }
+											}
+											
+											### Military Standard ###
+											
+											icon = {
+                                                visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_1_1'))]"
+                                                texture = "gfx/interface/icons/scheme_types/icon_scheme_claim_throne.dds"
+												parentanchor = hcenter
+												position = { 0 20 }
+                                                size = { 50 50 }
+											}
+
+                                            text_single = {
+												text = "[GuiLaw.GetLaw.GetName]"
+												position = {0 70}
+												parentanchor = hcenter
+												using = Font_Size_Very_Small
+												max_width = 120
+											}
+										}
+									}
+								}
+							}
+							spacer = {
+								size = { 0 10}
+							}
+							hbox = {
+								hbox = {
+									datamodel = "[GuiLawGroup.GetLaws]"
+									item = {
+										hbox = {
+											datamodel = "[GuiLawGroup.GetLaws]"
+											ignoreinvisible = yes
+											spacer = {
+												visible = "[Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_2_2')), Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_2_2')), EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_2_2'))))]"
+												size = { 567 0 }
+											}
+											button = {
+												datacontext = "[GuiLaw.GetLaw]"
+												size = { 170 100 }
+												enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
+												visible = "[And(And(Not(GuiLawGroup.GetLawGroup.HasFlag( 'policy_5_buttons' )), GuiLawGroup.GetLawGroup.HasFlag( 'policy_level_2' )), Not(Or( EqualTo_string(Law.GetNameNoTooltip, Localize('mil_law_2_0')), Or( EqualTo_string(Law.GetNameNoTooltip, Localize('diplo_law_2_0')), EqualTo_string(Law.GetNameNoTooltip, Localize('civic_law_2_0'))))))]"
+												onclick = "[GuiLaw.Enact]"
+												tooltipwidget = { pass_law_tooltip = {} }
+												using = tooltip_below
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_mil' ), Not(GuiLaw.IsEnacted))]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/military_policy_focus_template_bronze.dds"
+													size = { 170 100 }
+													
+													modify_texture = {
+														name = "shimmer_available"
+														texture = "gfx/interface/component_effects/effect_shimmer.dds"
+														visible = "[GuiLaw.CanEnact]"
+														blend_mode = colordodge
+														translate_uv = { 1 1 }
+														alpha = 0.8
+													}
+													state = {
+														name = shimmer
+														next = pause
+														trigger_on_create = yes
+														delay = 0.5
+														bezier = { 0 0.9 1 0.4 }
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { 1 0.8 }
+															alpha = 0.5
+														}
+													}
+
+													state = {
+														name = pause
+														duration = 0.8
+														next = shimmer
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { -1 -1 }
+															alpha = 0.5
+														}
+													}	
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_civic' ), Not(GuiLaw.IsEnacted))]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/civic_policy_focus_template_bronze.dds"
+													size = { 170 100 }
+													
+													modify_texture = {
+														name = "shimmer_available"
+														texture = "gfx/interface/component_effects/effect_shimmer.dds"
+														visible = "[GuiLaw.CanEnact]"
+														blend_mode = colordodge
+														translate_uv = { 1 1 }
+														alpha = 0.8
+													}
+													state = {
+														name = shimmer
+														next = pause
+														trigger_on_create = yes
+														delay = 0.5
+														bezier = { 0 0.9 1 0.4 }
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { 1 0.8 }
+															alpha = 0.5
+														}
+													}
+
+													state = {
+														name = pause
+														duration = 0.8
+														next = shimmer
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { -1 -1 }
+															alpha = 0.5
+														}
+													}	
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_diplo' ), Not(GuiLaw.IsEnacted))]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/diplomatic_policy_focus_template_bronze.dds"
+													size = { 170 100 }
+													
+													modify_texture = {
+														name = "shimmer_available"
+														texture = "gfx/interface/component_effects/effect_shimmer.dds"
+														visible = "[GuiLaw.CanEnact]"
+														blend_mode = colordodge
+														translate_uv = { 1 1 }
+														alpha = 0.8
+													}
+													state = {
+														name = shimmer
+														next = pause
+														trigger_on_create = yes
+														delay = 0.5
+														bezier = { 0 0.9 1 0.4 }
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { 1 0.8 }
+															alpha = 0.5
+														}
+													}
+
+													state = {
+														name = pause
+														duration = 0.8
+														next = shimmer
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { -1 -1 }
+															alpha = 0.5
+														}
+													}	
+												}
+	
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_mil' ), GuiLaw.IsEnacted)]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/military_policy_focus_template.dds"
+													size = { 170 100 }
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_civic' ), GuiLaw.IsEnacted)]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/civic_policy_focus_template.dds"
+													size = { 170 100 }
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_diplo' ), GuiLaw.IsEnacted)]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/diplomatic_policy_focus_template.dds"
+													size = { 170 100 }
+												}
+												
+												### Military ###
+												
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_2_1'))]"
+                                                    texture = "gfx/interface/icons/icon_soldier_survivor.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_2_2'))]"
+                                                    texture = "gfx/interface/icons/raise_legion.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_2_3'))]"
+                                                    texture = "gfx/interface/icons/inspirations/adventure_inspiration.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_2_1'))]"
+													texture = "gfx/interface/icons/icon_holding_city.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_2_2'))]"
+													texture = "gfx/interface/icons/point_of_interest_types/poi_grand_city_visit.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_2_3'))]"
+													texture = "gfx/interface/icons/barony_crown.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_2_1'))]"
+													texture = "gfx/interface/icons/casus_bellis/individual_duchy_de_jure_cb.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_2_2'))]"
+													texture = "gfx/interface/icons/point_of_interest_types/poi_grand_city_visit.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_2_3'))]"
+													texture = "gfx/interface/icons/faith/custom_faith_dove.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												
+                                                text_single = {
+													text = "[GuiLaw.GetLaw.GetName]"
+													position = {0 70}
+													parentanchor = hcenter
+                                                    using = Font_Size_Very_Small
+                                                    max_width = 122
+                                                }
+												icon = {
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/focus_tree_lines_2x.dds"
+													parentanchor = hcenter
+													position = {0 55}
+													#size = {193 378}
+													alpha = 0.5
+												}
+											}
+											spacer = {
+												visible = "[Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_2_2')), Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_2_2')), EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_2_2'))))]"
+												size = { 572 0 }
+											}
+										}
+									}
+								}
+							}
+							spacer = {
+								size = { 0 10}
+							}
+							hbox = {
+								hbox = {
+									datamodel = "[GuiLawGroup.GetLaws]"
+									item = {
+										hbox = {
+											datamodel = "[GuiLawGroup.GetLaws]"
+											button = {
+												datacontext = "[GuiLaw.GetLaw]"
+												size = { 170 100 }
+												enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
+												visible = "[And(And(Not(GuiLawGroup.GetLawGroup.HasFlag( 'policy_5_buttons' )), GuiLawGroup.GetLawGroup.HasFlag( 'policy_level_3' )), Not(Or( EqualTo_string(Law.GetNameNoTooltip, Localize('mil_law_3_0')), Or( EqualTo_string(Law.GetNameNoTooltip, Localize('diplo_law_3_0')), EqualTo_string(Law.GetNameNoTooltip, Localize('civic_law_3_0'))))))]"
+												onclick = "[GuiLaw.Enact]"
+												tooltipwidget = { pass_law_tooltip = {} }
+												using = tooltip_below
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_mil' ), Not(GuiLaw.IsEnacted))]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/military_policy_focus_template_bronze.dds"
+													size = { 170 100 }
+													
+													modify_texture = {
+														name = "shimmer_available"
+														texture = "gfx/interface/component_effects/effect_shimmer.dds"
+														visible = "[GuiLaw.CanEnact]"
+														blend_mode = colordodge
+														translate_uv = { 1 1 }
+														alpha = 0.8
+													}
+													state = {
+														name = shimmer
+														next = pause
+														trigger_on_create = yes
+														delay = 0.5
+														bezier = { 0 0.9 1 0.4 }
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { 1 0.8 }
+															alpha = 0.5
+														}
+													}
+
+													state = {
+														name = pause
+														duration = 0.8
+														next = shimmer
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { -1 -1 }
+															alpha = 0.5
+														}
+													}	
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_civic' ), Not(GuiLaw.IsEnacted))]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/civic_policy_focus_template_bronze.dds"
+													size = { 170 100 }
+													
+													modify_texture = {
+														name = "shimmer_available"
+														texture = "gfx/interface/component_effects/effect_shimmer.dds"
+														visible = "[GuiLaw.CanEnact]"
+														blend_mode = colordodge
+														translate_uv = { 1 1 }
+														alpha = 0.8
+													}
+													state = {
+														name = shimmer
+														next = pause
+														trigger_on_create = yes
+														delay = 0.5
+														bezier = { 0 0.9 1 0.4 }
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { 1 0.8 }
+															alpha = 0.5
+														}
+													}
+
+													state = {
+														name = pause
+														duration = 0.8
+														next = shimmer
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { -1 -1 }
+															alpha = 0.5
+														}
+													}	
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_diplo' ), Not(GuiLaw.IsEnacted))]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/diplomatic_policy_focus_template_bronze.dds"
+													size = { 170 100 }
+													
+													modify_texture = {
+														name = "shimmer_available"
+														texture = "gfx/interface/component_effects/effect_shimmer.dds"
+														visible = "[GuiLaw.CanEnact]"
+														blend_mode = colordodge
+														translate_uv = { 1 1 }
+														alpha = 0.8
+													}
+													state = {
+														name = shimmer
+														next = pause
+														trigger_on_create = yes
+														delay = 0.5
+														bezier = { 0 0.9 1 0.4 }
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { 1 0.8 }
+															alpha = 0.5
+														}
+													}
+
+													state = {
+														name = pause
+														duration = 0.8
+														next = shimmer
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { -1 -1 }
+															alpha = 0.5
+														}
+													}	
+												}
+	
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_mil' ), GuiLaw.IsEnacted)]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/military_policy_focus_template.dds"
+													size = { 170 100 }
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_civic' ), GuiLaw.IsEnacted)]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/civic_policy_focus_template.dds"
+													size = { 170 100 }
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_diplo' ), GuiLaw.IsEnacted)]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/diplomatic_policy_focus_template.dds"
+													size = { 170 100 }
+												}
+												
+												### Military ###
+												
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_3_1'))]"
+                                                    texture = "gfx/interface/icons/message_feed/control.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_3_2'))]"
+                                                    texture = "gfx/interface/icons/vassal_stances/warlike.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_3_3'))]"
+                                                    texture = "gfx/interface/icons/icon_prowess.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_3_4'))]"
+                                                    texture = "gfx/interface/icons/casus_bellis/claim_cb.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_3_5'))]"
+                                                    texture = "gfx/interface/icons/casus_bellis/county_conquest_cb.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_3_6'))]"
+                                                    texture = "gfx/interface/icons/memory_types/activity_tour.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_3_1'))]"
+													texture = "gfx/interface/icons/vassal_stances/builder.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_3_2'))]"
+													texture = "gfx/interface/icons/icon_supply.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_3_3'))]"
+													texture = "gfx/interface/icons/message_feed/opportunity.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_3_4'))]"
+													texture = "gfx/interface/icons/message_feed/council.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_3_5'))]"
+													texture = "gfx/interface/icons/message_feed/great_holy_war.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_3_6'))]"
+													texture = "gfx/interface/icons/icon_vassal.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_3_1'))]"
+													texture = "gfx/interface/icons/scheme_types/icon_scheme_personal.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_3_2'))]"
+													texture = "gfx/interface/icons/icon_dread.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_3_3'))]"
+													texture = "gfx/interface/icons/message_feed/icon_tax_collector.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_3_4'))]"
+													texture = "gfx/interface/icons/scheme_types/icon_scheme_befriend.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_3_5'))]"
+													texture = "gfx/interface/icons/casus_bellis/invasion.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_3_6'))]"
+													texture = "gfx/interface/icons/message_feed/compromise.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												
+                                                text_single = {
+													text = "[GuiLaw.GetLaw.GetName]"
+													position = {0 70}
+													parentanchor = hcenter
+                                                    using = Font_Size_Very_Small
+                                                    max_width = 122
+                                                }
+												icon = {
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/focus_tree_lines.dds"
+													parentanchor = hcenter
+													position = {0 55}
+													#size = {193 378}
+													alpha = 0.5
+												}
+											}
+											spacer = {
+												size = { 200 0 }
+											}
+										}
+									}
+								}
+							}
+							spacer = {
+								size = { 0 10}
+							}
+							hbox = {
+								hbox = {
+									datamodel = "[GuiLawGroup.GetLaws]"
+									item = {
+										hbox = {
+											datamodel = "[GuiLawGroup.GetLaws]"
+											button = {
+												datacontext = "[GuiLaw.GetLaw]"
+												size = { 170 100 }
+												enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
+												visible = "[And(And(Not(GuiLawGroup.GetLawGroup.HasFlag( 'policy_5_buttons' )), GuiLawGroup.GetLawGroup.HasFlag( 'policy_level_4' )), Not(Or( EqualTo_string(Law.GetNameNoTooltip, Localize('mil_law_4_0')), Or( EqualTo_string(Law.GetNameNoTooltip, Localize('diplo_law_4_0')), EqualTo_string(Law.GetNameNoTooltip, Localize('civic_law_4_0'))))))]"
+												onclick = "[GuiLaw.Enact]"
+												tooltipwidget = { pass_law_tooltip = {} }
+												using = tooltip_below
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_mil' ), Not(GuiLaw.IsEnacted))]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/military_policy_focus_template_bronze.dds"
+													size = { 170 100 }
+													
+													modify_texture = {
+														name = "shimmer_available"
+														texture = "gfx/interface/component_effects/effect_shimmer.dds"
+														visible = "[GuiLaw.CanEnact]"
+														
+														blend_mode = colordodge
+														translate_uv = { 1 1 }
+														alpha = 0.8
+													}
+													state = {
+														name = shimmer
+														next = pause
+														trigger_on_create = yes
+														delay = 0.5
+														bezier = { 0 0.9 1 0.4 }
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { 1 0.8 }
+															alpha = 0.5
+														}
+													}
+
+													state = {
+														name = pause
+														duration = 0.8
+														next = shimmer
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { -1 -1 }
+															alpha = 0.5
+														}
+													}	
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_civic' ), Not(GuiLaw.IsEnacted))]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/civic_policy_focus_template_bronze.dds"
+													size = { 170 100 }
+													
+													modify_texture = {
+														name = "shimmer_available"
+														texture = "gfx/interface/component_effects/effect_shimmer.dds"
+														visible = "[GuiLaw.CanEnact]"
+														blend_mode = colordodge
+														translate_uv = { 1 1 }
+														alpha = 0.8
+													}
+													state = {
+														name = shimmer
+														next = pause
+														trigger_on_create = yes
+														delay = 0.5
+														bezier = { 0 0.9 1 0.4 }
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { 1 0.8 }
+															alpha = 0.5
+														}
+													}
+
+													state = {
+														name = pause
+														duration = 0.8
+														next = shimmer
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { -1 -1 }
+															alpha = 0.5
+														}
+													}	
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_diplo' ), Not(GuiLaw.IsEnacted))]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/diplomatic_policy_focus_template_bronze.dds"
+													size = { 170 100 }
+													
+													modify_texture = {
+														name = "shimmer_available"
+														texture = "gfx/interface/component_effects/effect_shimmer.dds"
+														visible = "[GuiLaw.CanEnact]"
+														blend_mode = colordodge
+														translate_uv = { 1 1 }
+														alpha = 0.8
+													}
+													state = {
+														name = shimmer
+														next = pause
+														trigger_on_create = yes
+														delay = 0.5
+														bezier = { 0 0.9 1 0.4 }
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { 1 0.8 }
+															alpha = 0.5
+														}
+													}
+
+													state = {
+														name = pause
+														duration = 0.8
+														next = shimmer
+
+														modify_texture = {
+															name = "shimmer_available"
+															translate_uv = { -1 -1 }
+															alpha = 0.5
+														}
+													}	
+												}
+	
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_mil' ), GuiLaw.IsEnacted)]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/military_policy_focus_template.dds"
+													size = { 170 100 }
+													
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_civic' ), GuiLaw.IsEnacted)]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/civic_policy_focus_template.dds"
+													size = { 170 100 }
+												}
+												icon = {
+													visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'policy_diplo' ), GuiLaw.IsEnacted)]"
+													texture = "gfx/interface/icons/imperial_competence/imperial_competence_policies/diplomatic_policy_focus_template.dds"
+													size = { 170 100 }
+												}
+
+												### Military ###
+												
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_1'))]"
+                                                    texture = "gfx/interface/icons/scheme_types/icon_scheme_befriend.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_2'))]"
+                                                    texture = "gfx/interface/icons/icon_dread.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_3'))]"
+                                                    texture = "gfx/interface/icons/icon_supply.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_4'))]"
+                                                    texture = "gfx/interface/icons/message_feed/mercenary.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_5'))]"
+                                                    texture = "gfx/interface/icons/message_feed/siege.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_6'))]"
+                                                    texture = "gfx/interface/icons/message_feed/martial.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_7'))]"
+                                                    texture = "gfx/interface/icons/inspirations/armor_inspiration.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_8'))]"
+                                                    texture = "gfx/interface/icons/icon_holding_castle.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_9'))]"
+                                                    texture = "gfx/interface/icons/icon_garrison.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_10'))]"
+                                                    texture = "gfx/interface/icons/icon_knight.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_11'))]"
+                                                    texture = "gfx/interface/icons/regimenttypes/bowmen.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+												icon = {
+                                                    visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('mil_law_4_12'))]"
+                                                    texture = "gfx/interface/icons/regimenttypes/light_cavalry.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+                                                    size = { 50 50 }
+												}
+
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_1'))]"
+													texture = "gfx/interface/icons/development.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_2'))]"
+													texture = "gfx/interface/icons/inspirations/adventure_inspiration.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_3'))]"
+													texture = "gfx/interface/icons/icon_gold.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_4'))]"
+													texture = "gfx/interface/icons/icon_soldier.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_5'))]"
+													texture = "gfx/interface/icons/message_feed/technology.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_6'))]"
+													texture = "gfx/interface/icons/message_feed/icon_house_unity.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_7'))]"
+													texture = "gfx/interface/icons/message_feed/compromise.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_8'))]"
+													texture = "gfx/interface/icons/message_feed/tension.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_9'))]"
+													texture = "gfx/interface/icons/message_feed/icon_tax_collector.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_10'))]"
+													texture = "gfx/interface/icons/message_feed/dynasty.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_11'))]"
+													texture = "gfx/interface/icons/icon_no_retreat.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('civic_law_4_12'))]"
+													texture = "gfx/interface/icons/message_feed/alliance.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_1'))]"
+													texture = "gfx/interface/icons/message_feed/council.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_2'))]"
+													texture = "gfx/interface/icons/casus_bellis/vassalization.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_3'))]"
+													texture = "gfx/interface/icons/message_feed/prison.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_4'))]"
+													texture = "gfx/interface/icons/message_feed/law.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_5'))]"
+													texture = "gfx/interface/icons/scheme_types/icon_scheme_abduct.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_6'))]"
+													texture = "gfx/interface/icons/message_feed/icon_house_unity.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_7'))]"
+													texture = "gfx/interface/icons/development.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_8'))]"
+													texture = "gfx/interface/icons/icon_soldier.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_9'))]"
+													texture = "gfx/interface/icons/character_interactions/change_allegiance.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_10'))]"
+													texture = "gfx/interface/icons/character_interactions/icon_combat.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_11'))]"
+													texture = "gfx/interface/icons/character_interactions/alliance.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+
+												icon = {
+													visible = "[EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('diplo_law_4_12'))]"
+													texture = "gfx/interface/icons/activities/activity_wedding.dds"
+													parentanchor = hcenter
+													position = { 0 20 }
+													size = { 50 50 }
+												}
+												
+                                                text_single = {
+													text = "[GuiLaw.GetLaw.GetName]"
+													position = {0 70}
+													parentanchor = hcenter
+                                                    using = Font_Size_Very_Small
+                                                    max_width = 122
+                                                }
+											}
+											spacer = {
+												size = { 15 0 }
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	type edicts_can_enact = hbox {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			blockoverride "scrollbox_content"
+			{
+				scrollarea = {
+					scrollbar_horizontal = {
+						using = Scrollbar_Horizontal
+					}
+					scrollbarpolicy_vertical = always_off
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					scrollwidget = {
+						hbox = {
+							datamodel = "[MyRealmWindow.GetRealmLaws]"
+							ignoreinvisible = yes
+							item = {
+								hbox = {
+									datacontext = "[GuiLawGroup.GetLawGroup]"
+									block "visible" {
+										visible = "[And(GuiLawGroup.GetLawGroup.HasFlag( 'edict' ), GuiLawGroup.IsAvailable )]"
+									}
+									ignoreinvisible = yes
+									hbox = {
+										ignoreinvisible = yes
+					
+										hbox = {
+											datamodel = "[MyRealmWindow.GetRealmLaws]"
+											hbox = {
+												datamodel = "[GuiLawGroup.GetLawGroup]"
+												hbox = {
+													datamodel = "[GuiLawGroup.GetLaws]"
+													item = {
+														hbox = {
+															layoutpolicy_horizontal = expanding
+															layoutpolicy_vertical = expanding
+															datamodel = "[GuiLawGroup.GetLaws]"
+															vbox = {
+																visible = "[And( Not(IsObserver), GetScriptedGui('can_enact_edicts').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End) )]"
+																button_standard = {
+																	datacontext = "[GuiLaw.GetLaw]"
+																	size = { 100 100 }
+																	visible = "[And( Not(GuiLaw.IsEnacted), Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('totalitarian_edict_enacted')), Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('frugality_edict_enacted')), Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('populating_edict_enacted')), Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('logistics_edict_enacted')), EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('envoy_edict_enacted')))))))]"
+																	enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
+																	onclick = "[GuiLaw.Enact]"
+																	onclick = "[GetVariableSystem.Toggle('edicts_window')]"
+																	tooltipwidget = { pass_law_tooltip = {} }
+																	using = tooltip_below
+																	icon = {
+																		texture = "[Law.GetIcon]"
+																		size = { 100 100 }
+																	}
+																	icon = {
+																		texture = "gfx/interface/icons/imperial_competence/imperial_competence_edicts/border_bronze.dds"
+																		size = { 150 150 }
+																		parentanchor = hcenter
+																		position = { 0 -25 }
+																	}
+																}
+																spacer = {
+																	size = {0 25}
+																}
+																text_single = {
+																	visible = "[And( Not(GuiLaw.IsEnacted), Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('totalitarian_edict_enacted')), Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('frugality_edict_enacted')), Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('populating_edict_enacted')), Or( EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('logistics_edict_enacted')), EqualTo_string(GuiLaw.GetLaw.GetNameNoTooltip, Localize('envoy_edict_enacted')))))))]"
+																	text = "[GuiLaw.GetLaw.GetName]"
+																}
+															}
+															spacer = {
+																size = {25 0}
+															}
+														}
+													}
+												}
+												
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

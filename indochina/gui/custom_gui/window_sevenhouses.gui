@@ -14,7 +14,6 @@
 			using = Animation_FadeOut_Quick
 			using = Sound_WindowHide_Standard
 			using = Window_Position_MainTab_Hide
-			trigger_when = "[IsRightWindowOpen]"
 			on_start = "[GetScriptedGui('close_sevenhouses').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
 			alpha = 0
 		}
@@ -78,7 +77,7 @@
 
     					blockoverride "header_text"
     					{
-    						raw_text = "SEVEN_HOUSES_BUTTON"
+    						text = "SEVEN_HOUSES_BUTTON"
     					}
 
     					blockoverride "button_close"
@@ -89,11 +88,11 @@
     				}
 
 					background = {
-						texture = "gfx/interface/illustrations/struggle_backgrounds/struggle_compromise_bg.dds"
+						texture = "gfx/interface/illustrations/struggle_backgrounds/struggle_iberia_phase_compromise_bg.dds"
 						margin = { -40 450 }
 						fittype = end
 						alpha = 0.3
-
+						
 						using = Mask_Rough_Edges
 
 						using = Mask_Rough_Edges
@@ -109,9 +108,9 @@
 					ignoreinvisible = yes
 					layoutpolicy_vertical = expanding
 					layoutpolicy_horizontal = expanding
-
+					
 					vbox = {
-
+						
 						layoutpolicy_vertical = expanding
 						layoutpolicy_horizontal = expanding
 						text_label_center = {
@@ -168,7 +167,7 @@
 										}
 									}
 								}
-
+		
 							}
 							portrait_body = {
 								blockoverride "coa" {}
@@ -180,12 +179,12 @@
 								size = {35 0}
 							}
 							vbox = {
-
+						
 								layoutpolicy_vertical = expanding
 								layoutpolicy_horizontal = expanding
 								text_single = {
 									text = "SEVEN_HOUSES_STRENGTH"
-									default_format = "#high"
+									default_format = "#high"	
 								}
 								progressbar_red = {
 									direction = vertical
@@ -311,7 +310,7 @@
 												}
 											}
 										}
-									}
+									} 
 								}
 							}
 						}
@@ -329,7 +328,7 @@
 									vbox = {
 										button_endhouses_modular = {
 											datacontext = "[GetDecisionWithKey( 'TFE_assimilate_houses' )]"
-
+											
 										}
 										spacer = {
 											size = {0 5}
@@ -343,16 +342,16 @@
 										button_endhouses_modular = {
 											datacontext = "[GetDecisionWithKey( 'TFE_instate_dehqans' )]"
 										}
-									}
+									} 
 								}
 							}
 						}
 					}
-
+					
 				}
 			}
 
-
+			
 
     	}
     }
@@ -363,9 +362,10 @@
 			default_format = "#high"
 		}
 		button = {
-
-			tooltip = SHOW_DECISION_TOOLTIP
+			
+			tooltipwidget = { decision_tooltip = {} }
 			onclick = "[OpenGameViewData( 'decision_detail', Decision.Self)]"
+			onclick = "[GetVariableSystem.Toggle('sevenhouseswindow')]"
 			state = {
 				name = _mouse_hierarchy_enter
 				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('glow_hold_court_leave','glow_hold_court_enter')]"
@@ -390,8 +390,8 @@
 		}
 		button = {
 			datacontext = "[GetDecisionWithKey( 'TFE_assimilate_houses' )]"
-			tooltip = SHOW_DECISION_TOOLTIP
-			onclick = "[OpenGameViewData( 'decision_detail', Decision.Self)]"
+			tooltipwidget = { decision_tooltip = {} }
+			onclick = "[OpenDecisionDetailView(Decision.Self)]"
 			state = {
 				name = _mouse_hierarchy_enter
 				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('glow_hold_court_leave','glow_hold_court_enter')]"
@@ -416,12 +416,12 @@
 		}
 		button = {
 			datacontext = "[GetDecisionWithKey( 'TFE_abolish_houses' )]"
-			tooltip = SHOW_DECISION_TOOLTIP
+			tooltipwidget = { decision_tooltip = {} }
 			state = {
 				name = _mouse_hierarchy_enter
 				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('glow_hold_court_leave','glow_hold_court_enter')]"
 			}
-			onclick = "[OpenGameViewData( 'decision_detail', Decision.Self)]"
+			onclick = "[OpenDecisionDetailView(Decision.Self)]"
 			state = {
 				name = _mouse_hierarchy_leave
 				on_start = "[PdxGuiInterruptThenTriggerAllAnimations('glow_hold_court_enter','glow_hold_court_leave')]"
