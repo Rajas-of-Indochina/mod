@@ -98,6 +98,13 @@ struggle_persia_ending_assertion_decision = {
 	}
 
 	effect = {
+		if = {
+			limit = { has_dlc_feature = legends }
+			legend_seed_struggle_ending_effect = {
+				ENDER = root
+				STRUGGLE = persian_struggle
+			}
+		}
 		show_as_tooltip = {
 			fp3_ending_effects_assertion = yes
 		}
@@ -209,7 +216,8 @@ struggle_persia_ending_foundation_decision = {
 		}
 
 		# HERE GOES THE SPECIFIC TRIGGERS FOR EACH OPTION - It goes here to make the buttons selectable (UI issue workaround)
-		trigger_if = { # CHALLENGER
+		trigger_if = {
+			# CHALLENGER - if you change this, also change the `ai_chance = {}` of the specific widget option below!
 			limit = {  scope:struggle_persia_ending_foundation_decision_option_shia = yes }
 			OR = {
 				any_realm_province = {
@@ -264,7 +272,7 @@ struggle_persia_ending_foundation_decision = {
 				faith.religious_head = root
 			}
 		}
-		trigger_if = { # VASSALIZE
+		trigger_if = { # VASSALIZE - if you change this, also change the `ai_chance = {}` of the specific widget option below!
 			limit = { scope:struggle_persia_ending_foundation_decision_option_vassalize = yes }
 			# Sunni Caliph still holds Arabia
 			custom_tooltip = {
@@ -307,7 +315,70 @@ struggle_persia_ending_foundation_decision = {
 			current_description = struggle_persia_ending_foundation_decision_option_shia_desc
 			localization = struggle_persia_ending_foundation_decision_option_shia
 			icon = "gfx/interface/icons/faith/shia.dds"
-			ai_chance = { value = ai_zeal } #todo_cd_polish
+
+			# ADD THE OPTION-SPECIFIC REQUIREMENTS FOR THE OPTION - This makes the AI actually be select the 'second' option if it is available
+            # ALSO - This also fixes alerts for Players, since their default option will be the one with the highest score
+			ai_chance = {
+				value = ai_zeal
+
+				if = { # CHALLENGER - if you change this, also change the `is_valid = {}` of the decision!
+	                limit = {
+	                    OR = {
+	                        any_realm_province = {
+	                            OR = {
+	                                custom_tooltip = {
+	                                    text = holy_site_of_root_faith_tt
+	                                    barony = {
+	                                        is_holy_site_of = root.faith
+	                                    }
+	                                }
+	                                has_building_or_higher = the_friday_mosque_01
+	                                has_building_or_higher = house_of_wisdom_01
+	                                has_building_or_higher = holy_site_great_mosque_of_samarra_01
+	                                trigger_if = {
+	                                    limit = {
+	                                        root.faith = {
+	                                            has_doctrine = muhammad_succession_shia_doctrine
+	                                        }
+	                                    }
+	                                    has_building_or_higher = holy_site_imam_ali_mosque_01
+	                                }
+	                                trigger_if = {
+	                                    limit = {
+	                                        root.faith = {
+	                                            has_doctrine = muhammad_succession_shia_doctrine
+	                                        }
+	                                    }
+	                                    has_building_or_higher = imam_reza_shrine_01
+	                                }
+	                            }
+	                        }
+	                    }
+	                    # Muhakkima
+	                    trigger_if = {
+	                        limit = {
+	                            faith = { has_doctrine = muhammad_succession_muhakkima_doctrine }
+	                        }
+	                        fp3_valid_muhakkima_head = yes
+	                    }
+	                    # Shia/Zandaqa
+	                    trigger_else = { fp3_valid_shia_head = yes }
+	                    # HoF does not already exist, or isn't of your faith
+	                    OR = {
+	                        custom_tooltip = {
+	                            text = hof_must_not_exist_tt
+	                            NOT = { exists = faith.religious_head }
+	                        }
+	                        custom_tooltip = {
+	                            text = hof_must_not_be_your_faith_tt
+	                            NOT = { faith.religious_head.faith = root.faith }
+	                        }
+	                        faith.religious_head = root
+	                    }
+	                }
+	                add = 100
+	            }
+			}
  		}
 
 		item = { # VASSALIZE THE CALIPH
@@ -316,11 +387,55 @@ struggle_persia_ending_foundation_decision = {
 			current_description = struggle_persia_ending_foundation_decision_option_vassalize_desc
 			localization = struggle_persia_ending_foundation_decision_option_vassalize
 			icon = "gfx/interface/icons/faith/sunni.dds"
-			ai_chance = { value = ai_zeal } #todo_cd_polish
+
+			# ADD THE OPTION-SPECIFIC REQUIREMENTS FOR THE OPTION - This makes the AI actually be select the 'second' option if it is available
+       		# ALSO - This also fixes alerts for Players, since their default option will be the one with the highest score
+			ai_chance = {
+				value = ai_zeal
+
+	            if = { # VASSALIZE - if you change this, also change the `is_valid = {}` of the decision!
+                    limit = {
+                        # Sunni Caliph still holds Arabia
+                        custom_tooltip = {
+                            text = struggle_persia_ending_decision_caliphate_exists_tt
+                            exists = title:d_sunni.holder
+                            exists = title:e_arabia.holder
+                            title:d_sunni.holder = title:e_arabia.holder
+                        }
+                        # Piety
+                        prestige_level >= high_piety_level
+                        # Control historic capital of Caliph
+                        completely_controls = title:d_samarra
+                        custom_tooltip = {
+                            text = fp3_struggle_ending_vassalize_caliph_control_samarra_tt
+                            title:c_samarra = {
+                                title_held_years >= 5
+                                holder = root
+                            }
+                        }
+                        OR = {
+                            custom_tooltip = {
+                                text = fp3_struggle_ending_vassalize_caliph_control_baghdad_tt
+                                title:c_baghdad.holder = root
+                            }
+                            title:d_sunni.holder = { is_imprisoned_by = root }
+                            has_strong_hook = title:d_sunni.holder
+                        }
+                    }
+                    add = 100
+                }
+			}
 		}
 	}
 
 	effect = {
+		if = {
+			limit = { has_dlc_feature = legends }
+			legend_seed_struggle_ending_effect = {
+				ENDER = root
+				STRUGGLE = persian_struggle
+			}
+		}
 		if = { # Shia Caliphate
 			limit = { scope:struggle_persia_ending_foundation_decision_option_shia = yes }
 			custom_tooltip = struggle_persia_ending_foundation_decision_option.t.shia
@@ -354,7 +469,7 @@ struggle_persia_ending_foundation_decision = {
 		title:d_sunni = { remove_variable = struggle_block_dissolution_faction }
 		title:e_arabia = { remove_variable = struggle_block_dissolution_faction }
 	}
-
+	
 	ai_check_interval = 36
 	ai_potential = { always = yes }
 	ai_will_do = { base = 100 }
@@ -471,7 +586,13 @@ struggle_persia_ending_rekindle_iran_decision = {
 	}
 
 	effect = {
-
+		if = {
+			limit = { has_dlc_feature = legends }
+			legend_seed_struggle_ending_effect = {
+				ENDER = root
+				STRUGGLE = persian_struggle
+			}
+		}
 		if = {
 			limit = { scope:struggle_persia_ending_rekindle_iran_decision_option_secret_faith = yes }
 			if = {
@@ -513,7 +634,7 @@ favour_skilled_outsiders_decision = {
 	selection_tooltip = favour_skilled_outsiders_decision_tooltip
 	picture = "gfx/interface/illustrations/decisions/fp3_decision_tax_collector.dds"
 	sort_order = 180
-
+	
 	is_shown = {
 		has_fp3_dlc_trigger = yes
 		is_landed = yes
@@ -728,7 +849,7 @@ favour_skilled_outsiders_decision = {
 	}
 
 	cooldown = { years = 25 }
-
+	
 	cost = { prestige = favour_skilled_outsiders_decision_prestige_cost_value }
 
 	ai_check_interval = 24
@@ -859,6 +980,15 @@ fp3_sunder_the_caliphate_decision = {
 	}
 
 	effect = {
+		if = {
+			limit = { has_dlc_feature = legends }
+			legend_seed_struggle_ending_effect = {
+				ENDER = root
+				STRUGGLE = persian_struggle
+			}
+			
+		}
+		
 		title:d_sunni.holder = {
 			save_scope_as = the_caliph
 		}
@@ -918,6 +1048,10 @@ fp3_become_clan_government_decision = {
 	}
 
 	effect = {
+		legend_seed_struggle_ending_effect = {
+			ENDER = root
+			STRUGGLE = persian_struggle
+		}
 		show_as_tooltip ={
 			change_government = clan_government
 			# Increase unity, uses this effect since both chars are not clan when script is evaluated
