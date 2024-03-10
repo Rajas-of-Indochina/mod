@@ -70,7 +70,8 @@
 		filter_mouse = all
 		alwaystransparent = yes
 
-		size = { 170 95 }
+		#size = { 170 95 }
+		size = { 160 95 }
 
 		background = {
 			using = Background_Area_Dark
@@ -89,7 +90,8 @@
 			position = { 0 @zoom_level_offset }
 			direction = vertical
 			ignoreinvisible = yes
-			min_width = 170
+			#min_width = 170
+			min_width = 160
 			tooltip = "ZOOM_LEVEL_PAPER_MAP_TOOLTIP"
 
 			state = {
@@ -203,38 +205,7 @@
 			}
 		}
 
-		## Realm
-		icon_button_mapmode = {
-			name = "map_mode_realms_button"
-			position = { 0 25 }
-			size = { 50 50 }
-			visible = "[CanChangeMapMode]"
-
-			blockoverride 'mm_datacontext'
-			{
-				datacontext = "[GetMapMode('realms')]"
-			}
-
-			blockoverride "mm_button"
-			{
-				onclick = "[ClearExploringRealms]"
-				shortcut = "map_mode_1"
-			}
-			blockoverride "mm_icon"
-			{
-				size = { 50 50 }
-			}
-
-			blockoverride "mm_glow"
-			{
-				visible = no
-			}
-
-			blockoverride "mm_bg_color"
-			{
-				color = { 0.18 0.18 0 1 }
-			}
-		}
+		### Moved Realms mapmode ###
 
 		flowcontainer = {
 			parentanchor = right|bottom
@@ -248,6 +219,34 @@
 				direction = horizontal
 				ignoreinvisible = yes
 				spacing = -3
+
+				## Realm
+				icon_button_mapmode = {
+					name = "map_mode_realms_button"
+					position = { 0 25 }
+					size = { 38 38 }
+					visible = "[CanChangeMapMode]"
+
+					blockoverride 'mm_datacontext'
+					{
+						datacontext = "[GetMapMode('realms')]"
+					}
+
+					blockoverride "mm_button"
+					{
+						onclick = "[ClearExploringRealms]"
+						shortcut = "map_mode_1"
+					}
+					blockoverride "mm_icon"
+					{
+						size = { 38 38 }
+					}
+
+					blockoverride "mm_bg_color"
+					{
+						color = { 0.18 0.18 0 1 }
+					}
+				}
 
 				icon_button_mapmode = {
 					name = "map_mode_duchies_button"
