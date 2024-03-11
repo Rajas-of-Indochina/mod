@@ -1381,12 +1381,12 @@ widget = {
 		ignoreinvisible = yes
 
 		icon_hud_background = {
-			size = { 558 64 }
+			size = { 450 64 }
 			visible = "[IsDiarchyVisible]"
 		}
 
 		icon_hud_background = {
-			size = { 507 64 }
+			size = { 400 64 }
 			visible = "[Not( IsDiarchyVisible )]"
 		}
 	}
@@ -1397,7 +1397,6 @@ widget = {
 		visible = "[And( Not(IsGameViewOpen('barbershop')) , And(GetPlayer.IsValid, Not(GetVariableSystem.Exists( 'hide_bottom_left_HUD'))))]"
 		visible_at_creation = no
 		parentanchor = bottom|left
-
 
 		state = {
 			name = _show
@@ -4716,102 +4715,6 @@ types HUD
 					divider_light = {
 						layoutpolicy_vertical = expanding
 						alpha = 0.8
-					}
-
-					hbox = {
-						name = "ecostability"
-						layoutpolicy_vertical = expanding
-						minimumsize = { 90 0 }
-						visible = "[GetPlayer.MakeScope.Var( 'ecostability' ).IsSet]"
-
-						hbox = {
-							margin_top = -5
-							spacing = 7
-
-							icon = {
-								name = "ecostab_icon"
-								size = { 30 30 }
-								texture = "gfx/interface/skinned/hud_maintab/ecostability.dds"
-							}
-
-							flowcontainer = {
-								margin_bottom = 7
-								spacing = -6
-								direction = vertical
-								ignoreinvisible = yes
-
-								text_single = {
-									name = "ecostability_value_positive"
-									visible = "[GreaterThanOrEqualTo_CFixedPoint(GetPlayer.MakeScope.Var('ecostability').GetValue, '(CFixedPoint)0')]"
-									text = "[GetPlayer.MakeScope.Var('ecostability').GetValue|1]"
-									max_width = 50
-									default_format = "#high"
-									using = Font_Size_Medium
-								}
-
-								text_single = {
-									name = "ecostability_value_negative"
-									visible = "[LessThan_CFixedPoint(GetPlayer.MakeScope.Var('ecostability').GetValue, '(CFixedPoint)0')]"
-									text = "[GetPlayer.MakeScope.Var('ecostability').GetValue|1]"
-									max_width = 50
-									default_format = "#N"
-									using = Font_Size_Medium
-								}
-
-								container_resource_balance = {}
-							}
-						}
-						tooltipwidget = {
-							widget = {
-								using = DefaultTooltipBackground
-								size = {200 100}
-								vbox = {
-									margin = { 15 10 }
-									spacing = 10
-									set_parent_size_to_minimum = yes
-									minimumsize = { 280 0 }
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										raw_text = "#T Economic Stability: [GetPlayer.MakeScope.Var('ecostability').GetValue|1V]#!"
-										background = {
-											using = Background_Area
-											margin = { 10 0 }
-											margin_bottom = 5
-										}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										layoutpolicy_vertical = expanding
-										multiline = yes
-										raw_text = "Economic Stability is very important for city states as it can decide whether your realm is stable or if you have to cut some losses."
-									}
-									spacer = {
-										size = {0 1}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										layoutpolicy_vertical = expanding
-										multiline = yes
-										raw_text = "Economic Stability varies from -150 and 150 and adds your monthly net income/deficit every month."
-									}
-									spacer = {
-										size = {0 1}
-									}
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										layoutpolicy_vertical = expanding
-										multiline = yes
-										raw_text = "Keeping it as high as possible ensures that your realm will thrive and good fortune."
-									}
-								}
-							}
-						}
-					}
-
-					divider_light = {
-						layoutpolicy_vertical = expanding
-						alpha = 0.8
-						visible = "[GetPlayer.MakeScope.Var( 'ecostability' ).IsSet]"
 					}
 
 					hbox = {
