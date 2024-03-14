@@ -65,6 +65,8 @@
 	}
 
 	can_character_create_ui = {
+		base_faction_trigger = { FACTION_TYPE = nation_fracturing_faction }
+
 		common_can_character_create_trigger = {
 			FACTION_TARGET = scope:target
 		}
@@ -72,6 +74,13 @@
 		liege = {
 			is_independent_ruler = yes
 			NOT = { government_has_flag = government_is_theocracy }
+			custom_tooltip = {
+				text = nation_fracturing_faction.can_character_create_ui.blocked_by_struggle
+				# We could use a parameter but this is just infinitely more performant.
+				NOT = {
+					any_held_title = { has_variable = struggle_block_dissolution_faction }
+				}
+			}
 			OR = {
 				has_realm_law = crown_authority_0
 				has_realm_law = tribal_authority_0
@@ -118,6 +127,13 @@
 		liege = {
 			is_independent_ruler = yes
 			NOT = { government_has_flag = government_is_theocracy }
+			custom_tooltip = {
+				text = nation_fracturing_faction.can_character_create_ui.blocked_by_struggle
+				# We could use a parameter but this is just infinitely more performant.
+				NOT = {
+					any_held_title = { has_variable = struggle_block_dissolution_faction }
+				}
+			}
 			OR = {
 				has_realm_law = crown_authority_0
 				has_realm_law = tribal_authority_0
@@ -235,6 +251,12 @@
 		nation_fracturing_faction_modifiers = {
 			FACTION_TARGET = scope:faction.faction_target
 		}
+
+		modifier = { # CE1 Divine Mandate perk
+			desc = "FACTION_REASON_LEGITIMACY_LEGACY_4"
+			liege.dynasty = { has_dynasty_perk = ce1_legitimacy_legacy_4 }
+			add = -35
+		}
 	}
 
 	ai_demand_chance = {
@@ -275,8 +297,8 @@
 	is_county_valid = {
 		holder = scope:faction.faction_target
 		OR = {
-			NOT = { culture = scope:faction.faction_target.culture }
-			NOT = { faith = scope:faction.faction_target.faith }
+			NOT = { culture = scope:faction.faction_target.culture } 
+			NOT = { faith = scope:faction.faction_target.faith } 
 		}
 	}
 
