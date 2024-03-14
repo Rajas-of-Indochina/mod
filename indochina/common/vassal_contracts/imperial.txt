@@ -13,6 +13,7 @@ imperial_government_taxes = {
 
 			ai_liege_desire = 1
 			ai_vassal_desire = 5
+			score = 2
 		}
 		imperial_tax_low = {
 			parent = imperial_tax_exempt
@@ -23,6 +24,7 @@ imperial_government_taxes = {
 
 			ai_liege_desire = 2
 			ai_vassal_desire = 4
+			score = 1
 		}
 		imperial_tax_normal = {
 			default = yes
@@ -33,26 +35,29 @@ imperial_government_taxes = {
 
 			ai_liege_desire = 3
 			ai_vassal_desire = 3
+			score = 0
 		}
 		imperial_tax_high = {
 			parent = imperial_tax_normal
 			position = { 3 0 }
-
+			
 			tax = 0.3
 			vassal_opinion = -15
 
 			ai_liege_desire = 4
 			ai_vassal_desire = 2
+			score = -1
 		}
 		imperial_tax_extortionate = {
-			parent = imperial_tax_high
+			parent = imperial_tax_high 
 			position = { 4 0 }
-
+			
 			tax = 0.4
 			vassal_opinion = -25
 
 			ai_liege_desire = 5
 			ai_vassal_desire = 1
+			score = -2
 		}
 	}
 }
@@ -69,6 +74,7 @@ imperial_government_levies = {
 
 			ai_liege_desire = 1
 			ai_vassal_desire = 5
+			score = 2
 		}
 		imperial_levies_low = {
 			parent = imperial_levies_exempt
@@ -79,6 +85,7 @@ imperial_government_levies = {
 
 			ai_liege_desire = 2
 			ai_vassal_desire = 4
+			score = 1
 		}
 		imperial_levies_normal = {
 			default = yes
@@ -89,39 +96,40 @@ imperial_government_levies = {
 
 			ai_liege_desire = 3
 			ai_vassal_desire = 3
+			score = 0
 		}
 		imperial_levies_high = {
 			parent = imperial_levies_normal
 			position = { 3 0 }
-
+			
 			levies = 0.3
 			vassal_opinion = -15
 
 			ai_liege_desire = 4
 			ai_vassal_desire = 2
+			score = -1
 		}
 		imperial_levies_extortionate = {
 			parent = imperial_levies_high
 			position = { 4 0 }
-
+			
 			levies = 0.4
 			vassal_opinion = -25
 
 			ai_liege_desire = 5
 			ai_vassal_desire = 1
+			score = -2
 		}
 	}
 }
 
 imperial_special_contracts_central = {
 	display_mode = radiobutton
-	is_shown = {
-		always = no
-	}
 	obligation_levels = {
 		imperial_special_contracts_central_none = {
 			position = { 0 1 }
 			default = yes
+			score = 0
 		}
 		imperial_special_contracts_central_1 = {
 			parent = imperial_special_contracts_central_none
@@ -129,6 +137,7 @@ imperial_special_contracts_central = {
 			levies_factor = 0.2
 			tax_factor = 0.2
 			flag = is_central
+			score = 0
 		}
 		imperial_special_contracts_central_2 = {
 			parent = imperial_special_contracts_central_none
@@ -136,6 +145,7 @@ imperial_special_contracts_central = {
 			levies_factor = 0.3
 			tax_factor = 0.3
 			flag = is_central
+			score = 0
 		}
 		imperial_special_contracts_central_3 = {
 			parent = imperial_special_contracts_central_none
@@ -143,6 +153,7 @@ imperial_special_contracts_central = {
 			levies_factor = 0.4
 			tax_factor = 0.4
 			flag = is_central
+			score = 0
 		}
 		imperial_special_contracts_central_4 = {
 			parent = imperial_special_contracts_central_none
@@ -150,20 +161,19 @@ imperial_special_contracts_central = {
 			levies_factor = 0.5
 			tax_factor = 0.5
 			flag = is_central
+			score = 0
 		}
 	}
-
+			
 }
 
 imperial_special_contracts_de_central = {
 	display_mode = radiobutton
-	is_shown = {
-		always = no
-	}
 	obligation_levels = {
 		imperial_special_contracts_de_central_none = {
 			position = { 0 1 }
 			default = yes
+			score = 0
 		}
 		imperial_special_contracts_de_central_1 = {
 			parent = imperial_special_contracts_de_central_none
@@ -171,6 +181,7 @@ imperial_special_contracts_de_central = {
 			levies_factor = -0.3
 			tax_factor = -0.3
 			flag = is_de_central
+			score = 0
 		}
 		imperial_special_contracts_de_central_2 = {
 			parent = imperial_special_contracts_de_central_none
@@ -178,6 +189,7 @@ imperial_special_contracts_de_central = {
 			levies_factor = -0.4
 			tax_factor = -0.4
 			flag = is_de_central
+			score = 0
 		}
 		imperial_special_contracts_de_central_3 = {
 			parent = imperial_special_contracts_de_central_none
@@ -185,6 +197,7 @@ imperial_special_contracts_de_central = {
 			levies_factor = -0.5
 			tax_factor = -0.5
 			flag = is_de_central
+			score = 0
 		}
 		imperial_special_contracts_de_central_4 = {
 			parent = imperial_special_contracts_de_central_none
@@ -192,9 +205,10 @@ imperial_special_contracts_de_central = {
 			levies_factor = -0.6
 			tax_factor = -0.6
 			flag = is_de_central
+			score = 0
 		}
 	}
-
+			
 }
 
 roman_contracts = {
@@ -202,8 +216,8 @@ roman_contracts = {
 	is_shown = {
 		scope:liege = {
 			OR = {
-				has_government = imperial_government
-				has_government = autocratic_government
+				government_has_flag = government_is_imperial
+				government_has_flag = government_is_autocratic
 			}
 		}
 	}
@@ -211,15 +225,16 @@ roman_contracts = {
 		roman_contracts_none = {
 			position = { 0 1 }
 			default = yes
-
+			
 			ai_vassal_desire =  {
 				value = 0
 			}
-
-
+			
+			
 			ai_liege_desire =  {
 				value = 0
 			}
+			score = 0
 		}
 		roman_contracts_foederati = {
 			parent = roman_contracts_none
@@ -227,22 +242,24 @@ roman_contracts = {
 			is_valid = {
 				scope:liege = {
 					OR = {
-						has_government = imperial_government
-						has_government = autocratic_government
+						government_has_flag = government_is_imperial
+						government_has_flag = government_is_autocratic
 					}
 				}
 			}
-
+			ai_liege_desire = 5
+			ai_vassal_desire = 5
 			tax_factor = -0.9
 			levies_factor = 0.9
-
+			
 			vassal_modifier = {
 				men_at_arms_maintenance = -0.3
 			}
-
+			
 			ai_liege_desire =  {
 				value = 2
 			}
+			score = 0
 		}
 	}
 }

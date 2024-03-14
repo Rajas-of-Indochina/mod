@@ -885,8 +885,8 @@ greco_hinduism_effect = {
 
 greco_zoroastrianism_effect = {
 	faith:indo_hellenism = {
-		remove_doctrine = tenet_adaptive
-		add_doctrine = tenet_sky_burials
+		remove_doctrine = doctrine_funeral_bewailment
+		add_doctrine = doctrine_funeral_sky_burial
 		add_doctrine = doctrine_right_to_rule_divine
 		remove_doctrine = doctrine_no_head
 		add_doctrine = doctrine_spiritual_head
@@ -1347,3 +1347,30 @@ rename_china_title_effect = {
 	}
 }
 
+malayan_sultanate_effect = {
+	if = {
+		limit = {
+			highest_held_title_tier < tier_kingdom
+			capital_county.duchy = {
+				any_de_jure_county = {
+					percent >= 0.5
+					holder = ROOT
+				}
+			}
+		}
+		get_title = capital_county.duchy
+	}
+	else_if = {
+		limit = {
+			highest_held_title_tier < tier_empire
+			capital_county.kingdom = {
+				any_de_jure_county = {
+					percent >= 0.5
+					holder = ROOT
+				}
+			}
+		}
+		get_title = capital_county.kingdom
+	}
+	add_piety = major_piety_loss
+}

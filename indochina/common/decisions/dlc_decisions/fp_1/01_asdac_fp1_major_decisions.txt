@@ -30,9 +30,9 @@ secure_high_kingdom_north_sea_decision = {
 		is_landed = yes
 		exists = dynasty
 		OR = {
-			has_government = tribal_government
-			has_government = feudal_government
-			has_government = clan_government
+			government_has_flag = government_is_tribal
+			government_has_flag = government_is_feudal
+			government_has_flag = government_is_clan
 		}
 		#Must be within the North/West Germanic cultural sphere.
 		OR = {
@@ -63,9 +63,6 @@ secure_high_kingdom_north_sea_decision = {
 		title:k_england = { is_titular = no }
 		title:k_denmark = { is_titular = no }
 		title:k_norway = { is_titular = no }
-		NOT = {
-			culture = { has_cultural_era_or_later = culture_era_high_medieval }
-		}
 	}
 
 	is_valid = {
@@ -102,7 +99,7 @@ secure_high_kingdom_north_sea_decision = {
 
 	is_valid_showing_failures_only = {
 		is_alive = yes
-		# is_in_an_activity = no
+		not = { exists = involved_activity }
 		#Has to be around for the ceremony.
 		is_imprisoned = no
 		has_contagious_deadly_disease_trigger = no
@@ -111,6 +108,7 @@ secure_high_kingdom_north_sea_decision = {
 	effect = {
 		save_scope_as = founder
 		show_as_tooltip = { secure_high_kingdom_north_sea_scripted_effect = yes }
+		gain_heroic_legend_seed_tooltip_effect = yes
 		trigger_event = { id = fp1_major_decisions.0001 }
 		#Notify other players.
 		every_player = {
