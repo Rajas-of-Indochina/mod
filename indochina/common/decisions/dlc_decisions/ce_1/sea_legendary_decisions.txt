@@ -1,0 +1,55 @@
+﻿# Override PDX decision to use minorities
+
+legendary_conversion = {
+	picture = "gfx/interface/illustrations/decisions/decision_legend.dds"
+	major = yes
+	ai_check_interval = 120
+	desc = legendary_conversion_desc
+
+	is_shown = {
+		has_character_flag = legendary_conversion
+		has_dlc_feature = legends
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = leg_conv_valid_county
+			any_sub_realm_county = {
+				NOT = {
+					faith = root.faith
+				}
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = legendary_conversion_minorities_tt
+			remove_character_flag = legendary_conversion
+			random_sub_realm_county = { # Give em a free fully converted county no matter what
+				set_county_faith = root.faith
+			}
+			every_sub_realm_county = {
+				save_scope_as = county
+				promote_faith_minority_effect = { FAITH = ROOT.faith }
+				random = {
+					chance = 25
+					promote_faith_minority_effect = { FAITH = ROOT.faith }
+				}
+				random = {
+					chance = 5
+					promote_faith_minority_effect = { FAITH = ROOT.faith }
+				}
+			}
+		}
+	}
+
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
