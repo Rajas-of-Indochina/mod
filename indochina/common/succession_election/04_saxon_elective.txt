@@ -54,7 +54,7 @@ saxon_elective = { #Witenagemot
 			is_diarch_of_target = scope:holder
 		}
 	}
-	
+
 	electors = {
 		add = holder
 		add = {
@@ -63,6 +63,11 @@ saxon_elective = { #Witenagemot
 				is_vassal_of = scope:holder #All direct de jure vassals, no matter the tier.
 				is_adult = yes
 				NOT = { has_trait = incapable }
+				any_held_title = { #Elector title must be a de jure vassal of the title being voted on; multi-Dukes (or similar) might have two duchies in multiple electoral domains, which they should be able to vote on. This is only valid for the highest-tier title (so a Duke-Elector who also owns a County which is an electoral title for another title does not get a vote from that county).
+					tier = root.highest_held_title_tier
+					exists = de_jure_liege
+					target_is_de_jure_liege_or_above = scope:title
+				}
 			}
 		}
 		add = {
@@ -99,7 +104,7 @@ saxon_elective = { #Witenagemot
 		##########################	Elector voting patterns (opinion)	##########################
 		elector_voting_pattern_opinion_feudal_elective_modifier = yes
 	}
-	
+
 	#scope:candidate = Candidate, scope:title = Title, scope:holder_candidate = Candidate currently selected by ruler.
 	candidates = {
 		add = {

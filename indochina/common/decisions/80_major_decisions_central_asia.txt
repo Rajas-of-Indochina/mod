@@ -19,7 +19,7 @@ become_greatest_of_khans_decision = {
 	is_shown = {
 		highest_held_title_tier >= tier_duchy
 		is_landed = yes
-		culture = { has_cultural_pillar = heritage_mongolic }
+		culture = { has_cultural_parameter = heritage_group_altaic }
 		NOT = {
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -33,10 +33,7 @@ become_greatest_of_khans_decision = {
 		prestige_level >= 4
 		highest_held_title_tier = tier_empire
 		sub_realm_size >= greatest_of_khans_target_counties
-		OR = {
-			has_government = tribal_government
-			has_government = nomadic_government
-		}
+		government_has_flag = government_is_tribal
 		capital_province = {
 			geographical_region = world_steppe
 		}
@@ -58,6 +55,7 @@ become_greatest_of_khans_decision = {
 	}
 
 	effect = {
+		gain_heroic_legend_seed_tooltip_effect = yes
 		#Can only happen once
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -107,7 +105,7 @@ become_greatest_of_khans_decision = {
 #Enforce Bactrian Supremacy
 # by Petter Vilberg
 establish_bactrian_supremacy_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	picture = "gfx/interface/illustrations/decisions/fp3/fp3_decision_sunder.dds"
 	major = yes
 	desc = establish_bactrian_supremacy_decision_desc
 
@@ -146,12 +144,14 @@ establish_bactrian_supremacy_decision = {
 		OR = {
 			religion = religion:zoroastrianism_religion
 			religion = religion:buddhism_religion
+			faith = faith:manichean
 			religion = religion:hellenism_religion
+			faith = faith:manichean
 		}
 		prestige_level >= 3
 		OR = {
-			has_government = feudal_government
-			has_government = clan_government
+			government_has_flag = government_is_feudal
+			government_has_flag = government_is_clan
 		}
 		capital_province = {
 			geographical_region = custom_bactria
@@ -174,6 +174,7 @@ establish_bactrian_supremacy_decision = {
 	}
 
 	effect = {
+		gain_heroic_legend_seed_tooltip_effect = yes
 		#Can only happen once
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -316,6 +317,148 @@ establish_yamagate_in_samarkand_decision = {
 				}
 			}
 		}
+		modifier = {
+			factor = 0
+			has_trait = cynical
+		}
+	}
+}
+
+##########
+#End the Old Ways
+# by James Beaumont
+break_with_the_old_ways_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+
+	desc = break_with_the_old_ways_decision_desc
+	selection_tooltip = break_with_the_old_ways_decision_tooltip
+	major = yes
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		faith = faith:kabarism
+		NOT = {
+			faith:kabarism = {
+				has_variable = old_ways_been_broken
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_independent_ruler = yes
+		highest_held_title_tier > 3 #Only Kings and Emperors
+		custom_tooltip = {
+			text = hof_exists_tt
+			faith = { exists = religious_head }
+		}
+		trigger_if = {
+			limit = {
+				faith = { exists = religious_head }
+			}
+			is_liege_or_above_of = root.faith.religious_head
+		}
+	}
+
+	widget = {
+		gui = "decision_view_widget_option_list_generic"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "CHOOSE_REFORMATION_TYPE"
+		show_from_start = yes
+
+		item = { # Pluralist
+			value = bwow_no_changes
+			current_description = bwow_no_changes_desc
+			localization = bwow_no_changes
+			icon = "gfx/interface/icons/faith/tengri.dds"
+			ai_chance = {
+				value = 10
+				add = ai_sociability
+				add = ai_compassion
+			}
+		}
+
+		item = { # Righteous: Chosen People
+			value = bwow_chosen_people
+			current_description = bwow_chosen_people_desc
+			localization = bwow_chosen_people
+			icon = "gfx/interface/icons/icon_culture.dds"
+			ai_chance = {
+				value = 100
+				add = ai_zeal
+			}
+		}
+
+		item = { # Righteous: Esotericism
+			value = bwow_esotericism
+			current_description = bwow_esotericism_desc
+			localization = bwow_esotericism
+			icon = "gfx/interface/icons/traits/mystic_base.dds"
+			ai_chance = {
+				value = 100
+				add = {
+					subtract = ai_rationality
+				}
+			}
+		}
+
+		item = { # Fundementalist
+			value = bwow_fundementalist
+			current_description = bwow_fundementalist_desc
+			localization = bwow_fundementalist
+			icon = "gfx/interface/icons/icon_skill_martial.dds"
+			ai_chance = {
+				value = 0
+				add = ai_zeal
+				add = ai_vengefulness
+				add = {
+					subtract = ai_sociability
+					subtract = ai_compassion
+				}
+			}
+		}
+	}
+
+	effect = {
+		trigger_event = religious_decision.0501
+		show_as_tooltip = {
+			root.faith = { remove_doctrine = unreformed_faith_doctrine }
+			if = {
+				limit = {
+					scope:bwow_chosen_people = yes
+				}
+				root.faith = { break_with_old_ways_become_chosen_people = yes }
+			}
+			if = {
+				limit = {
+					scope:bwow_esotericism = yes
+				}
+				root.faith = { break_with_old_ways_become_righteous = yes }
+			}
+			if = {
+				limit = {
+					scope:bwow_fundementalist = yes
+				}
+				root.faith = { break_with_old_ways_become_fundamentalist = yes }
+			}
+		}
+		hidden_effect = {
+			faith:kabarism = {
+				set_variable = old_ways_been_broken
+			}
+		}
+	}
+
+	ai_potential = {
+		faith = faith:kabarism
+	}
+
+	ai_will_do = {
+		base = 100
 		modifier = {
 			factor = 0
 			has_trait = cynical

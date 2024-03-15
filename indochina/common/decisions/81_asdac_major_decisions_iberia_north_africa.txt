@@ -5,7 +5,7 @@
 ##################################################
 
 form_the_kingdom_of_aragon_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	picture = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
 	major = yes
 
 	ai_check_interval = 60
@@ -14,6 +14,7 @@ form_the_kingdom_of_aragon_decision = {
 	selection_tooltip = form_the_kingdom_of_aragon_decision_tooltip
 
 	is_shown = {
+		is_landed = yes # Redundancy check
 		# Can't form Aragon if Aragon already formed.
 		game_start_date < 1035.10.18
 		# Not relevant for characters who are already kings.
@@ -40,6 +41,7 @@ form_the_kingdom_of_aragon_decision = {
 	}
 
 	effect = {
+		gain_heroic_legend_seed_tooltip_effect = yes
 		# Grab scopes for loc.
 		save_scope_as = founder
 		#culture = { save_scope_as = founder_culture }
@@ -71,9 +73,7 @@ form_the_kingdom_of_aragon_decision = {
 		# De jure shifts.
 		## Take care of the preferred empire.
 		if = {
-			limit = {
-				NOT = { title:k_aragon.empire = title:d_aragon.empire }
-			}
+			limit = { NOT = { title:k_aragon.empire = title:d_aragon.empire } }
 			title:k_aragon = { set_de_jure_liege_title = title:d_aragon.empire }
 		}
 		## The heartlands drift over.
@@ -109,6 +109,14 @@ form_the_kingdom_of_aragon_decision = {
 			name = flag_formed_kingdom_of_aragon
 			value = scope:founder
 		}
+
+		# Reward suggested by Ewan
+		house = {
+			add_house_modifier = {
+				modifier = fp2_aragon_title_reward_house_modifier # Mountains/hills bonus + hard casualty bonus
+				years = 200
+			}
+		}
 	}
 
 	cost = {
@@ -127,7 +135,5 @@ form_the_kingdom_of_aragon_decision = {
 		any_held_title = { this = title:d_aragon }
 	}
 
-	ai_will_do = {
-		base = 100
-	}
+	ai_will_do = { base = 100 }
 }

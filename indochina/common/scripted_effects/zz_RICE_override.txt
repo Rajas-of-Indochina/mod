@@ -1,6 +1,6 @@
 ﻿# Inviting the Norse or Normans now spawns Norse or Norman minorities.
 
-RICE_invite_norse_main_effect = {	
+RICE_invite_norse_main_effect = {
 	if = {
 		limit = {
 			var:RICE_norse_adventurer_type = flag:courtiers
@@ -169,32 +169,32 @@ RICE_invite_norse_main_effect = {
 					}
 				}
 			}
+		}
 
-			scope:capital = {
-				duchy = {
-					every_in_de_jure_hierarchy = {
+		scope:capital = {
+			duchy = {
+				every_in_de_jure_hierarchy = {
+					limit = {
+						tier = tier_county
+						holder = {
+							OR = {
+								this = scope:current_title.holder
+								is_vassal_or_below_of = scope:current_title.holder
+							}
+						}
+					}
+					save_scope_as = county
+					random_culture_global = {
 						limit = {
-							tier = tier_county
-							holder = {
-								OR = {
-									this = scope:current_title.holder
-									is_vassal_or_below_of = scope:current_title.holder
-								}
-							}
+							has_cultural_pillar = heritage_north_germanic
+							culture_number_of_counties >= 1 # Needs to exist on-map
 						}
-						save_scope_as = county
-						random_culture_global = {
-							limit = {
-								has_cultural_pillar = heritage_north_germanic
-								culture_number_of_counties >= 1 # Needs to exist on-map
-							}
-							save_scope_as = norse_colonists
-						}
-						add_culture_minority_effect = {
-							COUNTY = county
-							CULTURE = scope:norse_colonists
-							size = small
-						}
+						save_scope_as = norse_colonists
+					}
+					add_culture_minority_effect = {
+						COUNTY = county
+						CULTURE = scope:norse_colonists
+						SIZE = small
 					}
 				}
 			}
@@ -293,9 +293,9 @@ RICE_invite_norse_main_effect = {
 				tier = tier_county
 				NOT = { this = root.capital_county }
 				#NOT = { this = scope:capital_county }
-			}	
+			}
 			save_scope_as = award_county
-		}			
+		}
 		scope:courtier_1 = {
 			get_title = scope:award_county
 		}
@@ -362,13 +362,13 @@ RICE_invite_norse_main_effect = {
 				}
 			}
 		}
-		scope:courtier_1 = {			
+		scope:courtier_1 = {
 			custom_tooltip = RICE_norse_adventurer_convert_tooltip
 		}
 	}
 }
 
-RICE_invite_norman_main_effect = {	
+RICE_invite_norman_main_effect = {
 	if = {
 		limit = {
 			var:RICE_norman_adventurer_type = flag:courtiers
@@ -531,25 +531,25 @@ RICE_invite_norman_main_effect = {
 					}
 				}
 			}
+		}
 
-			scope:capital = {
-				duchy = {
-					every_in_de_jure_hierarchy = {
-						limit = {
-							tier = tier_county
-							holder = {
-								OR = {
-									this = scope:current_title.holder
-									is_vassal_or_below_of = scope:current_title.holder
-								}
+		scope:capital = {
+			duchy = {
+				every_in_de_jure_hierarchy = {
+					limit = {
+						tier = tier_county
+						holder = {
+							OR = {
+								this = scope:current_title.holder
+								is_vassal_or_below_of = scope:current_title.holder
 							}
 						}
-						save_scope_as = county
-						add_culture_minority_effect = {
-							COUNTY = county
-							CULTURE = culture:norman
-							size = small
-						}
+					}
+					save_scope_as = county
+					add_culture_minority_effect = {
+						COUNTY = county
+						CULTURE = culture:norman
+						SIZE = small
 					}
 				}
 			}
@@ -630,9 +630,9 @@ RICE_invite_norman_main_effect = {
 				tier = tier_county
 				NOT = { this = root.capital_county }
 				#NOT = { this = scope:capital_county }
-			}	
+			}
 			save_scope_as = award_county
-		}			
+		}
 		scope:courtier_1 = {
 			get_title = scope:award_county
 		}
@@ -699,7 +699,7 @@ RICE_invite_norman_main_effect = {
 		# 		}
 		# 	}
 		# }
-		scope:courtier_1 = {			
+		scope:courtier_1 = {
 			custom_tooltip = RICE_norse_adventurer_convert_tooltip
 		}
 		if = {
@@ -793,7 +793,7 @@ RICE_pamir_reclaim_hephthalite_homeland_effect = {
 	}
 	resolve_title_and_vassal_change = scope:title_change
 	set_primary_title_to = title:k_hephthalite_restored
-	
+
 	set_realm_capital = title:c_balkh
 
 	custom_tooltip = RICE_pamir_reclaim_hephthalite_homeland_effect_tooltip_1
@@ -812,7 +812,7 @@ RICE_pamir_reclaim_hephthalite_homeland_effect = {
 
 	dynasty = { add_dynasty_prestige = 500 }
 
-	
+
 
 	if = {
 		limit = {
@@ -1018,7 +1018,7 @@ RICE_tarim_basin_sinicize_effect = {
 						}
 					}
 				}
-			}		
+			}
 		}
 		random = {
 			chance = 33
@@ -1066,7 +1066,7 @@ RICE_tarim_basin_himalayan_troops_spawn_effect = {
 		uses_supply = yes
 		inheritable = no
 		name = RICE_tarim_basin_himalayan_gift_event_troops
-	}	
+	}
 	do_silk_road_migration_effect = { REGION = RICE_silk_road_himalayas }
 }
 
@@ -1099,6 +1099,153 @@ RICE_tarim_basin_bring_indic_artisans_effect = {
 	do_silk_road_migration_effect = { REGION = RICE_silk_road_india }
 }
 
+RICE_east_african_migration_effect = {
+	random_list = {
+		50 = { do_silk_road_migration_effect = { REGION = world_africa_east } }
+		50 = {
+			random_list = {
+				15 = {
+					culture:makonde = {
+						save_scope_as = county_culture
+					}
+					faith:makonde_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:malagasy = {
+						save_scope_as = county_culture
+					}
+					faith:malagasy_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:mijikenda = {
+						save_scope_as = county_culture
+					}
+					faith:mijikenda_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:pokomo = {
+						save_scope_as = county_culture
+					}
+					faith:mijikenda_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:seuta = {
+						save_scope_as = county_culture
+					}
+					faith:mijikenda_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:sabaki = {
+						save_scope_as = county_culture
+					}
+					faith:mijikenda_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:ruvu = {
+						save_scope_as = county_culture
+					}
+					faith:mijikenda_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:shona = {
+						save_scope_as = county_culture
+					}
+					faith:shona_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				10 = {
+					culture:makua = {
+						save_scope_as = county_culture
+					}
+					faith:makua_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				10 = {
+					culture:tsonga = {
+						save_scope_as = county_culture
+					}
+					faith:tsonga_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				10 = {
+					culture:nguni = {
+						save_scope_as = county_culture
+					}
+					faith:nguni_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				10 = {
+					culture:sotho_tswana = {
+						save_scope_as = county_culture
+					}
+					faith:sotho_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:dahalo = {
+						save_scope_as = county_culture
+					}
+					faith:waaqism_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:aweer = {
+						save_scope_as = county_culture
+					}
+					faith:waaqism_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+			}
+			# We need to do a trick migration effect for the off-map migrations
+			fake_silk_road_migration_effect = yes
+		}
+	}
+}
+
+RICE_tarim_basin_east_african_slaves_effect = {
+	every_held_title = {
+		custom = RICE_every_county
+		limit = {
+			tier = tier_county
+		}
+		change_county_control = major_county_control_loss
+		add_county_modifier = {
+			modifier = RICE_tarim_basin_african_slaves
+			years = 10
+		}
+	}
+	RICE_east_african_migration_effect = yes
+}
+
+RICE_tarim_basin_southeast_asian_shipbuilders_effect = {
+	add_character_modifier = {
+		modifier = RICE_tarim_basin_southeast_asian_shipbuilders
+		years = 10
+	}
+	do_silk_road_migration_effect = { REGION = RICE_silk_road_SEA }
+}
+
 # Creates minorities of the old culture in the newly Tuareg counties
 RICE_tuareg_emergence_effect = {
 	add_prestige = 1000
@@ -1123,7 +1270,7 @@ RICE_tuareg_emergence_effect = {
 				this = capital_province.county
 			}
 		}
-		save_scope_as = scope:county
+		save_scope_as = county
 		culture = { save_scope_as = old_culture }
 		set_county_culture = culture:tuareg
 		promote_culture_minority_effect = { CULTURE = scope:old_culture }
@@ -1204,7 +1351,7 @@ RICE_granada_tensions_end_in_tragedy_effect = {
 				religion = religion:judaism_religion
 			}
 			random_list = {
-				60 = {				
+				60 = {
 					death = {
 						death_reason = death_beaten_by_mob
 					}
@@ -1309,4 +1456,93 @@ RICE_spawn_siberian_minorities_effect = {
 			}
 		}
 	}
+}
+
+# Deals with Buddhist Canons
+RoA_RICE_setup_magadha_flavor_pack_effect = {
+    title:c_magadha = {
+        add_county_modifier = {
+            modifier = RICE_magadha_rajgir_hot_springs_buddhist
+        }
+    }
+
+	if = {
+		limit = {
+			current_date > 1000.1.1
+		}
+        title:c_magadha.holder = {
+            get_title = title:c_gaya
+        }
+	}
+
+    faith:mahayana = {
+        add_doctrine = rice_mahayana_canon_doctrine
+    }
+	faith:phat_giao = {
+		add_doctrine = rice_mahayana_canon_doctrine
+	}
+	faith:zenzong = {
+		add_doctrine = rice_mahayana_canon_doctrine
+	}
+
+    faith:theravada = {
+        add_doctrine = rice_theravada_canon_doctrine
+    }
+
+	faith:vajrayana = {
+		add_doctrine = rice_vajrayana_canon_doctrine
+	}
+	faith:lamaism = { add_doctrine = rice_vajrayana_canon_doctrine }
+	faith:ari = {
+		add_doctrine = rice_vajrayana_canon_doctrine
+	}
+	faith:azhaliism = {
+		add_doctrine = rice_vajrayana_canon_doctrine
+	}
+	faith:pudgalavada = {
+		add_doctrine = rice_pudgalavada_canon_doctrine
+	}
+    if = {
+        limit = {
+            #is_tip_trigger = yes
+            exists = faith:vibhajyavada
+        }
+        faith:vibhajyavada = {
+            add_doctrine = rice_theravada_canon_doctrine
+        }
+    }
+    if = {
+        limit = {
+            #is_tip_trigger = yes
+            exists = faith:sarvastivada
+        }
+        faith:sarvastivada = {
+            add_doctrine = rice_mahayana_canon_doctrine
+        }
+    }
+    if = {
+        limit = {
+            #is_tip_trigger = yes
+            exists = faith:chan
+        }
+        faith:chan = {
+            add_doctrine = rice_mahayana_canon_doctrine
+        }
+    }
+    # Failsafe in case other mods add in other variations of Buddhism
+    religion:buddhism_religion = {
+        every_faith = {
+            limit = {
+                NOR = {
+                    has_doctrine = rice_mahayana_canon_doctrine
+                    has_doctrine = rice_theravada_canon_doctrine
+                    has_doctrine = rice_vajrayana_canon_doctrine
+                    has_doctrine = rice_pudgalavada_canon_doctrine
+                }
+            }
+            add_doctrine = rice_mahayana_canon_doctrine
+        }
+    }
+
+
 }

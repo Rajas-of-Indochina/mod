@@ -21,6 +21,28 @@ scripted_effect fetch_islam_options = {
 			faith = {
 				ROOT = {
 					if = {
+						limit = {
+							NOT = {
+								is_target_in_variable_list = {
+									name = faith_options
+									target = PREV
+								}
+							}
+						}
+						add_to_variable_list = {
+							name = faith_options
+							target = PREV
+						}
+					}
+				}
+			}
+		}
+		every_in_list = {
+			variable = faith_minorities_large
+			limit = { religion = religion:islam_religion }
+			ROOT = {
+				if = {
+					limit = {
 						NOT = {
 							is_target_in_variable_list = {
 								name = faith_options
@@ -36,32 +58,16 @@ scripted_effect fetch_islam_options = {
 			}
 		}
 		every_in_list = {
-			variable = faith_minorities_large
-			limit = { religion = religion:islam_religion }
-			ROOT = {
-				if = {
-					NOT = {
-						is_target_in_variable_list = {
-							name = faith_options
-							target = PREV
-						}
-					}
-				}
-				add_to_variable_list = {
-					name = faith_options
-					target = PREV
-				}
-			}
-		}
-		every_in_list = {
 			variable = faith_minorities_small
 			limit = { religion = religion:islam_religion }
 			ROOT = {
 				if = {
-					NOT = {
-						is_target_in_variable_list = {
-							name = faith_options
-							target = PREV
+					limit = {
+						NOT = {
+							is_target_in_variable_list = {
+								name = faith_options
+								target = PREV
+							}
 						}
 					}
 				}
@@ -81,9 +87,9 @@ scripted_effect do_islamic_settlers_effect = {
 				county_is_religiously_protected_trigger = no
 			}
 			random = {
-				chance = 15
-				modifier = {
-					multipy = {
+				chance = {
+					value = 15
+					multiply = {
 						value = development_level
 						multiply = {
 							value = 125
@@ -212,6 +218,9 @@ maritime_southeast_asia.0001 = {
 	immediate = {
 		play_music_cue = "mx_cue_epic_sacral_moment"
 		unite_nusantara_decision_effect = yes
+		legend_seed_great_deed_title_effect = {
+			TITLE = title:e_nusantara
+		}
 	}
 
 	option = {
@@ -235,6 +244,9 @@ maritime_southeast_asia.0002 = {
 	immediate = {
 		play_music_cue = "mx_cue_positive_effect"
 		unite_the_javanese_thrones_decision_effects = yes
+		legend_seed_great_deed_title_effect = {
+			TITLE = title:k_jawa
+		}
 	}
 
 	option = {
@@ -261,6 +273,9 @@ maritime_southeast_asia.0003 = {
 		reform_nanyue_decision_effect = yes
 		add_prestige = massive_prestige_value
 		add_prestige_level = 2
+		legend_seed_great_deed_title_effect = {
+			TITLE = title:e_nanyue
+		}
 	}
 
 	option = {
@@ -448,6 +463,9 @@ maritime_southeast_asia.0007 = {
 	immediate = {
 		play_music_cue = "mx_cue_positive_effect"
 		form_majapahit_empire_effect = yes
+		legend_seed_great_deed_title_effect = {
+			TITLE = title:e_majapahit
+		}
 		#show_as_tooltip = { form_majapahit_empire_effect = yes }
 	}
 
@@ -477,7 +495,7 @@ maritime_southeast_asia.0008 = {
 		gui = "sea_select_faith_widget"
 		container = "custom_widgets_container"
 	}
-	
+
 	option = {
 		name = maritime_southeast_asia.0008.nevermind
 		if = {
@@ -523,6 +541,7 @@ maritime_southeast_asia.0009 = {
 	immediate = {
 		remove_variable = selected_faith
 		fetch_sultanate_options = yes
+		malayan_sultanate_effect = yes
 	}
 	widget = {
 		gui = "sea_select_faith_widget"
@@ -554,7 +573,6 @@ maritime_southeast_asia.0009 = {
 					OR = {
 						has_government = tribal_government
 						has_government = anarchist_government
-						has_government = stateless_government
 					}
 				}
 				feudalize_into_islamic_effect = yes

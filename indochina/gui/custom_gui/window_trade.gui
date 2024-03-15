@@ -1,42 +1,53 @@
 types tradewidgets {
     type tradewindow = window {
             parentanchor = top|right
-	        layer = windows_layer
-            position = {0 500}
+			datacontext = "[GetVariableSystem]"
+			datacontext = "[GetPlayer]"
+
+			layer = windows_layer
             movable = no
+
             using = Window_Size_MainTab
+
             visible = "[GetVariableSystem.Exists('show_resource')]"
-            
 
             state = {
-                name = _hide
-                using = Animation_FadeOut_Quick
-                using = Sound_WindowHide_Standard
-                using = Window_Position_MainTab_Hide
-                trigger_when = "[IsRightWindowOpen]"
-                alpha = 0
-            }
-            state = {
-                name = _show
-                using = Animation_FadeIn_Quick
-                using = Sound_WindowShow_Standard
-                using = Window_Position_MainTab
-                alpha = 1
-            }
+				name = _show
+				using = Animation_FadeIn_Quick
+				using = Sound_WindowShow_Standard
+				using = Window_Position_MainTab
+				alpha = 1
+			}
+
+			state = {
+				name = _hide
+				using = Animation_FadeOut_Quick
+				using = Sound_WindowHide_Standard
+				using = Window_Position_MainTab_Hide
+				trigger_when = "[IsRightWindowOpen]"
+				alpha = 0
+			}
+
+			#state = {
+			#	name = _dismiss
+			#	next = _hide
+
+			#	trigger_when = "[GetVariableSystem.Exists( 'hide_right_windows' )]"
+			#}
 
             background = {
                 texture = "gfx/interface/component_tiles/solid_black_label.dds"
                 margin_left = -40
                 fittype = centercrop
             }
-            
-    
+
+
             margin_widget = {
                 size = { 100% 100% }
                 margin = { 0 26 }
-                margin_right = -20
-                
-                
+                margin_right = 13
+
+
 				background = {
 					texture = "gfx/interface/component_tiles/tile_window_background_subwindow.dds"
 					spriteType = Corneredtiled
@@ -45,7 +56,7 @@ types tradewidgets {
 					margin_left = -20
 					margin_bottom = 20
 					texture_density = 2
-		
+
 					modify_texture = {
 						name = "overlay"
 						texture = "gfx/interface/component_overlay/overlay_effect.dds"
@@ -61,13 +72,13 @@ types tradewidgets {
                     vbox = {
                         using = Window_Margins
                         layoutpolicy_horizontal = expanding
-    
+
                         header_pattern = {
                             layoutpolicy_horizontal = expanding
-    
+
                             blockoverride "header_text"
                             {
-                                raw_text = "Trade"
+                                text = "TRADE_TEXT"
                             }
                             blockoverride "button_close"
                             {
@@ -75,7 +86,7 @@ types tradewidgets {
                             }
                             expand = {}
                         }
-                    } 
+                    }
                     vbox = {
                         layoutpolicy_horizontal = expanding
                         layoutpolicy_vertical = expanding
@@ -95,14 +106,14 @@ types tradewidgets {
                                                 datacontext = "[Scope.Province.GetTitle]"
                                                 ignoreinvisible = yes
                                                 margin = { -250 0}
-                                                
+
                                                 coa_title_medium = {
                                                 }
-                                                
+
                                                 vbox = {
                                                     text_single = {
                                                         name = "trade_title"
-                                                        raw_text = "The [Scope.Province.GetTitle.GetName] Trade Node"
+                                                        text = "TRADE_NODE_TITLE"
                                                         default_format = "#high"
                                                         using = Font_Size_Medium
                                                     }
@@ -111,15 +122,15 @@ types tradewidgets {
                                                     }
                                                     text_single = {
                                                         name = "trade_power_value"
-                                                        raw_text = "Local [trade_power|E]: [Scope.ScriptValue('trade_node_strength')|1]/[Scope.Var('trade_node_cap').GetValue|1]"
+                                                        text = "TRADE_POWER_TEXT"
                                                         using = Font_Size_Medium
-                                                    }	
+                                                    }
                                                     divider_light = {
                                                         layoutpolicy_horizontal = expanding
                                                     }
                                                     text_single = {
                                                         name = "global_trade_power_value"
-                                                        raw_text = "[global_trade_power|E]: [Scope.Var('global_power').GetValue|1]"
+                                                        text = "GLOBAL_TRADE_POWER_TEXT"
                                                         using = Font_Size_Medium
                                                     }
 
@@ -145,7 +156,7 @@ types tradewidgets {
                                                                 minimumsize = { 150 0 }
                                                                 text_single = {
                                                                     layoutpolicy_horizontal = expanding
-                                                                    text = "#T Trade Center#!"
+                                                                    text = "TRADE_CENTER_TEXT"
                                                                     background = {
                                                                         using = Background_Area
                                                                         margin = { 10 0 }
@@ -171,7 +182,7 @@ types tradewidgets {
                                                                 minimumsize = { 150 0 }
                                                                 text_single = {
                                                                     layoutpolicy_horizontal = expanding
-                                                                    text = "#T Node Blockaded#!"
+                                                                    text = "NODE_BLOCKADE_TEXT"
                                                                     background = {
                                                                         using = Background_Area
                                                                         margin = { 10 0 }

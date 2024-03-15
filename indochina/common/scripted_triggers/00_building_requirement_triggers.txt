@@ -115,6 +115,7 @@ building_orchards_requirement_terrain = {
 	OR = {
 		terrain = floodplains
 		terrain = oasis
+		has_building_or_higher = qanats_05
 	}
 }
 
@@ -183,6 +184,7 @@ building_cereal_fields_requirement_terrain = {
 		county = {
 			has_county_modifier = fertile_desert_mountains_modifier
 		}
+		has_building_or_higher = qanats_05
 	}
 }
 
@@ -315,7 +317,7 @@ building_wind_furnace_requirement_terrain = {
 				}
 			}
 			duchy = {
-				any_county = {
+				any_de_jure_county = {
 					any_county_province = {
 						has_building_or_higher = konasamudram_mines_01
 					}
@@ -337,38 +339,63 @@ building_hill_forts_requirement_terrain = {
 }
 
 building_windmills_requirement_terrain = {
-	OR = {
-		terrain = farmlands
-		terrain = plains
-		terrain = hills
-		is_coastal = yes
+	county ?= {
+		any_county_province = {
+			OR = {
+				terrain = farmlands
+				terrain = plains
+				terrain = hills
+				is_coastal = yes
+			}
+		}
 	}
 }
 
 building_watermills_requirement_terrain = {
-	OR = {
-		terrain = mountains
-		terrain = wetlands
-		terrain = forest
-		terrain = taiga
-		terrain = jungle
-		is_riverside_province = yes
+	county ?= {
+		any_county_province = {
+			OR = {
+				terrain = mountains
+				terrain = wetlands
+				terrain = forest
+				terrain = taiga
+				terrain = jungle
+				is_riverside_province = yes
+			}
+		}
 	}
 }
 
 building_caravanserai_requirement_terrain = {
-	OR = {
-		terrain = drylands
-		terrain = desert
-		terrain = oasis
-		terrain = floodplains
-		terrain = steppe
-		terrain = desert_mountains
-		AND = {
-			geographical_region = world_europe_west_iberia
-			has_global_variable = fp2_struggle_conciliation_ending
+	county ?= {
+		any_county_province = {
+			OR = {
+				terrain = drylands
+				terrain = desert
+				terrain = oasis
+				terrain = floodplains
+				terrain = steppe
+				terrain = desert_mountains
+				AND = {
+					geographical_region = world_europe_west_iberia
+					has_global_variable = fp2_struggle_conciliation_ending
+				}
+			}
 		}
+	}
+}
 
+building_qanat_requirement_terrain = {
+	county ?= {
+		any_county_province = {
+			OR = {
+				terrain = hills
+				terrain = mountains
+				terrain = desert_mountains
+				terrain = desert
+				terrain = drylands
+			}
+		}
 	}
 }
 
