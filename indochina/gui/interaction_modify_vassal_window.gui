@@ -27,7 +27,7 @@ window = {
 		minimumsize = { 0 700 }
 
 		using = Window_Margins
-
+		
 		datacontext = "[ModifyVassalContractInteractionWindow.GetCharacterInteractionConfirmationWindow]"
 		datacontext = "[ModifyVassalContractInteractionWindow.GetContractPreview]"
 		datacontext = "[CharacterInteractionConfirmationWindow.GetRecipient]"
@@ -249,8 +249,8 @@ window = {
 												enabled = "[ModifyVassalContractInteractionWindow.IsObligationLevelEnabled( ModifyVassalContractInteractionWindowObligationLevelOption.Self )]"
 												visible = "[ModifyVassalContractInteractionWindow.IsObligationLevelVisible( ModifyVassalContractInteractionWindowObligationLevelOption.Self )]"
 
-												blockoverride "radio"
-												{
+												blockoverride "radio" 
+												{ 
 													frame = "[BoolTo1And2( ModifyVassalContractInteractionWindow.IsObligationLevelSelected( ModifyVassalContractInteractionWindowObligationLevelOption.Self ) )]"
 												}
 												blockoverride "text"
@@ -413,7 +413,7 @@ window = {
 					vbox = {
 						name = "major_line_tree_levels"
 						layoutpolicy_horizontal = expanding
-						visible = "[Character.GetGovernment.IsType('imperial_government')]" #律令制税兵
+						visible = "[Character.GetGovernment.IsType('chinese_government')]" #律令制税兵
 						spacing = 10
 
 						datamodel = "[ModifyVassalContractInteractionWindow.AccessObligationLevelLineTrees]"
@@ -463,34 +463,35 @@ window = {
 											}
 
 											button_letter = {
-												size = { 100 80 }
+												size = { 115 80 }
 
 												text_single = {
 													text = "[ModifyVassalContractInteractionWindowObligationLevelOption.GetName]"
-													visible = "[Not(ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected)]"
+													visible = "[Not( ModifyVassalContractInteractionWindow.IsObligationLevelSelected( ModifyVassalContractInteractionWindowObligationLevelOption.Self ) )]"
 													default_format = "#light_background"
 													parentanchor = center
-													position = {0 -3 }
+													position = {0 -10 }
 												}
 
 												text_single = {
 													text = "[ModifyVassalContractInteractionWindowObligationLevelOption.GetName]"
-													visible = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected]"
+													visible = "[ModifyVassalContractInteractionWindow.IsObligationLevelSelected( ModifyVassalContractInteractionWindowObligationLevelOption.Self )]"
 													default_format = "#high"
 													parentanchor = center
-													position = {0 -3 }
+													position = {0 -10 }
 												}
 
-												tooltip = "[ModifyVassalContractInteractionWindowObligationLevelOption.GetTooltip]"
+												tooltip = "[ModifyVassalContractInteractionWindow.GetObligationLevelTooltipFor( ModifyVassalContractInteractionWindowObligationLevelOption.Self )]"
 
-												onclick = "[ModifyVassalContractInteractionWindowObligationLevelOption.Select]"
-												down = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected]"
-												enabled = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsEnabled]"
+												onclick = "[ModifyVassalContractInteractionWindow.SelectObligationLevel( ModifyVassalContractInteractionWindowObligationLevelOption.Self )]"
+												down = "[ModifyVassalContractInteractionWindow.IsObligationLevelSelected( ModifyVassalContractInteractionWindowObligationLevelOption.Self )]"
+
+												enabled = "[ModifyVassalContractInteractionWindow.IsObligationLevelEnabled( ModifyVassalContractInteractionWindowObligationLevelOption.Self )]"
 												using = tooltip_above
 
 												background = {
 													using = Background_Area_Dark
-													visible = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected]"
+													visible = "[ModifyVassalContractInteractionWindow.IsObligationLevelSelected( ModifyVassalContractInteractionWindowObligationLevelOption.Self )]"
 												}
 
 												icon = {
@@ -501,7 +502,7 @@ window = {
 													size = { 24 24 }
 													frame = 2
 													tintcolor = { 0.4 0.4 0.5 0.7 }
-													visible = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsCurrent]"
+													visible = "[ModifyVassalContractInteractionWindow.IsCurrentObligationLevel( ModifyVassalContractInteractionWindowObligationLevelOption.Self )]"
 
 													using = Mask_Rough_Edges
 												}
@@ -785,7 +786,7 @@ window = {
 					visible = "[DisplayedInteractionEffects.HasAnyEffects]"
 					layoutpolicy_horizontal = expanding
 					margin = { 10 0 }
-
+					
 					text_label_left = {
 						text = CONTRACT_EFFECTS_HEADER
 					}
@@ -804,7 +805,7 @@ window = {
 					visible = "[Not( DisplayedInteractionEffects.HasAnyEffects )]"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
-
+					
 					text_single = {
 						visible = "[And( Not( DisplayedInteractionEffects.HasAnyEffects ), Character.GetGovernment.IsType( 'feudal_government' ) )]"
 						text = "VASSAL_CONTRACT_OBLIGATION_NO_EFFECT"
@@ -961,7 +962,7 @@ window = {
 						align = nobaseline
 						using = Font_Size_Medium
 
-						tooltip_enabled = "[ValueBreakdown.HasTooltip]"
+						tooltip_visible = "[ValueBreakdown.HasTooltip]"
 
 						tooltipwidget = {
 							widget_value_breakdown_tooltip = {}

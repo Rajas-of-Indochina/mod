@@ -55,6 +55,7 @@ become_greatest_of_khans_decision = {
 	}
 
 	effect = {
+		gain_heroic_legend_seed_tooltip_effect = yes
 		#Can only happen once
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -173,6 +174,7 @@ establish_bactrian_supremacy_decision = {
 	}
 
 	effect = {
+		gain_heroic_legend_seed_tooltip_effect = yes
 		#Can only happen once
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -362,26 +364,86 @@ break_with_the_old_ways_decision = {
 		}
 	}
 
+	widget = {
+		gui = "decision_view_widget_option_list_generic"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "CHOOSE_REFORMATION_TYPE"
+		show_from_start = yes
+
+		item = { # Pluralist
+			value = bwow_no_changes
+			current_description = bwow_no_changes_desc
+			localization = bwow_no_changes
+			icon = "gfx/interface/icons/faith/tengri.dds"
+			ai_chance = {
+				value = 10
+				add = ai_sociability
+				add = ai_compassion
+			}
+		}
+
+		item = { # Righteous: Chosen People
+			value = bwow_chosen_people
+			current_description = bwow_chosen_people_desc
+			localization = bwow_chosen_people
+			icon = "gfx/interface/icons/icon_culture.dds"
+			ai_chance = {
+				value = 100
+				add = ai_zeal
+			}
+		}
+
+		item = { # Righteous: Esotericism
+			value = bwow_esotericism
+			current_description = bwow_esotericism_desc
+			localization = bwow_esotericism
+			icon = "gfx/interface/icons/traits/mystic_base.dds"
+			ai_chance = {
+				value = 100
+				add = {
+					subtract = ai_rationality
+				}
+			}
+		}
+
+		item = { # Fundementalist
+			value = bwow_fundementalist
+			current_description = bwow_fundementalist_desc
+			localization = bwow_fundementalist
+			icon = "gfx/interface/icons/icon_skill_martial.dds"
+			ai_chance = {
+				value = 0
+				add = ai_zeal
+				add = ai_vengefulness
+				add = {
+					subtract = ai_sociability
+					subtract = ai_compassion
+				}
+			}
+		}
+	}
+
 	effect = {
 		trigger_event = religious_decision.0501
 		show_as_tooltip = {
 			root.faith = { remove_doctrine = unreformed_faith_doctrine }
-			random_list = {
-				100 = {
-					show_chance = no
-					desc = break_with_the_old_ways_decision.path_righteous
-					root.faith = { break_with_old_ways_become_chosen_people = yes }
+			if = {
+				limit = {
+					scope:bwow_chosen_people = yes
 				}
-				100 = {
-					show_chance = no
-					desc = break_with_the_old_ways_decision.path_righteous
-					root.faith = { break_with_old_ways_become_righteous = yes }
+				root.faith = { break_with_old_ways_become_chosen_people = yes }
+			}
+			if = {
+				limit = {
+					scope:bwow_esotericism = yes
 				}
-				100 = {
-					show_chance = no
-					desc = break_with_the_old_ways_decision.path_fundamentalist
-					root.faith = { break_with_old_ways_become_fundamentalist = yes }
+				root.faith = { break_with_old_ways_become_righteous = yes }
+			}
+			if = {
+				limit = {
+					scope:bwow_fundementalist = yes
 				}
+				root.faith = { break_with_old_ways_become_fundamentalist = yes }
 			}
 		}
 		hidden_effect = {
