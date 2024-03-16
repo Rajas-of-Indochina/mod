@@ -7,12 +7,13 @@
 }
 
 chinese_administration_type = {
-	display_mode = radiobutton
+	display_mode = tree
+	icon = development_icon
 	is_shown = { scope:vassal = { has_government = chinese_government } }
 	obligation_levels = {
 		chinese_administration_type_civil = {
 			default = yes
-			position = { 0 1 }
+			position = { 0 0 }
 
 			tax = 0.3
 			levies = 0.1
@@ -53,22 +54,14 @@ chinese_administration_type = {
 }
 
 chinese_centralization_level = {
-	display_mode = radiobutton
-	icon = gold_icon
+	display_mode = tree
+	icon = control_icon
 
 	is_shown = { scope:vassal = { has_government = chinese_government } }
 
 	obligation_levels = {
 		chinese_centralization_level_0 = { # None
 			position = { 4 1 }
-			is_valid = {
-				scope:vassal = {
-					OR = {
-						vassal_contract_has_flag = has_chinese_centralization_level_0
-						vassal_contract_has_flag = has_chinese_centralization_level_1
-					}
-				}
-			}
 
 			tax_factor = 0.6
 			levies_factor = 0.6
@@ -82,15 +75,7 @@ chinese_centralization_level = {
 		}
 		chinese_centralization_level_1 = { # Curtailed
 			position = { 3 1 }
-			is_valid = {
-				scope:vassal = {
-					OR = {
-						vassal_contract_has_flag = has_chinese_centralization_level_0
-						vassal_contract_has_flag = has_chinese_centralization_level_1
-						vassal_contract_has_flag = has_chinese_centralization_level_2
-					}
-				}
-			}
+			parent = chinese_centralization_level_0
 
 			tax_factor = 0.4
 			levies_factor = 0.4
@@ -104,16 +89,8 @@ chinese_centralization_level = {
 		}
 		chinese_centralization_level_2 = { # Limited
 			position = { 2 1 }
+			parent = chinese_centralization_level_1
 			default = yes
-			is_valid = {
-				scope:vassal = {
-					OR = {
-						vassal_contract_has_flag = has_chinese_centralization_level_1
-						vassal_contract_has_flag = has_chinese_centralization_level_2
-						vassal_contract_has_flag = has_chinese_centralization_level_3
-					}
-				}
-			}
 
 			# vassal_opinion = 5
 
@@ -124,15 +101,7 @@ chinese_centralization_level = {
 		}
 		chinese_centralization_level_3 = { # Moderate
 			position = { 1 1 }
-			is_valid = {
-				scope:vassal = {
-					OR = {
-						vassal_contract_has_flag = has_chinese_centralization_level_2
-						vassal_contract_has_flag = has_chinese_centralization_level_3
-						vassal_contract_has_flag = has_chinese_centralization_level_4
-					}
-				}
-			}
+			parent = chinese_centralization_level_2
 
 			tax_factor = -0.4
 			levies_factor = -0.4
@@ -146,14 +115,7 @@ chinese_centralization_level = {
 		}
 		chinese_centralization_level_4 = { # Total
 			position = { 0 1 }
-			is_valid = {
-				scope:vassal = {
-					OR = {
-						vassal_contract_has_flag = has_chinese_centralization_level_3
-						vassal_contract_has_flag = has_chinese_centralization_level_4
-					}
-				}
-			}
+			parent = chinese_centralization_level_3
 
 			tax_factor = -1.0
 			levies_factor = -1.0
