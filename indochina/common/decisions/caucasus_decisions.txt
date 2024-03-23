@@ -335,6 +335,9 @@ circassian_decision.8 = {
 			}
 		}
 		faith = faith:circassian_christianity
+		NOT = {
+			religion = religion:islam_religion
+		}
     }
 
 
@@ -344,6 +347,9 @@ circassian_decision.8 = {
 			culture = {	this = culture:ubykh }
 		}
 		faith = faith:circassian_christianity
+		NOT = {
+			religion = religion:islam_religion
+		}
 		AND = {
 			custom_tooltip = {
 				text = circassiantribal_requirement
@@ -490,4 +496,68 @@ circassian_decision_armenians = {
 		ai_will_do = {	base = 0
 	}
 }
+
+circassian_decision_dais = {
+	picture = "gfx/interface/illustrations/decisions/fp3/fp3_decision_secret_faith.dds"
+
+	sort_order = 81
+
+	desc = circassian_decision_ten_desc
+	selection_tooltip = circassian_decision_ten_tooltip
+
+	is_shown = {
+		NOT = {	#You can only do it once.
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_dais
+		}
+	}
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+		}
+		NOT = {
+			religion = religion:islam_religion
+		}
+	}
+
+	is_valid = {
+		NOT = {	#You can only do it once.
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_dais
+		}
+	}
+	prestige_level >=2
+		OR = {
+			learning >= 20
+		}
+		prestige >= 1000
+		custom_tooltip = {
+			text = yeareighthunredfifteen_customtooltip
+		current_year >= 815
+		}
+	}
+
+	cost = {
+		piety = 50
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = dai_customtooltip
+			trigger_event = {	id = caucasianroa.003 delayed = yes }
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_dais
+		}
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = {	base = 0
+}
+}
+
+
 
