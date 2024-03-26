@@ -381,21 +381,39 @@ sea_historical_artifacts = {
                 has_dlc_feature = royal_court
                 exists = title:e_kambujadesa.holder
             }
-            title:e_kambujadesa.holder = {
-                create_artifact_emerald_buddha = { OWNER = this }
+
+            if = { # Emerald Buddha
+                limit = { current_date >= 1432.1.1 }
+                title:e_kambujadesa.holder = {
+                    create_artifact_emerald_buddha = { OWNER = this }
+                }
             }
 
-            if = {
+            if = { # Laguna Copperplate
                 limit = { current_date >= 900.1.1 }
                 title:c_tondo.holder = {
                     create_artifact_laguna_copperplate = { OWNER = this }
                 }
             }
 
-            if = {
+            if = { # Heirloom Seal of the Realm
                 limit = { current_date <= 907.1.1 }
                 title:e_celestia_china.holder = {
                     create_artifact_heirloom_seal = { OWNER = this }
+                }
+            }
+
+            if = { # Kavirajamarga - The Royal Path for Poets written by Amoghavarsha
+                limit = { current_date < 1000.1.1 } #Only generated for early start
+                title:k_karnata.holder = {
+                    create_artifact_kavirajamarga_effect = { OWNER = this }
+                }
+            }
+
+            if = { # Wujing Zongyao / 武經總要
+                limit = { current_date > 1044.1.1 }
+                title:e_celestia_china.holder = {
+                    create_artifact_wujing_zongyao_effect = { OWNER = this }
                 }
             }
         }
