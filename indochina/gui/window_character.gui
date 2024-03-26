@@ -304,8 +304,17 @@ window = {
 				### Suzerain
 				vbox = {
 					name = "suzerain"
-					datacontext = "[CharacterWindow.GetCharacter.MakeScope.Var('my_suzerain').GetCharacter]"
-					visible = "[CharacterWindow.GetCharacter.MakeScope.Var('my_suzerain').IsSet]"
+					#datacontext = "[CharacterWindow.GetCharacter.MakeScope.Var('my_suzerain').GetCharacter]"
+					datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'suzerain' ) )]"
+					#visible = "[CharacterWindow.GetCharacter.MakeScope.Var('my_suzerain').IsSet]"
+					visible = "[Not(IsDataModelEmpty(CharacterWindow.GetRelationsOfType( GetRelation( 'suzerain' ) )))]"
+
+
+#								blockoverride "portrait_datamodel" {
+#									datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'ward' ) )]"
+#								}
+
+
 					allow_outside = yes
 
 					margin_right = 20
@@ -1939,7 +1948,7 @@ window = {
 			button_tab = {
 				name = "tribs_button"
 				datacontext = "[CharacterWindow.GetCharacter]"
-				visible = "[Not(IsDataModelEmpty(Character.MakeScope.GetList('all_tributaries')))]"
+				visible = "[Not(IsDataModelEmpty(CharacterWindow.GetRelationsOfType( GetRelation( 'tributary' ) )))]"
 				layoutpolicy_horizontal = expanding
 
 				onclick = "[GetVariableSystem.Set('char_gui_tabs','tribs')]"
@@ -1958,7 +1967,7 @@ window = {
 
 					text_single = {
 						align = center
-						text = "[GetDataModelSize(Character.MakeScope.GetList('all_tributaries'))]"
+						text = "[GetDataModelSize(CharacterWindow.GetRelationsOfType( GetRelation( 'tributary' ) ))]"
 						default_format = "#low"
 						margin_right = 15
 						min_width = 24
@@ -2962,7 +2971,7 @@ window = {
 
 			####################################
 			########### VASSALS TAB ############
-				####################################
+			####################################
 
 				vbox_character_list = {
 					# visible = "[CharacterWindow.IsTabShown('vassals')]"
@@ -3074,7 +3083,8 @@ window = {
 				blockoverride "container_implementation" {
 					fixedgridbox = {
 						name = "characters_grid"
-						datamodel = "[Character.MakeScope.GetList('permanent_tributaries')]"
+						datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'tributary' ) )]"
+
 						addcolumn = 590
 						addrow = 90
 						setitemsizefromcell = yes
@@ -3089,7 +3099,7 @@ window = {
 					}
 				}
 				blockoverride "scrollbox_empty_visibility" {
-					visible = "[IsDataModelEmpty(Character.MakeScope.GetList('all_tributaries'))]"
+					visible = "[IsDataModelEmpty(CharacterWindow.GetRelationsOfType( GetRelation( 'tributary' ) ))]"
 				}
 			}
 			# End custom tribs tab section
@@ -4866,45 +4876,45 @@ types CharacterWindow
 			margin_right = 10
 
 			hbox = {
-			layoutpolicy_horizontal = expanding
-
-			vbox = {
 				layoutpolicy_horizontal = expanding
-				spacing = 5
 
-				hbox = {
-				layoutpolicy_horizontal = expanding
-				minimumsize = { 0 30 }
-
-				background = {
-					using = Background_Area_Characterlist
-					margin = { 8 0 }
-					margin_left = 15
-
-					using = Mask_Rough_Edges
-				}
-
-				text_single = {
+				vbox = {
 					layoutpolicy_horizontal = expanding
-					text = "[Character.GetUINameNoTooltip]"
-					using = Font_Size_Medium
-					autoresize = no
-					fontsize_min = 13
-					align = nobaseline
-				}
-				}
+					spacing = 5
 
-				text_single = {
-				name = "character_relation"
-				visible = "[Character.GetLiege.IsLocalPlayer]"
-				layoutpolicy_horizontal = expanding
-				text = "[Character.GetRelationToString(GetPlayer)] "
-				default_format = "#low"
-				autoresize = no
-				fontsize_min = 13
-				align = nobaseline
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						minimumsize = { 0 30 }
+
+						background = {
+							using = Background_Area_Characterlist
+							margin = { 8 0 }
+							margin_left = 15
+
+							using = Mask_Rough_Edges
+						}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							text = "[Character.GetUINameNoTooltip]"
+							using = Font_Size_Medium
+							autoresize = no
+							fontsize_min = 13
+							align = nobaseline
+						}
+					}
+
+					text_single = {
+						name = "character_relation"
+						visible = "[Character.GetLiege.IsLocalPlayer]"
+						layoutpolicy_horizontal = expanding
+						raw_text = "[Character.GetRelationToString(GetPlayer)] "
+						default_format = "#low"
+						autoresize = no
+						fontsize_min = 13
+						align = nobaseline
+					}
 				}
-			}
 			}
 
 			expand = {}
@@ -4957,7 +4967,7 @@ types CharacterWindow
 
 				text_single = {
 				layoutpolicy_horizontal = expanding
-				text = "[Multiply_CFixedPoint(Character.MakeScope.Var('tribute_gold_percent').GetValue,'(CFixedPoint)100')|0]%"
+				raw_text = "[Multiply_CFixedPoint(Character.MakeScope.Var('tribute_gold_percent').GetValue,'(CFixedPoint)100')|0]%"
 				align = nobaseline
 				default_format = "#high"
 				}
@@ -4975,7 +4985,7 @@ types CharacterWindow
 
 				text_single = {
 				layoutpolicy_horizontal = expanding
-				text = "[Multiply_CFixedPoint(Character.MakeScope.Var('monthly_prestige_suzerain').GetValue,'(CFixedPoint)100')|0]%"
+				raw_text = "[Multiply_CFixedPoint(Character.MakeScope.Var('monthly_prestige_suzerain').GetValue,'(CFixedPoint)100')|0]%"
 				align = nobaseline
 				default_format = "#high"
 				}
@@ -4992,7 +5002,7 @@ types CharacterWindow
 
 				text_single = {
 				layoutpolicy_horizontal = expanding
-				text = "[Multiply_CFixedPoint(Character.MakeScope.Var('monthly_piety_suzerain').GetValue,'(CFixedPoint)100')|0]%"
+				raw_text = "[Multiply_CFixedPoint(Character.MakeScope.Var('monthly_piety_suzerain').GetValue,'(CFixedPoint)100')|0]%"
 				align = nobaseline
 				default_format = "#high"
 				}
