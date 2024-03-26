@@ -4,8 +4,6 @@ on_game_start = {
     on_actions = {
         # holy_site_buildings_on_game_start
         # holy_site_descriptions_on_game_start
-        add_right_to_rule_doctrines_on_game_start
-        add_disloyal_subjects_tradition_on_game_start
         assign_nanzhao_state
         acculturate_steppelads
         holy_site_fix
@@ -197,74 +195,6 @@ sea_set_cultural_acceptance = {
 
 ######
 
-add_right_to_rule_doctrines_on_game_start = {
-    effect = {
-        every_religion_global = {
-            ## Islam gets Material Right
-            if = {
-                limit = {
-                    this = religion:islam_religion
-                }
-                every_faith = {
-                    limit = {
-                        NOR = {
-                            has_doctrine = doctrine_right_to_rule_material
-                            has_doctrine = doctrine_right_to_rule_divine
-                            has_doctrine = doctrine_right_to_rule_rajadharma
-                        }
-                    }
-                    add_doctrine = doctrine_right_to_rule_material
-                }
-            }
-            ## Dharmics except Mahayana get Rajadharma
-            else_if = {
-                limit = {
-                    OR = {
-                        this = religion:hinduism_religion
-                        this = religion:jainism_religion
-                        this = religion:buddhism_religion
-                    }
-                }
-                every_faith = {
-                    limit = {
-                        NOR = {
-                            has_doctrine = doctrine_right_to_rule_material
-                            has_doctrine = doctrine_right_to_rule_divine
-                            has_doctrine = doctrine_right_to_rule_rajadharma
-                        }
-                    }
-                    if = {
-                        limit = {
-                            NOT = { this = faith:mahayana }
-                        }
-                        add_doctrine = doctrine_right_to_rule_rajadharma
-                    }
-                    else = {
-                        add_doctrine = doctrine_right_to_rule_divine
-                    }
-
-                }
-            }
-            ## Everyone else gets Divine Right
-            else = {
-                every_faith = {
-                    limit = {
-                        NOR = {
-                            has_doctrine = doctrine_right_to_rule_material
-                            has_doctrine = doctrine_right_to_rule_divine
-                            has_doctrine = doctrine_right_to_rule_rajadharma
-                        }
-                    }
-
-                    add_doctrine = doctrine_right_to_rule_divine
-                }
-            }
-        }
-    }
-}
-
-######
-
 ruler_popup_events = {
     effect = {
         every_ruler = {
@@ -397,31 +327,6 @@ acculturate_steppelads = {
             }
         }
 
-    }
-}
-
-#####
-
-add_disloyal_subjects_tradition_on_game_start = {
-    effect = {
-        culture:zhangzhung = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
-        culture:sumpa = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
-        culture:bodpa = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
-        culture:tsangpa = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
-        culture:lhomon = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
-        culture:tani = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
     }
 }
 
