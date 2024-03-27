@@ -304,47 +304,108 @@ window = {
 				### Suzerain
 				vbox = {
 					name = "suzerain"
-					#datacontext = "[CharacterWindow.GetCharacter.MakeScope.Var('my_suzerain').GetCharacter]"
-					datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'suzerain' ) )]"
-					#visible = "[CharacterWindow.GetCharacter.MakeScope.Var('my_suzerain').IsSet]"
+					spacing = -3
+					allow_outside = yes
 					visible = "[Not(IsDataModelEmpty(CharacterWindow.GetRelationsOfType( GetRelation( 'suzerain' ) )))]"
 
+					hbox = {
+						layoutpolicy_horizontal = expanding
+			
+						using = Animation_Character_Window_Refresh
 
-#								blockoverride "portrait_datamodel" {
-#									datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'ward' ) )]"
-#								}
+						fixedgridbox = {
+							flipdirection = yes
+							addcolumn = 85
+							addrow = 90
+							datamodel_wrap = 7
+							maxverticalslots = 1
+		
+							datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'suzerain' ) )]"
+							
+							item = {
+								portrait_head_small = {
+									blockoverride "portrait_button"
+									{
+										using = tooltip_ne
+									}
+									blockoverride "glow_visible"
+									{
+										visible = no
+									}
+								}
+							}
+						}
+			
+						expand = {}
+					}
+
+					widget = {
+						layoutpolicy_horizontal = expanding
+						size = { 0 25 }
+						min_width = 110
+
+						hbox = {
+							margin = { 10 0 }
+			
+							background = {
+								using = Text_Label_Background
+								alpha = 0.5
+								margin = { 0 -2 }
+							}
+			
+							text_single = {
+								align = nobaseline
+								fontsize = 14
+								raw_text = "trib_suzerain"
+							}
+			
+							expand = {}
+						}
+
+						expand = {}
+					}
 
 
-					allow_outside = yes
+					# portrait_opinion = {
+					# 	name = "suzerain_opinion"
 
-					margin_right = 20
+					# 	datacontext = "[CharacterWindow.GetCharacter]"
+					# 	visible = "[And( Character.GetLiege.IsValid, And( Character.IsAlive, Not(Character.IsLocalPlayer ) ) )]"
+
+					# 	blockoverride "dread_logic" {
+					# 		visible = "[Character.ShouldShowDreadEffectIconFor( Character.GetLiege )]"
+					# 		frame = "[Character.GetDreadEffectIconFrameFor( Character.GetLiege )]"
+					# 		tooltip = "[Character.GetDreadEffectTooltipFor( Character.GetLiege )]"
+					# 	}
+
+					# 	blockoverride "opinion_text"
+					# 	{
+					# 		text = "[Character.GetOpinionOf( Character.GetLiege )|=]"
+					# 		fonttintcolor = "[Character.GetOpinionOfTint( CharacterWindow.GetCharacter.GetLiege )]"
+					# 	}
+
+					# 	blockoverride "ott_heading_text"
+					# 	{
+					# 		text = "[Character.GetOpinionHeadingText( CharacterWindow.GetCharacter.GetLiege )]"
+					# 	}
+
+					# 	blockoverride "ott_opinion_value_text"
+					# 	{
+					# 		text = "[Character.GetOpinionOf( Character.GetLiege )|=]"
+					# 		fonttintcolor = "[Character.GetOpinionOfTint( CharacterWindow.GetCharacter.GetLiege )]"
+					# 	}
+
+					# 	blockoverride "ott_opinion_breakdown_text"
+					# 	{
+					# 		text = "[Character.GetOpinionBreakdownText( CharacterWindow.GetCharacter.GetLiege )]"
+					# 	}
+					# }
+
+					expand = {}
+
+					# margin_right = 20
 					layoutpolicy_vertical = expanding
 					using = Animation_Character_Window_Refresh
-
-					portrait_head_small = {
-						blockoverride "portrait_transformation"
-						{
-							portrait_scale = { -1 1 }
-							portrait_offset = { 1 0 }
-						}
-
-						blockoverride "coa" {
-							coa_realm_tiny = {
-								visible = "[And(CharacterWindow.GetCharacter.IsAlive, CharacterWindow.HasLiegeTitleEvenWhenDead)]"
-								parentanchor = bottom|left
-								position = { 3 -2 }
-								scale = 0.85
-							}
-
-							coa_title_tiny = {
-								visible = "[And(Not(CharacterWindow.GetCharacter.IsAlive), CharacterWindow.HasLiegeTitleEvenWhenDead)]"
-								datacontext = "[CharacterWindow.GetCharacter.GetLiegeTitleEvenWhenDead]"
-								parentanchor = bottom|left
-								position = { 3 -2 }
-								scale = 0.85
-							}
-						}
-					}
 
 					hbox = {
 						spacing = 3
@@ -353,12 +414,6 @@ window = {
 							datacontext = "[CharacterWindow.GetCharacter]"
 							visible = "[Character.IsHostage]"
 							text = "WARDEN_OF"
-						}
-
-						text_label_center = {
-							datacontext = "[CharacterWindow.GetCharacter]"
-							visible = "[Not( Character.IsHostage )]"
-							text = "trib_suzerain"
 						}
 
 						icon = {
@@ -372,43 +427,6 @@ window = {
 							tooltip = "MRW_TT_NOT_RIGHTFUL_LIEGE"
 						}
 					}
-
-
-					portrait_opinion = {
-						name = "suzerain_opinion"
-
-						datacontext = "[CharacterWindow.GetCharacter]"
-						visible = "[And( Character.GetLiege.IsValid, And( Character.IsAlive, Not(Character.IsLocalPlayer ) ) )]"
-
-						blockoverride "dread_logic" {
-							visible = "[Character.ShouldShowDreadEffectIconFor( Character.GetLiege )]"
-							frame = "[Character.GetDreadEffectIconFrameFor( Character.GetLiege )]"
-							tooltip = "[Character.GetDreadEffectTooltipFor( Character.GetLiege )]"
-						}
-
-						blockoverride "opinion_text"
-						{
-							text = "[Character.GetOpinionOf( Character.GetLiege )|=]"
-							fonttintcolor = "[Character.GetOpinionOfTint( CharacterWindow.GetCharacter.GetLiege )]"
-						}
-
-						blockoverride "ott_heading_text"
-						{
-							text = "[Character.GetOpinionHeadingText( CharacterWindow.GetCharacter.GetLiege )]"
-						}
-
-						blockoverride "ott_opinion_value_text"
-						{
-							text = "[Character.GetOpinionOf( Character.GetLiege )|=]"
-							fonttintcolor = "[Character.GetOpinionOfTint( CharacterWindow.GetCharacter.GetLiege )]"
-						}
-
-						blockoverride "ott_opinion_breakdown_text"
-						{
-							text = "[Character.GetOpinionBreakdownText( CharacterWindow.GetCharacter.GetLiege )]"
-						}
-					}
-					expand = {}
 				}
 			}
 
@@ -2467,6 +2485,22 @@ window = {
 										}
 									}
 								}
+							}
+							vbox_character_row_item = {
+								name = "suzerain"
+								visible = "[Not(IsDataModelEmpty(CharacterWindow.GetRelationsOfType( GetRelation( 'suzerain' ) )))]"
+								layoutpolicy_vertical = expanding
+
+								blockoverride "portrait_datamodel" {
+									datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'suzerain' ) )]"
+								}
+
+								blockoverride "header_text"
+								{
+									text = "trib_suzerain"
+								}
+
+								blockoverride "expand_button" {}
 							}
 
 							vbox_character_row_item = {
@@ -4852,173 +4886,173 @@ types CharacterWindow
 	############################
 
 	type widget_tribs_list_item = widget {
-	datacontext = "[CharacterListItem.GetCharacter]"
-	size = { 200 180 }
-
-	vbox = {
-		layoutpolicy_horizontal = expanding
-		layoutpolicy_vertical = expanding
-		margin = { 10 5 }
-
-		hbox = {
-		layoutpolicy_horizontal = expanding
-		spacing = 10
-
-		background = {
-			using = Background_Area
-		}
-
-		portrait_head_small = {}
+		datacontext = "[CharacterListItem.GetCharacter]"
+		size = { 200 180 }
 
 		vbox = {
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
-			margin_right = 10
+			margin = { 10 5 }
 
 			hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 10
+
+			background = {
+				using = Background_Area
+			}
+
+			portrait_head_small = {}
+
+			vbox = {
 				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				margin_right = 10
 
-				vbox = {
+				hbox = {
 					layoutpolicy_horizontal = expanding
-					spacing = 5
 
-					hbox = {
+					vbox = {
 						layoutpolicy_horizontal = expanding
-						minimumsize = { 0 30 }
+						spacing = 5
 
-						background = {
-							using = Background_Area_Characterlist
-							margin = { 8 0 }
-							margin_left = 15
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							minimumsize = { 0 30 }
 
-							using = Mask_Rough_Edges
+							background = {
+								using = Background_Area_Characterlist
+								margin = { 8 0 }
+								margin_left = 15
+
+								using = Mask_Rough_Edges
+							}
+
+							text_single = {
+								layoutpolicy_horizontal = expanding
+								text = "[Character.GetUINameNoTooltip]"
+								using = Font_Size_Medium
+								autoresize = no
+								fontsize_min = 13
+								align = nobaseline
+							}
 						}
 
 						text_single = {
+							name = "character_relation"
+							visible = "[Character.GetLiege.IsLocalPlayer]"
 							layoutpolicy_horizontal = expanding
-							text = "[Character.GetUINameNoTooltip]"
-							using = Font_Size_Medium
+							raw_text = "[Character.GetRelationToString(GetPlayer)] "
+							default_format = "#low"
 							autoresize = no
 							fontsize_min = 13
 							align = nobaseline
 						}
 					}
+				}
 
+				expand = {}
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 5
 					text_single = {
-						name = "character_relation"
-						visible = "[Character.GetLiege.IsLocalPlayer]"
 						layoutpolicy_horizontal = expanding
-						raw_text = "[Character.GetRelationToString(GetPlayer)] "
-						default_format = "#low"
-						autoresize = no
-						fontsize_min = 13
 						align = nobaseline
+						text = "[Character.MakeScope.Var('tributary_type').GetFlagName]"
 					}
 				}
-			}
-
-			expand = {}
-			hbox = {
+				expand = {}
+				hbox = {
 				layoutpolicy_horizontal = expanding
 				spacing = 5
+
 				text_single = {
-					layoutpolicy_horizontal = expanding
+					text = "REALM_WINDOW_SIZE"
+					tooltip = "REALM_WINDOW_SIZE_TT"
 					align = nobaseline
-					text = "[Character.MakeScope.Var('tributary_type').GetFlagName]"
+					visible = "[NotEqualTo_int32(Character.GetPrimaryTitle.GetTierFrame, '(int32)2')]" #nonbaron
+
 				}
+
+				hbox = {
+					spacing = 3
+					margin = { 5 0 }
+
+					icon = {
+					size = { 22 22 }
+					texture = "gfx/interface/icons/icon_soldier.dds"
+					}
+
+					text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "[Character.GetMilitaryStrengthText]"
+					align = nobaseline
+					default_format = "#high"
+					}
+				}
+				hbox = {
+					spacing = 3
+					margin = { 5 0 }
+
+					icon = {
+					size = { 22 22 }
+					texture = "gfx/interface/icons/icon_gold.dds"
+					}
+
+					text_single = {
+					layoutpolicy_horizontal = expanding
+					raw_text = "[Multiply_CFixedPoint(Character.MakeScope.Var('tribute_gold_percent').GetValue,'(CFixedPoint)100')|0]%"
+					align = nobaseline
+					default_format = "#high"
+					}
+				}
+				hbox = {
+					spacing = 3
+					margin = { 5 0 }
+
+
+					icon = {
+					name = "icon_prestige"
+					size = { 22 22 }
+					texture = "[Character.GetPrestigeLevelTexture]"
+					}
+
+					text_single = {
+					layoutpolicy_horizontal = expanding
+					raw_text = "[Multiply_CFixedPoint(Character.MakeScope.Var('monthly_prestige_suzerain').GetValue,'(CFixedPoint)100')|0]%"
+					align = nobaseline
+					default_format = "#high"
+					}
+				}
+				hbox = {
+					spacing = 3
+					margin = { 5 0 }
+
+					icon = {
+					name = "icon_piety"
+					size = { 22 22 }
+					texture = "[Character.GetPietyLevelTexture]"
+					}
+
+					text_single = {
+					layoutpolicy_horizontal = expanding
+					raw_text = "[Multiply_CFixedPoint(Character.MakeScope.Var('monthly_piety_suzerain').GetValue,'(CFixedPoint)100')|0]%"
+					align = nobaseline
+					default_format = "#high"
+					}
+				}
+
+				expand = {}
+
+				hbox_skills_grid = {}
+				}
+
+				expand = {}
 			}
-			expand = {}
-			hbox = {
-			layoutpolicy_horizontal = expanding
-			spacing = 5
-
-			text_single = {
-				text = "REALM_WINDOW_SIZE"
-				tooltip = "REALM_WINDOW_SIZE_TT"
-				align = nobaseline
-				visible = "[NotEqualTo_int32(Character.GetPrimaryTitle.GetTierFrame, '(int32)2')]" #nonbaron
-
-			}
-
-			hbox = {
-				spacing = 3
-				margin = { 5 0 }
-
-				icon = {
-				size = { 22 22 }
-				texture = "gfx/interface/icons/icon_soldier.dds"
-				}
-
-				text_single = {
-				layoutpolicy_horizontal = expanding
-				text = "[Character.GetMilitaryStrengthText]"
-				align = nobaseline
-				default_format = "#high"
-				}
-			}
-			hbox = {
-				spacing = 3
-				margin = { 5 0 }
-
-				icon = {
-				size = { 22 22 }
-				texture = "gfx/interface/icons/icon_gold.dds"
-				}
-
-				text_single = {
-				layoutpolicy_horizontal = expanding
-				raw_text = "[Multiply_CFixedPoint(Character.MakeScope.Var('tribute_gold_percent').GetValue,'(CFixedPoint)100')|0]%"
-				align = nobaseline
-				default_format = "#high"
-				}
-			}
-			hbox = {
-				spacing = 3
-				margin = { 5 0 }
-
-
-				icon = {
-				name = "icon_prestige"
-				size = { 22 22 }
-				texture = "[Character.GetPrestigeLevelTexture]"
-				}
-
-				text_single = {
-				layoutpolicy_horizontal = expanding
-				raw_text = "[Multiply_CFixedPoint(Character.MakeScope.Var('monthly_prestige_suzerain').GetValue,'(CFixedPoint)100')|0]%"
-				align = nobaseline
-				default_format = "#high"
-				}
-			}
-			hbox = {
-				spacing = 3
-				margin = { 5 0 }
-
-				icon = {
-				name = "icon_piety"
-				size = { 22 22 }
-				texture = "[Character.GetPietyLevelTexture]"
-				}
-
-				text_single = {
-				layoutpolicy_horizontal = expanding
-				raw_text = "[Multiply_CFixedPoint(Character.MakeScope.Var('monthly_piety_suzerain').GetValue,'(CFixedPoint)100')|0]%"
-				align = nobaseline
-				default_format = "#high"
-				}
-			}
-
-			expand = {}
-
-			hbox_skills_grid = {}
 			}
 
 			expand = {}
 		}
-		}
-
-		expand = {}
-	}
 	}
 }
 
