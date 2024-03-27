@@ -1899,5 +1899,124 @@ tradition_endogamous = {
 	}
 }
 
-# New Traditions:
-# Highland Tower Architects - Mutally exclusive with Mountain Homes and Hill Dwellers. Provides development growth, as well as a prestige award for building buildings within Hills and Mountains. Reduces danger for mountains and hills. Hill Forts have additional bonuses per level in counties of this culture: Lowered Skirmisher and Light Cavalry Maintanance, Lowered MAA Recruitment Cost, Increased Defender Advantage, increased taxes.
+tradition_highland_tower_architects = {
+	category = regional
+
+	layers = {
+		0 = martial
+		1 = western
+		4 = mountain.dds
+	}
+
+	is_shown = {
+		OR = {
+			has_cultural_pillar = heritage_ciscaucasian
+			has_cultural_pillar = heritage_transcaucasian
+			has_cultural_pillar = heritage_aghvank
+		}
+		NOR = {
+			has_cultural_tradition = tradition_mountaineer_ruralism
+		}
+	}
+
+	can_pick = {
+		NOR = {
+			has_cultural_tradition = tradition_mountain_homes
+			has_cultural_tradition = tradition_mountaineer_ruralism
+		}
+		custom_description = {
+			text = culture_in_mountains_or_hills_desc
+			any_culture_county = {
+				any_county_province = {
+					OR = {
+						terrain = mountains
+						terrain = hills
+					}
+				}
+			}
+		}
+	}
+
+	parameters = {
+		quarries_building_bonuses = yes
+		hill_farms_building_bonuses = yes
+		rough_terrain_expert_trait_more_common = yes
+		mountain_trait_bonuses = yes
+		can_recruit_mountain_specialist = yes
+	}
+	character_modifier = {
+		mountains_travel_danger = mountains_high_danger_reduction
+		hills_travel_danger = hills_high_danger_reduction
+	}
+	county_modifier = {
+		hills_development_growth_factor = 0.1
+		mountains_development_growth_factor = 0.1
+	}
+	province_modifier = {
+		hills_construction_gold_cost = -0.1
+		hills_holding_construction_gold_cost = -0.1
+		mountains_construction_gold_cost = -0.1
+		mountains_holding_construction_gold_cost = -0.1
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOT = {
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_stoic_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								terrain = mountains
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = mountain_true_percentage_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = hills
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}
