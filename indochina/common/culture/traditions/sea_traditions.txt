@@ -1607,3 +1607,297 @@ tradition_honored_headhunting = {
 		value = 100
 	}
 }
+
+tradition_caucasian_tenacity = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = mena
+		4 = mountain.dds
+	}
+
+	is_shown = {
+		has_cultural_pillar = heritage_ciscaucasian
+		# NOT = { has_cultural_tradition = tradition_highland_warriors }
+	}
+	can_pick = {
+		has_cultural_pillar = heritage_ciscaucasian
+		custom_description = {
+			text = culture_in_mountains_desc
+			any_culture_county = {
+				any_county_province = {
+					OR = {
+						terrain = mountains
+						terrain = desert_mountains
+					}
+				}
+			}
+		}
+	}
+
+	parameters = {
+		rough_terrain_expert_trait_more_common = yes
+		mountain_trait_bonuses = yes
+		can_recruit_mountain_specialist = yes
+	}
+	province_modifier = {
+		mountains_levy_size = 0.1
+		desert_mountains_levy_size = 0.1
+		mountains_supply_limit_mult = 0.25
+		desert_mountains_supply_limit_mult = 0.25
+		garrison_size = 0.25
+	}
+	character_modifier = {
+		mountains_travel_danger = mountains_medium_danger_reduction
+		desert_mountains_travel_danger = desert_mountains_medium_danger_reduction
+		defender_advantage = 5
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = desert_mountains
+								}
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = mountain_percentage_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 1000
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = desert_mountains
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
+tradition_jigit_riders = {
+	category = regional
+
+	layers = {
+		0 = martial
+		1 = mena
+		4 = horses.dds
+	}
+
+	is_shown = {
+		OR = {
+			has_cultural_pillar = heritage_ciscaucasian
+			has_cultural_pillar = heritage_aghvank
+		}
+		NOR = {
+			has_cultural_tradition = tradition_horse_lords
+		}
+	}
+
+	parameters = {
+		unlock_maa_jigit_riders = yes
+	}
+
+	character_modifier = {
+		light_cavalry_pursuit_mult = 0.1
+		light_cavalry_toughness_mult = 0.1
+		supply_duration = 1
+		movement_speed = 0.1
+		character_travel_speed_mult = 0.2
+		character_travel_safety_mult = 0.2
+		movement_speed_land_raiding = 0.3
+		hostile_county_attrition_raiding = -0.5
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_or_communal_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+	}
+}
+
+tradition_endogamous = {
+	category = realm
+
+	layers = {
+		0 = intrigue
+		1 = mediterranean
+		4 = noble.dds
+	}
+
+	is_shown = {
+		NOR = {
+			has_cultural_tradition = tradition_isolationist
+		}
+	}
+
+	parameters = {
+		courtiers_less_likely_to_leave_same_culture_court = yes
+		dislikes_marrying_outside_of_culture = yes
+		ai_doesnt_marry_outside_culture = yes
+
+		# guaranteed access to Avunculate Marriage (if possible to code).
+		# Doable probably but will take some effort
+	}
+	culture_modifier = {
+		cultural_acceptance_gain_mult = -0.35
+	}
+	character_modifier = {
+		diplomatic_range_mult = -0.25
+		same_culture_opinion = 15
+		different_culture_opinion = -5
+
+		ai_war_chance = -0.5
+		ai_war_cooldown = 5
+	}
+	county_modifier = {
+		monthly_county_control_growth_add = 0.5
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_spiritual_or_stoic_desc
+				}
+			}
+			if = {
+				limit = {
+					scope:character = {
+						any_sub_realm_county = {
+							culture = scope:character.culture
+							any_neighboring_county = {
+								NOT = {
+									culture = scope:character.culture
+								}
+								culture = {
+									cultural_acceptance = { target = scope:character.culture value >= 40 }
+								}
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = non_tolerated_cultures_desc
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						has_variable = defensive_traditionalist_discount
+						has_variable = aggressive_traditionalist_discount
+					}
+				}
+				add = {
+					value = traditionalist_discount
+					desc = traditionalist_discount_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					is_divergent_culture = yes
+				}
+			}
+			multiply = 0
+		}
+		if = {
+			limit = {
+				culture_pillar:ethos_egalitarian = { is_in_list = traits }
+			}
+			multiply = 0
+		}
+	}
+}
+
+# New Traditions:
+# Highland Tower Architects - Mutally exclusive with Mountain Homes and Hill Dwellers. Provides development growth, as well as a prestige award for building buildings within Hills and Mountains. Reduces danger for mountains and hills. Hill Forts have additional bonuses per level in counties of this culture: Lowered Skirmisher and Light Cavalry Maintanance, Lowered MAA Recruitment Cost, Increased Defender Advantage, increased taxes.
