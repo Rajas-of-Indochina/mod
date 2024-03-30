@@ -26,8 +26,9 @@
 			}
 		}
 		OR = {	#Government conditions.
-			government_has_flag = government_is_feudal
-			government_has_flag = government_is_clan
+			has_government = feudal_government
+			has_government = clan_government
+			fallen_eagle_special_needs_trigger = yes
 		}
 		exists = faith.religious_head
 	}
@@ -38,15 +39,15 @@
 		prestige_level >= high_prestige_level
 		#Title ownership conditions.
 		AND = {
-			has_title = title:k_italy
-			sub_realm_size >= 140	#Plus your various kingdoms should be ruling something.
-			custom_description = {
+			has_title = title:k_east_francia #Gotta be King of the Germans.
+			custom_description = {	#And have some additional royal dignity for good measure.
+				text = decision_refound_hre_own_three_kingdoms.tt
 				any_held_title = {
 					tier = tier_kingdom
-					has_title_law = feudal_elective_succession_law
+					count >= 3
 				}
-				text = has_convene_diet_loc
 			}
+			sub_realm_size >= 140	#Plus your various kingdoms should be ruling something.
 		}
 		#HoF preference conditions.
 		OR = {
@@ -58,7 +59,6 @@
 			}
 			root = { has_strong_usable_hook = faith.religious_head }	#Or you have a strong hook on them that you can actually use.
 			root = { has_weak_hook = faith.religious_head }	#Or a regular hook, to be fair, provided you meet the other criteria.
-			root = { piety_level >= 3 }
 		}
 	}
 
@@ -139,7 +139,7 @@
 		}
 		every_held_title = {
 			limit = {
-				tier = 4
+				tier = tier_kingdom
 			}
 			save_scope_as = destry_this
 			root = {

@@ -1,6 +1,6 @@
 ﻿nation_fracturing_faction = {
 	casus_belli = nation_fracturing_faction_war
-	
+
 	short_effect_desc = nation_fracturing_faction_short_effect_desc
 
 	sort_order = 0
@@ -34,7 +34,7 @@
 			FACTION_TARGET = scope:faction.faction_target
 		}
 	}
-	
+
 	demand = {
 		save_scope_as = faction
 
@@ -65,6 +65,8 @@
 	}
 
 	can_character_create_ui = {
+		base_faction_trigger = { FACTION_TYPE = nation_fracturing_faction }
+
 		common_can_character_create_trigger = {
 			FACTION_TARGET = scope:target
 		}
@@ -72,6 +74,13 @@
 		liege = {
 			is_independent_ruler = yes
 			NOT = { government_has_flag = government_is_theocracy }
+			custom_tooltip = {
+				text = nation_fracturing_faction.can_character_create_ui.blocked_by_struggle
+				# We could use a parameter but this is just infinitely more performant.
+				NOT = {
+					any_held_title = { has_variable = struggle_block_dissolution_faction }
+				}
+			}
 			OR = {
 				has_realm_law = crown_authority_0
 				has_realm_law = tribal_authority_0
@@ -92,6 +101,21 @@
 				NOT = { culture = liege.culture }
 			}
 			is_ai = no
+		}
+
+		trigger_if = {
+			limit = {
+				faith.religion = religion:islam_religion
+				liege = { has_title = title:d_sunni }
+				title:d_sunni = {
+					has_variable = dar_al_islam
+				}
+			}
+			liege = {
+				NOT = {
+					has_title = title:d_sunni
+				}
+			}
 		}
 	}
 
@@ -99,10 +123,17 @@
 		common_can_character_create_trigger = {
 			FACTION_TARGET = scope:target
 		}
-		
+
 		liege = {
 			is_independent_ruler = yes
 			NOT = { government_has_flag = government_is_theocracy }
+			custom_tooltip = {
+				text = nation_fracturing_faction.can_character_create_ui.blocked_by_struggle
+				# We could use a parameter but this is just infinitely more performant.
+				NOT = {
+					any_held_title = { has_variable = struggle_block_dissolution_faction }
+				}
+			}
 			OR = {
 				has_realm_law = crown_authority_0
 				has_realm_law = tribal_authority_0
@@ -114,7 +145,7 @@
 				# has_realm_law = stateless_authority_0
 			}
 		}
-		
+
 		# Only powerfull vassals can create such factions and they need to have either another culture or faith
 		OR = {
 			is_powerful_vassal = yes
@@ -123,6 +154,21 @@
 				NOT = { culture = liege.culture }
 			}
 			is_ai = no
+		}
+
+		trigger_if = {
+			limit = {
+				faith.religion = religion:islam_religion
+				liege = { has_title = title:d_sunni }
+				title:d_sunni = {
+					has_variable = dar_al_islam
+				}
+			}
+			liege = {
+				NOT = {
+					has_title = title:d_sunni
+				}
+			}
 		}
 	}
 
@@ -160,6 +206,21 @@
 		common_can_character_join_trigger = {
 			FACTION_TARGET = scope:faction.faction_target
 		}
+
+		trigger_if = {
+			limit = {
+				faith.religion = religion:islam_religion
+				liege = { has_title = title:d_sunni }
+				title:d_sunni = {
+					has_variable = dar_al_islam
+				}
+			}
+			liege = {
+				NOT = {
+					has_title = title:d_sunni
+				}
+			}
+		}
 	}
 
 	ai_join_score = {
@@ -189,6 +250,12 @@
 
 		nation_fracturing_faction_modifiers = {
 			FACTION_TARGET = scope:faction.faction_target
+		}
+
+		modifier = { # CE1 Divine Mandate perk
+			desc = "FACTION_REASON_LEGITIMACY_LEGACY_4"
+			liege.dynasty = { has_dynasty_perk = ce1_legitimacy_legacy_4 }
+			add = -35
 		}
 	}
 
@@ -230,8 +297,8 @@
 	is_county_valid = {
 		holder = scope:faction.faction_target
 		OR = {
-			NOT = { culture = scope:faction.faction_target.culture } 
-			NOT = { faith = scope:faction.faction_target.faith } 
+			NOT = { culture = scope:faction.faction_target.culture }
+			NOT = { faith = scope:faction.faction_target.faith }
 		}
 	}
 

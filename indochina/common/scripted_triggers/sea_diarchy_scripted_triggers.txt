@@ -1,0 +1,49 @@
+﻿
+### Overwrite Vanilla ### 
+
+diarch_swing_scales_valid_shared_hof_trigger = {
+	# You must share a HoF to be able to petition one.
+	custom_tooltip = {
+		text = swing_scales_currency_interaction.tt.no_shared_hof
+		exists = scope:actor.faith.religious_head
+		exists = scope:recipient.faith.religious_head
+		scope:actor.faith.religious_head = scope:recipient.faith.religious_head
+	}
+
+	# And opinions've gotta line up.
+	trigger_if = {
+		limit = { exists = scope:actor.faith.religious_head }
+		# They must like you.
+		custom_tooltip = {
+			text = swing_scales_currency_interaction.tt.hof_needs_to_like_you_more
+			scope:actor.faith.religious_head = {
+				opinion = {
+					target = scope:actor
+					value >= high_positive_opinion
+				}
+			}
+		}
+		# And not like scope:recipient too much.
+		custom_tooltip = {
+			text = swing_scales_currency_interaction.tt.hof_needs_to_like_them_less
+			scope:actor.faith.religious_head = {
+				opinion = {
+					target = scope:recipient
+					value <= medium_positive_opinion
+				}
+			}
+		}
+		# Plus scope:recipient can't have anything over them.
+		custom_tooltip = {
+			text = swing_scales_currency_interaction.tt.hof_refuses_to_cross_recipient
+			NOT = {
+				scope:recipient = { has_strong_hook = scope:actor.faith.religious_head }
+			}
+		}
+	}
+
+	# Japanese regentee should always be HOF so just disable this
+	scope:actor = {
+		NOT = { has_diarchy_active_parameter = diarchy_type_is_japanese_regency }
+	}
+}

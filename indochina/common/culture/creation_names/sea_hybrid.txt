@@ -4,12 +4,22 @@ dambro = { # Dambro - Mon-Malay Hybrid; Hypothetical
 	trigger = {
 		OR = {
 			AND = {
-				scope:culture = { has_cultural_pillar = heritage_mon }
+				scope:culture = {
+					OR = {
+						this = culture:mon
+						any_parent_culture_or_above = { this = culture:mon }
+					}
+				}
 				scope:other_culture = { has_cultural_pillar = heritage_malayic }
 			}
 			AND = {
 				scope:culture = { has_cultural_pillar = heritage_malayic }
-				scope:other_culture = { has_cultural_pillar = heritage_mon }
+				scope:other_culture = {
+					OR = {
+						this = culture:mon
+						any_parent_culture_or_above = { this = culture:mon }
+					}
+				}
 			}
 		}
 	}
@@ -124,13 +134,19 @@ siamese_hybrid = { # Siamese - Tai-Mon/Lavo Hybrid; in Ayutthaya OTL
 		OR = {
 			AND = {
 				scope:culture = { has_cultural_pillar = heritage_tai }
-				OR = {
-					scope:other_culture = { has_cultural_pillar = heritage_mon }
+				scope:other_culture = {
+					OR = {
+						this = culture:mon
+						any_parent_culture_or_above = { this = culture:mon }
+					}
 				}
 			}
 			AND = {
-				OR = {
-					scope:culture = { has_cultural_pillar = heritage_mon }
+				scope:culture = {
+					OR = {
+						this = culture:mon
+						any_parent_culture_or_above = { this = culture:mon }
+					}
 				}
 				scope:other_culture = { has_cultural_pillar = heritage_tai }
 			}
@@ -144,13 +160,19 @@ khomhybrid = { # Khom - Tai-Khmer Hybrid; in Late Lavo period
 		OR = {
 			AND = {
 				scope:culture = { has_cultural_pillar = heritage_tai }
-				OR = {
-					scope:other_culture = { has_cultural_pillar = heritage_khmer }
+				scope:other_culture = {
+					OR = {
+						this = culture:khmer
+						any_parent_culture_or_above = { this = culture:khmer }
+					}
 				}
 			}
 			AND = {
-				OR = {
-					scope:culture = { has_cultural_pillar = heritage_khmer }
+				scope:other_culture = {
+					OR = {
+						this = culture:khmer
+						any_parent_culture_or_above = { this = culture:khmer }
+					}
 				}
 				scope:other_culture = { has_cultural_pillar = heritage_tai }
 			}
@@ -409,28 +431,22 @@ haripunchian = { # Haripunchian - Mon-Palaungic Speaker Hybrid; in Haripunchai O
 	trigger = {
 		OR = {
 			AND = {
-				scope:culture = { has_cultural_pillar = heritage_mon }
+				scope:culture = {
+					OR = {
+						this = culture:mon
+						any_parent_culture_or_above = { this = culture:mon }
+					}
+				}
 				scope:other_culture = { has_cultural_pillar = language_palaungic }
 			}
 			AND = {
 				scope:culture = { has_cultural_pillar = language_palaungic }
-				scope:other_culture = { has_cultural_pillar = heritage_mon }
-			}
-		}
-	}
-	hybrid = yes
-}
-
-lavo = { # Lavo - Mon-Khmer Hybrid; in Lavapura during 1000s
-	trigger = {
-		OR = {
-			AND = {
-				scope:culture = { has_cultural_pillar = heritage_mon }
-				scope:other_culture = { has_cultural_pillar = heritage_khmer }
-			}
-			AND = {
-				scope:culture = { has_cultural_pillar = heritage_khmer }
-				scope:other_culture = { has_cultural_pillar = heritage_mon }
+				scope:other_culture = {
+					OR = {
+						this = culture:mon
+						any_parent_culture_or_above = { this = culture:mon }
+					}
+				}
 			}
 		}
 	}
@@ -442,11 +458,11 @@ dao_viet = { # Dao Viet - Mienic-Viet hybrid
 		OR = {
 			AND = {
 				scope:culture = { has_cultural_pillar = heritage_vietic }
-				scope:other_culture = { has_cultural_pillar = language_mien }
+				scope:other_culture = { has_cultural_pillar = heritage_mien }
 			}
 			AND = {
-				scope:culture = { has_cultural_pillar = heritage_khmer }
-				scope:other_culture = { has_cultural_pillar = language_mien }
+				scope:culture = { has_cultural_pillar = heritage_mien }
+				scope:other_culture = { has_cultural_pillar = heritage_vietic }
 			}
 		}
 	}
@@ -458,11 +474,21 @@ mien_viet = { # Mien Viet - Khmer-Viet hybrid
 		OR = {
 			AND = {
 				scope:culture = { has_cultural_pillar = heritage_vietic }
-				scope:other_culture = { has_cultural_pillar = heritage_khmer }
+				scope:other_culture = {
+					OR = {
+						this = culture:khmer
+						any_parent_culture_or_above = { this = culture:khmer }
+					}
+				}
 			}
 			AND = {
-				scope:culture = { has_cultural_pillar = heritage_khmer }
-				scope:other_culture = { has_cultural_pillar = heritage_khmer }
+				scope:culture = {
+					OR = {
+						this = culture:khmer
+						any_parent_culture_or_above = { this = culture:khmer }
+					}
+				}
+				scope:other_culture = { has_cultural_pillar = heritage_vietic }
 			}
 		}
 	}
@@ -505,12 +531,22 @@ hanthawadian = { # Hanthawadian - Mon-Burmese Speaker Hybrid
 	trigger = {
 		OR = {
 			AND = {
-				scope:culture = { has_cultural_pillar = heritage_mon }
+				scope:culture = {
+					OR = {
+						this = culture:mon
+						any_parent_culture_or_above = { this = culture:mon }
+					}
+				}
 				scope:other_culture = { has_cultural_pillar = language_burmese }
 			}
 			AND = {
 				scope:culture = { has_cultural_pillar = language_burmese }
-				scope:other_culture = { has_cultural_pillar = heritage_mon }
+				scope:other_culture = {
+					OR = {
+						this = culture:mon
+						any_parent_culture_or_above = { this = culture:mon }
+					}
+				}
 			}
 		}
 	}
@@ -739,6 +775,91 @@ chinese_vikings = {
 			AND = {
 				scope:culture = { has_cultural_pillar = heritage_north_germanic }
 				scope:other_culture = { has_cultural_pillar = heritage_iberian }
+			}
+		}
+	}
+	hybrid = yes
+}
+
+koke_nuur = {
+	trigger = {
+		OR = {
+			AND = {
+				scope:culture = culture:tuyuhun
+				scope:other_culture = { has_cultural_pillar = heritage_tibetan }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_tibetan }
+				scope:other_culture = culture:tuyuhun
+			}
+		}
+		any_sub_realm_county = {
+			OR = {
+				culture = scope:culture
+				culture = scope:other_culture
+			}
+		}
+	}
+	hybrid = yes
+}
+
+# Overwriting Vanilla
+turko_iranian = {
+	trigger = {
+		always = no
+	}
+	hybrid = yes
+}
+turko_afghan = {
+	trigger = {
+		always = no
+	}
+	hybrid = yes
+}
+
+khalaj = {
+	trigger = {
+		OR = {
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_on_oq }
+				scope:other_culture = culture:afghan
+			}
+			AND = {
+				scope:culture = culture:afghan
+				scope:other_culture = { has_cultural_pillar = heritage_on_oq }
+			}
+		}
+	}
+	hybrid = yes
+}
+
+turkmen = { # "Turkish"
+	trigger = {
+		OR = {
+			AND = {
+				# Canonically, Oghuz
+				scope:culture = { has_cultural_pillar = heritage_on_oq }
+				scope:other_culture = { has_cultural_pillar = heritage_iranian }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_iranian }
+				scope:other_culture = { has_cultural_pillar = heritage_on_oq }
+			}
+		}
+	}
+	hybrid = yes
+}
+
+tajik_hybrid = {
+	trigger = {
+		OR = {
+			AND = {
+				scope:culture = culture:bedouin
+				scope:other_culture = { has_cultural_pillar = heritage_iranian }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_iranian }
+				scope:other_culture = culture:bedouin
 			}
 		}
 	}

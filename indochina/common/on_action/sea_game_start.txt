@@ -4,19 +4,54 @@ on_game_start = {
     on_actions = {
         # holy_site_buildings_on_game_start
         # holy_site_descriptions_on_game_start
-        add_right_to_rule_doctrines_on_game_start
-        add_disloyal_subjects_tradition_on_game_start
         assign_nanzhao_state
         acculturate_steppelads
         holy_site_fix
         lock_indo_greek
         EEE_sea_setup_on_actions
+        fix_government_types
 
         # Struggles
         iberian_struggle_on_game_start
         # indian_struggle_on_game_start
         # tibetan_struggle_on_game_start
         # chinese_struggle_on_game_start
+    }
+}
+
+fix_government_types = {
+    effect = {
+        title:k_qocho.holder = {
+            if = {
+                limit = { has_government = clan_government }
+                change_government = feudal_government
+
+                every_vassal_or_below = {
+                    limit = {
+                        highest_held_title_tier >= tier_county
+                        has_government = clan_government
+                    }
+                    change_government = feudal_government
+                }
+            }
+        }
+        title:k_zhetysu.holder = {
+            if = {
+                limit = {
+                    game_start_date = 1066.9.15
+                    has_government = feudal_government
+                }
+                change_government = clan_government
+
+                every_vassal_or_below = {
+                    limit = {
+                        highest_held_title_tier >= tier_county
+                        has_government = feudal_government
+                    }
+                    change_government = clan_government
+                }
+            }
+        }
     }
 }
 
@@ -153,111 +188,6 @@ sea_set_cultural_acceptance = {
                 target = culture:greek
                 value = 50
                 desc = cultural_acceptance_historical_relations
-            }
-        }
-    }
-}
-
-######
-
-add_right_to_rule_doctrines_on_game_start = {
-    effect = {
-        every_religion_global = {
-            ## Christian religions except insular get Divine Right
-            if = {
-                limit = { this = religion:christianity_religion }
-                every_faith = {
-                    limit = {
-                        NOR = {
-                            has_doctrine = doctrine_right_to_rule_material
-                            has_doctrine = doctrine_right_to_rule_divine
-                        }
-                    }
-
-                    if = {
-                        limit = { this = faith:insular_celtic }
-                        add_doctrine = doctrine_right_to_rule_material
-                    }
-                    else = {
-                        add_doctrine = doctrine_right_to_rule_divine
-                    }
-                }
-            }
-            ## Judaism and Zoroastrianism get Divine Right
-            else_if = {
-                limit = {
-                    OR = {
-                        this = religion:judaism_religion
-                        this = religion:zoroastrianism_religion
-                    }
-                }
-                every_faith = {
-                    limit = {
-                        NOR = {
-                            has_doctrine = doctrine_right_to_rule_material
-                            has_doctrine = doctrine_right_to_rule_divine
-                        }
-                    }
-
-                    add_doctrine = doctrine_right_to_rule_divine
-                }
-            }
-            else_if = {
-                limit = {
-                    OR = {
-                        this = religion:taoism_religion
-                    }
-                }
-                every_faith = {
-                    limit = {
-                        NOR = {
-                            has_doctrine = doctrine_right_to_rule_material
-                            has_doctrine = doctrine_right_to_rule_divine
-                        }
-                    }
-
-                    add_doctrine = doctrine_right_to_rule_divine
-                }
-            }
-            else_if = {
-                limit = {
-                    OR = {
-                        this = religion:hinduism_religion
-                        this = religion:jainism_religion
-                        this = religion:buddhism_religion
-                    }
-                }
-                every_faith = {
-                    limit = {
-                        NOR = {
-                            has_doctrine = doctrine_right_to_rule_material
-                            has_doctrine = doctrine_right_to_rule_divine
-                            has_doctrine = doctrine_right_to_rule_rajadharma
-                        }
-                    }
-
-                    if = {
-                        limit = { this = faith:mahayana }
-                        add_doctrine = doctrine_right_to_rule_divine
-                    }
-                    else = {
-                        add_doctrine = doctrine_right_to_rule_rajadharma
-                    }
-                }
-            }
-            ## Everyone else gets Material Right
-            else = {
-                every_faith = {
-                    limit = {
-                        NOT = { has_doctrine = unreformed_faith_doctrine }
-                        NOR = {
-                            has_doctrine = doctrine_right_to_rule_material
-                            has_doctrine = doctrine_right_to_rule_divine
-                        }
-                    }
-
-                    add_doctrine = doctrine_right_to_rule_material
-                }
             }
         }
     }
@@ -402,31 +332,6 @@ acculturate_steppelads = {
 
 #####
 
-add_disloyal_subjects_tradition_on_game_start = {
-    effect = {
-        culture:zhangzhung = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
-        culture:sumpa = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
-        culture:bodpa = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
-        culture:tsangpa = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
-        culture:lhomon = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
-        culture:tani = {
-            add_culture_tradition = tradition_disloyal_subjects
-        }
-    }
-}
-
-#####
-
 assign_nanzhao_state = {
     effect = {
         if = {
@@ -476,21 +381,39 @@ sea_historical_artifacts = {
                 has_dlc_feature = royal_court
                 exists = title:e_kambujadesa.holder
             }
-            title:e_kambujadesa.holder = {
-                create_artifact_emerald_buddha = { OWNER = this }
+
+            if = { # Emerald Buddha
+                limit = { current_date >= 1432.1.1 }
+                title:e_kambujadesa.holder = {
+                    create_artifact_emerald_buddha = { OWNER = this }
+                }
             }
 
-            if = {
+            if = { # Laguna Copperplate
                 limit = { current_date >= 900.1.1 }
                 title:c_tondo.holder = {
                     create_artifact_laguna_copperplate = { OWNER = this }
                 }
             }
 
-            if = {
+            if = { # Heirloom Seal of the Realm
                 limit = { current_date <= 907.1.1 }
                 title:e_celestia_china.holder = {
                     create_artifact_heirloom_seal = { OWNER = this }
+                }
+            }
+
+            if = { # Kavirajamarga - The Royal Path for Poets written by Amoghavarsha
+                limit = { current_date < 1000.1.1 } #Only generated for early start
+                title:k_karnata.holder = {
+                    create_artifact_kavirajamarga_effect = { OWNER = this }
+                }
+            }
+
+            if = { # Wujing Zongyao / 武經總要
+                limit = { current_date > 1044.1.1 }
+                title:e_celestia_china.holder = {
+                    create_artifact_wujing_zongyao_effect = { OWNER = this }
                 }
             }
         }
@@ -830,12 +753,12 @@ assign_varnas = {
 set_court_languages = {
     effect = {
         if = {
-            limit = { exists = title:k_nanzhao.holder }
-            title:k_nanzhao.holder = { set_court_language = language_chinese }
+            limit = { exists = title:e_nanzhao.holder }
+            title:e_nanzhao.holder = { set_court_language = language_chinese }
         }
         if = {
-            limit = { exists = title:e_dai_viet.holder }
-            title:e_dai_viet.holder = { set_court_language = language_chinese }
+            limit = { exists = title:k_nanzhao.holder }
+            title:k_nanzhao.holder = { set_court_language = language_chinese }
         }
         if = {
             limit = { exists = title:k_annam.holder }

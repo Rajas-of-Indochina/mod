@@ -88,7 +88,7 @@ scripted_effect do_islamic_settlers_effect = {
 			}
 			random = {
 				chance = {
-					base = 15
+					value = 15
 					multiply = {
 						value = development_level
 						multiply = {
@@ -218,6 +218,9 @@ maritime_southeast_asia.0001 = {
 	immediate = {
 		play_music_cue = "mx_cue_epic_sacral_moment"
 		unite_nusantara_decision_effect = yes
+		legend_seed_great_deed_title_effect = {
+			TITLE = title:e_nusantara
+		}
 	}
 
 	option = {
@@ -241,6 +244,9 @@ maritime_southeast_asia.0002 = {
 	immediate = {
 		play_music_cue = "mx_cue_positive_effect"
 		unite_the_javanese_thrones_decision_effects = yes
+		legend_seed_great_deed_title_effect = {
+			TITLE = title:k_jawa
+		}
 	}
 
 	option = {
@@ -267,6 +273,9 @@ maritime_southeast_asia.0003 = {
 		reform_nanyue_decision_effect = yes
 		add_prestige = massive_prestige_value
 		add_prestige_level = 2
+		legend_seed_great_deed_title_effect = {
+			TITLE = title:e_nanyue
+		}
 	}
 
 	option = {
@@ -454,6 +463,9 @@ maritime_southeast_asia.0007 = {
 	immediate = {
 		play_music_cue = "mx_cue_positive_effect"
 		form_majapahit_empire_effect = yes
+		legend_seed_great_deed_title_effect = {
+			TITLE = title:e_majapahit
+		}
 		#show_as_tooltip = { form_majapahit_empire_effect = yes }
 	}
 
@@ -483,7 +495,7 @@ maritime_southeast_asia.0008 = {
 		gui = "sea_select_faith_widget"
 		container = "custom_widgets_container"
 	}
-	
+
 	option = {
 		name = maritime_southeast_asia.0008.nevermind
 		if = {
@@ -529,6 +541,7 @@ maritime_southeast_asia.0009 = {
 	immediate = {
 		remove_variable = selected_faith
 		fetch_sultanate_options = yes
+		malayan_sultanate_effect = yes
 	}
 	widget = {
 		gui = "sea_select_faith_widget"
@@ -544,16 +557,14 @@ maritime_southeast_asia.0009 = {
 			if = {
 				limit = {
 					OR = {
-						has_government = clan_government
 						has_government = feudal_government
 						has_government = theocracy_government
 						has_government = republic_government
 						has_government = autocratic_government
-						has_government = city_state_government
 						has_government = mandala_government
 					}
 				}
-				change_government = muslim_government
+				change_government = clan_government
 			}
 			else_if = {
 				limit = {

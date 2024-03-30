@@ -10,18 +10,119 @@
 
 transgender = {
 	potential = {
-		# must be one of the cultures where this is an extant concept
+		OR = {
+			# Must be one of the cultures where this is an extant concept
+			culture = { has_cultural_pillar = heritage_indo_aryan }
+			culture = { has_cultural_pillar = heritage_dravidian }
+			culture = { has_cultural_pillar = heritage_sulawesi }
+			culture = { has_cultural_pillar = heritage_mon_khmer }
+			culture = { has_cultural_pillar = heritage_tai }
+			culture = { has_cultural_pillar = heritage_malayic }
+			culture = { has_cultural_pillar = heritage_chamic }
+			culture = { has_cultural_pillar = heritage_dayak }
+			culture = { has_cultural_pillar = heritage_filipino }
+			culture = { has_cultural_pillar = heritage_lumad }
+			culture = { has_cultural_pillar = heritage_burman }
+
+			# Or else is considered virtuous by their faith
+			faith = { trait_is_virtue = transgender }
+		}
 	}
 
 	shown_in_ruler_designer = yes
 
-	# random_creation = 0.3
+	random_creation = 0.5
 
-	# kathoey
-	# bakla
-	# bayot
-	# manang bali
-	# ???
+	# Asog (Visayan)
+	# Bayog (Just use this for all Filipinos)
+	# Toey (Tai)
+	# Hijra (Indian)
+	# Bissu for Bugis
+	# Walaki for Javanese/Malay
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+				}
+				desc = trait_transgender_hijra
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = heritage_dravidian }
+				}
+				desc = trait_transgender_hijra
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = heritage_sulawesi }
+				}
+				desc = trait_transgender_bissu
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = heritage_mon_khmer }
+				}
+				desc = trait_transgender_kathoey
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = heritage_tai }
+				}
+				desc = trait_transgender_toey
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = heritage_filipino }
+				}
+				desc = trait_transgender_bayog
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = heritage_lumad }
+				}
+				desc = trait_transgender_bayog
+			}
+			triggered_desc = {
+				# Placeholder; Malayic, Dayak, Chamic, Javanese and Sunda
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = heritage_malayic }
+				}
+				desc = trait_transgender_walaki
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = heritage_dayak }
+				}
+				desc = trait_transgender_walaki
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = heritage_chamic }
+				}
+				desc = trait_transgender_walaki
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = heritage_burman }
+				}
+				desc = trait_transgender_apwint
+			}
+			desc = trait_transgender_default
+		}
+	}
 
 	desc = {
 		first_valid = {
@@ -112,17 +213,32 @@ lifestyle_headhunter = {
 	same_opinion = 10
 	dread_baseline_add = 15
 	dread_decay_mult = -0.1
+	culture_modifier = {
+		parameter = headhunter_respected
+		same_culture_opinion = 2
+		county_opinion_add = 2
+	}
 
 	track = {
 		50 = {
 			prowess = 2
 			dread_baseline_add = 15
 			dread_decay_mult = -0.1
+			culture_modifier = {
+				parameter = headhunter_respected
+				same_culture_opinion = 3
+				county_opinion_add = 3
+			}
 		}
 		100 = {
 			prowess = 4
 			dread_baseline_add = 30
 			dread_decay_mult = -0.2
+			culture_modifier = {
+				parameter = headhunter_respected
+				same_culture_opinion = 5
+				county_opinion_add = 5
+			}
 		}
 	}
 	ruler_designer_cost = 20
@@ -299,6 +415,80 @@ nart = {
 	inherit_from_real_father = no
 }
 
+thamade = {
+	category = fame
+	learning = 2
+	diplomacy = 2
+	same_culture_opinion = 10
+	khabzism_religion_opinion = 10
+	monthly_piety = 0.1
+
+	ruler_designer_cost = 40
+
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = this
+					OR = {
+						culture = { has_cultural_pillar = language_circassian }
+						culture = { has_cultural_pillar = language_ubykh }
+					}
+				}
+				desc = trait_thamade
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { this = culture:abasgi }
+				}
+				desc = trait_thamade_thamada
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { has_cultural_pillar = language_nakh }
+				}
+				desc = trait_thamade_thamd
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { this = culture:alan }
+				}
+				desc = trait_thamade_fadagd
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { this = culture:tawlu }
+				}
+				desc = trait_thamade_tamata
+			}
+			triggered_desc = {
+				trigger = {
+					exists = this
+					culture = { this = culture:abkhaz }
+				}
+				desc = trait_thamade_atahmada
+			}
+		}
+		desc = trait_thamade_aksakal
+	}
+
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { NOT = { exists = this } }
+				desc = trait_thamade_desc
+			}
+			desc = trait_thamade_character_desc
+		}
+	}
+	icon = { desc= thamade.dds }
+}
+
 brahmin = {
 	same_faith_opinion = 10
 	monthly_learning_lifestyle_xp_gain_mult = 0.1
@@ -395,48 +585,76 @@ shudra = {
 	}
 }
 
-# Mostly here to shush errors for RICE integration
+# error suppression or something
 
 RICE_silk_road_merchant = {
-	
+
 	category = fame
 
-	diplomacy = 1
-	stewardship = 1
-	monthly_income = 0.5
-	diplomatic_range_mult = 0.15
-	character_travel_speed = 5
-	character_travel_safety = 5
+	monthly_income = 0.05
+	diplomatic_range_mult = 0.05
 	learn_language_scheme_power_mult = 0.1
-	
+	monthly_prestige = 0.02
 
 	#ignore_negative_culture_opinion = yes
 	#ignore_negative_opinion_of_culture = yes
 
 	#same_opinion = 5
 
-	# track = {
-	# 	50 = {
-	# 		diplomacy = 1
-	# 		monthly_income = 0.15
-	# 		character_travel_spee
-	# 		diplomatic_range_mult = 0.05
-	# 		character_travel_speed = 5
-	# 		character_travel_safety = 5
-	# 		learn_language_scheme_power_mult = 0.05
-	# 	}
-	# 	100 = {
-	# 		diplomacy = 1
-	# 		stweardship = 1
-	# 		monthly_income = 0.15
-	# 		diplomatic_range_mult = 0.05
-	# 		character_travel_speed = 5
-	# 		character_travel_safety = 5
-	# 		learn_language_scheme_power_mult = 0.05
-	# 	}
-	# }
-	
+	track = {
+		50 = {
+			diplomacy = 1
+			stewardship = 1
+			monthly_income = 0.1
+			diplomatic_range_mult = 0.05
+			character_travel_speed = 5
+			character_travel_safety = 5
+			learn_language_scheme_power_mult = 0.05
+			monthly_prestige = 0.04
+		}
+		100 = {
+			diplomacy = 1
+			stewardship = 1
+			monthly_income = 0.1
+			diplomatic_range_mult = 0.05
+			character_travel_speed = 5
+			character_travel_safety = 5
+			learn_language_scheme_power_mult = 0.05
+			monthly_prestige = 0.04
+		}
+	}
+
 	ruler_designer_cost = 100
+
+	# Loc
+	name = {
+		first_valid = {
+			#Legendary Merchant
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = {
+						trait = RICE_silk_road_merchant
+						value >= 100
+					}
+				}
+				desc = trait_RICE_silk_road_merchant_3
+			}
+			#Renowned Merchant
+			triggered_desc = {
+				trigger = {
+					exists = this
+					has_trait_xp = {
+						trait = RICE_silk_road_merchant
+						value >= 50
+					}
+				}
+				desc = trait_RICE_silk_road_merchant_2
+			}
+			#Eager Reveler
+			desc = trait_RICE_silk_road_merchant
+		}
+	}
 
 	desc = {
 		first_valid = {
@@ -460,7 +678,7 @@ RICE_silk_road_merchant = {
 
 }
 
-RICE_mahavihara_trait = {	
+RICE_mahavihara_trait = {
 
 	opposites = {
 		RICE_abhayagiri_trait
@@ -471,10 +689,10 @@ RICE_mahavihara_trait = {
 	icon = RICE_mahavihara_trait.dds
 
 	# Modifiers
-	learning = 1	
+	learning = 1
 	monthly_lifestyle_xp_gain_mult = 0.03
 	monthly_piety = 0.1
-	
+
 	same_opinion = 10
 	opposite_opinion = -10
 
@@ -494,11 +712,11 @@ RICE_mahavihara_trait = {
 	}
 
 	monthly_track_xp_degradation = { min = 0 change = 0.1 }
-	
+
 	ruler_designer_cost = 15
-	
+
 	#shown_in_ruler_designer = no
-	
+
 	# AI Values
 
 	# Loc
@@ -517,7 +735,7 @@ RICE_mahavihara_trait = {
 			}
 			#RICE_mahavihara_trait
 			triggered_desc = {
-				trigger = { 
+				trigger = {
 					exists = this
 					has_trait_xp = {
 						trait = RICE_mahavihara_trait
@@ -536,13 +754,13 @@ RICE_mahavihara_trait = {
 		first_valid = {
 			#The trait can never go higher than the first level if it's not assigned to a character
 			triggered_desc = {
-				trigger = { 
-					NOT = { exists = this } 
+				trigger = {
+					NOT = { exists = this }
 				}
 				desc = trait_RICE_mahavihara_trait_1_desc
 			}
 			triggered_desc = {
-				trigger = { 
+				trigger = {
 					has_trait_xp = {
 						trait = RICE_mahavihara_trait
 						value >= 80
@@ -551,7 +769,7 @@ RICE_mahavihara_trait = {
 				desc = trait_RICE_mahavihara_trait_3_character_desc
 			}
 			triggered_desc = {
-				trigger = { 
+				trigger = {
 					has_trait_xp = {
 						trait = RICE_mahavihara_trait
 						value >= 40
@@ -569,10 +787,7 @@ RICE_mahavihara_trait = {
 
 }
 
-
-
-
-RICE_abhayagiri_trait = {	
+RICE_abhayagiri_trait = {
 
 	opposites = {
 		RICE_mahavihara_trait
@@ -583,13 +798,13 @@ RICE_abhayagiri_trait = {
 	icon = RICE_abhayagiri_trait.dds
 
 	# Modifiers
-	diplomacy = 1	
+	diplomacy = 1
 	development_growth_factor = 0.03
 	monthly_piety = 0.1
-	
+
 	same_opinion = 10
 	opposite_opinion = -10
-	
+
 	track = {
 		40 = {
 			diplomacy = 1
@@ -606,11 +821,11 @@ RICE_abhayagiri_trait = {
 	}
 
 	monthly_track_xp_degradation = { min = 0 change = 0.1 }
-	
+
 	ruler_designer_cost = 15
-	
+
 	#shown_in_ruler_designer = no
-	
+
 	# AI Values
 
 	# Loc
@@ -629,7 +844,7 @@ RICE_abhayagiri_trait = {
 			}
 			#RICE_abhayagiri_trait
 			triggered_desc = {
-				trigger = { 
+				trigger = {
 					exists = this
 					has_trait_xp = {
 						trait = RICE_abhayagiri_trait
@@ -648,13 +863,13 @@ RICE_abhayagiri_trait = {
 		first_valid = {
 			#The trait can never go higher than the first level if it's not assigned to a character
 			triggered_desc = {
-				trigger = { 
-					NOT = { exists = this } 
+				trigger = {
+					NOT = { exists = this }
 				}
 				desc = trait_RICE_abhayagiri_trait_1_desc
 			}
 			triggered_desc = {
-				trigger = { 
+				trigger = {
 					has_trait_xp = {
 						trait = RICE_abhayagiri_trait
 						value >= 80
@@ -663,7 +878,7 @@ RICE_abhayagiri_trait = {
 				desc = trait_RICE_abhayagiri_trait_3_character_desc
 			}
 			triggered_desc = {
-				trigger = { 
+				trigger = {
 					has_trait_xp = {
 						trait = RICE_abhayagiri_trait
 						value >= 40
@@ -682,7 +897,7 @@ RICE_abhayagiri_trait = {
 }
 
 
-RICE_jetavana_trait = {	
+RICE_jetavana_trait = {
 
 	opposites = {
 		RICE_mahavihara_trait
@@ -693,13 +908,13 @@ RICE_jetavana_trait = {
 	icon = RICE_jetavana_trait.dds
 
 	# Modifiers
-	stewardship = 1	
+	stewardship = 1
 	build_gold_cost = -0.03
 	monthly_piety = 0.1
-	
+
 	same_opinion = 10
 	opposite_opinion = -10
-	
+
 	track = {
 		40 = {
 			stewardship = 1
@@ -716,11 +931,11 @@ RICE_jetavana_trait = {
 	}
 
 	monthly_track_xp_degradation = { min = 0 change = 0.1 }
-	
+
 	ruler_designer_cost = 15
-	
+
 	#shown_in_ruler_designer = no
-	
+
 	# AI Values
 
 	# Loc
@@ -739,7 +954,7 @@ RICE_jetavana_trait = {
 			}
 			#RICE_jetavana_trait
 			triggered_desc = {
-				trigger = { 
+				trigger = {
 					exists = this
 					has_trait_xp = {
 						trait = RICE_jetavana_trait
@@ -758,13 +973,13 @@ RICE_jetavana_trait = {
 		first_valid = {
 			#The trait can never go higher than the first level if it's not assigned to a character
 			triggered_desc = {
-				trigger = { 
-					NOT = { exists = this } 
+				trigger = {
+					NOT = { exists = this }
 				}
 				desc = trait_RICE_jetavana_trait_1_desc
 			}
 			triggered_desc = {
-				trigger = { 
+				trigger = {
 					has_trait_xp = {
 						trait = RICE_jetavana_trait
 						value >= 80
@@ -773,7 +988,7 @@ RICE_jetavana_trait = {
 				desc = trait_RICE_jetavana_trait_3_character_desc
 			}
 			triggered_desc = {
-				trigger = { 
+				trigger = {
 					has_trait_xp = {
 						trait = RICE_jetavana_trait
 						value >= 40
