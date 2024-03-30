@@ -268,6 +268,14 @@ task_promote_culture = {
 			}
 		}
 
+		# factor in minority growth curve effect
+		multiply = {
+			value = scope:county.culture_minority_growth_factor
+			max = 1
+			min = 0.1
+			desc = "[minority_growth_factor|E]"
+		}
+
 	}
 
 	potential_county = {
@@ -827,6 +835,26 @@ task_promote_minority = {
 
 		# Because the task needs to complete 3 times with the minority system
 		multiply = 3
+
+		if = {
+			limit = { exists = scope:county.var:faith_to_convert }
+
+			# factor in minority growth curve effect
+			multiply = {
+				value = scope:county.faith.faith_minority_growth_factor
+				min = 0.1
+				desc = "[minority_growth_factor|E]"
+			}
+		}
+		else_if = {
+			limit = { exists = scope:county.var:culture_to_convert }
+			multiply = {
+				value = scope:county.culture_minority_growth_factor
+				max = 1
+				min = 0.1
+				desc = "[minority_growth_factor|E]"
+			}
+		}
 	}
 
 	potential_county = {
