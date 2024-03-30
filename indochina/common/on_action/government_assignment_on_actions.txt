@@ -71,15 +71,9 @@ on_government_assign_start = {
 					}
 					if = {
 						limit = {
-							highest_held_title_tier > tier_county
+							highest_held_title_tier >= tier_county
 						}
 						change_government = imperial_government
-					}
-					else_if = {
-						limit = {
-							highest_held_title_tier = tier_county
-						}
-						change_government = roman_government
 					}
 				}
 			}
@@ -91,48 +85,11 @@ on_government_assign_start = {
 				}
 			}
 			title:e_byzantium.holder = {
-				random_held_title = {
-					limit = {
-						AND = {
-							tier = tier_county
-							NOT = {
-								THIS = PREV.capital_county
-							}
-							NOT = {
-								title_province = {
-									has_holding_type = estate_holding
-								}
-							}
-						}
-					}
-					title_province = {
-						set_holding_type = estate_holding
-					}
-				}
-				random_held_title = {
-					limit = {
-						AND = {
-							tier = tier_county
-							NOT = {
-								THIS = PREV.capital_county
-							}
-							NOT = {
-								title_province = {
-									has_holding_type = estate_holding
-								}
-							}
-						}
-					}
-					title_province = {
-						set_holding_type = estate_holding
-					}
-				}
 				every_vassal_or_below = {
 					limit = {
 						OR = {
 							has_government = feudal_government
 							has_government = imperial_government
-							has_government = roman_government
 						}
 					}
 					if = {
@@ -140,46 +97,6 @@ on_government_assign_start = {
 							highest_held_title_tier > tier_county
 						}
 						change_government = imperial_government
-						random_held_title = {
-							limit = {
-								AND = {
-									tier = tier_county
-									NOT = {
-										THIS = PREV.capital_county
-									}
-									NOT = {
-										title_province = {
-											has_holding_type = estate_holding
-										}
-									}
-								}
-							}
-							title_province = {
-								set_holding_type = estate_holding
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							highest_held_title_tier = tier_county
-						}
-						every_held_title = {
-							limit = {
-								AND = {
-									tier = tier_county
-									NOT = {
-										title_province = {
-											has_holding_type = estate_holding
-										}
-									}
-								}
-							}
-							title_province = {
-								set_holding_type = estate_holding
-							}
-						}
-						change_government = roman_government
-
 					}
 				}
 			}
