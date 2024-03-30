@@ -25,25 +25,42 @@ make_tributary = {
 free_tributary_effect = {
     custom_tooltip = {
         text = free_tributary_effect_tt
-        var:my_suzerain = {
-            if = {
-                limit = {
-                    is_target_in_variable_list = { name = non_permanent_tributaries target = prev }
-                }
-                remove_list_variable = { name = non_permanent_tributaries target = prev }
-            }
-            if = {
-                limit = {
-                    is_target_in_variable_list = { name = permanent_tributaries target = prev }
-                }
-                remove_list_variable = { name = permanent_tributaries target = prev }
-            }
-            remove_list_variable = { name = all_tributaries target = prev }
-            trigger_event = { id = tributaries.4 }
+        every_relation = { type = suzerain
+            remove_relation_tributary = prev
         }
-        remove_variable = my_suzerain
+#        var:my_suzerain = {
+#            if = {
+#                limit = {
+#                    is_target_in_variable_list = { name = non_permanent_tributaries target = prev }
+#                }
+#                remove_list_variable = { name = non_permanent_tributaries target = prev }
+#            }
+#            if = {
+#                limit = {
+#                    is_target_in_variable_list = { name = permanent_tributaries target = prev }
+#                }
+#                remove_list_variable = { name = permanent_tributaries target = prev }
+#            }
+#            remove_list_variable = { name = all_tributaries target = prev }
+#            trigger_event = { id = tributaries.4 }
+#        }
+#        remove_variable = my_suzerain
     }
 }
+
+
+remove_tributaries_from_suzerain_effect = {
+    every_relation = { type = suzerain
+        remove_relation_tributary = prev
+    }
+}
+
+remove_suzerain_from_tributary_effect = {
+    every_relation = { type = tributary
+        remove_relation_suzerain = prev
+    }
+}
+
 
 # Params
 # $SUZERAIN$
@@ -185,7 +202,7 @@ pass_tributary_type_to_heir = {
     }
 }
 
-ruler_offer_tribute_to_recipient_effect = {
+demand_tribute_from_recipient_effect = {
     scope:actor = {
         if = {
             limit = {

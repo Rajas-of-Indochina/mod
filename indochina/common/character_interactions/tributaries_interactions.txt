@@ -613,8 +613,7 @@ call_suzerain_to_war = {
     }
 }
 
-# Demand tribute from recipient
-ruler_offer_tribute_to_recipient = {
+demand_tribute_from_recipient = {
     category = interaction_category_diplomacy
     common_interaction = yes
     use_diplomatic_range = yes
@@ -677,10 +676,8 @@ ruler_offer_tribute_to_recipient = {
                     scope:permanent_trib = yes
                 }
                 custom_tooltip = permanent_trib_recipient_tooltip
-                make_tributary = {
-                    TYPE = tributary_permanent
-                    SUZERAIN = scope:actor
-                    TRIBUTARY = scope:recipient
+                scope:actor = {
+                    set_relation_tributary = scope:recipient
                 }
                 scope:actor = {
                     custom_tooltip = permanent_trib_tooltip
@@ -748,15 +745,15 @@ ruler_offer_tribute_to_recipient = {
     }
 
     ai_accept = { # Based on Offer Vassalization
-        base = -20
-
-        modifier = {
-            add = -20
-            desc = ruler_offer_tribute_to_recipient_interaction_permanent_tributary_tt
-            trigger = {
-                scope:permanent_trib = yes
-            }
-        }
+#        base = -20
+#        modifier = {
+#            add = -20
+#            desc = demand_tribute_from_recipient_interaction_permanent_tributary_tt
+#            trigger = {
+#                scope:permanent_trib = yes
+#            }
+#        }
+        base = -40
 
         #MAIN
         #Heretic/Infidel modifier.
@@ -944,11 +941,11 @@ ruler_offer_tribute_to_recipient = {
     }
 
     send_options_exclusive = yes
-    send_option = {
-        flag = one_time_trib
-        localization = one_time_trib
-        starts_enabled = { always = yes }
-    }
+#    send_option = {
+#        flag = one_time_trib
+#        localization = one_time_trib
+#        starts_enabled = { always = yes }
+#    }
     send_option = {
         flag = permanent_trib
         localization = permanent_trib
@@ -1026,7 +1023,7 @@ free_tributary_interaction = {
 
     on_accept = {
         scope:recipient = {
-            free_tributary_effect = yes
+            remove_tributaries_from_suzerain_effect = yes
             add_truce_both_ways = {
                 character = scope:actor
                 days = 365
@@ -1239,10 +1236,9 @@ independent_tributary_interaction = {
             }
 
             #makes them as a permanent_tributary
-            make_tributary = {
-                TYPE = tributary_permanent
-                SUZERAIN = scope:actor
-                TRIBUTARY = scope:recipient
+            scope:actor = {
+                set_relation_tributary = scope:recipient
+
             }
 
             resolve_title_and_vassal_change = scope:change
