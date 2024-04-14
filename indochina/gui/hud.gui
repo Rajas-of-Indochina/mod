@@ -514,16 +514,6 @@ widget = {
 						}
 					}
 				}
-
-				## Caliph window
-
-				button = {
-					onclick = "[GetVariableSystem.Toggle('caliph_window')]"
-					texture = "gfx/interface/icons/faith/united_islam.dds"
-					visible = "[And(EqualTo_string(GetPlayer.GetFaith.GetReligion.GetNameNoTooltip, Localize('islam_religion')), EqualTo_string(GetPlayer.GetGovernment.GetName, GetGovernment('caliphate_government').GetName))]"
-					size = {45 45}
-					tooltip = "Caliphate Managment"
-				}
 			}
 		}
 
@@ -1369,7 +1359,6 @@ widget = {
 	layer = bottom
 	datacontext = "[GetPlayer]"
 	chariotwindow = {}
-	caliphwindow = {}
 	senatewindow = {}
 	senatewindow_eastern = {}
 
@@ -3039,30 +3028,6 @@ widget = {
 				}
 			}
 
-			flowcontainer = {
-				name = "chinese_hud"
-				parentanchor = vcenter
-				ignoreinvisible = yes
-
-				flowcontainer = {
-					ignoreinvisible = yes
-					visible = "[Not(IsObserver)]"
-
-					button = {
-						name = "oe_hud_widget_china_office"
-						datacontext = "[GetScriptedGui('is_china_government')]"
-						visible = "[And( Not(IsObserver), ScriptedGui.IsValid(GuiScope.SetRoot(GetPlayer.MakeScope).End) )]"
-						# visible = "[Not(IsRightWindowOpen)]"
-						texture = "gfx/interface/icons/china_symbol_frame.dds"
-						onclick = "[GetVariableSystem.Toggle( 'china_office_toggle' )]"
-						onclick = "[ToggleGameViewData('council_window', GetPlayer.GetID)]"
-						onclick = "[AccessCouncilWindow.SetLiegeCouncil]"
-						onclick = "[AccessCouncilWindow.Close]"
-						size = { 60 60 }
-						tooltip = "CHINESE_HUD_TOOLTIP"
-					}
-				}
-			}
 
 		}
 

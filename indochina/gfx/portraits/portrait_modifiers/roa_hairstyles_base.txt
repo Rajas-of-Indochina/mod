@@ -8,6 +8,58 @@ roa_hairstyles = {
 
 	selection_behavior = weighted_random
 
+    #######################
+    ###  Rajas of Asia  ###
+    #######################
+
+    tai_generic = {
+        dna_modifiers = {
+            accessory = {
+                mode = add
+                gene = hairstyles
+                template = tai_hairstyles
+                range = { 0 1 } # For the randomness to work correctly
+            }
+        }
+        weight = {
+            base = 0
+            modifier = {
+                add = 80
+                OR = {
+                    NOT = { exists = this }
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_straight
+                    }
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_straight_thin_beard
+                    }
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_wavy
+                    }
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_curly
+                    }
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_afro
+                    }
+                }
+                portrait_tai_clothing_trigger = yes
+            }
+            modifier = {
+                add = -100
+                exists = this
+                OR = {
+                    is_from_ruler_designer = yes
+                    has_character_flag = has_scripted_appearance
+                }
+            }
+        }
+    }
 
 	#######################
 	###   Han Chinese   ###
