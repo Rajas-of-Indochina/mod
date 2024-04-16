@@ -657,5 +657,121 @@ circassian_decision_unify = {
 
 
 
+circassian_decision_kabardia = {
+	picture = "gfx/interface/illustrations/decisions/kabardia.dds"
+	desc = circassian_decision_kabardia_desc
+	selection_tooltip = circassian_decision_kabardia_tooltip
+	sort_order = 1
+	major = yes
+
+	is_shown = {
+		has_title = title:k_circassia
+		NOT = {	#You can only do it once.
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_kabardia
+		}
+	}
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			culture = {	this = culture:afrabasgi }
+			culture = {	this = culture:abkhaz }
+			culture = {	this = culture:abasgi }
+		}
+	}
+
+	is_valid = {
+		has_title = title:k_circassia
+		completely_controls = title:d_alania
+		completely_controls = title:d_karabulakia
+		has_title = title:d_alania
+		has_title = title:d_karabulakia
+		#title:d_alania = { title_held_years >= 30 }		
+		#title:d_karabulakia = { title_held_years >= 30 }		
+	}
+
+	effect = {
+title:d_alania = { 
+  set_coa = d_kabardia 
+  name = d_kabardia
+  set_color_from_title = title:d_kabardia
+  set_de_jure_liege_title = title:k_circassia
+
+}
+title:d_karabulakia = { 
+  name = d_little_kabardia
+set_de_jure_liege_title = title:k_circassia
+}
+c_osuria  = { 
+		set_culture = culture:circassian
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = small
+		COUNTY = scope:county
+					}
+}
+c_tsatybaerzond  = { 
+		set_culture = culture:circassian
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = small
+		COUNTY = scope:county
+					}
+}
+c_nartsana  = { 
+		set_culture = culture:circassian
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = small
+		COUNTY = scope:county
+					}
+}
+c_malkaria  = { 
+		set_culture = culture:tawlu
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = small
+		COUNTY = scope:county
+					}
+		add_culture_minority_effect = {
+		CULTURE = culture:circassian
+		SIZE = small
+		COUNTY = scope:county
+					}
+}
+c_zhulat  = { 
+		set_culture = culture:circassian
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = small
+		COUNTY = scope:county
+					}
+}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_kabardia
+		}
+	}
+
+	cost = {
+			gold = 400
+			prestige = 500
+	}
+
+	ai_check_interval = 32
+	ai_potential = {}
+	ai_will_do = {
+		base = 100
+	}
+}
+
+
+
 
 
