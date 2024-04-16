@@ -214,11 +214,88 @@ caucasianroa.004 = {
 	}
 }
 
+caucasianroa.005 = {
+	type = character_event
+	title = caucasianroa.005.t
+	desc = caucasianroa.005_desc
 
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
 
+	immediate = {
+		unite_circassia_decision_effect = yes
+	}
 
+	option = {
+		name = caucasianroa.005.a
+		add_trait = thamade
+		add_trait = achebeg
+		add_prestige = 2000
+		add_piety = 500
+		add_martial_skill = 1
+		add_diplomacy_skill = 1
+		add_prestige_level = 2
+		hidden_effect = {
+			save_scope_as = achebeg_progenitor
+			every_child = {
+				even_if_dead = yes
+				trigger_event = hidden_achebeg_event
 
+				every_child = {
+					even_if_dead = yes
+					limit = {
+						OR = {
+							is_grandchild_of = scope:achebeg_progenitor
+							is_great_grandchild_of = scope:achebeg_progenitor
+						}
+					}
+					trigger_event = hidden_achebeg_event
 
+					every_child = {
+						even_if_dead = yes
+						limit = {
+							OR = {
+								is_grandchild_of = scope:achebeg_progenitor
+								is_great_grandchild_of = scope:achebeg_progenitor
+							}
+						}
+						trigger_event = hidden_achebeg_event
+					}
+				}
+			}
+		}
+	}	
+
+}
+
+hidden_achebeg_event = {
+    type = character_event
+    hidden = yes
+
+    trigger = {
+                exists = father
+                father = {
+                    OR = {
+                        has_trait = achebeg
+                        has_trait = achebeg_descendant
+                    }
+                }
+        NOR = {
+            has_trait = achebeg # Just in case the tree was horribly tangled...
+            has_trait = achebeg_descendant
+        }
+    }
+
+    immediate = {
+        add_trait = achebeg_descendant
+        every_child = {
+            trigger_event = hidden_achebeg_event
+        }
+    }
+}
 
 
 

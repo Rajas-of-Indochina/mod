@@ -600,3 +600,62 @@ circassian_decision_dais = {
 
 
 
+
+circassian_decision_unify = {
+	picture = "gfx/interface/illustrations/decisions/unify.dds"
+	desc = circassian_decision_unify_desc
+	selection_tooltip = circassian_decision_unify_tooltip
+	sort_order = 1
+	major = yes
+
+	is_shown = {
+		NOT = {	#You can only do it once.
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_unify
+		}
+	}
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			culture = {	this = culture:afrabasgi }
+			culture = {	this = culture:abkhaz }
+			culture = {	this = culture:abasgi }
+		}
+	}
+
+	is_valid = {
+		completely_controls = title:d_kassogia
+		completely_controls = title:d_papagia
+		completely_controls = title:d_eudusia
+		completely_controls = title:d_khegayk		
+		completely_controls = title:d_zichia	
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = unify_customtooltip
+			trigger_event = {	id = caucasianroa.005 }
+			give_nickname = ROA_nick_the_radiant	
+		}	
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_unify
+		}
+	}
+
+	cost = {
+
+	}
+
+	ai_check_interval = 32
+	ai_potential = {}
+	ai_will_do = {
+		base = 100
+	}
+}
+
+
+
+
+
