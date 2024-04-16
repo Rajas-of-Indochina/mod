@@ -375,21 +375,6 @@ window = {
 			}
 
 			hbox = {
-				name = "county_modifiers_grid"
-				datamodel = "[HoldingView.GetCountyModifiers]"
-
-				item = {
-					modifier_item_icon = {
-						size = { 30 30 }
-
-						blockoverride "icon_data" {
-							using = tooltip_ne
-						}
-					}
-				}
-			}
-
-			hbox = {
 				layoutpolicy_vertical = expanding
 				visible = [County.IsFullyOccupied]
 				datacontext = [County.GetCountyOccupant]
@@ -417,6 +402,36 @@ window = {
 				}
 			}
 		}
+
+		divider = {
+			layoutpolicy_horizontal = expanding
+			visible = "[Not(IsDataModelEmpty(HoldingView.GetCountyModifiers))]"
+		}
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			visible = "[Not(IsDataModelEmpty(HoldingView.GetCountyModifiers))]"
+			text_single = {
+				raw_text = "[county_modifiers|E]:"
+				margin_left = 10
+			}
+			expand = {
+			}
+			hbox = {
+				name = "county_modifiers_grid"
+				datamodel = "[HoldingView.GetCountyModifiers]"
+
+				item = {
+					modifier_item_icon = {
+						size = { 20 20 }
+
+						blockoverride "icon_data" {
+							using = tooltip_ne
+						}
+					}
+				}
+			}
+		}
+
 
 		hbox = {
 			name = "county_info"
@@ -1748,7 +1763,7 @@ window = {
 				button_standard = {
 					datacontext = "[HoldingView.GetGUIHoldingBuilding]"
 					parentanchor = right
-					size = { 145 75 }
+					size = { 145 35 }
 					allow_outside = yes
 					onclick = "[GUIBuildingItem.OnClick]"
 					down = "[GUIBuildingItem.IsHighlighted]"
@@ -1756,16 +1771,16 @@ window = {
 					tooltip = "[GUIBuildingItem.GetTooltip]"
 
 					vbox = {
-						margin = { 4 1 }
+						margin = { 1 1 }
 
 						### Fort Info
 						hbox = {
-							visible = "[HoldingView.GetProvince.HasFort]"
 							layoutpolicy_horizontal = expanding
 							spacing = 10
 							margin_left = 2
 							margin_right = 2
 							margin_top = 2
+							ignoreinvisible = yes
 
 							vbox = {
 								layoutpolicy_horizontal = expanding
@@ -1773,15 +1788,47 @@ window = {
 								spacing = -4
 
 								hbox = {
-									spacing = 2
-
-									icon = {
-										name = "icon_garrison"
-										texture = "gfx/interface/icons/icon_garrison.dds"
-										size = { 30 30 }
+									icon_building = {
+										name = icon_holding_type
+										texture = "[HoldingView.GetHolding.GetType.GetTabIcon]"
+										size = {
+											20 20
+										}
 									}
 
 									text_single = {
+										visible = "[GUIBuildingItem.HasLevel]"
+										text = "[GUIBuildingItem.GetCurrentOrConstrucingBuilding.GetLevel]"
+										size = { 15 20 }
+										margin = { 5 0 }
+										margin_bottom = 3
+										fontsize = 15
+										default_format = "#low;bold"
+										align = center;nobaseline
+		
+										background = {
+											using = Background_Area_Dark
+										}
+		
+										background = {
+											using = Background_Area_Dark
+										}
+		
+										background = {
+											using = Background_Area_Dark
+										}
+									}
+									spacing = 2
+
+									icon = {
+										visible = "[HoldingView.GetProvince.HasFort]"
+										name = "icon_garrison"
+										texture = "gfx/interface/icons/icon_garrison.dds"
+										size = { 20 20 }
+									}
+
+									text_single = {
+										visible = "[HoldingView.GetProvince.HasFort]"
 										text = "[HoldingView.GetCurrentGarrisonSize]"
 										default_format = "#high"
 										align = nobaseline
@@ -1793,8 +1840,8 @@ window = {
 
 									progressbar_standard_transparent = {
 										layoutpolicy_horizontal = expanding
-
-										size = { 0 10 }
+										
+										size = { 0 8 }
 										value = "[HoldingView.GetGarrisonRatio]"
 										direction = horizontal
 									}
@@ -1802,13 +1849,14 @@ window = {
 							}
 
 							hbox = {
+								visible = "[HoldingView.GetProvince.HasFort]"
 								spacing = 3
 								tooltip = "[Province.GetFortLevelTooltip]"
 
 								icon = {
 									name = "icon_fort"
 									texture = "gfx/interface/window_siege/fort_icon.dds"
-									size = { 30 25 }
+									size = { 20 20 }
 								}
 
 								text_single = {
@@ -1822,34 +1870,6 @@ window = {
 						hbox = {
 							spacing = 2
 							margin_bottom = 2
-
-							text_single = {
-								text = "[HoldingView.GetHolding.GetPrimaryBuildingType.GetTypeName]"
-								align = nobaseline
-							}
-
-							text_single = {
-								visible = "[GUIBuildingItem.HasLevel]"
-								text = "[GUIBuildingItem.GetCurrentOrConstrucingBuilding.GetLevel]"
-								size = { 15 20 }
-								margin = { 5 0 }
-								margin_bottom = 3
-								fontsize = 15
-								default_format = "#low;bold"
-								align = center;nobaseline
-
-								background = {
-									using = Background_Area_Dark
-								}
-
-								background = {
-									using = Background_Area_Dark
-								}
-
-								background = {
-									using = Background_Area_Dark
-								}
-							}
 
 							warning_icon = {
 								name = "wrong_type"
