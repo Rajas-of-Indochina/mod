@@ -339,10 +339,7 @@ call_suzerain_to_war = {
     is_shown = {
         scope:actor = { #put here every tributary type which should be able to call suzerain
             is_at_war = yes
-            has_variable = my_suzerain
-            var:my_suzerain = {
-                this = scope:recipient
-            }
+            has_relation_suzerain = scope:recipient
             NOT = { is_at_war_with = scope:recipient }
         }
     }
@@ -352,15 +349,15 @@ call_suzerain_to_war = {
     }
 
     is_valid_showing_failures_only = {
-        #all hail jank, this is a only way i think i can achive that xD
-        NOT = {
-            scope:actor = {
-                has_variable = my_suzerain
-                any_war_ally = {
-                    this = var:my_suzerain
-                }
-                var:my_suzerain = {
-                    is_target_in_variable_list = { name = permanent_tributaries target = prev }
+        scope:actor = {
+            NOT = {
+                any_relation = { type = suzerain
+                    save_scope_as = suzerain
+                    scope:actor = {
+                        any_war_ally = {
+                            this = scope:suzerain
+                        }
+                    }
                 }
             }
         }
@@ -384,19 +381,12 @@ call_suzerain_to_war = {
                         }
                         # This needs to go into a function (effect)
                         scope:actor = {
-                            remove_variable = my_suzerain
-
-                            scope:recipient = {
-                                remove_list_variable = { name = permanent_tributaries target = prev }
-                            }
-                            scope:recipient = {
-                                remove_list_variable = { name = all_tributaries target = prev }
-                            }
+                            remove_relation_suzerain = scope:recipient
                         }
                     }
                     scope:recipient = {
                         add_prestige_experience = massive_prestige_loss
-                        trigger_event = { id = tributaries.4 }
+                        trigger_event = { id = tributaries.2004 }
                     }
                 }
                 hidden_effect = {

@@ -1,7 +1,15 @@
-﻿on_game_start_after_lobby = {
+﻿# Tributary becoming unlanded by conquest should lose tributary status
+# Tributary abdicating or dying should pass tributary status to heir
+
+
+# Suzerain becoming unlanded by conquest should lose suzerain status
+# Suzerain abdicating or dying should pass suzerain status to heir
+
+
+on_game_start_after_lobby = {
     on_actions = {
         delay = { months = 1 }
-        T4N_on_yearly_tribute
+        tributary_on_yearly_tribute
     }
 }
 
@@ -11,31 +19,31 @@ quarterly_playable_pulse = {
     }
 }
 
-T4N_on_yearly_tribute = {
+tributary_on_yearly_tribute = {
     effect = {
-        every_suzerain = {
+        every_relation = { type = suzerain
             # Determine if still a suzerain
-            trigger_event = { id = tributaries.4 }
+            # This shouldn't be necessary?
+            # trigger_event = { id = tributaries.2004 }
             # Income
-            trigger_event = { id = tributaries.5 }
+            trigger_event = { id = tributaries.2005 }
         }
         trigger_event = {
-            on_action = T4N_on_yearly_tribute
+            on_action = tributary_on_yearly_tribute
             months = 36
         }
     }
 }
 
-
 on_war_won_attacker = {
     # The war notifications are handled in `effect` instead of `events` due to order of operations.
     # `effect` fires on THIS tick, `events` fires on the NEXT tick, and the war gets destroyed between this tick and the next.
     on_actions = {
-        T4N_tributaries_on_war_won_attacker
+        tributary_on_war_won_attacker
     }
 }
 
-T4N_tributaries_on_war_won_attacker = {
+tributary_on_war_won_attacker = {
     effect = {
         if = {
             limit = {
@@ -47,13 +55,13 @@ T4N_tributaries_on_war_won_attacker = {
                 }
             }
             scope:attacker = {
-                save_scope_as = tributaries_slash_suzerain_war_winner
+                save_scope_as = tributary_slash_suzerain_war_winner
             }
             scope:defender = {
                 save_scope_as = tributary_slash_suzerain_loser
             }
-            scope:tributaries_slash_suzerain_war_winner = {
-                trigger_event = { id = tributaries.3 days = 1 }
+            scope:tributary_slash_suzerain_war_winner = {
+                trigger_event = { id = tributaries.2003 days = 1 }
             }
         }
     }
@@ -61,109 +69,27 @@ T4N_tributaries_on_war_won_attacker = {
 
 # called when a war is started.
 # same scopes are available in these events as in the CBs' on_declaration, this just fires for all CBs instead of a specific CB.
-
 on_war_started = {
     on_actions = {
-        T4N_tributaries_on_war_started
+        tributary_on_war_started
     }
 }
 
-T4N_tributaries_on_war_started = {
+tributary_on_war_started = {
     effect = {
-        if = { #permanent tributary calls his suzerain to defensive war
+        every_relation = { type = suzerain
+            save_scope_as = suzerain
+
             limit = {
+                scope:war = {
+                    any_war_participant = { NOT = { this = scope:suzerain } }
+                }
+
                 scope:defender = {
-                    has_variable = my_suzerain
-                    NOT = {
-                        any_war_ally = {
-                            this = var:my_suzerain
-                        }
-                    }
+                    save_scope_as = call_to_arms_tribute
                     var:my_suzerain = {
-                        is_target_in_variable_list = { name = permanent_tributaries target = prev }
+                        trigger_event = { id = tributaries.2016 }
                     }
-                }
-            }
-            scope:defender = {
-                save_scope_as = call_to_arms_tribute
-                var:my_suzerain = {
-                    trigger_event = { id = tributaries.6 }
-                }
-            }
-        }
-    }
-}
-
-# A title is lost by a character
-# root = the old holder
-# scope:title = the title that changes hands
-# scope:new_holder = new holder.
-on_title_lost = {
-    on_actions = {
-        T4N_tributaries_on_title_lost
-    }
-}
-
-T4N_tributaries_on_title_lost = {
-    effect = {
-        switch = {
-            trigger = exists
-
-            var:my_suzerain = {
-                if = {
-                    limit = {
-                        OR = {
-                            is_landed = no
-                            is_independent_ruler = no
-                        }
-                        is_permanent_tributary = {
-                            SUZERAIN = var:my_suzerain
-                            TRIBUTARY = root
-                        }
-                    }
-                    var:my_suzerain = {
-                        remove_list_variable = { name = permanent_tributaries target = root }
-                        remove_list_variable = { name = all_tributaries target = root }
-                    }
-                    remove_variable = my_suzerain
-                }
-                else_if = {
-                    limit = {
-                        OR = {
-                            is_landed = no
-                            is_independent_ruler = no
-                        }
-                        is_non_permanent_tributary = {
-                            SUZERAIN = var:my_suzerain
-                            TRIBUTARY = root
-                        }
-                    }
-                    var:my_suzerain = {
-                        remove_list_variable = { name = non_permanent_tributaries target = root }
-                        remove_list_variable = { name = all_tributaries target = root }
-                    }
-                    remove_variable = my_suzerain
-                }
-            }
-            var:suzerain = {
-                if = {
-                    limit = {
-                        OR = {
-                            is_landed = no
-                            is_independent_ruler = no
-                            liege = scope:new_holder
-                        }
-                    }
-                    every_in_list = {
-                        variable = permanent_tributaries
-
-                        set_variable = { name = my_suzerain value = scope:new_holder }
-                        scope:new_holder = {
-                            add_to_variable_list = { name = permanent_tributaries target = prev }
-                        }
-                    }
-                    clear_variable_list = permanent_tributaries
-                    clear_variable_list = non_permanent_tributaries
                 }
             }
         }
@@ -184,74 +110,20 @@ tributaries_on_death = {
         # Suzerain dies
         # Copy old Ruler tributaries list to his primary heir (on_death)
         if = {
-            limit = {
-                num_of_relation_tributary > 0
+            limit = { is_suzerain = yes }
+
+            pass_suzerainship_to_heir = {
+                SUZERAIN = this
             }
-
-            # Remove all temporary tributaries
-            #every_in_list = { variable = non_permanent_tributaries
-            #    remove_tributaries_from_suzerain_effect = yes
-            #}
-            #clear_variable_list = non_permanent_tributaries
-
-            # Add permanent tributaries to heir
-            every_relation = {
-                type = tributary
-                save_scope_as = trib
-
-#               pass_tributary_type_to_heir = {
-#                   TYPE = var:tributary_type
-#                   TRIBUTARY = this
-#                   SUZERAIN = var:my_suzerain
-#               }
-
-                # Heir is now a suzerain
-                root.primary_heir = {
-                    set_relation_tributary = scope:trib
-                }
-
-                # set_variable = { name = my_suzerain value = root.primary_heir }
-                # root.primary_heir = { set_variable = suzerain }
-
-            }
-
-            # Remove tributaries from deceased
-            remove_tributaries_from_suzerain_effect = yes
-
-            # clear_variable_list = permanent_tributaries
-            # clear_variable_list = all_tributaries
-            # remove_variable = suzerain
         }
 
         # Tributary dies
         # give the heir var:my_suzerain
         if = {
-            limit = {
-                num_of_relation_suzerain > 0
-            }
+            limit = { is_tributary = yes }
 
-            # End
-
-
-            # Add my suzerain to my heir
-            var:my_suzerain = {
-                root.primary_heir = {
-                    set_variable = { name = my_suzerain
-                        value = prev
-                    }
-                }
-            }
-
-            # move trib type + character income to the heir
             pass_tributary_type_to_heir = {
-                TYPE = var:tributary_type
                 TRIBUTARY = this
-                SUZERAIN = var:my_suzerain
-            }
-
-            # Remove deceased from suzerain
-            root = {
-                remove_tributaries_from_suzerain_effect = yes
             }
         }
     }

@@ -12,11 +12,18 @@
 make_tributary = {
     if = {
         limit = {
-            $TRIBUTARY$ = { is_independent_ruler = yes }
+            $TRIBUTARY$ = {
+                is_alive = yes
+                is_independent_ruler = yes
+                highest_held_title_tier >= tier_county
+            }
+            $SUZERAIN$ = {
+                is_alive = yes
+                highest_held_title_tier >= tier_county
+            }
         }
-        $TYPE$ = {
-            TRIBUTARY = $TRIBUTARY$
-            SUZERAIN = $SUZERAIN$
+        $TRIBUTARY$ = {
+            add_relation_suzerain = $SUZERAIN$
         }
     }
 }
@@ -28,26 +35,8 @@ free_tributary_effect = {
         every_relation = { type = suzerain
             remove_relation_tributary = prev
         }
-#        var:my_suzerain = {
-#            if = {
-#                limit = {
-#                    is_target_in_variable_list = { name = non_permanent_tributaries target = prev }
-#                }
-#                remove_list_variable = { name = non_permanent_tributaries target = prev }
-#            }
-#            if = {
-#                limit = {
-#                    is_target_in_variable_list = { name = permanent_tributaries target = prev }
-#                }
-#                remove_list_variable = { name = permanent_tributaries target = prev }
-#            }
-#            remove_list_variable = { name = all_tributaries target = prev }
-#            trigger_event = { id = tributaries.4 }
-#        }
-#        remove_variable = my_suzerain
     }
 }
-
 
 remove_tributaries_from_suzerain_effect = {
     every_relation = { type = suzerain
@@ -61,143 +50,30 @@ remove_suzerain_from_tributary_effect = {
     }
 }
 
-
-# Params
-# $SUZERAIN$
-#   Character
-#   The character to receive tribute
-# $TRIBUTARY_BASE_TYPE$
-#   Value
-#   Base type of tributary ( permanent non_permanent )
-# $TRIBUTARY$
-#   Character
-#   The character to be paying tribute
-# $TRIBUTE_GOLD_PERCENT$
-#   Value
-#   The percent of income to be paid by the tributary
-#   Ideally between 0 and 1 but can be any number really
-# $MONTHLY_PRESTIGE_SUZERAIN$
-#   Value
-#   How much prestige does the suzerain earn every month
-#   Can be positive or negative
-# $MONTHLY_PRESTIGE_TRIBUTARY$
-#   Value
-#   How much prestige does the tributary earn every month
-#   Can be positive or negative
-# $MONTHLY_PIETY_SUZERAIN$
-#   Value
-#   How much piety does the suzerain earn every month
-#   Can be positive or negative
-# $MONTHLY_PIETY_TRIBUTARY$
-#   Value
-#   How much piety does the tributary earn every month
-#   Can be positive or negative
-
-make_custom_tributary = {
-
-    if = {
-        limit = {
-            NOT = {
-                $SUZERAIN$ = $TRIBUTARY$
-            }
+## PARAMS
+# TRIBUTARY
+##
+pass_tributary_type_to_heir = {
+    $TRIBUTARY$ = {
+        every_relation = { type = suzerain
+            add_relation_tributary = $TRIBUTARY$.primary_heir
         }
-
-        # Setup suzerain variables
-        $SUZERAIN$ = {
-            if = {
-                limit = {
-                    NOT = { has_variable = suzerain }
-                }
-                set_variable = suzerain
-            }
-
-            switch = {
-                trigger = $TRIBUTARY_BASE_TYPE$
-
-                flag:permanent = {
-                    add_to_variable_list = {
-                        name = permanent_tributaries
-                        target = $TRIBUTARY$
-                    }
-                }
-                flag:non_permanent = {
-                    add_to_variable_list = {
-                        name = non_permanent_tributaries
-                        target = $TRIBUTARY$
-                    }
-                }
-            }
-            add_to_variable_list = {
-                name = all_tributaries
-                target = $TRIBUTARY$
-            }
-        }
-
-        $TRIBUTARY$ = {
-            # Store suzerain scope
-            set_variable = { name = my_suzerain value = $SUZERAIN$ }
-
-            # Store tributary type
-            # Useful for localisation and similar customisation
-            set_variable = {
-                name = tributary_type
-                value = $TYPE$
-            }
-
-            # Tribute values
-            set_variable = {
-                name = tribute_gold_percent
-                value = $TRIBUTE_GOLD_PERCENT$
-            }
-            # set_variable = {
-            #     name = monthly_prestige_suzerain
-            #     value = $MONTHLY_PRESTIGE_SUZERAIN$
-            # }
-            # set_variable = {
-            #     name = monthly_prestige_tributary
-            #     value = $MONTHLY_PRESTIGE_TRIBUTARY$
-            # }
-            # set_variable = {
-            #     name = monthly_piety_suzerain
-            #     value = $MONTHLY_PIETY_SUZERAIN$
-            # }
-            # set_variable = {
-            #     name = monthly_piety_tributary
-            #     value = $MONTHLY_PIETY_TRIBUTARY$
-            # }
+        every_relation = { type = suzerain
+            remove_relation_tributary = $TRIBUTARY$
         }
     }
 }
 
 ## PARAMS
-# TYPE
-# TRIBUTARY
 # SUZERAIN
 ##
-pass_tributary_type_to_heir = {
-    switch = {
-        trigger = $TYPE$
-
-        flag:karling_tributary = {
-            make_tributary = {
-                TYPE = tributary_karling
-                TRIBUTARY = $TRIBUTARY$
-                SUZERAIN = $SUZERAIN$
-            }
+pass_suzerainship_to_heir = {
+    $SUZERAIN$ = {
+        every_relation = { type = tributary
+            add_relation_suzerain = $SUZERAIN$.primary_heir
         }
-        flag:china_tributary = {
-            make_tributary = {
-                TYPE = tributary_china
-                TRIBUTARY = $TRIBUTARY$
-                SUZERAIN = $SUZERAIN$
-            }
-        }
-        flag:permanent_tributary = {
-            make_tributary = {
-                TYPE = tributary_permanent
-                TRIBUTARY = $TRIBUTARY$
-                SUZERAIN = $SUZERAIN$
-            }
+        every_relation = { type = tributary
+            remove_relation_suzerain = $SUZERAIN$
         }
     }
 }

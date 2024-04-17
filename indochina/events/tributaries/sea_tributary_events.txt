@@ -2,102 +2,19 @@
 
 #Clear "Roadblocks"
 
-#Copy old Ruler tributaries list to his primary heir (on_death)
-#Root is old suzerain
-tributaries.1 = {
-    type = character_event
-    hidden = yes
-
-    immediate = {
-
-        # Remove all temporary tributaries
-        every_in_list = { variable = non_permanent_tributaries
-            remove_tributaries_from_suzerain_effect = yes
-        }
-        clear_variable_list = non_permanent_tributaries
-
-        # Add permanent tributaries to heir
-        every_in_list = { variable = permanent_tributaries
-
-            # Tributary inherits from the suzerain
-            if = {
-                limit = { root.primary_heir = this }
-                remove_tributaries_from_suzerain_effect = yes
-            }
-            else = {
-                pass_tributary_type_to_heir = {
-                    TYPE = var:tributary_type
-                    TRIBUTARY = this
-                    SUZERAIN = var:my_suzerain
-                }
-
-                # Heir is now a suzerain
-                set_variable = { name = my_suzerain value = root.primary_heir }
-                root.primary_heir = { set_variable = suzerain }
-            }
-        }
-
-        # Remove permanent tributaries from deceased
-        clear_variable_list = permanent_tributaries
-        clear_variable_list = all_tributaries
-        remove_variable = suzerain
-    }
-}
-
-#give the heir var:my_suzerain
-#Root is old tributary
-#on_death
-tributaries.2 = {
-    type = character_event
-    hidden = yes
-
-    immediate = {
-
-        if = { # Suzerain inherits from the tributary
-            limit = { root.primary_heir = var:my_suzerain }
-            root = {
-                remove_tributaries_from_suzerain_effect = yes
-            }
-        }
-        else_if = {
-            limit = {
-                has_variable = my_suzerain
-            }
-
-            # Add my suzerain to my heir
-            var:my_suzerain = {
-                root.primary_heir = {
-                    set_variable = { name = my_suzerain
-                        value = prev
-                    }
-                }
-            }
-
-            # move trib type + character income to the heir
-            pass_tributary_type_to_heir = {
-                TYPE = var:tributary_type
-                TRIBUTARY = this
-                SUZERAIN = var:my_suzerain
-            }
-
-            # Remove deceased from suzerain
-            root = {
-                remove_tributaries_from_suzerain_effect = yes
-            }
-        }
-    }
-}
-
 #Attacker may or may mot become new suzerain
-#Root = scope:tributaries_slash_suzerain_war_winner
+#Root = scope:tributary_slash_suzerain_war_winner
 #scope:tributary_slash_suzerain_loser = scope:defender
-tributaries.3 = {
+
+# ??????
+tributaries.2003 = {
     type = character_event
     hidden = yes
 
     immediate = {
         scope:tributary_slash_suzerain_loser = {
 
+            # Suzerain lost a war
             if = {
                 limit = { is_suzerain = yes }
 
@@ -108,9 +25,7 @@ tributaries.3 = {
                             is_landed = no
                         }
                     }
-                    every_in_list = {
-                        variable = permanent_tributaries
-
+                    every_relation = { type = tributary
                         set_variable = { name = my_suzerain value = root }
                         root = {
                             add_to_variable_list = { name = permanent_tributaries target = prev }
@@ -120,6 +35,7 @@ tributaries.3 = {
                     clear_variable_list = non_permanent_tributaries
                 }
             }
+            # Tributary lost a war
             else = {
                 if = {
                     limit = {
@@ -152,14 +68,14 @@ tributaries.3 = {
 #Suzerain no longer have any tributaries
 #on_monthly_tribute
 #Root is suzerain
-tributaries.4 = {
+tributaries.2004 = {
     type = character_event
     hidden = yes
 
     immediate = {
         if = {
             limit = {
-                has_permanent_tributaries = yes
+                has_tributaries = yes
             }
 
             save_scope_as = suzerain
@@ -184,7 +100,7 @@ tributaries.4 = {
         if = {
             limit = {
                 NOT = {
-                    has_permanent_tributaries = yes
+                    has_tributaries = yes
                 }
             }
             clear_variable_list = permanent_tributaries
@@ -196,26 +112,25 @@ tributaries.4 = {
 #Monthly income from tributes
 #on_monthly_tribute
 #Root is suzerain
-tributaries.5 = {
+tributaries.2005 = {
     type = character_event
     hidden = yes
 
     immediate = {
         if = {
             limit = {
-                has_permanent_tributaries = yes
+                has_tributaries = yes
             }
 
             save_scope_as = suzerain
-            every_in_list = {
-                variable = permanent_tributaries
-                trigger_event = { id = tributaries.50 }
+            every_relation = { type = tributary
+                trigger_event = { id = tributaries.2006 }
             }
         }
     }
 }
 
-tributaries.50 = {
+tributaries.2006 = {
     type = character_event
     title = tributary_event_send_tribute
     desc = tributary_event_send_tribute_desc
@@ -270,27 +185,27 @@ tributaries.50 = {
                 opinion = -50
                 target = root
             }
-            trigger_event = { id = tributaries.51 } # Suzerain may declare war
+            trigger_event = { id = tributaries.2011 } # Suzerain may declare war
         }
         custom_tooltip = tributary_refuse_tribute.tt
         ai_chance = { base = 0 }
     }
 }
 
-tributaries.51 = {
+tributaries.2011 = {
     type = letter_event
     opening = {
-        desc = tributaries.51_opening
+        desc = tributaries.2011_opening
     }
-    desc = tributaries.51_desc
+    desc = tributaries.2011_desc
     sender = scope:tributary
 
     option = {
-        name = tributaries.51.a
+        name = tributaries.2011.a
         ai_chance = { base = 66 }
     }
     option = {
-        name = tributaries.51.b
+        name = tributaries.2011.b
         ai_chance = { base = 33 }
         start_war = {
             casus_belli = tributary_punitive_war_cb
@@ -314,7 +229,7 @@ tributaries.51 = {
 #on_war_started
 #Root is suzerain
 #call_to_arms_tribute is defender
-tributaries.6 = {
+tributaries.2016 = {
     type = character_event
     theme = war
     title = tributary_6_tit
@@ -429,6 +344,17 @@ tributaries.9 = {
 
     option = {
         name = EXCELLENT
+
+        scope:trib = {
+            pay_long_term_gold = {
+                target = root
+                gold = {
+                    value = yearly_character_income
+                    multiply = var:tribute_gold_percent
+                    multiply = 3
+                }
+            }
+        }
     }
 }
 
