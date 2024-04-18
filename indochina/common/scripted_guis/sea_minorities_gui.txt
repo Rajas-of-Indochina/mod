@@ -106,16 +106,17 @@ minority_management = {
     scope = character
     effect = {
         clear_variable_list = minority_counties
+        remove_variable = selected_county
+        remove_variable = selected_culture
+        remove_variable = selected_faith
         every_held_county = {
-            if = {
-                limit = {
-                    OR = {
-                        county_has_minority_faith_trigger = yes
-                        county_has_minority_culture_trigger = yes
-                    }
+            limit = {
+                OR = {
+                    county_has_minority_faith_trigger = yes
+                    county_has_minority_culture_trigger = yes
                 }
-                save_scope_as = county_with_minority
             }
+            save_scope_as = county_with_minority
             ROOT = {
                 add_to_variable_list = {
                     name = minority_counties
@@ -125,16 +126,11 @@ minority_management = {
         }
     }
     is_shown = {
+        is_ai = no
         any_held_county = {
-            trigger_if = {
-                limit = {is_ai = no}
-                OR = {
-                    county_has_minority_faith_trigger = yes
-                    county_has_minority_culture_trigger = yes
-                }
-            }
-            trigger_else = {
-                always = no
+            OR = {
+                county_has_minority_faith_trigger = yes
+                county_has_minority_culture_trigger = yes
             }
         }
     }

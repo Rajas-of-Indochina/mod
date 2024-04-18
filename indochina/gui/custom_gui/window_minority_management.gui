@@ -38,56 +38,1484 @@ types minoritywidgets {
 				margin_right = 50
 				margin_bottom = 50
 				layoutpolicy_horizontal = expanding
-				vbox = {
-					layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				hbox = {
 					layoutpolicy_vertical = expanding
-					# spacer = {
-					# 	size = { 5 100 }
-					# }
-					text_label_center = {
-						text = "SUB_REALM_COUNTIES"
-						default_format = "#high"
-						using = Font_Size_Big
-					}
-					scrollbox = {
+					vbox = {
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
-						spacing = 10
-						max_width = 300
-						blockoverride "scrollbox_content"
-						{
-							vbox = {
-								name = "counties_with_minorities_box"
-								layoutpolicy_horizontal = expanding
-								layoutpolicy_vertical = expanding
-								spacing = 10
-								datamodel = "[GetPlayer.MakeScope.GetList('minority_counties')]"
-
-								item = {
-									button_standard = {
-										datacontext = "[GetPlayer]"
-										datacontext = "[GetScriptedGui('minority_management_select_county')]"
-										datacontext = "[Scope.GetLandedTitle]"
+						# spacer = {
+						# 	size = { 5 100 }
+						# }
+						text_label_center = {
+							text = "COUNTIES"
+							default_format = "#high"
+							using = Font_Size_Big
+						}
+						scrollbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							spacing = 10
+							max_width = 200
+							min_width = 200
+							blockoverride "scrollbox_content"
+							{
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									vbox = {
+										name = "counties_with_minorities_box"
 										layoutpolicy_horizontal = expanding
 										layoutpolicy_vertical = expanding
-										min_height = 50
-										max_height = 50
+										spacing = 10
+										datamodel = "[GetPlayer.MakeScope.GetList('minority_counties')]"
 
-										onclick = "[ScriptedGui.Execute( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope( 'county', Scope.GetLandedTitle.MakeScope ).End )]"
+										item = {
+											button_standard = {
+												datacontext = "[GetPlayer]"
+												datacontext = "[GetScriptedGui('minority_management_select_county')]"
+												datacontext = "[Scope.GetLandedTitle]"
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												min_height = 50
+												max_height = 50
 
+												onclick = "[ScriptedGui.Execute( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope( 'county', Scope.GetLandedTitle.MakeScope ).End )]"
+
+												hbox = {
+													layoutpolicy_horizontal = expanding
+													margin_left = 5
+													margin_right = 5
+													spacing = 7
+			
+													coa_title_tiny = {
+													}
+			
+													text_multi = {
+														# layoutpolicy_horizontal = expanding
+														text = "[Title.GetNameNoTierNoTooltip]"
+														align = nobaseline
+														autoresize = yes
+														max_width = 150
+													}
+
+													expand = {}
+												}
+											}
+										}
+									}
+								}
+								expand = {}
+							}
+						}
+					}
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						text_label_center = {
+							text = "MINORITIES"
+							default_format = "#high"
+							using = Font_Size_Big
+						}
+						scrollbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							min_width = 400
+							max_width = 400
+							spacing = 10
+							blockoverride "scrollbox_content" {
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									datacontext = "[GetPlayer]"
+									name = "minority_grids"
+
+									text_label_center ={
+										layoutpolicy_horizontal = expanding
+										text = "Minorities in [GetPlayer.MakeScope.Var('selected_county').GetLandedTitle.GetNameNoTierNoTooltip]:"
+										default_format = "#high"
+										using = Font_Size_Medium
+									}
+
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										spacing = 3
+										name = "county_culture_minorities_small_grid"
+										datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('culture_minorities_small')]"
+
+										item = {
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												datacontext = "[Scope.GetCulture]"
+												datacontext = "[GetScriptedGui('select_culture')]"
+
+												background = {
+													using = Background_Area
+													margin = { 0 5 }
+												}
+												vbox = {
+													button = {
+														size = { 64 64 }
+						
+														# onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
+														onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Scope.Culture.MakeScope ).End ) ]"
+														texture = "gfx/interface/icons/modifiers/sea_culture_minority_small.dds"
+														using = tooltip_ne
+														tooltipwidget = {
+															culture_minorities_tooltip = {
+																blockoverride "minority_label"
+																{
+																	text = "[minority_culture_small|E]"
+																}
+															}
+														}
+													}
+													text_single = {
+														text = "[Scope.Culture.GetNameNoTooltip]"
+														align = center
+														autoresize = yes
+													}
+												}
+												expand = {}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
+
+													tooltip = "PROMOTE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/traits/slave.dds"
+													tooltip = "ENSLAVE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/icon_gold.dds"
+													tooltip = "INVEST_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
+													tooltip = "EXPEL_MINORITY_TOOLTIP"
+												}
+											}
+										}
+									}
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										spacing = 3
+										name = "county_culture_minorities_large_grid"
+										datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('culture_minorities_large')]"
+
+										item = {
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												datacontext = "[Scope.GetCulture]"
+												datacontext = "[GetScriptedGui('select_culture')]"
+
+												background = {
+													using = Background_Area
+													margin = { 0 5 }
+												}
+												vbox = {
+													button = {
+														size = { 64 64 }
+						
+														# onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
+														onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Scope.Culture.MakeScope ).End ) ]"
+														texture = "gfx/interface/icons/modifiers/sea_culture_minority_large.dds"
+														using = tooltip_ne
+														tooltipwidget = {
+															culture_minorities_tooltip = {
+																blockoverride "minority_label"
+																{
+																	text = "[minority_culture_large|E]"
+																}
+															}
+														}
+													}
+													text_single = {
+														text = "[Scope.Culture.GetNameNoTooltip]"
+														align = center
+														autoresize = yes
+													}
+												}
+												expand = {}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
+
+													tooltip = "PROMOTE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/traits/slave.dds"
+													tooltip = "ENSLAVE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/icon_gold.dds"
+													tooltip = "INVEST_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
+													tooltip = "EXPEL_MINORITY_TOOLTIP"
+												}
+											}
+										}
+									}
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										spacing = 3
+										name = "county_culture_minorities_trader_grid"
+										datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('culture_minorities_trader')]"
+
+										item = {
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												datacontext = "[Scope.GetCulture]"
+												datacontext = "[GetScriptedGui('select_culture')]"
+
+												background = {
+													using = Background_Area
+													margin = { 0 5 }
+												}
+												vbox = {
+													button = {
+														size = { 64 64 }
+						
+														# onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
+														onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Scope.Culture.MakeScope ).End ) ]"
+														texture = "gfx/interface/icons/icon_gold.dds"
+														using = tooltip_ne
+														tooltipwidget = {
+															culture_minorities_tooltip = {
+																blockoverride "minority_label"
+																{
+																	text = "[trader_minority|E]"
+																}
+															}
+														}
+													}
+													text_single = {
+														text = "[Scope.Culture.GetNameNoTooltip]"
+														align = center
+														autoresize = yes
+													}
+												}
+												expand = {}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
+
+													tooltip = "PROMOTE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/traits/slave.dds"
+													tooltip = "ENSLAVE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/icon_gold.dds"
+													tooltip = "INVEST_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
+													tooltip = "EXPEL_MINORITY_TOOLTIP"
+												}
+											}
+										}
+									}
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										spacing = 3
+										name = "county_culture_minorities_slave_grid"
+										datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('culture_minorities_slave')]"
+
+										item = {
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												datacontext = "[Scope.GetCulture]"
+												datacontext = "[GetScriptedGui('select_culture')]"
+
+												background = {
+													using = Background_Area
+													margin = { 0 5 }
+												}
+												vbox = {
+													button = {
+														size = { 64 64 }
+						
+														# onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
+														onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Scope.Culture.MakeScope ).End ) ]"
+														texture = "gfx/interface/icons/traits/slave.dds"
+														using = tooltip_ne
+														tooltipwidget = {
+															culture_minorities_tooltip = {
+																blockoverride "minority_label"
+																{
+																	text = "[slave_minority|E]"
+																}
+															}
+														}
+													}
+													text_single = {
+														text = "[Scope.Culture.GetNameNoTooltip]"
+														align = center
+														autoresize = yes
+													}
+												}
+												expand = {}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
+
+													tooltip = "PROMOTE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/traits/slave.dds"
+													tooltip = "ENSLAVE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/icon_gold.dds"
+													tooltip = "INVEST_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
+													tooltip = "EXPEL_MINORITY_TOOLTIP"
+												}
+											}
+										}
+									}
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										spacing = 3
+										name = "county_faith_minorities_small_grid"
+										datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('faith_minorities_small')]"
+
+										item = {
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												datacontext = "[Scope.GetFaith]"
+												datacontext = "[GetScriptedGui('select_faith')]"
+
+												background = {
+													using = Background_Area
+													margin = { 0 5 }
+												}
+												vbox = {
+													button = {
+														size = { 64 64 }
+
+														# onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
+														onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', Scope.Faith.MakeScope ).End ) ]"
+														texture = "[Scope.Faith.GetIcon]"
+														using = tooltip_ne
+														tooltipwidget = {
+															faith_minorities_tooltip = {
+																blockoverride "minority_label"
+																{
+																	text = "[minority_faith_small|E]"
+																}
+															}
+														}
+
+														icon = {
+															name = "gold_negative_console_button_minus"
+															position = { 39 39 }
+															size = { 25 25 }
+															texture = "gfx/interface/icons/modifiers/sea_faith_minority_small.dds"
+														}
+													}
+													text_single = {
+														text = "[Scope.Faith.GetNameNoTooltip]"
+														align = center
+														autoresize = yes
+													}
+												}
+												expand = {}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
+
+													tooltip = "PROMOTE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/traits/slave.dds"
+													tooltip = "ENSLAVE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/icon_gold.dds"
+													tooltip = "INVEST_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
+													tooltip = "EXPEL_MINORITY_TOOLTIP"
+												}
+											}
+										}
+									}
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										spacing = 3
+										name = "county_faith_minorities_large_grid"
+										datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('faith_minorities_large')]"
+
+										item = {
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												datacontext = "[Scope.GetFaith]"
+												datacontext = "[GetScriptedGui('select_faith')]"
+
+												background = {
+													using = Background_Area
+													margin = { 0 5 }
+												}
+												vbox = {
+													button = {
+														size = { 64 64 }
+
+														# onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
+														onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', Scope.Faith.MakeScope ).End ) ]"
+														texture = "[Scope.Faith.GetIcon]"
+														using = tooltip_ne
+														tooltipwidget = {
+															faith_minorities_tooltip = {
+																blockoverride "minority_label"
+																{
+																	text = "[minority_faith_large|E]"
+																}
+															}
+														}
+
+														icon = {
+															name = "gold_negative_console_button_minus"
+															position = { 39 39}
+															size = { 25 25 }
+															texture = "gfx/interface/icons/modifiers/sea_faith_minority_large.dds"
+														}
+													}
+													text_single = {
+														text = "[Scope.Faith.GetNameNoTooltip]"
+														align = center
+														autoresize = yes
+													}
+												}
+												expand = {}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
+
+													tooltip = "PROMOTE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/traits/slave.dds"
+													tooltip = "ENSLAVE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/icon_gold.dds"
+													tooltip = "INVEST_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
+													tooltip = "EXPEL_MINORITY_TOOLTIP"
+												}
+											}
+										}
+									}
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										spacing = 3
+										name = "county_faith_minorities_trader_grid"
+										datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('faith_minorities_trader')]"
+
+										item = {
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												datacontext = "[Scope.GetFaith]"
+												datacontext = "[GetScriptedGui('select_faith')]"
+
+												background = {
+													using = Background_Area
+													margin = { 0 5 }
+												}
+												vbox = {
+													button = {
+														size = { 64 64 }
+
+														# onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
+														onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', Scope.Faith.MakeScope ).End ) ]"
+														texture = "[Scope.Faith.GetIcon]"
+														using = tooltip_ne
+														tooltipwidget = {
+															faith_minorities_tooltip = {
+																blockoverride "minority_label"
+																{
+																	text = "[minority_faith_large|E]"
+																}
+															}
+														}
+
+														icon = {
+															name = "gold_negative_console_button_minus"
+															position = { 39 39 }
+															size = { 25 25 }
+															texture = "gfx/interface/icons/icon_gold.dds"
+														}
+													}
+													text_single = {
+														text = "[Scope.Faith.GetNameNoTooltip]"
+														align = center
+														autoresize = yes
+													}
+												}
+												expand = {}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
+
+													tooltip = "PROMOTE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/traits/slave.dds"
+													tooltip = "ENSLAVE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/icon_gold.dds"
+													tooltip = "INVEST_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
+													tooltip = "EXPEL_MINORITY_TOOLTIP"
+												}
+											}
+										}
+									}
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										spacing = 3
+										name = "county_faith_minorities_slave_grid"
+										datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('faith_minorities_slave')]"
+
+										item = {
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												datacontext = "[Scope.GetFaith]"
+												datacontext = "[GetScriptedGui('select_faith')]"
+
+												background = {
+													using = Background_Area
+													margin = { 0 5 }
+												}
+												vbox = {
+													button = {
+														size = { 64 64 }
+
+														# onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
+														onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', Scope.Faith.MakeScope ).End ) ]"
+														texture = "[Scope.Faith.GetIcon]"
+														using = tooltip_ne
+														tooltipwidget = {
+															faith_minorities_tooltip = {
+																blockoverride "minority_label"
+																{
+																	text = "[minority_faith_large|E]"
+																}
+															}
+														}
+
+														icon = {
+															name = "gold_negative_console_button_minus"
+															position = { 39 39 }
+															size = { 25 25 }
+															texture = "gfx/interface/icons/traits/slave.dds"
+														}
+													}
+													text_single = {
+														text = "[Scope.Faith.GetNameNoTooltip]"
+														align = center
+														autoresize = yes
+													}
+												}
+												expand = {}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
+
+													tooltip = "PROMOTE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/traits/slave.dds"
+													tooltip = "ENSLAVE_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/icon_gold.dds"
+													tooltip = "INVEST_MINORITY_TOOLTIP"
+												}
+												button = {
+													size = { 64 64 }
+
+													texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
+													tooltip = "EXPEL_MINORITY_TOOLTIP"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					vbox = {
+						name = "culture_info"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						margin_left = 15
+						max_width = 385
+						min_width = 385
+						datacontext = "[GetPlayer]"
+						datacontext = "[GetPlayer.MakeScope.GetVariable('selected_culture').Culture]"
+						visible = "[GetScriptedGui('select_culture').IsShown( GuiScope.SetRoot(GetPlayer.MakeScope).End )]"
+						text_label_center = {
+							text = "[GetPlayer.MakeScope.GetVariable('selected_culture').Culture.GetNameNoTooltip]"
+							default_format = "#high"
+							using = Font_Size_Big
+						}
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+
+							container = {
+								datacontext = "[Culture.GetEthos]"
+								highlight_icon = {
+									name = "icon"
+									size = { 400 130 }
+									position = { -15 0 }
+									texture = "[CulturePillar.GetIcon]"
+									using = Mask_Rough_Edges
+								}
+
+								text_label_center = {
+									layoutpolicy_horizontal = expanding
+									name = "name"
+									text = "[CulturePillar.GetNameNoTooltip]"
+									parentanchor = top|left
+									default_format = "#high"
+									fontsize_min = 12
+				
+									using = Font_Size_Medium
+								}
+
+								text_label_center = {
+									# name = "acceptance_text"
+									layoutpolicy_horizontal = expanding
+									parentanchor = top|right
+									text = "[Concept( 'cultural_acceptance', 'Acceptance' )|E]: [Culture.GetAcceptance( GetPlayer.GetCulture )|%/0V]"
+									fontsize_min = 12
+									# autoresize = no
+									tooltip = "CULTURE_ACCEPTANCE_TOOLTIP"
+									visible = "[Not( ObjectsEqual( Culture.Self, GetPlayer.GetCulture ) )]"
+								}
+							}
+							
+							text_label_left = {
+								layoutpolicy_horizontal = expanding
+								text = "[culture_pillars|E]"
+								default_format = "#low"
+								align = nobaseline
+							}
+
+							hbox = {
+								name = "cultural_pillars_block"
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								maximumsize = { 375 104 }
+				
+								widget = {
+									name = "cultural_pillars_collumn_one"
+									layoutpolicy_horizontal = expanding
+				
+									vbox = {
+										# margin_left = 10
+				
+										hbox = {
+											name = "heritage"
+											datacontext = "[Culture.GetHeritage]"
+											layoutpolicy_horizontal = expanding
+				
+											hbox = {
+												spacing = 10
+				
+												tooltipwidget = {
+													using = culture_pillar_tooltip
+												}
+				
+												icon_doctrine = {
+													visible = "[ObjectsEqual( Culture.GetHeritage, GetPlayer.GetCulture.GetHeritage )]"
+													size = { 44 44 }
+													texture = "gfx/interface/icons/culture_pillars/heritage.dds"
+												}
+				
+												icon_doctrine = {
+													visible = "[Not( ObjectsEqual( Culture.GetHeritage, GetPlayer.GetCulture.GetHeritage ))]"
+													size = { 44 44 }
+													texture = "gfx/interface/icons/culture_pillars/heritage_diverge.dds"
+												}
+				
+												text_multi = {
+													datacontext = "[Culture.GetHeritage]"
+													text = "CULTURE_VIEW_HERITAGE_TEXT"
+													autoresize = yes
+													max_width = 220
+												}
+											}
+				
+											expand = {}
+										}
+				
+										hbox = {
+											name = "martial"
+											datacontext = "[Culture.GetMartial]"
+											layoutpolicy_horizontal = expanding
+				
+											 # Only show Martial if culture affects martial customs,
+											 # which is only the case if we are able to modify
+											 # the culture pillars.
+											visible = "[HasDlcFeature( 'diverge_culture' )]"
+				
+											spacing = 10
+				
+											icon_doctrine = {
+												size = { 44 44 }
+												texture = "[CulturePillar.GetIcon]"
+											}
+				
+											vbox = {
+												layoutpolicy_horizontal = expanding
+				
+												hbox = {
+													layoutpolicy_horizontal = expanding
+				
+													spacing = 5
+				
+													tooltipwidget = {
+														using = culture_pillar_tooltip
+													}
+				
+													text_multi = {
+														text = "CULTURE_VIEW_MARTIAL_CUSTOM_TEXT"
+														autoresize = yes
+														max_width = 220
+													}
+				
+													expand = {}
+												}
+											}
+										}
+									}
+								}
+				
+								widget = {
+									name = "cultural_pillars_collumn_two"
+									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+				
+									vbox = {
+										# margin_left = 10
+				
+										hbox = {
+											name = "language"
+											datacontext = "[Culture.GetLanguage]"
+											layoutpolicy_horizontal = expanding
+				
+											hbox = {
+												spacing = 10
+				
+												tooltipwidget = {
+													using = culture_pillar_tooltip
+												}
+				
+												icon_culture_pillar = {
+													visible = "[ObjectsEqual( Culture.GetLanguage, GetPlayer.GetCulture.GetLanguage )]"
+													texture = "gfx/interface/icons/culture_pillars/language.dds"
+												}
+				
+												icon_culture_pillar = {
+													visible = "[Not( ObjectsEqual( Culture.GetLanguage, GetPlayer.GetCulture.GetLanguage ))]"
+													texture = "gfx/interface/icons/culture_pillars/language_diverge.dds"
+												}
+				
+												text_multi = {
+													datacontext = "[Culture.GetLanguage]"
+													text = "CULTURE_VIEW_LANGUAGE_TEXT"
+													autoresize = yes
+													max_width = 220
+												}
+											}
+				
+											expand = {}
+										}
+				
 										hbox = {
 											layoutpolicy_horizontal = expanding
-											margin_left = 5
-											margin_right = 5
-											spacing = 7
-	
-											coa_title_tiny = {
+				
+											hbox = {
+												spacing = 10
+				
+												tooltip = "CULTURE_AESTHETICS_TOOLTIP"
+				
+												icon_culture_pillar = {
+													texture = "gfx/interface/icons/culture_pillars/aesthetics.dds"
+												}
+				
+												text_multi = {
+													text = "CULTURE_AESTHETICS"
+													autoresize = yes
+													max_width = 220
+												}
 											}
-	
+				
+											expand = {}
+										}
+									}
+								}
+							}
+
+							text_label_left = {
+								layoutpolicy_horizontal = expanding
+								text = "[traditions|E]"
+								align = nobaseline
+							}
+
+							scrollbox = {
+								name = "traditions_holder"
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								scrollbarpolicy_horizontal = always_off
+								blockoverride "scrollbox_content" {
+									vbox = {
+
+										fixedgridbox = {
+											name = "traditions_holder"
+											datamodel = "[Culture.GetTraditions]"
+											flipdirection = yes
+											addcolumn = 200
+											addrow = 124
+											datamodel_wrap = 2
+					
+											item = {
+												container = {
+													using = tooltip_se
+					
+													tooltipwidget = {
+														using = culture_tradition_tooltip
+													}
+					
+													widget_tradition_icon = {
+														block "icon_size" {
+															size = { 150 89 }
+														}
+													}
+					
+													text_label_center = {
+														name = "name"
+														parentanchor = bottom|hcenter
+														widgetanchor = center
+														fontsize_min = 10
+														multiline = yes
+														align = center
+														elide = right
+														text = "[CultureTradition.GetNameNoTooltip]"
+														default_format = "#medium"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+							expand = {}
+						}
+						expand = {}
+					}
+					vbox = {
+						name = "faith_info"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						# margin_left = 15
+						max_width = 400
+						min_width = 400
+						datacontext = "[GetPlayer]"
+						datacontext = "[GetPlayer.MakeScope.GetVariable('selected_faith').Faith]"
+						visible = "[GetScriptedGui('select_faith').IsShown( GuiScope.SetRoot(GetPlayer.MakeScope).End )]"
+						header_with_picture = {
+							name = "header"
+							datacontext = "[GetIllustration( 'religion_interior' )]"
+							size = { 0 130 }
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = fixed
+				
+							blockoverride "size" {
+								size = { 100% 143 }
+							}
+
+							blockoverride "button_close"
+							{
+								visible = "[Not(GetScriptedGui('select_faith').IsShown( GuiScope.SetRoot(GetPlayer.MakeScope).End ))]"
+							}
+				
+							blockoverride "header_text"
+							{
+								text = "FAITH_VIEW_HEADING"
+								using = tooltip_es
+				
+								state = {
+									name = "faith_view_refresh"
+									using = Animation_Refresh_FadeOut
+								}
+				
+								state = {
+									using = Animation_Refresh_FadeIn
+								}
+							}
+				
+							blockoverride "illustration_texture"
+							{
+								texture = "[Illustration.GetTexture( Faith.MakeScope )]"
+								spriteType = stretched
+								fittype = centercrop
+								alpha = 0.35
+							}
+				
+							hbox = {
+				
+								vbox = {
+									margin_top = 30
+									margin_left = 10
+				
+									icon = {
+										name = "faith_icon"
+										size = { 64 64 }
+										texture = "[Faith.GetIcon]"
+										using = tooltip_se
+										tooltipwidget = {
+											faith_tooltip = {}
+										}
+				
+										state = {
+											name = "faith_view_refresh"
+											using = Animation_Refresh_FadeOut
+										}
+				
+										state = {
+											using = Animation_Refresh_FadeIn
+										}
+									}
+								}
+				
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+				
+									expand = {}
+				
+									hbox = {
+										layoutpolicy_horizontal = expanding
+				
+										vbox = {
+											layoutpolicy_vertical = expanding
+											margin_bottom = 4
+											margin_left = 25
+											spacing = 1
+				
+											# expand = {}
+				
+											text_single = {
+												name = "your_faith"
+												visible = "[ObjectsEqual( GetPlayer.GetFaith, Faith.Self )]"
+												text = "FAITH_VIEW_YOUR_FAITH"
+												align = nobaseline|center
+											}
+				
+											# expand = {}
+				
+											text_single = {
+												name = "our_view"
+												visible = "[Not(ObjectsEqual( GetPlayer.GetFaith, Faith.Self ))]"
+												layoutpolicy_horizontal = expanding
+												text = "FAITH_VIEW_OUR_VIEW"
+												align = nobaseline|center
+											}
+				
+											text_single = {
+												name = "their_view"
+												visible = "[Not(ObjectsEqual( GetPlayer.GetFaith, Faith.Self ))]"
+												layoutpolicy_horizontal = expanding
+												text = "FAITH_VIEW_THEIR_VIEW"
+												align = nobaseline|center
+											}
+										}
+				
+										# expand = {}
+				
+										vbox = {
+											margin = { 10 0 }
+											spacing = 2
+				
+											fervor_container_vbox = {}
+										}
+									}
+								}
+							}
+				
+							text_single = {
+								visible = "[And( Not( Faith.GetReligion.HasPaganRoots ), Not( Faith.IsUnreformed ) )]"
+								text = "FAITH_VIEW_SUBHEADING"
+								align = center
+								parentanchor = top|hcenter
+								position = {0 40}
+								alpha = 0.9
+							}
+				
+							text_label_center = {
+								visible = "[Faith.IsUnreformed]"
+								text = "FAITH_VIEW_UNREFORMED_SUBHEADING"
+								align = center
+								parentanchor = top|hcenter
+								position = {0 40}
+								alpha = 0.8
+							}
+				
+							text_label_center = {
+								visible = "[And( Faith.GetReligion.HasPaganRoots, Not( Faith.IsUnreformed ) )]"
+								text = "FAITH_VIEW_REFORMED_SUBHEADING"
+								align = center
+								parentanchor = top|hcenter
+								position = {0 40}
+								alpha = 0.8
+							}
+						}
+
+						scrollbox = {
+							scrollbaralign_vertical = left
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							blockoverride "scrollbox_content"{
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+					
+									text_label_center = {
+										layoutpolicy_horizontal = expanding
+										text = "FAITH_CORE_TENETS_HEADING"
+									}
+		
+									hbox = {
+										name = "tenets"
+										datamodel = "[Faith.GetDoctrines]"
+										spacing = 10
+								
+										item = {
+											name = "doctrine_item"
+		
+											container = {
+		
+												using = tooltip_se
+												
+												visible = "[EqualTo_string( FaithDoctrine.GetGroup.GetGroupingKey, 'core_tenets' )]"
+										
+												highlight_icon = {
+													name = "doctrine_group_bg"
+													texture = "[Faith.GetDoctrineBackgroundIcon]"
+													size = { 100 133 }
+												}
+										
+												highlight_icon = {
+													name = "doctrine_group_icon"
+													texture = "[FaithDoctrine.GetIcon]"
+													size = { 100 133 }
+													alpha = 0.85
+													position = {0 0}
+												}
+										
+												text_label_center = {
+													name = "doctrine_name"
+													parentanchor = bottom|hcenter
+													widgetanchor = center
+													position = { 0 -24 }
+													maximumsize = { 100 44 }
+													fontsize_min = 12
+													multiline = yes
+													align = center
+													elide = right
+													text = "[FaithDoctrine.GetNameNoTooltip( Faith.Self )]"
+													default_format = "#high"
+										
+													using = Font_Size_Medium
+												}
+		
+												tooltip = "FAITH_DOCTRINE_TT"
+											}
+										}
+									}
+		
+									text_label_center = {
+										layoutpolicy_horizontal = expanding
+										text = "FAITH_DOCTRINES_IMPORTANT"
+										default_format = "#low"
+									}
+		
+									scrollarea = {
+										size = { 400 100 }
+										position = { -10 0 }
+										scrollbarpolicy_horizontal = as_needed
+										scrollbarpolicy_vertical = always_off
+										scrollbar_horizontal = {
+											using = Scrollbar_Horizontal
+										}
+		
+										scrollwidget = {
+											hbox = {
+												using = Scrollbox_Margins
+												datamodel = "[Faith.GetDoctrines]"
+												# debug_square = {}
+								
+												item = {
+													container = {
+														layoutpolicy_vertical = expanding
+														minimumsize = { 60 0 }
+														name = "doctrine_list_item"
+														# datacontext = "[GuiFaithDoctrineItem.GetDoctrine]"
+														visible = "[And(EqualTo_string( FaithDoctrine.GetGroup.GetGroupingKey, 'main_group' ),FaithDoctrine.IsVisible)]"
+														tooltip = "FAITH_WINDOW_DOCTRINE_TOOLTIP"
+														using = tooltip_se
+			
+														icon_doctrine = {
+															name = "doctrine_group_icon"
+															size = { 60 60 }
+															texture = "[FaithDoctrine.GetIcon]"
+		
+															tooltip = "FAITH_DOCTRINE_TT"
+														}
+										
+														text_label_center = {
+															name = "doctrine_name"
+															parentanchor = bottom|hcenter
+															widgetanchor = center
+															position = { 0 -24 }
+															maximumsize = { 60 30 }
+															fontsize_min = 8
+															multiline = yes
+															align = center
+															elide = right
+															text = "[FaithDoctrine.GetNameNoTooltip( Faith.Self )]"
+															default_format = "#high"
+														}
+													}
+												}
+		
+											}
+										}
+		
+										icon = {
+											name = "scrollbar_fade"
+											texture = "gfx/interface/scrollbars/scrollbar_fade.dds"
+											size = { 100% 100% }
+											alwaystransparent = yes
+		
+											spriteType = Corneredtiled
+											spriteborder = { 0 30 }
+										}
+									}
+		
+									text_label_center = {
+										layoutpolicy_horizontal = expanding
+										text = "FAITH_DOCTRINES_MARRIAGE"
+										default_format = "#low"
+									}
+		
+									scrollarea = {
+										size = { 400 100 }
+										position = { -10 0 }
+										scrollbarpolicy_horizontal = as_needed
+										scrollbarpolicy_vertical = always_off
+										scrollbar_horizontal = {
+											using = Scrollbar_Horizontal
+										}
+		
+										scrollwidget = {
+											hbox = {
+												using = Scrollbox_Margins
+												datamodel = "[Faith.GetDoctrines]"
+												# debug_square = {}
+								
+												item = {
+													container = {
+														layoutpolicy_vertical = expanding
+														minimumsize = { 60 0 }
+														name = "doctrine_list_item"
+														# datacontext = "[GuiFaithDoctrineItem.GetDoctrine]"
+														visible = "[And(EqualTo_string( FaithDoctrine.GetGroup.GetGroupingKey, 'marriage' ),FaithDoctrine.IsVisible)]"
+														tooltip = "FAITH_WINDOW_DOCTRINE_TOOLTIP"
+														using = tooltip_se
+			
+														icon_doctrine = {
+															name = "doctrine_group_icon"
+															size = { 60 60 }
+															texture = "[FaithDoctrine.GetGroup.GetIcon]"
+		
+															tooltip = "FAITH_DOCTRINE_TT"
+														}
+										
+														text_label_center = {
+															name = "doctrine_name"
+															parentanchor = bottom|hcenter
+															widgetanchor = center
+															position = { 0 -24 }
+															maximumsize = { 60 30 }
+															fontsize_min = 8
+															multiline = yes
+															align = center
+															elide = right
+															text = "[FaithDoctrine.GetNameNoTooltip( Faith.Self )]"
+															default_format = "#high"
+														}
+													}
+												}
+		
+											}
+										}
+		
+										icon = {
+											name = "scrollbar_fade"
+											texture = "gfx/interface/scrollbars/scrollbar_fade.dds"
+											size = { 100% 100% }
+											alwaystransparent = yes
+		
+											spriteType = Corneredtiled
+											spriteborder = { 0 30 }
+										}
+									}
+		
+									text_label_center = {
+										layoutpolicy_horizontal = expanding
+										text = "FAITH_DOCTRINES_CRIMES"
+										default_format = "#low"
+									}
+		
+									scrollarea = {
+										size = { 400 100 }
+										position = { -10 0 }
+										scrollbarpolicy_horizontal = as_needed
+										scrollbarpolicy_vertical = always_off
+										scrollbar_horizontal = {
+											using = Scrollbar_Horizontal
+										}
+		
+										scrollwidget = {
+											hbox = {
+												using = Scrollbox_Margins
+												datamodel = "[Faith.GetDoctrines]"
+												# debug_square = {}
+								
+												item = {
+													container = {
+														layoutpolicy_vertical = expanding
+														minimumsize = { 60 0 }
+														name = "doctrine_list_item"
+														# datacontext = "[GuiFaithDoctrineItem.GetDoctrine]"
+														visible = "[And(EqualTo_string( FaithDoctrine.GetGroup.GetGroupingKey, 'crimes' ),FaithDoctrine.IsVisible)]"
+														tooltip = "FAITH_WINDOW_DOCTRINE_TOOLTIP"
+														using = tooltip_se
+			
+														icon_doctrine = {
+															name = "doctrine_group_icon"
+															size = { 60 60 }
+															texture = "[FaithDoctrine.GetGroup.GetIcon]"
+		
+															tooltip = "FAITH_DOCTRINE_TT"
+														}
+										
+														text_label_center = {
+															name = "doctrine_name"
+															parentanchor = bottom|hcenter
+															widgetanchor = center
+															position = { 0 -24 }
+															maximumsize = { 60 30 }
+															fontsize_min = 8
+															multiline = yes
+															align = center
+															elide = right
+															text = "[FaithDoctrine.GetNameNoTooltip( Faith.Self )]"
+															default_format = "#high"
+														}
+													}
+												}
+		
+											}
+										}
+		
+										icon = {
+											name = "scrollbar_fade"
+											texture = "gfx/interface/scrollbars/scrollbar_fade.dds"
+											size = { 100% 100% }
+											alwaystransparent = yes
+		
+											spriteType = Corneredtiled
+											spriteborder = { 0 30 }
+										}
+									}
+		
+									text_label_center = {
+										layoutpolicy_horizontal = expanding
+										text = "FAITH_DOCTRINES_CLERGY"
+										default_format = "#low"
+									}
+		
+									scrollarea = {
+										size = { 400 100 }
+										position = { -10 0 }
+										scrollbarpolicy_horizontal = as_needed
+										scrollbarpolicy_vertical = always_off
+										scrollbar_horizontal = {
+											using = Scrollbar_Horizontal
+										}
+		
+										scrollwidget = {
+											hbox = {
+												using = Scrollbox_Margins
+												datamodel = "[Faith.GetDoctrines]"
+												# debug_square = {}
+								
+												item = {
+													container = {
+														layoutpolicy_vertical = expanding
+														minimumsize = { 60 0 }
+														name = "doctrine_list_item"
+														# datacontext = "[GuiFaithDoctrineItem.GetDoctrine]"
+														visible = "[And(EqualTo_string( FaithDoctrine.GetGroup.GetGroupingKey, 'clergy' ),FaithDoctrine.IsVisible)]"
+														tooltip = "FAITH_WINDOW_DOCTRINE_TOOLTIP"
+														using = tooltip_se
+			
+														icon_doctrine = {
+															name = "doctrine_group_icon"
+															size = { 60 60 }
+															texture = "[FaithDoctrine.GetGroup.GetIcon]"
+		
+															tooltip = "FAITH_DOCTRINE_TT"
+														}
+										
+														text_label_center = {
+															name = "doctrine_name"
+															parentanchor = bottom|hcenter
+															widgetanchor = center
+															position = { 0 -24 }
+															maximumsize = { 60 30 }
+															fontsize_min = 8
+															multiline = yes
+															align = center
+															elide = right
+															text = "[FaithDoctrine.GetNameNoTooltip( Faith.Self )]"
+															default_format = "#high"
+														}
+													}
+												}
+		
+											}
+										}
+		
+										icon = {
+											name = "scrollbar_fade"
+											texture = "gfx/interface/scrollbars/scrollbar_fade.dds"
+											size = { 100% 100% }
+											alwaystransparent = yes
+		
+											spriteType = Corneredtiled
+											spriteborder = { 0 30 }
+										}
+									}
+		
+									text_label_center = {
+										layoutpolicy_horizontal = expanding
+										text = "FAITH_DOCTRINES_SPECIAL"
+										default_format = "#low"
+									}
+									
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										datamodel = "[Faith.GetDoctrines]"
+
+										spacing = 2
+		
+										item = {
 											text_single = {
 												layoutpolicy_horizontal = expanding
-												text = "[Title.GetNameNoTooltip]"
+												visible = "[And(EqualTo_string( FaithDoctrine.GetGroup.GetGroupingKey, 'special' ),FaithDoctrine.IsVisible)]"
+		
+		
+												margin = { 17 0 }
+												margin_top = 12
+												margin_bottom = 13
+		
+												text = "[FaithDoctrine.GetNameNoTooltip( Faith.Self )]"
+												tooltip = "FAITH_WINDOW_DOCTRINE_TOOLTIP_WITH_FAITH"
+		
+												align = nobaseline
+		
+												using = tooltip_es
+		
+												background = {
+													using = Background_Area
+												}
+		
+		
 											}
+		
 										}
 									}
 								}
@@ -96,583 +1524,6 @@ types minoritywidgets {
 					}
 				}
 				expand = {}
-				vbox = {
-					layoutpolicy_horizontal = expanding
-					layoutpolicy_vertical = expanding
-					text_label_center = {
-						text = "COUNTY_MINORITY_INFO"
-						default_format = "#high"
-						using = Font_Size_Big
-					}
-					scrollbox = {
-						layoutpolicy_horizontal = expanding
-						layoutpolicy_vertical = expanding
-						spacing = 10
-						blockoverride "scrollbox_content" {
-							vbox = {
-								
-								datacontext = "[GetPlayer]"
-								name = "minority_grids"
-								vbox = {
-									spacing = 3
-									name = "county_culture_minorities_small_grid"
-									datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('culture_minorities_small')]"
-
-									item = {
-										hbox = {
-											layoutpolicy_horizontal = expanding
-											datacontext = "[Scope.GetCulture]"
-
-											background = {
-												using = Background_Area
-												margin = { 0 5 }
-											}
-											vbox = {
-												button = {
-													size = { 64 64 }
-					
-													onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
-													texture = "gfx/interface/icons/modifiers/sea_culture_minority_small.dds"
-													using = tooltip_ne
-													tooltipwidget = {
-														culture_minorities_tooltip = {
-															blockoverride "minority_label"
-															{
-																text = "[minority_culture_small|E]"
-															}
-														}
-													}
-												}
-												text_multi = {
-													text = "[Scope.Culture.GetNameNoTooltip] ([minority_culture_small|E])"
-													max_width = 100
-													min_width = 100
-													align = center
-													autoresize = yes
-												}
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
-
-												tooltip = "PROMOTE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/traits/slave.dds"
-												tooltip = "ENSLAVE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/icon_gold.dds"
-												tooltip = "INVEST_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
-												tooltip = "EXPEL_MINORITY_TOOLTIP"
-											}
-										}
-									}
-								}
-								vbox = {
-									spacing = 3
-									name = "county_culture_minorities_large_grid"
-									datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('culture_minorities_large')]"
-
-									item = {
-										hbox = {
-											layoutpolicy_horizontal = expanding
-											datacontext = "[Scope.GetCulture]"
-
-											background = {
-												using = Background_Area
-												margin = { 0 5 }
-											}
-											vbox = {
-												button = {
-													size = { 64 64 }
-					
-													onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
-													texture = "gfx/interface/icons/modifiers/sea_culture_minority_large.dds"
-													using = tooltip_ne
-													tooltipwidget = {
-														culture_minorities_tooltip = {
-															blockoverride "minority_label"
-															{
-																text = "[minority_culture_large|E]"
-															}
-														}
-													}
-												}
-												text_multi = {
-													text = "[Scope.Culture.GetNameNoTooltip] ([minority_culture_large|E])"
-													max_width = 100
-													min_width = 100
-													align = center
-													autoresize = yes
-												}
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
-
-												tooltip = "PROMOTE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/traits/slave.dds"
-												tooltip = "ENSLAVE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/icon_gold.dds"
-												tooltip = "INVEST_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
-												tooltip = "EXPEL_MINORITY_TOOLTIP"
-											}
-										}
-									}
-								}
-								vbox = {
-									spacing = 3
-									name = "county_culture_minorities_trader_grid"
-									datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('culture_minorities_trader')]"
-
-									item = {
-										hbox = {
-											layoutpolicy_horizontal = expanding
-											datacontext = "[Scope.GetCulture]"
-
-											background = {
-												using = Background_Area
-												margin = { 0 5 }
-											}
-											vbox = {
-												button = {
-													size = { 64 64 }
-					
-													onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
-													texture = "gfx/interface/icons/icon_gold.dds"
-													using = tooltip_ne
-													tooltipwidget = {
-														culture_minorities_tooltip = {
-															blockoverride "minority_label"
-															{
-																text = "[trader_minority|E]"
-															}
-														}
-													}
-												}
-												text_multi = {
-													text = "[Scope.Culture.GetNameNoTooltip] ([trader_minority|E])"
-													max_width = 100
-													min_width = 100
-													align = center
-													autoresize = yes
-												}
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
-
-												tooltip = "PROMOTE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/traits/slave.dds"
-												tooltip = "ENSLAVE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/icon_gold.dds"
-												tooltip = "INVEST_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
-												tooltip = "EXPEL_MINORITY_TOOLTIP"
-											}
-										}
-									}
-								}
-								vbox = {
-									spacing = 3
-									name = "county_culture_minorities_slave_grid"
-									datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('culture_minorities_slave')]"
-
-									item = {
-										hbox = {
-											layoutpolicy_horizontal = expanding
-											datacontext = "[Scope.GetCulture]"
-
-											background = {
-												using = Background_Area
-												margin = { 0 5 }
-											}
-											vbox = {
-												button = {
-													size = { 64 64 }
-					
-													onclick = "[OpenGameViewData( 'culture_window', Scope.Culture.GetID )]"
-													texture = "gfx/interface/icons/traits/slave.dds"
-													using = tooltip_ne
-													tooltipwidget = {
-														culture_minorities_tooltip = {
-															blockoverride "minority_label"
-															{
-																text = "[slave_minority|E]"
-															}
-														}
-													}
-												}
-												text_multi = {
-													text = "[Scope.Culture.GetNameNoTooltip] ([slave_minority|E])"
-													max_width = 100
-													min_width = 100
-													align = center
-													autoresize = yes
-												}
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
-
-												tooltip = "PROMOTE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/traits/slave.dds"
-												tooltip = "ENSLAVE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/icon_gold.dds"
-												tooltip = "INVEST_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
-												tooltip = "EXPEL_MINORITY_TOOLTIP"
-											}
-										}
-									}
-								}
-								vbox = {
-									spacing = 3
-									name = "county_faith_minorities_small_grid"
-									datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('faith_minorities_small')]"
-
-									item = {
-										hbox = {
-											layoutpolicy_horizontal = expanding
-											datacontext = "[Scope.GetFaith]"
-
-											background = {
-												using = Background_Area
-												margin = { 0 5 }
-											}
-											vbox = {
-												button = {
-													size = { 64 64 }
-
-													onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
-													texture = "[Scope.Faith.GetIcon]"
-													using = tooltip_ne
-													tooltipwidget = {
-														faith_minorities_tooltip = {
-															blockoverride "minority_label"
-															{
-																text = "[minority_faith_small|E]"
-															}
-														}
-													}
-
-													icon = {
-														name = "gold_negative_console_button_minus"
-														position = { 39 39 }
-														size = { 25 25 }
-														texture = "gfx/interface/icons/modifiers/sea_faith_minority_small.dds"
-													}
-												}
-												text_multi = {
-													text = "[Scope.Faith.GetNameNoTooltip] ([minority_faith_small|E])"
-													max_width = 100
-													min_width = 100
-													align = center
-													autoresize = yes
-												}
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
-
-												tooltip = "PROMOTE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/traits/slave.dds"
-												tooltip = "ENSLAVE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/icon_gold.dds"
-												tooltip = "INVEST_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
-												tooltip = "EXPEL_MINORITY_TOOLTIP"
-											}
-										}
-									}
-								}
-								vbox = {
-									spacing = 3
-									name = "county_faith_minorities_large_grid"
-									datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('faith_minorities_large')]"
-
-									item = {
-										hbox = {
-											layoutpolicy_horizontal = expanding
-											datacontext = "[Scope.GetFaith]"
-
-											background = {
-												using = Background_Area
-												margin = { 0 5 }
-											}
-											vbox = {
-												button = {
-													size = { 64 64 }
-
-													onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
-													texture = "[Scope.Faith.GetIcon]"
-													using = tooltip_ne
-													tooltipwidget = {
-														faith_minorities_tooltip = {
-															blockoverride "minority_label"
-															{
-																text = "[minority_faith_large|E]"
-															}
-														}
-													}
-
-													icon = {
-														name = "gold_negative_console_button_minus"
-														position = { 39 39}
-														size = { 25 25 }
-														texture = "gfx/interface/icons/modifiers/sea_faith_minority_large.dds"
-													}
-												}
-												text_multi = {
-													text = "[Scope.Faith.GetNameNoTooltip] ([minority_faith_large|E])"
-													max_width = 100
-													min_width = 100
-													align = center
-													autoresize = yes
-												}
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
-
-												tooltip = "PROMOTE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/traits/slave.dds"
-												tooltip = "ENSLAVE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/icon_gold.dds"
-												tooltip = "INVEST_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
-												tooltip = "EXPEL_MINORITY_TOOLTIP"
-											}
-										}
-									}
-								}
-								vbox = {
-									spacing = 3
-									name = "county_faith_minorities_trader_grid"
-									datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('faith_minorities_trader')]"
-
-									item = {
-										hbox = {
-											layoutpolicy_horizontal = expanding
-											datacontext = "[Scope.GetFaith]"
-
-											background = {
-												using = Background_Area
-												margin = { 0 5 }
-											}
-											vbox = {
-												button = {
-													size = { 64 64 }
-
-													onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
-													texture = "[Scope.Faith.GetIcon]"
-													using = tooltip_ne
-													tooltipwidget = {
-														faith_minorities_tooltip = {
-															blockoverride "minority_label"
-															{
-																text = "[minority_faith_large|E]"
-															}
-														}
-													}
-
-													icon = {
-														name = "gold_negative_console_button_minus"
-														position = { 39 39 }
-														size = { 25 25 }
-														texture = "gfx/interface/icons/icon_gold.dds"
-													}
-												}
-												text_multi = {
-													text = "[Scope.Faith.GetNameNoTooltip] ([trader_minority|E])"
-													max_width = 100
-													min_width = 100
-													align = center
-													autoresize = yes
-												}
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
-
-												tooltip = "PROMOTE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/traits/slave.dds"
-												tooltip = "ENSLAVE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/icon_gold.dds"
-												tooltip = "INVEST_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
-												tooltip = "EXPEL_MINORITY_TOOLTIP"
-											}
-										}
-									}
-								}
-								vbox = {
-									spacing = 3
-									name = "county_faith_minorities_slave_grid"
-									datamodel = "[GetPlayer.MakeScope.Var('selected_county').GetList('faith_minorities_slave')]"
-
-									item = {
-										hbox = {
-											layoutpolicy_horizontal = expanding
-											datacontext = "[Scope.GetFaith]"
-
-											background = {
-												using = Background_Area
-												margin = { 0 5 }
-											}
-											vbox = {
-												button = {
-													size = { 64 64 }
-
-													onclick = "[OpenGameViewData( 'faith', Scope.Faith.GetID )]"
-													texture = "[Scope.Faith.GetIcon]"
-													using = tooltip_ne
-													tooltipwidget = {
-														faith_minorities_tooltip = {
-															blockoverride "minority_label"
-															{
-																text = "[minority_faith_large|E]"
-															}
-														}
-													}
-
-													icon = {
-														name = "gold_negative_console_button_minus"
-														position = { 39 39 }
-														size = { 25 25 }
-														texture = "gfx/interface/icons/traits/slave.dds"
-													}
-												}
-												text_multi = {
-													text = "[Scope.Faith.GetNameNoTooltip] ([slave_minority|E])"
-													max_width = 100
-													min_width = 100
-													align = center
-													autoresize = yes
-												}
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
-
-												tooltip = "PROMOTE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/traits/slave.dds"
-												tooltip = "ENSLAVE_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/icon_gold.dds"
-												tooltip = "INVEST_MINORITY_TOOLTIP"
-											}
-											button = {
-												size = { 64 64 }
-
-												texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
-												tooltip = "EXPEL_MINORITY_TOOLTIP"
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
 			}
 		}
 	}
