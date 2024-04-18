@@ -228,6 +228,7 @@ caucasianroa.005 = {
 	immediate = {
 		play_music_cue = "mx_cue_epic_sacral_moment"
 		unite_circassia_decision_effect = yes
+		save_scope_as = scoped_unifier
 	}
 
 	option = {
@@ -235,14 +236,15 @@ caucasianroa.005 = {
 		add_trait = thamade
 		add_trait = achebeg
 		add_prestige = 2000
+		add_dynasty_prestige = 500
 		add_piety = 500
 		add_martial_skill = 1
 		add_diplomacy_skill = 1
-		add_prestige_level = 2
-		every_player = {
+		add_prestige_level = 1
+		every_ruler = {
 			limit = {
-				NOT = { this = title:k_circassia.holder }
-				is_within_diplo_range = { CHARACTER = title:k_circassia.holder }
+				NOT = { this = scoped_unifier }
+				is_within_diplo_range = { CHARACTER = scoped_unifier }
 			}
 			trigger_event = caucasianroa.007
 		}
@@ -338,14 +340,14 @@ caucasianroa.007 = {
 	desc = caucasianroa.007.desc
 	theme = realm
 	left_portrait = {
-		character =  title:k_circassia.holder
+		character =  scoped_unifier
 		animation = personality_honorable
 	}
 
 	immediate = {
 		#Same-faith non-empire tier rulers are over-awed.
 		if = {
-			limit = { faith = title:k_circassia.holder.faith }
+			limit = { faith = scoped_unifier.faith }
 			play_music_cue = "mx_cue_epic_sacral_moment"
 		}
 		#Otherwise, this is a tacit statement of imperial threat.
