@@ -7,6 +7,12 @@
 	}
 }
 
+on_game_start_after_lobby = {
+	on_actions = {
+		set_anarchist_coas
+	}
+}
+
 on_government_assign_start = {
 	effect = {
 		set_global_variable = {
@@ -162,7 +168,6 @@ on_government_assign_start = {
 						highest_held_title_tier = tier_barony
 						OR = {
 							has_government = feudal_government
-							has_government = republic_government
 						}
 					}
 					change_government = mandala_government
@@ -194,7 +199,6 @@ on_government_assign_start = {
 						highest_held_title_tier = tier_barony
 						OR = {
 							has_government = feudal_government
-							has_government = republic_government
 						}
 					}
 					change_government = mandala_government
@@ -524,4 +528,21 @@ add_right_to_rule_doctrines_on_game_start = {
             }
         }
     }
+}
+
+set_anarchist_coas = {
+	effect = {
+		every_ruler = {
+			limit = {
+				has_government = anarchist_government
+				is_independent_ruler = yes
+				exists = capital_county
+				exists = primary_title
+			}
+
+			primary_title = {
+				set_coa = prev.capital_county
+			}
+		}
+	}
 }
