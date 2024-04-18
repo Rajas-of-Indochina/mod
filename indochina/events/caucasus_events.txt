@@ -222,10 +222,11 @@ caucasianroa.005 = {
 	theme = realm
 	left_portrait = {
 		character = root
-		animation = personality_bold
+		animation = celebrate_sword
 	}
 
 	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
 		unite_circassia_decision_effect = yes
 	}
 
@@ -238,6 +239,13 @@ caucasianroa.005 = {
 		add_martial_skill = 1
 		add_diplomacy_skill = 1
 		add_prestige_level = 2
+		every_player = {
+			limit = {
+				NOT = { this = title:k_circassia.holder }
+				is_within_diplo_range = { CHARACTER = title:k_circassia.holder }
+			}
+			trigger_event = caucasianroa.007
+		}
 				capital_county = {
 					change_development_level = 1
 				}
@@ -322,4 +330,28 @@ caucasianroa.006 = {
 		name = caucasianroa.006.whatever
 	}
 
+}
+
+caucasianroa.007 = {
+	type = character_event
+	title = caucasianroa.007.t
+	desc = caucasianroa.007.desc
+	theme = realm
+	left_portrait = {
+		character =  title:k_circassia.holder
+		animation = personality_honorable
+	}
+
+	immediate = {
+		#Same-faith non-empire tier rulers are over-awed.
+		if = {
+			limit = { faith = title:k_circassia.holder.faith }
+			play_music_cue = "mx_cue_epic_sacral_moment"
+		}
+		#Otherwise, this is a tacit statement of imperial threat.
+		else = { play_music_cue = "mx_cue_combat_2" }
+	}
+	option = {
+		name = caucasianroa.007.ok
+	}
 }

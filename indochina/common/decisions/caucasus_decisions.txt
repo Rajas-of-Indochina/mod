@@ -186,7 +186,8 @@ circassian_decision.5 = {
 circassian_decision.6 = {
     picture = "gfx/interface/illustrations/decisions/decision_thamade.dds"
 
-    sort_order = 1
+    sort_order = 2
+	major = yes
 
     desc = circassian_decision_thamade_desc
     selection_tooltip = circassian_decision_thamade_tooltip
@@ -279,7 +280,8 @@ circassian_decision.6 = {
 circassian_decision.7 = {
     picture = "gfx/interface/illustrations/decisions/decision_ubykhs.dds"
 
-    sort_order = 1
+    sort_order = 2
+	major = yes
 
     desc = circassian_decision_seven_desc
     selection_tooltip = circassian_decision_seven_tooltip
@@ -326,7 +328,8 @@ circassian_decision.7 = {
 circassian_decision.8 = {
     picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
 
-    sort_order = 1
+    sort_order = 2
+	major = yes
 
     desc = circassian_decision_eight_desc
     selection_tooltip = circassian_decision_eight_tooltip
@@ -414,7 +417,8 @@ circassian_decision.8 = {
 circassian_decision_armenians = {
 		picture = "gfx/interface/illustrations/decisions/decision_cherkesogai.dds"
 
-		sort_order = 1
+		sort_order = 2
+	major = yes
 
 		desc = circassian_decision_nine_desc
 		selection_tooltip = circassian_decision_nine_tooltip
@@ -525,7 +529,8 @@ circassian_decision_armenians = {
 circassian_decision_dais = {
 	picture = "gfx/interface/illustrations/decisions/fp3/fp3_decision_secret_faith.dds"
 
-	sort_order = 1
+	sort_order = 2
+	major = yes
 
 	desc = circassian_decision_ten_desc
 	selection_tooltip = circassian_decision_ten_tooltip
@@ -648,12 +653,33 @@ circassian_decision_unify = {
 
 	}
 
-	ai_check_interval = 32
+	ai_check_interval = 1
+
+	ai_potential = {
+		NOT = {	#You can only do it once.
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_unify
+		}
+	}
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			culture = {	this = culture:afrabasgi }
+			culture = {	this = culture:abkhaz }
+			culture = {	this = culture:abasgi }
+		}
+		completely_controls = title:d_kassogia
+		completely_controls = title:d_papagia
+		completely_controls = title:d_eudusia
+		completely_controls = title:d_khegayk		
+		completely_controls = title:d_zichia
+	}
+
 	ai_will_do = {
 		base = 100
 	}
 }
-
 
 
 circassian_decision_kabardia = {
@@ -712,6 +738,7 @@ title:c_sabiria = {
 #}
 title:c_osuria  = { 
 set_county_culture =  culture:circassian
+set_county_faith = root.faith
 		save_scope_as = county
 		add_culture_minority_effect = {
 		CULTURE = culture:alan
@@ -721,6 +748,7 @@ set_county_culture =  culture:circassian
 }
 title:c_tsatybaerzond  = { 
 set_county_culture  = culture:circassian
+set_county_faith = root.faith
 		save_scope_as = county
 		add_culture_minority_effect = {
 		CULTURE = culture:alan
@@ -730,6 +758,7 @@ set_county_culture  = culture:circassian
 }
 title:c_nartsana  = { 
 set_county_culture  = culture:circassian
+set_county_faith = root.faith
 		save_scope_as = county
 		add_culture_minority_effect = {
 		CULTURE = culture:alan
@@ -739,6 +768,7 @@ set_county_culture  = culture:circassian
 }
 title:c_malkaria  = { 
 set_county_culture = culture:tawlu
+set_county_faith = faith:tengri_pagan
 		save_scope_as = county
 		add_culture_minority_effect = {
 		CULTURE = culture:alan
@@ -761,6 +791,7 @@ title:c_zhulat  = {
 }
 title:c_abazinia  = { 
 set_county_culture  = culture:circassian
+set_county_faith = root.faith
 }
 
 title:c_maghas  = { 
@@ -802,7 +833,28 @@ set_county_culture  = culture:circassian
 			prestige = 1000
 	}
 
-	ai_check_interval = 32
+	ai_check_interval = 1
+
+	ai_potential = {
+		NOT = {	#You can only do it once.
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_kabardia
+		}
+	}
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			culture = {	this = culture:afrabasgi }
+			culture = {	this = culture:abkhaz }
+			culture = {	this = culture:abasgi }
+		}
+		has_title = title:k_circassia
+		completely_controls = title:d_alania
+		completely_controls = title:d_karabulakia
+		#current_year >= 1000
+	}
+
 	ai_will_do = {
 		base = 100
 	}
