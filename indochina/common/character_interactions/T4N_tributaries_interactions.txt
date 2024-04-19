@@ -339,11 +339,21 @@ call_suzerain_to_war = {
     is_shown = {
         scope:actor = { #put here every tributary type which should be able to call suzerain
             is_at_war = yes
+            is_at_war_as_defender = yes
             has_variable = my_suzerain
             var:my_suzerain = {
                 this = scope:recipient
             }
-            NOT = { is_at_war_with = scope:recipient }
+            NOT = {
+                is_at_war_with = scope:recipient
+            }
+            # Can't call to war against your own suzerain's tributary
+            NOT = {
+                scope:target.casus_belli.primary_defender = {
+                    has_variable = my_suzerain
+                    var:my_suzerain = { this = scope:recipient }
+                }
+            }
         }
     }
 
