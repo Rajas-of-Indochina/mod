@@ -183,6 +183,38 @@ circassian_decision.5 = {
 	}
 }
 
+circassian_decision_dag = {
+    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+
+    sort_order = 100
+
+    desc = circassian_decision_dag_desc
+    selection_tooltip = circassian_decision_ddag_tooltip
+	ai_check_interval = 36
+
+    is_shown = {
+		NOT = { faith = faith:dagestan_pagan }
+			culture = {	has_cultural_pillar = heritage_aghvank }
+        religion = { is_in_family = rf_pagan }
+    }
+
+    effect = {
+		set_character_faith_with_conversion = faith:dagestan_pagan
+	}
+
+	ai_potential = {
+		NOT = { faith = faith:dagestan_pagan }
+	    culture = {	has_cultural_pillar = heritage_aghvank }
+        religion = { is_in_family = rf_pagan }
+		is_adult = yes
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
 circassian_decision.6 = {
     picture = "gfx/interface/illustrations/decisions/decision_thamade.dds"
 
@@ -304,6 +336,7 @@ circassian_decision.7 = {
 		}
         age < 30
 		prestige_level >=1
+		current_year >= 1000
     }
 
 	effect = {
@@ -315,11 +348,24 @@ circassian_decision.7 = {
 	}
 
 	ai_potential = {
-		always = no
+		culture = {	this = culture:ubykh }
+		knows_language = language_circassian
+		custom_tooltip = {
+			text = circassianize_decision_requirement
+			any_spouse	= {
+				has_culture	= culture:circassian
+			}
+			any_courtier	= {
+				has_culture	= culture:circassian
+			}
+		}
+        age < 30
+		prestige_level >=1
+		current_year >= 1000
 	}
 
 	ai_will_do = {
-		base = 0
+		base = 100
 	}
 }
 
@@ -358,9 +404,6 @@ circassian_decision.8 = {
 			culture = {	this = culture:ubykh }
 		}
 		faith = faith:circassian_christianity
-		NOT = {
-			religion = religion:islam_religion
-		}
 		AND = {
 			custom_tooltip = {
 				text = circassiantribal_requirement
@@ -423,6 +466,7 @@ circassian_decision_armenians = {
 		selection_tooltip = circassian_decision_nine_tooltip
 
         is_shown = {
+			current_year >= 1000
 			NOT = {	#You can only do it once.
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -471,7 +515,7 @@ circassian_decision_armenians = {
 			prestige >= 1000
 			custom_tooltip = {
 				text = yearthousand_customtooltip
-			current_year >= 1000
+			current_year >= 1100
 			}
 		}
 
@@ -534,6 +578,7 @@ circassian_decision_dais = {
 	selection_tooltip = circassian_decision_ten_tooltip
 
 	is_shown = {
+			current_year >= 950
 		NOT = {	#You can only do it once.
 		is_target_in_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -601,9 +646,6 @@ circassian_decision_dais = {
 }
 }
 
-
-
-
 circassian_decision_unify = {
 	picture = "gfx/interface/illustrations/decisions/unify.dds"
 	desc = circassian_decision_unify_desc
@@ -633,6 +675,12 @@ circassian_decision_unify = {
 		completely_controls = title:d_eudusia
 		completely_controls = title:d_khegayk		
 		completely_controls = title:d_zichia	
+			custom_tooltip = {
+				text = circassiannotstateless_requirement
+				NOT = {
+					has_government	= anarchist_government
+				}
+			}
 	}
 
 	effect = {
@@ -708,8 +756,8 @@ circassian_decision_kabardia = {
 		has_title = title:k_circassia
 		completely_controls = title:d_alania
 		completely_controls = title:d_karabulakia
-		#title:d_alania = { title_held_years >= 20 }		 #remember to activate these later when testing is done	
-		#current_year >= 1000
+		title:d_alania = { title_held_years >= 20 }		 #remember to activate these later when testing is done	
+		current_year >= 1000
 	}
 
 	effect = {
