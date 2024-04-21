@@ -24,6 +24,7 @@ circassian_decision.1 = {
 		OR = {
 			has_government	= tribal_government
 			has_government	= nomadic_government
+			has_government	= stateless_government
 		}
     }
 
@@ -654,6 +655,7 @@ circassian_decision_unify = {
 	major = yes
 
 	is_shown = {
+		is_ai = no
 		NOT = {	#You can only do it once.
 		is_target_in_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -670,11 +672,13 @@ circassian_decision_unify = {
 	}
 
 	is_valid = {
-		completely_controls = title:d_kassogia
+			AND = {
 		completely_controls = title:d_papagia
 		completely_controls = title:d_eudusia
 		completely_controls = title:d_khegayk		
-		completely_controls = title:d_zichia	
+		completely_controls = title:d_zichia
+		completely_controls = title:d_kassogia
+			}
 			custom_tooltip = {
 				text = circassiannotstateless_requirement
 				NOT = {
@@ -689,6 +693,143 @@ circassian_decision_unify = {
 			trigger_event = {	id = caucasianroa.005 }
 			give_nickname = ROA_nick_the_radiant	
 		}	
+			add_gold = 25
+			spawn_army = { 
+				name = event_troop_default_name
+		        levies = {
+			        value = 500 #King's new army
+	        	}
+				men_at_arms = {
+					type = jigit_riders_unit
+					stacks = 1
+				}
+				men_at_arms = {
+					type = pikemen_unit
+					stacks = 1
+				}
+				location = province:15596
+				origin = province:15596
+				inheritable = no
+			}	
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_unify
+		}
+	}
+
+	cost = {
+
+	}
+
+	ai_check_interval = 0
+
+	ai_potential = {
+always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+circassian_decision_unify_ai = {
+	picture = "gfx/interface/illustrations/decisions/unify.dds"
+	desc = circassian_decision_unify_desc
+	selection_tooltip = circassian_decision_unify_tooltip
+	sort_order = 100
+	major = yes
+
+	is_shown = {
+		is_ai = yes
+		NOT = {	#You can only do it once.
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_unify
+		}
+	}
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			culture = {	this = culture:afrabasgi }
+			culture = {	this = culture:abkhaz }
+			culture = {	this = culture:abasgi }
+		}
+	}
+
+	is_valid = {
+		is_ai = yes
+		OR = {
+		has_title = title:d_papagia			
+		completely_controls = title:d_papagia
+		}
+				OR = {
+		has_title = title:d_eudusia
+		completely_controls = title:d_eudusia
+				}
+				OR = {
+		has_title = title:d_khegayk		
+		completely_controls = title:d_khegayk	
+				}	
+				OR = {
+		has_title = title:d_zichia
+		completely_controls = title:d_zichia
+				}
+				OR = {
+		has_title = title:d_kassogia
+		completely_controls = title:d_kassogia
+			}
+			custom_tooltip = {
+				text = circassiannotstateless_requirement
+				NOT = {
+					has_government	= anarchist_government
+				}
+			}
+	}
+
+	effect = {
+	title:d_alania = { 
+  set_de_jure_liege_title = title:k_circassia
+}
+		custom_tooltip = {
+			text = unify_customtooltip
+			trigger_event = {	id = caucasianroa.005 }
+			give_nickname = ROA_nick_the_radiant	
+		}	
+			add_gold = 200
+			spawn_army = { 
+				name = event_troop_default_name
+		        levies = {
+			        value = 500 #King's new army, AI
+	        	}
+				men_at_arms = {
+					type = jigit_riders_unit
+					stacks = 1
+				}
+				men_at_arms = {
+					type = pikemen_unit
+					stacks = 1
+				}
+				location = province:15596
+				origin = province:15596
+				inheritable = no
+			}	
+			spawn_army = { 
+				name = event_troop_default_name
+		        levies = {
+			        value = 500 #King's new army
+	        	}
+				men_at_arms = {
+					type = jigit_riders_unit
+					stacks = 1
+				}
+				men_at_arms = {
+					type = pikemen_unit
+					stacks = 1
+				}
+				location = province:15596
+				origin = province:15596
+				inheritable = no
+			}	
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
 			target = flag:circassian_decision_unify
@@ -715,11 +856,32 @@ circassian_decision_unify = {
 			culture = {	this = culture:abkhaz }
 			culture = {	this = culture:abasgi }
 		}
-		completely_controls = title:d_kassogia
+		OR = {
+		has_title = title:d_papagia			
 		completely_controls = title:d_papagia
+		}
+				OR = {
+		has_title = title:d_eudusia
 		completely_controls = title:d_eudusia
-		completely_controls = title:d_khegayk		
+				}
+				OR = {
+		has_title = title:d_khegayk		
+		completely_controls = title:d_khegayk	
+				}	
+				OR = {
+		has_title = title:d_zichia
 		completely_controls = title:d_zichia
+				}
+				OR = {
+		has_title = title:d_kassogia
+		completely_controls = title:d_kassogia
+			}
+			custom_tooltip = {
+				text = circassiannotstateless_requirement
+				NOT = {
+					has_government	= anarchist_government
+				}
+			}
 	}
 
 	ai_will_do = {
@@ -736,6 +898,7 @@ circassian_decision_kabardia = {
 	major = yes
 
 	is_shown = {
+		is_ai = no
 		has_title = title:k_circassia
 		NOT = {	#You can only do it once.
 		is_target_in_global_variable_list = {
@@ -756,8 +919,7 @@ circassian_decision_kabardia = {
 		has_title = title:k_circassia
 		completely_controls = title:d_alania
 		completely_controls = title:d_karabulakia
-		title:d_alania = { title_held_years >= 20 }		 #remember to activate these later when testing is done	
-		current_year >= 1000
+		title:d_alania = { title_held_years >= 30 }		 #remember to activate these later when testing is done	
 	}
 
 	effect = {
@@ -766,7 +928,7 @@ title:d_alania = {
 	limit = { religion = religion:christianity_religion }
     set_coa = d_alania_kabardia
 	}
-		else = {     set_coa = d_alania_kabardia_islam" }
+		else = {     set_coa = d_alania_kabardia_islam }
   set_title_name = d_kabardia
   set_color_from_title = title:d_kabardia
   set_de_jure_liege_title = title:k_circassia
@@ -873,6 +1035,15 @@ set_county_culture  = culture:circassian
 					}
 }
 
+title:c_digoria  = { 
+set_county_culture  = culture:alan
+change_development_level = 1
+}
+
+title:c_darialani  = { 
+set_county_culture  = culture:alan
+}
+
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
 			target = flag:circassian_decision_kabardia
@@ -887,6 +1058,26 @@ set_county_culture  = culture:circassian
 	ai_check_interval = 1
 
 	ai_potential = {
+      always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+circassian_decision_kabardia_ai = {
+	picture = "gfx/interface/illustrations/decisions/kabardia.dds"
+	desc = circassian_decision_kabardia_desc
+	selection_tooltip = circassian_decision_kabardia_tooltip
+	sort_order = 100
+	major = yes
+
+	is_shown = {
+		is_ai = yes
+		has_title = title:k_circassia
+		completely_controls = title:d_alania
+		current_year >= 1000
 		NOT = {	#You can only do it once.
 		is_target_in_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -900,10 +1091,193 @@ set_county_culture  = culture:circassian
 			culture = {	this = culture:abkhaz }
 			culture = {	this = culture:abasgi }
 		}
+	}
+
+	is_valid = {
 		has_title = title:k_circassia
 		completely_controls = title:d_alania
-		completely_controls = title:d_karabulakia
-		#current_year >= 1000
+		current_year >= 1000
+	}
+
+	effect = {
+title:d_alania = { 
+	if = {	
+	limit = { religion = religion:christianity_religion }
+    set_coa = d_alania_kabardia
+	}
+		else = {     set_coa = d_alania_kabardia_islam }
+  set_title_name = d_kabardia
+  set_color_from_title = title:d_kabardia
+  set_de_jure_liege_title = title:k_circassia
+}
+title:d_karabulakia = { 
+  set_coa = d_karabulakia_kabardia
+  set_title_name = d_little_kabardia
+  set_de_jure_liege_title = title:k_circassia
+}
+title:d_sabiria = {
+ set_de_jure_liege_title = title:k_circassia
+}
+title:c_sabiria = {
+  set_title_name = d_shetqal
+}
+title:c_terek_alania = { 
+  set_title_name = d_terch
+}
+title:c_osuria  = { 
+set_county_culture =  culture:circassian
+set_county_faith = root.faith
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = small
+		COUNTY = scope:county
+					}
+}
+title:c_tsatybaerzond  = { 
+set_county_culture  = culture:circassian
+set_county_faith = root.faith
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = small
+		COUNTY = scope:county
+					}
+}
+title:c_nartsana  = { 
+set_county_culture  = culture:circassian
+set_county_faith = root.faith
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = small
+		COUNTY = scope:county
+					}
+}
+title:c_malkaria  = { 
+set_county_culture = culture:tawlu
+set_county_faith = faith:tengri_pagan
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = small
+		COUNTY = scope:county
+					}
+		add_culture_minority_effect = {
+		CULTURE = culture:circassian
+		SIZE = small
+		COUNTY = scope:county
+					}
+}
+title:c_zhulat  = { 
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:circassian
+		SIZE = large
+		COUNTY = scope:county
+					}
+}
+title:c_abazinia  = { 
+set_county_culture  = culture:circassian
+set_county_faith = root.faith
+}
+
+title:c_maghas  = { 
+set_county_culture  = culture:circassian
+set_county_faith = root.faith
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = large
+		COUNTY = scope:county
+					}
+}
+title:c_skhimar  = { 
+set_county_culture  = culture:circassian
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = small
+		COUNTY = scope:county
+					}
+}
+
+title:c_kaesaeg  = { 
+set_county_culture  = culture:circassian
+		save_scope_as = county
+		add_culture_minority_effect = {
+		CULTURE = culture:alan
+		SIZE = small
+		COUNTY = scope:county
+					}
+}
+
+title:c_digoria  = { 
+set_county_culture  = culture:alan
+change_development_level = 1
+}
+
+title:c_darialani  = { 
+set_county_culture  = culture:alan
+}
+
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_kabardia
+		}
+	}
+
+	cost = {
+
+	}
+
+	ai_check_interval = 2
+
+	ai_potential = {
+always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+circassian_decision_mtielta = {
+    picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+    sort_order = 100
+    desc = circassian_decision_mtielta_desc
+    selection_tooltip = circassian_decision_mtielta_tooltip
+	ai_check_interval = 60
+
+    is_shown = {
+		OR = {
+			culture = { this = culture:alan }
+			culture = {	this = culture:svan }
+				}
+        NOT = { faith = faith:mtielta }
+        religion = religion:christianity_religion
+		OR = {
+			has_government	= tribal_government
+			has_government	= nomadic_government
+			has_government	= stateless_government
+		}
+    }
+
+    effect = {
+		set_character_faith_with_conversion = faith:mtielta
+		add_piety = 100
+		add_prestige = 100
+	}
+
+	ai_potential = {
+        NOT = { faith = faith:mtielta }
+		OR = {
+			culture = {	this = culture:alan }
+			culture = {	this = culture:svan }
+				}
+        religion = religion:christianity_religion
+		is_adult = yes
+		is_at_war = no
 	}
 
 	ai_will_do = {
