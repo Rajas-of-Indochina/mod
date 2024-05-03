@@ -1619,16 +1619,23 @@ tradition_caucasian_tenacity = {
 
 	is_shown = {
 		has_cultural_pillar = heritage_ciscaucasian
-		# NOT = { has_cultural_tradition = tradition_highland_warriors }
+		NOR = {
+			has_cultural_tradition = tradition_mountaineers
+			has_cultural_tradition = tradition_highland_warriors
+			has_cultural_tradition = tradition_horn_mountain_skirmishing
+			has_cultural_tradition = tradition_caucasian_wolves
+			has_cultural_tradition = tradition_heirs_of_illuminator
+		}
 	}
 	can_pick = {
 		has_cultural_pillar = heritage_ciscaucasian
 		custom_description = {
-			text = culture_in_mountains_desc
+			text = culture_in_mountains_or_hills_desc
 			any_culture_county = {
 				any_county_province = {
 					OR = {
 						terrain = mountains
+						terrain = hills
 						terrain = desert_mountains
 					}
 				}
@@ -1639,18 +1646,23 @@ tradition_caucasian_tenacity = {
 	parameters = {
 		rough_terrain_expert_trait_more_common = yes
 		mountain_trait_bonuses = yes
+		hill_trait_bonuses = yes
 		can_recruit_mountain_specialist = yes
+		can_recruit_hill_specialist = yes
 	}
 	province_modifier = {
 		mountains_levy_size = 0.1
 		desert_mountains_levy_size = 0.1
+		hills_levy_size = 0.1
 		mountains_supply_limit_mult = 0.25
 		desert_mountains_supply_limit_mult = 0.25
+		hills_supply_limit_mult = 0.25
 		garrison_size = 0.25
 	}
 	character_modifier = {
 		mountains_travel_danger = mountains_medium_danger_reduction
 		desert_mountains_travel_danger = desert_mountains_medium_danger_reduction
+		hills_travel_danger = hills_medium_danger_reduction
 		defender_advantage = 5
 	}
 
@@ -1682,6 +1694,7 @@ tradition_caucasian_tenacity = {
 							any_county_province = {
 								OR = {
 									terrain = mountains
+									terrain = hills
 									terrain = desert_mountains
 								}
 							}
@@ -1709,6 +1722,7 @@ tradition_caucasian_tenacity = {
 							any_county_province = {
 								OR = {
 									terrain = mountains
+									terrain = hills
 									terrain = desert_mountains
 								}
 							}
@@ -1904,7 +1918,7 @@ tradition_highland_tower_architects = {
 
 	layers = {
 		0 = martial
-		1 = western
+		1 = mena
 		4 = tower.dds
 	}
 
@@ -1915,6 +1929,7 @@ tradition_highland_tower_architects = {
 			has_cultural_pillar = heritage_aghvank
 		}
 		NOR = {
+			has_cultural_tradition = tradition_mountain_homes
 			has_cultural_tradition = tradition_mountaineer_ruralism
 		}
 	}
@@ -1942,10 +1957,13 @@ tradition_highland_tower_architects = {
 		hill_farms_building_bonuses = yes
 		rough_terrain_expert_trait_more_common = yes
 		mountain_trait_bonuses = yes
+		hill_trait_bonuses = yes
 		can_recruit_mountain_specialist = yes
+		can_recruit_hill_specialist = yes
 	}
 	character_modifier = {
-		mountains_travel_danger = mountains_high_danger_reduction
+		mountains_travel_danger = mountains_medium_danger_reduction
+		desert_mountains_travel_danger = desert_mountains_medium_danger_reduction
 		hills_travel_danger = hills_high_danger_reduction
 	}
 	county_modifier = {
@@ -1957,6 +1975,8 @@ tradition_highland_tower_architects = {
 		hills_holding_construction_gold_cost = -0.1
 		mountains_construction_gold_cost = -0.1
 		mountains_holding_construction_gold_cost = -0.1
+		desert_mountains_construction_gold_cost = -0.1
+		desert_mountains_holding_construction_gold_cost = -0.1
 	}
 
 	cost = {
@@ -2010,6 +2030,137 @@ tradition_highland_tower_architects = {
 								OR = {
 									terrain = mountains
 									terrain = hills
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
+tradition_heirs_of_illuminator = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = mena
+		4 = mountain.dds
+	}
+
+	#For Armenians and diverged or hybrydised cultures - replaces the Mountaineers and Highland Warriors traditions.
+	is_shown = {
+		OR = {
+			this = culture:armenian
+			any_parent_culture_or_above = {
+				this = culture:armenian
+			}
+		}
+		NOR = {
+			has_cultural_tradition = tradition_highland_warriors
+			has_cultural_tradition = tradition_mountaineers
+			has_cultural_tradition = tradition_horn_mountain_skirmishing
+			has_cultural_tradition = tradition_caucasian_wolves
+			has_cultural_tradition = tradition_caucasian_tenacity
+		}
+	}
+
+	can_pick = {
+		custom_description = {
+			text = culture_in_mountains_or_hills_desc
+			any_culture_county = {
+				any_county_province = {
+					OR = {
+						terrain = mountains
+						terrain = hills
+						terrain = desert_mountains
+					}
+				}
+			}
+		}
+	}
+
+	parameters = {
+		unlock_maa_ayrudzi = yes
+		rough_terrain_expert_trait_more_common = yes
+		mountain_trait_bonuses = yes
+		hill_trait_bonuses = yes
+		can_recruit_mountain_specialist = yes
+		can_recruit_hill_specialist = yes
+	}
+	province_modifier = {
+		mountains_levy_size = 0.1
+		desert_mountains_levy_size = 0.1
+		hills_levy_size = 0.1
+		mountains_supply_limit_mult = 0.25
+		desert_mountains_supply_limit_mult = 0.25
+		hills_supply_limit_mult = 0.25
+	}
+	character_modifier = {
+		mountains_travel_danger = mountains_low_danger_reduction
+		desert_mountains_travel_danger = desert_mountains_low_danger_reduction
+		hills_travel_danger = hills_medium_danger_reduction
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = hills
+									terrain = desert_mountains
+								}
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = mountain_percentage_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = {
+		value = 1000
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = hills
+									terrain = desert_mountains
 								}
 							}
 						}
