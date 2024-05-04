@@ -1419,5 +1419,44 @@ reform_anarchy_to_tribalism_decision_circassian = {
 
 
 
+circassian_decision_aghvank = {
+    picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+    sort_order = 100
+    desc = circassian_decision_mtielta_desc
+    selection_tooltip = circassian_decision_mtielta_tooltip
+	ai_check_interval = 60
+
+    is_shown = {
+		culture = {	has_cultural_pillar = heritage_aghvank }
+        NOT = { faith = faith:NEC_orthodox }
+        religion = religion:christianity_religion
+		OR = {
+			has_government	= tribal_government
+			has_government	= nomadic_government
+			has_government	= stateless_government
+		}
+    }
+
+    effect = {
+		set_character_faith_with_conversion = faith:NEC_orthodox
+		add_piety = 100
+		add_prestige = 100
+	}
+
+	ai_potential = {
+        NOT = { faith = faith:mtielta }
+		culture = {	has_cultural_pillar = heritage_aghvank }
+        religion = religion:christianity_religion
+		is_adult = yes
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+
+
 
 
