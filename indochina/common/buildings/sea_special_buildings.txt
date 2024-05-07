@@ -2130,7 +2130,7 @@ mount_elbrus_01 = {
 
 tkhapsh_khajokh_01 = {
 
-	construction_time = very_slow_construction_time
+	construction_time = slow_construction_time
 
 	type_icon = "icon_tkhapsh.dds"
 
@@ -2177,4 +2177,50 @@ tkhapsh_khajokh_01 = {
 	flag = travel_point_of_interest_religious # tkhapsh
 }
 
+
+huaisheng_mosque = { # Huaisheng Mosque built during the life of prophet Muhammad
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "becp_icon_qianguangdian.dds"
+	
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+	
+	can_construct = {
+		OR = {
+			scope:holder = {
+				religion = religion:islam_religion
+			}
+			custom_description = {
+				text = holy_site_building_trigger
+				barony = {
+					is_holy_site_of = scope:holder.faith
+				}
+			}
+		}
+	}
+	
+	show_disabled = yes
+	
+	cost_gold = 1000
+
+	character_modifier = {
+	    islam_religion_opinion = 5
+		monthly_county_control_growth_factor = 0.01
+	}
+	
+	ai_value = {
+		base = 100
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+	}
+	
+	type = special
+
+	flag = travel_point_of_interest_religious
+}
 
