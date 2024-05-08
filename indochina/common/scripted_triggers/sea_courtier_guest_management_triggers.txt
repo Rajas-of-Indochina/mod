@@ -1,0 +1,31 @@
+﻿###POOL TRIGGERS### Below is borrowed from FlyingSturgeon on the co-op to curtail Shinto courtiers in Byzantium
+is_visitable_relation_trigger = {
+    exists = capital_province
+    capital_province = { local_pool_is_full_trigger = no }
+    opinion = {
+        target = $CHARACTER$
+        value >= medium_negative_opinion
+    }
+    # OR = {    # Not in Vanilla Added to try fix Wandering across world into bumfuck nowhere Pagan Guinea as Insular Irishmen
+        # knows_language_of_culture = $CHARACTER$
+        # knows_court_language_of = $CHARACTER$
+        # cultural_acceptance = { target = $CHARACTER$.culture value >= 40 }
+		# # We can make exceptions for vagabonds, adventurers and weirdos.
+		# has_trait = adventurer
+		# has_trait = lifestyle_traveler
+		# has_trait = brave
+		# has_trait = eccentric
+		# has_trait = fickle
+    # }
+    reverse_opinion = {
+        target = $CHARACTER$
+        value >= medium_negative_opinion
+    }
+    NOT = { this = $CHARACTER$.host }
+    $CHARACTER$ = {
+        NAND = {
+            exists = var:last_visited_ruler
+            var:last_visited_ruler = prev
+        }
+    }
+}
