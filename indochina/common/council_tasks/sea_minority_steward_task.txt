@@ -975,8 +975,18 @@ task_promote_minority = {
 	monthly_on_action = task_promote_culture_side_effects
 
 	on_start_task_county = {
-		scope:councillor_liege = {
-			trigger_event = minorities.2001
+		if = {
+			limit = {
+				scope:county = {
+					NOR = {
+						exists = scope:county.var:faith_to_convert
+						exists = scope:county.var:culture_to_convert
+					}
+				}
+			}
+			scope:councillor_liege = {
+				trigger_event = minorities.2001
+			}
 		}
 	}
 	on_finish_task_county = {
@@ -1037,7 +1047,9 @@ task_promote_minority = {
 	}
 
 	on_cancel_task_county = {
-		remove_variable = faith_to_convert
-		remove_variable = culture_to_convert
+		scope:county = {
+			remove_variable = faith_to_convert
+			remove_variable = culture_to_convert
+		}
 	}
 }
