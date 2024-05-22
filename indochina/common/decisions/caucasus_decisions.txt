@@ -5,6 +5,68 @@
 
 # Caucasian decisions by Patlichan, edited by Shautora.
 
+avar_decision_sassanid = {
+	picture = "gfx/interface/illustrations/decisions/decision_family_tree.dds"
+	desc = avar_decision_sassanid_desc
+	sort_order = 100
+	major = yes
+
+	is_shown = {
+		always = yes
+		dynasty = dynasty:nutsal_dynasty
+		NOT = {	#You can only do it once.
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_sassanid
+		}
+	}
+	}
+
+	is_valid = {
+		dynasty = dynasty:nutsal_dynasty
+		is_house_head = yes
+		knows_language = language_iranian
+		prestige_level >=3
+			OR = {
+				stewardship >= 20
+				diplomacy >= 20
+			}
+			prestige >= 1000
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = avarsassanid_customtooltip
+			trigger_event = {
+			id = caucasianroa.008
+			days = 35 }
+			character:216021 = {
+				save_scope_as = farrukhan_scope
+			}
+			character:saririds_1 = {
+				save_scope_as = abukhosro_scope
+			}
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_sassanid
+		}
+	}
+
+	cost = {
+		gold = 350
+		prestige = 1000
+	}
+
+	ai_check_interval = 32
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
 circassian_decision.1 = {
     picture = "gfx/interface/illustrations/decisions/decision_circassian_christianity.dds"
 
@@ -564,7 +626,10 @@ circassian_decision_armenians = {
 		effect = {
 			custom_tooltip = {
 				text = cherkesogai_customtooltip
-				trigger_event = {	id = caucasianroa.002 delayed = yes }
+				trigger_event = {
+				id = caucasianroa.002 
+				days = 15
+			}
 			}
 			capital_county = {
 				change_development_level = 1
@@ -1589,37 +1654,6 @@ circassian_decision_lak = {
 
 	ai_will_do = {
 		base = 100
-	}
-}
-
-avar_decision_sassanid = {
-	picture = "gfx/interface/illustrations/decisions/decision_family_tree.dds"
-	desc = avar_decision_sassanid_desc
-	sort_order = 100
-	major = no
-
-	is_shown = {
-		always = no
-	}
-
-	is_valid = {
-		
-	}
-
-	effect = {
-		
-	}
-
-	cost = {
-
-	}
-
-	ai_check_interval = 32
-	ai_potential = {
-		always = no
-	}
-	ai_will_do = {
-		base = 0
 	}
 }
 
