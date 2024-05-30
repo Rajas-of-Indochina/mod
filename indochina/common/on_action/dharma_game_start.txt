@@ -2,6 +2,7 @@
 on_game_start_after_lobby = {
 	on_actions = {
 		do_RICE_magadha_setup_maybe
+		setup_pagan_doctrines
 	}
 }
 
@@ -16,6 +17,48 @@ do_RICE_magadha_setup_maybe = {
 			title:b_anuradhapura.title_province = {
 				add_special_building_slot = generic_university
 				add_special_building = generic_university
+			}
+		}
+	}
+}
+on_game_start_after_lobby = {
+	events = {
+		dharma_artifacts.001	# Generating Historical Artifacts
+	}
+}
+
+setup_pagan_doctrines = {
+	effect = {
+		every_religion_global = {
+			if = {
+				limit = { is_in_family = rf_pagan }
+				every_faith = {
+					add_doctrine = special_doctrine_is_pagan_faith
+				}
+			}
+			else_if = {
+				limit = { is_in_family = rf_east_asian_pagan }
+				every_faith = {
+					add_doctrine = special_doctrine_is_east_asian_pagan_faith
+				}
+			}
+			else_if = {
+				limit = { is_in_family = rf_nusantaran }
+				every_faith = {
+					add_doctrine = special_doctrine_is_nusantaran_faith
+				}
+			}
+			else_if = {
+				limit = { is_in_family = rf_south_asian }
+				every_faith = {
+					add_doctrine = special_doctrine_is_south_asian_faith
+				}
+			}
+			else_if = {
+				limit = { is_in_family = rf_steppe_pagan }
+				every_faith = {
+					add_doctrine = special_doctrine_is_steppe_pagan_faith
+				}
 			}
 		}
 	}

@@ -195,6 +195,8 @@ doctrine_mz_syncretism = {
 	}
 
 	tenet_unreformed_syncretism = {
+		# This is getting narrowed to European Paganism specifically
+		# Pagan syncretism is getting split
 		piety_cost = {
 			if = {
 				limit = { doctrine:doctrine_pluralism_pluralistic = {is_in_list = selected_doctrines} }
@@ -216,14 +218,12 @@ doctrine_mz_syncretism = {
 		}
 
 		is_shown = {
-			NOT = { has_doctrine = pagan_hostility_doctrine }
+			NOT = { has_doctrine = is_pagan_faith }
 		}
 		parameters = {
-			hostility_override_unreformed_faith_doctrine = 1
-			hostility_override_west_african_unreformed_faith_doctrine = 1
-			unreformed_syncretic_actor_opinion_active = yes
-			opinion_of_unreformed_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
-			unreformed_syncretic_conversion_malus_active = yes
+			hostility_override_special_doctrine_is_pagan_faith = 2
+			pagan_syncretic_actor_opinion_active = yes
+			opinion_of_pagan_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
 		}
 		traits = {
 			virtues = { humble }
@@ -356,8 +356,310 @@ doctrine_mz_syncretism = {
 			sins = { cynical greedy }
 		}
 	}
+
+	tenet_near_east_syncretism = {
+		piety_cost = {
+			if = {
+				limit = {
+					OR = {
+						has_doctrine = pagan_hostility_doctrine
+						has_doctrine = special_doctrine_is_eastern_faith
+						has_doctrine = tenet_gnosticism # Gnosticism already makes you pally with the dualists
+					}
+				}
+				value = faith_tenet_cost_low
+			}
+			else_if = {
+				limit = {
+					OR = {
+						religion_tag = islam_religion
+						religion_tag = christianity_religion
+					}
+				}
+				value = faith_tenet_cost_high
+			}
+			else = {
+				value = faith_tenet_cost_mid
+			}
+
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_eastern_syncretism }
+				multiply = 0
+			}
+		}
+
+		is_shown = {
+			OR = {
+				has_doctrine = abrahamic_hostility_doctrine
+				has_doctrine = pagan_hostility_doctrine
+			}
+		}
+
+		can_pick = {
+			custom_description = {
+				text = incompatible_tenet_gnosticism_trigger
+				NOT = {
+					flag:tenet_gnosticism = { is_in_list = selected_doctrines }
+				}
+			}
+		}
+
+		parameters = {
+			hostility_override_special_doctrine_is_near_east_faith = 2
+			#For loc:
+			is_near_east_faith_bilateral_loc_override = 2
+			near_east_syncretic_actor_opinion_active = yes
+			opinion_of_near_east_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
+		}
+		traits = {
+			virtues = { honest }
+			sins = { wrathful }
+		}
+	}
+
+	tenet_east_asian_syncretism = {
+		# Pagan syncretism is getting split
+		piety_cost = {
+			if = {
+				limit = { doctrine:doctrine_pluralism_pluralistic = {is_in_list = selected_doctrines} }
+				value = faith_tenet_cost_low
+			}
+			else_if = {
+				limit = { doctrine:doctrine_pluralism_fundamentalist = {is_in_list = selected_doctrines} }
+				value = faith_tenet_cost_high
+			}
+			else = {
+				value = faith_tenet_cost_mid
+			}
+	
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_east_asian_syncretism }
+				multiply = 0
+			}
+		}
+	
+		is_shown = {
+			NOT = { has_doctrine = special_doctrine_is_east_asian_faith }
+		}
+		parameters = {
+			hostility_override_special_doctrine_is_east_asian_faith = 1
+			east_asian_syncretic_actor_opinion_active = yes
+			opinion_of_east_asian_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
+		}
+		traits = {
+			virtues = { humble }
+			sins = { arrogant }
+		}
+	}
+
+	tenet_nusantaran_syncretism = {
+		# Pagan syncretism is getting split
+		piety_cost = {
+			if = {
+				limit = { doctrine:doctrine_pluralism_pluralistic = {is_in_list = selected_doctrines} }
+				value = faith_tenet_cost_low
+			}
+			else_if = {
+				limit = { doctrine:doctrine_pluralism_fundamentalist = {is_in_list = selected_doctrines} }
+				value = faith_tenet_cost_high
+			}
+			else = {
+				value = faith_tenet_cost_mid
+			}
+	
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_nusantaran_syncretism }
+				multiply = 0
+			}
+		}
+	
+		is_shown = {
+			NOT = { has_doctrine = special_doctrine_is_nusantaran_faith }
+		}
+		parameters = {
+			hostility_override_special_doctrine_is_nusantaran_faith = 1
+			nusantaran_syncretic_actor_opinion_active = yes
+			opinion_of_nusantaran_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
+		}
+		traits = {
+			virtues = { humble }
+			sins = { arrogant }
+		}
+	}
+
+	tenet_south_asian_syncretism = {
+		# Pagan syncretism is getting split
+		piety_cost = {
+			if = {
+				limit = { doctrine:doctrine_pluralism_pluralistic = {is_in_list = selected_doctrines} }
+				value = faith_tenet_cost_low
+			}
+			else_if = {
+				limit = { doctrine:doctrine_pluralism_fundamentalist = {is_in_list = selected_doctrines} }
+				value = faith_tenet_cost_high
+			}
+			else = {
+				value = faith_tenet_cost_mid
+			}
+	
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_south_asian_syncretism }
+				multiply = 0
+			}
+		}
+	
+		is_shown = {
+			NOT = { has_doctrine = special_doctrine_is_south_asian_faith }
+		}
+		parameters = {
+			hostility_override_special_doctrine_is_south_asian_faith = 1
+			south_asian_syncretic_actor_opinion_active = yes
+			opinion_of_south_asian_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
+		}
+		traits = {
+			virtues = { humble }
+			sins = { arrogant }
+		}
+	}
+
+	tenet_steppe_pagan_syncretism = {
+		# Pagan syncretism is getting split
+		piety_cost = {
+			if = {
+				limit = { doctrine:doctrine_pluralism_pluralistic = {is_in_list = selected_doctrines} }
+				value = faith_tenet_cost_low
+			}
+			else_if = {
+				limit = { doctrine:doctrine_pluralism_fundamentalist = {is_in_list = selected_doctrines} }
+				value = faith_tenet_cost_high
+			}
+			else = {
+				value = faith_tenet_cost_mid
+			}
+	
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_unreformed_syncretism }
+				multiply = 0
+			}
+		}
+	
+		is_shown = {
+			NOT = { has_doctrine = special_doctrine_is_steppe_pagan_faith }
+		}
+		parameters = {
+			hostility_override_special_doctrine_is_steppe_pagan_faith = 1
+			steppe_pagan_syncretic_actor_opinion_active = yes
+			opinion_of_steppe_pagan_syncretic_recipient_opinion_active = 30 #Sync this to syncretic_mutual_opinion_bonus_value
+		}
+		traits = {
+			virtues = { humble }
+			sins = { arrogant }
+		}
+	}
 }
 
+
+is_near_east_faith = {
+	group = "special"
+
+	is_available_on_create = {
+		has_doctrine = special_doctrine_is_near_east_faith
+	}
+
+	special_doctrine_is_near_east_faith = {
+		parameters = {
+			# Since doctrines cannot modify other faith's views of us, only our view of others, all Near East faiths are given this special doctrine which makes them friendlier to Faiths with the Near-Eastern Syncretism tenet.
+			hostility_override_tenet_near_east_syncretism = 2
+			near_east_syncretic_recipient_opinion_active = yes
+			opinion_of_near_east_syncretic_actor_opinion_active = 30
+		}
+	}
+}
+
+is_east_asian_pagan_faith = {
+	group = "special"
+
+	is_available_on_create = {
+		has_doctrine = special_doctrine_is_east_asian_pagan_faith
+	}
+
+	special_doctrine_is_east_asian_pagan_faith = {
+		parameter = {
+			hostility_override_tenet_east_asian_pagan_syncretism = 2
+			east_asian_pagan_syncretic_recipient_opinion_active = yes
+			opinion_of_east_asian_pagan_syncretic_actor_opinion_active = 30
+		}
+	}
+}
+
+is_nusantaran_faith = {
+	group = "special"
+
+	is_available_on_create = {
+		has_doctrine = special_doctrine_is_nusantaran_faith
+	}
+
+	special_doctrine_is_nusantaran_faith = {
+		parameter = {
+			hostility_override_tenet_nusantaran_syncretism = 2
+			nusantaran_syncretic_recipient_opinion_active = yes
+			opinion_of_nusantaran_syncretic_recipient_opinion_active = 30
+		}
+	}
+}
+
+is_south_asian_faith = {
+	group = "special"
+
+	is_available_on_create = {
+		has_doctrine = special_doctrine_is_south_asian_faith
+	}
+
+	special_doctrine_is_south_asian_faith = {
+		parameter = {
+			hostility_override_tenet_south_asian_syncretism = 2
+			south_asian_syncretic_recipient_opinion_active = yes
+			opinion_of_south_asian_syncretic_recipient_opinion_active = 30
+		}
+	}
+}
+
+is_steppe_pagan_faith = {
+	group = "special"
+
+	is_available_on_create = {
+		has_doctrine = special_doctrine_is_steppe_pagan_faith
+	}
+
+	special_doctrine_is_steppe_pagan_faith = {
+		parameter = {
+			hostility_override_tenet_steppe_pagan_syncretism = 2
+			steppe_pagan_syncretic_recipient_opinion_active = yes
+			opinion_of_steppe_pagan_syncretic_recipient_opinion_active = 30
+		}
+	}
+}
+
+is_pagan_faith = {
+	group = "special"
+
+	is_available_on_create = {
+		has_doctrine = special_doctrine_is_pagan_faith
+	}
+
+	special_doctrine_is_pagan_faith = {
+		parameter = {
+			hostility_override_tenet_unreformed_syncretism = 2
+			pagan_syncretic_recipient_opinion_active = yes
+			opinion_of_pagan_syncretic_recipient_opinion_active = 30
+		}
+	}
+}
 doctrine_special_succession = {
 	group = "special"
 	is_available_on_create = {
