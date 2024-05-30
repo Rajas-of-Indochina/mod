@@ -11,6 +11,16 @@ task_conversion = {
 
 	effect_desc = {
 		desc = task_conversion_effect_desc
+		triggered_desc = {
+			trigger = {
+				scope:councillor_liege = {
+					any_vassal = {
+						has_vassal_stance = minority
+					}
+				}
+			}
+			desc = minority_disapproves_conversion_tooltip
+		}
 		desc = {
 			desc = council_task_possible_side_effects
 			triggered_desc = {
@@ -172,15 +182,49 @@ task_conversion = {
 				desc = council_toledo_heresies_task_desc
 			}
 		}
-        # Innovation
-        if = {
-            limit = {
-                scope:councillor_liege = {
-                    culture = { has_innovation = innovation_science_of_religion }
-                }
-            }
-            multiply = 1.1
-        }
+
+		# Faster conversion of Persian counties with the FP3 Promote Persian Scripture decision
+		if = {
+			limit = {
+				scope:councillor.liege = {
+					has_character_modifier = fp3_promoted_persian_scripture_modifier
+					is_ai = no #this is so that we don't get AI converting and homogenizing Persia too quickly
+				}
+				scope:county.culture = { has_cultural_pillar = heritage_iranian }
+			}
+			multiply = {
+				value = promote_persian_scripture_conversion_modifier_value
+				desc = fp3_promote_persian_scripture_task_desc
+			}
+		}
+
+		# FP3 faster conversion struggle ending rewards
+		if = {
+			limit = {
+				exists = global_var:fp3_struggle_ending_assertion_school
+				switch = {
+					trigger = global_var:fp3_struggle_ending_assertion_school
+					flag:sunni = {
+						scope:councillor.liege.faith = { has_doctrine = muhammad_succession_sunni_doctrine }
+					}
+					flag:shia = {
+						scope:councillor.liege.faith = { has_doctrine = muhammad_succession_sunni_doctrine }
+					}
+					flag:muhakkima = {
+						scope:councillor.liege.faith = { has_doctrine = muhammad_succession_muhakkima_doctrine }
+					}
+					flag:zandaqa = {
+						scope:councillor.liege.faith = { has_doctrine = muhammad_succession_zandaqa_doctrine }
+					}
+				}
+			}
+			multiply = {
+				value = fp3_struggle_ending_conversion_modifier_value
+				desc = fp3_struggle_ending_conversion_modifier_desc
+			}
+		}
+
+
 		# Conversion speed game rules
 		if = {
 			limit = {
@@ -274,17 +318,6 @@ task_conversion = {
 				desc = COURT_CHAPLAIN_CONVERSION_OFFICIAL_IMPERIAL_FAITH_EMPIRE
 			}
 		}
-		# Eranshar bonus
-		if = {
-			limit = {
-				scope:councillor_liege = {
-					vassal_contract_has_flag = eranshar_special_contracts_religious_enforcment
-				}
-			}
-			add = {
-				value = 30
-			}
-		}
 
 		# Because the task needs to complete 3 times with the minority system
 		multiply = 3
@@ -354,6 +387,21 @@ task_conversion = {
 								vassal_contract_has_flag = religiously_protected
 							}
 						}
+					}
+				}
+			}
+			trigger_if = {
+				limit = {
+					AND = {
+						has_variable = cannot_be_converted_by_value
+						var:cannot_be_converted_by_value = scope:councillor_liege
+					}
+				}
+				custom_tooltip = {
+					text = promised_to_not_convert_county
+					NOR = {
+						has_variable = cannot_be_converted_by_value
+						var:cannot_be_converted_by_value = scope:councillor_liege
 					}
 				}
 			}
@@ -472,7 +520,7 @@ task_conversion = {
 					scope:councillor_liege = {
 						is_ai = yes
 						faith = faith:ashari
-						capital_province = { geographical_region = world_europe_west_iberia }
+						capital_province ?= { geographical_region = world_europe_west_iberia }
 						scope:county.faith = faith:muwalladi
 					}
 					scope:county = {
@@ -588,7 +636,46 @@ task_conversion = {
 		}
 	}
 
+	on_start_task_county = {
+		# Message for vassals
+		scope:county = { save_scope_as = set_county }
+		trigger_event = {
+			id = court_chaplain_task.8000
+			days = 2 # To ensure it fires after the halted message
+		}
+	}
+
+	on_cancel_task_county = {
+		# Message for vassals
+		trigger_event = {
+			id = court_chaplain_task.8001
+			days = 1 # To ensure it does not fire at the same time as the finish message (both cancel and finish are fired on_finish_task_county)
+		}
+	}
+
 	on_finish_task_county = {
+		scope:county.faith = { save_scope_as = old_faith }
+		scope:councillor_liege = {
+			if = {
+				limit = {
+					any_vassal = {
+						has_vassal_stance = minority
+					}
+				}
+				custom_tooltip = minority_disapproves_conversion
+				hidden_effect = {
+					every_vassal = {
+						limit = {
+							has_vassal_stance = minority
+						}
+						add_opinion = {
+							target = scope:councillor_liege
+							modifier = minority_disapproves_of_conversion_opinion
+						}
+					}
+				}
+			}
+		}
 		scope:county = {
 			if = {
 				limit = { scope:county.faith = scope:councillor.faith }
@@ -601,6 +688,20 @@ task_conversion = {
 				if = {
 					limit = { scope:county.faith = scope:councillor.faith }
 					scope:councillor = { start_default_task = yes }
+					# Struggle parameters
+					scope:councillor_liege = {
+						if = {
+							limit = {
+								any_character_struggle = {
+									involvement = involved
+									has_struggle_phase_parameter = piety_from_converting_county
+								}
+							}
+							add_piety = medium_piety_gain
+						}
+					}
+					# Message for vassals
+					trigger_event = court_chaplain_task.8002
 				}
 			}
 		}
@@ -613,7 +714,9 @@ task_conversion = {
 
 		if = {	#Unless you're a crypto-religionist.
 			limit = {
-				scope:councillor_liege = { has_variable = false_convert }
+				scope:councillor_liege = {
+					any_secret = { secret_type = secret_crypto_religionist }
+				}
 			}
 			multiply = 0
 		}

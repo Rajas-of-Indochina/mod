@@ -53,6 +53,11 @@ has_partition_succession_realm_law_trigger = {
 		has_realm_law = confederate_partition_succession_law
 		has_realm_law = partition_succession_law
 		has_realm_law = high_partition_succession_law
+		has_realm_law = clan_antagonistic_partition_succession_law
+		has_realm_law = clan_competitive_partition_succession_law
+		has_realm_law = clan_impassive_partition_succession_law
+		has_realm_law = clan_friendly_partition_succession_law
+		has_realm_law = clan_harmonious_partition_succession_law
 	}
 }
 
@@ -60,7 +65,6 @@ realm_law_use_crown_authority = {
 	NOR = {
 		has_government = tribal_government
 		has_government = nomadic_government
-		has_government = eranshar_government
 		has_government = mandala_government
 		has_government = chinese_government
 		has_government = anarchist_government
@@ -72,28 +76,10 @@ realm_law_use_tribal_authority = {
 	has_government = tribal_government
 }
 
-realm_law_use_eranshar_authority = {
-	has_government = eranshar_government
-}
-
-realm_law_use_gupta_authority = {
-	# has_government = gupta_government
-	always = no
-}
-
-realm_law_use_imperial_authority = {
-	OR = {
-		has_government = imperial_government
-		has_government = imperial_cult_government
-		has_government = autocratic_government
-	}
-}
-
 can_have_confederate_partition_succession_law_trigger = {
 	OR = {
 		government_has_flag = government_is_feudal
 		government_has_flag = government_is_tribal
-		government_has_flag = government_is_clan
 	}
 }
 
@@ -118,17 +104,17 @@ can_keep_partition_succession_law_trigger = {
 			has_title = title:e_baruun_khanate
 		}
 	}
+	NOT = { government_has_flag = government_is_clan }
 }
 
 can_have_partition_succession_law_trigger = {
-	culture = {
-		has_innovation = innovation_hereditary_rule
-	}
+	#culture = {
+	#	has_innovation = innovation_hereditary_rule
+	#}
 	custom_description = {
 		text = succession_laws_must_have_organised_government_tooltip
 		OR = {
 			government_has_flag = government_is_feudal
-			government_has_flag = government_is_clan
 		}
 	}
 }
@@ -154,6 +140,7 @@ can_keep_high_partition_succession_law_trigger = {
 			has_title = title:e_baruun_khanate
 		}
 	}
+	NOT = { government_has_flag = government_is_clan}
 }
 
 can_have_high_partition_succession_law_trigger = {
@@ -169,7 +156,6 @@ can_have_high_partition_succession_law_trigger = {
 		text = succession_laws_must_have_organised_government_tooltip
 		OR = {
 			government_has_flag = government_is_feudal
-			government_has_flag = government_is_clan
 		}
 	}
 }
@@ -184,15 +170,7 @@ can_keep_single_heir_succession_law_trigger = {
 			can_have_single_heir_succession_law_trigger = yes
 			# Byzantine Empire
 			historical_succession_access_single_heir_succession_law_trigger = yes
-			fallen_eagle_special_needs_trigger = yes
-			has_government = imperial_government
-			has_government = imperial_cult_government
-			has_government = city_state_government
-			has_government = autocratic_government
-			has_government = legion_government
-			has_government = eranshar_government
 		}
-
 	}
 }
 
@@ -338,4 +316,36 @@ title_can_reduce_partition_law_trigger = {
 			}
 		}
 	}
+}
+
+can_pass_law_ca1_trigger = {
+	culture = { has_innovation = innovation_plenary_assemblies }
+}
+
+can_pass_law_ca2_trigger = {
+	culture = { has_innovation = innovation_royal_prerogative }
+}
+
+can_pass_law_ca3_trigger = {
+	culture = { has_innovation = innovation_royal_prerogative }
+}
+
+can_keep_nasrani_partition_law_trigger = {
+	trigger_if = {
+		limit = {
+			has_realm_law = nasrani_partition_law
+		}
+		can_have_nasrani_partition_law_trigger = yes
+	}
+}
+
+can_have_nasrani_partition_law_trigger = {
+	custom_tooltip = {
+		text = can_have_nasrani_partition_law_trigger_false_tt
+		OR = {
+			faith = { has_doctrine = special_doctrine_nasrani_partition_succession_law }
+			culture = { has_cultural_parameter = can_enact_nasrani_partition_succession_law }
+		}
+	}
+	can_have_confederate_partition_succession_law_trigger = yes
 }

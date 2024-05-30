@@ -1,0 +1,64 @@
+﻿tradition_crusader_states = {
+    category = regional
+
+    layers = {
+        0 = martial
+        1 = mediterranean
+        4 = soldiers3.dds
+    }
+
+    is_shown = {
+        AND = {
+            OR = {
+                culture_overlaps_geographical_region = custom_outremer
+                scope:character.capital_barony.title_province = {
+                    geographical_region = custom_outremer
+                }
+                scope:character = {
+                    has_trait = crusader_king
+                }
+            }
+            scope:character.faith = faith:catholic
+        }
+    }
+
+    can_pick = {
+        #primary_title = title:k_jerusalem
+        #has_title = title:k_jerusalem
+    }
+
+    parameters = {
+        peasant_and_populist_factions_less_common = yes
+        cb_lower_piety_level_requirement = yes
+        martial_education_more_valued = yes
+		outremer_elective_successionn_enabled = yes
+    }
+
+    culture_modifier = {
+        cultural_acceptance_gain_mult = 0.15
+    }
+
+    character_modifier = {
+        short_reign_duration_mult = -0.25
+        levy_reinforcement_rate_same_faith = 0.25
+        levy_reinforcement_rate_different_faith = -0.25
+    }
+
+    county_modifier = {
+
+    }
+
+    cost = {
+        prestige = {
+            add = {
+                value = tradition_base_cost
+                desc = BASE
+                format = "BASE_VALUE_FORMAT"
+            }
+
+            multiply = tradition_replacement_cost_if_relevant
+        }
+    }
+
+    ai_will_do = { value = 100 }
+}

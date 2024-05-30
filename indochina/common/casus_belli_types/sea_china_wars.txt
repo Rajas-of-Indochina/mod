@@ -92,74 +92,7 @@ claim_mandate_cb = {
 
 			# Name change
 			scope:attacker = {
-				if = {
-				    limit = { primary_title = title:k_qin_china }
-				    title:e_celestia_china = { set_title_name = k_qin_china }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_yan_china }
-				    title:e_celestia_china = {
-				    	set_title_name = k_yan_china
-				    	set_coa = e_yan
-				    }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_zhao_china }
-				    title:e_celestia_china = { set_title_name = k_zhao_china }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_jin_china }
-				    title:e_celestia_china = {
-				    	set_title_name = k_jin_china
-				    	set_coa = e_later_jin
-				    }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_xia_china }
-				    title:e_celestia_china = { set_title_name = k_xia_china }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_shu_china }
-				    title:e_celestia_china = {
-				    	set_title_name = k_shu_china
-				    	set_coa = e_shu
-				    }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_han_china }
-				    title:e_celestia_china = { set_title_name = k_han_china }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_zhou_china }
-				    title:e_celestia_china = { set_title_name = k_zhou_china }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_liang_china }
-				    title:e_celestia_china = { set_title_name = k_liang_china }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_qi_china }
-				    title:e_celestia_china = { set_title_name = k_qi_china }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_chu_china }
-				    title:e_celestia_china = {
-				    	set_title_name = k_chu_china
-				    	set_coa = e_chu
-				    }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_wu_china }
-				    title:e_celestia_china = {
-				    	set_title_name = k_wu_china
-				    	set_coa = e_wu
-				    }
-				}
-				else_if = {
-				    limit = { primary_title = title:k_yue_china }
-				    title:e_celestia_china = { set_title_name = k_yue_china }
-				}
-				# Else pick a new name, I'm lazy to do this right now
+				rename_china_title_effect = yes
 			}
 
 			create_title_and_vassal_change = {
@@ -971,7 +904,7 @@ china_duchy_conquest_cb = {
 
 	allowed_for_character = {
 		is_independent_ruler = yes
-		highest_held_title_tier >= tier_kingdom
+		highest_held_title_tier >= tier_duchy
 		capital_county.empire = title:e_celestia_china
 	}
 
@@ -1049,22 +982,10 @@ china_duchy_conquest_cb = {
 	cost = {
 		prestige = {
 			value = 0
-			if = {
-				limit = {
-					scope:attacker.primary_title.tier <= tier_county
-				}
-				add = {
-					value = major_prestige_value
-					desc = CB_BASE_COST
-				}
+			add = {
+				value = medium_prestige_value
+				desc = CB_BASE_COST
 			}
-			else = {
-				add = {
-					value = massive_prestige_value
-					desc = CB_BASE_COST
-				}
-			}
-
 			multiply = common_cb_prestige_cost_multiplier
 		}
 	}
@@ -1290,9 +1211,9 @@ china_duchy_conquest_cb = {
 	attacker_allies_inherit = yes
 	defender_allies_inherit = yes
 
-	war_name = "CONQUEST_WAR_NAME"
-	war_name_base = "CONQUEST_WAR_NAME_BASE"
-	cb_name = "CONQUEST_DUCHY_CB_NAME"
+	war_name = "CHINA_CONQUEST_WAR_NAME"
+	war_name_base = "CHINA_CONQUEST_WAR_NAME_BASE"
+	cb_name = "CHINA_CONQUEST_DUCHY_CB_NAME"
 
 	interface_priority = 79
 

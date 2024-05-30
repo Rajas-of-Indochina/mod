@@ -371,3 +371,49 @@ unsettle_nomadic_realm_decision = {
 		}
 	}
 }
+
+stateless_confederation_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	desc = stateless_confederation_decision_desc
+	ai_check_interval = 36
+
+	is_shown = {
+		has_government = anarchist_government
+		highest_held_title_tier < tier_duchy
+	}
+
+	is_valid = {
+		OR = {
+			is_independent_ruler = yes
+			liege = { highest_held_title_tier >= tier_kingdom }
+		}
+		is_at_war = no
+		prestige_level >= 3
+		OR = {
+			realm_size >= 5
+			custom_tooltip = {
+				text = controls_capital_duchy_tt
+				completely_controls = capital_county.duchy
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+	}
+
+	effect = {
+		show_as_tooltip = {
+			form_stateless_confederation_duchy_effect = yes
+		}
+		hidden_effect = {
+			trigger_event = sea_gov_event.1001
+		}
+	}
+
+	cost = {
+		prestige = major_prestige_value
+		gold = major_gold_value
+	}
+}

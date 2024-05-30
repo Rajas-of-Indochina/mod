@@ -34,9 +34,11 @@
 			FACTION_TARGET = scope:faction.faction_target
 		}
 		OR = {
-			has_government = tribal_government
 			has_government = nomadic_government
-			culture = { has_cultural_tradition = tradition_migratory }
+			AND = {
+				has_government = tribal_government
+				culture = { has_cultural_tradition = tradition_migratory }
+			}
 		}
 	}
 
@@ -69,6 +71,33 @@
 		}
 	}
 
+	can_character_create_ui = {
+		common_character_validity_trigger = {
+			FACTION_TARGET = scope:target
+		}
+
+		common_can_character_create_trigger = {
+			FACTION_TARGET = scope:target
+		}
+
+		liege = {
+			is_independent_ruler = yes
+			NOT = { has_government = nomadic_government }
+		}
+		OR = {
+			has_government = nomadic_government
+			AND = {
+				has_government = tribal_government
+				culture = {
+					OR = {
+						has_cultural_tradition = tradition_migratory
+						has_cultural_tradition = tradition_horse_lords
+					}
+				}
+			}
+		}
+	}
+
 	can_character_create = {
 		common_character_validity_trigger = {
 			FACTION_TARGET = scope:target
@@ -83,9 +112,16 @@
 			NOT = { has_government = nomadic_government }
 		}
 		OR = {
-			has_government = tribal_government
 			has_government = nomadic_government
-			culture = { has_cultural_tradition = tradition_migratory }
+			AND = {
+				has_government = tribal_government
+				culture = {
+					OR = {
+						has_cultural_tradition = tradition_migratory
+						has_cultural_tradition = tradition_horse_lords
+					}
+				}
+			}
 		}
 	}
 
@@ -122,7 +158,12 @@
 			factor = 2
 			OR = {
 				has_government = nomadic_government
-				culture = { has_cultural_tradition = tradition_migratory }
+				culture = {
+					OR = {
+						has_cultural_tradition = tradition_migratory
+						has_cultural_tradition = tradition_horse_lords
+					}
+				}
 			}
 		}
 
@@ -140,9 +181,16 @@
 			FACTION_TARGET = scope:faction.faction_target
 		}
 		OR = {
-			has_government = tribal_government
 			has_government = nomadic_government
-			culture = { has_cultural_tradition = tradition_migratory }
+			AND = {
+				has_government = tribal_government
+				culture = {
+					OR = {
+						has_cultural_tradition = tradition_migratory
+						has_cultural_tradition = tradition_horse_lords
+					}
+				}
+			}
 		}
 	}
 
@@ -179,7 +227,12 @@
 			factor = 2
 			OR = {
 				has_government = nomadic_government
-				culture = { has_cultural_tradition = tradition_migratory }
+				culture = {
+					OR = {
+						has_cultural_tradition = tradition_migratory
+						has_cultural_tradition = tradition_horse_lords
+					}
+				}
 			}
 		}
 

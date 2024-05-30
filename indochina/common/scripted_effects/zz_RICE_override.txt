@@ -1,0 +1,1548 @@
+﻿# Inviting the Norse or Normans now spawns Norse or Norman minorities.
+
+RICE_invite_norse_main_effect = {
+	if = {
+		limit = {
+			var:RICE_norse_adventurer_type = flag:courtiers
+		}
+		if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_normandy_struggle
+				}
+			}
+			struggle:RICE_normandy_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_normandy_invited_norse_courtiers
+					character = root
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			var:RICE_norse_adventurer_type = flag:colonists
+		}
+		random_list = {
+			10 = {
+				# scope:capital = {
+				# 	change_development_progress_with_overflow = 50
+				# 	change_county_control = 15
+				# 	add_county_modifier = {
+				# 		modifier = RICE_normandy_norse_colonists
+				# 		years = 10
+				# 	}
+				# }
+				scope:capital = {
+					save_temporary_scope_as = current_title
+					duchy = {
+						every_in_de_jure_hierarchy = {
+							limit = {
+								tier = tier_county
+								holder = {
+									OR = {
+										this = scope:current_title.holder
+										is_vassal_or_below_of = scope:current_title.holder
+									}
+								}
+							}
+							custom = RICE_every_county_in_capital_duchy
+							custom_tooltip = normandy.0021.colonists_duchy_tt_10
+							change_development_progress_with_overflow = 50
+							change_county_control = 15
+							hidden_effect = {
+								add_county_modifier = {
+									modifier = RICE_normandy_norse_colonists
+									years = 10
+								}
+							}
+						}
+					}
+				}
+			}
+			10 = {
+				# scope:capital = {
+				# 	change_development_progress_with_overflow = 50
+				# 	change_county_control = 15
+				# 	add_county_modifier = {
+				# 		modifier = RICE_normandy_norse_colonists
+				# 		years = 15
+				# 	}
+				# }
+				scope:capital = {
+					save_temporary_scope_as = current_title
+					duchy = {
+						every_in_de_jure_hierarchy = {
+							limit = {
+								tier = tier_county
+								holder = {
+									OR = {
+										this = scope:current_title.holder
+										is_vassal_or_below_of = scope:current_title.holder
+									}
+								}
+							}
+							custom = RICE_every_county_in_capital_duchy
+							custom_tooltip = normandy.0021.colonists_duchy_tt_15
+							change_development_progress_with_overflow = 50
+							change_county_control = 15
+							hidden_effect = {
+								add_county_modifier = {
+									modifier = RICE_normandy_norse_colonists
+									years = 15
+								}
+							}
+						}
+					}
+				}
+			}
+			10 = {
+				# scope:capital = {
+				# 	change_development_progress_with_overflow = 50
+				# 	change_county_control = 15
+				# 	add_county_modifier = {
+				# 		modifier = RICE_normandy_norse_colonists
+				# 		years = 20
+				# 	}
+				# }
+				scope:capital = {
+					save_temporary_scope_as = current_title
+					duchy = {
+						every_in_de_jure_hierarchy = {
+							limit = {
+								tier = tier_county
+								holder = {
+									OR = {
+										this = scope:current_title.holder
+										is_vassal_or_below_of = scope:current_title.holder
+									}
+								}
+							}
+							custom = RICE_every_county_in_capital_duchy
+							custom_tooltip = normandy.0021.colonists_duchy_tt_20
+							change_development_progress_with_overflow = 50
+							change_county_control = 15
+							hidden_effect = {
+								add_county_modifier = {
+									modifier = RICE_normandy_norse_colonists
+									years = 20
+								}
+							}
+						}
+					}
+				}
+			}
+			10 = {
+				# scope:capital = {
+				# 	change_development_progress_with_overflow = 50
+				# 	change_county_control = 15
+				# 	add_county_modifier = {
+				# 		modifier = RICE_normandy_norse_colonists
+				# 		years = 25
+				# 	}
+				# }
+				scope:capital = {
+					save_temporary_scope_as = current_title
+					duchy = {
+						every_in_de_jure_hierarchy = {
+							limit = {
+								tier = tier_county
+								holder = {
+									OR = {
+										this = scope:current_title.holder
+										is_vassal_or_below_of = scope:current_title.holder
+									}
+								}
+							}
+							custom = RICE_every_county_in_capital_duchy
+							custom_tooltip = normandy.0021.colonists_duchy_tt_25
+							change_development_progress_with_overflow = 50
+							change_county_control = 15
+							hidden_effect = {
+								add_county_modifier = {
+									modifier = RICE_normandy_norse_colonists
+									years = 25
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		scope:capital = {
+			duchy = {
+				every_in_de_jure_hierarchy = {
+					limit = {
+						tier = tier_county
+						holder = {
+							OR = {
+								this = scope:current_title.holder
+								is_vassal_or_below_of = scope:current_title.holder
+							}
+						}
+					}
+					save_scope_as = county
+					random_culture_global = {
+						limit = {
+							has_cultural_pillar = heritage_north_germanic
+							culture_number_of_counties >= 1 # Needs to exist on-map
+						}
+						save_scope_as = norse_colonists
+					}
+					add_culture_minority_effect = {
+						COUNTY = county
+						CULTURE = scope:norse_colonists
+						SIZE = small
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_normandy_struggle
+				}
+			}
+			struggle:RICE_normandy_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_normandy_invited_norse_colonists
+					character = root
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_norse_adventurer_type = flag:mercenaries
+		}
+		RICE_norse_adventurers_spawn_effect = yes
+		# So they wear armor
+		scope:courtier_1 = {
+			add_character_flag = single_combat_duel_armor
+		}
+		if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_normandy_struggle
+				}
+			}
+			struggle:RICE_normandy_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_normandy_invited_norse_mercenaries
+					character = root
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_norse_adventurer_type = flag:traders
+		}
+		random_list = {
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norse_traders
+					years = 10
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norse_traders
+					years = 15
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norse_traders
+					years = 20
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norse_traders
+					years = 25
+				}
+			}
+		}
+		if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_normandy_struggle
+				}
+			}
+			struggle:RICE_normandy_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_normandy_invited_norse_traders
+					character = root
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_norse_adventurer_type = flag:rulers
+		}
+		save_scope_as = granter
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				NOT = { this = root.capital_county }
+				#NOT = { this = scope:capital_county }
+			}
+			save_scope_as = award_county
+		}
+		scope:courtier_1 = {
+			get_title = scope:award_county
+		}
+		if = {
+			limit = {
+				highest_held_title_tier > tier_county
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:courtier_1 = {
+				change_liege = {
+					liege = root
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		else_if = {
+			limit = {
+				is_independent_ruler = no
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:courtier_1 = {
+				change_liege = {
+					liege = scope:granter.liege
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		add_truce_both_ways = {
+			character = scope:courtier_1
+			days = purchase_truce_interaction_truce_days_small_value
+			name = RICE_normandy_adventurer_truce
+		}
+		random_list = {
+			# 20 = {
+			# 	add_character_modifier = {
+			# 		modifier = fp1_reprieve_from_sa_modifier
+			# 		years = 5
+			# 	}
+			# }
+			10 = {
+				add_character_modifier = {
+					modifier = fp1_reprieve_from_sa_modifier
+					years = 10
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = fp1_reprieve_from_sa_modifier
+					years = 15
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = fp1_reprieve_from_sa_modifier
+					years = 20
+				}
+			}
+		}
+		scope:courtier_1 = {
+			custom_tooltip = RICE_norse_adventurer_convert_tooltip
+		}
+	}
+}
+
+RICE_invite_norman_main_effect = {
+	if = {
+		limit = {
+			var:RICE_norman_adventurer_type = flag:courtiers
+		}
+		if = {
+			limit = {
+				exists = struggle:RICE_normandy_struggle
+			}
+			struggle:RICE_normandy_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_normandy_invited_norman_courtiers
+			}
+		}
+	}
+	if = {
+		limit = {
+			var:RICE_norman_adventurer_type = flag:colonists
+		}
+		random_list = {
+			10 = {
+				# scope:capital = {
+				# 	change_development_progress_with_overflow = 50
+				# 	change_county_control = 15
+				# 	add_county_modifier = {
+				# 		modifier = RICE_normandy_norman_colonists
+				# 		years = 10
+				# 	}
+				# }
+				scope:capital = {
+					save_temporary_scope_as = current_title
+					duchy = {
+						every_in_de_jure_hierarchy = {
+							limit = {
+								tier = tier_county
+								holder = {
+									OR = {
+										this = scope:current_title.holder
+										is_vassal_or_below_of = scope:current_title.holder
+									}
+								}
+							}
+							custom = RICE_every_county_in_capital_duchy
+							custom_tooltip = normandy.0031.colonists_duchy_tt_10
+							change_development_progress_with_overflow = 50
+							change_county_control = 15
+							hidden_effect = {
+								add_county_modifier = {
+									modifier = RICE_normandy_norman_colonists
+									years = 10
+								}
+							}
+						}
+					}
+				}
+			}
+			10 = {
+				# scope:capital = {
+				# 	change_development_progress_with_overflow = 50
+				# 	change_county_control = 15
+				# 	add_county_modifier = {
+				# 		modifier = RICE_normandy_norman_colonists
+				# 		years = 15
+				# 	}
+				# }
+				scope:capital = {
+					save_temporary_scope_as = current_title
+					duchy = {
+						every_in_de_jure_hierarchy = {
+							limit = {
+								tier = tier_county
+								holder = {
+									OR = {
+										this = scope:current_title.holder
+										is_vassal_or_below_of = scope:current_title.holder
+									}
+								}
+							}
+							custom = RICE_every_county_in_capital_duchy
+							custom_tooltip = normandy.0031.colonists_duchy_tt_15
+							change_development_progress_with_overflow = 50
+							change_county_control = 15
+							hidden_effect = {
+								add_county_modifier = {
+									modifier = RICE_normandy_norman_colonists
+									years = 15
+								}
+							}
+						}
+					}
+				}
+			}
+			10 = {
+				# scope:capital = {
+				# 	change_development_progress_with_overflow = 50
+				# 	change_county_control = 15
+				# 	add_county_modifier = {
+				# 		modifier = RICE_normandy_norman_colonists
+				# 		years = 20
+				# 	}
+				# }
+				scope:capital = {
+					save_temporary_scope_as = current_title
+					duchy = {
+						every_in_de_jure_hierarchy = {
+							limit = {
+								tier = tier_county
+								holder = {
+									OR = {
+										this = scope:current_title.holder
+										is_vassal_or_below_of = scope:current_title.holder
+									}
+								}
+							}
+							custom = RICE_every_county_in_capital_duchy
+							custom_tooltip = normandy.0031.colonists_duchy_tt_20
+							change_development_progress_with_overflow = 50
+							change_county_control = 15
+							hidden_effect = {
+								add_county_modifier = {
+									modifier = RICE_normandy_norman_colonists
+									years = 20
+								}
+							}
+						}
+					}
+				}
+			}
+			10 = {
+				# scope:capital = {
+				# 	change_development_progress_with_overflow = 50
+				# 	change_county_control = 15
+				# 	add_county_modifier = {
+				# 		modifier = RICE_normandy_norman_colonists
+				# 		years = 25
+				# 	}
+				# }
+				scope:capital = {
+					save_temporary_scope_as = current_title
+					duchy = {
+						every_in_de_jure_hierarchy = {
+							limit = {
+								tier = tier_county
+								holder = {
+									OR = {
+										this = scope:current_title.holder
+										is_vassal_or_below_of = scope:current_title.holder
+									}
+								}
+							}
+							custom = RICE_every_county_in_capital_duchy
+							custom_tooltip = normandy.0031.colonists_duchy_tt_25
+							change_development_progress_with_overflow = 50
+							change_county_control = 15
+							hidden_effect = {
+								add_county_modifier = {
+									modifier = RICE_normandy_norman_colonists
+									years = 25
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		scope:capital = {
+			duchy = {
+				every_in_de_jure_hierarchy = {
+					limit = {
+						tier = tier_county
+						holder = {
+							OR = {
+								this = scope:current_title.holder
+								is_vassal_or_below_of = scope:current_title.holder
+							}
+						}
+					}
+					save_scope_as = county
+					add_culture_minority_effect = {
+						COUNTY = county
+						CULTURE = culture:norman
+						SIZE = small
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = struggle:RICE_normandy_struggle
+			}
+			struggle:RICE_normandy_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_normandy_invited_norman_colonists
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_norman_adventurer_type = flag:mercenaries
+		}
+		RICE_norman_adventurers_spawn_effect = yes
+		# So they wear armor
+		scope:courtier_1 = {
+			add_character_flag = single_combat_duel_armor
+		}
+		if = {
+			limit = {
+				exists = struggle:RICE_normandy_struggle
+			}
+			struggle:RICE_normandy_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_normandy_invited_norman_mercenaries
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_norman_adventurer_type = flag:traders
+		}
+		random_list = {
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norman_traders
+					years = 10
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norman_traders
+					years = 15
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norman_traders
+					years = 20
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norman_traders
+					years = 25
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = struggle:RICE_normandy_struggle
+			}
+			struggle:RICE_normandy_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_normandy_invited_norman_traders
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_norman_adventurer_type = flag:rulers
+		}
+		save_scope_as = granter
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				NOT = { this = root.capital_county }
+				#NOT = { this = scope:capital_county }
+			}
+			save_scope_as = award_county
+		}
+		scope:courtier_1 = {
+			get_title = scope:award_county
+		}
+		if = {
+			limit = {
+				highest_held_title_tier > tier_county
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:courtier_1 = {
+				change_liege = {
+					liege = root
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		else_if = {
+			limit = {
+				is_independent_ruler = no
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:courtier_1 = {
+				change_liege = {
+					liege = scope:granter.liege
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		add_truce_both_ways = {
+			character = scope:courtier_1
+			days = purchase_truce_interaction_truce_days_small_value
+			name = RICE_normandy_adventurer_truce
+		}
+		# random_list = {
+		# 	# 20 = {
+		# 	# 	add_character_modifier = {
+		# 	# 		modifier = fp1_reprieve_from_sa_modifier
+		# 	# 		years = 5
+		# 	# 	}
+		# 	# }
+		# 	10 = {
+		# 		add_character_modifier = {
+		# 			modifier = fp1_reprieve_from_sa_modifier
+		# 			years = 10
+		# 		}
+		# 	}
+		# 	10 = {
+		# 		add_character_modifier = {
+		# 			modifier = fp1_reprieve_from_sa_modifier
+		# 			years = 15
+		# 		}
+		# 	}
+		# 	10 = {
+		# 		add_character_modifier = {
+		# 			modifier = fp1_reprieve_from_sa_modifier
+		# 			years = 20
+		# 		}
+		# 	}
+		# }
+		scope:courtier_1 = {
+			custom_tooltip = RICE_norse_adventurer_convert_tooltip
+		}
+		if = {
+			limit = {
+				exists = struggle:RICE_normandy_struggle
+			}
+			struggle:RICE_normandy_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_normandy_invited_norman_rulers
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_norman_adventurer_type = flag:scholars
+		}
+		# if = {
+		# 	limit = { has_lifestyle = diplomacy_lifestyle }
+		# 	add_diplomacy_lifestyle_perk_points = 1
+		# }
+		# else_if = {
+		# 	limit = { has_lifestyle = martial_lifestyle }
+		# 	add_martial_lifestyle_perk_points = 1
+		# }
+		# else_if = {
+		# 	limit = { has_lifestyle = stewardship_lifestyle }
+		# 	add_stewardship_lifestyle_perk_points = 1
+		# }
+		# else_if = {
+		# 	limit = { has_lifestyle = intrigue_lifestyle }
+		# 	add_intrigue_lifestyle_perk_points = 1
+		# }
+		# else_if = {
+		# 	limit = { has_lifestyle = learning_lifestyle }
+		# 	add_learning_lifestyle_perk_points = 1
+		# }
+		# else = {
+		# 	10 = { add_diplomacy_lifestyle_perk_points = 1	}
+		# 	10 = { add_martial_lifestyle_perk_points = 1	}
+		# 	10 = { add_stewardship_lifestyle_perk_points = 1	}
+		# 	10 = { add_intrigue_lifestyle_perk_points = 1	}
+		# 	10 = { add_learning_lifestyle_perk_points = 1	}
+		# }
+		dynasty = {
+			add_dynasty_prestige = minor_prestige_gain
+		}
+		random_list = {
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norman_scholars_modifier
+					years = 10
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norman_scholars_modifier
+					years = 15
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norman_scholars_modifier
+					years = 20
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_normandy_norman_scholars_modifier
+					years = 25
+				}
+			}
+		}
+	}
+}
+
+# Reclaming the Hephthalite Homeland now guarantees promotion of a minority of your culture in the region
+# instead of having a 33% chance to convert outright.
+# Should result in the same total amount of time to convert the whole area manually but feels more flavorful.
+
+RICE_pamir_reclaim_hephthalite_homeland_effect = {
+	#Create the title and make it primary
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_hephthalite_restored = {
+		change_title_holder = {
+			holder = root
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+	set_primary_title_to = title:k_hephthalite_restored
+
+	set_realm_capital = title:c_balkh
+
+	custom_tooltip = RICE_pamir_reclaim_hephthalite_homeland_effect_tooltip_1
+
+	if = {
+		limit = {
+			religion = religion:zunism_religion
+		}
+		add_character_modifier = {
+			modifier = RICE_pamir_hephthalite_reclaimer_honors_zun
+		}
+		title:c_balkh = {
+			set_county_faith = root.faith
+		}
+	}
+
+	dynasty = { add_dynasty_prestige = 500 }
+
+
+
+	if = {
+		limit = {
+			culture = { has_cultural_tradition = tradition_RICE_white_huns }
+		}
+		title:c_balkh = {
+			set_county_culture = root.culture
+		}
+		every_sub_realm_county = {
+			limit = {
+				tier = tier_county
+				OR = {
+					de_jure_liege = title:d_balkh
+					de_jure_liege = title:d_badakhshan
+					de_jure_liege = title:d_khuttal
+				}
+			}
+			custom = RICE_pamir_restore_hephthalite_restored_culture_conversion
+			save_scope_as = county
+			promote_culture_minority_effect = { CULTURE = root.culture }
+		}
+	}
+
+	hidden_effect = {
+		title:d_balkh = {
+			if = {
+				limit = {
+					NOT = { is_in_list = new_de_jure_duchies }
+				}
+				add_to_list = new_de_jure_duchies
+			}
+		}
+		title:d_badakhshan = {
+			if = {
+				limit = {
+					NOT = { is_in_list = new_de_jure_duchies }
+				}
+				add_to_list = new_de_jure_duchies
+			}
+		}
+		title:d_khuttal = {
+			if = {
+				limit = {
+					NOT = { is_in_list = new_de_jure_duchies }
+				}
+				add_to_list = new_de_jure_duchies
+			}
+		}
+		every_in_list = {
+			list = new_de_jure_duchies
+			limit = {
+				trigger_if = {
+					limit = {
+						exists = this
+						root = { is_ai = yes }
+						exists = holder
+					}
+					NOR = {
+						holder.top_liege = { is_ai = no }
+						holder = { is_ai = no }
+					}
+				}
+			}
+			set_de_jure_liege_title = title:k_hephthalite_restored
+		}
+	}
+}
+
+# Instead of just converting to Han culture, you now convert to a Han hybrid of your culture if it exists,
+# else convert to any chinese-heritage offshoot of your culture if one exists
+# Else convert to any culture that diverged from yours and has the Sinicized Culture tradition if one exists
+# else create a new divergent culture with the Sinicized Culture tradition added on.
+
+RICE_tarim_basin_sinicize_effect = {
+	# set_culture = culture:han
+	if = { # If there's a Han hybrid of our culture, switch to that
+		limit = {
+			any_culture_global = {
+				any_parent_culture = { this = scope:old_culture }
+				any_parent_culture = { this = culture:han }
+			}
+		}
+		random_culture_global = {
+			limit = {
+				any_parent_culture = { this = scope:old_culture }
+				any_parent_culture = { this = culture:han }
+			}
+			save_scope_as = sinicized_culture
+		}
+	}
+	else_if = { # Else a Chinese-heritage hybrid
+		limit = {
+			any_culture_global = {
+				any_parent_culture = { this = scope:old_culture }
+				any_parent_culture = { has_cultural_pillar = heritage_chinese }
+			}
+		}
+		random_culture_global = {
+			limit = {
+				any_parent_culture = { this = scope:old_culture }
+				any_parent_culture = { has_cultural_pillar = heritage_chinese }
+			}
+			save_scope_as = sinicized_culture
+		}
+	}
+	else_if = { #Otherwise, check for any sinicized culture that diverged from ours
+		limit = {
+			any_culture_global = {
+				any_parent_culture = { this = scope:old_culture }
+				any_parent_culture = { has_cultural_tradition = tradition_sinicized_culture }
+			}
+		}
+		random_culture_global = {
+			limit = {
+				any_parent_culture = { this = scope:old_culture }
+				any_parent_culture = { has_cultural_tradition = tradition_sinicized_culture }
+			}
+			save_scope_as = sinicized_culture
+		}
+	}
+	else = {
+		# Or just diverge and create your own sinicized culture
+		custom_tooltip = CREATE_DIVERGENT_CULTURE_TT
+		hidden_effect = {
+			create_divergent_culture = yes
+			scope:new_culture = {
+				set_heritage_from = scope:old_culture
+				set_ethos_from = scope:old_culture
+				add_culture_tradition = tradition_sinicized_culture
+				save_scope_as = sinicized_culture
+			}
+		}
+	}
+	add_prestige = 100
+	add_character_modifier = {
+		modifier = RICE_tarim_basin_recently_sinicized
+		years = 10
+	}
+	every_spouse = {
+		limit = {
+			is_landed = no
+			OR = {
+				culture = culture:sogdian
+				culture = culture:saka
+				culture = culture:tocharian
+				culture = {
+					any_parent_culture_or_above = {
+						OR = {
+							this = culture:sogdian
+							this = culture:saka
+							this = culture:tocharian
+						}
+					}
+				}
+			}
+		}
+		set_culture = scope:sinicized_culture
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_recently_sinicized
+			years = 10
+		}
+	}
+	every_close_family_member = {
+		custom = all_family_members
+		limit = {
+			is_landed = no
+			OR = {
+				culture = culture:sogdian
+				culture = culture:saka
+				culture = culture:tocharian
+				culture = {
+					any_parent_culture_or_above = {
+						OR = {
+							this = culture:sogdian
+							this = culture:saka
+							this = culture:tocharian
+						}
+					}
+				}
+			}
+			is_courtier_of = root
+		}
+		set_culture = scope:sinicized_culture
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_recently_sinicized
+			years = 10
+		}
+	}
+	every_courtier_or_guest = {
+		custom = all_courtiers_and_guests
+		limit = {
+			is_landed = no
+			OR = {
+				culture = culture:sogdian
+				culture = culture:saka
+				culture = culture:tocharian
+				culture = {
+					any_parent_culture_or_above = {
+						OR = {
+							this = culture:sogdian
+							this = culture:saka
+							this = culture:tocharian
+						}
+					}
+				}
+			}
+		}
+		random = {
+			chance = 33
+			set_culture = scope:sinicized_culture
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_recently_sinicized
+				years = 10
+			}
+		}
+	}
+}
+
+# Silk Road effects: Now inviting these specialists to your realms spawns cultural and religious minorities!
+RICE_tarim_basin_steppe_troops_spawn_effect = {
+	spawn_army = {
+		levies = 100
+		men_at_arms = {
+			type = horse_archers
+			stacks = 1
+		}
+		men_at_arms = {
+			type = light_horsemen
+			stacks = 1
+		}
+		location = root.capital_province
+		uses_supply = yes
+		inheritable = no
+		name = RICE_tarim_basin_steppe_gift_event_troops
+	}
+	do_silk_road_migration_effect = { REGION = RICE_silk_road_steppe }
+}
+
+RICE_tarim_basin_himalayan_troops_spawn_effect = {
+	spawn_army = {
+		levies = 100
+		men_at_arms = {
+			type = light_footmen
+			stacks = 1
+		}
+		men_at_arms = {
+			type = mountaineer
+			stacks = 1
+		}
+		location = root.capital_province
+		uses_supply = yes
+		inheritable = no
+		name = RICE_tarim_basin_himalayan_gift_event_troops
+	}
+	do_silk_road_migration_effect = { REGION = RICE_silk_road_himalayas }
+}
+
+RICE_tarim_basin_bring_chinese_specialists_effect = {
+	dynasty = { add_dynasty_prestige = 25 }
+	add_character_modifier = {
+		modifier = RICE_tarim_basin_east_asian_specialists
+		years = 10
+	}
+	do_silk_road_migration_effect = { REGION = world_china }
+}
+
+RICE_tarim_basin_bring_merchant_settlers_effect = {
+	add_prestige = 100
+	capital_county = {
+		add_county_modifier = {
+			modifier = RICE_tarim_basin_merchant_settlers
+			years = 10
+		}
+	}
+	do_silk_road_migration_effect = { REGION = RICE_silk_road_middle_east }
+}
+
+RICE_tarim_basin_bring_indic_artisans_effect = {
+	add_piety = 100
+	add_character_modifier = {
+		modifier = RICE_tarim_basin_indic_artisans
+		years = 10
+	}
+	do_silk_road_migration_effect = { REGION = RICE_silk_road_india }
+}
+
+RICE_east_african_migration_effect = {
+	random_list = {
+		50 = { do_silk_road_migration_effect = { REGION = world_africa_east } }
+		50 = {
+			random_list = {
+				15 = {
+					culture:makonde = {
+						save_scope_as = county_culture
+					}
+					faith:makonde_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:malagasy = {
+						save_scope_as = county_culture
+					}
+					faith:malagasy_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:mijikenda = {
+						save_scope_as = county_culture
+					}
+					faith:mijikenda_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:pokomo = {
+						save_scope_as = county_culture
+					}
+					faith:mijikenda_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:seuta = {
+						save_scope_as = county_culture
+					}
+					faith:mijikenda_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:sabaki = {
+						save_scope_as = county_culture
+					}
+					faith:mijikenda_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:ruvu = {
+						save_scope_as = county_culture
+					}
+					faith:mijikenda_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:shona = {
+						save_scope_as = county_culture
+					}
+					faith:shona_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				10 = {
+					culture:makua = {
+						save_scope_as = county_culture
+					}
+					faith:makua_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				10 = {
+					culture:tsonga = {
+						save_scope_as = county_culture
+					}
+					faith:tsonga_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				10 = {
+					culture:nguni = {
+						save_scope_as = county_culture
+					}
+					faith:nguni_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				10 = {
+					culture:sotho_tswana = {
+						save_scope_as = county_culture
+					}
+					faith:sotho_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:dahalo = {
+						save_scope_as = county_culture
+					}
+					faith:waaqism_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+				15 = {
+					culture:aweer = {
+						save_scope_as = county_culture
+					}
+					faith:waaqism_pagan = {
+						save_scope_as = county_faith
+					}
+				}
+			}
+			# We need to do a trick migration effect for the off-map migrations
+			fake_silk_road_migration_effect = yes
+		}
+	}
+}
+
+RICE_tarim_basin_east_african_slaves_effect = {
+	every_held_title = {
+		custom = RICE_every_county
+		limit = {
+			tier = tier_county
+		}
+		change_county_control = major_county_control_loss
+		add_county_modifier = {
+			modifier = RICE_tarim_basin_african_slaves
+			years = 10
+		}
+	}
+	RICE_east_african_migration_effect = yes
+}
+
+RICE_tarim_basin_southeast_asian_shipbuilders_effect = {
+	add_character_modifier = {
+		modifier = RICE_tarim_basin_southeast_asian_shipbuilders
+		years = 10
+	}
+	do_silk_road_migration_effect = { REGION = RICE_silk_road_SEA }
+}
+
+# Creates minorities of the old culture in the newly Tuareg counties
+RICE_tuareg_emergence_effect = {
+	add_prestige = 1000
+	if = {
+		limit = {
+			exists = dynasty
+		}
+		dynasty = {
+			add_dynasty_prestige = 250
+		}
+	}
+	culture:tuareg = {
+		get_all_innovations_from = root.culture
+		reset_culture_creation_date = yes
+	}
+	RICE_make_tuareg_effect = yes
+	every_realm_county = {
+		custom = RICE_every_berber_county
+		limit = {
+			OR = {
+				culture = { has_cultural_pillar = heritage_berber }
+				this = capital_province.county
+			}
+		}
+		save_scope_as = county
+		culture = { save_scope_as = old_culture }
+		set_county_culture = culture:tuareg
+		promote_culture_minority_effect = { CULTURE = scope:old_culture }
+	}
+}
+
+# Downgrades Jewish minorities in Granada if pogrom happens.
+RICE_granada_tensions_end_in_tragedy_effect = {
+	set_global_variable = {
+		name = RICE_granada_pogrom_happened_like_historically
+		value = yes
+	}
+	title:c_granada = {
+		change_development_progress_with_overflow = -50
+		remove_county_modifier = RICE_granada_garnata_al_yahud_tensions
+		save_scope_as = county
+		add_county_modifier = {
+			modifier = RICE_granada_pogrom_happened
+			years = 20
+		}
+		every_in_list = {
+			limit = { religion = religion:judaism_religion }
+			variable = faith_minorities_small
+			scope:county = {
+				remove_list_variable = {
+					name = faith_minorities_small
+					target = PREV
+				}
+			}
+		}
+		every_in_list = {
+			limit = { religion = religion:judaism_religion }
+			variable = faith_minorities_large
+			scope:county = {
+				remove_list_variable = {
+					name = faith_minorities_large
+					target = PREV
+				}
+				add_to_variable_list = {
+					name = faith_minorities_small
+					target = PREV
+				}
+			}
+		}
+		every_in_list = {
+			limit = { has_cultural_pillar = heritage_israelite }
+			variable = culture_minorities_small
+			scope:county = {
+				remove_list_variable = {
+					name = culture_minorities_small
+					target = PREV
+				}
+			}
+		}
+		every_in_list = {
+			limit = { has_cultural_pillar = heritage_israelite }
+			variable = culture_minorities_large
+			scope:county = {
+				remove_list_variable = {
+					name = culture_minorities_large
+					target = PREV
+				}
+				add_to_variable_list = {
+					name = culture_minorities_small
+					target = PREV
+				}
+			}
+		}
+	}
+	scope:yusuf = {
+		death = {
+			death_reason = death_beaten_by_mob
+		}
+	}
+	hidden_effect = {
+		every_courtier_or_guest = {
+			limit = {
+				religion = religion:judaism_religion
+			}
+			random_list = {
+				60 = {
+					death = {
+						death_reason = death_beaten_by_mob
+					}
+				}
+				40 = {
+					move_to_pool = yes
+				}
+			}
+		}
+	}
+}
+
+RICE_spawn_north_atlantic_minority_effect = {
+	random_county_in_region = {
+		region = RICE_greenland_struggle_region
+		limit = {
+			# Don't bother spreading to a county that's already of the culture and faith
+			NAND = {
+				faith = scope:north_atlantic_faith
+				culture = scope:north_atlantic_culture
+			}
+		}
+		save_scope_as = county
+		random_list = {
+			15 = {
+				promote_culture_minority_effect = { CULTURE = scope:north_atlantic_culture }
+				promote_faith_minority_effect = { FAITH = scope:north_atlantic_faith }
+				holder = {
+					send_interface_message = {
+						title = north_atlantic_minority_culture_faith
+						custom_tooltip = north_atlantic_minority_culture_faith_desc
+						right_icon = scope:county
+					}
+					every_liege_or_above = {
+						send_interface_message = {
+							title = north_atlantic_minority_culture_faith
+							custom_tooltip = north_atlantic_minority_culture_faith_desc
+							right_icon = scope:county
+						}
+					}
+				}
+			}
+			85 = {}
+		}
+	}
+}
+
+RICE_spawn_siberian_minorities_effect = {
+	random_county = {
+		limit = { title_province = { RICE_is_in_siberian_region_courtier_spawn_trigger = yes } }
+		save_scope_as = county
+		random_list = {
+			10 = {
+				trigger = {
+					scope:county = {
+						NOT = {
+							title_province = {geographical_region = world_manchuria}
+						}
+					}
+				}
+				culture:evenk = { save_scope_as = siberian_culture }
+				faith:bugaism = { save_scope_as = siberian_faith }
+			}
+			10 = {
+				trigger = {
+					scope:county = {
+						NOT = {
+							title_province = {geographical_region = world_manchuria}
+						}
+					}
+				}
+				culture:nivkh = { save_scope_as = siberian_culture }
+				faith:yzng = { save_scope_as = siberian_faith }
+			}
+			10 = {
+				culture:yakut = { save_scope_as = siberian_culture }
+				faith:tengri_pagan = { save_scope_as = siberian_faith }
+			}
+			10 = {
+				culture:yeniseian = { save_scope_as = siberian_culture }
+				faith:siberian_pagan = { save_scope_as = siberian_faith }
+			}
+			10 = {
+				culture:yukaghir = { save_scope_as = siberian_culture }
+				faith:siberian_pagan = { save_scope_as = siberian_faith }
+			}
+		}
+		promote_culture_minority_effect = { CULTURE = scope:siberian_culture }
+		promote_faith_minority_effect = { FAITH = scope:siberian_faith }
+		scope:county.holder = {
+			send_interface_message = {
+				title = siberian_minority_title
+				custom_tooltip = siberian_minority_desc
+				right_icon = scope:county
+			}
+			every_liege_or_above = {
+				send_interface_message = {
+					title = siberian_minority_title
+					custom_tooltip = siberian_minority_desc
+					right_icon = scope:county
+				}
+			}
+		}
+	}
+}
+
+# Deals with Buddhist Canons
+RoA_RICE_setup_magadha_flavor_pack_effect = {
+    title:c_magadha = {
+        add_county_modifier = {
+            modifier = RICE_magadha_rajgir_hot_springs_buddhist
+        }
+    }
+
+	if = {
+		limit = {
+			current_date > 1000.1.1
+		}
+        title:c_magadha.holder = {
+            get_title = title:c_gaya
+        }
+	}
+
+    faith:mahayana = {
+        add_doctrine = rice_mahayana_canon_doctrine
+    }
+	faith:phat_giao = {
+		add_doctrine = rice_mahayana_canon_doctrine
+	}
+	faith:zenzong = {
+		add_doctrine = rice_mahayana_canon_doctrine
+	}
+
+    faith:theravada = {
+        add_doctrine = rice_theravada_canon_doctrine
+    }
+
+	faith:vajrayana = {
+		add_doctrine = rice_vajrayana_canon_doctrine
+	}
+	faith:lamaism = { add_doctrine = rice_vajrayana_canon_doctrine }
+	faith:ari = {
+		add_doctrine = rice_vajrayana_canon_doctrine
+	}
+	faith:azhaliism = {
+		add_doctrine = rice_vajrayana_canon_doctrine
+	}
+	faith:pudgalavada = {
+		add_doctrine = rice_pudgalavada_canon_doctrine
+	}
+    if = {
+        limit = {
+            #is_tip_trigger = yes
+            exists = faith:vibhajyavada
+        }
+        faith:vibhajyavada = {
+            add_doctrine = rice_theravada_canon_doctrine
+        }
+    }
+    if = {
+        limit = {
+            #is_tip_trigger = yes
+            exists = faith:sarvastivada
+        }
+        faith:sarvastivada = {
+            add_doctrine = rice_mahayana_canon_doctrine
+        }
+    }
+    if = {
+        limit = {
+            #is_tip_trigger = yes
+            exists = faith:chan
+        }
+        faith:chan = {
+            add_doctrine = rice_mahayana_canon_doctrine
+        }
+    }
+    # Failsafe in case other mods add in other variations of Buddhism
+    religion:buddhism_religion = {
+        every_faith = {
+            limit = {
+                NOR = {
+                    has_doctrine = rice_mahayana_canon_doctrine
+                    has_doctrine = rice_theravada_canon_doctrine
+                    has_doctrine = rice_vajrayana_canon_doctrine
+                    has_doctrine = rice_pudgalavada_canon_doctrine
+                }
+            }
+            add_doctrine = rice_mahayana_canon_doctrine
+        }
+    }
+
+
+}
