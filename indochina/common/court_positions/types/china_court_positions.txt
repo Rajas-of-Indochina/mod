@@ -1,0 +1,1183 @@
+﻿
+# director_of_the_left_court_position
+# director_of_the_right_court_position
+# minister_of_personnel_court_position
+# minister_of_war_court_position
+# minister_of_rites_court_position
+# minister_of_revenue_court_position
+# minister_of_justice_court_position
+# minister_of_works_court_position
+
+# Director of the Left
+director_of_the_left_court_position = { #尚书左仆射
+	max_available_positions = 1
+	category = court_position_category_chinese
+	skill = stewardship
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 25
+		add = {
+			value = stewardship
+			multiply = 2.5
+			max = 50
+			desc = court_position_skill_stewardship
+		}
+		if = {
+			limit = {
+				has_trait = administrator
+			}
+			add = {
+				value = 20
+				desc = court_position_administrator_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+	}
+
+	is_shown = {
+		can_have_shangshusheng_trigger = yes
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	valid_position = {
+
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			is_courtier_of = scope:liege
+			is_imprisoned = no
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			can_be_shangshu_trigger = yes
+
+			custom_tooltip = {
+				text = IS_NOT_THE_SPOUSE_OF_CHARACTER_COURT_POSITION
+				NOT = { is_spouse_of = scope:liege }
+			}
+			trigger_if = {
+				limit = { NOT = { has_court_position = director_of_the_left_court_position } }
+				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
+			}
+		}
+	}
+
+	revoke_cost = {
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = {
+					exists = this
+					is_ai = yes
+				}
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		round = no
+		gold = minor_court_position_salary
+	}
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			monthly_court_grandeur_change_mult = 0.01
+		  	monthly_county_control_growth_add = 0.1
+		}
+		poor = {
+			monthly_court_grandeur_change_mult = 0.02
+		  	monthly_county_control_growth_add = 0.1
+		}
+		average = {
+			monthly_court_grandeur_change_mult = 0.03
+		  	monthly_county_control_growth_add = 0.2
+		}
+		good = {
+			monthly_court_grandeur_change_mult = 0.04
+		  	monthly_county_control_growth_add = 0.2
+		}
+		excellent = {
+			monthly_court_grandeur_change_mult = 0.05
+		  	monthly_county_control_growth_add = 0.3
+		}
+	}
+
+	modifier = {
+		monthly_prestige = minor_court_position_prestige_salary
+	}
+
+	on_court_position_received = {
+		seneschal_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		seneschal_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		seneschal_title_invalidated_effect = yes
+	}
+
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	candidate_score = {
+		value = 150
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
+	}
+}
+
+# Director of the Right
+director_of_the_right_court_position = { #尚书右仆射
+	max_available_positions = 1
+	category = court_position_category_chinese
+	skill = stewardship
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 25
+		add = {
+			value = stewardship
+			multiply = 2.5
+			max = 50
+			desc = court_position_skill_stewardship
+		}
+		if = {
+			limit = {
+				has_trait = administrator
+			}
+			add = {
+				value = 20
+				desc = court_position_administrator_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+	}
+
+	is_shown = {
+		can_have_shangshusheng_trigger = yes
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	valid_position = {
+
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			is_courtier_of = scope:liege
+			is_imprisoned = no
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			can_be_shangshu_trigger = yes
+
+			custom_tooltip = {
+				text = IS_NOT_THE_SPOUSE_OF_CHARACTER_COURT_POSITION
+				NOT = { is_spouse_of = scope:liege }
+			}
+			trigger_if = {
+				limit = { NOT = { has_court_position = director_of_the_right_court_position } }
+				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
+			}
+		}
+	}
+
+	revoke_cost = {
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = {
+					exists = this
+					is_ai = yes
+				}
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		round = no
+		gold = minor_court_position_salary
+	}
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			monthly_court_grandeur_change_mult = 0.01
+		  	monthly_county_control_growth_add = 0.1
+		}
+		poor = {
+			monthly_court_grandeur_change_mult = 0.02
+		  	monthly_county_control_growth_add = 0.1
+		}
+		average = {
+			monthly_court_grandeur_change_mult = 0.03
+		  	monthly_county_control_growth_add = 0.2
+		}
+		good = {
+			monthly_court_grandeur_change_mult = 0.04
+		  	monthly_county_control_growth_add = 0.2
+		}
+		excellent = {
+			monthly_court_grandeur_change_mult = 0.05
+		  	monthly_county_control_growth_add = 0.3
+		}
+	}
+
+	modifier = {
+		monthly_prestige = minor_court_position_prestige_salary
+	}
+
+	on_court_position_received = {
+		seneschal_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		seneschal_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		seneschal_title_invalidated_effect = yes
+	}
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	candidate_score = {
+		value = 150
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
+	}
+}
+
+# Minister of Personnel
+minister_of_personnel_court_position = { #吏部
+	max_available_positions = 1
+	category = court_position_category_chinese
+	skill = stewardship
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 25
+		add = {
+			value = stewardship
+			multiply = 2.5
+			max = 50
+			desc = court_position_skill_stewardship
+		}
+		if = {
+			limit = {
+				has_trait = administrator
+			}
+			add = {
+				value = 20
+				desc = court_position_administrator_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+	}
+
+	is_shown = {
+		can_have_shangshusheng_trigger = yes
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	valid_position = {
+
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			is_courtier_of = scope:liege
+			is_imprisoned = no
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			can_be_shangshu_trigger = yes
+
+			custom_tooltip = {
+				text = IS_NOT_THE_SPOUSE_OF_CHARACTER_COURT_POSITION
+				NOT = { is_spouse_of = scope:liege }
+			}
+			trigger_if = {
+				limit = { NOT = { has_court_position = minister_of_personnel_court_position } }
+				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
+			}
+		}
+	}
+
+	revoke_cost = {
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = {
+					exists = this
+					is_ai = yes
+				}
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		round = no
+		gold = minor_court_position_salary
+	}
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			monthly_court_grandeur_change_mult = 0.01
+			direct_vassal_opinion = 3
+			parochial_opinion = 3
+		}
+		poor = {
+			monthly_court_grandeur_change_mult = 0.02
+			direct_vassal_opinion = 5
+			parochial_opinion = 5
+		}
+		average = {
+			monthly_court_grandeur_change_mult = 0.03
+			direct_vassal_opinion = 10
+			parochial_opinion = 10
+		}
+		good = {
+			monthly_court_grandeur_change_mult = 0.04
+			direct_vassal_opinion = 15
+			parochial_opinion = 15
+		}
+		excellent = {
+			monthly_court_grandeur_change_mult = 0.05
+			direct_vassal_opinion = 20
+			parochial_opinion = 20
+		}
+	}
+
+	modifier = {
+		monthly_prestige = minor_court_position_prestige_salary
+	}
+
+	on_court_position_received = {
+		seneschal_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		seneschal_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		seneschal_title_invalidated_effect = yes
+	}
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	candidate_score = {
+		value = 150
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
+	}
+}
+
+# Minister of War
+minister_of_war_court_position = { #兵部
+	max_available_positions = 1
+	category = court_position_category_chinese
+	skill = stewardship
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 25
+		add = {
+			value = stewardship
+			multiply = 2.5
+			max = 50
+			desc = court_position_skill_stewardship
+		}
+		if = {
+			limit = {
+				has_trait = administrator
+			}
+			add = {
+				value = 20
+				desc = court_position_administrator_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+	}
+
+	is_shown = {
+		can_have_shangshusheng_trigger = yes
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	valid_position = {
+
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			is_courtier_of = scope:liege
+			is_imprisoned = no
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			can_be_shangshu_trigger = yes
+
+			custom_tooltip = {
+				text = IS_NOT_THE_SPOUSE_OF_CHARACTER_COURT_POSITION
+				NOT = { is_spouse_of = scope:liege }
+			}
+			trigger_if = {
+				limit = { NOT = { has_court_position = minister_of_war_court_position } }
+				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
+			}
+		}
+	}
+
+	revoke_cost = {
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = {
+					exists = this
+					is_ai = yes
+				}
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		round = no
+		gold = minor_court_position_salary
+	}
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			monthly_court_grandeur_change_mult = 0.01
+			movement_speed = 0.01
+			levy_reinforcement_rate = 0.03
+		}
+		poor = {
+			monthly_court_grandeur_change_mult = 0.02
+			movement_speed = 0.02
+			levy_reinforcement_rate = 0.05
+		}
+		average = {
+			monthly_court_grandeur_change_mult = 0.03
+			movement_speed = 0.03
+			levy_reinforcement_rate = 0.10
+		}
+		good = {
+			monthly_court_grandeur_change_mult = 0.04
+			movement_speed = 0.04
+			levy_reinforcement_rate = 0.15
+		}
+		excellent = {
+			monthly_court_grandeur_change_mult = 0.05
+			movement_speed = 0.05
+			levy_reinforcement_rate = 0.20
+		}
+	}
+
+	modifier = {
+		monthly_prestige = minor_court_position_prestige_salary
+	}
+
+	on_court_position_received = {
+		seneschal_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		seneschal_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		seneschal_title_invalidated_effect = yes
+	}
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	candidate_score = {
+		value = 150
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
+	}
+}
+
+# Minister of Rites
+minister_of_rites_court_position = { #礼部
+	max_available_positions = 1
+	category = court_position_category_chinese
+	skill = stewardship
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 25
+		add = {
+			value = stewardship
+			multiply = 2.5
+			max = 50
+			desc = court_position_skill_learning
+		}
+		if = {
+			limit = {
+				has_trait = administrator
+			}
+			add = {
+				value = 20
+				desc = court_position_administrator_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+	}
+
+	is_shown = {
+		can_have_shangshusheng_trigger = yes
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	valid_position = {
+
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			is_courtier_of = scope:liege
+			is_imprisoned = no
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			can_be_shangshu_trigger = yes
+
+			custom_tooltip = {
+				text = IS_NOT_THE_SPOUSE_OF_CHARACTER_COURT_POSITION
+				NOT = { is_spouse_of = scope:liege }
+			}
+			trigger_if = {
+				limit = { NOT = { has_court_position = minister_of_rites_court_position } }
+				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
+			}
+		}
+	}
+
+	revoke_cost = {
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = {
+					exists = this
+					is_ai = yes
+				}
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		round = no
+		gold = minor_court_position_salary
+	}
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			monthly_court_grandeur_change_mult = 0.01
+			monthly_piety_gain_mult = 0.05
+			monthly_prestige_gain_mult = 0.05
+		}
+		poor = {
+			monthly_court_grandeur_change_mult = 0.02
+			monthly_piety_gain_mult = 0.1
+			monthly_prestige_gain_mult = 0.1
+		}
+		average = {
+			monthly_court_grandeur_change_mult = 0.03
+			monthly_piety_gain_mult = 0.15
+			monthly_prestige_gain_mult = 0.15
+		}
+		good = {
+			monthly_court_grandeur_change_mult = 0.04
+			monthly_piety_gain_mult = 0.15
+			monthly_prestige_gain_mult = 0.15
+		}
+		excellent = {
+			monthly_court_grandeur_change_mult = 0.05
+			monthly_piety_gain_mult = 0.15
+			monthly_prestige_gain_mult = 0.15
+		}
+	}
+
+	modifier = {
+		monthly_prestige = minor_court_position_prestige_salary
+	}
+
+	on_court_position_received = {
+		seneschal_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		seneschal_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		seneschal_title_invalidated_effect = yes
+	}
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	candidate_score = {
+		value = 150
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
+	}
+}
+
+# Minister of Revenue
+minister_of_revenue_court_position = { #户部
+	max_available_positions = 1
+	category = court_position_category_chinese
+	skill = stewardship
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 25
+		add = {
+			value = stewardship
+			multiply = 2.5
+			max = 50
+			desc = court_position_skill_stewardship
+		}
+		if = {
+			limit = {
+				has_trait = administrator
+			}
+			add = {
+				value = 20
+				desc = court_position_administrator_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+	}
+
+	is_shown = {
+		can_have_shangshusheng_trigger = yes
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	valid_position = {
+
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			is_courtier_of = scope:liege
+			is_imprisoned = no
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			can_be_shangshu_trigger = yes
+
+			custom_tooltip = {
+				text = IS_NOT_THE_SPOUSE_OF_CHARACTER_COURT_POSITION
+				NOT = { is_spouse_of = scope:liege }
+			}
+			trigger_if = {
+				limit = { NOT = { has_court_position = minister_of_revenue_court_position } }
+				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
+			}
+		}
+	}
+
+	revoke_cost = {
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = {
+					exists = this
+					is_ai = yes
+				}
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		round = no
+		gold = minor_court_position_salary
+	}
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			monthly_court_grandeur_change_mult = 0.01
+			domain_tax_mult = 0.02
+		}
+		poor = {
+			monthly_court_grandeur_change_mult = 0.02
+			domain_tax_mult = 0.04
+		}
+		average = {
+			monthly_court_grandeur_change_mult = 0.03
+			domain_tax_mult = 0.06
+		}
+		good = {
+			monthly_court_grandeur_change_mult = 0.04
+			domain_tax_mult = 0.08
+		}
+		excellent = {
+			monthly_court_grandeur_change_mult = 0.05
+			domain_tax_mult = 0.10
+		}
+	}
+
+	modifier = {
+		monthly_prestige = minor_court_position_prestige_salary
+	}
+
+	on_court_position_received = {
+		seneschal_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		seneschal_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		seneschal_title_invalidated_effect = yes
+	}
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	candidate_score = {
+		value = 150
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
+	}
+}
+
+# Minister of Justice
+minister_of_justice_court_position = { #刑部
+	max_available_positions = 1
+	category = court_position_category_chinese
+	skill = stewardship
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 25
+		add = {
+			value = stewardship
+			multiply = 2.5
+			max = 50
+			desc = court_position_skill_stewardship
+		}
+		if = {
+			limit = {
+				has_trait = administrator
+			}
+			add = {
+				value = 20
+				desc = court_position_administrator_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+	}
+
+	is_shown = {
+		can_have_shangshusheng_trigger = yes
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	valid_position = {
+
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			is_courtier_of = scope:liege
+			is_imprisoned = no
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			can_be_shangshu_trigger = yes
+
+			custom_tooltip = {
+				text = IS_NOT_THE_SPOUSE_OF_CHARACTER_COURT_POSITION
+				NOT = { is_spouse_of = scope:liege }
+			}
+			trigger_if = {
+				limit = { NOT = { has_court_position = minister_of_justice_court_position } }
+				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
+			}
+		}
+	}
+
+	revoke_cost = {
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = {
+					exists = this
+					is_ai = yes
+				}
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		round = no
+		gold = minor_court_position_salary
+	}
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			monthly_court_grandeur_change_mult = 0.01
+		  	tyranny_gain_mult = -0.03
+		  	tyranny_loss_mult = 0.03
+		}
+		poor = {
+			monthly_court_grandeur_change_mult = 0.02
+		  	tyranny_gain_mult = -0.06
+		  	tyranny_loss_mult = 0.06
+		}
+		average = {
+			monthly_court_grandeur_change_mult = 0.03
+		  	tyranny_gain_mult = -0.09
+		  	tyranny_loss_mult = 0.09
+		}
+		good = {
+			monthly_court_grandeur_change_mult = 0.04
+		  	tyranny_gain_mult = -0.12
+		  	tyranny_loss_mult = 0.12
+		}
+		excellent = {
+			monthly_court_grandeur_change_mult = 0.05
+		  	tyranny_gain_mult = -0.15
+		  	tyranny_loss_mult = 0.15
+		}
+	}
+
+	modifier = {
+		monthly_prestige = minor_court_position_prestige_salary
+	}
+
+	on_court_position_received = {
+		seneschal_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		seneschal_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		seneschal_title_invalidated_effect = yes
+	}
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	candidate_score = {
+		value = 150
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
+	}
+}
+
+# Minister of Works
+minister_of_works_court_position = { #工部
+	max_available_positions = 1
+	category = court_position_category_chinese
+	skill = stewardship
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 25
+		add = {
+			value = stewardship
+			multiply = 2.5
+			max = 50
+			desc = court_position_skill_stewardship
+		}
+		if = {
+			limit = {
+				has_trait = administrator
+			}
+			add = {
+				value = 20
+				desc = court_position_administrator_trait
+			}
+		}
+		add = court_position_aptitude_low_penalty_value
+	}
+
+	is_shown = {
+		can_have_shangshusheng_trigger = yes
+	}
+
+	# Is this an available position for this court? (root is court owner)
+	valid_position = {
+
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			is_courtier_of = scope:liege
+			is_imprisoned = no
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			can_be_shangshu_trigger = yes
+
+			custom_tooltip = {
+				text = IS_NOT_THE_SPOUSE_OF_CHARACTER_COURT_POSITION
+				NOT = { is_spouse_of = scope:liege }
+			}
+			trigger_if = {
+				limit = { NOT = { has_court_position = minister_of_works_court_position } }
+				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
+			}
+		}
+	}
+
+
+	revoke_cost = {
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+			if = {
+				limit = {
+					exists = this
+					is_ai = yes
+				}
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		round = no
+		gold = minor_court_position_salary
+	}
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			monthly_court_grandeur_change_mult = 0.01
+			build_speed = -0.05
+		}
+		poor = {
+			monthly_court_grandeur_change_mult = 0.02
+			build_speed = -0.1
+		}
+		average = {
+			monthly_court_grandeur_change_mult = 0.03
+			build_speed = -0.15
+		}
+		good = {
+			monthly_court_grandeur_change_mult = 0.04
+			build_speed = -0.2
+		}
+		excellent = {
+			monthly_court_grandeur_change_mult = 0.05
+			build_speed = -0.3
+		}
+	}
+
+	modifier = {
+		monthly_prestige = minor_court_position_prestige_salary
+	}
+
+	on_court_position_received = {
+		seneschal_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		seneschal_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		seneschal_title_invalidated_effect = yes
+	}
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	candidate_score = {
+		value = 150
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
+	}
+}

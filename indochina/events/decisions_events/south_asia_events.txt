@@ -1921,6 +1921,7 @@ south_asia.0042 = {
 	immediate = {
 		play_music_cue = "mx_cue_epic_sacral_moment"
 		add_prestige = massive_prestige_value
+		indo_greek_de_jure_effect = yes
 		legend_seed_great_deed_title_effect = {
 			TITLE = title:e_indo_greek_kingdom
 		}
@@ -2057,13 +2058,7 @@ south_asia.0044 = {
 
 	option = {
 		name = chaldean_nasrani
-		faith:indian_catholic = {
-			remove_doctrine = tenet_communal_identity
-			add_doctrine = tenet_rite
-			remove_doctrine = doctrine_no_head
-			add_doctrine = doctrine_spiritual_head
-			set_religious_head_title = title:d_patriarchate_in_the_east
-		}
+		add_piety = massive_piety_gain
 	}
 	option = {
 		name = catholic_nasrani
@@ -2072,11 +2067,7 @@ south_asia.0044 = {
 		}
 		faith:indian_catholic = {
 			remove_doctrine = tenet_communal_identity
-			add_doctrine = tenet_rite
-			remove_doctrine = tenet_adaptive
 			add_doctrine = tenet_communion
-			remove_doctrine = doctrine_no_head
-			add_doctrine = doctrine_spiritual_head
 			set_religious_head_title = title:k_papal_state
 		}
 	}
@@ -2087,16 +2078,18 @@ south_asia.0044 = {
 		}
 		faith:indian_catholic = {
 			remove_doctrine = tenet_communal_identity
-			add_doctrine = tenet_rite
-			remove_doctrine = tenet_adaptive
 			add_doctrine = tenet_pentarchy
-			remove_doctrine = doctrine_no_head
-			add_doctrine = doctrine_spiritual_head
 			set_religious_head_title = title:k_orthodox
 		}
 	}
 	option = {
 		name = independent_nasrani
+		add_prestige = massive_prestige_gain
+		faith:indian_catholic = {
+			remove_doctrine = tenet_rite
+			add_doctrine = tenet_adaptive
+			set_religious_head_title = d_indian_catholic_papacy
+		}
 		trigger_event = south_asia.0045
 	}
 
@@ -2104,6 +2097,16 @@ south_asia.0044 = {
 		name = debug
 		trigger = {
 			debug_only = yes
+		}
+	}
+
+	after = {
+		faith:indian_catholic.religious_head = {
+			add_opinion = {
+				target = ROOT
+				modifier = pious_opinion
+				opinion = 50
+			}
 		}
 	}
 }

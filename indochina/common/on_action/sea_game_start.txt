@@ -10,6 +10,8 @@ on_game_start = {
         lock_indo_greek
         EEE_sea_setup_on_actions
         fix_government_types
+        generate_shangshu
+        nerf_japan
 
         # Struggles
         iberian_struggle_on_game_start
@@ -776,6 +778,110 @@ holy_site_fix = {
                     title_province = {
                         set_holding_type = church_holding
                     }
+                }
+            }
+        }
+    }
+}
+
+generate_shangshu = {
+    effect = {
+        title:e_celestia_china.holder = {
+            save_scope_as = ruler
+
+            create_character = {
+                employer = scope:ruler
+                template = random_shangshu_character
+                save_scope_as = shangshu_char_1
+            }
+            create_character = {
+                employer = scope:ruler
+                template = random_shangshu_character
+                save_scope_as = shangshu_char_2
+            }
+            create_character = {
+                employer = scope:ruler
+                template = random_shangshu_character
+                save_scope_as = shangshu_char_3
+            }
+            create_character = {
+                employer = scope:ruler
+                template = random_shangshu_character
+                save_scope_as = shangshu_char_4
+            }
+            create_character = {
+                employer = scope:ruler
+                template = random_shangshu_character
+                save_scope_as = shangshu_char_5
+            }
+            create_character = {
+                employer = scope:ruler
+                template = random_shangshu_character
+                save_scope_as = shangshu_char_6
+            }
+            create_character = {
+                employer = scope:ruler
+                template = random_shangshu_character
+                save_scope_as = shangshu_char_7
+            }
+            create_character = {
+                employer = scope:ruler
+                template = random_shangshu_character
+                save_scope_as = shangshu_char_8
+            }
+
+            appoint_court_position = {
+                recipient = scope:shangshu_char_1
+                court_position = director_of_the_left_court_position
+            }
+            appoint_court_position = {
+                recipient = scope:shangshu_char_2
+                court_position = director_of_the_right_court_position
+            }
+            appoint_court_position = {
+                recipient = scope:shangshu_char_3
+                court_position = minister_of_personnel_court_position
+            }
+            appoint_court_position = {
+                recipient = scope:shangshu_char_4
+                court_position = minister_of_war_court_position
+            }
+            appoint_court_position = {
+                recipient = scope:shangshu_char_5
+                court_position = minister_of_rites_court_position
+            }
+            appoint_court_position = {
+                recipient = scope:shangshu_char_6
+                court_position = minister_of_revenue_court_position
+            }
+            appoint_court_position = {
+                recipient = scope:shangshu_char_7
+                court_position = minister_of_justice_court_position
+            }
+            appoint_court_position = {
+                recipient = scope:shangshu_char_8
+                court_position = minister_of_works_court_position
+            }
+        }
+    }
+}
+
+nerf_japan = {
+    effect = {
+        title:k_yamato.holder = {
+            every_vassal = {
+                limit = { highest_held_title_tier > tier_barony }
+                vassal_contract_set_obligation_level = {
+                    type = title_revocation_rights
+                    level = 1
+                }
+                vassal_contract_set_obligation_level = {
+                    type = feudal_government_taxes
+                    level = 0
+                }
+                vassal_contract_set_obligation_level = {
+                    type = feudal_government_levies
+                    level = 0
                 }
             }
         }
