@@ -1774,6 +1774,104 @@ circassian_decision_farschipse = {
 	}
 }
 
+circassian_decision_farschipse_ai = {
+	picture = "gfx/interface/illustrations/decisions/farschipse.dds"
+    desc = circassian_decision_farschipse_desc
+    selection_tooltip = circassian_decision_farschipse_tooltip
+	ai_check_interval = 5
+	major = yes
+
+	is_shown = {
+		is_ai = yes
+		NOT = {
+			has_trait = sikowschir
+			has_trait = chakobsa
+			has_trait = farschipse
+		}
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			}		
+		knows_language = language_circassian	
+		OR = {
+			OR = {
+				has_lifestyle = martial_lifestyle
+				martial >= 20
+				}
+		}
+	}
+
+	is_valid = {
+		is_ai = yes
+		knows_language = language_circassian	
+		NOT = {
+			has_trait = sikowschir
+			has_trait = chakobsa
+			has_trait = farschipse
+		}
+		OR = {
+			has_lifestyle = martial_lifestyle
+			martial >= 20
+			}
+			OR = {
+			AND = {
+		learning >= 10
+		martial >= 15
+			}
+			AND = {
+		learning >= 15
+		martial >= 10
+			}
+		}
+		NOT = {
+			has_trait = lazy
+			has_trait = impatient
+			has_trait = shy
+		}	
+	}
+
+	effect = {
+		add_trait = farschipse
+	}
+
+	cost = {
+
+	}
+
+	ai_check_interval = 1
+	ai_potential = {
+		is_ai = yes
+		knows_language = language_circassian	
+		NOT = {
+			has_trait = sikowschir
+			has_trait = chakobsa
+			has_trait = farschipse
+		}
+		OR = {
+			has_lifestyle = martial_lifestyle
+			martial >= 20
+			}
+			OR = {
+			AND = {
+		learning >= 10
+		martial >= 15
+			}
+			AND = {
+		learning >= 15
+		martial >= 10
+			}
+		}
+		NOT = {
+			has_trait = lazy
+			has_trait = impatient
+			has_trait = shy
+		}	
+	}
+	ai_will_do = {
+		base = 100
+	}
+}
+
 circassian_decision_chakobsa = {
 	picture = "gfx/interface/illustrations/decisions/chakobsa.dds"
     desc = circassian_decision_chakobsa_desc
@@ -1818,24 +1916,72 @@ circassian_decision_chakobsa = {
 
 	}
 
-	ai_check_interval = 5
+	ai_check_interval = 50
 	ai_potential = {
-		NOT = {
-			has_trait = sikowschir
-			has_trait = chakobsa
-			has_trait = farschipse
-		}
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
+circassian_decision_chakobsa_ai = {
+	picture = "gfx/interface/illustrations/decisions/chakobsa.dds"
+    desc = circassian_decision_chakobsa_desc
+    selection_tooltip = circassian_decision_chakobsa_tooltip
+	ai_check_interval = 5
+	major = yes
+
+	is_shown = {
+		is_ai = yes
 		OR = {
 			culture = {	this = culture:circassian }
 			culture = {	this = culture:ubykh }
 			}		
 		knows_language = language_circassian	
 		has_trait = lifestyle_hunter
-		learning >= 15
-		prowess >= 15
 		NOT = {
-			has_trait = lazy
-			has_trait = impatient
+			has_trait = chakobsa
+		}
+	}
+
+	is_valid = {
+		is_ai = yes
+		knows_language = language_circassian	
+		NOT = {
+			has_trait = sikowschir
+			has_trait = chakobsa
+			has_trait = farschipse
+		}
+		has_trait = lifestyle_hunter
+		learning >= 10
+		prowess >= 10
+		NOT = {
+			has_trait = cynical
+		}	
+	}
+
+	effect = {
+		add_trait = chakobsa
+	}
+
+	cost = {
+
+	}
+
+	ai_check_interval = 1
+	ai_potential = {
+		is_ai = yes
+		knows_language = language_circassian	
+		NOT = {
+			has_trait = sikowschir
+			has_trait = chakobsa
+			has_trait = farschipse
+		}
+		has_trait = lifestyle_hunter
+		learning >= 10
+		prowess >= 10
+		NOT = {
 			has_trait = cynical
 		}	
 	}
@@ -1920,6 +2066,64 @@ circassian_decision_sikowschir = {
 	}
 }
 
+circassian_decision_sikowschir_ai = {
+	picture = "gfx/interface/illustrations/decisions/sikowschir.dds"
+    desc = circassian_decision_sikowschir_desc
+    selection_tooltip = circassian_decision_sikowschir_tooltip
+	ai_check_interval = 5
+	major = yes
+
+	is_shown = {
+		is_ai = yes
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			}		
+		knows_language = language_circassian	
+		has_lifestyle = diplomacy_lifestyle
+		NOT = {
+			has_trait = sikowschir
+		}
+	}
+
+	is_valid = {	
+		is_ai = yes
+		knows_language = language_circassian	
+		has_lifestyle = diplomacy_lifestyle
+		NOT = {
+			has_trait = sikowschir
+			has_trait = chakobsa
+			has_trait = farschipse
+		}
+		learning >= 10
+		diplomacy >= 12
+	}
+
+	effect = {
+		add_trait = sikowschir
+	}
+
+	cost = {
+
+	}
+
+	ai_check_interval = 1
+	ai_potential = {
+		is_ai = yes
+		knows_language = language_circassian	
+		has_lifestyle = diplomacy_lifestyle
+		NOT = {
+			has_trait = sikowschir
+			has_trait = chakobsa
+			has_trait = farschipse
+		}
+		learning >= 10
+		diplomacy >= 12
+	}
+	ai_will_do = {
+		base = 100
+	}
+}
 
 
 
