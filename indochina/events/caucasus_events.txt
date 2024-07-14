@@ -575,3 +575,127 @@ caucasianroa.013 = {
 		}
 	}
 }
+
+# Unification of Georgia
+
+caucasianroa.014 = {
+	type = character_event
+	title = caucasianroa.014.t
+	desc = caucasianroa.014.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = {
+		event_background = wilderness_mountains
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		form_georgia_decision_effect = yes
+		legend_seed_new_title_effect = yes
+	}
+
+	#I was motivated by nobility!
+	option = {
+		name = east_europe.0101.a
+
+		#Your legacy will be remembered.
+		add_prestige_experience = major_prestige_gain
+
+		stress_impact = { arrogant = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_boldness = 0.5
+			}
+		}
+	}
+
+	#I was motivated by faith!
+	option = {
+		name = east_europe.0101.b
+
+		#Your piety will be remembered.
+		add_piety_experience = major_piety_gain
+
+		stress_impact = { zealous = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_zeal = 0.5
+				ai_boldness = 0.25
+			}
+		}
+	}
+
+	#I was motivated by a cynical lust for power!
+	option = {
+		name = east_europe.0101.c
+
+		#Your wry smile walking away from your coronation will be remembered.
+		add_stress = major_stress_loss
+
+		stress_impact = { cynical = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_greed = 0.5
+				ai_rationality = 0.25
+				ai_honor = -0.25
+			}
+		}
+	}
+}
+
+# Inform others
+
+caucasionroa.015 = {
+	type = character_event
+	title = caucasionroa.015.t
+	desc = caucasionroa.015.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = { reference = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+	}
+
+	#Kings and Emperors consider them an upstart.
+	option = {
+		name = east_europe.0102.a
+		trigger = { highest_held_title_tier >= tier_kingdom }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Same-culture rulers are probably quite happy.
+	option = {
+		name = east_europe.0102.b
+		trigger = { culture = scope:founder.culture }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Everyone else is a bit wary.
+	option = {
+		name = east_europe.0102.c
+		trigger = {
+			NOR = {
+				highest_held_title_tier >= tier_kingdom
+				culture = scope:founder.culture
+			}
+		}
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+}
