@@ -2093,6 +2093,7 @@ form_georgia_decision = {
 
 	is_valid = {
 		# is_ai = no
+		is_independent_ruler = yes
 		OR = {
 			culture = {
 				has_cultural_pillar = heritage_transcaucasian
@@ -2131,6 +2132,8 @@ form_georgia_decision = {
 			primary_title = title:k_iberia
 			primary_title = title:k_kakheti
 		}
+
+		legitimacy_level >= 4
 	}
 
 	cost = {
@@ -2164,5 +2167,71 @@ form_georgia_decision = {
 	}
 }
 
+unify_armenian_principalities_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	major = yes
+	desc = unify_armenian_principalities_decision_desc
 
+	ai_check_interval = 120
 
+	is_shown = {
+		OR = {
+			capital_county.title_province = { geographical_region = world_armenia }
+			culture = {
+				this = culture:armenian
+			}
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:armenian
+				}
+			}
+		}
+		title:k_armenian_principality = { is_titular = yes }
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		OR = {
+			culture = {
+				this = culture:armenian
+			}
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:armenian
+				}
+			}
+		}
+		OR = {
+			has_title = title:k_armenia
+			completely_controls = title:k_armenia
+		}
+		OR = {
+			has_title = title:k_ayrarat
+			completely_controls = title:k_armenia
+		}
+
+		OR = {
+			highest_held_title_tier <= tier_duchy
+			primary_title = title:k_armenia
+			primary_title = title:k_armenian_principality
+			primary_title = title:k_ayrarat
+			primary_title = title:k_syunik
+		}
+
+		legitimacy_level >= 4
+	}
+
+	effect = {
+		show_as_tooltip = {
+			unify_armenian_principalities_decision_effect = yes
+		}
+		hidden_effect = {
+			save_scope = founder
+			trigger_event = { id = caucasianroa.016 }
+		}
+	}
+	ai_will_do = {
+		base = 100
+	}
+
+}
