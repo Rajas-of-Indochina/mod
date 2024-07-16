@@ -705,7 +705,10 @@ circassian_decision_dais = {
 	}
 
 	is_valid = {
-		current_year >= 900
+		custom_tooltip = {
+			current_year >= 900
+			text = yearninehundred_customtooltip
+		}
 		NOT = {	#You can only do it once.
 		is_target_in_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -1093,6 +1096,30 @@ circassian_decision_kabardia = {
 	}
 
 	effect = {
+		culture:alan = {
+			set_culture_name = {
+				noun = alan_later_date
+				collective_noun = alan_later_date_collective_noun
+				prefix = alan_later_date_prefix
+			}
+			# Build list of characters to notify
+			culture_head = { add_to_list = alan_characters }
+			every_county = {
+				limit = { empire = title:e_caucasia }
+				if = {
+					limit = {
+						NOT = { is_in_list = alan_name_change_notification }
+					}
+					add_to_list = alan_name_change_notification
+				}
+			}
+		}
+		every_in_list = {
+			list = alan_name_change_notification
+			trigger_event = {
+				id = caucasianroa_alan_inform.006
+				days = 50 }
+		}
 		title:d_alania = { 
 			if = {	
 				limit = { religion = religion:christianity_religion }
@@ -1269,6 +1296,30 @@ circassian_decision_kabardia_ai = {
 	}
 
 	effect = {
+		culture:alan = {
+			set_culture_name = {
+				noun = alan_later_date
+				collective_noun = alan_later_date_collective_noun
+				prefix = alan_later_date_prefix
+			}
+			# Build list of characters to notify
+			culture_head = { add_to_list = alan_characters }
+			every_county = {
+				limit = { empire = title:e_caucasia }
+				if = {
+					limit = {
+						NOT = { is_in_list = alan_name_change_notification }
+					}
+					add_to_list = alan_name_change_notification
+				}
+			}
+		}
+		every_in_list = {
+			list = alan_name_change_notification
+			trigger_event = {
+				id = caucasianroa_alan_inform.006
+				days = 10 }
+		}
 		title:d_alania = { 
 			if = {	
 				limit = { religion = religion:christianity_religion }
