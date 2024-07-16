@@ -241,6 +241,30 @@ caucasianroa.005 = {
 		add_martial_skill = 1
 		add_diplomacy_skill = 1
 		add_prestige_level = 1
+		culture:alan = {
+			set_culture_name = {
+				noun = alan_later_date
+				collective_noun = alan_later_date_collective_noun
+				prefix = alan_later_date_prefix
+			}
+			# Build list of characters to notify
+			culture_head = { add_to_list = alan_characters }
+			every_county = {
+				limit = { empire = title:e_caucasia }
+				if = {
+					limit = {
+						NOT = { is_in_list = alan_name_change_notification }
+					}
+					add_to_list = alan_name_change_notification
+				}
+			}
+		}
+		every_in_list = {
+			list = alan_name_change_notification
+			trigger_event = {
+				id = caucasianroa_alan_inform.006
+				days = 50 }
+		}
 		every_ruler = {
 			limit = {
 				NOT = { this = scoped_unifier }
@@ -325,6 +349,28 @@ caucasianroa.006 = {
 
 	immediate = {
 		custom_tooltip = udi_name_change_tt
+	}
+	
+	option = {
+		#Okay whatever
+		name = caucasianroa.006.whatever
+	}
+
+}
+
+caucasianroa_alan_inform.006 = {
+	type = character_event
+	theme = culture_change
+	title = caucasianroa_alan_inform.006.t
+	desc = caucasianroa_alan_inform.006.desc
+
+	left_portrait = {
+		character = culture:alan.culture_head
+		animation = personality_content
+	}
+
+	immediate = {
+		custom_tooltip = alan_name_change_tt
 	}
 	
 	option = {
