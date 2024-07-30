@@ -25,6 +25,29 @@ tibetan_struggle_starting_events = {
 on_title_gain = {
 	on_actions = {
 		tibet_catalyst_on_title_gain
+		stateless_safeguard
+	}
+}
+
+stateless_safeguard = {
+	trigger = {
+		scope:title.tier >= tier_kingdom
+		ROOT = { government_has_flag = government_is_stateless }
+	}
+	effect = {
+
+		scope:title = {
+			every_de_jure_county_holder = {
+				send_interface_toast = {
+					title = stateless_kingdom_fracture_title
+					left_icon = ROOT
+					right_icon = scope:title
+
+					custom_tooltip = stateless_kingdom_fracture_tt
+				}
+			}
+		}
+		destroy_title = scope:title
 	}
 }
 
