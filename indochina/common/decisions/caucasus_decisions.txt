@@ -336,6 +336,7 @@ circassian_decision.7 = {
     }
 
 	is_valid = {
+		current_year >= 1000
 		culture = {	this = culture:ubykh }
 		knows_language = language_circassian
 		custom_tooltip = {
@@ -349,7 +350,6 @@ circassian_decision.7 = {
 		}
         age < 30
 		prestige_level >=1
-		current_year >= 1000
     }
 
 	effect = {
@@ -365,16 +365,16 @@ circassian_decision.7 = {
 		knows_language = language_circassian
 		custom_tooltip = {
 			text = circassianize_decision_requirement
-			any_spouse	= {
-				has_culture	= culture:circassian
-			}
 			any_courtier	= {
 				has_culture	= culture:circassian
 			}
 		}
         age < 30
 		prestige_level >=1
-		current_year >= 1000
+		custom_tooltip = {
+			current_year >= 1000
+			text = yearthousand_customtooltip
+		}
 	}
 
 	ai_will_do = {
@@ -694,6 +694,7 @@ circassian_decision_unify = {
 		completely_controls = title:d_khegayk
 		completely_controls = title:d_zichia
 		completely_controls = title:d_kassogia
+		completely_controls = title:d_tmutarakan
 			}
 			custom_tooltip = {
 				text = circassiannotstateless_requirement
@@ -718,10 +719,6 @@ circassian_decision_unify = {
 	        	}
 				men_at_arms = {
 					type = jigit_riders_unit
-					stacks = 1
-				}
-				men_at_arms = {
-					type = pikemen_unit
 					stacks = 1
 				}
 				location = province:15596
@@ -813,6 +810,26 @@ circassian_decision_unify_ai = {
 				}
 			}
 				}
+				OR = {
+					has_title = title:d_tmutarakan
+					completely_controls = title:d_tmutarakan
+					any_vassal = {
+						OR = {
+							has_title = title:d_tmutarakan
+							completely_controls = title:d_tmutarakan
+							}
+						}
+							}
+							OR = {
+								has_title = title:d_khegayk
+								completely_controls = title:d_khegayk
+								any_vassal = {
+									OR = {
+										has_title = title:d_khegayk
+										completely_controls = title:d_khegayk
+										}
+									}
+										}
 				OR = {
 		has_title = title:d_kassogia
 		completely_controls = title:d_kassogia
@@ -1818,7 +1835,7 @@ circassian_decision_zeikwebze_ai = {
 			}
 			AND = {
 		learning >= 15
-		martial >= 10
+		martial >= 12
 			}
 		}
 		NOT = {
@@ -1859,7 +1876,7 @@ circassian_decision_chakobsa = {
 			has_trait = zeikwebze
 		}
 		has_trait = lifestyle_hunter
-		learning >= 10
+		learning >= 15
 		prowess >= 15
 		NOT = {
 			has_trait = lazy
@@ -1914,8 +1931,8 @@ circassian_decision_chakobsa_ai = {
 			has_trait = zeikwebze
 		}
 		has_trait = lifestyle_hunter
-		learning >= 10
-		prowess >= 10
+		learning >= 12
+		prowess >= 15
 		NOT = {
 			has_trait = cynical
 		}
@@ -1949,8 +1966,6 @@ circassian_decision_chakobsa_ai = {
 		base = 100
 	}
 }
-
-
 
 circassian_decision_werqibze = {
 	picture = "gfx/interface/illustrations/decisions/werqibze.dds"
@@ -1999,6 +2014,7 @@ circassian_decision_werqibze = {
 	}
 
 	ai_check_interval = 5
+
 	ai_potential = {
 		NOT = {
 			has_trait = werqibze
