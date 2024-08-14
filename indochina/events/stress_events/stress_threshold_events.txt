@@ -72,7 +72,7 @@ stress_threshold.0001 = {
 				limit = { # Cognitive dissonance for Rakish characters who have become Celibate
 					has_trait = rakish
 					has_trait = celibate
-				} 
+				}
 				trigger_event = { id = stress_threshold_special.2001 days = 0 }
 			}
 			else = {
@@ -95,7 +95,7 @@ stress_threshold.0001 = {
 				limit = { # Cognitive dissonance for Rakish characters who have become Celibate
 					has_trait = rakish
 					has_trait = celibate
-				} 
+				}
 				trigger_event = { id = stress_threshold_special.2001 days = 0 }
 			}
 			else = {
@@ -119,7 +119,7 @@ stress_threshold.0001 = {
 				limit = { # Cognitive dissonance for Rakish characters who have become Celibate
 					has_trait = rakish
 					has_trait = celibate
-				} 
+				}
 				trigger_event = { id = stress_threshold_special.2001 days = 0 }
 			}
 			else = {
@@ -263,7 +263,7 @@ stress_threshold.0005 = {
 				days = 0
 			}
 		}
-	}	
+	}
 }
 
 # Sends a toast when the player gains a stress level.
@@ -317,7 +317,7 @@ stress_threshold.0400 = {
 				days = {2 3}
 			}
 		}
-		
+
 	}
 }
 
@@ -339,7 +339,7 @@ stress_threshold.1001 = {
 	type = character_event
 	title = stress_threshold.1001.t
 	desc = stress_threshold.1001.desc
-	
+
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
@@ -349,7 +349,7 @@ stress_threshold.1001 = {
 		character = root
 		animation = shame
 	}
-	
+
 	trigger = {
 		# Character must meet the criteria for at least two event options to qualify for this event (don't want to fire the event if the player has no choices!).
 		calc_true_if = {
@@ -398,6 +398,18 @@ stress_threshold.1001 = {
 			can_be_journaller = yes
 			add = 5
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = contrite }
+				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
 
 	widget = {
@@ -414,7 +426,7 @@ stress_threshold.1001 = {
 				OR = {
 					has_trait = contrite
 					can_be_contrite = yes
-				}	
+				}
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_contrite
@@ -602,7 +614,7 @@ stress_threshold.1001 = {
 		remove_short_term_gold = major_gold_value
 		add_stress = medium_stress_impact_loss
 	}
-	
+
 	# Option D: Become drunkard, minor stress loss.
 	option = {
 		trigger = {
@@ -638,11 +650,11 @@ stress_threshold.1001 = {
 				modifier = stress_drinking_binge
 				years = 3
 			}
-		}	
+		}
 		else = {
 			add_trait = drunkard
 		}
-		
+
 		add_stress = medium_stress_impact_loss
 	}
 
@@ -681,7 +693,7 @@ stress_threshold.1001 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = {
 			add_trait = hashishiyah
 		}
@@ -763,7 +775,7 @@ stress_threshold.1001 = {
 
 		trait = scholar
 		trait = theologian
-		
+
 		add_trait = journaller
 		trait = journaller
 
@@ -808,7 +820,7 @@ stress_threshold.1011 = {
 		character = root
 		animation = stress
 	}
-	
+
 	trigger = {
 		# Character must meet the criteria for at least two event options to qualify for this event (don't want to fire the event if the player has no choices!).
 		calc_true_if = {
@@ -850,6 +862,14 @@ stress_threshold.1011 = {
 		}
 		modifier = {
 			can_be_athletic = yes
+			add = 5
+		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = athletic }
+			}
 			add = 5
 		}
 	}
@@ -970,15 +990,15 @@ stress_threshold.1011 = {
 			base = 1
 			modifier = {
 				add = -5
-				has_trait = shy 
+				has_trait = shy
 			}
 			modifier = {
 				add = -5
-				has_trait = chaste 
+				has_trait = chaste
 			}
 			modifier = {
 				add = -15
-				has_trait = celibate 
+				has_trait = celibate
 			}
 			modifier = {
 				add = 15
@@ -1008,7 +1028,7 @@ stress_threshold.1011 = {
 			base = 1
 			modifier = {
 				add = 15
-				has_trait = shy 
+				has_trait = shy
 			}
 			modifier = {
 				add = 5
@@ -1016,7 +1036,7 @@ stress_threshold.1011 = {
 			}
 			modifier = {
 				add = -15
-				has_trait = gregarious 
+				has_trait = gregarious
 			}
 			modifier = {
 				add = -15
@@ -1039,7 +1059,7 @@ stress_threshold.1011 = {
 			base = 1
 			modifier = {
 				add = 5
-				has_trait = arbitrary 
+				has_trait = arbitrary
 			}
 			modifier = {
 				add = 15
@@ -1047,7 +1067,7 @@ stress_threshold.1011 = {
 			}
 			modifier = {
 				add = -15
-				has_trait = cynical 
+				has_trait = cynical
 			}
 			modifier = {
 				add = -15
@@ -1073,7 +1093,7 @@ stress_threshold.1011 = {
 				scope:new_faith = faith:karaism
 			}
 			text = stress_threshold.1011.conversion.judaism
-		}		
+		}
 		name = { # Special event option name if converting from non-Christianity to Christianity.
 			trigger = {
 				faith = {
@@ -1097,7 +1117,7 @@ stress_threshold.1011 = {
 			base = 1
 			modifier = {
 				add = 5
-				has_trait = arbitrary 
+				has_trait = arbitrary
 			}
 			modifier = {
 				add = 15
@@ -1105,7 +1125,7 @@ stress_threshold.1011 = {
 			}
 			modifier = {
 				add = -15
-				has_trait = cynical 
+				has_trait = cynical
 			}
 			modifier = {
 				add = -15
@@ -1136,7 +1156,7 @@ stress_threshold.1011 = {
 			base = 1
 			modifier = {
 				add = 5
-				has_trait = whole_of_body  
+				has_trait = whole_of_body
 			}
 			modifier = {
 				add = 15
@@ -1144,7 +1164,7 @@ stress_threshold.1011 = {
 			}
 			modifier = {
 				add = -15
-				has_trait = lazy 
+				has_trait = lazy
 			}
 			modifier = {
 				add = -5
@@ -1165,7 +1185,7 @@ stress_threshold.1011 = {
 			base = 1
 			modifier = {
 				add = 5
-				has_trait = stubborn  
+				has_trait = stubborn
 			}
 		}
 	}
@@ -1260,13 +1280,21 @@ stress_threshold.1501 = {
 			add = -5
 			has_trait = cynical
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = inappetetic }
+			}
+			add = 5
+		}
 	}
 
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
 	}
-	immediate = {		
+	immediate = {
 		root = { save_scope_as = stress_character } # For stress widget
 
 		save_scope_as = scoped_ruler
@@ -1623,6 +1651,15 @@ stress_threshold.1502 = {
 			add = -5
 			has_trait = generous
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = irritable }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+			}
+			add = 5
+		}
 	}
 
 	widget = {
@@ -1965,6 +2002,14 @@ stress_threshold.1503 = {
 			add = -5
 			has_trait = content
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = comfort_eater }
+			}
+			add = 5
+		}
 	}
 
 	widget = {
@@ -2192,6 +2237,19 @@ stress_threshold.1504 = {
 			add = -5
 			has_trait = wrathful
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+				has_witnessed_stress_coping_trait = { TRAIT = irritable }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = athletic }
+			}
+			add = 5
+		}
 	}
 
 	widget = {
@@ -2380,7 +2438,7 @@ stress_threshold.1504 = {
 				has_character_flag = stress_threshold_option_drunkard
 				has_character_flag = stress_threshold_option_betel_chewer
 			}
-			
+
 		}
 		if = {
 			limit = {
@@ -2861,6 +2919,11 @@ scripted_effect stress_threshold_fallback_event_select_options_effect = {
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_betel_chewer }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:betel_chewer
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_betel_chewer
 					remove_character_flag = stress_threshold_betel_chewer
 				}
@@ -3184,19 +3247,19 @@ scripted_effect stress_threshold_fallback_event_select_options_effect = {
 			random_list = {
 				10 = {
 					trigger = {
-						NOT = { has_character_flag = stress_threshold_option_profligate }	
+						NOT = { has_character_flag = stress_threshold_option_profligate }
 					}
 					add_character_flag = stress_threshold_option_profligate
 				}
 				10 = {
 					trigger = {
-						NOT = { has_character_flag = stress_threshold_option_irritable }	
+						NOT = { has_character_flag = stress_threshold_option_irritable }
 					}
 					add_character_flag = stress_threshold_option_irritable
 				}
 				10 = {
 					trigger = {
-						NOT = { has_character_flag = stress_threshold_option_reclusive }	
+						NOT = { has_character_flag = stress_threshold_option_reclusive }
 					}
 					add_character_flag = stress_threshold_option_reclusive
 				}
@@ -3663,7 +3726,7 @@ stress_threshold.1601 = {
 		}
 		trait = scholar
 		trait = theologian
-		
+
 		add_trait = journaller
 		trait = journaller
 
@@ -3678,7 +3741,7 @@ stress_threshold.1601 = {
 			}
 		}
 	}
-	
+
 	option = { #Gains Drunkard
 		trigger = {
 			has_character_flag = stress_threshold_option_drunkard
@@ -3702,11 +3765,11 @@ stress_threshold.1601 = {
 				modifier = stress_drinking_binge
 				years = 3
 			}
-		}	
+		}
 		else = {
 			add_trait = drunkard
 		}
-		
+
 		add_stress = medium_stress_impact_loss
 
 		ai_chance = {
@@ -3737,7 +3800,7 @@ stress_threshold.1601 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = {
 			add_trait = hashishiyah
 		}
@@ -4095,14 +4158,14 @@ stress_threshold.1602 = {
 			}
 		}
 		else_if = {
-			limit = { 
-				has_relation_friend = scope:friend 
+			limit = {
+				has_relation_friend = scope:friend
 				scope:friend = {
 					has_relation_flag = {
 						target = root
 						relation = friend
 						flag = has_been_confided_in
-			
+
 					}
 				}
 			}
@@ -4268,7 +4331,7 @@ stress_threshold.1602 = {
 		}
 		trait = scholar
 		trait = theologian
-		
+
 		add_trait = journaller
 		trait = journaller
 
@@ -4283,7 +4346,7 @@ stress_threshold.1602 = {
 			}
 		}
 	}
-	
+
 	option = { #Gains Drunkard
 		trigger = {
 			has_character_flag = stress_threshold_option_drunkard
@@ -4307,11 +4370,11 @@ stress_threshold.1602 = {
 				modifier = stress_drinking_binge
 				years = 3
 			}
-		}	
+		}
 		else = {
 			add_trait = drunkard
 		}
-		
+
 		add_stress = medium_stress_impact_loss
 
 		ai_chance = {
@@ -4342,7 +4405,7 @@ stress_threshold.1602 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = {
 			add_trait = hashishiyah
 		}
@@ -4577,7 +4640,7 @@ stress_threshold.1701 = {
 		#Characters must meet the criteria for at least two event options to qualify for this event (we don't want to fire the event if the player has no choices!).
 		calc_true_if = {
 			amount >= 2
-			
+
 			can_be_rakish = yes
 			has_trait = rakish
 			can_be_irritable = yes
@@ -4648,8 +4711,24 @@ stress_threshold.1701 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = irritable }
+				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = comfort_eater }
+				has_witnessed_stress_coping_trait = { TRAIT = inappetetic }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = confider }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -4665,7 +4744,7 @@ stress_threshold.1701 = {
 		if = { #Rakish (prone to extremely wonton behavior, with the associated consequences)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = rakish	
+				has_trait = rakish
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_rakish
@@ -4673,7 +4752,7 @@ stress_threshold.1701 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = irritable	
+				has_trait = irritable
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -4681,7 +4760,7 @@ stress_threshold.1701 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = flagellant	
+				has_trait = flagellant
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -4689,7 +4768,7 @@ stress_threshold.1701 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = profligate	
+				has_trait = profligate
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -4697,7 +4776,7 @@ stress_threshold.1701 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = journaller	
+				has_trait = journaller
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -4705,7 +4784,7 @@ stress_threshold.1701 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = confider	
+				has_trait = confider
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -4754,7 +4833,7 @@ stress_threshold.1701 = {
 		if = { #Rakish (prone to extremely wonton behavior, with the associated consequences)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_rakish = yes	
+				can_be_rakish = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_rakish
@@ -4762,7 +4841,7 @@ stress_threshold.1701 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_irritable = yes	
+				can_be_irritable = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -4770,7 +4849,7 @@ stress_threshold.1701 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_flagellant = yes	
+				can_be_flagellant = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -4778,7 +4857,7 @@ stress_threshold.1701 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_profligate = yes	
+				can_be_profligate = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -4786,7 +4865,7 @@ stress_threshold.1701 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_journaller = yes	
+				can_be_journaller = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -4794,7 +4873,7 @@ stress_threshold.1701 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_confider = yes	
+				can_be_confider = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -4886,7 +4965,7 @@ stress_threshold.1701 = {
 			trigger = { has_trait = irritable }
 			text = stress_threshold.1701.b.irritable.effect
 		}
-		
+
 		add_trait = irritable
 		trait = irritable
 
@@ -4919,7 +4998,7 @@ stress_threshold.1701 = {
 			trigger = { has_trait = flagellant }
 			text = stress_threshold.1701.c.flagellant.effect
 		}
-		
+
 		add_trait = flagellant
 		trait = flagellant
 
@@ -4959,7 +5038,7 @@ stress_threshold.1701 = {
 			trigger = { has_trait = profligate }
 			text = stress_threshold.1701.d.profligate.effect
 		}
-		
+
 		add_trait = profligate
 		trait = profligate
 
@@ -4993,7 +5072,7 @@ stress_threshold.1701 = {
 			trigger = { has_trait = journaller }
 			text = stress_threshold.1701.g.journaller.effect
 		}
-		
+
 		add_trait = journaller
 		trait = journaller
 
@@ -5026,7 +5105,7 @@ stress_threshold.1701 = {
 			trigger = { has_trait = confider }
 			text = stress_threshold.1701.h.confider.effect
 		}
-		
+
 		add_trait = confider
 		trait = confider
 
@@ -5115,12 +5194,12 @@ stress_threshold.1701 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.1701.i.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -5162,7 +5241,7 @@ stress_threshold.1701 = {
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -5170,7 +5249,7 @@ stress_threshold.1701 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
 
 		ai_chance = {
@@ -5415,7 +5494,7 @@ stress_threshold.1711 = {
 		#Characters must meet the criteria for at least two event options to qualify for this event (we don't want to fire the event if the player has no choices!).
 		calc_true_if = {
 			amount >= 2
-			
+
 			can_be_reclusive = yes
 			has_trait = reclusive
 			can_be_flagellant = yes
@@ -5474,8 +5553,23 @@ stress_threshold.1711 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = improvident }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = athletic }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -5489,7 +5583,7 @@ stress_threshold.1711 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = reclusive	
+				has_trait = reclusive
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -5497,7 +5591,7 @@ stress_threshold.1711 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = flagellant	
+				has_trait = flagellant
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -5505,7 +5599,7 @@ stress_threshold.1711 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = profligate	
+				has_trait = profligate
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -5513,7 +5607,7 @@ stress_threshold.1711 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = improvident	
+				has_trait = improvident
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -5521,7 +5615,7 @@ stress_threshold.1711 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = journaller	
+				has_trait = journaller
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -5529,7 +5623,7 @@ stress_threshold.1711 = {
 		if = { #Athletic (exercises as a stress outlet)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = athletic	
+				has_trait = athletic
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_athletic
@@ -5565,7 +5659,7 @@ stress_threshold.1711 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_reclusive = yes	
+				can_be_reclusive = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -5573,7 +5667,7 @@ stress_threshold.1711 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_flagellant = yes	
+				can_be_flagellant = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -5581,7 +5675,7 @@ stress_threshold.1711 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_profligate = yes	
+				can_be_profligate = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -5589,7 +5683,7 @@ stress_threshold.1711 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_improvident = yes	
+				can_be_improvident = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -5597,7 +5691,7 @@ stress_threshold.1711 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_journaller = yes	
+				can_be_journaller = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -5605,7 +5699,7 @@ stress_threshold.1711 = {
 		if = { #Athletic (exercises as a stress outlet)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_athletic = yes	
+				can_be_athletic = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_athletic
@@ -5652,7 +5746,7 @@ stress_threshold.1711 = {
 			trigger = { has_trait = reclusive }
 			text = stress_threshold.1711.a.reclusive.effect
 		}
-		
+
 		add_trait = reclusive
 		trait = reclusive
 
@@ -5685,7 +5779,7 @@ stress_threshold.1711 = {
 			trigger = { has_trait = flagellant }
 			text = stress_threshold.1711.b.flagellant.effect
 		}
-		
+
 		add_trait = flagellant
 		trait = flagellant
 
@@ -5711,7 +5805,7 @@ stress_threshold.1711 = {
 			}
 		}
 	}
-	
+
 	#Profligate: minor stress loss
 	option = {
 		trigger = {
@@ -5725,7 +5819,7 @@ stress_threshold.1711 = {
 			trigger = { has_trait = profligate }
 			text = stress_threshold.1711.c.profligate.effect
 		}
-		
+
 		add_trait = profligate
 		trait = profligate
 
@@ -5745,7 +5839,7 @@ stress_threshold.1711 = {
 			}
 		}
 	}
-	
+
 	#Improvident: minor stress loss
 	option = {
 		trigger = {
@@ -5759,7 +5853,7 @@ stress_threshold.1711 = {
 			trigger = { has_trait = improvident }
 			text = stress_threshold.1711.d.improvident.effect
 		}
-		
+
 		add_trait = improvident
 		trait = improvident
 
@@ -5779,7 +5873,7 @@ stress_threshold.1711 = {
 			}
 		}
 	}
-	
+
 	#Journaller: minor stress loss
 	option = {
 		trigger = {
@@ -5793,7 +5887,7 @@ stress_threshold.1711 = {
 			trigger = { has_trait = journaller }
 			text = stress_threshold.1711.e.journaller.effect
 		}
-		
+
 		add_trait = journaller
 		trait = journaller
 
@@ -5812,7 +5906,7 @@ stress_threshold.1711 = {
 			}
 		}
 	}
-	
+
 	#Athletic: medium stress loss
 	option = {
 		trigger = {
@@ -5826,7 +5920,7 @@ stress_threshold.1711 = {
 			trigger = { has_trait = athletic }
 			text = stress_threshold.1711.f.athletic.effect
 		}
-		
+
 		add_trait = athletic
 		trait = athletic
 
@@ -5845,7 +5939,7 @@ stress_threshold.1711 = {
 			}
 		}
 	}
-	
+
 	#Drunkard: minor stress loss
 	option = {
 		trigger = {
@@ -5859,12 +5953,12 @@ stress_threshold.1711 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.1711.g.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -5887,7 +5981,7 @@ stress_threshold.1711 = {
 			}
 		}
 	}
-	
+
 	#Hashishiyah: minor stress loss
 	option = {
 		trigger = {
@@ -5906,7 +6000,7 @@ stress_threshold.1711 = {
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -5914,7 +6008,7 @@ stress_threshold.1711 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
 
 		ai_chance = {
@@ -6225,7 +6319,7 @@ stress_threshold.1721 = {
 		#Characters must meet the criteria for at least two event options to qualify for this event (we don't want to fire the event if the player has no choices!).
 		calc_true_if = {
 			amount >= 2
-			
+
 			can_be_reclusive = yes
 			has_trait = reclusive
 			can_be_irritable = yes
@@ -6308,8 +6402,27 @@ stress_threshold.1721 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = irritable }
+				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = improvident }
+				has_witnessed_stress_coping_trait = { TRAIT = contrite }
+				has_witnessed_stress_coping_trait = { TRAIT = comfort_eater }
+				has_witnessed_stress_coping_trait = { TRAIT = inappetetic }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = confider }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -6323,7 +6436,7 @@ stress_threshold.1721 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = reclusive	
+				has_trait = reclusive
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -6331,7 +6444,7 @@ stress_threshold.1721 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = irritable	
+				has_trait = irritable
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -6339,7 +6452,7 @@ stress_threshold.1721 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = flagellant	
+				has_trait = flagellant
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -6347,7 +6460,7 @@ stress_threshold.1721 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = profligate	
+				has_trait = profligate
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -6355,7 +6468,7 @@ stress_threshold.1721 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = improvident	
+				has_trait = improvident
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -6363,7 +6476,7 @@ stress_threshold.1721 = {
 		if = { #Contrite (compelled to reveal own secrets)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = contrite	
+				has_trait = contrite
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_contrite
@@ -6372,7 +6485,7 @@ stress_threshold.1721 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = comfort_eater	
+				has_trait = comfort_eater
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -6380,7 +6493,7 @@ stress_threshold.1721 = {
 		if = { #Inappetetic (lack of appetite)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = inappetetic	
+				has_trait = inappetetic
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_inappetetic
@@ -6388,7 +6501,7 @@ stress_threshold.1721 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = journaller	
+				has_trait = journaller
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -6396,7 +6509,7 @@ stress_threshold.1721 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = confider	
+				has_trait = confider
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -6440,12 +6553,12 @@ stress_threshold.1721 = {
 				}
 			}
 		}
-		
+
 		#Then potential ones.
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_reclusive = yes	
+				can_be_reclusive = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -6453,7 +6566,7 @@ stress_threshold.1721 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_irritable = yes	
+				can_be_irritable = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -6461,7 +6574,7 @@ stress_threshold.1721 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_flagellant = yes	
+				can_be_flagellant = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -6469,7 +6582,7 @@ stress_threshold.1721 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_profligate = yes	
+				can_be_profligate = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -6477,7 +6590,7 @@ stress_threshold.1721 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_improvident = yes	
+				can_be_improvident = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -6485,7 +6598,7 @@ stress_threshold.1721 = {
 		if = { #Contrite (compelled to reveal own secrets)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_contrite = yes	
+				can_be_contrite = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_contrite
@@ -6494,7 +6607,7 @@ stress_threshold.1721 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_comfort_eater = yes	
+				can_be_comfort_eater = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -6502,7 +6615,7 @@ stress_threshold.1721 = {
 		if = { #Inappetetic (lack of appetite)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_inappetetic = yes	
+				can_be_inappetetic = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_inappetetic
@@ -6510,7 +6623,7 @@ stress_threshold.1721 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_journaller = yes	
+				can_be_journaller = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -6518,7 +6631,7 @@ stress_threshold.1721 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_confider = yes	
+				can_be_confider = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -6578,7 +6691,7 @@ stress_threshold.1721 = {
 			trigger = { has_trait = reclusive }
 			text = stress_threshold.1721.a.reclusive.effect
 		}
-		
+
 		add_trait = reclusive
 		trait = reclusive
 
@@ -6611,7 +6724,7 @@ stress_threshold.1721 = {
 			trigger = { has_trait = irritable }
 			text = stress_threshold.1721.b.irritable.effect
 		}
-		
+
 		add_trait = irritable
 		trait = irritable
 
@@ -6630,7 +6743,7 @@ stress_threshold.1721 = {
 			}
 		}
 	}
-	
+
 	#Flagellant: medium stress loss
 	option = {
 		trigger = {
@@ -6644,7 +6757,7 @@ stress_threshold.1721 = {
 			trigger = { has_trait = flagellant }
 			text = stress_threshold.1721.c.flagellant.effect
 		}
-		
+
 		add_trait = flagellant
 		trait = flagellant
 
@@ -6670,7 +6783,7 @@ stress_threshold.1721 = {
 			}
 		}
 	}
-	
+
 	#Profligate: minor stress loss
 	option = {
 		trigger = {
@@ -6684,7 +6797,7 @@ stress_threshold.1721 = {
 			trigger = { has_trait = profligate }
 			text = stress_threshold.1721.d.profligate.effect
 		}
-		
+
 		add_trait = profligate
 		trait = profligate
 
@@ -6704,7 +6817,7 @@ stress_threshold.1721 = {
 			}
 		}
 	}
-	
+
 	#Improvident: minor stress loss
 	option = {
 		trigger = {
@@ -6718,7 +6831,7 @@ stress_threshold.1721 = {
 			trigger = { has_trait = improvident }
 			text = stress_threshold.1721.e.improvident.effect
 		}
-		
+
 		add_trait = improvident
 		trait = improvident
 
@@ -6738,7 +6851,7 @@ stress_threshold.1721 = {
 			}
 		}
 	}
-	
+
 	#Contrite: major stress loss
 	option = {
 		trigger = {
@@ -6752,7 +6865,7 @@ stress_threshold.1721 = {
 			trigger = { has_trait = contrite }
 			text = stress_threshold.1721.f.contrite.effect
 		}
-		
+
 		add_trait = contrite
 		trait = contrite
 
@@ -6770,7 +6883,7 @@ stress_threshold.1721 = {
 			}
 		}
 	}
-	
+
 	#Comfort Eater: medium stress loss
 	option = {
 		trigger = {
@@ -6784,7 +6897,7 @@ stress_threshold.1721 = {
 			trigger = { has_trait = comfort_eater }
 			text = stress_threshold.1721.g.comfort_eater.effect
 		}
-		
+
 		add_trait = comfort_eater
 		trait = comfort_eater
 
@@ -6803,7 +6916,7 @@ stress_threshold.1721 = {
 			}
 		}
 	}
-	
+
 	#Inappetetic: medium stress loss
 	option = {
 		trigger = {
@@ -6817,7 +6930,7 @@ stress_threshold.1721 = {
 			trigger = { has_trait = inappetetic }
 			text = stress_threshold.1721.h.inappetetic.effect
 		}
-		
+
 		add_trait = inappetetic
 		trait = inappetetic
 
@@ -6842,7 +6955,7 @@ stress_threshold.1721 = {
 			}
 		}
 	}
-	
+
 	#Journaller: minor stress loss
 	option = {
 		trigger = {
@@ -6856,7 +6969,7 @@ stress_threshold.1721 = {
 			trigger = { has_trait = journaller }
 			text = stress_threshold.1721.i.journaller.effect
 		}
-		
+
 		add_trait = journaller
 		trait = journaller
 
@@ -6875,7 +6988,7 @@ stress_threshold.1721 = {
 			}
 		}
 	}
-	
+
 	#Confider: medium stress loss
 	option = {
 		trigger = {
@@ -6889,7 +7002,7 @@ stress_threshold.1721 = {
 			trigger = { has_trait = confider }
 			text = stress_threshold.1721.j.confider.effect
 		}
-		
+
 		add_trait = confider
 		trait = confider
 
@@ -6952,7 +7065,7 @@ stress_threshold.1721 = {
 			}
 		}
 	}
-	
+
 	#Drunkard: minor stress loss
 	option = {
 		trigger = {
@@ -6966,12 +7079,12 @@ stress_threshold.1721 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.1721.k.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -6994,7 +7107,7 @@ stress_threshold.1721 = {
 			}
 		}
 	}
-	
+
 	#Hashishiyah: minor stress loss
 	option = {
 		trigger = {
@@ -7013,7 +7126,7 @@ stress_threshold.1721 = {
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -7021,7 +7134,7 @@ stress_threshold.1721 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
 
 		ai_chance = {
@@ -7428,8 +7541,24 @@ stress_threshold.1731 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = improvident }
+				has_witnessed_stress_coping_trait = { TRAIT = comfort_eater }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = confider }
+				has_witnessed_stress_coping_trait = { TRAIT = athletic }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -7444,7 +7573,7 @@ stress_threshold.1731 = {
 		if = { #Rakish (prone to extremely wonton behavior, with the associated consequences)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = rakish	
+				has_trait = rakish
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_rakish
@@ -7452,7 +7581,7 @@ stress_threshold.1731 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = reclusive	
+				has_trait = reclusive
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -7460,7 +7589,7 @@ stress_threshold.1731 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = profligate	
+				has_trait = profligate
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -7468,7 +7597,7 @@ stress_threshold.1731 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = comfort_eater	
+				has_trait = comfort_eater
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -7476,7 +7605,7 @@ stress_threshold.1731 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = journaller	
+				has_trait = journaller
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -7484,7 +7613,7 @@ stress_threshold.1731 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = confider	
+				has_trait = confider
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -7536,12 +7665,12 @@ stress_threshold.1731 = {
 				}
 			}
 		}
-		
+
 		#Then potential ones.
 		if = { #Rakish (prone to extremely wonton behavior, with the associated consequences)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_rakish = yes	
+				can_be_rakish = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_rakish
@@ -7549,7 +7678,7 @@ stress_threshold.1731 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_reclusive = yes	
+				can_be_reclusive = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -7557,7 +7686,7 @@ stress_threshold.1731 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_profligate = yes	
+				can_be_profligate = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -7565,7 +7694,7 @@ stress_threshold.1731 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_comfort_eater = yes	
+				can_be_comfort_eater = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -7573,7 +7702,7 @@ stress_threshold.1731 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_journaller = yes	
+				can_be_journaller = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -7581,7 +7710,7 @@ stress_threshold.1731 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_confider = yes	
+				can_be_confider = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -7602,7 +7731,7 @@ stress_threshold.1731 = {
 		if = { #Athletic (exercises as a stress outlet)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_athletic = yes	
+				can_be_athletic = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_athletic
@@ -7649,7 +7778,7 @@ stress_threshold.1731 = {
 			trigger = { has_trait = rakish }
 			text = stress_threshold.1731.a.rakish.effect
 		}
-		
+
 		add_trait = rakish
 		trait = rakish
 
@@ -7667,7 +7796,7 @@ stress_threshold.1731 = {
 			}
 		}
 	}
-	
+
 	#Reclusive: medium stress loss
 	option = {
 		trigger = {
@@ -7681,7 +7810,7 @@ stress_threshold.1731 = {
 			trigger = { has_trait = reclusive }
 			text = stress_threshold.1731.b.reclusive.effect
 		}
-		
+
 		add_trait = reclusive
 		trait = reclusive
 
@@ -7714,7 +7843,7 @@ stress_threshold.1731 = {
 			trigger = { has_trait = profligate }
 			text = stress_threshold.1731.c.profligate.effect
 		}
-		
+
 		add_trait = profligate
 		trait = profligate
 
@@ -7748,7 +7877,7 @@ stress_threshold.1731 = {
 			trigger = { has_trait = comfort_eater }
 			text = stress_threshold.1731.d.comfort_eater.effect
 		}
-		
+
 		add_trait = comfort_eater
 		trait = comfort_eater
 
@@ -7781,7 +7910,7 @@ stress_threshold.1731 = {
 			trigger = { has_trait = journaller }
 			text = stress_threshold.1731.e.journaller.effect
 		}
-		
+
 		add_trait = journaller
 		trait = journaller
 
@@ -7800,7 +7929,7 @@ stress_threshold.1731 = {
 			}
 		}
 	}
-	
+
 	#Confider: medium stress loss
 	option = {
 		trigger = {
@@ -7814,7 +7943,7 @@ stress_threshold.1731 = {
 			trigger = { has_trait = confider }
 			text = stress_threshold.1731.f.confider.effect
 		}
-		
+
 		add_trait = confider
 		trait = confider
 
@@ -7889,7 +8018,7 @@ stress_threshold.1731 = {
 			}
 		}
 	}
-	
+
 	#Athletic: medium stress loss
 	option = {
 		trigger = {
@@ -7903,7 +8032,7 @@ stress_threshold.1731 = {
 			trigger = { has_trait = athletic }
 			text = stress_threshold.1731.g.athletic.effect
 		}
-		
+
 		add_trait = athletic
 		trait = athletic
 
@@ -7922,7 +8051,7 @@ stress_threshold.1731 = {
 			}
 		}
 	}
-	
+
 	#Drunkard: minor stress loss
 	option = {
 		trigger = {
@@ -7936,12 +8065,12 @@ stress_threshold.1731 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.1731.h.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -7964,7 +8093,7 @@ stress_threshold.1731 = {
 			}
 		}
 	}
-	
+
 	#Hashishiyah: minor stress loss
 	option = {
 		trigger = {
@@ -7983,7 +8112,7 @@ stress_threshold.1731 = {
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -7991,7 +8120,7 @@ stress_threshold.1731 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
 
 		ai_chance = {
@@ -8145,7 +8274,7 @@ stress_threshold.2001 = {
 	type = character_event
 	title = stress_threshold.2001.t
 	desc = stress_threshold.2001.desc
-	
+
 	theme = mental_break
 	left_portrait = {
 		character = root
@@ -8224,7 +8353,7 @@ stress_threshold.2001 = {
 		add_stress = medium_stress_impact_loss
 
 	}
-	
+
 	# Option C: Just try to work through it, gain stress.
 	option = {
 		name = stress_threshold.2001.endure
@@ -8263,7 +8392,7 @@ stress_threshold.2101 = {
 	}
 
 	trigger = {
-		NOT = {	
+		NOT = {
 			faith = {
 				has_doctrine_parameter = witchcraft_accepted
 			}
@@ -8306,7 +8435,7 @@ stress_threshold.2101 = {
 			}
 			if = {
 				limit = {
-					NOT = {	
+					NOT = {
 						faith = {
 							has_doctrine_parameter = witchcraft_accepted
 						}
@@ -8320,9 +8449,9 @@ stress_threshold.2101 = {
 				add_trait = witch
 				add_piety_level = -1
 			}
-			
+
 		}
-		
+
 		add_stress = medium_stress_impact_loss
 	}
 
@@ -8343,12 +8472,12 @@ stress_threshold.2101 = {
 				NOT = { has_trait = drunkard }
 			}
 			add_trait = drunkard
-		}	
+		}
 		add_character_modifier = {
 			modifier = stress_drinking_binge
 			years = 3
 		}
-		
+
 		add_stress = medium_stress_impact_loss
 
 	}
@@ -8371,8 +8500,8 @@ stress_threshold.2101 = {
 				NOT = { has_trait = hashishiyah }
 			}
 			add_trait = hashishiyah
-		}	
-		
+		}
+
 		add_character_modifier = {
 			modifier = stress_hashish_stupor
 			years = 3
@@ -8707,7 +8836,7 @@ stress_threshold.2201 = {
 			base = 500
 		}
 	}
-	
+
 	# Say sorry and repress your feelings, gain stress.
 	option = {
 		name = {
@@ -8890,7 +9019,7 @@ stress_threshold.2301 = {
 		#Characters must meet the criteria for at least two event options to qualify for this event (we don't want to fire the event if the player has no choices!).
 		calc_true_if = {
 			amount >= 2
-			
+
 			can_be_rakish = yes
 			has_trait = rakish
 			can_be_profligate = yes
@@ -8931,8 +9060,19 @@ stress_threshold.2301 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = comfort_eater }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -8946,7 +9086,7 @@ stress_threshold.2301 = {
 		if = { #Rakish (prone to extremely wonton behavior, with the associated consequences)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = rakish	
+				has_trait = rakish
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_rakish
@@ -8954,7 +9094,7 @@ stress_threshold.2301 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = profligate	
+				has_trait = profligate
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -8962,7 +9102,7 @@ stress_threshold.2301 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = comfort_eater	
+				has_trait = comfort_eater
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -8993,12 +9133,12 @@ stress_threshold.2301 = {
 				}
 			}
 		}
-		
+
 		#Then potential ones.
 		if = { #Rakish (prone to extremely wonton behavior, with the associated consequences)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_rakish = yes	
+				can_be_rakish = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_rakish
@@ -9006,7 +9146,7 @@ stress_threshold.2301 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_profligate = yes	
+				can_be_profligate = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -9014,7 +9154,7 @@ stress_threshold.2301 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_comfort_eater = yes	
+				can_be_comfort_eater = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -9061,12 +9201,12 @@ stress_threshold.2301 = {
 			trigger = { has_trait = rakish }
 			text = stress_threshold.2301.a.rakish.effect
 		}
-		
+
 		add_trait = rakish
 		trait = rakish
 
 		rakish_brothel_night_effect = yes # Stress reduction is included in this effect.
-		
+
 		if = {
 			limit = {
 				faith = { trait_is_virtue = lustful }
@@ -9107,14 +9247,14 @@ stress_threshold.2301 = {
 			trigger = { has_trait = profligate }
 			text = stress_threshold.2301.b.profligate.effect
 		}
-		
+
 		add_trait = profligate
 		trait = profligate
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
 		remove_short_term_gold = massive_gold_value
-		
+
 		#You buy a veritable glut of furniture.
 		add_character_modifier = {
 			modifier = glut_of_furniture_modifier
@@ -9134,7 +9274,7 @@ stress_threshold.2301 = {
 			}
 		}
 	}
-	
+
 	#Comfort Eater: medium stress loss
 	option = {
 		trigger = {
@@ -9148,13 +9288,13 @@ stress_threshold.2301 = {
 			trigger = { has_trait = comfort_eater }
 			text = stress_threshold.2301.c.comfort_eater.effect
 		}
-		
+
 		add_trait = comfort_eater
 		trait = comfort_eater
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Your constant feasts drain the local area of game.
 		capital_province.county = {
 			add_county_modifier = {
@@ -9175,7 +9315,7 @@ stress_threshold.2301 = {
 			}
 		}
 	}
-	
+
 	#Drunkard: medium stress loss
 	option = {
 		trigger = {
@@ -9189,12 +9329,12 @@ stress_threshold.2301 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.2301.d.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -9204,7 +9344,7 @@ stress_threshold.2301 = {
 			}
 		}
 		else = { add_trait = drunkard }
-		
+
 		#You seem less scary, or at least less noble.
 		if = {
 			limit = { dread >= major_dread_loss }
@@ -9226,7 +9366,7 @@ stress_threshold.2301 = {
 			}
 		}
 	}
-	
+
 	#Hashishiyah: medium stress loss
 	option = {
 		trigger = {
@@ -9245,7 +9385,7 @@ stress_threshold.2301 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -9253,9 +9393,9 @@ stress_threshold.2301 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
-		
+
 		#You seem less scary, or at least less noble.
 		if = {
 			limit = { dread >= major_dread_loss }
@@ -9506,7 +9646,7 @@ stress_threshold.2311 = {
 		#Characters must meet the criteria for at least two event options to qualify for this event (we don't want to fire the event if the player has no choices!).
 		calc_true_if = {
 			amount >= 2
-			
+
 			can_be_rakish = yes
 			has_trait = rakish
 			can_be_irritable = yes
@@ -9583,8 +9723,25 @@ stress_threshold.2311 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = irritable }
+				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
+				has_witnessed_stress_coping_trait = { TRAIT = improvident }
+				has_witnessed_stress_coping_trait = { TRAIT = contrite }
+				has_witnessed_stress_coping_trait = { TRAIT = inappetetic }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = confider }
+				has_witnessed_stress_coping_trait = { TRAIT = athletic }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -9598,7 +9755,7 @@ stress_threshold.2311 = {
 		if = { #Rakish (prone to extremely wonton behavior, with the associated consequences)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = rakish	
+				has_trait = rakish
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_rakish
@@ -9606,7 +9763,7 @@ stress_threshold.2311 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = irritable	
+				has_trait = irritable
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -9614,7 +9771,7 @@ stress_threshold.2311 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = flagellant	
+				has_trait = flagellant
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -9622,7 +9779,7 @@ stress_threshold.2311 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = improvident	
+				has_trait = improvident
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -9630,7 +9787,7 @@ stress_threshold.2311 = {
 		if = { #Contrite (compelled to reveal own secrets)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = contrite	
+				has_trait = contrite
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_contrite
@@ -9639,7 +9796,7 @@ stress_threshold.2311 = {
 		if = { #Inappetetic (lack of appetite)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = inappetetic	
+				has_trait = inappetetic
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_inappetetic
@@ -9647,7 +9804,7 @@ stress_threshold.2311 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = journaller	
+				has_trait = journaller
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -9655,7 +9812,7 @@ stress_threshold.2311 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = confider	
+				has_trait = confider
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -9707,12 +9864,12 @@ stress_threshold.2311 = {
 				}
 			}
 		}
-		
+
 		#Then potential ones.
 		if = { #Rakish (prone to extremely wonton behavior, with the associated consequences)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_rakish = yes	
+				can_be_rakish = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_rakish
@@ -9720,7 +9877,7 @@ stress_threshold.2311 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_irritable = yes	
+				can_be_irritable = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -9728,7 +9885,7 @@ stress_threshold.2311 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_flagellant = yes	
+				can_be_flagellant = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -9736,7 +9893,7 @@ stress_threshold.2311 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_improvident = yes	
+				can_be_improvident = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -9744,7 +9901,7 @@ stress_threshold.2311 = {
 		if = { #Contrite (compelled to reveal own secrets)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_contrite = yes	
+				can_be_contrite = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_contrite
@@ -9753,7 +9910,7 @@ stress_threshold.2311 = {
 		if = { #Inappetetic (lack of appetite)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_inappetetic = yes	
+				can_be_inappetetic = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_inappetetic
@@ -9761,7 +9918,7 @@ stress_threshold.2311 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_journaller = yes	
+				can_be_journaller = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -9769,7 +9926,7 @@ stress_threshold.2311 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_confider = yes	
+				can_be_confider = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -9790,7 +9947,7 @@ stress_threshold.2311 = {
 		if = { #Athletic (exercises as a stress outlet)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_athletic = yes	
+				can_be_athletic = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_athletic
@@ -9837,12 +9994,12 @@ stress_threshold.2311 = {
 			trigger = { has_trait = rakish }
 			text = stress_threshold.2311.a.rakish.effect
 		}
-		
+
 		add_trait = rakish
 		trait = rakish
 
 		rakish_brothel_night_effect = yes # Stress reduction is included in this effect.
-		
+
 		#Add regret coping modifier.
 		add_character_modifier = {
 			modifier = lost_in_lust_modifier
@@ -9875,13 +10032,13 @@ stress_threshold.2311 = {
 			trigger = { has_trait = irritable }
 			text = stress_threshold.2311.b.irritable.effect
 		}
-		
+
 		add_trait = irritable
 		trait = irritable
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Add regret coping modifier.
 		add_character_modifier = {
 			modifier = agonising_irritations_modifier
@@ -9900,7 +10057,7 @@ stress_threshold.2311 = {
 			}
 		}
 	}
-	
+
 	#Flagellant: medium stress loss
 	option = {
 		trigger = {
@@ -9914,7 +10071,7 @@ stress_threshold.2311 = {
 			trigger = { has_trait = flagellant }
 			text = stress_threshold.2311.c.flagellant.effect
 		}
-		
+
 		add_trait = flagellant
 		trait = flagellant
 
@@ -9927,7 +10084,7 @@ stress_threshold.2311 = {
 			}
 			add_piety = minor_piety_value
 		}
-		
+
 		#Add regret coping modifier.
 		add_character_modifier = {
 			modifier = scars_over_scars_modifier
@@ -9946,7 +10103,7 @@ stress_threshold.2311 = {
 			}
 		}
 	}
-	
+
 	#Improvident: medium stress loss
 	option = {
 		trigger = {
@@ -9960,14 +10117,14 @@ stress_threshold.2311 = {
 			trigger = { has_trait = improvident }
 			text = stress_threshold.2311.d.improvident.effect
 		}
-		
+
 		add_trait = improvident
 		trait = improvident
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
 		remove_short_term_gold = massive_gold_value
-		
+
 		#Add regret coping modifier.
 		add_character_modifier = {
 			modifier = trying_to_buy_happiness_modifier
@@ -9986,7 +10143,7 @@ stress_threshold.2311 = {
 			}
 		}
 	}
-	
+
 	#Contrite: major stress loss
 	option = {
 		trigger = {
@@ -10000,12 +10157,12 @@ stress_threshold.2311 = {
 			trigger = { has_trait = contrite }
 			text = stress_threshold.2311.e.contrite.effect
 		}
-		
+
 		add_trait = contrite
 		trait = contrite
 
 		contrite_reveal_secrets_effect = yes # Includes stress loss based on what secrets were revealed
-		
+
 		#Add regret coping modifier.
 		add_character_modifier = {
 			modifier = outer_monologue_modifier
@@ -10024,7 +10181,7 @@ stress_threshold.2311 = {
 			}
 		}
 	}
-	
+
 	#Inappetetic: medium stress loss
 	option = {
 		trigger = {
@@ -10038,7 +10195,7 @@ stress_threshold.2311 = {
 			trigger = { has_trait = inappetetic }
 			text = stress_threshold.2311.f.inappetetic.effect
 		}
-		
+
 		add_trait = inappetetic
 		trait = inappetetic
 
@@ -10050,7 +10207,7 @@ stress_threshold.2311 = {
 			}
 			inappetetic_advance_starvation_effect = yes
 		}
-		
+
 		#Add regret coping modifier.
 		add_character_modifier = {
 			modifier = sated_by_mistakes_modifier
@@ -10069,7 +10226,7 @@ stress_threshold.2311 = {
 			}
 		}
 	}
-	
+
 	#Journaller: medium stress loss
 	option = {
 		trigger = {
@@ -10083,13 +10240,13 @@ stress_threshold.2311 = {
 			trigger = { has_trait = journaller }
 			text = stress_threshold.2311.g.journaller.effect
 		}
-		
+
 		add_trait = journaller
 		trait = journaller
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Add regret coping modifier.
 		add_character_modifier = {
 			modifier = refuge_in_words_modifier
@@ -10108,7 +10265,7 @@ stress_threshold.2311 = {
 			}
 		}
 	}
-	
+
 	#Confider: medium stress loss
 	option = {
 		trigger = {
@@ -10122,7 +10279,7 @@ stress_threshold.2311 = {
 			trigger = { has_trait = confider }
 			text = stress_threshold.2311.h.confider.effect
 		}
-		
+
 		add_trait = confider
 		trait = confider
 
@@ -10172,7 +10329,7 @@ stress_threshold.2311 = {
 				opinion = 20
 			}
 		}
-		
+
 		#Add regret coping modifier.
 		add_character_modifier = {
 			modifier = sorely_needed_confidant_modifier
@@ -10191,7 +10348,7 @@ stress_threshold.2311 = {
 			}
 		}
 	}
-	
+
 	#Athletic: medium stress loss
 	option = {
 		trigger = {
@@ -10205,13 +10362,13 @@ stress_threshold.2311 = {
 			trigger = { has_trait = athletic }
 			text = stress_threshold.2311.i.athletic.effect
 		}
-		
+
 		add_trait = athletic
 		trait = athletic
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Add regret coping modifier.
 		add_character_modifier = {
 			modifier = long_walks_of_the_mind_modifier
@@ -10230,7 +10387,7 @@ stress_threshold.2311 = {
 			}
 		}
 	}
-	
+
 	#Drunkard: medium stress loss
 	option = {
 		trigger = {
@@ -10244,12 +10401,12 @@ stress_threshold.2311 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.2311.j.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -10259,7 +10416,7 @@ stress_threshold.2311 = {
 			}
 		}
 		else = { add_trait = drunkard }
-		
+
 		#Add regret coping modifier.
 		add_character_modifier = {
 			modifier = bottom_of_a_bottle_modifier
@@ -10278,7 +10435,7 @@ stress_threshold.2311 = {
 			}
 		}
 	}
-	
+
 	#Hashishiyah: medium stress loss
 	option = {
 		trigger = {
@@ -10297,7 +10454,7 @@ stress_threshold.2311 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -10305,9 +10462,9 @@ stress_threshold.2311 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
-		
+
 		#Add regret coping modifier.
 		add_character_modifier = {
 			modifier = fogging_hard_memories_modifier
@@ -10561,7 +10718,7 @@ stress_threshold.2321 = {
 		#Characters must meet the criteria for at least two event options to qualify for this event (we don't want to fire the event if the player has no choices!).
 		calc_true_if = {
 			amount >= 2
-			
+
 			can_be_irritable = yes
 			has_trait = irritable
 			can_be_profligate = yes
@@ -10626,8 +10783,24 @@ stress_threshold.2321 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = irritable }
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = improvident }
+				has_witnessed_stress_coping_trait = { TRAIT = contrite }
+				has_witnessed_stress_coping_trait = { TRAIT = comfort_eater }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = confider }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -10646,7 +10819,7 @@ stress_threshold.2321 = {
 			is_alive = yes
 				has_two_stress_threshold_options = no
 				is_alive = yes
-				has_trait = irritable	
+				has_trait = irritable
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -10654,7 +10827,7 @@ stress_threshold.2321 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = profligate	
+				has_trait = profligate
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -10662,7 +10835,7 @@ stress_threshold.2321 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = improvident	
+				has_trait = improvident
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -10670,7 +10843,7 @@ stress_threshold.2321 = {
 		if = { #Contrite (compelled to reveal own secrets)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = contrite	
+				has_trait = contrite
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_contrite
@@ -10679,7 +10852,7 @@ stress_threshold.2321 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = comfort_eater	
+				has_trait = comfort_eater
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -10687,7 +10860,7 @@ stress_threshold.2321 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = journaller	
+				has_trait = journaller
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -10695,7 +10868,7 @@ stress_threshold.2321 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = confider	
+				has_trait = confider
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -10739,12 +10912,12 @@ stress_threshold.2321 = {
 				}
 			}
 		}
-		
+
 		#Then potential ones.
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_irritable = yes	
+				can_be_irritable = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -10752,7 +10925,7 @@ stress_threshold.2321 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_profligate = yes	
+				can_be_profligate = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -10760,7 +10933,7 @@ stress_threshold.2321 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_improvident = yes	
+				can_be_improvident = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -10768,7 +10941,7 @@ stress_threshold.2321 = {
 		if = { #Contrite (compelled to reveal own secrets)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_contrite = yes	
+				can_be_contrite = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_contrite
@@ -10777,7 +10950,7 @@ stress_threshold.2321 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_comfort_eater = yes	
+				can_be_comfort_eater = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -10785,7 +10958,7 @@ stress_threshold.2321 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_journaller = yes	
+				can_be_journaller = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -10793,7 +10966,7 @@ stress_threshold.2321 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_confider = yes	
+				can_be_confider = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -10853,13 +11026,13 @@ stress_threshold.2321 = {
 			trigger = { has_trait = irritable }
 			text = stress_threshold.2321.a.irritable.effect
 		}
-		
+
 		add_trait = irritable
 		trait = irritable
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Court reacts to your little upset.
 		if = {
 			limit = {
@@ -10913,14 +11086,14 @@ stress_threshold.2321 = {
 			trigger = { has_trait = profligate }
 			text = stress_threshold.2321.b.profligate.effect
 		}
-		
+
 		add_trait = profligate
 		trait = profligate
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
 		remove_short_term_gold = massive_gold_value
-		
+
 		#Court reacts to your little upset.
 		if = {
 			limit = {
@@ -10966,7 +11139,7 @@ stress_threshold.2321 = {
 			}
 		}
 	}
-	
+
 	#Improvident: medium stress loss
 	option = {
 		trigger = {
@@ -10980,14 +11153,14 @@ stress_threshold.2321 = {
 			trigger = { has_trait = improvident }
 			text = stress_threshold.2321.c.improvident.effect
 		}
-		
+
 		add_trait = improvident
 		trait = improvident
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
 		remove_short_term_gold = massive_gold_value
-		
+
 		#Court reacts to your little upset.
 		if = {
 			limit = {
@@ -11033,7 +11206,7 @@ stress_threshold.2321 = {
 			}
 		}
 	}
-	
+
 	#Contrite: major stress loss
 	option = {
 		trigger = {
@@ -11047,12 +11220,12 @@ stress_threshold.2321 = {
 			trigger = { has_trait = contrite }
 			text = stress_threshold.2321.d.contrite.effect
 		}
-		
+
 		add_trait = contrite
 		trait = contrite
 
 		contrite_reveal_secrets_effect = yes # Includes stress loss based on what secrets were revealed
-		
+
 		#Court reacts to your little upset.
 		if = {
 			limit = {
@@ -11098,7 +11271,7 @@ stress_threshold.2321 = {
 			}
 		}
 	}
-	
+
 	#Comfort Eater: medium stress loss
 	option = {
 		trigger = {
@@ -11112,7 +11285,7 @@ stress_threshold.2321 = {
 			trigger = { has_trait = comfort_eater }
 			text = stress_threshold.2321.e.comfort_eater.effect
 		}
-		
+
 		add_trait = comfort_eater
 		trait = comfort_eater
 
@@ -11158,7 +11331,7 @@ stress_threshold.2321 = {
 			}
 		}
 	}
-	
+
 	#Journaller: medium stress loss
 	option = {
 		trigger = {
@@ -11172,13 +11345,13 @@ stress_threshold.2321 = {
 			trigger = { has_trait = journaller }
 			text = stress_threshold.2321.f.journaller.effect
 		}
-		
+
 		add_trait = journaller
 		trait = journaller
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Court reacts to your little upset.
 		every_in_list = {
 			list = affected_by_outburst
@@ -11210,7 +11383,7 @@ stress_threshold.2321 = {
 			}
 		}
 	}
-	
+
 	#Confider: medium stress loss
 	option = {
 		trigger = {
@@ -11224,7 +11397,7 @@ stress_threshold.2321 = {
 			trigger = { has_trait = confider }
 			text = stress_threshold.2321.g.confider.effect
 		}
-		
+
 		add_trait = confider
 		trait = confider
 
@@ -11274,7 +11447,7 @@ stress_threshold.2321 = {
 				opinion = 20
 			}
 		}
-		
+
 		#Court reacts to your little upset.
 		every_in_list = {
 			list = affected_by_outburst
@@ -11306,7 +11479,7 @@ stress_threshold.2321 = {
 			}
 		}
 	}
-	
+
 	#Drunkard: medium stress loss
 	option = {
 		trigger = {
@@ -11320,12 +11493,12 @@ stress_threshold.2321 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.2321.h.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -11335,7 +11508,7 @@ stress_threshold.2321 = {
 			}
 		}
 		else = { add_trait = drunkard }
-		
+
 		#Court reacts to your little upset.
 		every_in_list = {
 			list = affected_by_outburst
@@ -11367,7 +11540,7 @@ stress_threshold.2321 = {
 			}
 		}
 	}
-	
+
 	#Hashishiyah: medium stress loss
 	option = {
 		trigger = {
@@ -11386,7 +11559,7 @@ stress_threshold.2321 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -11394,9 +11567,9 @@ stress_threshold.2321 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
-		
+
 		#Court reacts to your little upset.
 		every_in_list = {
 			list = affected_by_outburst
@@ -11502,7 +11675,7 @@ stress_threshold.2321 = {
 
 	after = {
 		stress_threshold_event_aftereffects = yes #Perform stress threshold event clean-up and preparation for future stress threshold events.
-		
+
 		if = {
 			limit = {
 				is_alive = yes
@@ -11719,8 +11892,24 @@ stress_threshold.2331 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = irritable }
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = improvident }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = confider }
+				has_witnessed_stress_coping_trait = { TRAIT = athletic }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -11734,7 +11923,7 @@ stress_threshold.2331 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = reclusive	
+				has_trait = reclusive
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -11742,7 +11931,7 @@ stress_threshold.2331 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = irritable	
+				has_trait = irritable
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -11750,7 +11939,7 @@ stress_threshold.2331 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = profligate	
+				has_trait = profligate
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -11758,7 +11947,7 @@ stress_threshold.2331 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = improvident	
+				has_trait = improvident
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -11766,7 +11955,7 @@ stress_threshold.2331 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = journaller	
+				has_trait = journaller
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -11774,7 +11963,7 @@ stress_threshold.2331 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = confider	
+				has_trait = confider
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -11826,12 +12015,12 @@ stress_threshold.2331 = {
 				}
 			}
 		}
-		
+
 		#Then potential ones.
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_reclusive = yes	
+				can_be_reclusive = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -11839,7 +12028,7 @@ stress_threshold.2331 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_irritable = yes	
+				can_be_irritable = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -11847,7 +12036,7 @@ stress_threshold.2331 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_profligate = yes	
+				can_be_profligate = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -11855,7 +12044,7 @@ stress_threshold.2331 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_improvident = yes	
+				can_be_improvident = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -11863,7 +12052,7 @@ stress_threshold.2331 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_journaller = yes	
+				can_be_journaller = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -11871,7 +12060,7 @@ stress_threshold.2331 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_confider = yes	
+				can_be_confider = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -11892,7 +12081,7 @@ stress_threshold.2331 = {
 		if = { #Athletic (exercises as a stress outlet)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_athletic = yes	
+				can_be_athletic = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_athletic
@@ -11939,13 +12128,13 @@ stress_threshold.2331 = {
 			trigger = { has_trait = reclusive }
 			text = stress_threshold.2331.a.reclusive.effect
 		}
-		
+
 		add_trait = reclusive
 		trait = reclusive
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#You banish them from your presence for a few days.
 		every_courtier_or_guest = {
 			custom = stress_threshold.2331.a.reclusive.opinion_list
@@ -11982,13 +12171,13 @@ stress_threshold.2331 = {
 			trigger = { has_trait = irritable }
 			text = stress_threshold.2331.b.irritable.effect
 		}
-		
+
 		add_trait = irritable
 		trait = irritable
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Your blood pressure goes up.
 		add_character_modifier = {
 			modifier = high_blood_pressure_modifier
@@ -12021,14 +12210,14 @@ stress_threshold.2331 = {
 			trigger = { has_trait = profligate }
 			text = stress_threshold.2331.c.profligate.effect
 		}
-		
+
 		add_trait = profligate
 		trait = profligate
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
 		remove_short_term_gold = massive_gold_value
-		
+
 		#This excess spending is unbecoming of you.
 		add_prestige = medium_prestige_loss
 
@@ -12044,7 +12233,7 @@ stress_threshold.2331 = {
 			}
 		}
 	}
-	
+
 	#Improvident: medium stress loss
 	option = {
 		trigger = {
@@ -12058,14 +12247,14 @@ stress_threshold.2331 = {
 			trigger = { has_trait = improvident }
 			text = stress_threshold.2331.d.improvident.effect
 		}
-		
+
 		add_trait = improvident
 		trait = improvident
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
 		remove_short_term_gold = massive_gold_value
-		
+
 		capital_province.county = {
 			add_county_modifier = {
 				modifier = an_influx_of_eager_beggars_modifier
@@ -12085,7 +12274,7 @@ stress_threshold.2331 = {
 			}
 		}
 	}
-	
+
 	#Journaller: medium stress loss
 	option = {
 		trigger = {
@@ -12099,13 +12288,13 @@ stress_threshold.2331 = {
 			trigger = { has_trait = journaller }
 			text = stress_threshold.2331.e.journaller.effect
 		}
-		
+
 		add_trait = journaller
 		trait = journaller
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#You shut yourself away with your journals.
 		add_character_modifier = {
 			modifier = refuge_in_words_modifier
@@ -12124,7 +12313,7 @@ stress_threshold.2331 = {
 			}
 		}
 	}
-	
+
 	#Confider: medium stress loss
 	option = {
 		trigger = {
@@ -12138,7 +12327,7 @@ stress_threshold.2331 = {
 			trigger = { has_trait = confider }
 			text = stress_threshold.2331.f.confider.effect
 		}
-		
+
 		add_trait = confider
 		trait = confider
 
@@ -12195,7 +12384,7 @@ stress_threshold.2331 = {
 				opinion = 20
 			}
 		}
-		
+
 		if = {
 			limit = { exists = scope:friend }
 			jealousy_at_court_effect = {
@@ -12217,7 +12406,7 @@ stress_threshold.2331 = {
 			}
 		}
 	}
-	
+
 	#Athletic: medium stress loss
 	option = {
 		trigger = {
@@ -12231,13 +12420,13 @@ stress_threshold.2331 = {
 			trigger = { has_trait = athletic }
 			text = stress_threshold.2331.g.athletic.effect
 		}
-		
+
 		add_trait = athletic
 		trait = athletic
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Your regular walks give ample opportunity to ambush you.
 		add_character_modifier = {
 			modifier = regular_walking_routes_modifier
@@ -12256,7 +12445,7 @@ stress_threshold.2331 = {
 			}
 		}
 	}
-	
+
 	#Drunkard: medium stress loss
 	option = {
 		trigger = {
@@ -12270,12 +12459,12 @@ stress_threshold.2331 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.2331.h.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -12285,7 +12474,7 @@ stress_threshold.2331 = {
 			}
 		}
 		else = { add_trait = drunkard }
-		
+
 		#Not a great look for anyone.
 		add_prestige = medium_prestige_loss
 
@@ -12301,7 +12490,7 @@ stress_threshold.2331 = {
 			}
 		}
 	}
-	
+
 	#Hashishiyah: medium stress loss
 	option = {
 		trigger = {
@@ -12320,7 +12509,7 @@ stress_threshold.2331 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -12328,9 +12517,9 @@ stress_threshold.2331 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
-		
+
 		#Not a great look for anyone.
 		add_prestige = medium_prestige_loss
 
@@ -12605,8 +12794,23 @@ stress_threshold.2341 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = comfort_eater }
+				has_witnessed_stress_coping_trait = { TRAIT = inappetetic }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = confider }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -12620,7 +12824,7 @@ stress_threshold.2341 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = reclusive	
+				has_trait = reclusive
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -12628,7 +12832,7 @@ stress_threshold.2341 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = profligate	
+				has_trait = profligate
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -12636,7 +12840,7 @@ stress_threshold.2341 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = comfort_eater	
+				has_trait = comfort_eater
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -12644,7 +12848,7 @@ stress_threshold.2341 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = journaller	
+				has_trait = journaller
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -12652,7 +12856,7 @@ stress_threshold.2341 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = confider	
+				has_trait = confider
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -12696,12 +12900,12 @@ stress_threshold.2341 = {
 				}
 			}
 		}
-		
+
 		#Then potential ones.
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_reclusive = yes	
+				can_be_reclusive = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -12709,7 +12913,7 @@ stress_threshold.2341 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_profligate = yes	
+				can_be_profligate = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -12717,7 +12921,7 @@ stress_threshold.2341 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_comfort_eater = yes	
+				can_be_comfort_eater = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -12725,7 +12929,7 @@ stress_threshold.2341 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_journaller = yes	
+				can_be_journaller = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -12733,7 +12937,7 @@ stress_threshold.2341 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_confider = yes	
+				can_be_confider = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -12793,13 +12997,13 @@ stress_threshold.2341 = {
 			trigger = { has_trait = reclusive }
 			text = stress_threshold.2341.a.reclusive.effect
 		}
-		
+
 		add_trait = reclusive
 		trait = reclusive
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#You lose mild opinion with all courtiers, and all guests are immediately made to leave.
 		every_courtier = {
 			custom = stress_threshold.2341.a.reclusive.list_courtier
@@ -12842,14 +13046,14 @@ stress_threshold.2341 = {
 			trigger = { has_trait = profligate }
 			text = stress_threshold.2341.b.profligate.effect
 		}
-		
+
 		add_trait = profligate
 		trait = profligate
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
 		remove_short_term_gold = massive_gold_value
-		
+
 		#Your new cloak becomes a symbol of your shirked duty.
 		add_character_modifier = {
 			modifier = symbol_of_folly_modifier
@@ -12882,13 +13086,13 @@ stress_threshold.2341 = {
 			trigger = { has_trait = comfort_eater }
 			text = stress_threshold.2341.c.comfort_eater.effect
 		}
-		
+
 		add_trait = comfort_eater
 		trait = comfort_eater
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Your feast gives you a poor nickname.
 		if = {
 			limit = { has_any_nickname = no }
@@ -12935,13 +13139,13 @@ stress_threshold.2341 = {
 			trigger = { has_trait = journaller }
 			text = stress_threshold.2341.d.journaller.effect
 		}
-		
+
 		add_trait = journaller
 		trait = journaller
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#You shut yourself away with your journals.
 		add_character_modifier = {
 			modifier = refuge_in_words_modifier
@@ -12960,7 +13164,7 @@ stress_threshold.2341 = {
 			}
 		}
 	}
-	
+
 	#Confider: medium stress loss
 	option = {
 		trigger = {
@@ -12976,7 +13180,7 @@ stress_threshold.2341 = {
 			trigger = { has_trait = confider }
 			text = stress_threshold.2341.e.confider.effect
 		}
-		
+
 		add_trait = confider
 		trait = confider
 
@@ -13070,7 +13274,7 @@ stress_threshold.2341 = {
 				opinion = 20
 			}
 		}
-		
+
 		if = {
 			limit = { exists = scope:friend }
 			jealousy_at_court_effect = {
@@ -13106,12 +13310,12 @@ stress_threshold.2341 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.2341.f.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -13121,7 +13325,7 @@ stress_threshold.2341 = {
 			}
 		}
 		else = { add_trait = drunkard }
-		
+
 		#Doesn't look great, even on a landed ruler.
 		add_prestige = medium_prestige_loss
 
@@ -13156,7 +13360,7 @@ stress_threshold.2341 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -13164,9 +13368,9 @@ stress_threshold.2341 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
-		
+
 		#Doesn't look great, even on a landed ruler.
 		add_prestige = medium_prestige_loss
 
@@ -13189,7 +13393,7 @@ stress_threshold.2341 = {
 			has_character_flag = stress_threshold_option_betel_chewer
 		}
 		name = {
-			trigger = { betel_chewer = yes }
+			trigger = { NOT = { has_trait = betel_chewer } }
 			text = stress_threshold.2341.g.betel_chewer.gain
 		}
 		name = {
@@ -13240,7 +13444,7 @@ stress_threshold.2341 = {
 
 	after = {
 		stress_threshold_event_aftereffects = yes #Perform stress threshold event clean-up and preparation for future stress threshold events.
-		
+
 		if = {
 			limit = {
 				is_alive = yes
@@ -13382,7 +13586,7 @@ stress_threshold.2351 = {
 		#Characters must meet the criteria for at least two event options to qualify for this event (we don't want to fire the event if the player has no choices!).
 		calc_true_if = {
 			amount >= 2
-			
+
 			can_be_reclusive = yes
 			has_trait = reclusive
 			can_be_irritable = yes
@@ -13441,8 +13645,23 @@ stress_threshold.2351 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = irritable }
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = improvident }
+				has_witnessed_stress_coping_trait = { TRAIT = inappetetic }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -13456,7 +13675,7 @@ stress_threshold.2351 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = reclusive	
+				has_trait = reclusive
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -13464,7 +13683,7 @@ stress_threshold.2351 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = irritable	
+				has_trait = irritable
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -13472,7 +13691,7 @@ stress_threshold.2351 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = profligate	
+				has_trait = profligate
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -13480,7 +13699,7 @@ stress_threshold.2351 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = improvident	
+				has_trait = improvident
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -13488,7 +13707,7 @@ stress_threshold.2351 = {
 		if = { #Inappetetic (lack of appetite)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = inappetetic	
+				has_trait = inappetetic
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_inappetetic
@@ -13496,7 +13715,7 @@ stress_threshold.2351 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = journaller	
+				has_trait = journaller
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -13527,12 +13746,12 @@ stress_threshold.2351 = {
 				}
 			}
 		}
-		
+
 		#Then potential ones.
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_reclusive = yes	
+				can_be_reclusive = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -13540,7 +13759,7 @@ stress_threshold.2351 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_irritable = yes	
+				can_be_irritable = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -13548,7 +13767,7 @@ stress_threshold.2351 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_profligate = yes	
+				can_be_profligate = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -13556,7 +13775,7 @@ stress_threshold.2351 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_improvident = yes	
+				can_be_improvident = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -13564,7 +13783,7 @@ stress_threshold.2351 = {
 		if = { #Inappetetic (lack of appetite)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_inappetetic = yes	
+				can_be_inappetetic = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_inappetetic
@@ -13572,7 +13791,7 @@ stress_threshold.2351 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_journaller = yes	
+				can_be_journaller = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -13605,7 +13824,7 @@ stress_threshold.2351 = {
 		}
 		stress_threshold_event_post_immediate = yes
 	}
-	
+
 	#Reclusive: medium stress loss
 	option = {
 		trigger = {
@@ -13619,13 +13838,13 @@ stress_threshold.2351 = {
 			trigger = { has_trait = reclusive }
 			text = stress_threshold.2351.a.reclusive.effect
 		}
-		
+
 		add_trait = reclusive
 		trait = reclusive
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#You gain a reputation as reclusive and strange.
 		add_character_modifier = {
 			modifier = strange_recluse_modifier
@@ -13658,13 +13877,13 @@ stress_threshold.2351 = {
 			trigger = { has_trait = irritable }
 			text = stress_threshold.2351.b.irritable.effect
 		}
-		
+
 		add_trait = irritable
 		trait = irritable
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#You get a reputation as a grouch.
 		add_character_modifier = {
 			modifier = grouchy_ruler_modifier
@@ -13683,7 +13902,7 @@ stress_threshold.2351 = {
 			}
 		}
 	}
-	
+
 	#Profligate: medium stress loss
 	option = {
 		trigger = {
@@ -13697,14 +13916,14 @@ stress_threshold.2351 = {
 			trigger = { has_trait = profligate }
 			text = stress_threshold.2351.c.profligate.effect
 		}
-		
+
 		add_trait = profligate
 		trait = profligate
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
 		remove_short_term_gold = massive_gold_value
-		
+
 		#You try to buy your way to feeling better.
 		add_character_modifier = {
 			modifier = trying_to_buy_happiness_modifier
@@ -13723,7 +13942,7 @@ stress_threshold.2351 = {
 			}
 		}
 	}
-	
+
 	#Improvident: medium stress loss
 	option = {
 		trigger = {
@@ -13737,14 +13956,14 @@ stress_threshold.2351 = {
 			trigger = { has_trait = improvident }
 			text = stress_threshold.2351.d.improvident.effect
 		}
-		
+
 		add_trait = improvident
 		trait = improvident
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
 		remove_short_term_gold = massive_gold_value
-		
+
 		#Giving everyone who needs it access to the treasury is generally bad practice for feudal societies.
 		add_stewardship_skill = -1
 
@@ -13760,7 +13979,7 @@ stress_threshold.2351 = {
 			}
 		}
 	}
-	
+
 	#Inappetetic: medium stress loss
 	option = {
 		trigger = {
@@ -13774,7 +13993,7 @@ stress_threshold.2351 = {
 			trigger = { has_trait = inappetetic }
 			text = stress_threshold.2351.e.inappetetic.effect
 		}
-		
+
 		add_trait = inappetetic
 		trait = inappetetic
 
@@ -13786,7 +14005,7 @@ stress_threshold.2351 = {
 			}
 			inappetetic_advance_starvation_effect = yes
 		}
-		
+
 		#A ruler should have might feasts, after all.
 		add_prestige = medium_prestige_loss
 
@@ -13802,7 +14021,7 @@ stress_threshold.2351 = {
 			}
 		}
 	}
-	
+
 	#Journaller: medium stress loss
 	option = {
 		trigger = {
@@ -13816,13 +14035,13 @@ stress_threshold.2351 = {
 			trigger = { has_trait = journaller }
 			text = stress_threshold.2351.f.journaller.effect
 		}
-		
+
 		add_trait = journaller
 		trait = journaller
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#People grow suspicious of your journal constantly being in your lap.
 		add_character_modifier = {
 			modifier = suspicious_sketcher_modifier
@@ -13841,7 +14060,7 @@ stress_threshold.2351 = {
 			}
 		}
 	}
-	
+
 	#Drunkard: medium stress loss
 	option = {
 		trigger = {
@@ -13855,12 +14074,12 @@ stress_threshold.2351 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.2351.g.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -13870,7 +14089,7 @@ stress_threshold.2351 = {
 			}
 		}
 		else = { add_trait = drunkard }
-		
+
 		#Tsk, drinking on the job.
 		add_prestige = medium_prestige_loss
 
@@ -13886,7 +14105,7 @@ stress_threshold.2351 = {
 			}
 		}
 	}
-	
+
 	#Hashishiyah: medium stress loss
 	option = {
 		trigger = {
@@ -13905,7 +14124,7 @@ stress_threshold.2351 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -13913,9 +14132,9 @@ stress_threshold.2351 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
-		
+
 		#Tsk, indulging on the job.
 		add_prestige = medium_prestige_loss
 
@@ -13989,7 +14208,7 @@ stress_threshold.2351 = {
 
 	after = {
 		stress_threshold_event_aftereffects = yes #Perform stress threshold event clean-up and preparation for future stress threshold events.
-		
+
 		if = {
 			limit = {
 				is_alive = yes
@@ -14047,6 +14266,138 @@ stress_threshold.2351 = {
 				}
 			}
 		}
+	}
+}
+
+
+##################################################
+# Eccentric stress break
+# by James Beaumont
+# #2360
+##################################################
+stress_threshold.2360 = {
+	type = character_event
+	title = stress_threshold.2360.t
+	desc = stress_threshold.2360.desc
+	theme = mental_break
+	override_background = {
+		reference = bedchamber
+	}
+	left_portrait = {
+		character = root
+		animation = anger
+	}
+
+	trigger = {
+		is_ai = no # We want the eccentric trait to be rare
+		is_travelling = no
+		number_of_personality_traits < personality_trait_limit
+	}
+
+	widget = {
+		gui = "event_window_widget_stress"
+		container = "custom_widgets_container"
+	}
+
+	immediate = {
+		root = { save_scope_as = stress_character } #For stress widget.
+	}
+
+	#Become eccentric, big stress loss
+	option = {
+		name = {
+			trigger = { NOT = { has_trait = eccentric } }
+			text = stress_threshold.2360.a.eccentric.gain
+		}
+		name = {
+			trigger = { has_trait = eccentric }
+			text = stress_threshold.2360.a.eccentric.effect
+		}
+		if = {
+			limit = {
+				has_trait = fickle
+			}
+			remove_trait = fickle
+		}
+		if = {
+			limit = {
+				has_trait = stubborn
+			}
+			remove_trait = stubborn
+		}
+		add_trait_force_tooltip = eccentric
+		trait = eccentric
+
+		#Account for stress.
+		add_stress = major_stress_impact_loss
+
+		#You gain a reputation as eccentric and strange.
+		add_character_modifier = {
+			modifier = erratic_behaviour
+			years = 10
+		}
+
+		ai_chance = {
+			base = 25
+			ai_value_modifier = {
+				ai_rationality = -1
+			}
+			modifier = {	#Pick this option if you have the relevant coping mechanism.
+				add = 200
+				has_trait = eccentric
+			}
+		}
+	}
+
+	#Become irritable, stress loss
+	option = {
+		trigger = {
+			OR = {
+				can_be_irritable = yes
+				has_trait = irritable
+			}
+		}
+		name = {
+			trigger = { can_be_irritable = yes }
+			text = stress_threshold.2360.b.irritable.gain
+		}
+		name = {
+			trigger = { has_trait = irritable }
+			text = stress_threshold.2360.b.irritable.effect
+		}
+		add_trait = irritable
+		trait = irritable
+
+		#Account for stress.
+		add_stress = medium_stress_impact_loss
+
+		#You're smashing birds and that's weird
+		add_character_modifier = {
+			modifier = bird_cruelty
+			years = 10
+		}
+
+		ai_chance = {
+			base = 25
+			ai_value_modifier = {
+				ai_vengefulness = 0.5
+				ai_compassion = -0.5
+			}
+			modifier = {	#Pick this option if you have the relevant coping mechanism.
+				add = 200
+				has_trait = irritable
+			}
+		}
+	}
+	#Opt out, get another stress event
+	option = {
+		name = stress_threshold.2360.c
+		add_stress = minor_stress_impact_gain
+		ai_chance = { base = 300 }	#AI shouldn't become eccentric through stress
+	}
+
+	after = {
+		stress_threshold_event_aftereffects = yes
 	}
 }
 
@@ -14138,8 +14489,8 @@ stress_threshold.3001 = {
 		add_prestige = major_prestige_loss
 		add_prestige_level = -1
 		add_stress = major_stress_impact_loss
-	}	
-	
+	}
+
 	after = {
 		stress_threshold_event_aftereffects = yes # Perform stress threshold event clean-up and preparation for future stress threshold events.
 	}
@@ -14431,7 +14782,7 @@ stress_threshold.3201 = {
 				}
 			}
 		}
-	}	
+	}
 
 	# Lash out.
 	option = {
@@ -14480,7 +14831,7 @@ stress_threshold.3201 = {
 						increase_wounds_effect = { REASON = fight }
 						add_prestige = minor_prestige_loss
 					}
-					
+
 				}
 				50 = {
 					desc = stress_threshold.3201.wrathful.effect.failure
@@ -14509,16 +14860,16 @@ stress_threshold.3201 = {
 		}
 
 
-		
+
 		ai_chance = {
 			base = 50
 
 			ai_value_modifier = {
 				ai_compassion = -5
 			}
-		}		
+		}
 	}
-	
+
 	after = {
 		stress_threshold_event_aftereffects = yes # Perform stress threshold event clean-up and preparation for future stress threshold events.
 	}
@@ -14711,7 +15062,7 @@ stress_threshold.3401 = {
 				has_trait = betel_chewer
 			}
 		}
-		#There must also be 3 potential victims 
+		#There must also be 3 potential victims
 		any_courtier_or_guest = {
 			NOR = {
 				dynasty = root.dynasty
@@ -14753,8 +15104,21 @@ stress_threshold.3401 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = irritable }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = confider }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -14784,7 +15148,7 @@ stress_threshold.3401 = {
 			save_scope_as = unlucky_sod
 			weight = {
 				base = 1
-				
+
 				modifier = {	#Powerful potential foes!
 					add = 30
 					any_close_family_member = { highest_held_title_tier = tier_empire }
@@ -14837,7 +15201,7 @@ stress_threshold.3401 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = reclusive	
+				has_trait = reclusive
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -14845,7 +15209,7 @@ stress_threshold.3401 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = irritable	
+				has_trait = irritable
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -14853,7 +15217,7 @@ stress_threshold.3401 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = journaller	
+				has_trait = journaller
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -14861,7 +15225,7 @@ stress_threshold.3401 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = confider	
+				has_trait = confider
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -14905,12 +15269,12 @@ stress_threshold.3401 = {
 				}
 			}
 		}
-		
+
 		#Then potential ones.
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_reclusive = yes	
+				can_be_reclusive = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -14918,7 +15282,7 @@ stress_threshold.3401 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_irritable = yes	
+				can_be_irritable = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -14926,7 +15290,7 @@ stress_threshold.3401 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_journaller = yes	
+				can_be_journaller = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -14934,7 +15298,7 @@ stress_threshold.3401 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_confider = yes	
+				can_be_confider = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -14980,7 +15344,7 @@ stress_threshold.3401 = {
 		}
 		stress_threshold_event_post_immediate = yes
 	}
-	
+
 	#Reclusive: major stress loss
 	option = {
 		trigger = {
@@ -14994,13 +15358,13 @@ stress_threshold.3401 = {
 			trigger = { has_trait = reclusive }
 			text = stress_threshold.3401.a.reclusive.effect
 		}
-		
+
 		add_trait = reclusive
 		trait = reclusive
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#You banish everyone you can from your court.
 		every_courtier_or_guest = {
 			limit = {
@@ -15053,13 +15417,13 @@ stress_threshold.3401 = {
 			trigger = { has_trait = irritable }
 			text = stress_threshold.3401.b.irritable.effect
 		}
-		
+
 		add_trait = irritable
 		trait = irritable
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#If available, execute a courtier/guest.
 		if = {
 			limit = { exists = scope:unlucky_sod }
@@ -15081,7 +15445,7 @@ stress_threshold.3401 = {
 			}
 		}
 	}
-	
+
 	#Journaller: major stress loss
 	option = {
 		trigger = {
@@ -15095,13 +15459,13 @@ stress_threshold.3401 = {
 			trigger = { has_trait = journaller }
 			text = stress_threshold.3401.c.journaller.effect
 		}
-		
+
 		add_trait = journaller
 		trait = journaller
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#In a fit of insanity, you have the corpse drained and the resulting fluids made into ink. Just like other normal human writers do.
 		add_character_modifier = {
 			modifier = carrion_writer_modifier
@@ -15125,7 +15489,7 @@ stress_threshold.3401 = {
 			}
 		}
 	}
-	
+
 	#Confider: major stress loss
 	option = {
 		trigger = {
@@ -15139,7 +15503,7 @@ stress_threshold.3401 = {
 			trigger = { has_trait = confider }
 			text = stress_threshold.3401.d.confider.effect
 		}
-		
+
 		add_trait = confider
 		trait = confider
 
@@ -15191,7 +15555,7 @@ stress_threshold.3401 = {
 				opinion = 20
 			}
 		}
-		
+
 		#Your confidant is blamed for the death.
 		if = {
 			limit = { exists = scope:friend }
@@ -15230,12 +15594,12 @@ stress_threshold.3401 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.3401.e.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -15245,7 +15609,7 @@ stress_threshold.3401 = {
 			}
 		}
 		else = { add_trait = drunkard }
-		
+
 		#Your behaviour is unbecoming.
 		add_prestige_level = -1
 		add_prestige = medium_prestige_loss
@@ -15262,7 +15626,7 @@ stress_threshold.3401 = {
 			}
 		}
 	}
-	
+
 	#Hashishiyah: major stress loss
 	option = {
 		trigger = {
@@ -15281,7 +15645,7 @@ stress_threshold.3401 = {
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -15289,9 +15653,9 @@ stress_threshold.3401 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
-		
+
 		#Your behaviour is unbecoming.
 		add_prestige_level = -1
 		add_prestige = medium_prestige_loss
@@ -15563,7 +15927,7 @@ stress_threshold.3411 = {
 		#Characters must meet the criteria for at least two event options to qualify for this event (we don't want to fire the event if the player has no choices!).
 		calc_true_if = {
 			amount >= 2
-			
+
 			can_be_reclusive = yes
 			has_trait = reclusive
 			can_be_flagellant = yes
@@ -15640,8 +16004,26 @@ stress_threshold.3411 = {
 				has_trait = betel_chewer
 			}
 		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = improvident }
+				has_witnessed_stress_coping_trait = { TRAIT = contrite }
+				has_witnessed_stress_coping_trait = { TRAIT = inappetetic }
+				has_witnessed_stress_coping_trait = { TRAIT = journaller }
+				has_witnessed_stress_coping_trait = { TRAIT = confider }
+				has_witnessed_stress_coping_trait = { TRAIT = athletic }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
+		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -15655,7 +16037,7 @@ stress_threshold.3411 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = reclusive	
+				has_trait = reclusive
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -15663,7 +16045,7 @@ stress_threshold.3411 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = flagellant	
+				has_trait = flagellant
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -15671,7 +16053,7 @@ stress_threshold.3411 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = profligate	
+				has_trait = profligate
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -15679,7 +16061,7 @@ stress_threshold.3411 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = improvident	
+				has_trait = improvident
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -15687,7 +16069,7 @@ stress_threshold.3411 = {
 		if = { #Contrite (compelled to reveal own secrets)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = contrite	
+				has_trait = contrite
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_contrite
@@ -15696,7 +16078,7 @@ stress_threshold.3411 = {
 		if = { #Inappetetic (lack of appetite)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = inappetetic	
+				has_trait = inappetetic
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_inappetetic
@@ -15704,7 +16086,7 @@ stress_threshold.3411 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = journaller	
+				has_trait = journaller
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -15712,7 +16094,7 @@ stress_threshold.3411 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = confider	
+				has_trait = confider
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -15733,7 +16115,7 @@ stress_threshold.3411 = {
 		if = { #Athletic (exercises as a stress outlet)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = athletic	
+				has_trait = athletic
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_athletic
@@ -15764,12 +16146,12 @@ stress_threshold.3411 = {
 				}
 			}
 		}
-		
+
 		#Then potential ones.
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_reclusive = yes	
+				can_be_reclusive = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -15777,7 +16159,7 @@ stress_threshold.3411 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_flagellant = yes	
+				can_be_flagellant = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -15785,7 +16167,7 @@ stress_threshold.3411 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_profligate = yes	
+				can_be_profligate = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -15793,7 +16175,7 @@ stress_threshold.3411 = {
 		if = { #Improvident (habitually over-donates to charity)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_improvident = yes	
+				can_be_improvident = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_improvident
@@ -15801,7 +16183,7 @@ stress_threshold.3411 = {
 		if = { #Contrite (compelled to reveal own secrets)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_contrite = yes	
+				can_be_contrite = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_contrite
@@ -15810,7 +16192,7 @@ stress_threshold.3411 = {
 		if = { #Inappetetic (lack of appetite)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_inappetetic = yes	
+				can_be_inappetetic = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_inappetetic
@@ -15818,7 +16200,7 @@ stress_threshold.3411 = {
 		if = { #Journaller (writes down thoughts in a journal as a healthy stress relief)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_journaller = yes	
+				can_be_journaller = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_journaller
@@ -15826,7 +16208,7 @@ stress_threshold.3411 = {
 		if = { #Confider (has a close confidant)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_confider = yes	
+				can_be_confider = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_confider
@@ -15847,7 +16229,7 @@ stress_threshold.3411 = {
 		if = { #Athletic (exercises as a stress outlet)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_athletic = yes	
+				can_be_athletic = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_athletic
@@ -15894,13 +16276,13 @@ stress_threshold.3411 = {
 			trigger = { has_trait = reclusive }
 			text = stress_threshold.3411.a.reclusive.effect
 		}
-		
+
 		add_trait = reclusive
 		trait = reclusive
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#You develop a phobia of being observed that will take years to overcome.
 		add_character_modifier = {
 			modifier = scopophobic_modifier
@@ -15934,7 +16316,7 @@ stress_threshold.3411 = {
 			trigger = { has_trait = flagellant }
 			text = stress_threshold.3411.b.flagellant.effect
 		}
-		
+
 		add_trait = flagellant
 		trait = flagellant
 
@@ -15947,7 +16329,7 @@ stress_threshold.3411 = {
 			}
 			add_piety = minor_piety_value
 		}
-		
+
 		#You do yourself permanent harm to compensate for your inadequacies.
 		if = {
 			limit = {
@@ -15997,7 +16379,7 @@ stress_threshold.3411 = {
 			}
 		}
 	}
-	
+
 	#Profligate: major stress loss
 	option = {
 		trigger = {
@@ -16011,14 +16393,14 @@ stress_threshold.3411 = {
 			trigger = { has_trait = profligate }
 			text = stress_threshold.3411.c.profligate.effect
 		}
-		
+
 		add_trait = profligate
 		trait = profligate
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
 		remove_short_term_gold = monumental_gold_value
-		
+
 		#You begin work on a series of self-aggrandising monuments, attempting to fool others.
 		add_character_modifier = {
 			modifier = ostentatious_follies_modifier
@@ -16037,7 +16419,7 @@ stress_threshold.3411 = {
 			}
 		}
 	}
-	
+
 	#Improvident: major stress loss
 	option = {
 		trigger = {
@@ -16051,14 +16433,14 @@ stress_threshold.3411 = {
 			trigger = { has_trait = improvident }
 			text = stress_threshold.3411.d.improvident.effect
 		}
-		
+
 		add_trait = improvident
 		trait = improvident
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
 		remove_short_term_gold = monumental_gold_value
-		
+
 		#You declare that literally anyone can take whatever they want from the treasury.
 		add_character_modifier = {
 			modifier = extreme_tax_rebates_modifier
@@ -16077,7 +16459,7 @@ stress_threshold.3411 = {
 			}
 		}
 	}
-	
+
 	#Contrite: massive stress loss
 	option = {
 		trigger = {
@@ -16091,12 +16473,12 @@ stress_threshold.3411 = {
 			trigger = { has_trait = contrite }
 			text = stress_threshold.3411.e.contrite.effect
 		}
-		
+
 		add_trait = contrite
 		trait = contrite
 
 		contrite_reveal_secrets_effect = yes # Includes stress loss based on what secrets were revealed
-		
+
 		#Not a great look for any ruler.
 		add_prestige = massive_prestige_loss
 
@@ -16112,7 +16494,7 @@ stress_threshold.3411 = {
 			}
 		}
 	}
-	
+
 	#Inappetetic: major stress loss
 	option = {
 		trigger = {
@@ -16126,7 +16508,7 @@ stress_threshold.3411 = {
 			trigger = { has_trait = inappetetic }
 			text = stress_threshold.3411.f.inappetetic.effect
 		}
-		
+
 		add_trait = inappetetic
 		trait = inappetetic
 
@@ -16138,7 +16520,7 @@ stress_threshold.3411 = {
 			}
 			inappetetic_advance_starvation_effect = yes
 		}
-		
+
 		#Your dumping of the larders causes everyone else in the castle to experience the ill-effects of your self-enforced famine.
 		every_courtier_or_guest = {
 			custom = stress_threshold.3411.f.inappetetic.list
@@ -16161,7 +16543,7 @@ stress_threshold.3411 = {
 			}
 		}
 	}
-	
+
 	#Journaller: major stress loss
 	option = {
 		trigger = {
@@ -16175,13 +16557,13 @@ stress_threshold.3411 = {
 			trigger = { has_trait = journaller }
 			text = stress_threshold.3411.g.journaller.effect
 		}
-		
+
 		add_trait = journaller
 		trait = journaller
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#Obsessed with discovering where you went wrong, you compulsively read and re-read old journals.
 		add_character_modifier = {
 			modifier = obsessed_autobiographer_modifier
@@ -16200,7 +16582,7 @@ stress_threshold.3411 = {
 			}
 		}
 	}
-	
+
 	#Confider: major stress loss
 	option = {
 		trigger = {
@@ -16214,7 +16596,7 @@ stress_threshold.3411 = {
 			trigger = { has_trait = confider }
 			text = stress_threshold.3411.h.confider.effect
 		}
-		
+
 		add_trait = confider
 		trait = confider
 
@@ -16264,7 +16646,7 @@ stress_threshold.3411 = {
 				opinion = 20
 			}
 		}
-		
+
 		#Accusations of sycophancy & general disapproval ensue.
 		add_prestige = major_prestige_loss
 		if = {
@@ -16288,7 +16670,7 @@ stress_threshold.3411 = {
 			}
 		}
 	}
-	
+
 	#Athletic: major stress loss
 	option = {
 		trigger = {
@@ -16302,13 +16684,13 @@ stress_threshold.3411 = {
 			trigger = { has_trait = athletic }
 			text = stress_threshold.3411.i.athletic.effect
 		}
-		
+
 		add_trait = athletic
 		trait = athletic
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#You attempt to, quite literally, run from your problems.
 		add_character_modifier = {
 			modifier = running_from_responsibilities_modifier
@@ -16328,7 +16710,7 @@ stress_threshold.3411 = {
 			}
 		}
 	}
-	
+
 	#Drunkard: major stress loss
 	option = {
 		trigger = {
@@ -16342,12 +16724,12 @@ stress_threshold.3411 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.3411.j.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -16357,7 +16739,7 @@ stress_threshold.3411 = {
 			}
 		}
 		else = { add_trait = drunkard }
-		
+
 		#You commit fully to pickling yourself in booze.
 		add_character_modifier = {
 			modifier = tragic_drunk_modifier
@@ -16377,7 +16759,7 @@ stress_threshold.3411 = {
 			}
 		}
 	}
-	
+
 	#Hashishiyah: major stress loss
 	option = {
 		trigger = {
@@ -16396,7 +16778,7 @@ stress_threshold.3411 = {
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -16404,9 +16786,9 @@ stress_threshold.3411 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
-		
+
 		#You attempt to obliterate your brain with hashish.
 		add_character_modifier = {
 			modifier = tragic_stoner_modifier
@@ -16743,7 +17125,7 @@ stress_threshold.3421 = {
 		#Characters must meet the criteria for at least two event options to qualify for this event (we don't want to fire the event if the player has no choices!).
 		calc_true_if = {
 			amount >= 2
-			
+
 			can_be_rakish = yes
 			has_trait = rakish
 			can_be_reclusive = yes
@@ -16803,7 +17185,7 @@ stress_threshold.3421 = {
 			}
 		}
 	}
-	
+
 	widget = {
 		gui = "event_window_widget_stress"
 		container = "custom_widgets_container"
@@ -16825,7 +17207,7 @@ stress_threshold.3421 = {
 		if = { #Rakish (prone to extremely wonton behavior, with the associated consequences)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = rakish	
+				has_trait = rakish
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_rakish
@@ -16833,7 +17215,7 @@ stress_threshold.3421 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = reclusive	
+				has_trait = reclusive
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -16841,7 +17223,7 @@ stress_threshold.3421 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = irritable	
+				has_trait = irritable
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -16849,7 +17231,7 @@ stress_threshold.3421 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = flagellant	
+				has_trait = flagellant
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -16857,7 +17239,7 @@ stress_threshold.3421 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = profligate	
+				has_trait = profligate
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -16865,7 +17247,7 @@ stress_threshold.3421 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				has_trait = comfort_eater	
+				has_trait = comfort_eater
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -16896,12 +17278,12 @@ stress_threshold.3421 = {
 				}
 			}
 		}
-		
+
 		#Then potential ones.
 		if = { #Rakish (prone to extremely wonton behavior, with the associated consequences)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_rakish = yes	
+				can_be_rakish = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_rakish
@@ -16909,7 +17291,7 @@ stress_threshold.3421 = {
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_reclusive = yes	
+				can_be_reclusive = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_reclusive
@@ -16917,7 +17299,7 @@ stress_threshold.3421 = {
 		if = { #Irritable (tends to lash out at random)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_irritable = yes	
+				can_be_irritable = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_irritable
@@ -16925,7 +17307,7 @@ stress_threshold.3421 = {
 		if = { #Flagellant (impulsively self-harms)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_flagellant = yes	
+				can_be_flagellant = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_flagellant
@@ -16933,7 +17315,7 @@ stress_threshold.3421 = {
 		if = { #Profligate (compulsively spends money)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_profligate = yes	
+				can_be_profligate = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_profligate
@@ -16941,7 +17323,7 @@ stress_threshold.3421 = {
 		if = { #Comfort Eater (eats as a stress release)
 			limit = {
 				has_two_stress_threshold_options = no
-				can_be_comfort_eater = yes	
+				can_be_comfort_eater = yes
 			}
 			# Set the flag for enabling this event option.
 			add_character_flag = stress_threshold_option_comfort_eater
@@ -16988,12 +17370,12 @@ stress_threshold.3421 = {
 			trigger = { has_trait = rakish }
 			text = stress_threshold.3421.a.rakish.effect
 		}
-		
+
 		add_trait = rakish
 		trait = rakish
 
 		rakish_brothel_night_effect = yes # Stress reduction is included in this effect.
-		
+
 		#Other effects: the county suffers minor damage and your delay disgusts everyone.
 		scope:burning_holding.county = {
 			add_county_modifier = {
@@ -17016,7 +17398,7 @@ stress_threshold.3421 = {
 			}
 		}
 	}
-	
+
 	#Reclusive: major stress loss
 	option = {
 		trigger = {
@@ -17030,13 +17412,13 @@ stress_threshold.3421 = {
 			trigger = { has_trait = reclusive }
 			text = stress_threshold.3421.b.reclusive.effect
 		}
-		
+
 		add_trait = reclusive
 		trait = reclusive
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#Other effects: everything burns, everyone burns, everyone *else* is disgusted with you for refusing to even give a response.
 		scope:burning_holding.county = {
 			add_county_modifier = {
@@ -17087,13 +17469,13 @@ stress_threshold.3421 = {
 			trigger = { has_trait = irritable }
 			text = stress_threshold.3421.c.irritable.effect
 		}
-		
+
 		add_trait = irritable
 		trait = irritable
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#Other effects: the county suffers minor damage and your delay disgusts everyone.
 		scope:burning_holding.county = {
 			add_county_modifier = {
@@ -17119,7 +17501,7 @@ stress_threshold.3421 = {
 			}
 		}
 	}
-	
+
 	#Flagellant: major stress loss
 	option = {
 		trigger = {
@@ -17133,7 +17515,7 @@ stress_threshold.3421 = {
 			trigger = { has_trait = flagellant }
 			text = stress_threshold.3421.d.flagellant.effect
 		}
-		
+
 		add_trait = flagellant
 		trait = flagellant
 
@@ -17146,7 +17528,7 @@ stress_threshold.3421 = {
 			}
 			add_piety = minor_piety_value
 		}
-		
+
 		#Other effects: the county suffers minor damage and your delay disgusts everyone.
 		scope:burning_holding.county = {
 			add_county_modifier = {
@@ -17169,7 +17551,7 @@ stress_threshold.3421 = {
 			}
 		}
 	}
-	
+
 	#Profligate: major stress loss
 	option = {
 		trigger = {
@@ -17183,14 +17565,14 @@ stress_threshold.3421 = {
 			trigger = { has_trait = profligate }
 			text = stress_threshold.3421.e.profligate.effect
 		}
-		
+
 		add_trait = profligate
 		trait = profligate
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
 		remove_short_term_gold = monumental_gold_value
-		
+
 		#Other effects: the fires are doused successfully at huge cost but with minimal damage.
 		scope:burning_holding.county = {
 			add_county_modifier = {
@@ -17212,7 +17594,7 @@ stress_threshold.3421 = {
 			}
 		}
 	}
-	
+
 	#Comfort Eater: major stress loss
 	option = {
 		trigger = {
@@ -17226,13 +17608,13 @@ stress_threshold.3421 = {
 			trigger = { has_trait = comfort_eater }
 			text = stress_threshold.3421.f.comfort_eater.effect
 		}
-		
+
 		add_trait = comfort_eater
 		trait = comfort_eater
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#Other effects: the county suffers minor damage and your delay disgusts everyone.
 		scope:burning_holding.county = {
 			add_county_modifier = {
@@ -17255,7 +17637,7 @@ stress_threshold.3421 = {
 			}
 		}
 	}
-	
+
 	#Drunkard: major stress loss
 	option = {
 		trigger = {
@@ -17269,12 +17651,12 @@ stress_threshold.3421 = {
 			trigger = { has_trait = drunkard }
 			text = stress_threshold.3421.g.drunkard.effect
 		}
-		
+
 		trait = drunkard
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#Make habitual binge drinker, or go on a tear.
 		if = {
 			limit = { has_trait = drunkard }
@@ -17284,7 +17666,7 @@ stress_threshold.3421 = {
 			}
 		}
 		else = { add_trait = drunkard }
-		
+
 		#Other effects: the county suffers minor damage and your delay disgusts everyone.
 		scope:burning_holding.county = {
 			add_county_modifier = {
@@ -17307,7 +17689,7 @@ stress_threshold.3421 = {
 			}
 		}
 	}
-	
+
 	#Hashishiyah: major stress loss
 	option = {
 		trigger = {
@@ -17326,7 +17708,7 @@ stress_threshold.3421 = {
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		
+
 		#Make habitual hashish consumer, or go on a notable binge.
 		if = {
 			limit = { has_trait = hashishiyah }
@@ -17334,9 +17716,9 @@ stress_threshold.3421 = {
 				modifier = stress_hashish_stupor
 				years = 3
 			}
-		}	
+		}
 		else = { add_trait = hashishiyah }
-		
+
 		#Other effects: the county suffers minor damage and your delay disgusts everyone.
 		scope:burning_holding.county = {
 			add_county_modifier = {
@@ -17431,7 +17813,7 @@ stress_threshold.3421 = {
 			modifier = encouraged_city_burn_modifier
 			years = 10
 		}
-		
+
 		ai_chance = { base = 0 }	#AI should never opt for stress.
 	}
 

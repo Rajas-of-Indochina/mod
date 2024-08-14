@@ -1,0 +1,78 @@
+﻿hunnic_heritage = { # MY nomadic people *totally* are the Huns guys
+	type = legitimizing
+	quality = famed
+	is_shown = {
+		has_dlc_feature = legends
+		NOT = {
+			has_global_variable = hunnic_heritage_legend
+		}
+		NOT = { culture = culture:hunnic }
+		capital_province = { geographical_region = world_europe } # No one outside Europe gives a crap
+		OR = {
+			culture = { has_cultural_pillar = heritage_hunnic } #Custom cultures and such
+			culture = { has_cultural_pillar = heritage_magyar }
+			culture = { has_cultural_parameter = heritage_group_altaic } # Turks and Mongols etc who make it here can do it I guess
+		}
+	}
+	is_valid = {
+		is_landed = yes
+		highest_held_title_tier >= tier_kingdom
+		prestige_level >= high_prestige_level
+	}
+
+	chronicle = ancient_people
+	chronicle_properties = {
+		culture = culture:hunnic
+		title = title:e_caspian-pontic_steppe
+		original_region = geographical_region:world_steppe_west
+	}
+}
+
+TFE_modu_chanyu = {
+	type = legitimizing
+	quality = famed
+	is_shown = {
+		has_dlc_feature = legends
+		NOT = {
+			has_global_variable = TFE_modu_chanyu_legend
+		}
+		OR = {
+			culture = { has_cultural_pillar = heritage_hunnic } #Custom cultures and such
+			culture = { has_cultural_parameter = heritage_group_altaic }
+		}
+	}
+	is_valid = {
+		is_landed = yes
+		highest_held_title_tier = tier_empire
+		prestige_level >= high_prestige_level
+	}
+
+	chronicle = ancestral_glory_not_in_history
+	chronicle_properties = {
+		ancestor_flag = flag:modu_chanyu
+		title = title:e_mongolia
+	}
+}
+
+TFE_ashoka = {
+	type = holy
+	quality = famed
+	is_shown = {
+		has_dlc_feature = legends
+		NOT = {
+			has_global_variable = TFE_ashoka_legend
+		}
+		religion = religion:buddhism_religion
+	}
+	is_valid = {
+		is_landed = yes
+		highest_held_title_tier >= tier_kingdom
+		piety_level >= high_piety_level
+	}
+
+	chronicle = saintly_descent
+	chronicle_properties = {
+		ancestor_flag = flag:ashoka
+		religion = root.religion
+	}
+}

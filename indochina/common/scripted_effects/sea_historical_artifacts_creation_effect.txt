@@ -77,3 +77,36 @@ create_artifact_laguna_copperplate = {
 		flag_as_trash_artifact = yes
 	}
 }
+
+create_artifact_wujing_zongyao_effect = {
+	# Get the character the artifact is being made for.
+	$OWNER$ = { save_scope_as = owner }
+	# Not really used, but if we don't set the scopes we get errors in the feature selection
+	set_artifact_rarity_famed = yes
+
+	# Create the artifact
+	create_artifact = {
+		name = wujing_zongyao_name
+		description = wujing_zongyao_description
+		type = book
+		visuals = indian_book
+		wealth = scope:wealth
+		quality = scope:quality
+		template = general_unique_template
+		history = {
+			type = created
+			date = 1044.1.1
+			actor = character:songc001
+			recipient = character:song004
+			location = province:12869
+		}
+		modifier = wujing_zongyao_modifier
+		save_scope_as = newly_created_artifact
+		decaying = no
+	}
+
+	scope:newly_created_artifact = {
+		set_variable = { name = historical_unique_artifact value = yes }
+		save_scope_as = epic
+	}
+}

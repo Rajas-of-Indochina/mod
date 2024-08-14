@@ -18,6 +18,9 @@ unreformed_faith = {
 
 		character_modifier = {
 			monthly_prestige_gain_mult = 0.2
+			#clan_government_vassal_opinion = -20
+			#feudal_government_vassal_opinion = -20
+			#republic_government_vassal_opinion = -20
 		}
 	}
 	west_african_unreformed_faith_doctrine = {
@@ -351,6 +354,98 @@ doctrine_mz_syncretism = {
 		traits = {
 			virtues = { patient }
 			sins = { cynical greedy }
+		}
+	}
+}
+
+doctrine_special_succession = {
+	group = "special"
+	is_available_on_create = {
+		has_doctrine = special_doctrine_nasrani_partition_succession_law
+	}
+	special_doctrine_nasrani_partition_succession_law = {
+		parameters = {
+			unlock_nasrani_succession = yes
+			unlock_nasrani_succession_tradition = yes
+		}
+	}
+}
+
+# Overwriting funeral doctrines here in case we add more
+doctrine_funeral = {
+	group = "clergy"
+	doctrine_funeral_stoic = { # Abrahamic funerals, stand around and try not to cry too much before the body is humbly buried
+		piety_cost = {
+			value = faith_doctrine_cost_mid
+			if = {
+				limit = { has_doctrine = doctrine_funeral_stoic }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+		parameters = {
+			burial_funeral = yes
+			stoic_funeral = yes
+		}
+	}
+	doctrine_funeral_bewailment = { # West African funerals, strongly encouraged to show emotion before the body is humbly buried
+		piety_cost = {
+			value = faith_doctrine_cost_mid
+			if = {
+				limit = { has_doctrine = doctrine_funeral_bewailment }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+		parameters = {
+			burial_funeral = yes
+			bewailment_funeral = yes
+		}
+	}
+	doctrine_funeral_cremation = { # Catch-all cremations, burn or otherwise dissolve the body
+		piety_cost = {
+			value = faith_doctrine_cost_mid
+			if = {
+				limit = { has_doctrine = doctrine_funeral_cremation }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+		parameters = {
+			cremation_funeral = yes
+		}
+	}
+	doctrine_funeral_sky_burial = { # Have the body fed to scavenging animals and birds
+		piety_cost = {
+			value = faith_doctrine_cost_mid
+			if = {
+				limit = { has_doctrine = doctrine_funeral_sky_burial }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+		parameters = {
+			sky_burials_active = yes
+			can_build_towers_of_silence_active = yes
+		}
+
+		character_modifier = {
+			negate_health_penalty_add = 0.25
+		}
+	}
+	doctrine_funeral_mummification = { # Fanatically preserve the body, very expensive
+		piety_cost = {
+			value = faith_doctrine_cost_high
+			if = {
+				limit = { has_doctrine = doctrine_funeral_mummification }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+		parameters = {
+			mummification_funeral = yes
+		}
+
+		can_pick = {
+			custom_description = {
+				text = incompatible_tenet_aniconism_trigger
+				NOT = { doctrine:tenet_aniconism = { is_in_list = selected_doctrines } }
+			}
 		}
 	}
 }

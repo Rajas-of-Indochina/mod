@@ -1,0 +1,594 @@
+﻿
+##################################
+###### Religious & Cultural ######
+##################################
+
+# Caucasian decisions by Patlichan, edited by Shautora.
+
+circassian_decision.1 = {
+    picture = "gfx/interface/illustrations/decisions/decision_circassian_christianity.dds"
+
+    sort_order = 81
+
+    desc = circassian_decision_1_desc
+    selection_tooltip = circassian_decision_1_tooltip
+	ai_check_interval = 60
+
+    is_shown = {
+        NOT = { faith = faith:circassian_christianity }
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+				}
+        religion = religion:christianity_religion
+		OR = {
+			has_government	= tribal_government
+			has_government	= nomadic_government
+		}
+    }
+
+    effect = {
+		set_character_faith_with_conversion = faith:circassian_christianity
+		add_piety = 100
+		add_prestige = 100
+	}
+
+	ai_potential = {
+        NOT = { faith = faith:circassian_christianity }
+		culture = { this = culture:circassian }
+        religion = religion:christianity_religion
+		is_adult = yes
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+
+circassian_decision.2 = {
+    picture = "gfx/interface/illustrations/decisions/decision_khabze.dds"
+
+    sort_order = 81
+
+    desc = circassian_decision_2_desc
+    selection_tooltip = circassian_decision_2_tooltip
+	ai_check_interval = 36
+
+    is_shown = {
+        NOT = { faith = faith:khabzism }
+		culture = { this = culture:circassian }
+        religion = { is_in_family = rf_pagan }
+    }
+
+    effect = {
+		set_character_faith_with_conversion = faith:khabzism
+	}
+
+	ai_potential = {
+        NOT = { faith = faith:khabzism }
+		culture = { this = culture:circassian }
+        religion = { is_in_family = rf_pagan }
+		is_adult = yes
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+circassian_decision.3 = {
+    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+
+    sort_order = 81
+
+    desc = circassian_decision_3_desc
+    selection_tooltip = circassian_decision_3_tooltip
+	ai_check_interval = 36
+
+    is_shown = {
+        NOT = { faith = faith:nakh_pagan }
+		culture = { this = culture:nakh }
+        religion = { is_in_family = rf_pagan }
+    }
+
+    effect = {
+		set_character_faith_with_conversion = faith:nakh_pagan
+	}
+
+	ai_potential = {
+        NOT = { faith = faith:nakh_pagan }
+		culture = { this = culture:nakh }
+        religion = { is_in_family = rf_pagan }
+		is_adult = yes
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+circassian_decision.4 = {
+    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+
+    sort_order = 81
+
+    desc = circassian_decision_4_desc
+    selection_tooltip = circassian_decision_4_tooltip
+	ai_check_interval = 36
+
+    is_shown = {
+		NOT = { faith = faith:alan_pagan }
+		culture = { this = culture:alan }
+        religion = { is_in_family = rf_pagan }
+    }
+
+    effect = {
+		set_character_faith_with_conversion = faith:alan_pagan
+	}
+
+	ai_potential = {
+		NOT = { faith = faith:alan_pagan }
+		culture = { this = culture:alan }
+        religion = { is_in_family = rf_pagan }
+		is_adult = yes
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+circassian_decision.5 = {
+    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+
+    sort_order = 81
+
+    desc = circassian_decision_5_desc
+    selection_tooltip = circassian_decision_5_tooltip
+	ai_check_interval = 36
+
+    is_shown = {
+		NOT = { faith = faith:apsuara }
+		OR = {
+			culture = {	this = culture:abkhaz }
+			culture = { this = culture:abasgi }
+			culture = { this = culture:afrabasgi }
+		}
+        religion = { is_in_family = rf_pagan }
+    }
+
+    effect = {
+		set_character_faith_with_conversion = faith:apsuara
+	}
+
+	ai_potential = {
+		NOT = { faith = faith:apsuara }
+		OR = {
+			culture = {	this = culture:abkhaz }
+			culture = { this = culture:abasgi }
+			culture = { this = culture:afrabasgi }
+		}
+        religion = { is_in_family = rf_pagan }
+		is_adult = yes
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+circassian_decision.6 = {
+    picture = "gfx/interface/illustrations/decisions/decision_thamade.dds"
+
+    sort_order = 81
+
+    desc = circassian_decision_thamade_desc
+    selection_tooltip = circassian_decision_thamade_tooltip
+
+    is_shown = {
+		OR = {
+			culture = { has_cultural_pillar = heritage_caucasian }
+		}
+		NOT = {
+			has_trait = thamade
+		}
+		NOT = { this = culture:georgian }
+    }
+
+	is_valid = {
+		culture = { has_cultural_pillar = heritage_caucasian }
+		NOT = { this = culture:georgian }
+        age > 50
+		prestige_level >=1
+        OR = {
+				has_trait = honest
+				has_trait = forgiving
+				has_trait = generous
+				has_trait = just
+				has_trait = patient
+				has_trait = compassionate
+    	}
+		NOT = {
+		    OR = {
+				has_trait = thamade
+				has_trait = sadistic
+				has_trait = greedy
+				has_trait = callous
+				has_trait = craven
+				has_trait = lustful
+				has_trait = lazy
+				has_trait = deceitful
+				has_trait = impatient
+				has_trait = shy
+				has_trait = paranoid
+				has_trait = intellect_bad
+				has_trait = intellect_bad_2
+				has_trait = intellect_bad_3
+				has_trait = torturer
+				has_trait = adulterer
+				has_trait = murderer
+				has_trait = deviant
+				has_trait = sodomite
+				has_trait = lunatic
+				has_trait = kinslayer_1
+				has_trait = kinslayer_2
+				has_trait = kinslayer_3
+				has_trait = incestuous
+				has_trait = cannibal
+				has_trait = murderer
+				has_trait = drunkard
+				has_trait = flagellant
+				has_trait = contrite
+				has_trait = reclusive
+				has_trait = irritable
+				has_trait = rakish
+				has_trait = hashishiyah
+				has_trait = irritable
+				has_trait = incapable
+		    }
+		}
+    }
+
+    effect = {
+      add_trait = thamade
+    }
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+circassian_decision.7 = {
+    picture = "gfx/interface/illustrations/decisions/decision_ubykhs.dds"
+
+    sort_order = 81
+
+    desc = circassian_decision_seven_desc
+    selection_tooltip = circassian_decision_seven_tooltip
+
+    is_shown = {
+		culture = {	this = culture:ubykh }
+    }
+
+	is_valid = {
+		culture = {	this = culture:ubykh }
+		knows_language = language_circassian
+		custom_tooltip = {
+			text = circassianize_decision_requirement
+			any_spouse	= {
+				has_culture	= culture:circassian
+			}
+			any_courtier	= {
+				has_culture	= culture:circassian
+			}
+		}
+        age < 30
+		prestige_level >=1
+    }
+
+	effect = {
+		convert_family_culture_and_notify_vassals_effect = {
+			CONVERTER = root
+			OLD_CULTURE = root.culture
+			NEW_CULTURE = culture:circassian
+		}
+	}
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+
+
+circassian_decision.8 = {
+    picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+
+    sort_order = 81
+
+    desc = circassian_decision_eight_desc
+    selection_tooltip = circassian_decision_eight_tooltip
+
+    is_shown = {
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			any_parent_culture = {
+				OR = {
+					culture = {	this = culture:circassian }
+					culture = {	this = culture:ubykh }
+				}
+			}
+		}
+		faith = faith:circassian_christianity
+		NOT = {
+			religion = religion:islam_religion
+		}
+    }
+
+
+	is_valid = {
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+		}
+		faith = faith:circassian_christianity
+		NOT = {
+			religion = religion:islam_religion
+		}
+		AND = {
+			custom_tooltip = {
+				text = circassiantribal_requirement
+				NOT = {
+					has_government	= tribal_government
+				}
+				NOT = {
+					has_government	= nomadic_government
+				}
+				NOT = {
+					has_government	= anarchist_government
+				}
+			}
+		}
+		prestige_level >=2
+		piety_level	>=3
+    }
+
+    effect = {
+		custom_tooltip = {
+			text = christiancircassian_requirement
+			trigger_event = { 	id = caucasianroa.001  delayed = yes }
+		}
+    }
+
+	ai_potential = {
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+		}
+		faith = faith:circassian_christianity
+		AND = {
+				NOT = {
+					has_government	= tribal_government
+				}
+				NOT = {
+					has_government	= nomadic_government
+				}
+				NOT = {
+					has_government	= anarchist_government
+				}
+		}
+		prestige_level >=2
+		piety_level	>=3
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+
+
+circassian_decision_armenians = {
+		picture = "gfx/interface/illustrations/decisions/decision_cherkesogai.dds"
+
+		sort_order = 81
+
+		desc = circassian_decision_nine_desc
+		selection_tooltip = circassian_decision_nine_tooltip
+
+        is_shown = {
+			NOT = {	#You can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:circassian_decision_armenians
+			}
+		}
+			OR = {
+				culture = {	this = culture:circassian }
+				culture = {	this = culture:ubykh }
+			}
+        }
+
+		is_valid = {
+			NOT = {	#You can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:circassian_decision_armenians
+			}
+		}
+			custom_tooltip = {
+				text = circassianubykh_customtooltip
+			OR = {
+				culture = {	this = culture:circassian }
+				culture = {	this = culture:ubykh }
+			}
+		}
+		AND = {
+			custom_tooltip = {
+				text = circassiantribal_requirement
+				NOT = {
+					has_government	= tribal_government
+				}
+				NOT = {
+					has_government	= nomadic_government
+				}
+				NOT = {
+					has_government	= anarchist_government
+				}
+			}
+		}
+		prestige_level >=3
+			OR = {
+				stewardship >= 20
+				diplomacy >= 20
+			}
+			prestige >= 1000
+			custom_tooltip = {
+				text = yearthousand_customtooltip
+			current_year >= 1000
+			}
+		}
+
+		cost = {
+			gold = 200
+			prestige = 200
+		}
+
+		effect = {
+			custom_tooltip = {
+				text = cherkesogai_customtooltip
+				trigger_event = {	id = caucasianroa.002 delayed = yes }
+			}
+			capital_county = {
+				change_development_level = 1
+			}
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:circassian_decision_armenians
+			}
+			set_global_variable = {
+				name = circassian_decision_armenians
+				value = scope:traded
+			}
+			create_character = {
+				age = { 20 32 }
+				location = root.capital_province
+				gender_female_chance = root_faith_dominant_gender_female_chance
+				culture = culture:cherkesogai
+				faith = armenian_apostolic
+				random_traits = yes
+				trait = education_stewardship_3
+				stewardship = { 15 20 }
+
+				dynasty = none
+				after_creation = {
+					add_gold = { minor_gold_value medium_gold_value }
+					add_prestige = { minor_prestige_gain medium_prestige_gain }
+					add_piety = { minor_piety_gain medium_piety_gain }
+				}
+				save_scope_as = armenian_merchant
+				after_creation = {
+					save_scope_as = armenian_merchant
+				}
+			}
+			add_courtier = scope:armenian_merchant
+		}
+
+		ai_potential = { always = no }
+		ai_will_do = {	base = 0
+	}
+}
+
+circassian_decision_dais = {
+	picture = "gfx/interface/illustrations/decisions/fp3/fp3_decision_secret_faith.dds"
+
+	sort_order = 81
+
+	desc = circassian_decision_ten_desc
+	selection_tooltip = circassian_decision_ten_tooltip
+
+	is_shown = {
+		NOT = {	#You can only do it once.
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_dais
+		}
+	}
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+		}
+		NOT = {
+			religion = religion:islam_religion
+		}
+	}
+
+	is_valid = {
+		NOT = {	#You can only do it once.
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_dais
+		}
+	}
+	AND = {
+		custom_tooltip = {
+			text = circassiantribal_requirement
+			NOT = {
+				has_government	= tribal_government
+			}
+			NOT = {
+				has_government	= nomadic_government
+			}
+			NOT = {
+				has_government	= anarchist_government
+			}
+		}
+	}
+	prestige_level >=2
+		OR = {
+			learning >= 20
+		}
+		prestige >= 1000
+		custom_tooltip = {
+			text = yeareighthunredfifteen_customtooltip
+		current_year >= 815
+		}
+	}
+
+	cost = {
+		piety = 50
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = dai_customtooltip
+			trigger_event = {	id = caucasianroa.003 delayed = yes }
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_dais
+		}
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = {	base = 0
+}
+}
+
+
+

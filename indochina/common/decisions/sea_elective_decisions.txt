@@ -1,0 +1,40 @@
+﻿kurultai_elective_ai = {
+	ai_goal = yes
+	is_shown = {
+		is_ai = yes
+	}
+	is_valid = {
+		is_ai = yes
+		highest_held_title_tier >= tier_kingdom
+		can_change_title_law_trigger = yes
+		culture = {
+			has_innovation = innovation_kurultai
+			has_cultural_pillar = heritage_mongolic
+		}
+        has_government = tribal_government
+		NOT = {
+			primary_title = {
+				has_title_law = kurultai_elective_succession_law
+			}
+		}
+		any_held_title = {
+			NOR = {
+				has_title_law = gaelic_elective_succession_law
+				has_title_law = scandinavian_elective_succession_law
+				has_title_law = princely_elective_succession_law
+				has_title_law = feudal_elective_succession_law
+				has_title_law = saxon_elective_succession_law
+			}
+		}
+	}
+	effect = {
+		every_held_title = {
+			limit = { has_title_law = kurultai_elective_succession_law }
+			clear_title_laws = yes
+		}
+		primary_title = {
+			add_title_law = kurultai_elective_succession_law
+		}
+	}
+	ai_will_do = 100
+}

@@ -230,7 +230,7 @@ court_language_ai_score = {
 		}
 		multiply = 1.5
 	}
-	
+
 	# CCU: Prefer not to switch from native language to very different languages
 	if = {
 		limit = {
@@ -320,6 +320,20 @@ culture_acceptance_baseline = {
 			add = {
 				value = 20 # please update CULTURE_PILLAR_TOOLTIP_HERITAGE_EFFECT if this number changes
 				desc = ACCEPTANCE_BASELINE_HERITAGE
+			}
+		}
+		else_if = {
+			limit = { has_same_heritage_group_as = { TARGET = scope:culture } }
+			add = {
+				value = same_heritage_group_cultural_acceptance
+				desc = ACCEPTANCE_BASELINE_HERITAGE_GROUP
+			}
+		}
+		else_if = {
+			limit = { has_same_heritage_family_as = { TARGET = scope:culture } }
+			add = {
+				value = same_heritage_family_cultural_acceptance
+				desc = ACCEPTANCE_BASELINE_HERITAGE_FAMILY
 			}
 		}
 		# Increase base acceptance for sharing same language

@@ -1,0 +1,105 @@
+
+
+# This window is just for testing. You can spawn it from the console menu.
+window = {
+	name = "test_window"
+	parentanchor = center
+	size = { 1100 920 }
+	layer = top
+	filter_mouse = all
+	alwaystransparent = no
+
+	using = Window_Background
+	using = Window_Decoration
+	using = Window_Movable
+
+	button = {
+		size = { 30 30 }
+		parentanchor = left
+		texture = "gfx/interface/icons/modifiers/sea_faith_minority_small.dds"
+		datacontext = "[GetScriptedGui('update_malayan_sultanate_faiths_list')]"
+		onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+
+	icon = {
+		size = { 64 64 }
+		parentanchor = center
+		texture = "[GetPlayer.MakeScope.Var('faith_pick').Faith.GetIcon]"
+	}
+
+	scrollbox = {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		parentanchor = hcenter|top
+		size = { 500 100 }
+
+		background = {
+			using = Background_Bottom_Fade
+		}
+		blockoverride "scrollbox_content" {
+			dynamicgridbox = {
+				layoutpolicy_vertical = expanding
+				size = { 200 200 }
+
+				margin_top = 2
+				spacing = 2
+
+				datamodel = "[GetPlayer.MakeScope.GetList('islam_options')]"
+
+				item = {
+					button_standard = {
+						# layoutpolicy_vertical = expanding
+						# layoutpolicy_horizontal = expanding
+						parentanchor = hcenter|top
+						size = { 450 64 }
+						margin = { 10 10 }
+						datacontext = "[Faith.MakeScope]"
+						datacontext = "[GetScriptedGui( 'select_sultanate_faith' )]"
+						onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', Scope.Faith.MakeScope ).End ) ]"
+						spacing = 2
+						# using = tooltip_ne
+						icon = {
+							size = { 64 64 }
+							texture = "[Scope.Faith.GetIcon]"
+						}
+						hbox = {
+							icon = {
+								size = { 64 64 }
+								texture = "[Scope.Faith.GetIcon]"
+							}
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								margin_left = 10
+
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+
+									text_single = {
+										name = "faith_name"
+										align = left|nobaseline
+										text = "[Scope.Faith.GetNameNoTooltip]"
+										using = Font_Size_Medium
+										default_format = "#high"
+										max_width = 240
+									}
+
+									expand = {}
+
+									text_single = {
+										min_width = 160
+										name = "religion_faith_name"
+										align = right|nobaseline
+										text = "FAITH_RELIGION"
+										margin_right = 5
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,41 @@
+﻿outremer_elective_potential_candidate_trigger = {
+    save_temporary_scope_as = potential_candidate
+    has_unelectable_outremer_government_trigger = no
+    has_unelectable_trait_trigger = no
+
+    OR = {
+		any_liege_or_above = {
+			this = scope:holder
+		}
+		is_ruler = no
+		scope:holder = { is_independent_ruler = yes }
+		scope:holder = {
+			exists = liege
+			NOT = {
+				any_liege_or_above = {
+					has_realm_law_flag = titles_cannot_leave_realm_on_succession
+					NOR = {
+						this = scope:potential_candidate
+						target_is_vassal_or_below = scope:potential_candidate
+					}
+				}
+			}
+		}
+	}
+    NOT = { #Landless characters should not be heirs to Republics.
+		any_heir_title = {
+			exists = holder
+			holder = {
+				has_unelectable_outremer_government_trigger = yes
+			}
+		}
+	}
+}
+
+has_unelectable_outremer_government_trigger = {
+	OR = {
+		has_government = republic_government
+		has_government = mercenary_government
+		has_government = holy_order_government
+	}
+}

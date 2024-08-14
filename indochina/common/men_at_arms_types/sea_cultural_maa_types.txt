@@ -176,7 +176,7 @@ iron_buddhas = {
 	pursuit = 30
 	screen = 25
 
-	siege_tier = 0.25
+	siege_tier = 1
 	siege_value = 0.05
 
 	terrain_bonus = {
@@ -193,7 +193,7 @@ iron_buddhas = {
 		archers = 1
 		pikemen = 1
 	}
-	
+
 	can_recruit = {
 		culture = { has_cultural_parameter = unlock_maa_iron_buddhas }
 	}
@@ -232,7 +232,7 @@ iron_hawks = {
 		archers = 1
 		pikemen = 1
 	}
-	
+
 	can_recruit = {
 		culture = { has_cultural_parameter = unlock_maa_iron_hawks }
 	}
@@ -254,21 +254,162 @@ iron_hawks = {
 bed_crossbows = {
 	type = siege_weapon
 	fights_in_main_phase = no
-	
+
 	damage = 0
 	toughness = 20
-	
+
 	siege_tier = 4
 	siege_value = 0.8
-	
+
+	can_recruit = {
+		culture = { has_cultural_parameter = unlock_maa_bed_crossbows }
+	}
+
 	buy_cost = {  gold = 110 }
 	low_maintenance_cost = { gold = 1.5 }
 	high_maintenance_cost = { gold = 3.0 }
 	allowed_in_hired_troops = no
-	
+
 	stack = 5
 	#to-do icon
+
+	icon = bed_crossbow
 }
 
+sumpitan = {
+	type = archers
 
+	damage = 20
+	toughness = 12
+	pursuit = 15
+	screen = 0
 
+	terrain_bonus = {
+		jungle = { damage = 8 toughness = 4 }
+		forest = { damage = 8 toughness = 4 }
+		hills = { damage = 8 toughness = 4 }
+	}
+
+	counters = {
+		skirmishers = 1
+	}
+
+	can_recruit = {
+		culture = { has_cultural_parameter = unlock_maa_sumpitan }
+	}
+
+	buy_cost = { gold = sumpitan_recruitment_cost }
+	low_maintenance_cost = { gold = sumpitan_low_maint_cost }
+	high_maintenance_cost = { gold = sumpitan_high_maint_cost }
+
+	stack = 100
+	ai_quality = { value = @cultural_maa_extra_ai_score }
+	icon = sumpitan
+}
+
+cam_quan = {
+	type = heavy_infantry
+
+	damage = 38
+	toughness = 24
+	pursuit = 0
+	screen = 20
+
+	terrain_bonus = {
+		jungle = { damage = 10 toughness = 6 }
+		hills = { damage = 8 toughness = 4 }
+	}
+
+	counters = {
+		pikemen = 2
+	}
+
+	can_recruit = {
+		culture = { has_cultural_parameter = unlock_maa_cam_quan }
+	}
+
+	buy_cost = { gold = palace_guards_recruitment_cost }
+	low_maintenance_cost = { gold = palace_guards_low_maint_cost }
+	high_maintenance_cost = { gold = palace_guards_high_maint_cost }
+
+	stack = 100
+	ai_quality = { value = @cultural_maa_extra_ai_score }
+	icon = heavy_infantry
+}
+
+# Overwriting Vanilla
+
+chu_ko_nu = {
+	type = archers
+
+	damage = 30
+	toughness = 20
+	pursuit = 0
+	screen = 0
+
+	terrain_bonus = {
+		hills = { damage = 10 toughness = 4 }
+		mountains = { damage = 8 toughness = 2 }
+		desert_mountains = { damage = 8 toughness = 2 }
+	}
+
+	counters = {
+		skirmishers = 1
+		archer_cavalry = 0.5
+	}
+
+	can_recruit = {
+		always = no
+	}
+
+	buy_cost = { gold = chu_ko_nu_recruitment_cost }
+	low_maintenance_cost = { gold = chu_ko_nu_low_maint_cost }
+	high_maintenance_cost = { gold = chu_ko_nu_high_maint_cost }
+
+	stack = 100
+	ai_quality = { value = @cultural_maa_extra_ai_score }
+	icon = crossbowmen
+}
+
+crossbowmen = {
+	type = archers
+
+	damage = 42
+	toughness = 18
+	pursuit = 0
+	screen = 0
+
+	terrain_bonus = {
+		hills = { damage = 10 }
+		plains = { toughness = -8 }
+		drylands = { toughness = -8 }
+		desert = { toughness = -8 }
+	}
+
+	counters = {
+		heavy_infantry = 1
+		heavy_cavalry = 1
+		archer_cavalry = 0.5
+	}
+
+	buy_cost = { gold = crossbowmen_recruitment_cost }
+	low_maintenance_cost = { gold = crossbowmen_low_maint_cost }
+	high_maintenance_cost = { gold = crossbowmen_high_maint_cost }
+
+	ai_quality = {
+		value = counter_synergy_ai_weight_archers
+	}
+
+	can_recruit = {
+		culture = {
+			OR = {
+				has_innovation = innovation_repeating_crossbow
+				has_innovation = innovation_advanced_bowmaking
+			}
+		}
+	}
+
+	holy_order_fallback = yes
+
+	stack = 100
+}

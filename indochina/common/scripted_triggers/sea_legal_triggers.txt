@@ -1,7 +1,7 @@
 ﻿
 can_change_succession_law_trigger = {
 	trigger_if = {
-		limit = { realm_law_use_crown_authority = no }
+		limit = { realm_law_use_tribal_authority = yes }
 		custom_description = {
 			text = "has_tribal_law_allowing_succession_law_change"
 			has_realm_law_flag = can_change_succession_laws
@@ -24,6 +24,7 @@ can_change_succession_law_trigger = {
 	}
 }
 
+
 unlock_bureaucracy_trigger = {
 	OR = {
 		any_liege_or_above = {
@@ -35,4 +36,28 @@ unlock_bureaucracy_trigger = {
 		religion = religion:taoism_religion # Or the right religion...
 		has_title = title:e_celestia_china # Or is the actual Emperor of China
 	}
+}
+
+# Moved these here to reduce MB+/Gov+ compatch conflicts
+
+realm_law_use_nomadic_authority = {
+	has_government = nomadic_government
+}
+
+realm_law_use_mandala_authority = {
+	has_government = mandala_government
+}
+
+realm_law_use_stateless_authority = {
+	has_government = anarchist_government
+}
+
+realm_law_use_chinese_imperial_authority = {
+	has_government = chinese_government
+	highest_held_title_tier = tier_empire
+}
+
+realm_law_use_chinese_vassal_authority = {
+	has_government = chinese_government
+	highest_held_title_tier < tier_empire
 }

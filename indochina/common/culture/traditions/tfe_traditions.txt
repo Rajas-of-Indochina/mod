@@ -1,0 +1,112 @@
+﻿# Cappadocian Underground Cities
+tradition_underground_cities = {
+	category = regional
+
+	layers = {
+		0 = learning
+		1 = mediterranean
+		4 = TFE_mountain_cave.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:cappadocian
+			any_parent_culture_or_above = {
+				this = culture:cappadocian
+			}
+		}
+	}
+	can_pick = {
+		custom_description = {
+			# text = culture_in_mountains_desc
+			any_culture_county = {
+				any_county_province = {
+					OR = {
+						terrain = hills
+            terrain = mountains
+						terrain = desert_mountains
+					}
+				}
+			}
+		}
+	}
+
+	#parameters = {
+	#}
+	character_modifier = {
+		defender_holding_advantage = 4
+	#	mountains_attrition_mult = -0.25
+	#	mountains_advantage = 3
+	#	desert_mountains_attrition_mult = -0.25
+	#	desert_mountains_advantage = 3
+	}
+	county_modifier = {
+		additional_fort_level = 1
+	#	mountains_development_growth_factor = 0.05
+	#	desert_mountains_development_growth_factor = 0.05
+	}
+	province_modifier = {
+		hills_construction_gold_cost = -0.3
+    mountains_construction_gold_cost = -0.3
+		desert_mountains_construction_gold_cost = -0.3
+    hills_holding_construction_gold_cost = -0.3
+		mountains_holding_construction_gold_cost = -0.3
+		desert_mountains_holding_construction_gold_cost = -0.3
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								OR = {
+									terrain = hills
+                  terrain = mountains
+									terrain = desert_mountains
+								}
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = hill_percentage_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							percent >= 0.2
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+                  terrain = hills
+									terrain = mountains
+									terrain = desert_mountains
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}

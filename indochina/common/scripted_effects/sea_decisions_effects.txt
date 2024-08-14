@@ -231,7 +231,7 @@ convert_whole_realm_to_feudalism_effect = {
 			}
 		}
 
-		every_vassal = {			
+		every_vassal = {
 			capital_county = {
 				every_county_province = {
 					barony = {
@@ -250,10 +250,60 @@ convert_whole_realm_to_feudalism_effect = {
 	}
 }
 
+unite_india_decision_effect = {
+	#Create the title and make it primary
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:e_india = {
+		change_title_holder = {
+			holder = root
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+	set_primary_title_to = title:e_india
+
+	title:e_rajastan = { add_to_list = indian_empire }
+	title:e_deccan = { add_to_list = indian_empire }
+	title:e_dravida = { add_to_list = indian_empire }
+	title:e_bengal = { add_to_list = indian_empire }
+
+	every_in_list = {
+		list = indian_empire
+		every_in_de_jure_hierarchy = {
+			limit = {
+				tier = tier_kingdom
+			}
+			set_de_jure_liege_title = title:e_india
+		}
+	}
+
+	hidden_effect = {
+		if = {
+			limit = { has_title = title:e_rajastan }
+			destroy_title = title:e_rajastan
+		}
+		if = {
+			limit = { has_title = title:e_deccan }
+			destroy_title = title:e_deccan
+		}
+		if = {
+			limit = { has_title = title:e_dravida }
+			destroy_title = title:e_deccan
+		}
+		if = {
+			limit = { has_title = title:e_bengal }
+			destroy_title = title:e_bengal
+		}
+	}
+}
+
 #####
 
 adopt_bureaucracy_effect = {
-	change_government = chinese_government
 
 	##Sort out new laws.
 	if = {
@@ -262,6 +312,27 @@ adopt_bureaucracy_effect = {
 				has_government = tribal_government
 				has_government = nomadic_government
 			}
+		}
+		capital_county = {
+			every_county_province = {
+				if = {
+					limit = { has_holding_type = tribal_holding }
+					set_holding_type = castle_holding
+					add_province_modifier = {
+						modifier = converted_to_feudal_county_modifier
+						years = 10
+					}
+				}
+			}
+		}
+		change_government = chinese_government
+		#Start off crown authorities.
+		if = {
+			limit = {highest_held_title_tier = tier_empire}
+			add_realm_law_skip_effects = bureaucratic_authority_0
+		}
+		else = {
+			add_realm_law_skip_effects = bureaucratic_vassal_authority_0
 		}
 		custom_tooltip = all_holding_will_change
 		hidden_effect = {
@@ -282,20 +353,17 @@ adopt_bureaucracy_effect = {
 				limit = { has_realm_law = tribal_authority_3 }
 				remove_realm_law = tribal_authority_3
 			}
-			#Start off crown authorities.
-			if = {
-				limit = {
-					has_government = mandala_government
-					NOT = { has_realm_law = mandala_authority_0 }
-				}
-				add_realm_law_skip_effects = mandala_authority_0
-			}
-			else_if = {
-				limit = {
-					NOT = { has_realm_law = crown_authority_0 }
-				}
-				add_realm_law_skip_effects = crown_authority_0
-			}
+		}
+	}
+	else = {
+		change_government = chinese_government
+		#Start off crown authorities.
+		if = {
+			limit = {highest_held_title_tier = tier_empire}
+			add_realm_law_skip_effects = bureaucratic_authority_0
+		}
+		else = {
+			add_realm_law_skip_effects = bureaucratic_vassal_authority_0
 		}
 	}
 
@@ -310,7 +378,6 @@ adopt_bureaucracy_effect = {
 					has_government = nomadic_government
 				}
 			}
-			change_government = chinese_government
 			#Nuke tribal authorities.
 			if = {
 				limit = { has_realm_law = tribal_authority_0 }
@@ -328,10 +395,8 @@ adopt_bureaucracy_effect = {
 				limit = { has_realm_law = tribal_authority_3 }
 				remove_realm_law = tribal_authority_3
 			}
-		}
-		capital_county = {
-			every_county_province = {
-				barony = {
+			capital_county = {
+				every_county_province = {
 					if = {
 						limit = { has_holding_type = tribal_holding }
 						set_holding_type = castle_holding
@@ -342,8 +407,120 @@ adopt_bureaucracy_effect = {
 					}
 				}
 			}
+			change_government = chinese_government
+			add_realm_law_skip_effects = bureaucratic_authority_0
 		}
 	}
+}
+
+#####
+
+feudalize_into_islamic_effect = {
+
+	change_government = clan_government
+
+	capital_county = {
+		title_province = {
+			if = {
+				limit = { has_holding_type = tribal_holding }
+				set_holding_type = castle_holding
+				add_province_modifier = {
+					modifier = converted_to_feudal_county_modifier
+					years = 10
+				}
+			}
+		}
+	}
+	hidden_effect = {
+
+		#Nuke tribal authorities.
+		if = {
+			limit = { has_realm_law = tribal_authority_0 }
+			remove_realm_law = tribal_authority_0
+		}
+		if = {
+			limit = { has_realm_law = tribal_authority_1 }
+			remove_realm_law = tribal_authority_1
+		}
+		if = {
+			limit = { has_realm_law = tribal_authority_2 }
+			remove_realm_law = tribal_authority_2
+		}
+		if = {
+			limit = { has_realm_law = tribal_authority_3 }
+			remove_realm_law = tribal_authority_3
+		}
+		if = {
+			limit = { has_realm_law = stateless_authority_0 }
+			remove_realm_law = stateless_authority_0
+		}
+		if = {
+			limit = { has_realm_law = stateless_authority_1 }
+			remove_realm_law = stateless_authority_1
+		}
+		if = {
+			limit = { has_realm_law = stateless_authority_2 }
+			remove_realm_law = stateless_authority_2
+		}
+		if = {
+			limit = { has_realm_law = stateless_authority_3 }
+			remove_realm_law = stateless_authority_3
+		}
+		if = {
+			limit = { has_realm_law = nomadic_authority_0 }
+			remove_realm_law = nomadic_authority_0
+		}
+		if = {
+			limit = { has_realm_law = nomadic_authority_1 }
+			remove_realm_law = nomadic_authority_1
+		}
+		if = {
+			limit = { has_realm_law = nomadic_authority_2 }
+			remove_realm_law = nomadic_authority_2
+		}
+		if = {
+			limit = { has_realm_law = nomadic_authority_3 }
+			remove_realm_law = nomadic_authority_3
+		}
+		if = {
+			limit = { has_realm_law = crown_authority_0 }
+			remove_realm_law = crown_authority_0
+		}
+		if = {
+			limit = { has_realm_law = crown_authority_1 }
+			remove_realm_law = crown_authority_1
+		}
+		if = {
+			limit = { has_realm_law = crown_authority_2 }
+			remove_realm_law = crown_authority_2
+		}
+		if = {
+			limit = { has_realm_law = crown_authority_3 }
+			remove_realm_law = crown_authority_3
+		}
+		if = {
+			limit = { has_realm_law = mandala_authority_0 }
+			remove_realm_law = mandala_authority_0
+		}
+		if = {
+			limit = { has_realm_law = mandala_authority_1 }
+			remove_realm_law = mandala_authority_1
+		}
+		if = {
+			limit = { has_realm_law = mandala_authority_2 }
+			remove_realm_law = mandala_authority_2
+		}
+		if = {
+			limit = { has_realm_law = mandala_authority_3 }
+			remove_realm_law = mandala_authority_3
+		}
+	}
+	hidden_effect = {
+		every_vassal = {
+			feudalize_into_islamic_effect = yes
+		}
+	}
+
 }
 
 unite_nusantara_decision_effect = {
@@ -454,255 +631,7 @@ reform_nanyue_decision_effect = {
 	# Additionally give your culture a unique tradition or something
 }
 
-form_lanna_decision_effect = {
-	save_scope_as = founder
-
-	#Create the title and make it primary
-	create_title_and_vassal_change = {
-		type = created
-		save_scope_as = title_change
-		add_claim_on_loss = no
-	}
-	title:k_haripunjaya = {
-		change_title_holder = {
-			holder = root
-			change = scope:title_change
-		}
-	}
-	resolve_title_and_vassal_change = scope:title_change
-	set_primary_title_to = title:k_haripunjaya
-
-	#Covert self & court to Lanna culture
-	if = {
-		limit = { NOT = { has_culture = culture:lanna } }
-
-		every_courtier = {
-			limit = { has_same_culture_as = scope:founder }
-			add_to_list = convert_list
-		}
-		#transfer over innovations from previous culture.
-		culture:lanna = {
-			hidden_effect = { reset_culture_creation_date = yes }
-			get_all_innovations_from = scope:founder.culture
-		}
-		set_culture = culture:lanna
-
-		every_in_list = {
-			list = convert_list
-			custom = lanna_convert_list #This says "every subject in the realm" even though vassals and their courts only covert later, through event
-			set_culture = culture:lanna
-		}
-
-		every_vassal_or_below = {
-			limit = {
-				is_ai = yes
-				culture = { has_cultural_pillar = heritage_tai }
-				exists = capital_province
-				capital_province = {
-					county = {
-						OR = {
-							de_jure_liege = title:d_chiang_saen
-							de_jure_liege = title:d_chiang_mai
-							de_jure_liege = title:d_haripunjaya
-						}
-					}
-				}
-			}
-			set_culture = culture:lanna
-		}
-	}
-
-	# Convert Tai counties to Siamese culture
-	every_sub_realm_county = {
-		limit = {
-			tier = tier_county
-			culture = { has_cultural_pillar = heritage_tai }
-			OR = {
-				de_jure_liege = title:d_chiang_saen
-				de_jure_liege = title:d_chiang_mai
-				de_jure_liege = title:d_haripunjaya
-			}
-		}
-		set_county_culture = culture:lanna
-	}
-}
-
-form_ayutthaya_decision_effect = {
-	save_scope_as = founder
-
-	#Create the title and make it primary
-	create_title_and_vassal_change = {
-		type = created
-		save_scope_as = title_change
-		add_claim_on_loss = no
-	}
-	title:k_lavapura = {
-		change_title_holder = {
-			holder = root
-			change = scope:title_change
-		}
-		set_title_name = k_ayutthaya
-		set_coa = k_ayutthaya
-	}
-	hidden_effect = {
-		if = {
-			limit = {
-				NOT = { root = { has_title = title:c_ayutthaya } }
-			}
-			title:c_ayutthaya = {
-				change_title_holder = {
-					holder = root
-					change = scope:title_change
-				}
-			}
-		}
-	}
-	resolve_title_and_vassal_change = scope:title_change
-	set_primary_title_to = title:k_lavapura
-	set_realm_capital = title:c_ayutthaya
-
-	#Covert self & court to Siamese culture
-	if = {
-		limit = { NOT = { has_culture = culture:siamese } }
-
-		every_courtier = {
-			limit = { has_same_culture_as = scope:founder }
-			add_to_list = convert_list
-		}
-		#transfer over innovations from previous culture.
-		culture:siamese = {
-			hidden_effect = { reset_culture_creation_date = yes }
-			get_all_innovations_from = scope:founder.culture
-		}
-		set_culture = culture:siamese
-
-		every_in_list = {
-			list = convert_list
-			custom = siamese_convert_list #This says "every subject in the realm" even though vassals and their courts only covert later, through event
-			set_culture = culture:siamese
-		}
-
-		every_vassal_or_below = {
-			limit = {
-				is_ai = yes
-				culture = { has_cultural_pillar = heritage_tai }
-				exists = capital_province
-				capital_province = {
-					county = {
-						OR = {
-							de_jure_liege = title:d_lavapura
-							de_jure_liege = title:d_u_thong
-							de_jure_liege = title:d_pribpri
-						}
-					}
-				}
-			}
-			set_culture = culture:siamese
-		}
-	}
-
-	# Convert Tai counties to Siamese culture
-	every_sub_realm_county = {
-		limit = {
-			tier = tier_county
-			culture = { has_cultural_pillar = heritage_tai }
-			OR = {
-				de_jure_liege = title:d_lavapura
-				de_jure_liege = title:d_u_thong
-				de_jure_liege = title:d_pribpri
-			}
-		}
-		set_county_culture = culture:siamese
-	}
-}
-
-form_lanxang_decision_effect = {
-	save_scope_as = founder
-
-	#Create the title and make it primary
-	create_title_and_vassal_change = {
-		type = created
-		save_scope_as = title_change
-		add_claim_on_loss = no
-	}
-	title:k_laos = {
-		change_title_holder = {
-			holder = root
-			change = scope:title_change
-		}
-		set_title_name = k_lanxang
-	}
-	hidden_effect = {
-		if = {
-			limit = {
-				NOT = { root = { has_title = title:c_luang_prabang } }
-			}
-			title:c_luang_prabang = {
-				change_title_holder = {
-					holder = root
-					change = scope:title_change
-				}
-			}
-		}
-	}
-	resolve_title_and_vassal_change = scope:title_change
-	set_primary_title_to = title:k_laos
-	set_realm_capital = title:c_luang_prabang
-
-	#Covert self & court to Lao culture
-	if = {
-		limit = { NOT = { has_culture = culture:lao } }
-
-		every_courtier = {
-			limit = { has_same_culture_as = scope:founder }
-			add_to_list = convert_list
-		}
-		#transfer over innovations from previous culture.
-		culture:lao = {
-			hidden_effect = { reset_culture_creation_date = yes }
-			get_all_innovations_from = scope:founder.culture
-		}
-		set_culture = culture:lao
-
-		every_in_list = {
-			list = convert_list
-			custom = lao_convert_list #This says "every subject in the realm" even though vassals and their courts only covert later, through event
-			set_culture = culture:lao
-		}
-
-		every_vassal_or_below = {
-			limit = {
-				is_ai = yes
-				culture = { has_cultural_pillar = heritage_tai }
-				exists = capital_province
-				capital_province = {
-					county = {
-						OR = {
-							de_jure_liege = title:d_luang_prabang
-							de_jure_liege = title:d_xiangkhouang
-							de_jure_liege = title:d_chantabuli
-						}
-					}
-				}
-			}
-			set_culture = culture:lao
-		}
-	}
-
-	# Convert Tai counties to Siamese culture
-	every_sub_realm_county = {
-		limit = {
-			tier = tier_county
-			culture = { has_cultural_pillar = heritage_tai }
-			OR = {
-				de_jure_liege = title:d_luang_prabang
-				de_jure_liege = title:d_xiangkhouang
-				de_jure_liege = title:d_chantabuli
-			}
-		}
-		set_county_culture = culture:lao
-	}
-}
+#####
 
 unite_the_javanese_thrones_decision_effects = {
 	create_title_and_vassal_change = {
@@ -899,4 +828,562 @@ unsettle_nomadic_realm_effect = {
 			}
 		}
 	}
+}
+reform_indo_hellenism_effect = {
+	faith:indo_hellenism = {
+		#Remove conversion block
+		remove_variable = block_conversion_till_decision_taken
+		# And you are organizing this faith
+		set_variable = { name = has_been_reformed }
+		remove_doctrine = unreformed_faith_doctrine
+	}
+
+	set_character_faith_with_conversion = faith:indo_hellenism
+	every_realm_county = {
+		limit = {
+			NOT = {faith = faith:indo_hellenism }
+			trigger_if = {
+				limit = { faith:indo_hellenism = { has_doctrine = special_doctrine_is_buddhist_faith } }
+				religion = religion:buddhism_religion
+			}
+			trigger_else_if = {
+				limit = { faith:indo_hellenism = { has_doctrine = special_doctrine_is_hinduism_faith } }
+				religion = religion:hinduism_religion
+			}
+			trigger_else_if = {
+				limit = { faith:indo_hellenism = { has_doctrine = doctrine_spiritual_head } } # Zoroastrian
+				religion = religion:zoroastrianism_religion
+			}
+		}
+		save_scope_as = county
+		add_faith_minority_effect = {
+			COUNTY = scope:county
+			FAITH = faith:indo_hellenism
+			SIZE = small
+		}
+	}
+}
+
+greco_buddhism_effect = {
+	faith:indo_hellenism = {
+		remove_doctrine = tenet_adaptive
+		add_doctrine = tenet_dharmic_pacifism
+		add_doctrine = doctrine_right_to_rule_rajadharma
+		add_doctrine = special_doctrine_is_buddhist_faith
+	}
+}
+
+greco_hinduism_effect = {
+	faith:indo_hellenism = {
+		remove_doctrine = tenet_adaptive
+		add_doctrine = tenet_monasticism
+		add_doctrine = doctrine_right_to_rule_rajadharma
+		add_doctrine = special_doctrine_is_hinduism_faith
+		add_doctrine = sampradaya_vaishnavism_doctrine
+	}
+}
+
+greco_zoroastrianism_effect = {
+	faith:indo_hellenism = {
+		remove_doctrine = doctrine_funeral_bewailment
+		add_doctrine = doctrine_funeral_sky_burial
+		add_doctrine = doctrine_right_to_rule_divine
+		remove_doctrine = doctrine_no_head
+		add_doctrine = doctrine_spiritual_head
+	}
+	if = {
+		limit = {
+			can_create_head_of_faith_title_trigger = { FAITH = faith:indo_hellenism }
+		}
+		faith:indo_hellenism = {
+			save_scope_as = faith
+		}
+		create_head_of_faith_title_effect = yes
+	}
+}
+
+indo_greek_flexibility = {
+	faith:indo_hellenism = {
+		add_doctrine = doctrine_right_to_rule_divine
+		add_doctrine = tenet_unreformed_syncretism
+	}
+}
+
+indo_greek_de_jure_effect = {
+	title:k_sindh = {
+		add_to_temporary_list = igk
+	}
+	title:k_punjab = {
+		add_to_temporary_list = igk
+	}
+	title:k_kashmir = {
+		add_to_temporary_list = igk
+	}
+	title:k_makran = {
+		add_to_temporary_list = igk
+	}
+	title:k_kabulistan = {
+		add_to_temporary_list = igk
+	}
+
+	every_in_list = {
+		list = igk
+		limit = {
+			OR = {
+				this.holder = ROOT
+				ROOT = {
+					completely_controls = PREV
+				}
+			}
+		}
+		set_de_jure_liege_title = title:e_indo_greek_kingdom
+	}
+
+	custom_tooltip = {
+		text = indo_greek_de_jure_tt
+	}
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+	}
+	title:e_indo_greek_kingdom = {
+		change_title_holder = {
+			holder = ROOT
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+}
+
+indo_greek_culture_decision_effect = {
+	set_culture = culture:indo_greek
+	culture:indo_greek = {
+		reset_culture_creation_date = yes
+	}
+	custom_tooltip = {
+		text = yavana_counties_conversion_tt
+		every_realm_county = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+					culture = { has_cultural_pillar = heritage_byzantine }
+					culture = { has_cultural_pillar = language_greek }
+				}
+			}
+			save_scope_as = county
+			random = {
+				chance = 40
+				set_county_culture = culture:indo_greek
+				add_culture_minority_effect = {
+					COUNTY = scope:county
+					CULTURE = culture:indo_greek
+					SIZE = small
+				}
+				modifier = {
+					add = development_level
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		text = yavana_vassal_conversion_tt
+		every_vassal_or_below = {
+			limit = {
+				is_ai = yes
+				OR = {
+					culture = { has_cultural_pillar = heritage_indo_aryan }
+					culture = { has_cultural_pillar = heritage_byzantine }
+					culture = { has_cultural_pillar = language_greek }
+				}
+			}
+			random_list = {
+				1 = {
+					set_culture = culture:indo_greek
+					opinion_modifier = {
+						opinion_target = ROOT
+						who = THIS
+						multiplier = 0.1
+					}
+				}
+				1 = {}
+			}
+		}
+	}
+}
+
+unite_nasrani_decision_effect = {
+	add_prestige = major_prestige_gain
+	add_piety = major_piety_gain
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_nasrani = {
+		change_title_holder = {
+			holder = scope:founder
+			change = scope:title_change
+		}
+		set_de_jure_liege_title = title:e_dravida
+	}
+	resolve_title_and_vassal_change = scope:title_change
+
+	title:d_chera_nadu = { set_de_jure_liege_title = title:k_nasrani }
+	title:d_konkana = { set_de_jure_liege_title = title:k_nasrani }
+	if = {
+		limit = {
+			title:d_sinhala = { holder = root }
+		}
+		title:d_sinhala = { set_de_jure_liege_title = title:k_nasrani }
+
+		struggle:RICE_sri_lanka_struggle ?= {
+			set_faith_as_involved = faith:indian_catholic
+		}
+	}
+	if = {
+		limit = {
+			title:d_pandya_nadu = { holder = root }
+		}
+		title:d_pandya_nadu = { set_de_jure_liege_title = title:k_nasrani }
+	}
+	every_held_title = {
+		limit = {
+			tier = tier_barony
+			is_holy_site_of = faith:indian_catholic
+		}
+		county = { set_county_faith = faith:indian_catholic }
+	}
+	custom_tooltip = nasrani_growth_tt
+	hidden_effect = {
+		every_realm_county = {
+			limit = {
+				NOT = {
+					any_in_de_jure_hierarchy = { is_holy_site_of = faith:indian_catholic }
+				}
+			}
+			save_scope_as = county
+			promote_faith_minority_effect = { FAITH = faith:indian_catholic }
+		}
+	}
+}
+
+unite_bene_israel_effect = {
+	add_prestige = major_prestige_gain
+	add_piety = major_piety_gain
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_bene_israel = {
+		change_title_holder = {
+			holder = scope:founder
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+
+	title:d_chera_nadu = { set_de_jure_liege_title = title:k_bene_israel }
+	title:d_konkana = { set_de_jure_liege_title = title:k_bene_israel }
+	if = {
+		limit = {
+			title:d_lata = { holder = root }
+		}
+		title:d_lata = { set_de_jure_liege_title = title:k_bene_israel }
+	}
+	if = {
+		limit = {
+			title:d_nasikya = { holder = root }
+		}
+		title:d_nasikya = { set_de_jure_liege_title = title:k_bene_israel }
+	}
+	every_held_title = {
+		limit = {
+			tier = tier_barony
+			is_holy_site_of = faith:malabarism
+		}
+		county = {
+			save_scope_as = county
+			culture = { save_scope_as = old_culture }
+			faith = { save_scope_as = old_faith }
+			set_county_culture = culture:kochinim
+			set_county_faith = faith:malabarism
+			add_culture_minority_effect = {
+				COUNTY = scope:county
+				CULTURE = scope:old_culture
+				SIZE = small
+			}
+			add_faith_minority_effect = {
+				COUNTY = scope:county
+				FAITH = scope:old_faith
+				SIZE = small
+			}
+		}
+	}
+	every_realm_county = {
+		limit = {
+			NOT = {
+				any_in_de_jure_hierarchy = { is_holy_site_of = faith:malabarism }
+			}
+		}
+		save_scope_as = county
+		promote_faith_minority_effect = { FAITH = faith:malabarism }
+		promote_culture_minority_effect = { CULTURE = culture:kochinim }
+	}
+}
+
+form_stateless_confederation_duchy_effect = {
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	if = {
+		# First we check if the realm county's duchy is free. If so, save that as the scope.
+		limit = { NOT = { exists = capital_county.duchy.holder } }
+		capital_county = { duchy = { save_scope_as = commune_title } }
+		scope:commune_title = {
+			change_title_holder = {
+				holder = ROOT
+				change = scope:change
+			}
+			add_title_law = anarchist_elective_succession_law
+		}
+	}
+	else = {
+		custom_tooltip = {
+			text = create_commune_title_tt
+			create_dynamic_title = {
+				tier = duchy
+				name = ANARCHIST_TITLE_NAME
+			}
+			scope:new_title = {
+				set_destroy_on_gain_same_tier = yes
+				set_no_automatic_claims = yes
+				set_can_be_named_after_dynasty = no
+				save_scope_as = commune_title
+			}
+			scope:commune_title = {
+				change_title_holder = {
+					holder = ROOT
+					change = scope:change
+				}
+				add_title_law = anarchist_elective_succession_law
+			}
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+	hidden_effect = {
+		if = {
+			limit = { scope:commune_title = { is_titular = yes } }
+			scope:commune_title = {
+				generate_coa = yes
+				set_color_from_title = root.capital_county
+			}
+		}
+	}
+	custom_tooltip = {
+		text = commune_handout_tt
+		every_held_title = {
+			limit = {
+				tier = tier_county
+				NOT = { THIS = ROOT.capital_county }
+			}
+			save_scope_as = title
+			create_character = {
+				location = scope:title.title_province
+				template = generic_peasant_character
+				faith = scope:title.faith
+				culture = scope:title.culture
+				save_scope_as = new_count
+			}
+			give_commune_county_effect = yes
+		}
+	}
+}
+
+# scope:new_count - Character to be given the county
+# scope:title - the county being handed off
+give_commune_county_effect = {
+	create_title_and_vassal_change = {
+		type = granted
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	scope:title = {
+		change_title_holder = {
+			holder = scope:new_count
+			change = scope:change
+			take_baronies = yes
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+
+	hidden_effect = {
+		scope:new_count = {
+			change_government = anarchist_government
+			add_realm_law_skip_effects = single_heir_dynasty_house
+		}
+	}
+
+	# Opinion boost for new vassal
+	scope:new_count = {
+		add_opinion = {
+			target = root
+			modifier = stateless_given_county_opinion
+		}
+	}
+}
+
+rename_china_title_effect = {
+	if = {
+	    limit = { primary_title = title:k_qin_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_qin_china
+	    	set_coa = e_qin
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_yan_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_yan_china
+	    	set_coa = e_yan
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_zhao_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_zhao_china
+	    	set_coa = e_zhao
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_jin_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_jin_china
+	    	set_coa = e_later_jin
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_xia_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_xia_china
+	    	set_coa = k_xia_china
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_shu_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_shu_china
+	    	set_coa = e_shu
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_han_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_han_china
+	    	set_coa = e_han
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_zhou_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_zhou_china
+	    	set_coa = e_zhou
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_liang_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_liang_china
+	    	set_coa = e_liang
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_qi_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_qi_china
+	    	set_coa = e_qi
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_chu_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_chu_china
+	    	set_coa = e_chu
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_wu_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_wu_china
+	    	set_coa = e_wu
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_yue_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_yue_china
+	    	set_coa = e_yue
+	    }
+	}
+	else_if = {
+	    limit = { primary_title = title:k_min_china }
+	    title:e_celestia_china = {
+	    	set_title_name = k_min_china
+	    	set_coa = e_min
+	    }
+	}
+	# Else pick a new name, I'm lazy to do this right now
+	else = {
+		# Trigger event to select another name
+		# Tang, Yuan, Liao, Ba
+		# Qi 齐
+		# Liang 梁
+		# Wu 吴
+		# Chu 楚
+		# Shu 蜀
+		# Han 汉
+		# Min 闽
+		# Yue 越
+		# Chen 陈
+		# Song 宋
+		# Wei 魏
+		# Zhao 赵
+		# Yan 燕
+		# Jin 晋
+		# Qin 秦
+		# Zhou 周
+		# Liang 凉
+		# Dali 大理
+		# Xia 夏
+	}
+}
+
+malayan_sultanate_effect = {
+	if = {
+		limit = {
+			highest_held_title_tier = tier_county
+			capital_county.duchy = {
+				any_de_jure_county = {
+					percent >= 0.5
+					holder = ROOT
+				}
+			}
+		}
+		get_title = capital_county.duchy
+	}
+	else_if = {
+		limit = {
+			highest_held_title_tier = tier_duchy
+			capital_county.kingdom = {
+				any_de_jure_county = {
+					percent >= 0.5
+					holder = ROOT
+				}
+			}
+		}
+		get_title = capital_county.kingdom
+	}
+	add_piety = major_piety_loss
 }

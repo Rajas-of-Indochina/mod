@@ -2719,9 +2719,13 @@ dharma_buddhism.121 = {# Gardening
 					add_prestige = minor_prestige_gain
 					if = {
 						limit = { exists = scope:increase_mystic }
-						change_trait_rank = {
+						# change_trait_rank = {
+						# 	trait = lifestyle_mystic
+						# 	rank = 1
+						# }
+						add_trait_xp = {
 							trait = lifestyle_mystic
-							rank = 1
+							value = 15
 						}
 					}
 				}
@@ -3306,7 +3310,7 @@ dharma_buddhism.131 = {# End meditation
 
 	immediate = {
 		scope:activity = {
-			complete_activity = yes
+			#complete_activity = yes
 		}
 		# Remove character
 		remove_character_flag = meditation_secret
@@ -4444,7 +4448,12 @@ dharma_buddhism.307 = {# Mystical learning
 		hidden_effect = {
 			if = {
 				limit = {
-					NOT = { has_trait = mystic_3 }
+					NOT = {
+						has_trait_xp = {
+							trait = lifestyle_mystic
+							value >= 100
+						}
+					}
 				}
 				random = {
 					chance = 05
@@ -4475,9 +4484,9 @@ dharma_buddhism.307 = {# Mystical learning
 					add_prestige = minor_prestige_gain
 					if = {
 						limit = { exists = scope:increase_mystic }
-						change_trait_rank = {
+						add_trait_xp = {
 							trait = lifestyle_mystic
-							rank = 1
+							value = 10 #TODO_CD_EP2 standardize
 						}
 					}
 				}
@@ -4757,9 +4766,13 @@ dharma_buddhism.310 = {# Medical learning
 					add_prestige = minor_prestige_gain
 					if = {
 						limit = { exists = scope:increase_physcian }
-						change_trait_rank = {
+						# change_trait_rank = {
+						# 	trait = lifestyle_physician
+						# 	rank = 1
+						# }
+						add_trait_xp = {
 							trait = lifestyle_physician
-							rank = 1
+							value = 15
 						}
 					}
 				}
