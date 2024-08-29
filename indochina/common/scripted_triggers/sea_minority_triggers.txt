@@ -90,6 +90,45 @@ county_has_large_minority_culture_trigger = {
     }
 }
 
+
+# $TRIGGER$ = any scripted trigger (mind scopes!)
+county_has_large_culture_minority_with_trigger = {
+	any_in_list = {
+		variable = culture_minorities_large
+		$TRIGGER$ = yes
+	}
+}
+county_has_small_culture_minority_with_trigger = {
+	any_in_list = {
+		variable = culture_minorities_small
+		$TRIGGER$ = yes
+	}
+}
+county_has_culture_minority_with_trigger = {
+	OR = {
+		county_has_large_culture_minority_with_trigger = { TRIGGER = $TRIGGER$ }
+		county_has_small_culture_minority_with_trigger = { TRIGGER = $TRIGGER$ }
+	}
+}
+county_has_large_faith_minority_with_trigger = {
+	any_in_list = {
+		variable = faith_minorities_large
+		$TRIGGER$ = yes
+	}
+}
+county_has_small_faith_minority_with_trigger = {
+	any_in_list = {
+		variable = faith_minorities_small
+		$TRIGGER$ = yes
+	}
+}
+county_has_faith_minority_with_trigger = {
+	OR = {
+		county_has_large_faith_minority_with_trigger = { TRIGGER = $TRIGGER$ }
+		county_has_small_faith_minority_with_trigger = { TRIGGER = $TRIGGER$ }
+	}
+}
+
 county_is_religiously_protected_trigger = {
 	exists = holder.liege
 	holder = {
