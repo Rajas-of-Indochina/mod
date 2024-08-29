@@ -1,4 +1,4 @@
-﻿namespace = normandy
+namespace = normandy
 namespace = sus
 namespace = tarim_basin
 namespace = siberia
@@ -2218,7 +2218,7 @@ siberia.0001 = {
 					# Don't spawn Evenk and Nivkh event courtiers in Manchuria, they aren't unusual here
 					any_realm_county = {
 						count <= 0
-						geographical_region = world_manchuria
+						title_province.geographical_region = world_manchuria
 					}
 				}
 				add_character_flag = RICE_siberia_evenk_maker
@@ -2235,7 +2235,7 @@ siberia.0001 = {
 					# Don't spawn Evenk and Nivkh event courtiers in Manchuria, they aren't unusual here
 					any_realm_county = {
 						count <= 0
-						geographical_region = world_manchuria
+						title_province.geographical_region = world_manchuria
 					}
 				}
 				add_character_flag = RICE_siberia_nivkh_maker
@@ -2976,7 +2976,7 @@ sri_lanka.0010 = {
 					NOT = { religion = religion:buddhism_religion }
 				}
 				# set_county_faith = scope:indian_faith
-				save_scope_as = scope:county
+				save_scope_as = county
 				promote_faith_minority_effect = { FAITH = scope:indian_faith }
 			}
 			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
@@ -3150,7 +3150,7 @@ sri_lanka.0010 = {
 					NOT = { religion = religion:hinduism_religion }
 				}
 				# set_county_faith = scope:indian_faith
-				save_scope_as = scope:county
+				save_scope_as = county
 				promote_faith_minority_effect = { FAITH = scope:indian_faith }
 			}
 			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
@@ -3304,7 +3304,7 @@ sri_lanka.0010 = {
 					NOT = { religion = religion:jainism_religion }
 				}
 				# set_county_faith = scope:indian_faith
-				save_scope_as = scope:county
+				save_scope_as = county
 				promote_faith_minority_effect = { FAITH = scope:indian_faith }
 			}
 			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
@@ -3405,7 +3405,7 @@ sri_lanka.0010 = {
 					}
 				}
 				every_held_title = {
-					custom = RICE_all_held_counties_india_church
+					custom_tooltip = RICE_all_held_counties_india_church
 					limit = {
 						tier = tier_county
 						any_county_province = {
@@ -3444,7 +3444,7 @@ sri_lanka.0010 = {
 					NOT = { religion = religion:christianity_religion }
 				}
 				# set_county_faith = scope:indian_faith
-				save_scope_as = scope:county
+				save_scope_as = county
 				promote_faith_minority_effect = { FAITH = scope:indian_faith }
 			}
 			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
@@ -3584,7 +3584,7 @@ sri_lanka.0010 = {
 					NOT = { religion = religion:judaism_religion }
 				}
 				# set_county_faith = scope:indian_faith
-				save_scope_as = scope:county
+				save_scope_as = county
 				promote_faith_minority_effect = { FAITH = scope:indian_faith }
 			}
 			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
@@ -3746,6 +3746,8 @@ sicily.0016 = {
 		}
 	}
 }
+
+
 
 # Locals are using other culture/religion legal courts
 sicily.0200 = {
@@ -4204,4 +4206,28 @@ sicily.0201 = {
 		}
 	}
 
+}
+
+# stronghold minority spawn
+sicily.9999 = {
+	hidden = yes
+
+	trigger = {
+		any_county_in_region = {
+			region = custom_sicily
+			RICE_sicily_has_stronghold_trigger = yes
+		}
+		has_global_variable = is_RICE_loaded_global_variable
+	}
+
+	immediate = {
+		random_chance = {
+			chance = 5
+			random_county_in_region = {
+				region = custom_sicily
+				limit = { RICE_sicily_has_stronghold_trigger = yes }
+				RoA_RICE_stronghold_minorities_effect = yes
+			}
+		}
+	}
 }
