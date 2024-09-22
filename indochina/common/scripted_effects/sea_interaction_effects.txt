@@ -383,11 +383,37 @@ marriage_interaction_on_accept_effect = {
 						# Courtly vassals, however, are cringe haters regardless of the norms
 						has_vassal_stance = courtly
 					}
-					add_opinion = {
-						target = scope:actor
-						modifier = married_commoner_opinion
-					}
 				}
+				add_opinion = {
+					target = scope:actor
+					modifier = married_commoner_opinion
+				}
+			}
+		}
+	}
+
+	# Reverence for Sapphic Love
+	if = {
+		limit = {
+			scope:secondary_actor = {
+				is_female = yes
+			}
+			scope:secondary_recipient = {
+				is_female = yes
+			}
+		}
+		scope:secondary_actor = {
+			if = {
+				limit = { culture = { has_cultural_parameter = lesbian_romance_venerated } }
+				add_piety = medium_piety_gain
+				add_prestige = medium_prestige_gain
+			}
+		}
+		scope:secondary_recipient = {
+			if = {
+				limit = { culture = { has_cultural_parameter = lesbian_romance_venerated } }
+				add_piety = medium_piety_gain
+				add_prestige = medium_prestige_gain
 			}
 		}
 	}

@@ -11,6 +11,13 @@
 	}
 }
 
+yearly_playable_pulse = {
+	on_actions = {
+		delay = { days = { 30 330 } }
+		spawn_lesbian_culture
+	}
+}
+
 on_yearly_sea_culture_north_luzon = {
 	trigger = {
 		current_date <= 1030.1.1
@@ -176,6 +183,84 @@ start_nanzhao_collapse = {
 		else_if = {
 			limit = { title:k_nanzhao = { has_variable = dayining } }
 			trigger_event = nanzhao_collapse.3001
+		}
+	}
+}
+
+#####
+
+spawn_lesbian_culture = {
+	trigger = {
+		realm_capital = title:c_lesbos
+		is_female = yes
+		OR = {
+			has_sexuality = bisexual
+			has_sexuality = homosexual
+		}
+		culture = {
+			OR = {
+				this = culture:greek
+				any_parent_culture_or_above = { this = culture:greek }
+			}
+		}
+		NOT = { has_global_variable = lesbianism_spawned }
+		NOT = { has_game_rule = accepted_same_sex_relations } #No point in this if it's already normal to be gay
+	}
+	effect = {
+		random = {
+			chance = {
+				value = 1 #1% chance
+				if = {
+					limit = { has_trait = lustful }
+					add = 1
+				}
+				if = {
+					limit = { has_trait = gregarious }
+					add = 1
+				}
+				if = {
+					limit = { has_trait = eccentric }
+					add = 1
+				}
+				if = {
+					limit = { has_trait = seducer }
+					add = 2
+				}
+				add = {
+					# Learned characters are more likely to get this event
+					value = learning
+					multiply = 0.05
+				}
+				# As are characters that are already engaged in sapphic romance of some kind
+				# ESPECIALLY soulmates
+				if = {
+					limit = {
+						any_relation = {
+							type = lover
+							is_female = yes
+						}
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						any_spouse = {
+							is_female = yes
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						any_relation = {
+							type = soulmate
+							is_female = yes
+						}
+					}
+					add = 20
+				}
+			}
+			trigger_event = easter_egg.0001
 		}
 	}
 }

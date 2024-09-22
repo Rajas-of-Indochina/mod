@@ -1,0 +1,170 @@
+﻿namespace = easter_egg
+
+scripted_effect create_sappho_poetry_book = {
+	if = {
+		limit = {
+			scope:lesbian = {
+				has_royal_court = yes
+			}
+		}
+		hidden_effect_new_object = {
+			create_artifact = {
+				name = sapphos_poetry_book_name
+				description = sapphos_poetry_book_desc
+				type = book
+				visuals = book
+				quality = 100
+				wealth = 100
+				modifier = sapphos_poetry_modifier
+				save_scope_as = sapphos_poetry
+				decaying = no
+			}
+		}
+	}
+	else = {
+		hidden_effect_new_object = {
+			create_artifact = {
+				name = sapphos_poetry_book_name
+				description = sapphos_poetry_book_desc
+				type = miscellaneous
+				visuals = book
+				quality = 100
+				wealth = 100
+				modifier = sapphos_poetry_modifier_trinket
+				save_scope_as = sapphos_poetry
+				decaying = no
+			}
+		}
+	}
+}
+
+
+# You find a book of old poems
+easter_egg.0001 = {
+	type = character_event
+	title = easter_egg.0001.t
+	desc = {
+		desc = easter_egg.0001.desc.1
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { faith = { has_doctrine_parameter = homosexuality_accepted } }
+				}
+				desc = easter_egg.0001.desc.2.homophobia
+			}
+			desc = easter_egg.0001.desc.2.nonhomophobia
+		}
+	}
+	theme = love
+
+	left_portrait = {
+		character = scope:lesbian
+		animation = personality_rational
+	}
+
+	artifact = {
+		target = scope:sapphos_poetry
+		position = lower_right_portrait
+	}
+
+	immediate = {
+		save_scope_as = lesbian
+		create_sappho_poetry_book = yes
+	}
+
+	# Read them
+	option = {
+		name = easter_egg.0001.1
+		show_as_tooltip = {
+			scope:sapphos_poetry = {
+				set_owner = {
+					target = scope:lesbian
+				}
+			}
+		}
+		hidden_effect = {
+			trigger_event = { id = easter_egg.0002 }
+		}
+	}
+
+	# Dispose of it
+	option = {
+		name = easter_egg.0001.2
+		destroy_artifact = scope:sapphos_poetry
+		if = {
+			limit = {
+				NOT = { faith = { has_doctrine_parameter = homosexuality_accepted } }
+			}
+			add_piety = miniscule_piety_gain
+			stress_impact = {
+				zealous = miniscule_stress_impact_loss
+				lustful = minor_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				lustful = minor_stress_impact_gain
+			}
+		}
+	}
+}
+
+easter_egg.0002 = {
+	type = character_event
+	title = easter_egg.0002.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { NOT = { faith = { has_doctrine_parameter = homosexuality_accepted } } }
+				desc = easter_egg.0002.desc.homophobia
+			}
+			desc = easter_egg.0002.desc.nonhomophobia
+		}
+		desc = easter_egg.0002.desc.2
+	}
+	theme = love
+
+	left_portrait = {
+		character = scope:lesbian
+		animation = personality_rational
+	}
+
+	artifact = {
+		target = scope:sapphos_poetry
+		position = lower_right_portrait
+	}
+
+	immediate = {
+		scope:sapphos_poetry = {
+			set_owner = {
+				target = scope:lesbian
+			}
+		}
+	}
+
+	option = {
+		name = easter_egg.0002.1
+
+		hidden_effect = {
+			culture:lesbian = {
+				reset_culture_creation_date = yes
+			}
+			set_global_variable = lesbianism_spawned
+		}
+
+		convert_family_culture_and_notify_vassals_effect = {
+			CONVERTER = scope:lesbian
+			OLD_CULTURE = scope:lesbian.culture
+			NEW_CULTURE = culture:lesbian
+		}
+
+		capital_county = { set_county_culture = culture:lesbian }
+	}
+
+	option = {
+		name = easter_egg.0002.2
+		stress_impact = {
+			base = minor_stress_impact_loss
+		}
+	}
+}
