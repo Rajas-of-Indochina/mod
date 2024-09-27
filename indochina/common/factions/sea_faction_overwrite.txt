@@ -49,6 +49,21 @@ claimant_faction = {
 					this = root.faction_target
 					has_government = anarchist_government # (We don't want stateless rulers cheesing their way to becoming an emperor)
 				}
+				# Byzantium does not brook
+				trigger_if = {
+					limit = {
+						root.special_title = {
+							OR = {
+								has_title_law = acclamation_succession_law
+								holder ?= { has_realm_law = acclamation_succession_law }
+							}
+						}
+					}
+					NOR = {
+						is_eunuch_trigger = yes
+						has_trait = blind
+					}
+				}
 				trigger_if = { #If they're imprisoned by the faction target they can only be so for five years before invalidating
 					limit = {
 						is_imprisoned_by = root.faction_target
@@ -60,6 +75,7 @@ claimant_faction = {
 			}
 			exists = faction_war
 		}
+		has_valid_faction_members_trigger = yes
 	}
 
 	demand = { # The effect of pressing demand
@@ -152,11 +168,41 @@ claimant_faction = {
 		}
 	}
 
-	on_war_start = {}
+	on_war_start = {
+		every_faction_member = {
+			limit = {
+				has_variable = gathered_support_for_faction
+				var:gathered_support_for_faction = root
+			}
+			spawn_army = {
+				name = gathered_support_for_faction_army
+				levies = {
+					value = this.massive_influence_value
+					multiply = 3
+				}
+				men_at_arms = {
+					type = light_footmen
+					stacks = 2
+				}
+				location = this.location
+				war = root.faction_war
+				inheritable = yes
+			}
+		}
+	}
 
 	is_character_valid = { # Is the character valid to stay in the faction? This is also checked when creating it...
 		common_character_validity_trigger = {
 			FACTION_TARGET = scope:faction.faction_target
+		}
+		
+		trigger_if = {
+			limit = {
+				government_allows = administrative
+			}
+			scope:faction.faction_target ?= {
+				is_independent_ruler = yes
+			}
 		}
 	}
 
@@ -200,7 +246,7 @@ claimant_faction = {
 	}
 
 	can_character_become_leader = {
-		is_landed = yes
+		is_playable_character = yes
 	}
 
 	ai_create_score = { # How likely is an AI to create a faction?
@@ -234,6 +280,16 @@ claimant_faction = {
 			FACTION_TARGET = scope:target
 			FACTION_CLAIMANT = scope:claimant
 			FACTION_TITLE = scope:title
+		}
+
+		admin_faction_modifiers = {
+			FACTION_TARGET = scope:target
+			FACTION_TYPE = claimant_faction
+		}
+
+		admin_claimant_faction_modifiers = {
+			FACTION_TARGET = scope:target
+			FACTION_CLAIMANT = scope:claimant
 		}
 
 		# If another Claimant Faction already exists, prefer to side with it
@@ -310,22 +366,52 @@ claimant_faction = {
 			FACTION_TITLE = scope:faction.special_title
 		}
 
-		##########################
+		admin_faction_modifiers = {
+			FACTION_TARGET = scope:faction.faction_target
+			FACTION_TYPE = claimant_faction
+		}		
+
+		admin_claimant_faction_modifiers = {
+			FACTION_TARGET = scope:faction.faction_target
+			FACTION_CLAIMANT = scope:faction.special_character
+		}
+
 		# Faction 'Stacking' Factors, attempts to cluster AI rulers into several powerful factions instead of many weak ones.
+		join_faction_stacking_modifiers = yes
+		
+		modifier = { # CE1 Divine Mandate perk
+			desc = "FACTION_REASON_LEGITIMACY_LEGACY_4"
+			liege.dynasty = { has_dynasty_perk = ce1_legitimacy_legacy_4 }
+			add = -10
+		}
+		
+		struggle_faction_modifiers = yes
+		
+		#EP3 admin legitimacy event
 		modifier = {
-			desc = "FACTION_REASON_POWER_HALFWAY_THRESHOLD"
-			scope:faction.faction_power >= scope:faction.faction_power_halfway_threshold
-			factor = faction_weight_factor_power_halfway_threshold
+			desc = "FACTION_REASON_LOW_LEGITIMACY_CHALLENGER"
+			add = 25
+			scope:faction = {
+				any_faction_member = {
+					has_character_flag = low_legitimacy_admin_factions_flag
+				}
+			}
+		}
+
+		#EP3 King of England disgruntled vassals/life threatened modifiers
+		modifier = {
+			desc = "FACTION_REASON_CLAIMANT_DISGRUNTLED_VASSALS"
+			add = 25
+			liege = {
+				has_character_modifier = ep3_disgruntled_vassals_modifier
+			}
 		}
 		modifier = {
-			desc = "FACTION_REASON_POWER_PUSHING_THRESHOLD"
-			scope:faction.faction_power >= scope:faction.faction_power_pushing_threshold
-			factor = faction_weight_factor_power_pushing_threshold
-		}
-		modifier = {
-			desc = "FACTION_REASON_POWER_THRESHOLD"
-			scope:faction.faction_power >= scope:faction.faction_power_threshold
-			factor = faction_weight_factor_power_exceeds_threshold
+			desc = "FACTION_REASON_CLAIMANT_DISGRUNTLED_VASSALS"
+			add = 25
+			liege = {
+				has_character_modifier = ep3_life_threatened_modifier
+			}
 		}
 	}
 
@@ -442,6 +528,41 @@ claimant_faction = {
 
 			# How big the factor is for supporting this claimant over other factions at max support.
 			multiplier = 2
+		}
+	}
+
+	on_creation = {
+		save_scope_as = faction
+		if = {
+			limit = {
+				any_player = {
+					is_landless_adventurer = yes
+					is_within_diplo_range = { CHARACTER = scope:faction.faction_target }
+					OR = {
+						has_contact = scope:faction.faction_leader
+						has_contact = scope:faction.special_character
+						NOT = { has_contact = scope:faction.faction_target }
+					}
+					any_character_task_contract = {
+						has_task_contract_type = laamp_join_faction_contract
+						count <= 3
+					}
+					can_create_task_contract = {
+						type_name = laamp_join_faction_contract
+						employer = scope:faction.faction_leader
+					}
+					save_temporary_scope_as = player_laamp
+				}
+			}
+			scope:player_laamp = {
+				create_task_contract = {
+					task_contract_type = laamp_join_faction_contract
+					task_contract_tier = scope:faction.faction_leader.task_contract_tier_value
+					location = scope:faction.faction_leader.primary_title.title_province
+					task_contract_employer = scope:faction.faction_leader
+					target = scope:faction.faction_target
+				}
+			}
 		}
 	}
 
