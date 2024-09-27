@@ -1,8 +1,10 @@
 ﻿# Override PDX decision to use minorities
 
 legendary_conversion = {
-	picture = "gfx/interface/illustrations/decisions/decision_legend.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legend.dds"
+	}
+	decision_group_type = major
 	ai_check_interval = 120
 	desc = legendary_conversion_desc
 
@@ -28,6 +30,45 @@ legendary_conversion = {
 			remove_character_flag = legendary_conversion
 			random_sub_realm_county = { # Give em a free fully converted county no matter what
 				set_county_faith = root.faith
+				weight = {
+					value = 1
+					if = {
+						limit = {
+							AND = {
+								THIS = ROOT.capital_county
+								NOT = { faith = ROOT.faith }
+							}
+						}
+						add = 1000
+					}
+					if = {
+						limit = {
+							AND = {
+								THIS.duchy = ROOT.capital_county.duchy
+								NOT = { faith = ROOT.faith }
+							}
+						}
+						add = 100
+					}
+					if = {
+						limit = {
+							AND = {
+								THIS.kingdom = ROOT.capital_county.kingdom
+								NOT = { faith = ROOT.faith }
+							}
+						}
+						add = 50
+					}
+					if = {
+						limit = {
+							AND = {
+								THIS.empire = ROOT.capital_county.empire
+								NOT = { faith = ROOT.faith }
+							}
+						}
+						add = 25
+					}
+				}
 			}
 			every_sub_realm_county = {
 				save_scope_as = county
