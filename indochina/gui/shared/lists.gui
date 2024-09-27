@@ -152,7 +152,7 @@ types Lists
 				framesize = { 252 80 }
 				spriteType = Corneredtiled
 				spriteborder = { 10 30 }
-
+				
 				block "button_texture"
 				{
 					texture = "gfx/interface/buttons/button_entry_characterlist.dds"
@@ -488,7 +488,7 @@ types Lists
 									using = Font_Size_Medium
 									layoutpolicy_horizontal = expanding
 									align = nobaseline
-									text = "[Character.GetUINameNoTooltip]"
+									text = "[Character.GetUINameNoTooltip|U]"
 									autoresize = no
 									fontsize_min = 14
 								}
@@ -1824,6 +1824,7 @@ types Lists
 							}
 
 							button_round = {
+								visible = "[Character.GetGovernment.IsType('feudal_government')]"
 								enabled = "[Character.IsPlayerInteractionValid('liege_modify_vassal_contract_interaction')]"
 								onclick = "[Character.OpenPlayerInteraction('liege_modify_vassal_contract_interaction')]"
 								tooltip = "[Character.GetPlayerInteractionTooltip('liege_modify_vassal_contract_interaction')]"
@@ -1831,6 +1832,20 @@ types Lists
 								block "feudal_contract_button_round" {}
 
 								button_feudal_contract = {
+									alwaystransparent = yes
+									parentanchor = center
+								}
+							}
+
+							button_round = {
+								visible = "[Character.GetGovernment.IsType('administrative_government')]"
+								enabled = "[Character.IsPlayerInteractionValid('admin_liege_modify_vassal_contract_interaction')]"
+								onclick = "[Character.OpenPlayerInteraction('admin_liege_modify_vassal_contract_interaction')]"
+								tooltip = "[Character.GetPlayerInteractionTooltip('admin_liege_modify_vassal_contract_interaction')]"
+
+								block "admin_contract_button_round" {}
+
+								button_add_laws = {
 									alwaystransparent = yes
 									parentanchor = center
 								}
@@ -1887,7 +1902,7 @@ types Lists
 										visible = "[Not( Character.IsAssignedAsTaxpayer )]"
 										texture = "gfx/interface/colors/red.dds"
 										alpha = 0.2
-
+							
 										modify_texture = {
 											texture = "gfx/interface/component_masks/mask_dlc.dds"
 											blend_mode = alphaMultiply
@@ -2034,8 +2049,37 @@ types Lists
 
 							expand = {}
 						}
+						
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							button_round = {
+								visible = "[Character.IsPlayerInteractionShown('give_vassal_directive_interaction')]"
+								enabled = "[Character.IsPlayerInteractionValid('give_vassal_directive_interaction')]"
+								onclick = "[Character.OpenPlayerInteraction('give_vassal_directive_interaction')]"
+								tooltip = "[Character.GetPlayerInteractionTooltip('give_vassal_directive_interaction')]"
 
-						vassal_progressbars = {}
+								block "give_directive_button_round" {}
+
+								button_give_directive = {
+									alwaystransparent = yes
+									parentanchor = center
+								}
+								using = tooltip_se
+							}
+							vbox = {
+								margin_top = -11
+								text_single = {
+									visible = "[Character.IsPlayerInteractionShown('give_vassal_directive_interaction')]"
+									text = "[Character.Custom('vassal_directive_icon')]"
+									tooltip = "[Character.Custom('vassal_directive_text')]"
+									using = tooltip_se
+								}
+							}
+							
+							expand = {}
+							
+							vassal_progressbars = {}
+						}
 
 						divider_light = {
 							layoutpolicy_horizontal = expanding
@@ -2787,7 +2831,7 @@ types DataModelViewTypes
 
 		dropdown_menu_standard = {
 			name = "sort_options"
-
+			
 			blockoverride "dropdown_properties"
 			{
 				datamodel = "[DataModelView.GetSorters]"
