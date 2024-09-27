@@ -1055,9 +1055,38 @@ window = {
 				spacing = 5
 				margin = { 5 5 }
 
-				coa_title_medium = {
-					datacontext = "[HoldingView.GetTitle]"
-					visible = "[HoldingView.GetTitle.HasHolder]"
+				flowcontainer = {
+					ignoreinvisible = yes
+					direction = vertical
+					layoutpolicy_vertical = expanding
+					coa_title_medium = {
+						datacontext = "[HoldingView.GetTitle]"
+						visible = "[HoldingView.GetTitle.HasHolder]"
+					}
+					
+
+					button_round = {
+						name = "move_domcicle_button"
+						datacontext = "[GetPlayer.GetDomicile]"
+						datacontext = "[HoldingView.GetProvince]"
+						visible = "[IsLandlessAdventurer( GetPlayer )]"
+						widgetid = "move_domcicle_button"
+						size = { 50 50 }
+
+						enabled = "[Domicile.CanMoveTo( Province.Self )]"
+						onclick = "[OpenGameViewData( 'move_domicile_planner', Province.Self )]"
+
+						tooltip = "[Domicile.GetType.GetMoveTooltip( Character.Self )]"
+						tooltip_when_disabled = "[Domicile.GetMoveToTooltip( Province.Self )]"
+						using = tooltip_ne
+
+						button_icon = {
+							alwaystransparent = yes
+							parentanchor = center
+							size = { 30 30 }
+							texture = "gfx/interface/icons/flat_icons/move_camp.dds"
+						}
+					}
 				}
 
 				flowcontainer = {
@@ -1456,11 +1485,13 @@ window = {
 							container = {
 								icon = {
 									name = "terrain"
+									datacontext = "[HoldingView.GetProvince]"
+									tooltip = "HOLDING_TERRAIN_TOTAL_TOOLTIP"
+
 									visible = "[HoldingStatus.IsTerrainType]"
 									datacontext = "[HoldingStatus.GetTerrainType]"
 									texture = "[Terrain.GetIcon]"
 									size = { 35 35 }
-									tooltip = "HOLDING_TERRAIN_TOOLTIP"
 								}
 
 								button_round = {
@@ -1713,6 +1744,7 @@ window = {
 							layoutpolicy_horizontal = expanding
 							text = "SUPPLY_LIMIT"
 							default_format = "#high"
+							max_width = 140
 						}
 
 						text_single = {
@@ -1745,8 +1777,8 @@ window = {
 
 						tooltip_visible = "[ValueBreakdown.HasTooltip]"
 						tooltipwidget = {
-                            widget_value_breakdown_tooltip = {}
-                        }
+							widget_value_breakdown_tooltip = {}
+						}
 					}
 
 					expand = {}
