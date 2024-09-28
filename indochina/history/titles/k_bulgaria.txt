@@ -2,6 +2,7 @@
 k_bulgaria = {
 	867.1.1 = { change_development_level = 5 }
 	1066.1.1 = { change_development_level = 8 }
+	1178.1.1 = { change_development_level = 24 }
 	1187.1.1 = { change_development_level = 25 }
 	1337.1.1 = { change_development_level = 50 }
 
@@ -67,21 +68,21 @@ k_bulgaria = {
 	}
 	852.1.1 = {
 		holder = 70382 #Boris
-		#effect = {
-		#	if = {
-		#		limit = {
-		#			exists = holder
-		#			has_dlc_feature = royal_court
-		#		}
-		#		holder = {
-		#			set_court_language = language_greek # Much of the clergy and nobility were speaking Greek, only replaced in 893 when there was a mass-reconversion to Old Bulgarian
-		#			if = {
-		#				limit = { NOT = { knows_court_language_of = this } }
-		#				learn_court_language_of = this
-		#			}
-		#		}
-		#	}
-		#}
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					has_dlc_feature = royal_court
+				}
+				holder = {
+					set_court_language = language_greek # Much of the clergy and nobility were speaking Greek, only replaced in 893 when there was a mass-reconversion to Old Bulgarian
+					if = {
+						limit = { NOT = { knows_court_language_of = this } }
+						learn_court_language_of = this
+					}
+				}
+			}
+		}
 	}
 	889.1.1 = {
 		holder = 70383 #Vladimir
@@ -91,17 +92,17 @@ k_bulgaria = {
 	#}
 	893.1.1 = {
 		holder = 712 #Simeon
-		#effect = {
-		#	if = {
-		#		limit = {
-		#			exists = holder
-		#			has_dlc_feature = royal_court
-		#		}
-		#		holder = {
-		#			set_court_language = language_slavonic
-		#		}
-		#	}
-		#}
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					has_dlc_feature = royal_court
+				}
+				holder = {
+					set_court_language = language_south_slavic
+				}
+			}
+		}
 	}
 	927.5.27 = {
 		holder = 714 #Petar I
@@ -278,6 +279,10 @@ d_vidin = {
 		holder = 34281
 		#liege="d_bulgaria"
 	}
+	1178.1.1 = {
+		holder = 215060 # Alexios Branas
+		government = administrative_government
+	}
 	1185.10.26 = { #1185.1.1
 		liege = "k_bulgaria"
 		holder = 217502 #Kaloyan
@@ -316,6 +321,9 @@ d_vidin = {
 		liege = "k_bulgaria"
 		holder = 467507 #Belaur
 	}
+	1330.7.28 = {
+		holder = 467524 #Liudovik
+	}
 	1336.1.2 = {
 		holder = 467500 #Ivan Alexander
 	}
@@ -328,7 +336,8 @@ d_vidin = {
 c_vidin = {
 	867.1.1 = { change_development_level = 6 }
 	1066.1.1 = { change_development_level = 9 }
-
+	1178.1.1 = { change_development_level = 20 }
+	
 	330.1.1 = {
 		liege = "d_vidin"
 		government = tribal_government
@@ -368,6 +377,19 @@ c_vidin = {
 	1066.1.1 = {
 		holder = 724
 		liege = d_rashka	#as theme of Sirmium
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
+		holder = 724
 	}
 	1071.8.26 = {
 		holder = 34463
@@ -391,6 +413,9 @@ c_vidin = {
 	1156.1.1 = {
 		holder = 34281
 		liege="d_bulgaria"
+	}
+	1178.1.1 = {
+		holder = 215060 # Alexios Branas
 	}
 	1185.10.26 = { #1185.1.1
 		liege = "k_bulgaria"
@@ -428,6 +453,9 @@ c_vidin = {
 	}
 	1322.8.1 = {
 		holder = 467507 #Belaur
+	}
+	1330.7.28 = {
+		holder = 467524 #Liudovik
 	}
 	1336.1.2 = {
 		holder = 467500 #Ivan Alexander
@@ -502,6 +530,9 @@ c_branicevo = {
 		holder = 34281
 		liege="d_bulgaria"
 	}
+	1178.1.1 = {
+		holder = 215060 # Alexios Branas
+	}
 	1185.1.1 = { #1185.1.1
 		liege = "k_hungary"
 		holder = 93765
@@ -540,6 +571,12 @@ c_branicevo = {
 	1322.6.1 = {
 		holder = 468510
 	}
+	1311.1.2 = {
+		holder = 467520 #Mihail
+	}
+	1330.7.28 = {
+		holder = 467524 #Liudovik
+	}
 	1331.11.3 = {
 		holder = 468500
 	}
@@ -554,6 +591,18 @@ c_branicevo = {
 d_turnovo = {
 	330.1.1 = {
 		liege = "e_byzantium"
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 	681.1.1 = {
 		liege = "k_bulgaria"
@@ -658,6 +707,9 @@ d_turnovo = {
 	1176.1.2 = {
 		holder = 231059
 	}
+	1178.1.1 = {
+		holder = 34412 # Ioannes Kantakouzenos
+	}
 	1183.9.20 = {
 		holder = 232506
 	}
@@ -672,6 +724,9 @@ d_turnovo = {
 	}
 	1196.1.1 = {
 		holder = 217502 #Kaloyan
+	}
+	1200.1.1 = {
+		holder = 217505 #Boril
 	}
 	1207.10.1 = {
 		holder = 217507 #Strez
@@ -710,7 +765,8 @@ d_turnovo = {
 c_turnovo = {
 	867.1.1 = { change_development_level = 6 }
 	1066.1.1 = { change_development_level = 9 }
-
+	1178.1.1 = { change_development_level = 34 }
+	
 	330.1.1 = {
 		liege = "d_turnovo"
 	}
@@ -771,7 +827,12 @@ c_turnovo = {
 	852.1.1 = {
 		holder = 70382 #Boris
 	}
-
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	1066.1.1 = {
 		holder = 1748
 	}
@@ -792,6 +853,9 @@ c_turnovo = {
 	}
 	1176.1.2 = {
 		holder = 231059
+	}
+	1178.1.1 = {
+		holder = 34412 # Ioannes Kantakouzenos
 	}
 	1183.9.20 = {
 		holder = 232506
@@ -867,9 +931,22 @@ c_turnovo = {
 c_sredets = {
 	867.1.1 = { change_development_level = 6 }
 	1066.1.1 = { change_development_level = 9 }
-
+	1178.1.1 = { change_development_level = 20 }
+	
 	330.1.1 = {
 		liege = "d_turnovo"
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 	681.1.1 = {
 		liege = "e_byzantium"
@@ -892,6 +969,19 @@ c_sredets = {
 	1066.1.1 = {
 		holder = 34464
 		liege = d_bulgaria	#as Bulgarian theme
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
+		holder = 34464
 	}
 	1073.1.1 = {
 		holder = 1782
@@ -911,6 +1001,10 @@ c_sredets = {
 	1176.1.2 = {
 		holder = 231059
 	}
+	1178.1.1 = {
+		holder = 34413 # Michael Kantakouzenos, serving under his father
+		liege = d_turnovo
+	}
 	1183.9.20 = {
 		holder = 232506
 	}
@@ -926,6 +1020,9 @@ c_sredets = {
 	}
 	1200.1.1 = {
 		holder = 217505 #Boril
+	}
+	1207.10.1 = {
+		holder = 217507 #Strez
 	}
 	1214.1.1 = {
 		holder = 217506 #Aleksii
@@ -960,7 +1057,8 @@ c_sredets = {
 c_nikopolis = {
 	867.1.1 = { change_development_level = 8 }
 	1066.1.1 = { change_development_level = 11 }
-
+	1178.1.1 = { change_development_level = 24 }
+	
 	330.1.1 = {
 		liege = "d_turnovo"
 	}
@@ -1021,7 +1119,12 @@ c_nikopolis = {
 	852.1.1 = {
 		holder = 70382 #Boris
 	}
-
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	1066.1.1 = {
 		holder = 1748
 		liege = d_turnovo	#as theme of Moesia
@@ -1043,6 +1146,10 @@ c_nikopolis = {
 	}
 	1176.1.2 = {
 		holder = 231059
+	}
+	1178.1.1 = {
+		holder = 34413 # Michael Kantakouzenos, serving under his father
+		liege = d_turnovo
 	}
 	1183.9.20 = {
 		holder = 232506
@@ -1117,7 +1224,8 @@ c_nikopolis = {
 c_dorostorum = {
 	867.1.1 = { change_development_level = 7 }
 	1066.1.1 = { change_development_level = 10 }
-
+	1178.1.1 = { change_development_level = 24 }
+	
 	330.1.1 = {
 		liege = "d_turnovo"
 	}
@@ -1178,7 +1286,25 @@ c_dorostorum = {
 	852.1.1 = {
 		holder = 70382 #Boris
 	}
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	1066.1.1 = {
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 		holder = 20479
 	}
 	1093.1.1 = {
@@ -1199,11 +1325,15 @@ c_dorostorum = {
 	1176.1.2 = {
 		holder = 231059
 	}
+	1178.1.1 = {
+		holder = 34412 # Ioannes Kantakouzenos
+	}
 	1183.9.20 = {
 		holder = 232506
 	}
 	1185.10.26 = { #1185.1.1
 		liege = "k_bulgaria"
+		government = feudal_government
 	}
 	1185.10.26 = { #1185.1.1
 		holder = 217502 #Kaloyan
@@ -1330,7 +1460,12 @@ c_vratsa = {
 	852.1.1 = {
 		holder = 70382 #Boris
 	}
-
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	1066.1.1 = {
 		holder = 34464
 		liege = d_bulgaria	#as Bulgarian theme
@@ -1356,6 +1491,10 @@ c_vratsa = {
 	1176.1.2 = {
 		holder = 231059
 	}
+	1178.1.1 = {
+		holder = 34413 # Michael Kantakouzenos, serving under his father
+		liege = d_turnovo
+	}
 	1183.9.20 = {
 		holder = 232506
 	}
@@ -1371,15 +1510,60 @@ c_vratsa = {
 	1196.1.1 = {
 		holder = 217502 #Kaloyan
 	}
+	1207.10.1 = {
+		holder = 217505 #Boril
+	}
+	1218.1.2 = {
+		holder = 31160 #Ivan II
+	}
+	1241.6.24 = {
+		holder = 31165 #Koloman I
+	}
+	1246.8.1 = {
+		holder = 31166 #Mihail I
+	}
+	1256.1.1 = {
+		holder = 31170 #Koloman II
+	}
+	1257.1.1 = {
+		holder = 31185 #Micho
+	}
+	1258.1.1 = {
+		holder = 31187 #Konstandin
+	}
 	1277.9.1 = {
 		holder = 467508 #Shishman
 		liege = d_vidin
 	}
+	1279.1.1 = {
+		holder = 31192 #Ivaljo
+	}
+	1280.1.1 = {
+		holder = 467530 #Georgi I
+	}
+	1292.1.1 = {
+		holder = 467540 #Smiletz
+	}
+	1298.1.2 = {
+		holder = 125519 #Chaka
+	}
+	1299.1.2 = {
+		holder = 31193 #Todor
+	}
 	1311.1.2 = {
 		holder = 467520 #Mihail
 	}
+	1322.1.1 = {
+		holder = 31195 #Georgi II
+	}
 	1322.8.1 = {
-		holder = 467507 #Belaur
+		holder = 467520 #Mihail II
+	}
+	1330.7.28 = {
+		holder = 467521 #Ivan Stefan
+	}
+	1331.3.1 = {
+		holder = 467500 #Ivan Aleksandr
 	}
 	1336.1.2 = {
 		holder = 467500 #Ivan Alexander
@@ -1452,6 +1636,12 @@ c_aytos = {
 	852.1.1 = {
 		holder = 70382 #Boris
 	}
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	1066.1.1 = {
 		holder = 1748
 	}
@@ -1472,6 +1662,22 @@ c_aytos = {
 	}
 	1176.1.2 = {
 		holder = 231059
+	}
+	1178.1.1 = {
+		holder = 34410 # Michael Kantakouzenos
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
+		liege = d_turnovo
 	}
 	1183.9.20 = {
 		holder = 232506
@@ -1618,6 +1824,9 @@ d_dobrudja = {
 	#1060.1.1 = {
 	#	holder = 1740
 	#}
+	1066.1.1 = {
+		holder = 1748
+	}
 	#1071.8.26 = {
 	#	holder = 1735
 	#}
@@ -1641,6 +1850,9 @@ d_dobrudja = {
 	}
 	1176.9.17 = {
 		holder = 34407
+	}
+	1178.1.1 = {
+		holder = 0
 	}
 	1180.1.1 = {
 		holder = 34409
@@ -1682,7 +1894,7 @@ d_dobrudja = {
 		holder = 31195 #Georgi II
 	}
 	1322.8.1 = {
-		holder = 467550
+		holder = 467521 #Ivan Stefan
 	}
 }
 
@@ -1690,7 +1902,8 @@ d_dobrudja = {
 c_constanta = {
 	867.1.1 = { change_development_level = 7 }
 	1066.1.1 = { change_development_level = 10 }
-
+	1178.1.1 = { change_development_level = 24 }
+	
 	330.1.1 = {
 		liege = "d_dobrudja"
 	}
@@ -1721,13 +1934,31 @@ c_constanta = {
 	852.1.1 = {
 		holder = 70382 #Boris
 	}
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	936.1.1 = {
 		holder = 260671
 		liege = d_dobrudja
 	}
 	1063.1.1 = {
-		holder = 1740
 		liege = d_turnovo	#as theme of Moesia
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
+		holder = 20511 # Ioannes Kantakouzenos
 	}
 	1101.1.1 = {
 		holder = 34266
@@ -1747,6 +1978,10 @@ c_constanta = {
 	}
 	1176.9.17 = {
 		holder = 34407
+	}
+	1178.1.1 = {
+		holder = 34410 # Michael Kantakouzenos
+		liege = d_turnovo
 	}
 	1180.1.1 = {
 		holder = 34409
@@ -1785,7 +2020,7 @@ c_constanta = {
 		holder = 31195 #Georgi II
 	}
 	1322.8.1 = {
-		holder = 467550
+		holder = 467522 #Shishman
 	}
 }
 
@@ -1827,8 +2062,20 @@ c_mesembria = {
 	}
 
 	1060.1.1 = {
-		holder = 20511
 		liege = d_turnovo	#as theme of Moesia
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
+		holder = 20511
 	}
 	1107.10.1 = {
 		holder = 41301
@@ -1845,6 +2092,10 @@ c_mesembria = {
 	}
 	1176.9.17 = {
 		holder = 34407
+	}
+	1178.1.1 = {
+		holder = 34410 # Michael Kantakouzenos
+		liege = d_turnovo
 	}
 	1180.1.1 = {
 		holder = 34409
@@ -1883,7 +2134,7 @@ c_mesembria = {
 		holder = 31195 #Georgi II
 	}
 	1322.8.1 = {
-		holder = 467550
+		holder = 467521 #Ivan Stefan
 	}
 }
 
@@ -1891,13 +2142,29 @@ c_mesembria = {
 d_bulgaria = {
 	330.1.1 = {
 		liege = "e_byzantium"
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 	766.1.1 = {
 		holder = 145799
 	}
 	865.1.1 = {
-		holder = 70383
 		liege = "k_bulgaria"
+		government = feudal_government
+		holder = 70383
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
 	}
 	936.1.1 = {
 		holder = 260678
@@ -1907,12 +2174,23 @@ d_bulgaria = {
 	}
 
 	1066.1.1 = {
-		holder = 90035	#Nikephoros Synadenos
 		liege = e_byzantium	#as Bulgarian theme
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
+		holder = 34464 # Nikephoros Karantenos
 	}
 	1081.10.18 = {
 		holder = 90093
-		liege = "e_byzantium"
 	}
 	1093.1.1 = {
 		holder = 90092
@@ -1923,16 +2201,48 @@ d_bulgaria = {
 	1149.1.1 = {
 		holder = 215035
 	}
+	1178.1.1 = {
+		holder = 34281 # Alexios Palaiologos
+		effect = {
+			set_capital_county = title:c_skopje
+		}
+	}
 	1185.9.12 = {
 		holder = 215508
-		liege = e_byzantium
 	}
 	1200.1.1 = {
 		holder = 215513
 	}
-	1203.1.1 = {
-		holder = 217507
-		liege = k_bulgaria
+	1203.1.2 = {
+		holder = 215514
+	}
+	1204.5.16 = {
+		liege = 0
+	}
+	1204.5.16 = {
+		holder = 215517
+	}
+	1215.1.1 = {
+		holder = 215514
+	}
+	1230.3.9 = {
+		holder = 125715
+	}
+	1268.1.1 = {
+		holder = 125726
+	}
+	1297.1.1 = {
+		holder = 125728
+	}
+	
+	1318.1.1 = {
+		holder = 31440 #Nicolo Orsini
+	}
+	1323.1.1 = {
+		holder = 31441 #Giovanni II Orsini
+	}
+	1335.1.1 = {
+		holder = 31443 #Nikephoros Orsini
 	}
 	1337.1.1 = {
 		holder = 0
@@ -1943,27 +2253,39 @@ d_bulgaria = {
 c_naissus = {
 	867.1.1 = { change_development_level = 6 }
 	1066.1.1 = { change_development_level = 9 }
-
+	1178.1.1 = { change_development_level = 20 }
+	
 	330.1.1 = {
 		liege = "d_vidin"
 		government = tribal_government
 	}
 	681.1.1 = {
 		liege = "e_byzantium"
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 	759.1.1 = {
 		holder = 145125
 	}
 	843.1.1 = {
 		liege = "k_bulgaria"
+		government = feudal_government
 	}
 	852.1.1 = {
 		holder = 70382 #Boris
 	}
 	860.1.1 = {
 		liege = "d_vidin"
-	}
-	860.1.1 = {
 		#holder = 70383
 		holder = vlach_000003
 	}
@@ -1974,12 +2296,21 @@ c_naissus = {
 		holder = 260683
 		liege = d_vidin
 	}
-	#1066.1.1 = {
-	#	liege = "d_vidin"
-	#}
 	1066.1.1 = {
-		holder = 1735
 		liege = d_rashka	#as theme of Sirmium
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
+		holder = 1735
 	}
 	1071.8.26 = {
 		liege = "k_bulgaria"
@@ -1987,7 +2318,7 @@ c_naissus = {
 	}
 	1073.1.1 = {
 		liege = "d_vidin"
-	holder = 41537
+		holder = 41537
 	}
 	1094.3.12 = {
 		holder = 34468
@@ -2002,6 +2333,10 @@ c_naissus = {
 		holder = 34281
 		liege="d_bulgaria"
 	}
+	1178.1.1 = {
+		holder = 215009 # Alexios Palaiologos
+		liege = d_bulgaria
+	}
 	1186.1.1 = {
 		liege = "k_serbia"
 	}
@@ -2015,7 +2350,7 @@ c_naissus = {
 		liege = "d_vidin"
 	}
 	1202.1.1 = {
-		holder = 217505 #Kaloyan
+		holder = 217502 #Kaloyan
 	}
 	1207.10.1 = {
 		holder = 217505 #Boril
@@ -2064,6 +2399,18 @@ c_naissus = {
 c_pomoravlje = {
 	330.1.1 = {
 		liege = "d_dyrrachion"
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 	640.1.1 = {
 		liege = "d_rashka"
@@ -2080,6 +2427,7 @@ c_pomoravlje = {
 	# since 843.1.1 d_dyrrachion is under k_bulgaria
 	843.1.1 = {
 		liege = "d_dyrrachion"
+		government = feudal_government
 	}
 	852.1.1 = {
 		holder = 70382 #Boris
@@ -2088,17 +2436,32 @@ c_pomoravlje = {
 		holder = 70383
 		liege = "d_vidin"
 	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	936.1.1 = {
 		holder = 260683
 		liege = d_vidin
 	}
 	1066.1.1 = {
-		holder = 20482
 		liege = d_rashka	#as theme of Sirmium
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
+		holder = 20482
 	}
 	1078.1.1 = {
 		holder = 20481
-		liege = d_bulgaria
+		liege = d_vidin
 	}
 	1107.1.1 = {
 		holder = 42014
@@ -2113,6 +2476,9 @@ c_pomoravlje = {
 		holder = 34281
 		liege="d_bulgaria"
 	}
+	1178.1.1 = {
+		holder = 34281 # Alexios Palaiologos
+	}
 	1180.1.1 = {
 		holder = 218500
 		liege = k_serbia
@@ -2123,9 +2489,15 @@ c_pomoravlje = {
 	1196.1.1 = {
 		holder = 218507
 	}
+	1203.1.1 = {
+		holder = 34282
+	}
+	1204.5.16 = {
+		liege = "d_epirus"
+		holder = 215517
+	}
 	1215.1.1 = {
 		holder = 215514
-		liege = d_epirus
 	}
 	1230.1.1 = {
 		liege = "k_bulgaria"
@@ -2154,8 +2526,8 @@ c_pomoravlje = {
 	1322.6.1 = {
 		holder = 468510
 	}
-	1331.1.1 = {
-		holder = vukoslav
+	1331.11.3 = {
+		holder = 468500
 	}
 
 }
@@ -2188,9 +2560,8 @@ c_velbazhd = {
 		holder = 70383
 		liege = "d_vidin"
 	}
-	936.1.1 = {
-		holder = 260678
-		liege = d_bulgaria
+	893.1.1 = {
+		holder = 712 #Simeon
 	}
 	1066.1.1 = {
 		holder = 20484
@@ -2198,7 +2569,6 @@ c_velbazhd = {
 	}
 	1078.1.1 = {
 		holder = 20481
-		liege = d_bulgaria
 	}
 	1107.1.1 = {
 		holder = 42014
@@ -2213,9 +2583,35 @@ c_velbazhd = {
 		holder = 34281
 		liege="d_bulgaria"
 	}
+	1178.1.1 = {
+		holder = 215009 # Alexios Palaiologos
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
+		liege = d_bulgaria
+	}
 	1203.1.1 = {
 		liege = "d_turnovo"
 		holder = 217507 #Strez
+	}
+	1204.5.16 = {
+		liege = "d_epirus"
+		holder = 215517
+	}
+	1215.1.1 = {
+		holder = 215514
+	}
+	1230.1.1 = {
+		liege = "k_bulgaria"
 	}
 	1230.1.1 = {
 		holder = 31160 #Ivan II
@@ -2253,18 +2649,34 @@ c_velbazhd = {
 c_pirin = {
 	330.1.1 = {
 		liege = "d_dyrrachion"
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 	753.1.1 = {
 		holder = 145818
 	}
 	# since 843.1.1 d_dyrrachion is under k_bulgaria
 	852.1.1 = {
-		holder = 70382 #Boris
 		liege = "k_bulgaria"
+		government = feudal_government
+		holder = 70382 #Boris
 	}
 	860.1.1 = {
 		holder = 70383
 		liege = "d_vidin"
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
 	}
 	936.1.1 = {
 		holder = 260678
@@ -2273,8 +2685,21 @@ c_pirin = {
 	1060.1.1 = {
 		holder = 20484
 	}
-	1066.1.1 = {
+	1060.1.1 = {
 		liege = d_bulgaria	#as Bulgarian theme
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
+		holder = 20484
 	}
 	1078.1.1 = {
 		holder = 20480
@@ -2288,9 +2713,13 @@ c_pirin = {
 	1170.1.1 = {
 		holder = 215001
 	}
+	1178.1.1 = {
+		holder = 215009 # Alexios Palaiologos
+		liege = d_bulgaria
+	}
 	1185.9.12 = {
-		liege = "d_philippopolis"
-	holder = 215061
+		liege = "d_strymon"
+		holder = 215061
 	}
 	1186.1.1 = {
 		holder = 215001
@@ -2301,6 +2730,9 @@ c_pirin = {
 	#Bulgarian conquest
 	1203.1.1 = {
 		liege = "d_turnovo"
+		holder = 217505 #Boril
+	}
+	1207.10.1 = {
 		holder = 217507 #Strez
 	}
 	1214.1.1 = {
@@ -2316,14 +2748,26 @@ c_pirin = {
 		holder = 31198 #Ivan
 	}
 	1275.1.2 = {
-		holder = 465527
+		holder = 467540 #Smiletz
 	}
 	1282.12.11 = {
 		holder = 465521
 	}
+	1292.1.1 = {
+		holder = 31199 #Radoslav
+	}
+	1298.1.2 = {
+		holder = 468555 #Aldimir
+	}
+	1305.1.5 = {
+		holder = 468550 #Ivan
+	}
 	1320.1.1 = {
 		holder = hrelja
 		liege = k_serbia
+	}
+	1322.8.1 = {
+		holder = 467500 #Ivan Aleksandr
 	}
 }
 
@@ -2343,6 +2787,9 @@ c_strumica = {
 	860.1.1 = {
 		holder = 70383
 		liege = "d_vidin"
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
 	}
 	936.1.1 = {
 		holder = 260678
@@ -2366,9 +2813,13 @@ c_strumica = {
 	1170.1.1 = {
 		holder = 215001
 	}
+	1178.1.1 = {
+		holder = 215009 # Alexios Palaiologos
+		liege = d_bulgaria
+	}
 	1185.9.12 = {
-		liege = "d_philippopolis"
-	holder = 215061
+		liege = "d_strymon"
+		holder = 215061
 	}
 	1186.1.1 = {
 		holder = 215001
@@ -2379,6 +2830,9 @@ c_strumica = {
 	#Bulgarian conquest
 	1203.1.1 = {
 		liege = "d_turnovo"
+		holder = 217505 #Boril
+	}
+	1207.10.1 = {
 		holder = 217507 #Strez
 	}
 	1214.1.1 = {
@@ -2394,14 +2848,26 @@ c_strumica = {
 		holder = 31198 #Ivan
 	}
 	1275.1.2 = {
-		holder = 465527
+		holder = 467540 #Smiletz
 	}
 	1282.12.11 = {
 		holder = 465521
 	}
+	1292.1.1 = {
+		holder = 31199 #Radoslav
+	}
+	1298.1.2 = {
+		holder = 468555 #Aldimir
+	}
+	1305.1.5 = {
+		holder = 468550 #Ivan
+	}
 	1320.1.1 = {
 		holder = hrelja
 		liege = k_serbia
+	}
+	1322.8.1 = {
+		holder = 467500 #Ivan Aleksandr
 	}
 }
 
@@ -2433,12 +2899,15 @@ c_skopje = {
 		holder = 70383
 		liege = "d_vidin"
 	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	936.1.1 = {
 		holder = 260678
 		liege = d_bulgaria
 	}
 	1066.1.1 = {
-		holder = 90035
+		holder = 34464 # Nikephoros Karantenos
 		liege = d_bulgaria	#as Bulgarian theme
 	}
 	1078.1.1 = {
@@ -2458,12 +2927,18 @@ c_skopje = {
 		holder = 34281
 		liege="d_bulgaria"
 	}
+	1178.1.1 = {
+		holder = 34281 # Alexios Palaiologos
+	}
 	1185.9.12 = {
 		holder = 215508
 	}
 	1200.1.1 = {
 		holder = 217507 #Strez
 		liege = d_turnovo
+	}
+	1203.1.1 = {
+		holder = 34282
 	}
 	1204.1.1 = {
 		holder = 31186 #Tikh
@@ -2509,8 +2984,9 @@ c_skopje = {
 
 }
 
-
 c_ohrid = {
+	1178.1.1 = { change_development_level = 34 }
+
 	330.1.1 = {
 		liege = "d_dyrrachion"
 	}
@@ -2535,20 +3011,19 @@ c_ohrid = {
 		holder = 70382 #Boris
 		liege = "k_bulgaria"
 	}
-	936.1.1 = {
-		holder = 260678
-		liege = d_bulgaria
-	}
 	860.1.1 = {
 		holder = 70383
 		liege = "d_vidin"
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
 	}
 	936.1.1 = {
 		holder = 260679
 		liege = d_bulgaria
 	}
 	1066.1.1 = {
-		holder = 90035	#Nikephoros Synadenos
+		holder = 34464 # Nikephoros Karantenos
 		liege = d_bulgaria	#as Bulgarian theme
 	}
 	1078.1.1 = {
@@ -2567,6 +3042,9 @@ c_ohrid = {
 	1168.1.1 = {
 		holder = 34281
 		liege="d_bulgaria"
+	}
+	1178.1.1 = {
+		holder = 34281 # Alexios Palaiologos
 	}
 	1185.9.12 = {
 		holder = 215508
@@ -2620,6 +3098,18 @@ c_ohrid = {
 
 d_philippopolis = {
 	330.1.1 = {
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 		liege = "e_byzantium"
 	}
 	681.1.1 = {
@@ -2680,6 +3170,9 @@ d_philippopolis = {
 	852.1.1 = {
 		holder = 70382
 	}
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
 	893.1.1 = {
 		holder = 712
 	}
@@ -2715,14 +3208,29 @@ d_philippopolis = {
 	1113.1.1 = {
 		holder = 34587
 	}
+	1167.6.1 = {
+		holder = 231059 # Alexios Komnenos, the protostrator and protosebastos
+	}
 	1168.1.1 = {
 		holder = 34273
 	}
-	1185.9.12 = {
-		holder = 215060
+	1183.9.20 = {
+		holder = 232506
+	}
+	1185.1.1 = {
+		liege = "k_bulgaria"
+	}
+	1185.1.1 = {
+		holder = 217502 #Kaloyan
 	}
 	1186.1.1 = {
 		holder = 34273
+	}
+	1196.1.1 = {
+		holder = 215004 #Dobromir
+	}
+	1200.1.1 = {
+		holder = 217505 #Boril
 	}
 	1202.1.1 = {
 		holder = 34590
@@ -2733,6 +3241,12 @@ d_philippopolis = {
 	}
 	1206.7.1 = {
 		holder = 205525 #Henry I van Vlaanderen
+	}
+	1207.10.1 = {
+		holder = 217507 #Strez
+	}
+	1214.1.1 = {
+		holder = 217506 #Aleksii
 	}
 	1216.6.11 = {
 		holder = 205725 #Pierre I de Courtenay
@@ -2747,13 +3261,10 @@ d_philippopolis = {
 		holder = 461742 #Jean de Brienne (regent)
 	}
 
-	1230.1.1 = {
+	1230.1.2 = {
 		liege = "k_bulgaria"
 	}
-	1230.1.1 = {
-		holder = 31160 #Ivan II
-	}
-	1230.1.1 = {
+	1230.1.2 = {
 		holder = 31160 #Ivan II
 	}
 	1241.6.24 = {
@@ -2795,7 +3306,12 @@ c_philippopolis = {
 		#holder = 1700
 		holder = 70382
 	}
-
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	1064.1.1 = {
 		holder = 1736
 		liege = d_philippopolis
@@ -2809,8 +3325,8 @@ c_philippopolis = {
 	1113.1.1 = {
 		holder = 34587
 	}
-	1168.1.1 = {
-		holder = 34273
+	1167.6.1 = {
+		holder = 231059 # Alexios Komnenos, the protostrator and protosebastos
 	}
 	1185.9.12 = {
 		holder = 215060
@@ -2938,6 +3454,12 @@ c_kran = {
 	852.1.1 = {
 		holder = 70382 #Boris
 	}
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	1066.1.1 = {
 		holder = 1748
 	}
@@ -3020,7 +3542,10 @@ c_kran = {
 	1322.8.1 = {
 		holder = 467505
 	}
-	1330.1.2 = {
+	1330.7.28 = {
+		holder = 467521
+	}
+	1331.3.1 = {
 		holder = 467500
 	}
 
@@ -3041,7 +3566,12 @@ c_beroe = {
 		#holder = 1700
 		holder = 70382
 	}
-
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	1064.1.1 = {
 		holder = 1736
 		liege = d_philippopolis
@@ -3055,8 +3585,8 @@ c_beroe = {
 	1113.1.1 = {
 		holder = 34587
 	}
-	1168.1.1 = {
-		holder = 34273
+	1167.6.1 = {
+		holder = 231059 # Alexios Komnenos, the protostrator and protosebastos
 	}
 	1185.9.12 = {
 		holder = 215060
@@ -3115,7 +3645,8 @@ c_beroe = {
 c_burgas = {
 	867.1.1 = { change_development_level = 7 }
 	1066.1.1 = { change_development_level = 10 }
-
+	1178.1.1 = { change_development_level = 24 }
+	
 	#330.1.1 = {
 	#	liege = "d_thracesia"
 	#}
@@ -3131,13 +3662,6 @@ c_burgas = {
 		holder = 1732	#BYZ Emperor
 		liege = e_byzantium
 	}
-	#Sultanate of Rum
-	#1077.1.1 = {
-	#	holder = 3046
-	#}
-	#1086.1.1 = {
-	#	holder = 41701
-	#}
 	1071.8.26 = {
 		holder = 9810
 	}
@@ -3154,57 +3678,51 @@ c_burgas = {
 	1143.4.8 = {
 		holder = 215530
 	}
-	#1176.9.17 = {
-		#holder = 225000
-	#}
+	1167.6.1 = {
+		holder = 231059 # Alexios Komnenos, the protostrator and protosebastos
+	}
 	1187.1.1 = {
 		holder = 215032
 	}
-	#1200.1.1 = {
-	#	holder = 34590
-	#}
-	1204.5.16 = {
-		holder = 205523
+	1200.1.1 = {
+		holder = 225004
 	}
-	#1200.1.1 = {
-	#	holder = 225004
-	#}
-	#1204.1.1 = {
-	#	holder = 34187
-	#}
-	#1205.1.1 = {
-	#	holder = 225002
-	#}
-	#1211.1.1 = {
-	#	holder = 34188
-	#}
-	#1220.1.1 = {
-	#	holder = 34189
-	#}
-	#1237.1.1 = {
-	#	holder = 34190
-	#}
-	#1246.1.1 = {
-	#	holder = 34191
-	#}
-	#1248.1.1 = {
-	#	holder = 34192
-	#}
-	#1249.1.1 = {
-	#	holder = 34193
-	#}
-	#1257.1.1 = {
-	#	holder = 34192
-	#}
-	#1265.1.1 = {
-	#	holder = 34194
-	#}
-	#1280.1.1 = {
-	#	holder = 71867
-	#}
-	#1327.1.1 = {
-	#	holder = 71868
-	#}
+	1204.1.1 = {
+		holder = 34187
+	}
+	1205.1.1 = {
+		holder = 225002
+	}
+	1211.1.1 = {
+		holder = 34188
+	}
+	1220.1.1 = {
+		holder = 34189
+	}
+	1237.1.1 = {
+		holder = 34190
+	}
+	1246.1.1 = {
+		holder = 34191
+	}
+	1248.1.1 = {
+		holder = 34192
+	}
+	1249.1.1 = {
+		holder = 34193
+	}
+	1257.1.1 = {
+		holder = 34192
+	}
+	1265.1.1 = {
+		holder = 34194
+	}
+	1280.1.1 = {
+		holder = 71867
+	}
+	1327.1.1 = {
+		holder = 71868
+	}
 	1337.1.1 = {
 		holder = 467500
 	}
@@ -3214,7 +3732,8 @@ c_burgas = {
 c_adrianopolis = {
 	867.1.1 = { change_development_level = 6 }
 	1066.1.1 = { change_development_level = 9 }
-
+	1178.1.1 = { change_development_level = 24 }
+	
 	330.1.1 = {
 		liege = "d_strymon"
 	}
@@ -3246,8 +3765,8 @@ c_adrianopolis = {
 	1113.1.1 = {
 		holder = 34587
 	}
-	1168.1.1 = {
-		holder = 34273
+	1167.6.1 = {
+		holder = 231059 # Alexios Komnenos, the protostrator and protosebastos
 	}
 	1185.9.12 = {
 		holder = 215060
@@ -3308,6 +3827,12 @@ c_zherkovo = {
 		#holder = 1700
 		holder = 70382
 	}
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	936.1.1 = {
 		holder = 70381
 		liege = e_bulgaria
@@ -3325,8 +3850,8 @@ c_zherkovo = {
 	1113.1.1 = {
 		holder = 34587
 	}
-	1168.1.1 = {
-		holder = 34273
+	1167.6.1 = {
+		holder = 231059 # Alexios Komnenos, the protostrator and protosebastos
 	}
 	1185.9.12 = {
 		holder = 215060
@@ -3396,6 +3921,12 @@ c_rhodopes = {
 		#holder = 1700
 		holder = 70382
 	}
+	889.1.1 = {
+		holder = 70383 #Vladimir
+	}
+	893.1.1 = {
+		holder = 712 #Simeon
+	}
 	936.1.1 = {
 		holder = 70381
 		liege = k_bulgaria
@@ -3413,8 +3944,8 @@ c_rhodopes = {
 	1113.1.1 = {
 		holder = 34587
 	}
-	1168.1.1 = {
-		holder = 34273
+	1167.6.1 = {
+		holder = 231059 # Alexios Komnenos, the protostrator and protosebastos
 	}
 	1185.9.12 = {
 		holder = 215060
