@@ -1,6 +1,7 @@
 k_sicily = {
 	867.1.1 = { change_development_level = 5 }
 	1066.1.1 = { change_development_level = 8 }
+	1178.1.1 = { change_development_level = 24 }
 	1187.1.1 = { change_development_level = 25 }
 	1337.1.1 = { change_development_level = 50 }
 
@@ -30,7 +31,9 @@ k_sicily = {
 	1166.5.7 = {
 		holder = 211500 # William II
 	}
-
+	1178.1.1 = {
+		de_jure_liege = e_italy
+	}
 	1189.11.11 = {
 		holder = 211509 # Tancred
 	}
@@ -83,6 +86,7 @@ k_sicily = {
 d_sicily = {
 	867.1.1 = { change_development_level = 8 }
 	1066.1.1 = { change_development_level = 11 }
+	1178.1.1 = { change_development_level = 15 }
 	1187.1.1 = { change_development_level = 30 }
 	1337.1.1 = { change_development_level = 60 }
 
@@ -200,7 +204,7 @@ d_sicily = {
 c_palermo = {
 	867.1.1 = { change_development_level = 12 }
 	1066.1.1 = { change_development_level = 18 }
-	1187.1.1 = { change_development_level = 45 }
+	1178.1.1 = { change_development_level = 53 }
 	1337.1.1 = { change_development_level = 65 }
 
 	536.1.1 = {
@@ -337,6 +341,8 @@ c_palermo = {
 }
 
 c_messina = {
+	1178.1.1 = { change_development_level = 32 }
+
 	536.1.1 = {
 		liege = d_sicily
 	}
@@ -476,6 +482,18 @@ c_messina = {
 c_siracusa = {
 	536.1.1 = {
 		liege = d_sicily
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 	756.1.1 = {
 		holder = 145854 # Elpidios, placeholder
@@ -490,7 +508,23 @@ c_siracusa = {
 		liege = d_sicily
 	}
 	885.1.1 = {
-		holder = baranis0004 # Sawada ibn Muhammad
+		government = clan_government
+		holder = maghrebi0004 # Sawada ibn Muhammad
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = {
+						holder = {
+							has_government = clan_government
+						}
+					}
+				}
+				holder = {
+					change_government = clan_government
+				}
+			}
+		}
 	}
 #	890.1.1 = {
 #		holder = baranis0004 # Sawada ibn Muhammad (2nd time)
@@ -564,6 +598,25 @@ c_siracusa = {
 	}
 	1154.2.26 = {
 		holder = 211516 # Simon II
+	}
+	1159.1.1 = {
+		holder = palmer_1 # Richard Palmer, bishop of Syracuse
+		government = theocracy_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = {
+						holder = {
+							has_government = theocracy_government
+						}
+					}
+				}
+				holder = {
+					change_government = theocracy_government
+				}
+			}
+		}
 	}
 	1202.1.1 = {
 		holder = 211518 # Roger II
@@ -684,6 +737,9 @@ c_agrigento = {
 	1154.2.26 = {
 		holder = 211516 # Simon
 	}
+	1172.1.1 = {
+		holder = sicilian0002 # Guglielmo di Montescaglioso
+	}
 	1202.1.1 = {
 		holder = 211518 # Roger III
 	}
@@ -720,6 +776,18 @@ c_agrigento = {
 c_malta = {
 	536.1.1 = {
 		liege = d_sicily
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 	751.1.1 = {
 		holder = 145859 # Drosos, placeholder
@@ -734,8 +802,9 @@ c_malta = {
 		holder = greek0002 # Ambrosios, governor of Malta during Siege of 870
 	}
 	870.1.1 = {
-		holder = baranis0002 # Muhammad ibn Khafaja
 		liege = d_sicily
+		government = clan_government
+		holder = maghrebi0002 # Muhammad ibn Khafaja
 	}
 	872.1.1 = {
 		holder = baranis0009 # Ahmad ibn Ya'qub
@@ -1196,6 +1265,9 @@ c_benevento = {
 	1170.1.1 = {
 		holder = 73482 # Cardinale Lombardo, Bishop of Benevento
 	}
+	1178.1.1 = {
+		holder = rupecanina_2 # Roger, Count of Alife
+	}
 	1179.1.1 = {
 		holder = 73483 # Roger, Bishop of Benevento
 	}
@@ -1485,7 +1557,8 @@ c_foggia = {
 d_capua = {
 	867.1.1 = { change_development_level = 8 }
 	1066.1.1 = { change_development_level = 12 }
-
+	1178.1.1 = { change_development_level = 17 }
+	
 	840.1.1 = {
 		holder = 163075 # Landolf I 'the Old' di Capua
 	}
@@ -1818,6 +1891,9 @@ c_capua = {
 		liege = k_sicily
 		holder = 211500 # William II of Sicily
 	}
+	1178.1.1 = {
+		holder = sicilian0035 # Riccardo dell'Aquila, count of Fondi
+	}
 	1189.11.11 = {
 		holder = 211509 # Tancred of Sicily
 	}
@@ -1859,6 +1935,7 @@ c_capua = {
 c_napoli = {
 	867.1.1 = { change_development_level = 13 }
 	1066.1.1 = { change_development_level = 20 }
+	1178.1.1 = { change_development_level = 31 }
 	1187.1.1 = { change_development_level = 50 }
 	1337.1.1 = { change_development_level = 70 }
 
@@ -2195,6 +2272,15 @@ b_amalfi = {
 	1141.1.1 = {
 		holder = 30880 # William II de Hauteville
 	}
+	1158.1.1 = {
+		holder = 211501 # William I
+	}
+	1166.5.7 = {
+		holder = 73357 # Henry
+	}
+	1169.1.1 = {
+		holder = 214096 # Riccardo d'Aquino, as count of Acerra
+	}
 	1197.9.28 = {
 		holder = 32549 # Pietro of Calabria
 	}
@@ -2207,7 +2293,8 @@ b_amalfi = {
 d_apulia = {
 	867.1.1 = { change_development_level = 8 }
 	1066.1.1 = { change_development_level = 11 }
-
+	1178.1.1 = { change_development_level = 15 }
+	
 	857.1.1 = {
 		holder = 163094 # Sawdan, Emir of Bari
 	}
@@ -2275,6 +2362,7 @@ d_apulia = {
 c_apulia = {
 	867.1.1 = { change_development_level = 10 }
 	1066.1.1 = { change_development_level = 13 }
+	1178.1.1 = { change_development_level = 15 }
 	1187.1.1 = { change_development_level = 45 }
 	1337.1.1 = { change_development_level = 60 }
 
@@ -2434,6 +2522,17 @@ c_bari = {
 		holder = 211509 # Tancred of Sicily
 		name = c_taranto
 	}
+	1182.9.15 = {
+		holder = 211500 # William II of Sicily
+	}
+	1183.1.1 = {
+		holder = 127092 # Bohemond
+		liege = d_apulia
+	}
+	1187.1.1 = {
+		holder = 211509 # Tancred of Sicily
+		liege = k_sicily
+	}
 	1189.11.11 = {
 		holder = 211511 # Roger V
 		liege = d_apulia
@@ -2494,6 +2593,18 @@ b_taranto = {
 c_lecce = {
 	536.1.1 = {
 		liege = e_byzantium
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 	755.1.1 = {
 		holder = 145864 # Markellos
@@ -2507,6 +2618,7 @@ c_lecce = {
 	}
 	1065.1.1 = {
 		liege = d_apulia
+		government = feudal_government
 		holder = 73270 # Geoffroy I di Lecce
 	}
 	1082.12.1 = {
@@ -2561,7 +2673,8 @@ c_lecce = {
 d_salerno = {
 	867.1.1 = { change_development_level = 8 }
 	1066.1.1 = { change_development_level = 11 }
-
+	1178.1.1 = { change_development_level = 15 }
+	
 	839.1.1 = {
 		holder = 190163 # Siconulf Sicard
 	}
@@ -2639,7 +2752,8 @@ d_salerno = {
 c_salerno = {
 	867.1.1 = { change_development_level = 12 }
 	1066.1.1 = { change_development_level = 18 }
-
+	1178.1.1 = { change_development_level = 36 }
+	
 	763.1.1 = {
 		liege = d_benevento
 	}
@@ -2738,6 +2852,10 @@ c_salerno = {
 	1141.1.1 = {
 		holder = 30880 # William II
 	}
+	1153.1.1 = {
+		holder = guarna_8 # Romuald Guarna, archbishop of Salerno
+		government = theocracy_government
+	}
 	1160.1.1 = {
 		holder = 211501 # William I of Sicily
 	}
@@ -2832,6 +2950,9 @@ c_camarda = { # Principality of Taranto
 	}
 	1157.1.1 = {
 		holder = 211500 # William II of Sicily
+	}
+	1178.1.1 = {
+		holder = sicilian0040 # Isabella Guarna, as countess of Marsico
 	}
 	1189.11.11 = {
 		holder = 211509 # Tancred of Sicily
