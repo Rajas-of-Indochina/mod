@@ -52,6 +52,59 @@ ToleranceValue = {
 	}
 }
 
+ToleranceValueConcept = {
+	type = character
+
+	text = {
+		localization_key = FAITH_HOSTILITY_RIGHTEOUS
+
+		trigger = {
+			faith = {
+				faith_hostility_level = {
+					target = scope:second.faith
+					value = faith_fully_accepted_level
+				}
+			}
+		}
+	}
+	text = {
+		localization_key = FAITH_HOSTILITY_ASTRAY
+
+		trigger = {
+			faith = {
+				faith_hostility_level = {
+					target = scope:second.faith
+					value = faith_astray_level
+				}
+			}
+		}
+	}
+	text = {
+		localization_key = FAITH_HOSTILITY_HOSTILE
+
+		trigger = {
+			faith = {
+				faith_hostility_level = {
+					target = scope:second.faith
+					value = faith_hostile_level
+				}
+			}
+		}
+	}
+	text = {
+		localization_key = FAITH_HOSTILITY_EVIL
+
+		trigger = {
+			faith = {
+				faith_hostility_level = {
+					target = scope:second.faith
+					value = faith_evil_level
+				}
+			}
+		}
+	}
+}
+
 MyPriestTitle = {
 	type = character
 
@@ -77,6 +130,24 @@ MyPriestTitle = {
 		trigger = {
 			always = no
 		}
+		localization_key = neuter_priest_title
+		fallback = yes
+	}
+}
+
+PriestTitle = {
+	type = character
+
+	text = {
+		trigger = { is_female = no }
+		localization_key = male_priest_title
+	}
+	text = {
+		trigger = { is_female = yes }
+		localization_key = female_priest_title
+	}
+	text = {
+		trigger = { always = no }
 		localization_key = neuter_priest_title
 		fallback = yes
 	}
@@ -598,7 +669,7 @@ GetActualBishopTitle = {
 	}
 	text = {
 		trigger = {
-			is_landed = yes
+			is_playable_character = yes
 		}
 		localization_key = ruler_title_name
 	}
@@ -690,39 +761,39 @@ GetActualBishopTitle = {
 	text = {
 		trigger = {
 			liege.highest_held_title_tier >= tier_kingdom
-			faith.religion = faith:mazdayasna.religion
 			is_female = no
+			fp3_custom_divinity_for_zoroastrianism_faiths = yes
 		}
 		localization_key = councillor_court_chaplain_zoroastrianism_religion_kingdom
 	}
 	text = {
 		trigger = {
 			liege.highest_held_title_tier >= tier_kingdom
-			faith.religion = faith:mazdayasna.religion
 			is_female = yes
+			fp3_custom_divinity_for_zoroastrianism_faiths = yes
 		}
 		localization_key = councillor_court_chaplain_zoroastrianism_religion_kingdom_female
 	}
 	text = {
 		trigger = {
 			liege.highest_held_title_tier >= tier_duchy
-			faith.religion = faith:mazdayasna.religion
 			is_female = no
+			fp3_custom_divinity_for_zoroastrianism_faiths = yes
 		}
 		localization_key = councillor_court_chaplain_zoroastrianism_religion_duchy
 	}
 	text = {
 		trigger = {
 			liege.highest_held_title_tier >= tier_duchy
-			faith.religion = faith:mazdayasna.religion
 			is_female = yes
+			fp3_custom_divinity_for_zoroastrianism_faiths = yes
 		}
 		localization_key = councillor_court_chaplain_zoroastrianism_religion_duchy_female
 	}
 	text = {
 		trigger = {
 			liege.highest_held_title_tier < tier_duchy
-			faith.religion = faith:mazdayasna.religion
+			fp3_custom_divinity_for_zoroastrianism_faiths = yes
 		}
 		localization_key = councillor_court_chaplain_zoroastrianism_religion_county
 	}
