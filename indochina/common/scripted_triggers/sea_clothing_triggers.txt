@@ -81,7 +81,10 @@ portrait_chinese_clothing_contents_trigger = {
 }
 
 portrait_song_chinese_clothing_trigger = {
-	has_government = chinese_government
+	OR = {
+		has_government = chinese_government
+		has_government = administrative_government
+	}
 	OR = {
 		NOT = { portrait_era1_trigger = yes }
 		game_start_date > 1000
@@ -201,14 +204,20 @@ portrait_chinese_government_trigger = {
 	is_adult = yes
 	OR = {
 		# Has Chinese Governemnt
-		has_government = chinese_government
+		OR = {
+			has_government = chinese_government
+			has_government = administrative_government
+		}
 		# Liege is either China or has Chinese gov types
 		AND = {
 			exists = liege
 			liege = {
 				AND = {
 					has_title = title:e_celestia_china
-					has_government = chinese_government
+					OR = {
+						has_government = chinese_government
+						has_government = administrative_government
+					}
 				}
 			}
 		}
@@ -374,6 +383,7 @@ portrait_chinese_peasant_trigger = {
 			OR = {
 				has_government = feudal_government
 				has_government = chinese_government
+				has_government = administrative_government
 				has_government = clan_government
 			}
 		}
