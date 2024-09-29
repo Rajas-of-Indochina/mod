@@ -81,6 +81,9 @@ on_game_start_after_lobby = {
 
         # Chinese gov setup
         sea_historical_chinese_vassal_contracts
+
+        # 930 conquerors
+        sea_936_conquerors
     }
 }
 
@@ -439,12 +442,14 @@ set_tai_language = {
 #####
 
 sea_historical_chinese_vassal_contracts = {
+    # This will only apply if you don't have RtP, we'll figure out vassal contacts for Admin China whenever
     effect = {
         title:e_celestia_china.holder = {
 
             if = {
                 limit = {
                     game_start_date <= 900.1.1 # Tang Dynasty
+                    has_government = chinese_government
                 }
 
                 if = {
@@ -884,6 +889,26 @@ nerf_japan = {
                     level = 0
                 }
             }
+        }
+    }
+}
+
+###
+
+sea_936_conquerors = {
+    trigger = {
+        NOT = { has_game_rule = no_conquerors_frequency }
+    }
+    effect = {
+        # Otto the Great
+        character:1282 = {
+            if = { limit = { is_alive = yes } }
+            create_story = story_conqueror
+        }
+        # Taizong of Great Liao
+        character:194326 = {
+            if = { limit = { is_alive = yes } }
+            create_story = story_conqueror
         }
     }
 }
