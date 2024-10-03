@@ -8,7 +8,7 @@
 avar_decision_sassanid = {
 	picture = "gfx/interface/illustrations/decisions/decision_family_tree.dds"
 	desc = avar_decision_sassanid_desc
-	sort_order = 100
+
 	major = yes
 
 	is_shown = {
@@ -76,20 +76,20 @@ avar_decision_sassanid = {
 }
 
 circassian_decision.1 = {
-    picture = "gfx/interface/illustrations/decisions/decision_circassian_christianity.dds"
-
-    sort_order = 100
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_circassian_christianity.dds"
+    }
 
     desc = circassian_decision_1_desc
     selection_tooltip = circassian_decision_1_tooltip
-	ai_check_interval = 60
+    ai_check_interval = 60
 
     is_shown = {
         NOT = { faith = faith:circassian_christianity }
 		OR = {
 			culture = {	this = culture:circassian }
 			culture = {	this = culture:ubykh }
-				}
+		}
         religion = religion:christianity_religion
 		OR = {
 			has_government	= tribal_government
@@ -119,13 +119,13 @@ circassian_decision.1 = {
 
 
 circassian_decision.2 = {
-    picture = "gfx/interface/illustrations/decisions/decision_khabze.dds"
-
-    sort_order = 100
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_khabze.dds"
+	}
 
     desc = circassian_decision_2_desc
     selection_tooltip = circassian_decision_2_tooltip
-	ai_check_interval = 36
+    ai_check_interval = 36
 
     is_shown = {
         NOT = { faith = faith:circassian_pagan }
@@ -161,9 +161,9 @@ circassian_decision.2 = {
 }
 
 circassian_decision.3 = {
-    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
-
-    sort_order = 100
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
 
     desc = circassian_decision_3_desc
     selection_tooltip = circassian_decision_3_tooltip
@@ -205,9 +205,9 @@ circassian_decision.3 = {
 }
 
 circassian_decision.4 = {
-    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
-
-    sort_order = 100
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
 
     desc = circassian_decision_4_desc
     selection_tooltip = circassian_decision_4_tooltip
@@ -237,9 +237,9 @@ circassian_decision.4 = {
 }
 
 circassian_decision.5 = {
-    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
-
-    sort_order = 100
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
 
     desc = circassian_decision_5_desc
     selection_tooltip = circassian_decision_5_tooltip
@@ -278,8 +278,6 @@ circassian_decision.5 = {
 
 circassian_decision_dag = {
     picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
-
-    sort_order = 100
 
     desc = circassian_decision_dag_desc
     selection_tooltip = circassian_decision_dag_tooltip
@@ -322,14 +320,115 @@ circassian_decision_dag = {
 	}
 }
 
-circassian_decision.7 = {
-    picture = "gfx/interface/illustrations/decisions/decision_ubykhs.dds"
+circassian_decision.6 = {
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_thamade.dds"
+    }
 
-    sort_order = 2
-	major = yes
+    major = yes
+
+    desc = circassian_decision_thamade_desc
+    selection_tooltip = circassian_decision_thamade_tooltip
+	ai_check_interval = 36
+
+    is_shown = {
+		OR = {
+			culture = {
+				OR = {
+        	has_cultural_pillar = heritage_aghvank
+        	has_cultural_pillar = heritage_ciscaucasian
+			}
+			}
+		}
+		NOT = {
+			has_trait = thamade
+		}
+    }
+
+	is_valid = {
+		culture = {
+			OR = {
+        	has_cultural_pillar = heritage_aghvank
+        	has_cultural_pillar = heritage_ciscaucasian
+			}
+			}
+        age > 50
+		prestige_level >=1
+        OR = {
+				has_trait = honest
+				has_trait = forgiving
+				has_trait = generous
+				has_trait = just
+				has_trait = patient
+				has_trait = compassionate
+    	}
+		NOT = {
+		    OR = {
+				has_trait = thamade
+				has_trait = sadistic
+				has_trait = greedy
+				has_trait = callous
+				has_trait = craven
+				has_trait = lustful
+				has_trait = lazy
+				has_trait = deceitful
+				has_trait = impatient
+				has_trait = shy
+				has_trait = paranoid
+				has_trait = intellect_bad
+				has_trait = intellect_bad_2
+				has_trait = intellect_bad_3
+				has_trait = torturer
+				has_trait = adulterer
+				has_trait = murderer
+				has_trait = deviant
+				has_trait = sodomite
+				has_trait = lunatic
+				has_trait = kinslayer_1
+				has_trait = kinslayer_2
+				has_trait = kinslayer_3
+				has_trait = incestuous
+				has_trait = cannibal
+				has_trait = murderer
+				has_trait = drunkard
+				has_trait = flagellant
+				has_trait = contrite
+				has_trait = reclusive
+				has_trait = irritable
+				has_trait = rakish
+				has_trait = hashishiyah
+				has_trait = irritable
+				has_trait = incapable
+		    }
+		}
+    }
+
+    effect = {
+
+    add_trait = thamade
+    add_trait = trait_thamade
+
+    }
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+circassian_decision.7 = {
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_ubykhs.dds"
+    }
+
+    major = yes
 
     desc = circassian_decision_seven_desc
     selection_tooltip = circassian_decision_seven_tooltip
+	ai_check_interval = 36
 
     is_shown = {
 		culture = {	this = culture:ubykh }
@@ -385,22 +484,26 @@ circassian_decision.7 = {
 
 
 circassian_decision.8 = {
-    picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
 
-    sort_order = 2
 	major = yes
 
     desc = circassian_decision_eight_desc
     selection_tooltip = circassian_decision_eight_tooltip
+	ai_check_interval = 36
 
     is_shown = {
 		OR = {
 			culture = {	this = culture:circassian }
 			culture = {	this = culture:ubykh }
-			any_parent_culture = {
-				OR = {
-					culture = {	this = culture:circassian }
-					culture = {	this = culture:ubykh }
+			culture = {
+				any_parent_culture = {
+					OR = {
+						this = culture:circassian
+						this = culture:ubykh
+					}
 				}
 			}
 		}
@@ -420,13 +523,9 @@ circassian_decision.8 = {
 		AND = {
 			custom_tooltip = {
 				text = circassiantribal_requirement
-				NOT = {
+				NOR = {
 					has_government	= tribal_government
-				}
-				NOT = {
 					has_government	= nomadic_government
-				}
-				NOT = {
 					has_government	= anarchist_government
 				}
 			}
@@ -449,13 +548,9 @@ circassian_decision.8 = {
 		}
 		faith = faith:circassian_christianity
 		AND = {
-				NOT = {
+				NOR = {
 					has_government	= tribal_government
-				}
-				NOT = {
 					has_government	= nomadic_government
-				}
-				NOT = {
 					has_government	= anarchist_government
 				}
 		}
@@ -468,16 +563,15 @@ circassian_decision.8 = {
 	}
 }
 
-
-
 circassian_decision_armenians = {
-		picture = "gfx/interface/illustrations/decisions/decision_cherkesogai.dds"
-		major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_cherkesogai.dds"
+	}
 
-		sort_order = 100
+	major = yes
 
-		desc = circassian_decision_nine_desc
-		selection_tooltip = circassian_decision_nine_tooltip
+	desc = circassian_decision_nine_desc
+	selection_tooltip = circassian_decision_nine_tooltip
 
         is_shown = {
 			NOT = {	#You can only do it once.
@@ -586,10 +680,12 @@ circassian_decision_armenians = {
 }
 
 circassian_decision_dais = {
-	picture = "gfx/interface/illustrations/decisions/fp3/fp3_decision_secret_faith.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp3/fp3_decision_secret_faith.dds"
+	}
+
 	major = yes
 
-	sort_order = 100
 
 	desc = circassian_decision_ten_desc
 	selection_tooltip = circassian_decision_ten_tooltip
@@ -663,10 +759,13 @@ circassian_decision_dais = {
 }
 
 circassian_decision_unify = {
-	picture = "gfx/interface/illustrations/decisions/unify.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/unify.dds"
+	}
+
 	desc = circassian_decision_unify_desc
 	selection_tooltip = circassian_decision_unify_tooltip
-	sort_order = 100
+
 	major = yes
 
 	is_shown = {
@@ -753,10 +852,13 @@ circassian_decision_unify = {
 }
 
 circassian_decision_unify_ai = {
-	picture = "gfx/interface/illustrations/decisions/unify.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/unify.dds"
+	}
+
 	desc = circassian_decision_unify_desc
 	selection_tooltip = circassian_decision_unify_tooltip
-	sort_order = 100
+
 	major = yes
 
 	is_shown = {
@@ -991,10 +1093,13 @@ circassian_decision_unify_ai = {
 
 
 circassian_decision_kabardia = {
-	picture = "gfx/interface/illustrations/decisions/kabardia.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/kabardia.dds"
+	}
+
 	desc = circassian_decision_kabardia_desc
 	selection_tooltip = circassian_decision_kabardia_tooltip
-	sort_order = 100
+
 	major = yes
 
 	is_shown = {
@@ -1191,10 +1296,13 @@ circassian_decision_kabardia = {
 }
 
 circassian_decision_kabardia_ai = {
-	picture = "gfx/interface/illustrations/decisions/kabardia.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/kabardia.dds"
+	}
+
 	desc = circassian_decision_kabardia_desc
 	selection_tooltip = circassian_decision_kabardia_tooltip
-	sort_order = 100
+
 	major = yes
 
 	is_shown = {
@@ -1390,8 +1498,10 @@ circassian_decision_kabardia_ai = {
 }
 
 circassian_decision_mtielta = {
-    picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
-    sort_order = 100
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+    }
+
     desc = circassian_decision_mtielta_desc
     selection_tooltip = circassian_decision_mtielta_tooltip
 	ai_check_interval = 60
@@ -1433,7 +1543,11 @@ circassian_decision_mtielta = {
 }
 
 reform_anarchy_to_tribalism_decision_circassian = {
-	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	
+
 	major = yes
 	desc = reform_anarchy_to_tribalism_decision_desc
 	ai_check_interval = 36
@@ -1495,8 +1609,10 @@ reform_anarchy_to_tribalism_decision_circassian = {
 
 
 circassian_decision_aghvank = {
-    picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
-    sort_order = 100
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+    }
+
     desc = circassian_decision_mtielta_desc
     selection_tooltip = circassian_decision_mtielta_tooltip
 	ai_check_interval = 60
@@ -1532,9 +1648,9 @@ circassian_decision_aghvank = {
 }
 
 circassian_decision_lezgic = {
-    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
-
-    sort_order = 100
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+    }
 
     desc = circassian_decision_lezgic_desc
     selection_tooltip = circassian_decision_lezgic_tooltip
@@ -1589,9 +1705,9 @@ circassian_decision_lezgic = {
 
 
 circassian_decision_lak = {
-    picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
-
-    sort_order = 100
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+    }
 
     desc = circassian_decision_lak_desc
     selection_tooltip = circassian_decision_lak_tooltip
@@ -1633,7 +1749,10 @@ circassian_decision_lak = {
 }
 
 circassian_decision_zeikwebze = {
-	picture = "gfx/interface/illustrations/decisions/zeikwebze.dds"
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/zeikwebze.dds"
+    }
+
     desc = circassian_decision_zeikwebze_desc
     selection_tooltip = circassian_decision_zeikwebze_tooltip
 	ai_check_interval = 5
@@ -1752,7 +1871,10 @@ circassian_decision_zeikwebze = {
 }
 
 circassian_decision_zeikwebze_ai = {
-	picture = "gfx/interface/illustrations/decisions/zeikwebze.dds"
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/zeikwebze.dds"
+    }
+
     desc = circassian_decision_zeikwebze_desc
     selection_tooltip = circassian_decision_zeikwebze_tooltip
 	ai_check_interval = 5
@@ -1850,7 +1972,10 @@ circassian_decision_zeikwebze_ai = {
 }
 
 circassian_decision_chakobsa = {
-	picture = "gfx/interface/illustrations/decisions/chakobsa.dds"
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/chakobsa.dds"
+    }
+
     desc = circassian_decision_chakobsa_desc
     selection_tooltip = circassian_decision_chakobsa_tooltip
 	ai_check_interval = 5
@@ -1903,7 +2028,10 @@ circassian_decision_chakobsa = {
 }
 
 circassian_decision_chakobsa_ai = {
-	picture = "gfx/interface/illustrations/decisions/chakobsa.dds"
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/chakobsa.dds"
+    }
+
     desc = circassian_decision_chakobsa_desc
     selection_tooltip = circassian_decision_chakobsa_tooltip
 	ai_check_interval = 5
@@ -1968,7 +2096,10 @@ circassian_decision_chakobsa_ai = {
 }
 
 circassian_decision_werqibze = {
-	picture = "gfx/interface/illustrations/decisions/werqibze.dds"
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/werqibze.dds"
+    }
+
     desc = circassian_decision_werqibze_desc
     selection_tooltip = circassian_decision_werqibze_tooltip
 	ai_check_interval = 5
@@ -2043,7 +2174,10 @@ circassian_decision_werqibze = {
 }
 
 form_georgia_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	}
+
 	major = yes
 	desc = form_georgia_decision_desc
 
@@ -2144,7 +2278,10 @@ form_georgia_decision = {
 }
 
 unify_armenian_principalities_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	}
+
 	major = yes
 	desc = unify_armenian_principalities_decision_desc
 
@@ -2215,101 +2352,3 @@ unify_armenian_principalities_decision = {
 	}
 
 }
-
-circassian_decision.6 = {
-    picture = "gfx/interface/illustrations/decisions/decision_thamade.dds"
-
-    sort_order = 2
-	major = yes
-
-    desc = circassian_decision_thamade_desc
-    selection_tooltip = circassian_decision_thamade_tooltip
-
-    is_shown = {
-		OR = {
-			culture = {
-				OR = {
-        	has_cultural_pillar = heritage_aghvank
-        	has_cultural_pillar = heritage_ciscaucasian
-			}
-			}
-		}
-		NOT = {
-			has_trait = thamade
-		}
-    }
-
-	is_valid = {
-		culture = {
-			OR = {
-        	has_cultural_pillar = heritage_aghvank
-        	has_cultural_pillar = heritage_ciscaucasian
-			}
-			}
-        age > 50
-		prestige_level >=1
-        OR = {
-				has_trait = honest
-				has_trait = forgiving
-				has_trait = generous
-				has_trait = just
-				has_trait = patient
-				has_trait = compassionate
-    	}
-		NOT = {
-		    OR = {
-				has_trait = thamade
-				has_trait = sadistic
-				has_trait = greedy
-				has_trait = callous
-				has_trait = craven
-				has_trait = lustful
-				has_trait = lazy
-				has_trait = deceitful
-				has_trait = impatient
-				has_trait = shy
-				has_trait = paranoid
-				has_trait = intellect_bad
-				has_trait = intellect_bad_2
-				has_trait = intellect_bad_3
-				has_trait = torturer
-				has_trait = adulterer
-				has_trait = murderer
-				has_trait = deviant
-				has_trait = sodomite
-				has_trait = lunatic
-				has_trait = kinslayer_1
-				has_trait = kinslayer_2
-				has_trait = kinslayer_3
-				has_trait = incestuous
-				has_trait = cannibal
-				has_trait = murderer
-				has_trait = drunkard
-				has_trait = flagellant
-				has_trait = contrite
-				has_trait = reclusive
-				has_trait = irritable
-				has_trait = rakish
-				has_trait = hashishiyah
-				has_trait = irritable
-				has_trait = incapable
-		    }
-		}
-    }
-
-    effect = {
-
-    add_trait = thamade
-    add_trait = trait_thamade
-
-    }
-
-	ai_potential = {
-		always = no
-	}
-
-	ai_will_do = {
-		base = 0
-	}
-}
-
