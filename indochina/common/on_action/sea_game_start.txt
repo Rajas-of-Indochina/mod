@@ -18,6 +18,9 @@ on_game_start = {
         # indian_struggle_on_game_start
         # tibetan_struggle_on_game_start
         # chinese_struggle_on_game_start
+
+        # Optional admin realms via gamerules; PDX does it before and after lobby, so will we.
+        sea_optional_admin_realms
     }
 }
 
@@ -84,6 +87,9 @@ on_game_start_after_lobby = {
 
         # 930 conquerors
         sea_936_conquerors
+
+        # Optional admin realms via gamerules
+        sea_optional_admin_realms
     }
 }
 
@@ -909,6 +915,45 @@ sea_936_conquerors = {
         character:194326 = {
             if = { limit = { is_alive = yes } }
             create_story = story_conqueror
+        }
+    }
+}
+
+sea_optional_admin_realms = {
+    trigger = {
+        has_dlc_feature = roads_to_power
+    }
+    effect = {
+        if = {
+            limit = {
+                has_game_rule = historicity_extra_admin_liao_gameplay_always
+                exists = title:e_kara_khitai
+            }
+            title:e_kara_khitai ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+        }
+        if = {
+            limit = {
+                OR = {
+                    AND = {
+                        has_game_rule = historicity_extra_admin_khmer_historic_936
+                        game_start_date > 935.1.1
+                    }
+                    AND = {
+                        has_game_rule = historicity_extra_admin_khmer_historic_1066
+                        game_start_date > 1065.1.1
+                    }
+                }
+                exists = title:e_kambujadesa
+            }
+            title:e_kambujadesa.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+        }
+        if = {
+            limit = {
+                has_game_rule = historicity_extra_admin_korea_historic_1066
+                exists = title:k_goryeo
+                game_start_date > 1065.1.1
+            }
+            title:k_goryeo.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
         }
     }
 }

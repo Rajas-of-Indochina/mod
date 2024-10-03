@@ -1,0 +1,38 @@
+﻿convert_to_administrative_from_feudalism_game_start_effect = {
+	if = {
+		limit = { has_dlc_feature = roads_to_power }
+		# Because we run this twice, since folks can change in the lobby.
+		if = {
+			limit = {
+				NOT = { government_has_flag = government_is_administrative }
+			}
+			change_government = administrative_government
+			create_noble_family_effect = yes
+			add_to_list = estatified_list
+		}
+
+		every_vassal_or_below = {
+			limit = {
+				highest_held_title_tier >= tier_county
+				OR = {
+					government_has_flag = government_is_feudal
+					government_has_flag = government_is_clan
+					government_has_flag = government_is_tribal
+					government_has_flag = government_is_mandala
+				}
+				NOR = {
+					faith.religious_head ?= this
+					liege = {
+						faith.religious_head ?= this
+						is_independent_ruler = no
+					}
+					AND = {
+						exists = scope:ignore_culture
+						culture = scope:ignore_culture
+					}
+				}
+			}
+			change_to_administrative_effect = yes
+		}
+	}
+}
