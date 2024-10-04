@@ -90,24 +90,6 @@ declare_war_interaction = {
         trigger_if = {
             limit = {
                 scope:actor = {
-                    is_ai = yes
-                }
-            }
-            scope:actor = {
-                NOT = {
-                    AND = {
-                        is_independent_ruler = no
-                        OR = {
-                            has_government = imperial_government
-                            has_government = autocratic_government
-                        }
-                    }
-                }
-            }
-        }
-        trigger_if = {
-            limit = {
-                scope:actor = {
                     has_variable = my_suzerain
                 }
             }
@@ -206,7 +188,7 @@ declare_war_interaction = {
 		scope:actor = { has_usable_hook = liege }
 	}
 	extra_icon = "gfx/interface/icons/character_interactions/hook_icon.dds"
-	
+
 	on_accept = {
 		scope:actor = {
 			#Feedback!
@@ -215,7 +197,7 @@ declare_war_interaction = {
 					type = event_toast_effect_neutral
 					title = declare_war_interaction_notification
 
-					left_icon = scope:actor					
+					left_icon = scope:actor
 					right_icon = scope:recipient
 
 					custom_tooltip = declare_war_interaction_notification_tooltip
@@ -351,7 +333,7 @@ declare_war_interaction = {
 							type = msg_war_declared_on_liege
 							title = declare_war_interaction_notification
 
-							left_icon = scope:actor					
+							left_icon = scope:actor
 							right_icon = scope:recipient
 
 							custom_tooltip = declare_war_interaction_notification_tooltip
@@ -361,7 +343,7 @@ declare_war_interaction = {
 			}
 		}
 	}
-	
+
 	auto_accept = yes
 }
 
@@ -381,21 +363,11 @@ call_suzerain_to_war = {
     is_shown = {
         scope:actor = { #put here every tributary type which should be able to call suzerain
             is_at_war = yes
-            is_at_war_as_defender = yes
             has_variable = my_suzerain
             var:my_suzerain = {
                 this = scope:recipient
             }
-            NOT = {
-                is_at_war_with = scope:recipient
-            }
-            # Can't call to war against your own suzerain's tributary
-            NOT = {
-                scope:target.casus_belli.primary_defender = {
-                    has_variable = my_suzerain
-                    var:my_suzerain = { this = scope:recipient }
-                }
-            }
+            NOT = { is_at_war_with = scope:recipient }
         }
     }
 

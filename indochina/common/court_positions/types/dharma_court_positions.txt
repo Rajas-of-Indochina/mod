@@ -1313,3 +1313,252 @@ high_almoner_court_position = {# They Use the Bhangika Position instead.
 		add = court_position_debt_considerations_value
 	}
 }
+
+court_poet_court_position = {
+	max_available_positions = 1
+	category = court_position_category_royal
+	minimum_rank = kingdom # Should only be available for kings and emperors
+	skill = diplomacy
+
+	opinion = {
+		value = regular_court_position_opinion
+	}
+
+	# How high the aptitude has to be to reach the 5 different modifier levels
+	aptitude_level_breakpoints = { 20 40 60 80 }
+
+	# How good is this character in this position? root scope is the holder of the court position
+	aptitude = {
+		value = 25
+		add = {
+			value = diplomacy
+			multiply = 2.5
+			max = 50
+			desc = court_position_skill_diplomacy
+		}
+		add = {
+			value = learning
+			multiply = 1
+			max = 50
+			desc = court_position_skill_learning
+		}
+		if = {
+			limit = {
+				has_trait = gregarious
+			}
+			add = {
+				value = 15
+				desc = court_position_gregarious_trait
+			}
+		}
+		if = { #Cultural Tradition that improves the aptitude of characters of that culture
+			limit = {
+				culture = { has_cultural_parameter = characters_are_better_court_poets }
+			}
+			add = {
+				value = 20
+				desc = court_position_tradition_poetry
+			}
+		}
+		if = { #Cultural Tradition that improves the aptitude of characters of that culture
+			limit = {
+				culture = { has_cultural_parameter = lesbian_characters_are_better_court_poets }
+				is_female = yes
+				OR = {
+					has_sexuality = homosexual
+					has_sexuality = bisexual
+				}
+			}
+			add = {
+				value = 20
+				desc = court_position_tradition_sapphic_romance
+			}
+		}
+		add = court_position_aptitude_family_business_value
+		add = court_position_aptitude_low_penalty_value
+	}
+
+	is_shown = {
+		has_ep1_court_positions_dlc_trigger = yes
+	}
+
+	valid_position = {
+		highest_held_title_tier >= tier_kingdom
+	}
+
+	is_shown_character = {
+		scope:employee = {
+			is_courtier_of = scope:liege
+			is_imprisoned = no
+		}
+	}
+
+	valid_character = {
+		scope:employee = {
+			custom_tooltip = {
+				text = IS_NOT_THE_SPOUSE_OF_CHARACTER_COURT_POSITION
+				NOT = { is_spouse_of = scope:liege }
+			}
+			has_trait = poet
+			trigger_if = {
+				limit = { NOT = { has_court_position = court_poet_court_position } }
+				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
+			}
+		}
+	}
+
+	revoke_cost = {
+		prestige =  {
+			value = major_court_position_prestige_revoke_cost
+
+			# Set to 0 with Dynasty Perk Inner Circle
+			if = {
+				limit = {
+					exists = dynasty
+					dynasty = { has_dynasty_perk = fp2_coterie_legacy_1 }
+
+					employs_court_position = court_poet_court_position
+					any_court_position_holder = {
+				        type = court_poet_court_position
+						exists = dynasty
+						house = prev.house
+					}
+				}
+				multiply = 0
+			}
+			if = {
+				limit = {
+					exists = this
+					is_ai = yes
+				}
+				multiply = 0
+			}
+		}
+	}
+
+	salary = {
+		round = no
+		gold = {
+			value = minor_court_position_salary
+			# Set to 0 with Dynasty Perk Inner Circle
+			if = {
+				limit = {
+					scope:liege = {
+						exists = dynasty
+						dynasty = { has_dynasty_perk = fp2_coterie_legacy_1 }
+
+						employs_court_position = court_poet_court_position
+						any_court_position_holder = {
+					        type = court_poet_court_position
+							exists = dynasty
+							house = prev.house
+						}
+					}
+				}
+				multiply = {
+					value = 0.0
+					desc = inner_circle_salary_mod
+					format = "BASE_VALUE_FORMAT_DECIMALS_MINUS_POSITIVE"
+				}
+			}
+			if = {
+				limit = {
+					scope:liege = {
+						employs_court_position = court_poet_court_position
+						any_court_position_holder = {
+					        type = court_poet_court_position
+					        scope:liege = {
+								has_hook_of_type = {
+									type = obligation_hook
+									target = prev
+								}
+							}
+						}
+					}
+				}
+				multiply = {
+					value = 0.5
+					desc = obligation_hook_salary
+				}
+			}
+		}
+	}
+
+	# These modifiers are employed based on what level the aptitude reaches (levels are defined as breakpoints)
+	scaling_employer_modifiers = {
+		terrible = {
+			court_grandeur_baseline_add = 1
+		}
+		poor = {
+			court_grandeur_baseline_add = 1
+			monthly_court_grandeur_change_mult = 0.05
+		}
+		average = {
+			court_grandeur_baseline_add = 2
+			monthly_court_grandeur_change_mult = 0.10
+		}
+		good = {
+			court_grandeur_baseline_add = 2
+			monthly_court_grandeur_change_mult = 0.15
+		}
+		excellent = {
+			court_grandeur_baseline_add = 3
+			monthly_court_grandeur_change_mult = 0.20
+		}
+	}
+
+	custom_employer_modifier_description = court_poet_employer_custom_effect_description
+
+	modifier = {
+		monthly_prestige = minor_court_position_prestige_salary
+	}
+
+	on_court_position_received = {
+		court_poet_title_accepted_effect = yes
+	}
+	on_court_position_revoked = {
+		court_poet_title_revoked_effect = yes
+	}
+	on_court_position_invalidated = {
+		court_poet_title_invalidated_effect = yes
+	}
+	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
+	candidate_score = {
+		value = 50
+		scope:employee = {
+			# Does the liege have a better candidate that they should be hiring instead?
+			if = {
+				limit = {
+					scope:highest_available_aptitude > scope:employee_aptitude
+				}
+				add = -125
+			}
+			# More likely to pick a courtier with a high aptitude, less likely to pick one with low
+			add = {
+				value = scope:employee_aptitude
+				multiply = 4
+			}
+		}
+
+		add = scope:base_value
+		add = court_position_candidate_score_base_value
+		scope:liege = {
+			# More likely for very generous characters
+			if = {
+				limit = {
+					ai_greed <= -75
+				}
+				add = 25
+			}
+			# Lots of gold to spend on inspirations!
+			if = {
+				limit = {
+					gold >= 500
+					monthly_character_income > monthly_character_expenses_plus_fourty_percent
+				}
+				add = 50
+			}
+		}
+		add = court_position_debt_considerations_value
+	}
+}
