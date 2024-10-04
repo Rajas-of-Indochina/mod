@@ -1,4 +1,8 @@
-﻿
+﻿# Modify (multiply) the doctrine cost when converting to a faith.
+# The returned value is interpreted as a multiplicative modifier (e.g. 0.5 means +50% cost).
+# scope:character = the converting character
+# scope:new_faith = the faith the character is converting to
+# There should be no subtract equal or higher than 1
 faith_conversion_cost_mult = {
 
 	#Adding 1 to apply properly the following multipliers
@@ -916,4 +920,17 @@ faith_conversion_cost_mult = {
 		value = 1
 	}
 
+}
+
+
+# Modify (multiply) the doctrine cost when creating a faith.
+# The returned value is interpreted as a multiplicative modifier (e.g. 0.5 means +50% cost).
+# scope:character = the creation character
+# scope:old_faith = the faith the character is converting from
+faith_creation_cost_mult = {
+	subtract = {
+		value = scope:old_faith.faith_conversion_fervor_mult
+		desc = "faith_creation_cost_fervor_impact"
+		format = "BREAKDOWN_FORMAT_PIETY_PERCENTAGE_POSITIVE_IS_BAD"
+	}
 }
