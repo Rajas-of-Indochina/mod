@@ -13,12 +13,6 @@ on_game_start = {
         generate_shangshu
         nerf_japan
 
-        # Struggles
-        iberian_struggle_on_game_start
-        # indian_struggle_on_game_start
-        # tibetan_struggle_on_game_start
-        # chinese_struggle_on_game_start
-
         # Optional admin realms via gamerules; PDX does it before and after lobby, so will we.
         sea_optional_admin_realms
     }
@@ -219,53 +213,6 @@ ruler_popup_events = {
     }
 }
 
-######
-
-iberian_struggle_on_game_start = {
-    # Going here because we overwrote `history/titles/k_andalusia.txt` and starting it in history is STUPID ANYWAY AUUUGH
-    effect = {
-        if = {
-            limit = {
-                has_dlc_feature = the_fate_of_iberia
-                game_start_date >= 718.1.1
-            }
-            start_struggle = {
-                struggle_type = iberian_struggle
-                start_phase = struggle_iberia_phase_opportunity # TODO: We should add phase changes in History to get two different entry point
-            }
-        }
-    }
-}
-tibetan_struggle_on_game_start = {
-    effect = {
-        if = {
-            limit = {
-                game_start_date >= 842.1.1
-            }
-            start_struggle = {
-                struggle_type = tibetan_struggle
-                start_phase = struggle_tibet_phase_hostility
-            }
-        }
-    }
-}
-chinese_struggle_on_game_start = {
-    effect = {
-        start_struggle = {
-            struggle_type = chinese_struggle
-            start_phase = struggle_iberia_phase_opportunity # TODO: We should add phase changes in History to get two different entry point
-        }
-    }
-}
-indian_struggle_on_game_start = {
-    effect = {
-        start_struggle = {
-            struggle_type = indian_struggle
-            start_phase = struggle_iberia_phase_opportunity # TODO: We should add phase changes in History to get two different entry point
-        }
-    }
-}
-
 #####
 
 acculturate_steppelads = {
@@ -448,6 +395,9 @@ set_tai_language = {
 #####
 
 sea_historical_chinese_vassal_contracts = {
+    trigger = {
+        NOT = { has_dlc_feature = roads_to_power }
+    }
     # This will only apply if you don't have RtP, we'll figure out vassal contacts for Admin China whenever
     effect = {
         title:e_celestia_china.holder = {
