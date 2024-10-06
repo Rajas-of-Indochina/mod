@@ -1,0 +1,98 @@
+﻿armenian_struggle_is_roman_culture_trigger = {
+	struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
+	$CULTURE$ = {
+		OR = {
+			this = culture:greek
+			this = culture:cappadocian
+			has_cultural_parameter = heritage_family_european
+		}
+	}
+}
+
+armenian_struggle_is_roman_faith_trigger = {
+	struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	$FAITH$ = {
+		OR = {
+			this = faith:orthodox
+			this = faith:paulician
+			religious_head_title = title:k_orthodox
+			religious_head_title = title:d_georgian_patriarchate
+			religious_head_title = title:k_papal_state
+			religion = religion:hellenism_religion
+		}
+		NOT = {
+			this = faith:mtielta
+		}
+	}
+}
+
+armenian_struggle_is_persian_culture_trigger = {
+	struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
+	$CULTURE$ = {
+		OR = {
+			this = culture:adhari
+			this = culture:kurdish
+			this = culture:persian
+			this = culture:turkish
+			this = culture:turkmen
+			this = culture:turkmenroa
+			has_cultural_pillar = heritage_iranian
+			has_cultural_pillar = language_iranian
+		}
+	}
+}
+
+armenian_struggle_is_persian_faith_trigger = {
+	struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	$FAITH$ = {
+		OR = {
+			religion = religion:zoroastrianism_religion
+			this = faith:nestorian
+			AND = {
+				religion = religion:islam_religion
+				OR = {
+					NOT = { exists = religious_head }
+					religious_head = {
+						OR = {
+							has_trait = pro_persian
+							NOT = { any_character_struggle = { is_struggle_type = armenian_struggle } }
+						}
+					}
+				}
+			}
+		}
+		has_variable = is_persian_faith
+	}
+}
+
+armenian_struggle_is_local_culture_trigger = {
+	struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
+	$CULTURE$ = {
+		OR = {
+			this = culture:georgian
+			this = culture:armenian
+			this = culture:udi
+			has_cultural_pillar = heritage_caucasian
+			has_cultural_pillar = heritage_aghvank
+		}
+	}
+}
+
+armenian_struggle_is_local_faith_trigger = {
+	struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	$FAITH$ = {
+		OR = {
+			this = faith:apostolic
+			this = faith:tondrakian
+			this = faith:mtielta
+			this = faith:urartuism
+			AND = {
+				religion = religion:islam_religion
+				religious_head = {
+					has_trait = pro_persian
+				}
+			}
+			has_variable = is_local_faith
+		}
+	}
+}

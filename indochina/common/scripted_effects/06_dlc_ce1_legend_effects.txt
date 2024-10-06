@@ -587,7 +587,9 @@ grab_mythical_founder_effect = {
 					trigger = {
 						OR = {
 							root.primary_title = title:k_georgia
-							root.primary_title = title:d_georgia
+							root.primary_title = title:k_kakheti
+							root.primary_title = title:k_iberia
+							root.primary_title = title:k_abkhazia
 						}
 						root.faith.religion = religion:christianity_religion
 					}
@@ -1737,7 +1739,12 @@ get_appropriate_exotic_location = {
 		999 = { # Bald Mountain, slavic witchy mountain
 			trigger = {
 				OR = {
-					culture_has_slavic_heritage_pillar_trigger = yes
+					AND = {
+						culture = { has_culutural_parameter = { heritage_group_balto_slavic } }
+						NOT = {
+							culture = { has_cultural_pillar = heritage_baltic }
+						}
+					}
 					religion = religion:slavic_religion
 				}
 			}

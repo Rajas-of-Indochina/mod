@@ -3,7 +3,7 @@
 # Armenia becomes permanently a part of Rome (yes the Byzantines are Rome, shut up)
 
 armenian_struggle_ending_roman_rule = {
-	major = yes
+	decision_group_type = major
 	title = armenian_struggle_ending_roman_rule_decision
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
@@ -97,7 +97,7 @@ armenian_struggle_ending_roman_rule = {
 # Armenia becomes a permanent part of Persia
 
 armenian_struggle_ending_persian_rule = {
-	major = yes
+	decision_group_type = major
 	title = armenian_struggle_ending_persian_rule_decision
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
@@ -178,7 +178,7 @@ armenian_struggle_ending_persian_rule = {
 # Recreate the old Armenian Empire!
 
 armenian_struggle_ending_armenian_empire = {
-	major = yes
+	decision_group_type = major
 	title = armenian_struggle_ending_armenian_empire_decision
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
@@ -189,6 +189,15 @@ armenian_struggle_ending_armenian_empire = {
 	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
 	is_invisible = yes
 	sort_order = 80
+
+	is_shown = {
+		culture = {
+			OR = {
+				this = culture:armenian
+				any_parent_culture_or_above = { this = culture:armenian }
+			}
+		}
+	}
 
 	is_valid = {
 		is_independent_ruler = yes
@@ -232,7 +241,7 @@ armenian_struggle_ending_armenian_empire = {
 # Armenians will join defensive wars to keep everyone else out and can wage wars to liberate Armenian lands from foreign rulers
 
 armenian_struggle_ending_armenian_confederation = {
-	major = yes
+	decision_group_type = major
 	title = armenian_struggle_ending_roman_rule_decision
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
@@ -267,7 +276,8 @@ armenian_struggle_ending_armenian_confederation = {
 		NOT = { completely_controls_region = custom_greater_armenia }
 
 		struggle:armenian_struggle = {
-			all_involved_ruler = {
+			any_involved_ruler = {
+				percent = 1.0
 				limit = {
 					is_independent_ruler = yes
 					primary_title = { is_mercenary_company = no }
@@ -300,7 +310,7 @@ armenian_struggle_ending_armenian_confederation = {
 # But Armenia itself isn't strong enough to assert independence longterm
 
 armenian_struggle_ending_armenian_stalemate = {
-	major = yes
+	decision_group_type = major
 	title = armenian_struggle_ending_armenian_empire_decision
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
@@ -393,7 +403,7 @@ armenian_struggle_ending_armenian_stalemate = {
 # But you get a real cushy vassal contract and the protection of an empire, letting you consolidate an Armenian Exarchy with near impunity
 
 armenian_struggle_ending_complicity = {
-	major = yes
+	decision_group_type = major
 	title = armenian_struggle_ending_armenian_empire_decision
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
@@ -460,6 +470,58 @@ armenian_struggle_ending_complicity = {
 				}
 			}
 		}
+	}
+
+	effect = {
+		#TODO: Effect
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+armenian_struggle_georgian_empire = {
+	decision_group_type = major
+	title = armenian_struggle_georgian_empire_decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/fp2_decision_hostility.dds"
+	desc = armenian_struggle_georgian_empire_decision_desc
+	selection_tooltip = armenian_struggle_georgian_empire_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+	sort_order = 80
+
+	is_shown = {
+		culture = {
+			NOR = {
+				this = culture:armenian
+				any_parent_culture_or_above = { this = culture:armenian }
+			}
+			OR = {
+				this = culture:georgian
+				any_parent_culture_or_above = { this = culture:georgian }
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		highest_held_title_tier = tier_kingdom
+		title:e_caucasia = {
+			any_de_jure_county = {
+				percent > 0.5
+				holder.top_liege = ROOT
+			}
+		}
+		has_title = title:k_georgia
+		legitimacy_level >= 5
 	}
 
 	effect = {
