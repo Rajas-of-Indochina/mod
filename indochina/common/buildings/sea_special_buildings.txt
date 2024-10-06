@@ -2075,3 +2075,226 @@ mount_fuji_01 = {
 
 	flag = travel_point_of_interest_natural_feature # mountain
 }
+
+mount_elbrus_01 = {
+
+	#asset = {
+	#	type = pdxmesh
+	#	name = "fp3_building_special_mount_damavand_01_a_mesh"
+	#}
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "icon_structure_mount_damavand.dds"
+
+	can_construct = {
+		scope:holder.culture = {
+			has_innovation = innovation_hoardings
+		}
+	}
+
+	cost_gold = 1000
+
+	character_modifier = {
+		stress_loss_mult = 0.1
+		mountains_travel_danger = -5
+		monthly_piety = 0.15
+		monthly_county_control_growth_factor = 0.05
+	}
+
+	county_holder_character_modifier = {
+	}
+
+	county_modifier = {
+		travel_danger = -30
+		development_growth_factor = 0.1
+	}
+
+	province_modifier = {
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_2
+	}
+
+	ai_value = {
+		base = 100
+		culture_likely_to_fortify_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+	}
+
+	type = special
+
+	flag = travel_point_of_interest_natural_feature # mountain
+}
+
+tkhapsh_khajokh_01 = {
+
+	construction_time = slow_construction_time
+
+	type_icon = "icon_tkhapsh.dds"
+
+	can_construct = {
+		custom_description = {
+		text = tkhapsh_trigger
+		scope:holder = {
+        OR = {
+		faith = faith:circassian_pagan
+		faith =	faith:circassian_christianity
+		faith = faith:apsuara
+		}
+		}
+	}
+
+
+	}
+
+	cost_gold = 150 # 150 x 6 = 900
+
+	character_modifier = {
+	}
+
+	county_holder_character_modifier = {
+		legitimacy_gain_mult = 0.01
+		monthly_piety = 0.2
+		same_faith_opinion = 2
+		popular_opinion = 1
+	}
+
+	county_modifier = {
+		development_growth_factor = 0.05
+		levy_size = 0.01
+	}
+
+	ai_value = {
+		base = 100
+		culture_likely_to_fortify_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+	}
+
+	type = special
+
+	flag = travel_point_of_interest_religious # tkhapsh
+}
+
+
+huaisheng_mosque = { # Huaisheng Mosque built during the life of prophet Muhammad
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "becp_icon_qianguangdian.dds"
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+		OR = {
+			scope:holder = {
+				religion = religion:islam_religion
+			}
+			custom_description = {
+				text = holy_site_building_trigger
+				barony = {
+					is_holy_site_of = scope:holder.faith
+				}
+			}
+		}
+	}
+
+	show_disabled = yes
+
+	cost_gold = 1000
+
+	character_modifier = {
+	    islam_religion_opinion = 5
+		monthly_county_control_growth_factor = 0.01
+	}
+
+	ai_value = {
+		base = 100
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+	}
+
+	type = special
+
+	flag = travel_point_of_interest_religious
+}
+
+derbent_juma_mosque = { # Juma Mosque of Derbent
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "icon_structure_cathedral_muslim.dds"
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+		OR = {
+			scope:holder = {
+				religion = religion:islam_religion
+			}
+			custom_description = {
+				text = holy_site_building_trigger
+				barony = {
+					is_holy_site_of = scope:holder.faith
+				}
+			}
+		}
+	}
+
+	is_enabled = {
+		custom_description = {
+			text = holy_site_muslim_or_holy_site_trigger
+			OR = {
+				scope:holder = {
+					religion = religion:islam_religion
+				}
+				custom_description = {
+					text = holy_site_building_trigger
+					barony = {
+						is_holy_site_of = scope:holder.faith
+					}
+				}
+			}
+		}
+	}
+
+	show_disabled = yes
+
+	cost_gold = 1000
+
+	character_modifier = {
+		monthly_piety = 0.1
+		monthly_dynasty_prestige_mult = 0.01
+	}
+
+	county_modifier = {
+		tax_mult = 0.05
+		development_growth_factor = 0.05
+		development_growth = 0.10
+	}
+
+	ai_value = {
+		base = 100
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+	}
+
+	type = special
+
+	flag = travel_point_of_interest_religious
+}
+
+
+
