@@ -225,6 +225,34 @@ task_conversion = {
 				desc = fp3_struggle_ending_conversion_modifier_desc
 			}
 		}
+
+		# Armenian Struggle Phase Stuff
+		if = {
+			limit = {
+				exists = scope:county
+				OR = {
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_roman }
+						NOT = { armenian_struggle_is_roman_faith_trigger = { FAITH = scope:county.faith } }
+						armenian_struggle_is_roman_faith_trigger = { FAITH = scope:councillor_liege.faith }
+					}
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_persian }
+						NOT = { armenian_struggle_is_persian_faith_trigger = { FAITH = scope:county.faith } }
+						armenian_struggle_is_persian_faith_trigger = { FAITH = scope:councillor_liege.faith }
+					}
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_armenian }
+						NOT = { armenian_struggle_is_local_faith_trigger = { FAITH = scope:county.faith } }
+						armenian_struggle_is_local_faith_trigger = { FAITH = scope:councillor_liege.faith }
+					}
+				}
+			}
+			add = {
+				value = scope:councillor.boost_county_conversion_phase_bonus_value
+				desc = CHAPLAIN_CONVERT_COUNTY_STRUGGLE_BONUS
+			}
+		}
 		# Court events
 		if = {	#court.6010
 			limit = {

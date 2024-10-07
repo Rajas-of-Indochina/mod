@@ -1,0 +1,175 @@
+﻿armenia_struggle_dominance_de_jure_drift_effect = {
+	title:e_byzantium = {
+		every_in_de_jure_hierarchy = {
+			limit = {
+				is_armenian_struggle_kingdom = yes
+				is_titular = no
+			}
+			if = {
+				limit = {
+					is_going_$TYPE$ = yes
+				}
+				add_to_list = title_drift
+			}
+		}
+	}
+	title:e_roman_empire = {
+		every_in_de_jure_hierarchy = {
+			limit = {
+				is_armenian_struggle_kingdom = yes
+				is_titular = no
+			}
+			if = {
+				limit = {
+					is_going_$TYPE$ = yes
+				}
+				add_to_list = title_drift
+			}
+		}
+	}
+	title:e_caucasia = {
+		every_in_de_jure_hierarchy = {
+			limit = {
+				is_armenian_struggle_kingdom = yes
+				is_titular = no
+			}
+			if = {
+				limit = {
+					is_going_$TYPE$ = yes
+				}
+				add_to_list = title_drift
+			}
+		}
+	}
+	title:e_persia = {
+		every_in_de_jure_hierarchy = {
+			limit = {
+				is_armenian_struggle_kingdom = yes
+				is_titular = no
+			}
+			if = {
+				limit = {
+					is_going_$TYPE$ = yes
+				}
+				add_to_list = title_drift
+			}
+		}
+	}
+	title:e_arabia = {
+		every_in_de_jure_hierarchy = {
+			limit = {
+				is_armenian_struggle_kingdom = yes
+				is_titular = no
+			}
+			if = {
+				limit = {
+					is_going_$TYPE$ = yes
+				}
+				add_to_list = title_drift
+			}
+		}
+	}
+	every_in_list = {
+		list = title_drift
+		do_$TYPE$_drift = yes
+	}
+}
+
+do_roman_drift = {
+	if = {
+		limit = { title:e_byzantium = { is_titular = yes } }
+		set_de_jure_liege_title = title:e_roman_empire
+	}
+	else = { set_de_jure_liege_title = title:e_byzantium }
+}
+
+do_persian_drift = {
+	set_de_jure_liege_title = title:e_persia
+}
+
+armenia_struggle_reset_de_jure = {
+	# e_caucasia
+	title:k_abkhazia = { set_de_jure_liege_title = title:e_caucasia }
+	title:k_iberia = { set_de_jure_liege_title = title:e_caucasia }
+	title:k_kakheti = { set_de_jure_liege_title = title:e_caucasia }
+	title:k_georgia = { set_de_jure_liege_title = title:e_caucasia }
+	title:k_syunik = { set_de_jure_liege_title = title:e_caucasia }
+	title:k_ayrarat = { set_de_jure_liege_title = title:e_caucasia }
+	title:k_armenia = { set_de_jure_liege_title = title:e_caucasia }
+	title:k_armenian_principality = { set_de_jure_liege_title = title:e_caucasia }
+	title:k_shirvan = { set_de_jure_liege_title = title:e_caucasia }
+	#e_byzantium
+	title:k_pontus = { sort_out_roman_existence = yes }
+	title:k_anatolia = { sort_out_roman_existence = yes }
+	title:k_rum = { sort_out_roman_existence = yes }
+	# e_persia
+	title:k_adurbadagan = { set_de_jure_liege_title = title:e_persia }
+	title:k_jazira = { set_de_jure_liege_title = title:e_persia }
+	# e_arabia
+	title:k_syria = { set_de_jure_liege_title = title:e_arabia }
+}
+
+#Just to make tier-based catalysts easier
+#use county duchy kingdom or empire please
+activate_tiered_struggle_catalyst = {
+	activate_struggle_catalyst = {
+		catalyst = $BASE_CATALYST$_$TIER$
+		character = $CHARACTER$
+	}
+}
+
+# Done for AI, players get to pick when they join
+# Called in a character scope
+# The struggle will use `every_involved_ruler` on struggle start and ONLY on struggle start
+# Characters joining later will just have it happen in the on_join
+armenian_struggle_assign_stance_on_join = {
+	if = {
+		limit = {
+			OR = {
+				has_title = title:e_byzantium
+				has_title = title:e_roman_empire
+			}
+		}
+		remove_trait = pro_armenian
+		remove_trait = pro_persian
+		add_trait = pro_roman
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_title = title:e_persia
+				has_title = title:k_persia
+			}
+		}
+		remove_trait = pro_armenian
+		remove_trait = pro_roman
+		add_trait = pro_persian
+	}
+	# We're going to do it a bit lazily just to start, sorting by faith first
+	# Then by faith
+	# Anyone left over will just have to take the decision ig
+	else_if = {
+		limit = { armenian_struggle_is_local_faith_trigger = { FAITH = this.faith } }
+		add_trait = pro_armenian
+	}
+	else_if = {
+		limit = { armenian_struggle_is_persian_faith_trigger = { FAITH = this.faith } }
+		add_trait = pro_persian
+	}
+	else_if = {
+		limit = { armenian_struggle_is_roman_faith_trigger = { FAITH = this.faith } }
+		add_trait = pro_roman
+	}
+	else_if = {
+		limit = { armenian_struggle_is_local_culture_trigger = { CULTURE = this.culture } }
+		add_trait = pro_armenian
+	}
+	else_if = {
+		limit = { armenian_struggle_is_persian_culture_trigger = { CULTURE = this.culture } }
+		add_trait = pro_persian
+	}
+	else_if = {
+		limit = { armenian_struggle_is_roman_culture_trigger = { CULTURE = this.culture } }
+		add_trait = pro_roman
+	}
+}

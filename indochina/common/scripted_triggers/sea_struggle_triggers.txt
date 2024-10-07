@@ -10,19 +10,43 @@
 }
 
 armenian_struggle_is_roman_faith_trigger = {
-	struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
 	$FAITH$ = {
-		OR = {
-			this = faith:orthodox
-			this = faith:paulician
-			religious_head_title = title:k_orthodox
-			religious_head_title = title:d_georgian_patriarchate
-			religious_head_title = title:k_papal_state
-			religion = religion:hellenism_religion
-		}
 		NOT = {
-			this = faith:mtielta
+			this = faith:mtielta # TODO: Add is_local_faith to mtielta on start
+			has_variable = is_local_faith
+			has_variable = is_persian_faith
 		}
+		OR = {
+			AND = {
+				OR = {
+					this = faith:orthodox
+					this = faith:paulician
+					religious_head_title = title:k_orthodox
+					religious_head_title = title:d_georgian_patriarchate
+					religious_head_title = title:k_papal_state
+					religion = religion:hellenism_religion
+				}
+			}
+			has_variable = is_pro_roman
+		}
+	}
+}
+
+armenian_struggle_would_be_roman_faith_trigger = {
+	trigger_if = {
+		limit = {
+			armenian_struggle_is_roman_faith = { FAITH = scope:old_faith }
+		}
+		scope:character = {
+			NOR = {
+				has_trait = pro_persian
+				has_trait = pro_armenian
+			}
+		}
+	}
+	trigger_else = {
+		scope:character = { has_trait = pro_roman }
 	}
 }
 
@@ -38,16 +62,22 @@ armenian_struggle_is_persian_culture_trigger = {
 			this = culture:turkmenroa
 			has_cultural_pillar = heritage_iranian
 			has_cultural_pillar = language_iranian
+			has_cultural_pillar = heritage_arabic
 		}
 	}
 }
 
 armenian_struggle_is_persian_faith_trigger = {
-	struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
 	$FAITH$ = {
+		NOR = {
+			has_variable = is_local_faith
+			has_variable = is_roman_faith
+			this = faith:urartuism
+		}
 		OR = {
 			religion = religion:zoroastrianism_religion
-			this = faith:nestorian
+			religious_head_title = title:d_patriarchate_in_the_east
 			AND = {
 				religion = religion:islam_religion
 				OR = {
@@ -60,18 +90,35 @@ armenian_struggle_is_persian_faith_trigger = {
 					}
 				}
 			}
+			has_variable = is_persian_faith
 		}
-		has_variable = is_persian_faith
+	}
+}
+
+armenian_struggle_would_be_persian_faith_trigger = {
+	trigger_if = {
+		limit = {
+			armenian_struggle_is_persian_faith = { FAITH = scope:old_faith }
+		}
+		scope:character = {
+			NOR = {
+				has_trait = pro_roman
+				has_trait = pro_armenian
+			}
+		}
+	}
+	trigger_else = {
+		scope:character = { has_trait = pro_persian }
 	}
 }
 
 armenian_struggle_is_local_culture_trigger = {
-	struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
+	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
 	$CULTURE$ = {
 		OR = {
-			this = culture:georgian
 			this = culture:armenian
 			this = culture:udi
+			has_cultural_pillar = heritage_ciscaucasian
 			has_cultural_pillar = heritage_caucasian
 			has_cultural_pillar = heritage_aghvank
 		}
@@ -79,8 +126,12 @@ armenian_struggle_is_local_culture_trigger = {
 }
 
 armenian_struggle_is_local_faith_trigger = {
-	struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
 	$FAITH$ = {
+		NOR = {
+			has_variable = is_roman_faith
+			has_variable = is_persian_faith
+		}
 		OR = {
 			this = faith:apostolic
 			this = faith:tondrakian
@@ -89,10 +140,130 @@ armenian_struggle_is_local_faith_trigger = {
 			AND = {
 				religion = religion:islam_religion
 				religious_head = {
-					has_trait = pro_persian
+					has_trait = pro_armenian
 				}
 			}
 			has_variable = is_local_faith
 		}
+	}
+}
+
+armenian_struggle_would_be_local_faith_trigger = {
+	trigger_if = {
+		limit = {
+			armenian_struggle_is_local_faith = { FAITH = scope:old_faith }
+		}
+		scope:character = {
+			NOR = {
+				has_trait = pro_roman
+				has_trait = pro_persian
+			}
+		}
+	}
+	trigger_else = {
+		scope:character = { has_trait = pro_armenian }
+	}
+}
+
+# We use a hard trigger so that this can be easily adjusted without overwriting the rest of the fp2_interactions file by modders.
+struggle_can_access_unlocks_bargain_fealty_interaction_trigger = {
+	# Just uhh, use an OR if you add something else.
+	OR = {
+		is_struggle_type = iberian_struggle
+		is_struggle_type = armenian_struggle
+	}
+}
+
+is_armenian_struggle_kingdom = {
+	OR = {
+		#e_caucasia
+		this = title:k_abkhazia
+		this = title:k_iberia
+		this = title:k_kakheti
+		this = title:k_georgia
+		this = title:k_syunik
+		this = title:k_ayrarat
+		this = title:k_armenia
+		this = title:k_armenian_principality
+		this = title:k_shirvan
+		#e_byzantium
+		this = title:k_pontus
+		this = title:k_anatolia
+		this = title:k_rum
+		# e_persia
+		this = title:k_adurbadagan
+		this = title:k_jazira
+		# e_arabia
+		this = title:k_syria
+	}
+}
+
+is_going_roman = {
+	trigger_if = {
+		limit = { exists = holder }
+		OR = {
+			holder ?= { is_roman_emperor_ish_trigger = yes }
+			holder ?= {
+				AND = {
+					is_independent_ruler = yes
+					has_trait = pro_roman
+				}
+			}
+		}		
+	}
+	trigger_else = {
+		any_ruler = {
+			OR = {
+				is_roman_emperor_ish_trigger = yes
+				AND = {
+					is_independent_ruler = yes
+					has_trait = pro_roman
+				}			
+			}
+			completely_controls = PREV
+		}
+	}
+	any_title_to_title_neighboring_kingdom = {
+		OR = {
+			empire = title:e_byzantium
+			empire = title:e_roman_empire
+		}
+	}
+}
+
+is_going_persian = {
+	trigger_if = {
+		limit = { exists = holder }
+		OR = {
+			holder ?= { has_title = title:e_persia }
+			holder ?= {
+				AND = {
+					is_independent_ruler = yes
+					has_trait = pro_persian
+				}
+			}
+		}		
+	}
+	trigger_else = {
+		any_ruler = {
+			OR = {
+				has_title = title:e_persia
+				AND = {
+					is_independent_ruler = yes
+					has_trait = pro_persian
+				}			
+			}
+			completely_controls = PREV
+		}
+	}
+}
+
+is_roman_emperor_ish_trigger = {
+	OR = {
+		has_title = title:e_hre
+		has_title = title:e_byzantium
+		has_title = title:e_latin_empire
+		has_title = title:e_roman_empire
+		has_title = title:e_italy
 	}
 }

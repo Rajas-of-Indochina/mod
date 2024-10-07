@@ -519,3 +519,358 @@ incite_revolts_interaction = {
 		}
 	}
 }
+
+###################
+# Claim Throne
+# by Petter Vilberg
+###################
+claim_throne_interaction = {
+	icon = icon_scheme_claim_throne
+	category = interaction_category_hostile
+
+	ai_targets = {
+		ai_recipients = liege
+	}
+	
+	auto_accept = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+
+	scheme = claim_throne
+
+	desc = claim_throne_interaction_desc
+	
+	is_shown = {
+		exists = scope:actor.liege
+		scope:recipient = scope:actor.liege
+		scope:actor = {
+			is_landless_adventurer = no
+			highest_held_title_tier > tier_barony
+			OR = {
+				has_perk = meritocracy_perk
+				AND = {
+					is_diarch_of_target = scope:recipient
+					scope:recipient = {
+						NOT = { has_diarchy_parameter = can_be_instantly_dismissed }
+					}
+				}
+				AND = {
+					is_powerful_vassal_of = scope:recipient
+					any_character_struggle = {
+						involvement = involved
+						has_struggle_phase_parameter = unlocks_claim_throne_for_powerful_vassals
+						is_secondary_character_involvement_involved_trigger = {
+							CHAR = scope:recipient
+						}
+					}
+				}
+				AND = {
+					any_character_struggle = {
+						involvement = involved
+						has_struggle_phase_parameter = unlocks_claim_throne_for_all
+						is_secondary_character_involvement_involved_trigger = {
+							CHAR = scope:recipient
+						}
+					}
+				}
+				AND = {
+					exists = title:d_sunni.holder
+					is_vassal_of = title:d_sunni.holder
+					any_character_struggle = {
+						involvement = involved
+						has_struggle_phase_parameter = unlocks_claim_throne_for_caliph_vassals
+					}
+				}
+				AND = {
+					NOT = { has_trait = pro_roman }
+					liege = {has_trait = pro_roman}
+					any_character_struggle = {
+						involvement = involved
+						has_struggle_phase_parameter = unlocks_claim_throne_against_romans
+					}
+				}
+				AND = {
+					NOT = { has_trait = pro_persian }
+					liege = {has_trait = pro_persian}
+					any_character_struggle = {
+						involvement = involved
+						has_struggle_phase_parameter = unlocks_claim_throne_against_persians
+					}
+				}
+				AND = {
+					NOT = { has_trait = pro_armenian }
+					liege = {has_trait = pro_armenian}
+					any_character_struggle = {
+						involvement = involved
+						has_struggle_phase_parameter = unlocks_claim_throne_against_armenians
+					}
+				}
+			}
+		}
+		NOT = { scope:recipient = scope:actor }	
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_physically_able_adult = yes
+			can_start_scheme = {
+				target_character = scope:recipient
+				type = claim_throne
+			}
+		}
+	}
+
+	# Scheme Starter Packages
+	options_heading = schemes.t.agent_packages
+	send_options_exclusive = yes
+	## Balanced agents.
+	send_option = {
+		flag = agent_focus_balance
+		current_description = claim_throne_interaction.tt.agent_focus_balance
+	}
+	## Focused on Success Chance.
+	send_option = {
+		flag = agent_focus_success
+		current_description = claim_throne_interaction.tt.agent_focus_success
+	}
+	## Focused on Speed.
+	send_option = {
+		flag = agent_focus_speed
+		current_description = claim_throne_interaction.tt.agent_focus_speed
+	}
+	## Focused on Secrecy.
+	send_option = {
+		flag = agent_focus_secrecy
+		current_description = claim_throne_interaction.tt.agent_focus_secrecy
+	}
+
+	on_accept = {
+		scope:actor = {
+			stress_impact = {
+				content = medium_stress_impact_gain
+				just = medium_stress_impact_gain
+			}
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = claim_throne_interaction_toast
+				left_icon = scope:actor
+				right_icon = scope:recipient
+
+				# Success.
+				if = {
+					limit = { scope:agent_focus_success ?= yes }
+					begin_scheme_with_agents_effect = {
+						SCHEME_TYPE = claim_throne
+						TARGET_TYPE = target_character
+						TARGET_SCOPE = scope:recipient
+						# Success.
+						AGENT_1 = agent_diplomat
+						AGENT_2 = agent_diplomat
+						AGENT_3 = agent_scribe
+						# Speed.
+						AGENT_4 = agent_cleric
+						# Secrecy.
+						AGENT_5 = agent_justiciar
+					}
+				}
+				# Speed.
+				else_if = {
+					limit = { scope:agent_focus_speed ?= yes }
+					begin_scheme_with_agents_effect = {
+						SCHEME_TYPE = claim_throne
+						TARGET_TYPE = target_character
+						TARGET_SCOPE = scope:recipient
+						# Speed.
+						AGENT_1 = agent_cleric
+						AGENT_2 = agent_socialite
+						AGENT_3 = agent_gabbler
+						# Success.
+						AGENT_4 = agent_diplomat
+						# Secrecy.
+						AGENT_5 = agent_justiciar
+					}
+				}
+				# Secrecy.
+				else_if = {
+					limit = { scope:agent_focus_secrecy ?= yes }
+					begin_scheme_with_agents_effect = {
+						SCHEME_TYPE = claim_throne
+						TARGET_TYPE = target_character
+						TARGET_SCOPE = scope:recipient
+						# Secrecy.
+						AGENT_1 = agent_justiciar
+						AGENT_2 = agent_justiciar
+						AGENT_3 = agent_decoy
+						# Success.
+						AGENT_4 = agent_diplomat
+						# Speed.
+						AGENT_5 = agent_cleric
+					}
+				}
+				# Balanced.
+				else = {
+					begin_scheme_with_agents_effect = {
+						SCHEME_TYPE = claim_throne
+						TARGET_TYPE = target_character
+						TARGET_SCOPE = scope:recipient
+						# Success.
+						AGENT_1 = agent_diplomat
+						AGENT_2 = agent_scribe
+						# Speed.
+						AGENT_3 = agent_cleric
+						AGENT_4 = agent_socialite
+						# Secrecy.
+						AGENT_5 = agent_decoy
+					}
+				}
+
+				show_as_tooltip = {
+					stress_impact = {
+						content = medium_stress_impact_gain
+						just = medium_stress_impact_gain
+					}
+				}
+			}
+		}
+
+		# If we're a clan this interaction affects unity
+		add_clan_unity_interaction_effect = {
+			CHARACTER = scope:actor
+			TARGET = scope:recipient
+			VALUE = minor_unity_loss
+			DESC = clan_unity_throne_claim.desc
+			REVERSE_NON_HOUSE_TARGET = no
+		}
+	}
+	
+	ai_potential = {
+		is_adult = yes
+		highest_held_title_tier > tier_barony
+		ai_greed >= medium_positive_ai_value
+		learning >= medium_skill_rating
+		intrigue >= mediocre_skill_rating
+		trigger_if = {
+			limit = {
+				liege = { save_temporary_scope_as = struggle_liege }
+				any_character_struggle = {
+					involvement = involved
+					has_struggle_phase_parameter = unlocks_claim_throne_for_all
+					is_secondary_character_involvement_involved_trigger = {
+						CHAR = scope:struggle_liege
+					}
+				}
+			}
+			is_powerful_vassal = yes
+		}
+		NOR = {
+			has_trait = content
+			opinion = {
+				target = liege
+				value >= high_positive_opinion
+			}
+			any_scheme = {
+				OR = {
+					scheme_type = murder
+					scheme_type = abduct
+					scheme_type = claim_throne
+					scheme_type = fabricate_hook
+					scheme_type = steal_back_artifact
+				}
+			}
+		}
+	}
+
+	ai_frequency = 36
+
+	ai_will_do = {
+		base = 100
+
+		# Agenda impact
+		modifier = {
+			scope:actor = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = iberian_struggle
+				}
+			}
+			add = {
+				value = 0
+				if = {
+					limit = {
+						scope:actor = {
+							any_character_struggle = {
+								phase_has_catalyst = catalyst_gain_claim_on_title_fp2
+							}
+							has_character_flag = agenda_towards_escalation
+						}
+					}
+					add = 200
+				}
+				else_if = {
+					limit = {
+						scope:actor = {
+							any_character_struggle = {
+								phase_has_catalyst = catalyst_gain_claim_on_title_fp2
+							}
+						}
+					}
+					add = -100
+				}
+			}
+		}
+
+		modifier = {
+			scope:actor = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = persian_struggle
+				}
+			}
+			add = {
+				value = 0
+				if = {
+					limit = {
+						scope:actor = {
+							any_character_struggle = {
+								phase_has_catalyst = catalyst_gain_claim_on_title_fp3
+							}
+							has_trait = fp3_struggle_detractor
+						}
+					}
+					add = 200
+				}
+				else_if = {
+					limit = {
+						scope:actor = {
+							any_character_struggle = {
+								phase_has_catalyst = catalyst_gain_claim_on_title_fp3
+							}
+							has_trait = fp3_struggle_supporter
+						}
+						scope:recipient = {
+							has_trait = fp3_struggle_detractor
+						}
+					}
+					add = 100
+				}
+				else_if = {
+					limit = {
+						scope:actor = {
+							any_character_struggle = {
+								phase_has_catalyst = catalyst_gain_claim_on_title_fp3
+							}
+						}
+					}
+					add = -100
+				}
+			}
+		}
+
+		# Unity modifiers
+		evaluate_action_decreasing_house_unity = {
+			VALUE = 100
+		}
+
+		start_hostile_scheme_ai_base_modifiers = yes # At the end so Cowed can block it completely
+	}
+}
