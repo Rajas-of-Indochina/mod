@@ -2,6 +2,49 @@
 # Scope:struggle is the currently pulsing struggle.
 yearly_struggle_playable_pulse = {}
 
+on_title_gain = {
+	on_actions = {
+		sea_armenian_struggle_on_title_conquest_revoke
+		sea_armenian_struggle_on_title_creation
+	}
+}
+
+on_vassal_gained = {
+	on_actions = {
+		sea_armenian_struggle_on_vassal_gained
+	}
+}
+
+on_faith_change = {
+	on_actions = {
+		sea_armenian_struggle_on_faith_change
+	}
+}
+
+on_culture_created = {
+	on_actions = {
+		sea_armenian_struggle_on_culture_created
+	}
+}
+
+on_building_completed = {
+	on_actions = {
+		sea_armenian_struggle_on_building_completed
+	}
+}
+
+on_death = {
+	on_actions = {
+		sea_armenian_struggle_on_death
+	}
+}
+
+on_title_destroyed = {
+	on_actions = {
+		sea_armenian_struggle_on_title_destroyed
+	}
+}
+
 # root: is involved (or interloper) character
 # Scope:struggle is the currently pulsing struggle.
 five_year_struggle_playable_pulse = {
@@ -846,6 +889,29 @@ sea_armenian_struggle_on_death = {
 					}
 				}
 			}
+		}
+	}
+}
+
+# A title is destroyed
+# root = the holder before destruction
+# scope:landed_title = the title that is being destroyed
+# Does *not* provide scope:transfer_type
+sea_armenian_struggle_on_title_destroyed = {
+	# trigger = {
+	# 	struggle:struggle_armenia = { exists = yes }
+	# }
+	effect = {
+		if = {
+			limit = {
+				scope:landed_title = title:k_armenian_principality
+				ROOT = {
+					any_character_struggle = {
+						is_struggle_type = armenian_struggle
+					}
+				}
+			}
+			armenian_dissolution_effect = yes
 		}
 	}
 }
