@@ -2418,6 +2418,10 @@ join_war_interaction = {
 				}
 				# Deliberately blank; we've passed the trigger and making a desc out of this doesn't make sense
 			}
+			trigger_else_if = {
+				limit = { scope:actor.culture = { has_cultural_pillar = heritage_ciscaucasian }}
+				scope:recipient.culture = { has_cultural_pillar = heritage_ciscaucasian }
+			  }			
 			trigger_else = {
 				custom_description = {
 					text = join_war_interaction_recipient_not_ally
@@ -2500,6 +2504,13 @@ join_war_interaction = {
 			}
 			# if holy war, recipient is defender of same faith
 			# and not too far away
+			trigger_else_if = {
+				limit = {
+				  scope:actor.culture = { has_cultural_pillar = heritage_ciscaucasian }
+				  scope:recipient.culture = { has_cultural_pillar = heritage_ciscaucasian }
+				}
+				always = yes
+			  }
 			trigger_else_if = {
 				limit = { is_religious_war = yes }
 				trigger_if = { #Only if you're not allies
