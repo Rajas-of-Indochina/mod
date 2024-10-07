@@ -2437,19 +2437,8 @@ join_war_interaction = {
 			}
 		}
 
-		# recipient is liege
-		trigger_else = {
-			custom_description = {
-				text = join_war_interaction_recipient_not_liege
-				subject = scope:recipient
-				scope:actor = {
-					target_is_liege_or_above = scope:recipient
-				}
-			}
-		}
-
 		# Special exception for Involved Pro-Armenian characters during Armenian Independence Phase of Armenian Struggle
-		trigger_if = {
+		trigger_else_if = {
 			limit = {
 				scope:actor = {
 					has_trait = pro_armenian
@@ -2464,6 +2453,17 @@ join_war_interaction = {
 					has_struggle_phase_parameter = armenians_join_defensive_wars_against_outsiders
 				}
 				any_war_enemy = { NOT = { has_trait = pro_armenian } }
+			}
+		}
+
+		# recipient is liege
+		trigger_else = {
+			custom_description = {
+				text = join_war_interaction_recipient_not_liege
+				subject = scope:recipient
+				scope:actor = {
+					target_is_liege_or_above = scope:recipient
+				}
 			}
 		}
 		
