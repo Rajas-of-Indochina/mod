@@ -193,3 +193,308 @@ armenian_dissolution_effect = {
 		}
 	}
 }
+
+# Communalist Revolts
+setup_communalist_leader_effect = {
+	save_scope_as = faction
+
+	random_faction_county_member = {
+		save_scope_as = peasant_county
+	}
+
+	# Runs the scripted effect to find the best title to target for the rebellion.
+	get_popular_revolt_target_effect = { FACTION = this }
+
+	# If we can't find any, then generate a new character to be the populist leader of the revolt.
+	if = {
+		limit = {
+			NOT = { exists = scope:peasant_leader }
+		}
+		if = {
+			limit = { scope:peasant_county.faith = { is_communalist_faith = yes } }
+			scope:peasant_county.faith ={
+				save_scope_as = leader_faith
+			}
+			else_if = {
+				limit = { scope:peasant_county = { county_has_large_faith_minority_with_trigger = { TRIGGER = is_communalist_faith } } }
+				scope:peasant_county = {
+					random_in_list = {
+						variable = faith_minorities_large
+						limit = { is_communalist_faith = yes }
+						save_scope_as = leader_faith
+					}
+				}
+			}
+			else_if = {
+				limit = { scope:peasant_county = { county_has_small_faith_minority_with_trigger = { TRIGGER = is_communalist_faith } } }
+				scope:peasant_county = {
+					random_in_list = {
+						variable = faith_minorities_small
+						limit = { is_communalist_faith = yes }
+						save_scope_as = leader_faith
+					}
+				}
+			}
+			else = {
+				faith:tondrakian = { save_scope_as = leader_faith }
+			}
+		}
+		create_character = {
+			location = scope:peasant_county.title_province
+			template = populist_faction_leader_template
+			faith = scope:leader_faith
+			culture = scope:peasant_county.culture
+			gender_female_chance = 25
+			save_scope_as = peasant_leader
+		}
+		scope:peasant_leader = {
+			add_character_flag = peasant_faction_random_peasant
+		}
+	}
+
+	# Create a new title for the peasant.
+	create_dynamic_title = {
+		tier = duchy
+		name = FACTION_POPULIST_REVOLT_TITLE_NAME
+	}
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	scope:new_title = {
+		set_capital_county = scope:peasant_county
+		set_landless_title = yes
+		set_destroy_on_succession = yes
+		set_delete_on_destroy = yes
+		set_no_automatic_claims = yes
+		set_definitive_form = yes
+		set_can_be_named_after_dynasty = no
+		change_title_holder = {
+			holder = scope:peasant_leader
+			change = scope:change
+		}
+		set_variable = {
+			name = faction
+			value = scope:faction
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+	scope:peasant_leader = {
+		set_variable = {
+			name = peasant_title
+			value = scope:new_title
+		}
+	}
+	scope:new_title = { generate_coa = factions }
+
+	# Set the peasant leader as the head of the faction.
+	scope:peasant_leader = {
+		set_variable = {
+			name = rebel_leader_peasants
+			value = scope:faction
+		}
+		join_faction_skip_check = scope:faction
+	}
+	set_special_character = scope:peasant_leader
+}
+setup_landed_communalist_leader_effect = {
+	save_scope_as = faction
+
+	random_faction_county_member = {
+		save_scope_as = peasant_county
+	}
+
+	# Runs the scripted effect to find the best title to target for the rebellion.
+	get_popular_revolt_target_effect = { FACTION = this }
+
+	scope:faction.faction_leader = {
+		save_scope_as = peasant_leader
+		set_variable = {
+			name = rebel_leader_peasants
+			value = scope:faction
+		}
+	}
+
+	# Set the peasant leader as the head of the faction.
+	scope:peasant_leader = {
+		set_variable = {
+			name = rebel_leader_peasants
+			value = scope:faction
+		}
+	}
+	set_special_character = scope:peasant_leader
+}
+# Shared effect between the Popular Faction's demand event and victory outcome.
+#
+# Parameters:
+#	$FACTION_LEADER$
+successful_communalist_uprising_outcome_effect = {
+	# Save scopes for later usage.
+	$FACTION_LEADER$ = {
+		joined_faction = {
+			save_scope_as = popular_faction
+			every_faction_member = {
+				add_to_list = faction_members
+			}
+			faction_target = {
+				save_scope_as = faction_target
+			}
+		}
+	}
+
+	# Compile a list of all counties belonging to the faction.
+	scope:popular_faction = {
+		every_faction_county_member = {
+			add_to_list = siezed_counties
+		}
+	}
+	# Additionally, if we're at war (and not just pressing demands)...
+	if = {
+		limit = {
+			$FACTION_LEADER$ = {
+				is_at_war_with = scope:faction_target
+			}
+		}
+		# Add all occupied counties.
+		scope:faction_target = {
+			every_sub_realm_county = {
+				limit = {
+					county_controller = $FACTION_LEADER$
+					faith = { is_communalist_faith = yes }
+					NOT = { is_in_list = seized_counties }
+				}
+				add_to_list = siezed_counties
+			}
+		}
+		
+		# And add any war members that aren't already in the faction.
+		$FACTION_LEADER$ = {
+			every_character_war = {
+				limit = {
+					is_defender = scope:faction_target
+				}
+				every_war_attacker = {
+					limit = {
+						NOT = { is_in_list = faction_members }
+					}
+					add_to_list = faction_members
+				}
+			}
+		}
+	}
+	# Also add in counties with Tondrakian minorities
+	scope:faction_target = {
+		every_sub_realm_county = {
+			limit = {
+				NOT = { is_in_list = seized_counties }
+				# county_has_specific_minority_faith_trigger = { FAITH = faith:tondrakian }
+				county_has_faith_minority_with_trigger = { TRIGGER = is_communalist_faith }
+			}
+			add_to_list = seized_counties
+		}
+	}
+	# And the counties of revolting rulers.
+	every_in_list = {
+		list = faction_members
+		every_faction_member = {
+			every_sub_realm_county = {
+				limit = { NOT = { is_in_list = seized_counties } }
+				add_to_list = seized_counties
+			}
+		}
+	}
+
+	hidden_effect = {
+		every_in_list = {
+			list = seized_counties
+			save_scope_as = county
+			if = {
+				limit = {
+					holder.faith = { is_communalist_faith = yes }
+				}
+				holder.faith = { save_scope_as = communalist_faith }
+			}
+			else_if = {
+				limit = {
+					county_has_large_faith_minority_with_trigger = { TRIGGER = is_communalist_faith }
+				}
+				random_in_list = {
+					variable = faith_minorities_large
+					limit = { is_communalist_faith = yes }
+					save_scope_as = communalist_faith
+				}
+			}
+			else_if = {
+				limit = {
+					county_has_small_faith_minority_with_trigger = { TRIGGER = is_communalist_faith }
+				}
+				random_in_list = {
+					variable = faith_minorities_small
+					limit = { is_communalist_faith = yes }
+					save_scope_as = communalist_faith
+				}
+			}
+			else = {
+				$FACTION_LEADER$.faith = { save_scope_as = communalist_faith }
+			}
+			promote_faith_minority_effect = { FAITH = scope:communalist_faith }
+			if = {
+				limit = { faith = { is_communalist_faith = yes } }
+				set_variable = {
+					name = hold_court_8120_religion_block
+					value = scope:county.faith
+					years = 15
+				}
+			}
+		}
+	}
+
+	custom_tooltip = "Counties controlled or occupied by the faction will promote [minority_faiths|E] with the [GetFaithDoctrine('tenet_communal_possessions').GetBaseName] [core_tenet|E]."
+	custom_tooltip = "Communalist counties occupied or controlled by the faction can't be converted for 15 years."
+	
+	# If the faction still exists, dissolve it (it's no longer relevant).
+	hidden_effect = {
+		if = {
+			limit = {
+				exists = scope:popular_faction
+			}
+			scope:popular_faction = {
+				destroy_faction = yes
+			}
+		}
+	}
+}
+
+decision_form_armenian_cilicia_effect = {
+	title:d_cilicia = {
+		set_de_jure_liege_title = title:k_armenian_cilicia
+	}
+	title:d_edessa = {
+		set_de_jure_liege_title = title:k_armenian_cilicia
+	}
+	if = {
+		limit = {
+			OR = {
+				has_title = title:d_antioch
+				completely_controls = title:d_antioch
+			}
+		}
+		title:d_antioch = {
+			set_de_jure_liege_title = title:k_armenian_cilicia
+		}
+	}
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_armenian_cilicia = {
+		change_title_holder = {
+			holder = ROOT
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+	set_primary_title_to = title:k_armenian_cilicia
+}

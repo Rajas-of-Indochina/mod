@@ -321,27 +321,24 @@ marriage_interaction_on_accept_effect = {
 			}
 		}
 	}
-
+	
 	#Legitimacy loss for marrying a lowborn
-	if = {
-		limit = {
-			scope:actor = {
+	scope:actor = {
+		if = {
+			limit = {
+				is_valid_for_legitimacy_change = yes
 				NOT = {
 					has_variable = lowborn_legitimacy_cooldown
 					faith = { has_doctrine_parameter = piety_from_marrying_lowborn_active }
 					has_government = anarchist_government
 				}
+				this = scope:secondary_actor # We check that you're marrying them yourself
+				scope:secondary_recipient = { is_lowborn = yes }
 			}
-			scope:actor = scope:secondary_actor # We check that you're marrying them yourself
-			scope:secondary_recipient = { is_lowborn = yes }
-		}
-		if = {
-			limit = {
-				scope:actor = { is_ai = no }
-			}
-			scope:actor = {
+			if = {
+				limit = { is_ai = no }
 				send_interface_toast = {
-					type = event_toast_effect_bad
+					type = event_toast_effect_good
 					title = married_lowborn_toast
 					left_icon = scope:actor
 					add_legitimacy = {
@@ -350,43 +347,18 @@ marriage_interaction_on_accept_effect = {
 					}
 				}
 			}
-		}
-		else = { # To avoid destroying polygamy AIs
-			scope:actor = {
+			else = { # To avoid destroying polygamy AIs
 				send_interface_toast = {
-					type = event_toast_effect_bad
+					type = event_toast_effect_good
 					title = married_lowborn_toast
 					left_icon = scope:actor
-					add_legitimacy = {
-						value = minor_legitimacy_loss
-					}
+					add_legitimacy = { value = minor_legitimacy_loss }
 				}
-			}
-			hidden_effect = {
-				scope:actor = {
+				hidden_effect = {
 					set_variable = {
 						name = lowborn_legitimacy_cooldown
 						years = 10
 					}
-				}
-			}
-		}
-		scope:actor = {
-			every_powerful_vassal = {
-				limit = {
-					OR = {
-						# Communalists won't be offended, this is normal to them
-						NOT = {
-							faith = { has_doctrine_parameter = piety_from_marrying_lowborn_active }
-							has_government = anarchist_government
-						}
-						# Courtly vassals, however, are cringe haters regardless of the norms
-						has_vassal_stance = courtly
-					}
-				}
-				add_opinion = {
-					target = scope:actor
-					modifier = married_commoner_opinion
 				}
 			}
 		}

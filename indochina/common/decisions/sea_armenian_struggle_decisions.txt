@@ -1070,3 +1070,61 @@ armenian_struggle_georgian_empire = {
 
 	ai_will_do = { base = 100 }
 }
+
+decision_form_armenian_cilicia = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp3/fp3_decision_foundation.dds"
+	}
+	decision_group_type = major
+	desc = decision_form_armenian_cilicia_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		OR = {
+			culture = culture:armenian
+			culture = {
+				any_parent_culture_or_above = { this = culture:armenian }
+				has_cultural_pillar = heritage_caucasian
+			}
+			capital_county = {
+				title_province = { geographical_region = custom_armenian_cilicia }
+			}
+		}
+		highest_held_title_tier <= tier_duchy
+
+	}
+
+	is_valid = {
+		OR = {
+			has_title = title:d_cilicia
+			completely_controls = title:d_cilicia
+		}
+		OR = {
+			has_title = title:d_edessa
+			completely_controls = title:d_edessa
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_adult = yes
+		is_available = yes
+		is_independent_ruler = yes
+	}
+
+	cost = {
+		gold = {
+			value = major_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
+	}
+
+	effect = {
+		# add_piety = 1
+		decision_form_armenian_cilicia_effect = yes
+	}
+	
+}
