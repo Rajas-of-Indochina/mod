@@ -194,7 +194,14 @@ start_nanzhao_collapse = {
 
 spawn_lesbian_culture = {
 	trigger = {
-		realm_capital = title:c_lesbos
+		trigger_if = {
+			limit = { is_landed = yes }
+			capital_county = title:c_lesbos
+		}
+		trigger_else_if = {
+			limit = { has_domicile = yes }
+			domicile.domicile_location.county = title:c_lesbos
+		}
 		is_female = yes
 		OR = {
 			has_sexuality = bisexual
