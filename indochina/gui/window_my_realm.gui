@@ -33,7 +33,7 @@ window = {
 		on_start = "[PdxGuiTabs.RemoveTabIf( 'vassals', IsLandlessAdventurer( GetPlayer ) )]"
 		on_start = "[PdxGuiTabs.AddTab( 'succession' )]"
 		on_start = "[PdxGuiTabs.AddTabIf( 'laws', Not( IsLandlessAdventurer( GetPlayer ) ) )]"
-		on_start = "[PdxGuiTabs.removeTabIf( 'laws', Not( IsLandlessAdventurer( GetPlayer ) ) )]"
+		on_start = "[PdxGuiTabs.RemoveTabIf( 'laws', IsLandlessAdventurer( GetPlayer ) )]"
 	}
 
 	state = {
@@ -2736,5 +2736,199 @@ types MyRealmWindow
 		frame = "[IntToFrameIndex( Character.GetLegitimacyExpectationsOfLiege )]"
 
 		tooltip = "VASSAL_EXPECTED_LEGITIMACY_TT"
+	}
+
+	type vbox_domicile_button = vbox
+	{
+		datacontext = "[Character.GetDomicile]"
+
+		margin = { 10 0 }
+
+		layoutpolicy_horizontal = expanding
+
+		background = {
+			fittype = centercrop
+			alpha = 0.7
+			texture = "[Domicile.GetType.GetIllustration]"
+			margin = { -10 0 }
+
+			modify_texture = {
+				texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+				blend_mode = alphamultiply
+			}
+
+			modify_texture = {
+				texture = "gfx/interface/component_overlay/overlay_effect.dds"
+				blend_mode = overlay
+			}
+		}
+
+		button_standard_clean = {
+			layoutpolicy_horizontal = expanding
+			size = { 0 80 }
+
+			onclick = "[ToggleGameViewData( 'domicile', Domicile.Self )]"
+
+			background = {
+				using = Background_Button_Illustration
+				visible = "[IsGameViewOpen( 'domicile' )]"
+			}
+
+			using = Background_Vignette_Button
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+
+				vbox = {
+					spacing = 0
+					margin = { 10 0 }
+
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					hbox = {
+						name = "domicile_header"
+						layoutpolicy_horizontal = expanding
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							visible = "[Domicile.GetType.IsDomicileType( 'estate' )]"
+
+							background = {
+								margin_left = 15
+								margin_right = 25
+								margin_top = 0
+								margin_bottom = 5
+
+								texture = "gfx/interface/component_tiles/tile_title_bg_01.dds"
+								spriteType = Corneredtiled
+								spriteborder = { 40 8 }
+								texture_density = 2
+
+								modify_texture = {
+									name = "mask"
+									texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+									blend_mode = alphamultiply
+									mirror = horizontal
+								}
+							}
+
+							text_single = {
+								text = "[Domicile.GetMainLevelText]"
+							}
+
+							expand = {}
+						}
+
+						hbox = {
+							visible = "[Domicile.GetType.IsDomicileType( 'camp' )]"
+							margin_left = 52
+
+							background = {
+								margin_left = -37
+								margin_right = 25
+								margin_top = 0
+								margin_bottom = 5
+
+								texture = "gfx/interface/component_tiles/tile_title_bg_01.dds"
+								spriteType = Corneredtiled
+								spriteborder = { 40 8 }
+								texture_density = 2
+
+								modify_texture = {
+									name = "mask"
+									texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+									blend_mode = alphamultiply
+									mirror = horizontal
+								}
+							}
+
+							text_single = {
+								datacontext = "[Character.GetDomicile]"
+								text = "[Domicile.GetMainLevelText]"
+							}
+						}
+					}
+
+					hbox = {
+						name = "domicile_construction_info"
+
+						layoutpolicy_horizontal = expanding
+
+						minimumsize = { 0 40 }
+
+						vbox = {
+							tooltip = "[Domicile.GetBuildingUnderConstruction.GetConstructionTooltip( Character.Self )]"
+							using = tooltip_ne
+
+							hbox = {
+
+								background = {
+									visible = "[Domicile.GetType.IsDomicileType( 'camp' )]"
+									margin_left = 15
+									margin_right = 25
+									margin_top = 0
+									margin_bottom = 3
+
+									texture = "gfx/interface/component_tiles/tile_title_bg_01.dds"
+									spriteType = Corneredtiled
+									spriteborder = { 40 8 }
+									texture_density = 2
+									alpha = 0.7
+
+									modify_texture = {
+										name = "mask"
+										texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+										blend_mode = alphamultiply
+										mirror = horizontal
+										alpha = 0.1
+									}
+								}
+
+								text_single = {
+									text = "[Domicile.GetConstructionStatusText]"
+									align = nobaseline
+								}
+							}
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+
+								progressbar_standard = {
+									name = "building_progressbar"
+									visible = "[Domicile.IsConstructing]"
+									alwaystransparent = yes
+
+									layoutpolicy_horizontal = expanding
+									maximumsize = { -1 15 }
+									value = "[Multiply_float( FixedPointToFloat( Domicile.GetConstructionProgress ), '(float)100' )]"
+									direction = horizontal
+								}
+
+								expand = {}
+							}
+						}
+
+						text_single = {
+							margin_right = 52
+							visible = "[Domicile.CanUpgradeMain]"
+							text = "[Domicile.GetUpgradeMainText]"
+							default_format = "#P"
+						}
+
+						expand = {
+							visible = "[Domicile.GetType.IsDomicileType( 'estate' )]"
+						}
+					}
+				}
+
+				hbox_access_domicile_button = {
+					visible = "[And( Character.HasDomicile, ObjectsEqual( Character.Self, GetPlayer ) )]"
+					margin_right = 10
+				}
+
+				expand = {}
+			}
+		}
 	}
 }

@@ -349,39 +349,10 @@ task_conversion = {
 					}
 				}
 			}
-			min = {
-				value = 0.1
-				desc = minimum_conversion
-			}
 		}
-
-		### TFE county conversion changes
-		# Bonus for converting a province within the Empire to its Official Faith
-		if = {
-			limit = {
-				OR = {
-					exists = scope:councillor_liege.primary_title.var:official_imperial_faith
-					AND = {
-						exists = scope:councillor_liege.top_liege
-						exists = scope:councillor_liege.top_liege.primary_title.var:official_imperial_faith
-					}
-				}
-				OR = {
-					AND = {
-						exists = scope:councillor_liege.primary_title.var:official_imperial_faith
-						scope:councillor.faith = scope:councillor_liege.primary_title.var:official_imperial_faith
-					}
-					AND = {
-						exists = scope:councillor_liege.top_liege
-						exists = scope:councillor_liege.top_liege.primary_title.var:official_imperial_faith
-						scope:councillor.faith = scope:councillor_liege.top_liege.primary_title.var:official_imperial_faith
-					}
-				}
-			}
-			multiply = {
-				value = 1.1
-				desc = COURT_CHAPLAIN_CONVERSION_OFFICIAL_IMPERIAL_FAITH_EMPIRE
-			}
+		min = {
+			value = 0.1
+			desc = minimum_conversion
 		}
 
 		# Because the task needs to complete 3 times with the minority system
@@ -424,7 +395,10 @@ task_conversion = {
 
 			trigger_if = {
 				limit = {
-					scope:councillor_liege = { has_variable = hold_court_8120_religion_block }
+					scope:councillor_liege = {
+						is_alive = yes
+						has_variable = hold_court_8120_religion_block
+					}
 				}
 				custom_tooltip = {
 					text = hold_court_8120_conversion_tt
@@ -634,7 +608,10 @@ task_conversion = {
 					scope:councillor_liege = {
 						is_ai = yes
 						faith = {
-							has_doctrine = tenet_tax_nonbelievers
+							OR = {
+								has_doctrine = tenet_tax_nonbelievers
+								has_doctrine = special_doctrine_jizya
+							}
 						}
 					}
 					OR = {
@@ -778,6 +755,8 @@ task_conversion = {
 			}
 		}
 		scope:county = {
+			#set_county_faith = scope:councillor.faith
+
 			if = {
 				limit = { scope:county.faith = scope:councillor.faith }
 				demote_random_faith_minority_effect = yes
@@ -804,11 +783,34 @@ task_conversion = {
 							add_piety = medium_piety_gain
 						}
 					}
-					# Message for vassals
-					trigger_event = court_chaplain_task.8002
 				}
 			}
 		}
+		#if = {
+			#limit = {
+				#scope:councillor = {
+					#has_council_position = councillor_court_chaplain
+				#}
+			#}
+			#scope:councillor = {
+				#start_default_task = yes
+			#}
+		#}
+
+		# Struggle parameters
+		scope:councillor_liege = {
+			if = {
+				limit = {
+					any_character_struggle = {
+						involvement = involved
+						has_struggle_phase_parameter = piety_from_converting_county
+					}
+				}
+				add_piety = miniscule_piety_value #medium_piety_gain
+			}
+		}
+		# Message for vassals
+		trigger_event = court_chaplain_task.8002
 	}
 
 	monthly_on_action = task_convert_side_effects
