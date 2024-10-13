@@ -3356,6 +3356,32 @@ on_game_start_after_lobby = {
 					add_realm_law_skip_effects = camp_purpose_mercenaries
 				}
 			}
+			## Yusuf Al Lakzi
+			character:yusuf_lakzi ?= {
+				if = {
+					limit = {
+						is_alive = yes
+						is_landless_adventurer = yes
+					}
+					add_realm_law_skip_effects = camp_purpose_mercenaries
+					if = {
+						limit = {
+							character:musa_derbendi = {
+								NOT = { is_courtier_of = character:yusuf_lakzi }
+							}
+						}
+						add_courtier = character:musa_derbendi
+					}
+					if = {
+						limit = {
+							character:abubakr_derbendi = {
+								NOT = { is_courtier_of = character:yusuf_lakzi }
+							}
+						}
+						add_courtier = character:abubakr_derbendi
+					}
+				}
+			}
 			every_independent_ruler = {
 				limit = { is_landless_adventurer = yes }
 				# C... food.
