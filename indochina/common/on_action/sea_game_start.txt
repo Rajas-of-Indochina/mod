@@ -9,47 +9,61 @@ on_game_start = {
         #holy_site_fix
         lock_indo_greek
         EEE_sea_setup_on_actions
-        #fix_government_types
+        fix_government_types
         #generate_shangshu
         nerf_japan
 
         # Optional admin realms via gamerules; PDX does it before and after lobby, so will we.
         sea_optional_admin_realms
+
+        # update title CoAs
+        sea_title_coa_on_start
     }
 }
 
 fix_government_types = {
+    trigger = {
+        has_dlc_feature = roads_to_power
+    }
     effect = {
-        title:k_qocho.holder = {
-            if = {
-                limit = { has_government = clan_government }
-                change_government = feudal_government
+        # title:k_qocho.holder = {
+        #     if = {
+        #         limit = { has_government = clan_government }
+        #         change_government = feudal_government
 
-                every_vassal_or_below = {
-                    limit = {
-                        highest_held_title_tier >= tier_county
-                        has_government = clan_government
-                    }
-                    change_government = feudal_government
-                }
-            }
-        }
-        title:k_zhetysu.holder = {
-            if = {
-                limit = {
-                    game_start_date = 1066.9.15
-                    has_government = feudal_government
-                }
-                change_government = clan_government
+        #         every_vassal_or_below = {
+        #             limit = {
+        #                 highest_held_title_tier >= tier_county
+        #                 has_government = clan_government
+        #             }
+        #             change_government = feudal_government
+        #         }
+        #     }
+        # }
+        # title:k_zhetysu.holder = {
+        #     if = {
+        #         limit = {
+        #             game_start_date = 1066.9.15
+        #             has_government = feudal_government
+        #         }
+        #         change_government = clan_government
 
-                every_vassal_or_below = {
-                    limit = {
-                        highest_held_title_tier >= tier_county
-                        has_government = feudal_government
-                    }
-                    change_government = clan_government
-                }
+        #         every_vassal_or_below = {
+        #             limit = {
+        #                 highest_held_title_tier >= tier_county
+        #                 has_government = feudal_government
+        #             }
+        #             change_government = clan_government
+        #         }
+        #     }
+        # }
+        # Noticed that unlanded Chinese house heads were being incorrectly given Chinese gov
+        every_ruler = {
+            limit = {
+                primary_title = { is_noble_family_title = yes }
+                has_government = chinese_government
             }
+            change_government = administrative_government
         }
     }
 }
@@ -912,6 +926,19 @@ sea_optional_admin_realms = {
                 game_start_date > 1065.1.1
             }
             title:k_goryeo.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+        }
+    }
+}
+
+sea_title_coa_on_start = {
+    effect = {
+        if = {
+            limit = { game_start_date > 1000.1.1 }
+            title:k_georgia = {
+                set_variable = k_georgia_abkhazia
+                set_coa = k_georgia_abkhazia_christian
+            }
+            title:c_zichia = {set_coa = c_middlesex}
         }
     }
 }
