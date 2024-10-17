@@ -14,14 +14,13 @@ austronesian_tattoo = {
 			human = {
 				morph = {
 					mode = add
-					template = gene_idaya_tattoo
-					value = 1.0
 					gene = austronesian_tattoo
+					value = 1.0
+					template = gene_idaya_tattoo
 				}
 				color = {
 					gene = skin_color
 					mode = modify
-
 					x = 0.0
 					y = -0.1
 				}
@@ -39,6 +38,7 @@ austronesian_tattoo = {
 			}
 		}
 		dna_modifiers = {
+			human = {
 				morph = {
 					mode = add
 					template = gene_aeta_tattoo
@@ -52,6 +52,7 @@ austronesian_tattoo = {
 					x = 0.0
 					y = -0.1
 				}
+			}
 		}
 	}
 	bisaya_tattoo = {
@@ -61,7 +62,16 @@ austronesian_tattoo = {
 		trigger = {
 			trigger_if = {
 				limit = { exists = root }
-				culture = culture:bisaya
+				culture = {
+					OR = {
+						this = culture:tawo
+						any_parent_culture_or_above = { this = culture:tawo }
+					}
+					NOT = {
+						this = culture:tagalog
+						any_parent_culture_or_above = { this = culture:tagalog }
+					}
+				}
 			}
 		}
 		dna_modifiers = {
