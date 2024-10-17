@@ -389,7 +389,31 @@ k_jin_china = {
 
     936.1.1 = {
     	holder = shijingtang_jin
-    	government = feudal_government
+    	# government = feudal_government
+		government = administrative_government
+		succession_laws = {
+			single_heir_succession_law
+		}
+		effect = {
+			set_coa = e_tang
+			if = {
+				limit = {
+					exists = holder
+					holder = { has_government = administrative_government }
+				}
+				set_state_faith = faith:jingxue
+			}
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+					add_realm_law_skip_effects = single_heir_succession_law
+				}
+			}
+		}
     	liege = e_celestia_china
     }
     942.7.28 = {
