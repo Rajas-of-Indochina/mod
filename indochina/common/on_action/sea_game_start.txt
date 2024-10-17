@@ -326,7 +326,39 @@ acculturate_steppelads = {
                 }
             }
         }
+        # Flip Kara-Khitans to Qitai culture
+        if = {
+            limit = {
+                exists = title:e_kara_khitai.holder
+            }
 
+            title:e_kara_khitai.holder = {
+
+                set_culture = culture:qitai
+
+                every_close_or_extended_family_member = {
+                    limit = { culture = culture:khitan }
+                    set_culture = culture:qitai
+                }
+
+                every_vassal_or_below = {
+                    if = {
+                        limit = { culture = culture:khitan }
+                        set_culture = culture:qitai
+                    }
+
+                    every_close_or_extended_family_member = {
+                        limit = { culture = culture:khitan }
+                        set_culture = culture:qitai
+                    }
+
+                    every_courtier_or_guest = {
+                        limit = { culture = culture:khitan }
+                        set_culture = culture:qitai
+                    }
+                }
+            }
+        }
         if = {
             limit = {
                 game_start_date <= 1030.1.1
