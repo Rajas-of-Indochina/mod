@@ -1,6 +1,8 @@
 ﻿
 three_teachings_convert_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_three_teachings.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_three_teachings.dds"
+	}
 
 	cooldown = { days = 3650 }
 
@@ -42,7 +44,7 @@ three_teachings_convert_decision = {
 # Get recognized by China (get truce with China if you're another empire on their border, a la Liao)
 
 claim_mandate_decision = {
-	major = yes
+	decision_group_type = major
 	desc = claim_mandate_decision_desc
 
 	is_shown = {
@@ -52,12 +54,14 @@ claim_mandate_decision = {
 		}
 		OR = {
 			has_government = chinese_government
+			has_government = administrative_government
 			has_government = tribal_government
 			has_government = feudal_government
 		}
 		unlock_bureaucracy_trigger = yes
 		highest_held_title_tier >= tier_duchy
 		is_independent_ruler = yes
+		is_landed = yes
 		capital_province = { geographical_region = world_china }
 	}
 
@@ -95,13 +99,16 @@ claim_mandate_decision = {
 
 # Lets you actually take on the Chinese government type provided you meet the requirements
 adopt_chinese_government_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = major
 	desc = adopt_chinese_government_decision_desc
 
 	ai_check_interval = 36
 
 	is_shown = {
+		NOT = { has_dlc_feature = roads_to_power }
 		NOT = {
 			has_government = chinese_government
 			has_government = anarchist_government
@@ -125,7 +132,7 @@ adopt_chinese_government_decision = {
 						geographical_region = world_china
 					}
 				}
-				culture = { has_cultural_parameter = unlock_bureaucracy_param }
+				culture = { has_cultural_parameter = can_adopt_administrative_government_as_kingdom_tier }
 				religion = religion:taoism_religion
 			}
 		}
@@ -189,8 +196,10 @@ adopt_chinese_government_decision = {
 # Do if either independent or imperial authority is very low or you have a strong hook on the emperor (?)
 
 convert_to_feudal_from_chinese_bureaucracy_decision = {
- 	picture = "gfx/interface/illustrations/decisions/decision_china_army.dds"
- 	major = yes
+	picture = {
+ 		reference = "gfx/interface/illustrations/decisions/decision_china_army.dds"
+	}
+ 	decision_group_type = major
  	desc = convert_to_feudal_from_chinese_bureaucracy_decision_desc
 
  	ai_check_interval = 36

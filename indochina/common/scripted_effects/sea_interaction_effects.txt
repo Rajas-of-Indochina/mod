@@ -323,23 +323,20 @@ marriage_interaction_on_accept_effect = {
 	}
 	
 	#Legitimacy loss for marrying a lowborn
-	if = {
-		limit = {
-			scope:actor = {
+	scope:actor = {
+		if = {
+			limit = {
+				is_valid_for_legitimacy_change = yes
 				NOT = {
 					has_variable = lowborn_legitimacy_cooldown
 					faith = { has_doctrine_parameter = piety_from_marrying_lowborn_active }
 					has_government = anarchist_government
 				}
+				this = scope:secondary_actor # We check that you're marrying them yourself
+				scope:secondary_recipient = { is_lowborn = yes }
 			}
-			scope:actor = scope:secondary_actor # We check that you're marrying them yourself
-			scope:secondary_recipient = { is_lowborn = yes }
-		}
-		if = {
-			limit = {
-				scope:actor = { is_ai = no }
-			}
-			scope:actor = {
+			if = {
+				limit = { is_ai = no }
 				send_interface_toast = {
 					type = event_toast_effect_good
 					title = married_lowborn_toast
@@ -350,20 +347,14 @@ marriage_interaction_on_accept_effect = {
 					}
 				}
 			}
-		}
-		else = { # To avoid destroying polygamy AIs
-			scope:actor = {
+			else = { # To avoid destroying polygamy AIs
 				send_interface_toast = {
 					type = event_toast_effect_good
 					title = married_lowborn_toast
 					left_icon = scope:actor
-					add_legitimacy = {
-						value = minor_legitimacy_loss
-					}
+					add_legitimacy = { value = minor_legitimacy_loss }
 				}
-			}
-			hidden_effect = {
-				scope:actor = {
+				hidden_effect = {
 					set_variable = {
 						name = lowborn_legitimacy_cooldown
 						years = 10
@@ -371,23 +362,30 @@ marriage_interaction_on_accept_effect = {
 				}
 			}
 		}
-		scope:actor = {
-			every_powerful_vassal = {
-				limit = {
-					OR = {
-						# Communalists won't be offended, this is normal to them
-						NOT = {
-							faith = { has_doctrine_parameter = piety_from_marrying_lowborn_active }
-							has_government = anarchist_government
-						}
-						# Courtly vassals, however, are cringe haters regardless of the norms
-						has_vassal_stance = courtly
-					}
-					add_opinion = {
-						target = scope:actor
-						modifier = married_commoner_opinion
-					}
-				}
+	}
+
+	# Reverence for Sapphic Love
+	if = {
+		limit = {
+			scope:secondary_actor = {
+				is_female = yes
+			}
+			scope:secondary_recipient = {
+				is_female = yes
+			}
+		}
+		scope:secondary_actor = {
+			if = {
+				limit = { culture = { has_cultural_parameter = lesbian_romance_venerated } }
+				add_piety = medium_piety_gain
+				add_prestige = medium_prestige_gain
+			}
+		}
+		scope:secondary_recipient = {
+			if = {
+				limit = { culture = { has_cultural_parameter = lesbian_romance_venerated } }
+				add_piety = medium_piety_gain
+				add_prestige = medium_prestige_gain
 			}
 		}
 	}
@@ -450,16 +448,18 @@ marriage_interaction_on_accept_effect = {
 						}
 					}
 					send_interface_toast = {
+						type = event_toast_effect_good
 						title = arrange_marriage_interaction_accept_betrothal_toast
-						left_icon = scope:secondary_actor 
+						left_icon = scope:secondary_actor
 						right_icon = scope:secondary_recipient
 						custom_tooltip  = arrange_marriage_interaction_accept_betrothal_toast_desc
 					}
 				}
 				else = {
 					send_interface_toast = {
+						type = event_toast_effect_good
 						title = arrange_marriage_interaction_accept_toast
-						left_icon = scope:secondary_actor 
+						left_icon = scope:secondary_actor
 						right_icon = scope:secondary_recipient
 						custom_tooltip  = arrange_marriage_interaction_accept_toast_desc
 					}
@@ -470,7 +470,7 @@ marriage_interaction_on_accept_effect = {
 		# Apply any relevant opinion penalties for relatives of spouse.
 		scope:secondary_actor = {
 			if = { # Polygamy
-				limit = { 
+				limit = {
 					any_consort = {
 						count >= 2
 					}
@@ -488,7 +488,7 @@ marriage_interaction_on_accept_effect = {
 					#... then family members who also do not believe in polygamy aren't happy about having a relative forced into polygamous union with you.
 					every_close_family_member = {
 						if = {
-							limit = { 
+							limit = {
 								NOR = {
 									culture = { has_cultural_tradition = tradition_polygamous }
 									faith = { has_doctrine = doctrine_polygamy }
@@ -514,7 +514,7 @@ marriage_interaction_on_accept_effect = {
 				}
 				every_close_family_member = {
 					if = {
-						limit = { 
+						limit = {
 							allowed_to_marry_same_sex_trigger = no
 						}
 						add_opinion = {
@@ -575,7 +575,7 @@ marriage_interaction_on_accept_effect = {
 	}
 
 	###MANAGEMENT SCRIPT FOR VARIOUS EVENTS/CONTENT###
-	
+
 	#If your spouse councillor had boosted the chance of marriage, remove modifier
 	if = {
 		limit = {
@@ -601,7 +601,7 @@ marriage_interaction_on_accept_effect = {
 	}
 
 	#AI Break up consideration after marriage
-	scope:secondary_recipient = { 
+	scope:secondary_recipient = {
 		if = {
 			limit = {
 				is_adult = yes
@@ -657,15 +657,15 @@ marriage_interaction_on_accept_effect = {
 		}
 	}
 
-	#other stuff 
+	#other stuff
 	#Khurramites and Mazdakists gain piety from marrying lowborn
 	if = {
 		limit = {
 			scope:secondary_recipient = {
-				is_lowborn = yes 
+				is_lowborn = yes
 			}
 			scope:actor.faith = {
-				has_doctrine = tenet_communal_possessions 
+				has_doctrine = tenet_communal_possessions
 			}
 		}
 		scope:actor = {

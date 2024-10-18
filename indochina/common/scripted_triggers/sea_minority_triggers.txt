@@ -90,6 +90,45 @@ county_has_large_minority_culture_trigger = {
     }
 }
 
+
+# $TRIGGER$ = any scripted trigger (mind scopes!)
+county_has_large_culture_minority_with_trigger = {
+	any_in_list = {
+		variable = culture_minorities_large
+		$TRIGGER$ = yes
+	}
+}
+county_has_small_culture_minority_with_trigger = {
+	any_in_list = {
+		variable = culture_minorities_small
+		$TRIGGER$ = yes
+	}
+}
+county_has_culture_minority_with_trigger = {
+	OR = {
+		county_has_large_culture_minority_with_trigger = { TRIGGER = $TRIGGER$ }
+		county_has_small_culture_minority_with_trigger = { TRIGGER = $TRIGGER$ }
+	}
+}
+county_has_large_faith_minority_with_trigger = {
+	any_in_list = {
+		variable = faith_minorities_large
+		$TRIGGER$ = yes
+	}
+}
+county_has_small_faith_minority_with_trigger = {
+	any_in_list = {
+		variable = faith_minorities_small
+		$TRIGGER$ = yes
+	}
+}
+county_has_faith_minority_with_trigger = {
+	OR = {
+		county_has_large_faith_minority_with_trigger = { TRIGGER = $TRIGGER$ }
+		county_has_small_faith_minority_with_trigger = { TRIGGER = $TRIGGER$ }
+	}
+}
+
 county_is_religiously_protected_trigger = {
 	exists = holder.liege
 	holder = {
@@ -241,5 +280,67 @@ culture_has_specialists = {
 		has_cultural_parameter = herbalist_traits_more_common
 		has_cultural_parameter = loyal_trait_more_common
 		has_cultural_parameter = can_recruit_gardeners
+	}
+}
+
+favour_skilled_outsiders_decision_valid_county_minority_to_generate_trigger = {
+	county_has_culture_minority_with_trigger = { TRIGGER = skilled_outsider_culture_trigger }
+}
+
+skilled_outsider_culture_trigger = {
+	custom_tooltip = {
+		text = favour_skilled_outsiders_decision.tt.not_share_your_heritage
+		NOT = { has_same_culture_heritage = root.culture }
+	}
+	trigger_if = {
+		limit = { exists = root.cp:councillor_chancellor }
+		custom_tooltip = {
+			text = favour_skilled_outsiders_decision.tt.not_share_chancellor_heritage
+			NOT = { has_same_culture_heritage = root.cp:councillor_chancellor.culture }
+		}
+	}
+	trigger_if = {
+		limit = { exists = root.cp:councillor_marshal }
+		custom_tooltip = {
+			text = favour_skilled_outsiders_decision.tt.not_share_marshal_heritage
+			NOT = { has_same_culture_heritage = root.cp:councillor_marshal.culture }
+		}
+	}
+	trigger_if = {
+		limit = { exists = root.cp:councillor_steward }
+		custom_tooltip = {
+			text = favour_skilled_outsiders_decision.tt.not_share_steward_heritage
+			NOT = { has_same_culture_heritage = root.cp:councillor_steward.culture }
+		}
+	}
+	trigger_if = {
+		limit = { exists = root.cp:councillor_spymaster }
+		custom_tooltip = {
+			text = favour_skilled_outsiders_decision.tt.not_share_spymaster_heritage
+			NOT = { has_same_culture_heritage = root.cp:councillor_spymaster.culture }
+		}
+	}
+	trigger_if = {
+		limit = { exists = root.cp:councillor_court_chaplain }
+		custom_tooltip = {
+			text = favour_skilled_outsiders_decision.tt.not_share_court_chaplain_heritage
+			NOT = { has_same_culture_heritage = root.cp:councillor_court_chaplain.culture }
+		}
+	}
+	trigger_if = {
+		limit = {
+			root = { is_independent_ruler = no }
+		}
+		custom_tooltip = {
+			text = favour_skilled_outsiders_decision.tt.not_share_liege_heritage
+			save_temporary_scope_as = culture_temp
+			NOT = {
+				root = {
+					any_liege_or_above = {
+						culture = { has_same_culture_heritage = scope:culture_temp }
+					}
+				}
+			}
+		}
 	}
 }

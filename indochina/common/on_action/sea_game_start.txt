@@ -6,11 +6,11 @@ on_game_start = {
         # holy_site_descriptions_on_game_start
         assign_nanzhao_state
         acculturate_steppelads
-        holy_site_fix
+        #holy_site_fix
         lock_indo_greek
         EEE_sea_setup_on_actions
         fix_government_types
-        generate_shangshu
+        #generate_shangshu
         nerf_japan
 
         # Struggles
@@ -18,41 +18,55 @@ on_game_start = {
         # indian_struggle_on_game_start
         # tibetan_struggle_on_game_start
         # chinese_struggle_on_game_start
+
+        # Optional admin realms via gamerules; PDX does it before and after lobby, so will we.
+        sea_optional_admin_realms
     }
 }
 
 fix_government_types = {
+    trigger = {
+        has_dlc_feature = roads_to_power
+    }
     effect = {
-        title:k_qocho.holder = {
-            if = {
-                limit = { has_government = clan_government }
-                change_government = feudal_government
+        # title:k_qocho.holder = {
+        #     if = {
+        #         limit = { has_government = clan_government }
+        #         change_government = feudal_government
 
-                every_vassal_or_below = {
-                    limit = {
-                        highest_held_title_tier >= tier_county
-                        has_government = clan_government
-                    }
-                    change_government = feudal_government
-                }
-            }
-        }
-        title:k_zhetysu.holder = {
-            if = {
-                limit = {
-                    game_start_date = 1066.9.15
-                    has_government = feudal_government
-                }
-                change_government = clan_government
+        #         every_vassal_or_below = {
+        #             limit = {
+        #                 highest_held_title_tier >= tier_county
+        #                 has_government = clan_government
+        #             }
+        #             change_government = feudal_government
+        #         }
+        #     }
+        # }
+        # title:k_zhetysu.holder = {
+        #     if = {
+        #         limit = {
+        #             game_start_date = 1066.9.15
+        #             has_government = feudal_government
+        #         }
+        #         change_government = clan_government
 
-                every_vassal_or_below = {
-                    limit = {
-                        highest_held_title_tier >= tier_county
-                        has_government = feudal_government
-                    }
-                    change_government = clan_government
-                }
+        #         every_vassal_or_below = {
+        #             limit = {
+        #                 highest_held_title_tier >= tier_county
+        #                 has_government = feudal_government
+        #             }
+        #             change_government = clan_government
+        #         }
+        #     }
+        # }
+        # Noticed that unlanded Chinese house heads were being incorrectly given Chinese gov
+        every_ruler = {
+            limit = {
+                primary_title = { is_noble_family_title = yes }
+                has_government = chinese_government
             }
+            change_government = administrative_government
         }
     }
 }
@@ -71,7 +85,7 @@ lock_indo_greek = {
 
 on_game_start_after_lobby = {
     on_actions = {
-        ruler_popup_events
+        #ruler_popup_events
         sea_set_cultural_acceptance
         on_yearly_assign_culture_faith
         sea_historical_artifacts
@@ -81,6 +95,15 @@ on_game_start_after_lobby = {
 
         # Chinese gov setup
         sea_historical_chinese_vassal_contracts
+
+        # Set
+        sea_give_gunpowder_innos
+
+        # 930 conquerors
+        sea_936_conquerors
+
+        # Optional admin realms via gamerules
+        sea_optional_admin_realms
     }
 }
 
@@ -185,13 +208,13 @@ sea_set_cultural_acceptance = {
                 desc = cultural_acceptance_historical_relations
             }
         }
-        culture:crimean_gothic = {
-            change_cultural_acceptance = {
-                target = culture:greek
-                value = 50
-                desc = cultural_acceptance_historical_relations
-            }
-        }
+        # culture:crimean_gothic = {
+        #     change_cultural_acceptance = {
+        #         target = culture:greek
+        #         value = 50
+        #         desc = cultural_acceptance_historical_relations
+        #     }
+        # }
     }
 }
 
@@ -306,7 +329,39 @@ acculturate_steppelads = {
                 }
             }
         }
+        # Flip Kara-Khitans to Qitai culture
+        if = {
+            limit = {
+                exists = title:e_kara_khitai.holder
+            }
 
+            title:e_kara_khitai.holder = {
+
+                set_culture = culture:qitai
+
+                every_close_or_extended_family_member = {
+                    limit = { culture = culture:khitan }
+                    set_culture = culture:qitai
+                }
+
+                every_vassal_or_below = {
+                    if = {
+                        limit = { culture = culture:khitan }
+                        set_culture = culture:qitai
+                    }
+
+                    every_close_or_extended_family_member = {
+                        limit = { culture = culture:khitan }
+                        set_culture = culture:qitai
+                    }
+
+                    every_courtier_or_guest = {
+                        limit = { culture = culture:khitan }
+                        set_culture = culture:qitai
+                    }
+                }
+            }
+        }
         if = {
             limit = {
                 game_start_date <= 1030.1.1
@@ -439,12 +494,17 @@ set_tai_language = {
 #####
 
 sea_historical_chinese_vassal_contracts = {
+    trigger = {
+        NOT = { has_dlc_feature = roads_to_power }
+    }
+    # This will only apply if you don't have RtP, we'll figure out vassal contacts for Admin China whenever
     effect = {
         title:e_celestia_china.holder = {
 
             if = {
                 limit = {
                     game_start_date <= 900.1.1 # Tang Dynasty
+                    has_government = chinese_government
                 }
 
                 if = {
@@ -584,6 +644,23 @@ sea_historical_chinese_vassal_contracts = {
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+sea_give_gunpowder_innos = {
+    effect = {
+        if = {
+            limit = { game_start_date > 1150 }
+            # Jin and Xia
+            culture:tangut = {
+                set_variable = exposed_to_fire_lances
+                #add_innovation = innovation_fire_lances
+            }
+            culture:jurchen = {
+                set_variable = exposed_to_fire_lances
+                #add_innovation = innovation_fire_lances
             }
         }
     }
@@ -884,6 +961,65 @@ nerf_japan = {
                     level = 0
                 }
             }
+        }
+    }
+}
+
+###
+
+sea_936_conquerors = {
+    trigger = {
+        NOT = { has_game_rule = no_conquerors_frequency }
+    }
+    effect = {
+        # Otto the Great
+        character:1282 = {
+            if = { limit = { is_alive = yes } }
+            create_story = story_conqueror
+        }
+        # Taizong of Great Liao
+        character:194326 = {
+            if = { limit = { is_alive = yes } }
+            create_story = story_conqueror
+        }
+    }
+}
+
+sea_optional_admin_realms = {
+    trigger = {
+        has_dlc_feature = roads_to_power
+    }
+    effect = {
+        if = {
+            limit = {
+                has_game_rule = historicity_extra_admin_liao_historic_always
+                exists = title:e_kara_khitai
+            }
+            title:e_kara_khitai ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+        }
+        if = {
+            limit = {
+                OR = {
+                    AND = {
+                        has_game_rule = historicity_extra_admin_khmer_historic_936
+                        game_start_date > 935.1.1
+                    }
+                    AND = {
+                        has_game_rule = historicity_extra_admin_khmer_historic_1066
+                        game_start_date > 1065.1.1
+                    }
+                }
+                exists = title:e_kambujadesa
+            }
+            title:e_kambujadesa.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+        }
+        if = {
+            limit = {
+                has_game_rule = historicity_extra_admin_korea_historic_1066
+                exists = title:k_goryeo
+                game_start_date > 1065.1.1
+            }
+            title:k_goryeo.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
         }
     }
 }

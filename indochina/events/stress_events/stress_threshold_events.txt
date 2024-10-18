@@ -2796,21 +2796,41 @@ scripted_effect stress_threshold_fallback_event_select_options_effect = {
 			random_list = {
 				10 = {
 					trigger = { has_character_flag = stress_threshold_athletic }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:athletic
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_athletic
 					remove_character_flag = stress_threshold_athletic
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_inappetetic }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:inappetetic
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_inappetetic
 					remove_character_flag = stress_threshold_inappetetic
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_comfort_eater }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:comfort_eater
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_comfort_eater
 					remove_character_flag = stress_threshold_comfort_eater
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_profligate }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:profligate
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_profligate
 					remove_character_flag = stress_threshold_profligate
 				}
@@ -2821,37 +2841,72 @@ scripted_effect stress_threshold_fallback_event_select_options_effect = {
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_reclusive }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:reclusive
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_reclusive
 					remove_character_flag = stress_threshold_reclusive
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_irritable }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:irritable
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_irritable
 					remove_character_flag = stress_threshold_irritable
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_contrite }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:contrite
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_contrite
 					remove_character_flag = stress_threshold_contrite
 					contrite_get_secret_scopes_effect = yes
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_flagellant }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:flagellant
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_flagellant
 					remove_character_flag = stress_threshold_flagellant
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_improvident }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:improvident
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_improvident
 					remove_character_flag = stress_threshold_improvident
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_journaller }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:journaller
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_journaller
 					remove_character_flag = stress_threshold_journaller
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_confider }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:confider
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_confider
 					remove_character_flag = stress_threshold_confider
 					if = { #To save the confidant!
@@ -2909,11 +2964,21 @@ scripted_effect stress_threshold_fallback_event_select_options_effect = {
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_drunkard }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:drunkard
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_drunkard
 					remove_character_flag = stress_threshold_drunkard
 				}
 				10 = {
 					trigger = { has_character_flag = stress_threshold_hashishiyah }
+					modifier = {
+						#One of your parents/guardian has issues
+						var:witnessed_trait ?= flag:hashishiyah
+						add = 20
+					}
 					add_character_flag = stress_threshold_option_hashishiyah
 					remove_character_flag = stress_threshold_hashishiyah
 				}
@@ -3277,7 +3342,7 @@ stress_threshold.1601 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -3654,7 +3719,18 @@ stress_threshold.1601 = {
 		add_trait = flagellant
 		trait = flagellant
 
-		increase_wounds_effect = {REASON = whipping}
+		if = {
+			limit = {
+				is_ai = yes
+			}
+			random_list = {
+				75 = {}
+				25 = { increase_wounds_effect = { REASON = whipping } }
+			}
+		}
+		else = {
+			increase_wounds_effect = { REASON = whipping }
+		}
 		add_stress = medium_stress_impact_loss
 
 		ai_chance = {
@@ -3884,7 +3960,7 @@ stress_threshold.1602 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -4259,7 +4335,18 @@ stress_threshold.1602 = {
 		add_trait = flagellant
 		trait = flagellant
 
-		increase_wounds_effect = {REASON = whipping}
+		if = {
+			limit = {
+				is_ai = yes
+			}
+			random_list = {
+				75 = {}
+				25 = { increase_wounds_effect = { REASON = whipping } }
+			}
+		}
+		else = {
+			increase_wounds_effect = { REASON = whipping }
+		}
 		add_stress = medium_stress_impact_loss
 
 		ai_chance = {
@@ -4616,7 +4703,7 @@ stress_threshold.1701 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -4624,8 +4711,8 @@ stress_threshold.1701 = {
 	}
 
 	trigger = {
-		#Landless characters & barons don't need fancy events.
-		is_landed = yes
+		#Barons don't need fancy events.
+		is_playable_character = yes
 		primary_title.tier >= tier_county
 		#Must match at least one appropriate personality trait.
 		OR = {
@@ -5470,17 +5557,24 @@ stress_threshold.1711 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
 		animation = stress
 	}
+	right_portrait = {
+		character = scope:courtier
+		animation = stunned
+	}
 
 	trigger = {
-		#Landless characters & barons don't need fancy events.
-		is_landed = yes
+		#Barons don't need fancy events.
+		is_playable_character = yes
 		primary_title.tier >= tier_county
+		any_courtier = {
+			is_available_adult = yes
+		}
 		#Must match at least one appropriate personality trait.
 		OR = {
 			has_trait = greedy
@@ -5577,7 +5671,15 @@ stress_threshold.1711 = {
 
 	immediate = {
 		root = { save_scope_as = stress_character } #For stress widget.
-
+		random_courtier = {
+			limit = { is_available_adult = yes }
+			save_scope_as = courtier
+			add_opinion = {
+				target = root
+				modifier = insulted_opinion
+				opinion = -15
+			}
+		}
 		#Event option set-up to determine which event options we want to offer to the player.
 		#Check for existing coping mechanisms first.
 		if = { #Reclusive (frequently withdrawn, risking damage to relationships)
@@ -6287,7 +6389,7 @@ stress_threshold.1721 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -6295,8 +6397,8 @@ stress_threshold.1721 = {
 	}
 
 	trigger = {
-		#Landless characters & barons don't need fancy events.
-		is_landed = yes
+		#Barons don't need fancy events.
+		is_playable_character = yes
 		primary_title.tier >= tier_county
 		#Must match at least one appropriate personality trait.
 		OR = {
@@ -7461,8 +7563,8 @@ stress_threshold.1731 = {
 	}
 
 	trigger = {
-		#Landless characters & barons don't need fancy events.
-		is_landed = yes
+		#Barons don't need fancy events.
+		is_playable_character = yes
 		primary_title.tier >= tier_county
 		#Must match at least one appropriate personality trait.
 		OR = {
@@ -8291,9 +8393,8 @@ stress_threshold.2001 = {
 	}
 
 	trigger = {
-		any_courtier = {
-			is_imprisoned = no
-		}
+		is_travelling = no
+		any_courtier = { is_imprisoned = no }
 	}
 
 	immediate = {
@@ -8339,10 +8440,7 @@ stress_threshold.2001 = {
 
 	# Option B: Imprison a random courtier, medium stress loss, but you will (probably) suffer Tyranny penalties.
 	option = {
-		trigger = {
-			exists = scope:victim
-			is_landed = yes
-		}
+		trigger = { exists = scope:victim  }
 		name = stress_threshold.2001.imprison_victim
 
 		imprison_character_effect = {
@@ -8380,7 +8478,7 @@ stress_threshold.2101 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -8444,10 +8542,48 @@ stress_threshold.2101 = {
 				add_secret = {
 					type = secret_witch
 				}
+				# If you have a legend maybe we change it?
+				if = {
+					limit = {
+						has_legend_chapter_trigger = { CHAPTER = opening }
+					}
+					random = {
+						chance = 75
+						send_interface_toast = {
+							title = legend_chapter_change_toast
+							left_icon = root
+							promoted_legend = {
+								set_legend_chapter = {
+									name = opening
+									localization_key = legend_chapter_opening_witch
+								}
+							}
+						}
+					}
+				}
 			}
 			else = {
 				add_trait = witch
 				add_piety_level = -1
+				# If you have a legend maybe we change it?
+				if = {
+					limit = {
+						has_legend_chapter_trigger = { CHAPTER = opening }
+					}
+					random = {
+						chance = 75
+						send_interface_toast = {
+							title = legend_chapter_change_toast
+							left_icon = root
+							promoted_legend = {
+								set_legend_chapter = {
+									name = opening
+									localization_key = legend_chapter_opening_witch
+								}
+							}
+						}
+					}
+				}
 			}
 
 		}
@@ -8559,7 +8695,10 @@ stress_threshold.2201 = {
 	type = character_event
 	title = stress_threshold.2201.t
 	desc = {
-		desc = stress_threshold.2201.desc.insult
+		triggered_desc = {
+			trigger = { is_landless_adventurer = yes }
+			desc = stress_threshold.2201.desc.insult_adventurer
+		}
 		desc = stress_threshold.2201.desc
 		desc = {
 			first_valid = {
@@ -8589,19 +8728,20 @@ stress_threshold.2201 = {
 
 	theme = mental_break
 	override_background = {
+		trigger = { is_travelling = no }
 		reference = throne_room
 	}
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
-		animation = anger
+		animation = rage
 	}
 	right_portrait = {
 		character = scope:character_to_yell_at
-		animation = rage
+		animation = anger
 		triggered_animation = {
 			trigger = {
 				root = {
@@ -8626,12 +8766,16 @@ stress_threshold.2201 = {
 				exists = liege
 				NOT = { liege = root }
 				NOT = { has_relation_rival = liege }
-				is_ai = yes
 			}
 			any_vassal = {
 				is_powerful_vassal = yes
 				NOT = { has_relation_rival = root }
-				is_ai = yes
+			}
+			AND = {
+				is_landless_adventurer = yes
+				any_courtier = {
+					NOT = { has_relation_rival = root }
+				}
 			}
 		}
 	}
@@ -8668,6 +8812,16 @@ stress_threshold.2201 = {
 						value <= low_positive_ai_value
 					}
 				}
+				AND = {
+					is_landless_adventurer = yes
+					any_courtier = {
+						NOT = { has_relation_rival = root }
+					}
+					dread_modified_ai_boldness = {
+						dreaded_character = root
+						value <= low_positive_ai_value
+					}
+				}
 			}
 		}
 	}
@@ -8681,24 +8835,45 @@ stress_threshold.2201 = {
 				exists = liege
 				NOT = { liege = root }
 				NOT = { has_relation_rival = liege }
-				is_ai = yes
 			}
 			liege = {
 				save_scope_as = character_to_yell_at
 			}
 		}
-		else = {
+		else_if = {
+			limit = {
+				any_vassal = {
+					is_powerful_vassal = yes
+					NOT = { has_relation_rival = root }
+				}
+			}
 			random_vassal = {
 				limit = {
 					is_powerful_vassal = yes
 					NOT = { has_relation_rival = root }
 					has_relation_potential_rival = root
-					is_ai = yes
 				}
 				alternative_limit = {
 					is_powerful_vassal = yes
 					NOT = { has_relation_rival = root }
-					is_ai = yes
+				}
+				weight = {
+					base = 1
+					is_of_minor_interest_to_weight_up_modifier = { CHARACTER = root }
+					is_of_major_interest_to_weight_up_modifier = { CHARACTER = root }
+				}
+				save_scope_as = character_to_yell_at
+			}
+		}
+		else = {
+			random_courtier = {
+				limit = {
+					NOT = { has_relation_rival = root }
+				}
+				weight = {
+					base = 1
+					is_of_minor_interest_to_weight_up_modifier = { CHARACTER = root }
+					is_of_major_interest_to_weight_up_modifier = { CHARACTER = root }
 				}
 				save_scope_as = character_to_yell_at
 			}
@@ -8874,9 +9049,7 @@ stress_threshold.2201 = {
 
 	after = {
 		stress_threshold_event_aftereffects = yes # Perform stress threshold event clean-up and preparation for future stress threshold events.
-		scope:character_to_yell_at = {
-			trigger_event = stress_threshold.2202
-		}
+		scope:character_to_yell_at = { trigger_event = stress_threshold.2202 }
 	}
 }
 
@@ -8886,7 +9059,17 @@ stress_threshold.2202 = {
 	type = character_event
 	title = stress_threshold.2202.t
 	desc = {
-		desc = stress_threshold.2201.desc.insult
+		desc = {
+			first_valid = {
+				triggered_desc = {
+					trigger = {
+						scope:stress_character = { is_landless_adventurer = yes }
+					}
+					desc = stress_threshold.2201.desc.insult_adventurer
+				}
+				desc = stress_threshold.2201.desc.insult
+			}
+		}
 		first_valid = {
 			triggered_desc = {
 				trigger = {
@@ -8916,8 +9099,23 @@ stress_threshold.2202 = {
 	}
 	theme = unfriendly
 	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				root = {
+					dread_modified_ai_boldness = {
+						dreaded_character = scope:character_to_yell_at
+						value <= low_positive_ai_value
+					}
+				}
+			}
+			animation = fear
+		}
+		animation = dismissal
+	}
+	right_portrait = {
 		character = scope:stress_character
-		animation = anger
+		animation = rage
 	}
 
 	immediate = {
@@ -8998,7 +9196,7 @@ stress_threshold.2301 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -9006,8 +9204,8 @@ stress_threshold.2301 = {
 	}
 
 	trigger = {
-		#Landless characters & barons don't need fancy events.
-		is_landed = yes
+		#Barons don't need fancy events.
+		is_playable_character = yes
 		primary_title.tier >= tier_county
 		#Must match at least one appropriate personality trait.
 		OR = {
@@ -9619,7 +9817,7 @@ stress_threshold.2311 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -9627,8 +9825,8 @@ stress_threshold.2311 = {
 	}
 
 	trigger = {
-		#Landless characters & barons don't need fancy events.
-		is_landed = yes
+		#Barons don't need fancy events.
+		is_playable_character = yes
 		primary_title.tier >= tier_county
 		#Must match at least one appropriate personality trait.
 		OR = {
@@ -10692,11 +10890,12 @@ stress_threshold.2321 = {
 	}
 	theme = mental_break
 	override_background = {
+		trigger = { is_travelling = no }
 		reference = throne_room
 	}
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -10704,8 +10903,8 @@ stress_threshold.2321 = {
 	}
 
 	trigger = {
-		#Landless characters & barons don't need fancy events.
-		is_landed = yes
+		#Barons don't need fancy events.
+		is_playable_character = yes
 		primary_title.tier >= tier_county
 		#Must match at least one appropriate personality trait.
 		OR = {
@@ -11799,7 +11998,7 @@ stress_threshold.2331 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -11807,8 +12006,8 @@ stress_threshold.2331 = {
 	}
 
 	trigger = {
-		#Landless characters & barons don't need fancy events.
-		is_landed = yes
+		#Barons don't need fancy events.
+		is_playable_character = yes
 		primary_title.tier >= tier_county
 		#Must match at least one appropriate personality trait.
 		OR = {
@@ -12719,7 +12918,7 @@ stress_threshold.2341 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -12727,8 +12926,8 @@ stress_threshold.2341 = {
 	}
 
 	trigger = {
-		#Landless characters & barons don't need fancy events.
-		is_landed = yes
+		#Barons don't need fancy events.
+		is_playable_character = yes
 		primary_title.tier >= tier_county
 		#Must match at least one appropriate personality trait.
 		OR = {
@@ -13560,11 +13759,12 @@ stress_threshold.2351 = {
 	}
 	theme = mental_break
 	override_background = {
+		trigger = { is_travelling = no }
 		reference = throne_room
 	}
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -13572,8 +13772,8 @@ stress_threshold.2351 = {
 	}
 
 	trigger = {
-		#Landless characters & barons don't need fancy events.
-		is_landed = yes
+		#Barons don't need fancy events.
+		is_playable_character = yes
 		primary_title.tier >= tier_county
 		#Must match at least one appropriate personality trait.
 		OR = {
@@ -14419,7 +14619,7 @@ stress_threshold.3001 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -14509,11 +14709,12 @@ stress_threshold.3101 = {
 
 	theme = mental_break
 	override_background = {
+		trigger = { is_travelling = no }
 		reference = throne_room
 	}
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -14603,7 +14804,7 @@ stress_threshold.3201 = {
 	}
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -14620,8 +14821,16 @@ stress_threshold.3201 = {
 	}
 
 	trigger = {
-		any_vassal = {
-			NOT = { has_relation_rival = root }
+		OR = {
+			any_vassal = {
+				NOT = { has_relation_rival = root }
+			}
+			AND = {
+				is_landless_adventurer = yes
+				any_courtier = {
+					NOT = { has_relation_rival = root }
+				}
+			}
 		}
 	}
 
@@ -14650,12 +14859,39 @@ stress_threshold.3201 = {
 				ai_value_modifier = {
 					ai_compassion = 2 # +100 at 50, -100 at -50
 				}
+				is_of_minor_interest_to_weight_up_modifier = { CHARACTER = root }
+				is_of_major_interest_to_weight_up_modifier = { CHARACTER = root }
 			}
 			save_scope_as = vassal
 		}
 
-		capital_county = {
-			save_scope_as = county
+		if = {
+			limit = {
+				NOT = { exists = scope:vassal }
+			}
+			random_courtier = {
+				limit = {
+					has_relation_friend = root
+				}
+				alternative_limit = {
+					has_relation_potential_friend = root
+				}
+				alternative_limit = {
+					NOT = { has_relation_rival = root }
+				}
+				weight = {
+					base = 100
+					opinion_modifier = {
+						opinion_target = root
+					}
+					ai_value_modifier = {
+						ai_compassion = 2 # +100 at 50, -100 at -50
+					}
+					is_of_minor_interest_to_weight_up_modifier = { CHARACTER = root }
+ 					is_of_major_interest_to_weight_up_modifier = { CHARACTER = root }
+				}
+				save_scope_as = vassal
+			}
 		}
 
 		stress_threshold_event_post_immediate = yes
@@ -14900,7 +15136,7 @@ stress_threshold.3301 = {
 	theme = mental_break
 	override_background = {
 		trigger = { is_travelling = yes }
-		reference = terrain
+		reference = terrain_travel
 	}
 	left_portrait = {
 		character = root
@@ -15012,6 +15248,7 @@ stress_threshold.3401 = {
 	}
 	theme = mental_break
 	override_background = {
+		trigger = { is_travelling = no }
 		reference = throne_room
 	}
 	override_background = {
@@ -16353,7 +16590,7 @@ stress_threshold.3411 = {
 			limit = {
 				NOT = { has_trait = maimed }
 			}
-			add_trait = maimed
+			apply_maimed_trait_and_modifier_effect = yes
 		}
 		else_if = {
 			limit = {
@@ -16886,6 +17123,11 @@ stress_threshold.3411 = {
 				target = root
 			}
 		}
+		add_character_flag = {
+			flag = abdicated_from_throne
+			days = 30
+		}
+
 		hidden_effect = {	#Make all weak claims on your titles into strong claims.
 			every_held_title = {
 				save_temporary_scope_as = abdicator_title
@@ -16896,7 +17138,7 @@ stress_threshold.3411 = {
 			}
 		}
 		custom_tooltip = stress_threshold.3411.l.tt
-		depose = yes
+		depose = yes # depose_effect not used for opted abdication
 
 		ai_chance = { base = 0 }	#AI should never opt for stress.
 	}
@@ -17183,6 +17425,21 @@ stress_threshold.3421 = {
 				has_trait = hashishiyah
 				has_trait = betel_chewer
 			}
+		}
+		#One of your parents/guardian has issues
+		modifier = {
+			OR = {
+				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
+				has_witnessed_stress_coping_trait = { TRAIT = irritable }
+				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
+				has_witnessed_stress_coping_trait = { TRAIT = profligate }
+				has_witnessed_stress_coping_trait = { TRAIT = contrite }
+				has_witnessed_stress_coping_trait = { TRAIT = comfort_eater }
+				has_witnessed_stress_coping_trait = { TRAIT = drunkard }
+				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
+				has_witnessed_stress_coping_trait = { TRAIT = betel_chewer }
+			}
+			add = 5
 		}
 	}
 

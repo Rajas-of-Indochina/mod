@@ -57,3 +57,20 @@ can_have_headhunting_duel_trigger = {
 	scope:actor = { basic_can_have_headhunting_duel_trigger = yes }
 	scope:recipient = { basic_can_have_headhunting_duel_trigger = yes }
 }
+
+# Override Vanilla
+can_create_spiritual_head_of_faith_title_trigger = {
+	num_realm_holy_sites_faithful_holders = {
+		COUNT = holy_sites_to_create_spiritual_head_of_faith
+		CHARACTER = ROOT
+	}
+	root = { piety_level >= medium_piety_level }
+	trigger_if = {
+		limit = { has_doctrine = special_doctrine_not_allowed_to_hof }
+		NOT = { has_doctrine = special_doctrine_not_allowed_to_hof }
+	}
+	NAND = {
+		exists = religious_head
+		has_doctrine_parameter = maintains_head_of_faith_on_creation
+	}
+}

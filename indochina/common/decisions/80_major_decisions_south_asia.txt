@@ -11,8 +11,10 @@
 #Become Chakravarti
 # by Petter Vilberg
 become_chakravarti_decision = {
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_chakravatin.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
+	decision_group_type = major
 	title = {
 		first_valid = {
 			triggered_desc = {# For Dharmic Faiths
@@ -66,6 +68,7 @@ become_chakravarti_decision = {
 	}
 
 	is_valid_showing_failures_only = {
+		is_landed = yes
 		is_adult = yes
 		is_available = yes
 		is_independent_ruler = yes
@@ -197,8 +200,10 @@ become_chakravarti_decision = {
 #Become Lord/Lady of the Sacred River
 # by Petter Vilberg
 take_stewardship_of_the_sacred_river_decision = {
-	picture = "gfx/interface/illustrations/decisions/dharma_decision_sacred_rivers.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	decision_group_type = major
 	ai_check_interval = 120
 
 	desc = take_stewardship_of_the_sacred_river_decision_desc
@@ -224,6 +229,7 @@ take_stewardship_of_the_sacred_river_decision = {
 	}
 
 	is_valid_showing_failures_only = {
+		is_landed = yes
 		is_adult = yes
 		is_available = yes
 		trigger_if = {
@@ -312,8 +318,10 @@ take_stewardship_of_the_sacred_river_decision = {
 #Declare Bene Israel
 # by James Beaumont
 form_bene_israel_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
 
 	desc = form_bene_israel_decision_desc
 	selection_tooltip = form_bene_israel_decision_tooltip
@@ -322,11 +330,11 @@ form_bene_israel_decision = {
 
 	is_shown = {
 		is_ruler = yes
-		is_landed = yes
+		is_playable_character = yes
 		faith = faith:malabarism
 		highest_held_title_tier = tier_duchy
 		capital_province = { geographical_region = world_india }
-
+		NOT = { government_has_flag = government_is_stateless }
 		NOT = {
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -356,6 +364,7 @@ form_bene_israel_decision = {
 	}
 
 	is_valid_showing_failures_only = {
+		is_landed = yes
 		is_adult = yes
 		is_available = yes
 		is_independent_ruler = yes
@@ -406,10 +415,12 @@ form_bene_israel_decision = {
 }
 
 unite_nasrani_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
 	desc = unite_nasrani_decision_desc
 	selection_tooltip = unite_nasrani_decision_tooltip
-	major = yes
 
 	ai_check_interval = 120
 
@@ -436,6 +447,7 @@ unite_nasrani_decision = {
 			}
 		}
 		highest_held_title_tier <= tier_duchy
+		NOT = { government_has_flag = government_is_stateless }
 		OR = {
 			capital_province = { geographical_region = world_india}
 			capital_province = { geographical_region = custom_lanka}
@@ -507,8 +519,10 @@ unite_nasrani_decision = {
 ######################################
 
 spread_theravada_faith_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
+	decision_group_type = major
 	title = spread_theravada_faith_decision
 	desc = spread_theravada_faith_decision_desc
 	confirm_text = spread_theravada_faith_decision_confirm # had to use an override for some reason
@@ -550,6 +564,10 @@ spread_theravada_faith_decision = {
 		piety_level >= 2
 	}
 
+	is_valid_showing_failures_only = {
+		is_landed = yes
+	}
+
 	cost = {
 		piety = {
 			value = major_piety_value
@@ -580,8 +598,10 @@ spread_theravada_faith_decision = {
 
 # Re-establish Yavanarajya
 restore_indo_greek_kingdom_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
+	decision_group_type = major
 	desc = restore_indo_greek_kingdom_decision_desc
 
 	ai_check_interval = 120
@@ -592,6 +612,7 @@ restore_indo_greek_kingdom_decision = {
 			geographical_region = custom_indo_greek_kingdom
 		}
 		# Need to have a cultural or religious tie to the Hellenes:
+		NOT = { government_has_flag = government_is_stateless }
 		OR = {
 			has_religion = religion:hellenism_religion
 			culture = culture:greek
@@ -685,8 +706,10 @@ restore_indo_greek_kingdom_decision = {
 }
 
 indo_greek_culture_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+	}
+	decision_group_type = major
 	desc = indo_greek_culture_decision_desc
 	ai_check_interval = 120
 
@@ -728,7 +751,7 @@ indo_greek_culture_decision = {
 						OR = {
 							this = culture:greek
 							any_parent_culture_or_above = { this = culture:greek }
-							culture = { has_cultural_pillar = language_greek }
+							has_cultural_pillar = language_greek
 						}
 					}
 				}
@@ -742,7 +765,7 @@ indo_greek_culture_decision = {
 						OR = {
 							this = culture:greek
 							any_parent_culture_or_above = { this = culture:greek }
-							culture = { has_cultural_pillar = language_greek }
+							has_cultural_pillar = language_greek
 						}
 					}
 				}
