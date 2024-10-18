@@ -9,6 +9,8 @@
 		delay = { days = { 30 330 } }
 		start_nanzhao_collapse
 		###
+		on_yearly_check_gunpowder_spread
+		###
 		on_yearly_spawn_roa_historical_characters
 	}
 }
@@ -270,6 +272,43 @@ spawn_lesbian_culture = {
 				}
 			}
 			trigger_event = easter_egg.0001
+		}
+	}
+}
+
+on_yearly_check_gunpowder_spread = {
+	effect = {
+		every_culture_global = {
+			limit = { has_innovation = innovation_fire_lances }
+
+			save_scope_as = spreading_culture
+
+			every_culture_county = {
+				every_neighboring_county = {
+					limit = {
+						NOR = {
+							culture = scope:spreading_culture
+							culture = { has_innovation = innovation_fire_lances }
+							culture = { has_variable = exposed_to_fire_lances }
+							culture = { is_in_list = cultures_to_recieve_spread }
+						}
+					}
+					culture = {
+						add_to_temporary_list = cultures_to_recieve_spread
+						save_scope_as = this_culture
+						debug_log = "Spreading fire lances to [this_culture.GetName]"
+					}
+				}
+			}
+		}
+
+		every_in_list = {
+			list = cultures_to_recieve_spread
+
+			random = {
+				chance = 10 # 10% or 1/10
+				trigger_fire_lances_spread_effect = yes
+			}
 		}
 	}
 }
