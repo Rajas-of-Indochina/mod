@@ -278,6 +278,8 @@ spawn_lesbian_culture = {
 
 on_yearly_check_gunpowder_spread = {
 	effect = {
+
+		# Fire Lance
 		every_culture_global = {
 			limit = { has_innovation = innovation_fire_lances }
 
@@ -290,24 +292,52 @@ on_yearly_check_gunpowder_spread = {
 							culture = scope:spreading_culture
 							culture = { has_innovation = innovation_fire_lances }
 							culture = { has_variable = exposed_to_fire_lances }
-							culture = { is_in_list = cultures_to_recieve_spread }
+							culture = { is_in_list = cultures_to_recieve_fire_lances }
 						}
 					}
 					culture = {
-						add_to_temporary_list = cultures_to_recieve_spread
-						save_scope_as = this_culture
-						debug_log = "Spreading fire lances to [this_culture.GetName]"
+						add_to_temporary_list = cultures_to_recieve_fire_lances
 					}
 				}
 			}
 		}
-
 		every_in_list = {
-			list = cultures_to_recieve_spread
+			list = cultures_to_recieve_fire_lances
 
 			random = {
 				chance = 10 # 10% or 1/10
 				trigger_fire_lances_spread_effect = yes
+			}
+		}
+
+		# Hand Cannon
+		every_culture_global = {
+			limit = { has_innovation = innovation_hand_cannons }
+
+			save_scope_as = spreading_culture
+
+			every_culture_county = {
+				every_neighboring_county = {
+					limit = {
+						NOR = {
+							culture = scope:spreading_culture
+							culture = { has_innovation = innovation_hand_cannons }
+							culture = { has_variable = exposed_to_hand_cannons }
+							culture = { is_in_list = cultures_to_recieve_hand_cannons }
+						}
+					}
+					culture = {
+						add_to_temporary_list = cultures_to_recieve_hand_cannons
+					}
+				}
+			}
+		}
+		every_in_list = {
+			list = cultures_to_recieve_hand_cannons
+
+			random = {
+				chance = 10 # 10% or 1/10
+				trigger_hand_cannons_spread_effect = yes
 			}
 		}
 	}
