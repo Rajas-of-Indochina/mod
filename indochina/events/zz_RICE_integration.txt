@@ -568,7 +568,7 @@ sus.0030 = {
 			add = -0.1
 			AND = {
 				is_ruler = yes
-				government_has_flag = government_is_tribal
+				has_government = tribal_government
 			}
 		}
 		modifier = {
@@ -613,10 +613,13 @@ sus.0030 = {
 					region = world_innovation_camels
 					OR = {
 						culture = { has_cultural_pillar = heritage_arabic }
-						culture = { has_cultural_pillar = heritage_syriac }
 						AND = {
 							has_global_variable = RICE_game_started_on_TFE_start_date
 							culture = { has_cultural_pillar = heritage_kemetic }
+						}
+						AND = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							culture = { has_cultural_pillar = heritage_semitic }
 						}
 						AND = {
 							has_global_variable = RICE_game_started_on_TFE_start_date
@@ -630,10 +633,13 @@ sus.0030 = {
 				limit = {
 					OR = {
 						culture = { has_cultural_pillar = heritage_arabic }
-						culture = { has_cultural_pillar = heritage_syriac }
 						AND = {
 							has_global_variable = RICE_game_started_on_TFE_start_date
 							culture = { has_cultural_pillar = heritage_kemetic }
+						}
+						AND = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							culture = { has_cultural_pillar = heritage_semitic }
 						}
 						AND = {
 							has_global_variable = RICE_game_started_on_TFE_start_date
@@ -953,7 +959,7 @@ sus.0031 = {
 			add = -0.1
 			AND = {
 				is_ruler = yes
-				government_has_flag = government_is_tribal
+				has_government = tribal_government
 			}
 		}
 		modifier = {
@@ -1312,7 +1318,7 @@ sus.0032 = {
 			add = -0.1
 			AND = {
 				is_ruler = yes
-				government_has_flag = government_is_tribal
+				has_government = tribal_government
 			}
 		}
 		modifier = {
@@ -1642,7 +1648,7 @@ sus.0033 = {
 			add = -0.1
 			AND = {
 				is_ruler = yes
-				government_has_flag = government_is_tribal
+				has_government = tribal_government
 			}
 		}
 		modifier = {
@@ -1972,18 +1978,6 @@ tarim_basin.0020 = {
 				}
 				desc = tarim_basin.0020.desc.indian
 			}
-			triggered_desc = {
-				trigger = {
-					var:RICE_silk_road_community_type = flag:east_african
-				}
-				desc = tarim_basin.0020.desc.east_african
-			}	
-			triggered_desc = {
-				trigger = {
-					var:RICE_silk_road_community_type = flag:southeast_asian
-				}
-				desc = tarim_basin.0020.desc.southeast_asian
-			}	
 		}
 	}
 	theme = realm
@@ -2013,14 +2007,6 @@ tarim_basin.0020 = {
 		name = {
 			trigger = { var:RICE_silk_road_community_type = flag:indian }
 			text = tarim_basin.0020.option.indian
-		}
-		name = {
-			trigger = { var:RICE_silk_road_community_type = flag:east_african }
-			text = tarim_basin.0020.option.east_african
-		}
-		name = {
-			trigger = { var:RICE_silk_road_community_type = flag:southeast_asian }
-			text = tarim_basin.0020.option.southeast_asian
 		}
 		if = {
 			limit = {
@@ -2146,56 +2132,6 @@ tarim_basin.0020 = {
 			}
 			custom_tooltip = tarim_basin.0020.tooltip.indian
 			do_silk_road_migration_effect = { REGION = RICE_silk_road_india }
-		}
-		if = {
-			limit = {
-				var:RICE_silk_road_community_type = flag:east_african
-			}
-			if = {
-				limit = {
-					exists = dynasty
-					dynasty = {
-						has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_3
-					}
-				}
-				add_character_modifier = {
-					modifier = RICE_tarim_basin_east_african_contacts
-					years = 20
-				}
-			}
-			else = {
-				add_character_modifier = {
-					modifier = RICE_tarim_basin_east_african_contacts
-					years = 10
-				}
-			}
-			custom_tooltip = tarim_basin.0020.tooltip.east_african
-			do_east_african_silk_road_migration_effect = yes
-		}
-		if = {
-			limit = {
-				var:RICE_silk_road_community_type = flag:southeast_asian
-			}
-			if = {
-				limit = {
-					exists = dynasty
-					dynasty = {
-						has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_3
-					}
-				}
-				add_character_modifier = {
-					modifier = RICE_tarim_basin_southeast_asian_contacts
-					years = 20
-				}
-			}
-			else = {
-				add_character_modifier = {
-					modifier = RICE_tarim_basin_southeast_asian_contacts
-					years = 10
-				}
-			}
-			custom_tooltip = tarim_basin.0020.tooltip.southeast_asian
-			do_silk_road_migration_effect = { REGION = RICE_silk_road_SEA }
 		}
 	}
 
@@ -3224,7 +3160,7 @@ sri_lanka.0010 = {
 
 		else_if = {
 			limit = {
-				var:RICE_india_land_grant_type ?= flag:jainism
+				var:RICE_india_land_grant_type = flag:jainism
 			}
 			religion:jainism_religion = {
 				save_scope_as = religion
@@ -3378,7 +3314,7 @@ sri_lanka.0010 = {
 
 		else_if = {
 			limit = {
-				var:RICE_india_land_grant_type ?= flag:nasrani
+				var:RICE_india_land_grant_type = flag:nasrani
 			}
 			religion:christianity_religion = {
 				save_scope_as = religion
