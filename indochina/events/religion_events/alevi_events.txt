@@ -1,0 +1,149 @@
+﻿alevi.0002 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				title:c_kyzistra = {
+					OR = {
+						culture = { has_cultural_pillar = heritage_turkic }			
+						culture = { has_cultural_pillar = heritage_iranian }
+					}
+				}
+			}
+			title:c_kyzistra = { save_scope_as = province_alevi }
+		}
+		else_if = {
+			limit = {
+				title:c_kaisereia = {
+					OR = {
+						culture = { has_cultural_pillar = heritage_turkic }			
+						culture = { has_cultural_pillar = heritage_iranian }				
+					}
+				}
+			}
+			title:c_kaisereia = { save_scope_as = province_alevi }
+		}
+		else_if = {
+			limit = {
+				title:c_charsianon = {
+					OR = {
+						culture = { has_cultural_pillar = heritage_iranian }
+						culture = { has_cultural_pillar = heritage_turkic }				
+					}
+				}
+			}
+			title:c_charsianon = { save_scope_as = province_alevi }
+		}
+		else = {
+			title:c_nishapur = { save_scope_as = province_alevi }
+		}
+		create_character = {
+			template = ROA_alevi_religious_leader_character
+			random_traits = no
+			save_scope_as = new_alevi
+		}
+		scope:new_alevi = {
+			get_title = title:d_alevi
+		}
+		scope:province_alevi = {
+			set_county_faith = faith:alevi
+			every_neighboring_county = {
+				limit = {					
+					NOT = { faith = faith:alevi }
+					OR = {
+						culture = culture:turkmen
+						culture = {
+							any_parent_culture_or_above = {
+								culture = culture:turkmen
+							}
+						}
+						religion = religion:islam_religion
+					}
+				}
+				random = {
+					chance = 30
+					set_county_faith = faith:alevi
+					holder = {
+						every_courtier_or_guest = {
+							limit = {
+								is_lowborn = yes
+							}
+							random = {
+								chance = 20
+								set_character_faith = faith:alevi
+							}
+						}
+					}
+					random_neighboring_county = {
+						limit = {
+							culture = { 
+								has_cultural_pillar = language_turkic 
+							}
+						}
+						set_county_faith = faith:alevi
+						holder = {
+							every_courtier_or_guest = {
+								limit = {
+									is_lowborn = yes
+								}
+								random = {
+									chance = 20
+									set_character_faith = faith:alevi
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+		every_ruler = {
+						limit = {
+						religion = religion:islam_religion
+							culture = { 
+								has_cultural_pillar = language_turkic 
+							}
+						}
+		trigger_event = alevi.0003
+		}
+	}
+
+}
+
+alevi.0003 = {
+	type = character_event
+	title = alevi.0003.t
+	desc = alevi.0003.desc
+	theme = learning
+
+	right_portrait = {
+		character = new_alevi
+		animation = chaplain 
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		custom_tooltip = alevi.0003.tooltip
+	}
+	
+	option = { # Ok
+		name = alevi.0003.a
+		ai_chance = {
+			base = 100
+		}
+	}
+	
+	option = { # Ok
+		name = alevi.0003.b
+		trigger = {
+			OR = {
+				is_ai = no	
+			}
+		}
+		set_character_faith_with_conversion = faith:alevi
+	}
+
+}
+
+
