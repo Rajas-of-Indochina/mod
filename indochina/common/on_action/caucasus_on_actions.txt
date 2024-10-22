@@ -131,14 +131,19 @@ ildeguzids_action = {
 }
 
 avar_nutsal_action = {
-	effect = {
-	title:k_sarir_roa.holder = {
-		if = {
-			limit = {
+	trigger = {
+		title:k_sarir = {
+			exists = holder
+			holder ?= {
 				has_any_nickname = no
 				religion = religion:islam_religion
 				culture = { has_cultural_pillar = name_list_avaric }
+				NOT = { has_variable = avar_nutsal_flag }
 			}
+		}
+	}
+	effect = {
+		title:k_sarir_roa.holder = {
 			random_list = {
 				200 = { }
 				50 = { give_nickname = ROA_nick_abbas }
@@ -175,8 +180,8 @@ avar_nutsal_action = {
 				25 = { give_nickname = ROA_nick_mahmud_khan }
 				25 = { give_nickname = ROA_nick_ali_bek }
 			}
+			set_variable = avar_nutsal_flag
 		}
 	}
-  }
 }
 
