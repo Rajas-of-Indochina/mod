@@ -1,4 +1,21 @@
-﻿armenian_struggle_is_roman_culture_trigger = {
+﻿does_this_player_care_about_the_armenian_struggle = {
+	save_temporary_scope_as = char_temp
+	OR = {
+		capital_province ?= {
+			geographical_region = struggle_region_armenia
+		}
+		struggle:armenian_struggle = { is_culture_involved_in_struggle = scope:char_temp.culture }
+		struggle:armenian_struggle = { is_faith_involved_in_struggle = scope:char_temp.faith }
+		# Ping islamic, zoroastrian players as they might be interested
+		religion = religion:islam_religion
+		religion = religion:zoroastrianism_religion
+		any_character_struggle = {
+			is_struggle_type = armenian_struggle
+		}
+	}
+}
+
+armenian_struggle_is_roman_culture_trigger = {
 	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
 	$CULTURE$ = {
 		OR = {
@@ -194,6 +211,7 @@ is_armenian_struggle_kingdom = {
 		this = title:k_pontus
 		this = title:k_anatolia
 		this = title:k_rum
+		this = title:k_armenian_cilicia
 		# e_persia
 		this = title:k_adurbadagan
 		this = title:k_jazira

@@ -1,0 +1,368 @@
+﻿struggle_ending_roman_rule_effect = {
+	give_nickname = nick_imperator_armeniae
+
+	custom_tooltip = {
+		text = armenian_struggle_roman_de_jure_shifts
+		every_kingdom = {
+			limit = {
+				is_armenian_struggle_kingdom = yes
+			}
+			do_roman_drift = yes
+		}
+	}
+
+	custom_tooltip = {
+		text = armenian_struggle_unlock_armenian_reclamation_cb
+		set_global_variable = unlock_armenian_reclamation_cb
+	}
+
+	custom_tooltip = {
+		text = armenian_struggle_anti_roman_factions_less_common
+		set_global_variable = anti_roman_factions_less_common
+	}
+
+	custom_tooltip = {
+		text = armenian_struggle_faster_roman_conversion
+		set_global_variable = faster_roman_conversion
+	}
+
+	dynasty = {
+		add_dynasty_modifier = {
+			modifier = armenian_emperors
+		}
+	}
+}
+
+struggle_ending_persian_rule_effect = {
+	give_nickname = nick_shah_of_armanestan
+
+	custom_tooltip = {
+		text = armenian_struggle_persian_de_jure_shifts
+		every_kingdom = {
+			limit = {
+				is_armenian_struggle_kingdom = yes
+			}
+			do_persian_drift = yes
+		}
+	}
+
+
+	custom_tooltip = {
+		text = armenian_struggle_unlock_persian_conquests
+		set_global_variable = unlock_persian_conquests
+	}
+
+	custom_tooltip = {
+		text = armenian_struggle_unlock_tax_armenian_trade_routes
+		set_global_variable = unlock_tax_armenian_trade_routes
+	}
+
+	dynasty = {
+		add_dynasty_modifier = {
+			modifier = armenian_shahs
+		}
+	}
+}
+
+struggle_ending_armenian_empire_effect = {
+	save_scope_as = founder
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:e_armenia = {
+		change_title_holder = {
+			holder = scope:founder
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+
+	hidden_effect = {
+		# Save owned or completely controlled kingdoms in the struggle region for drifting into Armenian Ampire
+		# Exclude Thessalonika and Persia
+		every_kingdom = {
+			limit = {
+				scope:founder = {
+					OR = {
+						has_title = PREV
+						completely_controls = PREV
+					}
+				}
+				NOR = {
+					this = title:k_thessalonika
+					this = title:k_persia
+				}
+				OR ={
+					is_armenian_struggle_kingdom = yes
+					this = title:k_jerusalem
+					this = title:k_daylam
+					this = title:k_israel
+				}
+			}
+			add_to_list = armenian_kingdoms
+		}
+		# Handle border territory edge case bullshit
+		if = {
+			limit = {
+				title:d_edessa = {
+					kingdom = { NOT = { is_in_list = armenian_kingdoms } }
+				}
+			}
+			title:d_edessa = { set_de_jure_liege_title = title:k_armenian_principality }
+		}
+		if = {
+			limit = {
+				title:d_antioch = {
+					kingdom = { NOT = { is_in_list = armenian_kingdoms } }
+				}
+			}
+			title:d_antioch = { set_de_jure_liege_title = title:k_armenian_principality }
+		}
+		if = {
+			limit = {
+				title:d_cilicia = {
+					kingdom = { NOT = { is_in_list = armenian_kingdoms } }
+				}
+			}
+			title:d_cilicia = { set_de_jure_liege_title = title:k_armenian_principality }
+		}
+		if = {
+			limit = {
+				title:d_diyarbakr = {
+					kingdom = { NOT = { is_in_list = armenian_kingdoms } }
+				}
+			}
+			title:d_diyarbakr = { set_de_jure_liege_title = title:k_armenian_principality }
+		}
+		if = {
+			limit = {
+				title:d_kurdistan = {
+					kingdom = { NOT = { is_in_list = armenian_kingdoms } }
+				}
+			}
+			title:d_kurdistan = { set_de_jure_liege_title = title:k_armenian_principality }
+		}
+		# Now that duchies are sorted, move the kingdoms
+		every_in_list = {
+			list = armenian_kingdoms
+			set_de_jure_liege_title = title:e_armenia
+		}
+	}
+
+	custom_tooltip = {
+		text = armenian_struggle_claim_titles_with_legitimacy
+		set_global_variable = claim_titles_with_legitimacy
+	}
+
+	custom_tooltip = {
+		text = armenian_struggle_unlock_lifetime_armenian_dejure_drift
+		set_global_variable = unlock_lifetime_armenian_dejure_drift
+	}
+
+	custom_tooltip = {
+		text = armenian_struggle_armenian_cultures_grow_faster
+		set_global_variable = armenian_cultures_grow_faster
+	}
+
+	dynasty = {
+		add_dynasty_modifier = {
+			modifier = heir_of_tigranes
+		}
+	}
+}
+
+struggle_ending_armenian_confederation_effect = {
+	custom_tooltip = {
+		text = armenian_struggle_form_armenian_confederation
+		set_global_variable = armenian_confederation
+	}
+
+	custom_tooltip = {
+		text = armenian_struggle_unlock_interloper_expulsions
+		set_global_variable = unlock_interloper_expulsions
+	}
+
+	custom_tooltip = {
+		text = armenian_struggle_strengthen_tondrakians
+		set_global_variable = strengthen_tondrakians
+	}
+
+	custom_tooltip = {
+		text = armenian_struggle_unlock_armenian_empire_for_later
+		set_global_variable = unlock_armenian_empire_for_later
+	}
+}
+
+struggle_ending_complicity_effect = {
+	save_scope_as = exarch
+	if = {
+		limit = {
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_phase = armenian_struggle_phase_persian_dominance
+			}
+		}
+		get_persian_overlord_effect = yes
+	}
+	else_if = {
+		limit = {
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_phase = armenian_struggle_phase_roman_dominance
+			}
+		}
+		get_roman_overlord_effect = yes
+	}
+	if = {
+		limit = {
+			exists = scope:overlord
+		}
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:exarch = {
+			change_liege ={
+				liege = scope:overlord
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		custom_tooltip = complicity_vassal_contract_tt
+		switch = {
+			trigger = has_government
+			administrative_government = {
+				vassal_contract_set_obligation_level = {
+					type = administrative_themes
+					level = admin_theme_frontier
+				}
+			}
+			chinese_government = {
+				vassal_contract_set_obligation_level = { type = chinese_administration_type level = chinese_administration_type_military }
+				vassal_contract_set_obligation_level = { type = chinese_centralization_level level = chinese_centralization_level_4 }
+			}
+			clan_government = {
+				vassal_contract_set_obligation_level = { type = religious_rights level = 1 }
+				vassal_contract_set_obligation_level = { type = title_revocation_rights level = 1 }
+			}
+			feudal_government = {
+				vassal_contract_set_obligation_level = { type = feudal_government_taxes level = feudal_tax_low }
+				vassal_contract_set_obligation_level = { type = feudal_government_levies level = feudal_levies_low }
+				vassal_contract_set_obligation_level = { type = religious_rights level = 1 }
+				vassal_contract_set_obligation_level = { type = title_revocation_rights level = 1 }
+			}
+			mandala_government = {
+				vassal_contract_set_obligation_level = { type = religious_rights level = 1 }
+				vassal_contract_set_obligation_level = { type = title_revocation_rights level = 1 }
+			}
+		}
+		dynasty = {
+			add_dynasty_modifier = {
+				modifier = armenian_exarchs
+			}
+		}
+	}
+
+}
+
+get_roman_overlord_effect = {
+	custom_tooltip = get_roman_overlord_effect
+	random_neighboring_top_liege_realm_owner = {
+		limit = {
+			OR = {
+				has_title = title:e_byzantium
+				has_title = title:e_roman_empire
+			}
+		}
+		save_scope_as = overlord
+	}
+}
+
+get_persian_overlord_effect = {
+	if = {
+		limit = {
+			any_neighboring_top_liege_realm_owner = { this = title:e_persia.holder }
+		}
+		title:e_persia.holder = { save_scope_as = overlord }
+	}
+	else_if = {
+		limit = {
+			any_neighboring_top_liege_realm_owner = { this = title:e_arabia.holder }
+		}
+		title:e_arabia.holder = { save_scope_as = overlord }
+	}
+	else = {
+		random_neighboring_top_liege_realm_owner = {
+			limit = {
+				AND = {
+					highest_held_title_tier >= tier_empire
+					has_trait = pro_persian
+				}
+			}
+			save_scope_as = overlord
+		}
+	}
+	if = {
+		limit = {
+			NOT = { exists = scope:overlord }
+		}
+		custom_tooltip = no_valid_persian_overlord_tt
+	}
+}
+
+struggle_ending_georgian_empire_effect = {
+	save_scope_as = founder
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+	}
+	title:e_caucasia = {
+		change_title_holder = {
+			holder = scope:founder
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+	# Send out mass events to vassalize Caucasian rulers
+	dynasty = {
+		add_dynasty_modifier = {
+			modifier = overlords_of_the_caucasus
+		}
+	}
+}
+
+decision_form_armenian_cilicia_effect = {
+	title:d_cilicia = {
+		set_de_jure_liege_title = title:k_armenian_cilicia
+	}
+	title:d_edessa = {
+		set_de_jure_liege_title = title:k_armenian_cilicia
+	}
+	if = {
+		limit = {
+			OR = {
+				has_title = title:d_antioch
+				completely_controls = title:d_antioch
+			}
+		}
+		title:d_antioch = {
+			set_de_jure_liege_title = title:k_armenian_cilicia
+		}
+	}
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_armenian_cilicia = {
+		change_title_holder = {
+			holder = ROOT
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+	set_primary_title_to = title:k_armenian_cilicia
+}

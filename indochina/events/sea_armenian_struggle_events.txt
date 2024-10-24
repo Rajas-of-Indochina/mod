@@ -1,0 +1,268 @@
+﻿namespace = armenian_struggle
+
+# Intro event
+armenian_struggle.0001 = {
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.0001.t
+
+	desc = {
+		desc = armenian_struggle.0001.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = armenian_struggle
+					}
+				}
+				desc = armenian_struggle.0001.desc.involved
+			}
+			triggered_desc = {
+				trigger = {
+					any_character_struggle = {
+						involvement = interloper
+						is_struggle_type = armenian_struggle
+					}
+				}
+				desc = armenian_struggle.0001.desc.interloper
+			}
+		}
+	}
+	theme = realm
+	trigger = {
+		is_ai = no
+		NOT = { has_character_flag = armenian_struggle_intro_event_flag }
+		any_character_struggle = {
+			is_struggle_type = armenian_struggle
+		}
+	}
+	override_background = { reference = fp2_fullscreen_intro }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	cooldown = { years = 100 }
+
+	widgets = {
+		widget = {
+			gui = "event_window_widget_struggle_info"
+			container = "dynamic_content_widget"
+			controller = struggle_info
+			setup_scope = { struggle:armenian_struggle = { save_scope_as = struggle } }
+		}
+	}
+	immediate = {
+		play_music_cue = "mx_Struggle_Opening"
+		add_character_flag = armenian_struggle_intro_event_flag
+		save_scope_value_as = {
+			name = start
+			value = yes
+		}
+	}
+	option = {
+		name = armenian_struggle.0001.pro_roman
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+		add_trait = pro_roman
+	}
+	option = {
+		name = armenian_struggle.0001.pro_persian
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+		add_trait = pro_persian
+	}
+	option = {
+		name = armenian_struggle.0001.pro_roman
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+		add_trait = pro_persian
+	}
+}
+
+#Ending 1: Foreign Rule ("canonical" ending)
+armenian_struggle.0900 = {
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.0900.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { has_trait = pro_persian }
+				desc = armenian_struggle.0900.opening.pro_persian
+			}
+			triggered_desc = {
+				trigger = { has_trait = pro_roman }
+				desc = armenian_struggle.0900.opening.pro_roman
+			}
+			triggered_desc = {
+				trigger = { has_trait = pro_armenian }
+				desc = armenian_struggle.0900.opening.pro_armenian
+			}
+			desc = armenian_struggle.0900.opening.foreigner
+		}
+		desc = armenian_struggle.0900.desc
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_concession }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = struggleend_cue
+	}
+
+	option = {
+		name = fp3_struggle.0082.a
+		show_as_tooltip = {
+			struggle:persian_struggle = { end_struggle = yes }
+			fp3_struggle_ending_concession_effects = yes
+		}
+		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_negative"
+	}
+}
+
+#Ending 2: Armenian Resurgence
+#Re-establish the empire of Tigranes (and possibly more!)
+armenian_struggle.1000 = {
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1000.t
+	desc = {
+		first_valid = {
+			triggered_desc ={
+				trigger = {
+					culture = {
+						OR = {
+							this = culture:armenian
+							any_parent_culture_or_above = { this = culture:armenian }
+						}
+					}
+					desc = armenian_struggle.1000.desc.armenian
+				}
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_armenian
+				}
+				desc = armenian_struggle.1000.desc.pro_armenian
+			}
+		}
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_strength }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+	immediate = {
+		struggle_ending_armenian_empire_effect = yes
+		play_music_cue = struggleend_cue
+	}
+
+	option = {
+		name = armenian_struggle.1000.a
+		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_positive"
+		
+		ai_chance = {
+			base = 75
+			
+			modifier = {
+				factor = 0.1
+				realm_size >= 250
+			}
+		}
+	}
+	option = {
+		trigger = {
+			has_dlc_feature = roads_to_power
+			NOT = { has_government = anarchist_government } # Need to account for the Tondrakians
+			NOT = { government_has_flag = government_is_administrative }
+		}
+		name = armenian_struggle.1000.b
+		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_positive"
+		
+		convert_to_administrative_from_feudalism_effect = yes
+		
+		ai_chance = {
+			base = 0
+			
+			modifier = {
+				add = 25
+				realm_size >= 75
+			}
+			modifier = {
+				add = 25
+				realm_size >= 100
+			}
+			modifier = {
+				add = 25
+				realm_size >= 125
+			}
+			modifier = {
+				add = 25
+				realm_size >= 150
+			}
+			modifier = {
+				add = 50
+				realm_size >= 200
+			}
+		}
+	}
+
+	after = {
+		armenian_struggle_ending_effect = {
+			ENDING = armenian_struggle_ending_armenian_empire_decision
+			EVENT = armenian_struggle.1001
+			FLAG = flag:armenian_struggle_armenian_empire
+		}
+	}
+}
+
+armenian_struggle.1001 = { #Notification
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1001.t
+	desc = {
+		first_valid = {
+			triggered_desc ={
+				trigger = {
+					culture = {
+						OR = {
+							this = culture:armenian
+							any_parent_culture_or_above = { this = culture:armenian }
+						}
+					}
+					desc = armenian_struggle.1001.desc.armenian
+				}
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_armenian
+				}
+				desc = armenian_struggle.1001.desc.pro_armenian
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_roman
+				}
+				desc = armenian_struggle.1001.desc.pro_roman
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_persian
+				}
+				desc = armenian_struggle.1001.desc.pro_persian
+			}
+		}
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_strength }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	trigger = {
+		NOT = { has_character_flag = struggle_end_notification }
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			struggle:armenian_struggle = { end_struggle = yes }
+		}
+		add_character_flag = strggle_end_notification
+		play_music_cue = struggleend_cue
+	}
+	after = {
+		remove_character_flag = struggle_end_notification
+	}
+}
