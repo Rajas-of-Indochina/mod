@@ -1,5 +1,8 @@
 ﻿# Choose A Stance in the Armenian Struggle
 armenian_struggle_declare_stance = {
+	title = armenian_struggle_declare_stance_decision
+	desc = armenian_struggle_declare_stance_decision_desc
+	selection_tooltip = armenian_struggle_declare_stance_decision_tooltip
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/fp3/fp3_decision_foundation.dds"
 	}
@@ -944,7 +947,31 @@ armenian_struggle_ending_complicity = {
 		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
 	}
 	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/fp2_decision_hostility.dds"
-	desc = armenian_struggle_ending_complicity_decision_desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = armenian_struggle
+						is_struggle_phase = armenian_struggle_phase_roman_dominance
+					}
+				}
+				desc = armenian_struggle_ending_complicity_decision_desc.roman
+			}
+			triggered_desc = {
+				trigger = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = armenian_struggle
+						is_struggle_phase = armenian_struggle_phase_persian_dominance
+					}
+				}
+				desc = armenian_struggle_ending_complicity_decision_desc.persian
+			}
+		}
+		desc = armenian_struggle_ending_complicity_decision_desc
+	}
 	selection_tooltip = armenian_struggle_ending_complicity_decision_tooltip
 	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
 	is_invisible = yes
@@ -1010,7 +1037,29 @@ armenian_struggle_ending_complicity = {
 	}
 
 	effect = {
-		struggle_ending_complicity_effect = yes
+		if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_phase = armenian_struggle_phase_persian_dominance
+				}
+			}
+			get_persian_overlord_effect = yes
+			add_character_flag = persian_complicity
+		}
+		else_if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_phase = armenian_struggle_phase_roman_dominance
+				}
+			}
+			get_roman_overlord_effect = yes
+			add_character_flag = roman_complicity
+		}
+		show_as_tooltip = {
+			struggle_ending_complicity_effect = yes
+		}
 	}
 
 	cost = {}
@@ -1043,7 +1092,17 @@ armenian_struggle_georgian_empire = {
 			}
 			OR = {
 				this = culture:georgian
-				any_parent_culture_or_above = { this = culture:georgian }
+				this = culture:megrel
+				this = culture:abkhaz
+				AND = {
+					any_parent_culture_or_above = {
+						OR = {
+							this = culture:georgian
+							this = culture:megrel
+							this = culture:abkhaz
+						}
+					}
+				}
 			}
 		}
 	}

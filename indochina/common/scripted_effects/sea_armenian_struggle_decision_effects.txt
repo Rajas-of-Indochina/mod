@@ -1,8 +1,15 @@
 ﻿struggle_ending_roman_rule_effect = {
 	give_nickname = nick_imperator_armeniae
 
-	custom_tooltip = {
-		text = armenian_struggle_roman_de_jure_shifts
+	if = {
+		limit = { title:e_byzantium = { is_titular = yes } }
+		custom_tooltip = armenian_struggle_roman_de_jure_shifts
+	}
+	else = {
+		custom_tooltip = armenian_struggle_byzantine_de_jure_shifts
+	}
+	
+	hidden_effect = {
 		every_kingdom = {
 			limit = {
 				is_armenian_struggle_kingdom = yes
@@ -151,70 +158,22 @@ struggle_ending_armenian_empire_effect = {
 		}
 	}
 
-	custom_tooltip = {
-		text = armenian_struggle_claim_titles_with_legitimacy
-		set_global_variable = claim_titles_with_legitimacy
-	}
-
-	custom_tooltip = {
-		text = armenian_struggle_unlock_lifetime_armenian_dejure_drift
-		set_global_variable = unlock_lifetime_armenian_dejure_drift
-	}
-
-	custom_tooltip = {
-		text = armenian_struggle_armenian_cultures_grow_faster
-		set_global_variable = armenian_cultures_grow_faster
-	}
-
 	dynasty = {
-		add_dynasty_modifier = {
-			modifier = heir_of_tigranes
+		custom_tooltip = {
+			text = heir_of_tigranes_benefits
+			add_dynasty_modifier = {
+				modifier = heir_of_tigranes
+			}
 		}
 	}
 }
 
 struggle_ending_armenian_confederation_effect = {
-	custom_tooltip = {
-		text = armenian_struggle_form_armenian_confederation
-		set_global_variable = armenian_confederation
-	}
-
-	custom_tooltip = {
-		text = armenian_struggle_unlock_interloper_expulsions
-		set_global_variable = unlock_interloper_expulsions
-	}
-
-	custom_tooltip = {
-		text = armenian_struggle_strengthen_tondrakians
-		set_global_variable = strengthen_tondrakians
-	}
-
-	custom_tooltip = {
-		text = armenian_struggle_unlock_armenian_empire_for_later
-		set_global_variable = unlock_armenian_empire_for_later
-	}
+	custom_tooltip = armenian_struggle_form_armenian_confederation
 }
 
 struggle_ending_complicity_effect = {
 	save_scope_as = exarch
-	if = {
-		limit = {
-			any_character_struggle = {
-				involvement = involved
-				is_struggle_phase = armenian_struggle_phase_persian_dominance
-			}
-		}
-		get_persian_overlord_effect = yes
-	}
-	else_if = {
-		limit = {
-			any_character_struggle = {
-				involvement = involved
-				is_struggle_phase = armenian_struggle_phase_roman_dominance
-			}
-		}
-		get_roman_overlord_effect = yes
-	}
 	if = {
 		limit = {
 			exists = scope:overlord
@@ -269,7 +228,6 @@ struggle_ending_complicity_effect = {
 }
 
 get_roman_overlord_effect = {
-	custom_tooltip = get_roman_overlord_effect
 	random_neighboring_top_liege_realm_owner = {
 		limit = {
 			OR = {
@@ -278,6 +236,12 @@ get_roman_overlord_effect = {
 			}
 		}
 		save_scope_as = overlord
+	}
+	if = {
+		limit = {
+			NOT = { exists = scope:overlord }
+		}
+		custom_tooltip = no_valid_roman_overlord_tt
 	}
 }
 

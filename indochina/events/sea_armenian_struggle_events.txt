@@ -1,4 +1,4 @@
-﻿namespace = armenian_struggle
+namespace = armenian_struggle
 
 # Intro event
 armenian_struggle.0001 = {
@@ -75,7 +75,7 @@ armenian_struggle.0001 = {
 	}
 }
 
-#Ending 1: Foreign Rule ("canonical" ending)
+# Ending 1: Foreign Rule ("canonical" ending)
 armenian_struggle.0900 = {
 	type = character_event
 	window = fullscreen_event
@@ -116,8 +116,8 @@ armenian_struggle.0900 = {
 	}
 }
 
-#Ending 2: Armenian Resurgence
-#Re-establish the empire of Tigranes (and possibly more!)
+# Ending 2: Armenian Resurgence
+# Re-establish the empire of Tigranes (and possibly more!)
 armenian_struggle.1000 = {
 	type = character_event
 	window = fullscreen_event
@@ -259,9 +259,542 @@ armenian_struggle.1001 = { #Notification
 		show_as_tooltip = {
 			struggle:armenian_struggle = { end_struggle = yes }
 		}
-		add_character_flag = strggle_end_notification
+		add_character_flag = struggle_end_notification
 		play_music_cue = struggleend_cue
 	}
+
+	option = {
+		name = armenian_struggle.1001.a
+	}
+
+	after = {
+		remove_character_flag = struggle_end_notification
+	}
+}
+
+# Ending 3: Armenian Confederation
+# Armenia's free but it's not quite the glorious Armenian victory
+armenian_struggle.1100 = {
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1100.t
+	desc = {
+		first_valid = {
+			triggered_desc ={
+				trigger = {
+					culture = {
+						OR = {
+							this = culture:armenian
+							any_parent_culture_or_above = { this = culture:armenian }
+						}
+					}
+					desc = armenian_struggle.1100.desc.armenian
+				}
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_armenian
+				}
+				desc = armenian_struggle.1100.desc.pro_armenian
+			}
+		}
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_strength }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+	immediate = {
+		struggle_ending_armenian_confederation_effect = yes
+		play_music_cue = struggleend_cue
+	}
+	option = {
+		name = armenian_struggle.1100.a
+		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_negative"
+	}
+	after = {
+		armenian_struggle_ending_effect = {
+			ENDING = armenian_struggle_ending_armenian_confederation_decision
+			EVENT = armenian_struggle.1101
+			FLAG = flag:armenian_struggle_armenian_confederation
+		}
+	}
+}
+
+armenian_struggle.1101 = { #Notification
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1101.t
+	desc = {
+		first_valid = {
+			triggered_desc ={
+				trigger = {
+					culture = {
+						OR = {
+							this = culture:armenian
+							any_parent_culture_or_above = { this = culture:armenian }
+						}
+					}
+					desc = armenian_struggle.1101.desc.armenian
+				}
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_armenian
+				}
+				desc = armenian_struggle.1101.desc.pro_armenian
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_roman
+				}
+				desc = armenian_struggle.1101.desc.pro_roman
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_persian
+				}
+				desc = armenian_struggle.1101.desc.pro_persian
+			}
+		}
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_strength }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	trigger = {
+		NOT = { has_character_flag = struggle_end_notification }
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			struggle:armenian_struggle = { end_struggle = yes }
+		}
+		add_character_flag = struggle_end_notification
+		play_music_cue = struggleend_cue
+	}
+
+	option = {
+		name = armenian_struggle.1101.a
+		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_negative"
+	}
+
+	after = {
+		remove_character_flag = struggle_end_notification
+	}
+}
+
+# Ending 4: Collaboration
+# An Armenian ruler has decided to colaborate with either Rome, Arabia or Persia,
+# bringing Armenia to heel as that emperor's exarch
+armenian_struggle.1200 = {
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1200.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { has_character_flag = persian_complicity }
+				desc = armenian_struggle.1200.opening.pro_persian
+			}
+			triggered_desc = {
+				trigger = { has_character_flag = roman_complicity }
+				desc = armenian_struggle.1200.opening.pro_roman
+			}
+		}
+		desc = armenian_struggle.1200.desc
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_concession }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = struggleend_cue
+	}
+
+	option = {
+		name = armenian_struggle.1200.a
+		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_negative"
+		struggle_ending_complicity_effect = yes
+	}
+
+	after = {
+		if = {
+			limit = { has_character_flag = persian_complicity }
+			armenian_struggle_ending_effect = {
+				ENDING = armenian_struggle_ending_complicity_decision
+				EVENT = armenian_struggle.1201
+				FLAG = flag:armenian_struggle_persian_complicity
+			}
+			remove_character_flag = persian_complicity
+		}
+		else_if = {
+			limit = { has_character_flag = roman_complicity }
+			armenian_struggle_ending_effect = {
+				ENDING = armenian_struggle_ending_complicity_decision
+				EVENT = armenian_struggle.1201
+				FLAG = flag:armenian_struggle_roman_complicity
+			}
+			remove_character_flag = roman_complicity
+		}
+	}
+}
+
+armenian_struggle.1201 = { #Notification
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1201.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_armenian
+				}
+				desc = armenian_struggle.1201.desc.pro_armenian
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_roman
+				}
+				desc = armenian_struggle.1201.desc.pro_roman
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_persian
+				}
+				desc = armenian_struggle.1201.desc.pro_persian
+			}
+		}
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_strength }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	trigger = {
+		NOT = { has_character_flag = struggle_end_notification }
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			struggle:armenian_struggle = { end_struggle = yes }
+		}
+		add_character_flag = struggle_end_notification
+		play_music_cue = struggleend_cue
+	}
+
+	option = {
+		name = armenian_struggle.1201.a
+	}
+
+	after = {
+		remove_character_flag = struggle_end_notification
+	}
+}
+
+# Ending 5: Roman Rule Cemented
+armenian_struggle.1300 = {
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1300.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_armenian
+				}
+				desc = armenian_struggle.1201.desc.pro_armenian
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_roman
+				}
+				desc = armenian_struggle.1201.desc.pro_roman
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_persian
+				}
+				desc = armenian_struggle.1201.desc.pro_persian
+			}
+		}
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_strength }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = struggleend_cue
+	}
+
+	option = {
+		name = armenian_struggle.1300.a
+		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_negative"
+		struggle_ending_roman_rule_effect = yes
+	}
+	after = {
+		armenian_struggle_ending_effect = {
+			ENDING = armenian_struggle_ending_roman_rule_decision
+			EVENT = armenian_struggle.1301
+			FLAG = flag:armenian_struggle_armenian_confederation
+		}
+	}
+}
+
+armenian_struggle.1301 = { #Notification
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1301.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_armenian
+				}
+				desc = armenian_struggle.1301.desc.pro_armenian
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_roman
+				}
+				desc = armenian_struggle.1301.desc.pro_roman
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_persian
+				}
+				desc = armenian_struggle.1301.desc.pro_persian
+			}
+		}
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_strength }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	trigger = {
+		NOT = { has_character_flag = struggle_end_notification }
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			struggle:armenian_struggle = { end_struggle = yes }
+		}
+		add_character_flag = struggle_end_notification
+		play_music_cue = struggleend_cue
+	}
+
+	option = {
+		name = armenian_struggle.1301.a
+	}
+
+	after = {
+		remove_character_flag = struggle_end_notification
+	}
+}
+
+# Ending 6: Persian Rule Cemented
+armenian_struggle.1400 = {
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1400.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_armenian
+				}
+				desc = armenian_struggle.1201.desc.pro_armenian
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_roman
+				}
+				desc = armenian_struggle.1201.desc.pro_roman
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_persian
+				}
+				desc = armenian_struggle.1201.desc.pro_persian
+			}
+		}
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_strength }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = struggleend_cue
+	}
+
+	option = {
+		name = armenian_struggle.1400.a
+		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_negative"
+		struggle_ending_persian_rule_effect = yes
+	}
+	after = {
+		armenian_struggle_ending_effect = {
+			ENDING = armenian_struggle_ending_persian_rule_decision
+			EVENT = armenian_struggle.1401
+			FLAG = flag:armenian_struggle_armenian_confederation
+		}
+	}
+}
+
+armenian_struggle.1401 = { #Notification
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1401.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_armenian
+				}
+				desc = armenian_struggle.1401.desc.pro_armenian
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_roman
+				}
+				desc = armenian_struggle.1401.desc.pro_roman
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_persian
+				}
+				desc = armenian_struggle.1401.desc.pro_persian
+			}
+		}
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_strength }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	trigger = {
+		NOT = { has_character_flag = struggle_end_notification }
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			struggle:armenian_struggle = { end_struggle = yes }
+		}
+		add_character_flag = struggle_end_notification
+		play_music_cue = struggleend_cue
+	}
+
+	option = {
+		name = armenian_struggle.1401.a
+	}
+
+	after = {
+		remove_character_flag = struggle_end_notification
+	}
+}
+
+# Ending 7: Georgian Caucasus
+armenian_struggle.1500 = {
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1500.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_armenian
+				}
+				desc = armenian_struggle.1500.desc.pro_armenian
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_roman
+				}
+				desc = armenian_struggle.1500.desc.pro_roman
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_persian
+				}
+				desc = armenian_struggle.1500.desc.pro_persian
+			}
+		}
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_strength }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = struggleend_cue
+	}
+
+	option = {
+		name = armenian_struggle.1200.a
+		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_negative"
+		struggle_ending_persian_rule_effect = yes
+	}
+	after = {
+		armenian_struggle_ending_effect = {
+			ENDING = armenian_struggle_georgian_empire_decision
+			EVENT = armenian_struggle.1501
+			FLAG = flag:armenian_struggle_armenian_confederation
+		}
+	}
+}
+
+armenian_struggle.1501 = { #Notification
+	type = character_event
+	window = fullscreen_event
+	title = armenian_struggle.1501.t
+	desc = {
+		first_valid = {
+			triggered_desc ={
+				trigger = {
+					culture = {
+						OR = {
+							this = culture:georgian
+							any_parent_culture_or_above = { this = culture:georgian }
+						}
+					}
+					desc = armenian_struggle.1501.desc.armenian
+				}
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_armenian
+				}
+				desc = armenian_struggle.1501.desc.pro_armenian
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_roman
+				}
+				desc = armenian_struggle.1501.desc.pro_roman
+			}
+			triggered_desc = {
+				trigger = {
+					has_trait = pro_persian
+				}
+				desc = armenian_struggle.1501.desc.pro_persian
+			}
+		}
+	}
+	theme = court
+	override_background = { reference = fp3_fullscreen_strength }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	trigger = {
+		NOT = { has_character_flag = struggle_end_notification }
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			struggle:armenian_struggle = { end_struggle = yes }
+		}
+		add_character_flag = struggle_end_notification
+		play_music_cue = struggleend_cue
+	}
+
+	option = {
+		name = armenian_struggle.1501.a
+	}
+
 	after = {
 		remove_character_flag = struggle_end_notification
 	}
