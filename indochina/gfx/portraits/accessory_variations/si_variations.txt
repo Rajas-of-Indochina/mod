@@ -1,0 +1,251 @@
+﻿###################
+#	Texture sets  #
+###################
+pattern_textures = {
+	name = "tilmahtli_trim_simple"
+	colormask	= "gfx/portraits/accessory_variations/textures/patterns/si_trim_simple_masks.dds"
+	normal		= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_plain_01_normal.dds"
+	properties	= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_plain_01_properties.dds"
+}
+pattern_textures = {
+	name = "tilmahtli_trim_01"
+	colormask	= "gfx/portraits/accessory_variations/textures/patterns/si_trim_01_masks.dds"
+	normal		= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_trim_01_normal.dds"
+	properties	= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_trim_01_properties.dds"
+}
+
+pattern_textures = {
+	name = "tilmahtli_chequers"
+	colormask	= "gfx/portraits/accessory_variations/textures/patterns/si_chequers_masks.dds"
+	normal		= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_plain_01_normal.dds"
+	properties	= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_plain_01_properties.dds"
+}
+pattern_textures = {
+	name = "tilmahtli_spiral"
+	colormask	= "gfx/portraits/accessory_variations/textures/patterns/si_spiral_masks.dds"
+	normal		= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_plain_01_normal.dds"
+	properties	= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_plain_01_properties.dds"
+}
+pattern_textures = {
+	name = "tilmahtli_eyes"
+	colormask	= "gfx/portraits/accessory_variations/textures/patterns/si_eyes_masks.dds"
+	normal		= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_plain_01_normal.dds"
+	properties	= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_plain_01_properties.dds"
+}
+
+##################
+#	Layouts		 #
+##################
+pattern_layout = {
+	name = "plain_fabric_large_layout"	
+	scale 		= { min = 1	max = 1 }
+	rotation 	= { min = 0	max = 0 }	
+	offset 		= { x = { min = 0	max = 0 }    y = { min = 0	max = 0 } } 
+}
+pattern_layout = {
+	name = "plain_fabric_medium_layout"	
+	scale 		= { min = 0.5	max = 0.5 }
+	rotation 	= { min = 0	max = 0 }	
+	offset 		= { x = { min = 0	max = 0 }    y = { min = 0	max = 0 } } 
+}
+pattern_layout = {
+	name = "plain_fabric_small_layout"	
+	scale 		= { min = 0.25	max = 0.25 }
+	rotation 	= { min = 0	max = 0 }	
+	offset 		= { x = { min = 0	max = 0 }    y = { min = 0	max = 0 } } 
+}
+pattern_layout = {
+	name = "plain_fabric_tiny_layout"	
+	scale 		= { min = 0.125	max = 0.125 }
+	rotation 	= { min = 0	max = 0 }	
+	offset 		= { x = { min = 0	max = 0 }    y = { min = 0	max = 0 } } 
+}
+
+pattern_layout = {
+	name = "small_trim_layout"	
+	scale 		= { min = 0.125	max = 0.125 }
+	rotation 	= { min = 0	max = 0 }	
+	offset 		= { x = { min = 0	max = 0 }    y = { min = 0	max = 0 } } 
+}
+pattern_layout = {
+	name = "medium_trim_layout"	
+	scale 		= { min = 0.25	max = 0.25 }
+	rotation 	= { min = 0	max = 0 }	
+	offset 		= { x = { min = 0	max = 0 }    y = { min = 0.5	max = 0.5 } } 
+}
+pattern_layout = {
+	name = "big_trim_layout_01"	
+	scale 		= { min = 0.17	max = 0.17 }
+	rotation 	= { min = 0	max = 0 }	
+	offset 		= { x = { min = 0	max = 0 }    y = { min = 0.5	max = 0.5 } } 
+}
+pattern_layout = {
+	name = "edge_trim_layout"	
+	scale 		= { min = 0.125	max = 0.125 }
+	rotation 	= { min = 0	max = 0 }	
+	offset 		= { x = { min = 0	max = 0 }    y = { min = 0.5	max = 0.5 } } 
+}
+
+
+
+###################
+#	Variations    #
+###################
+
+variation = {
+	name = "tilmahtli_common_variation"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_tiny_layout" }
+		g = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_tiny_layout" }
+		b = { textures = "tilmahtli_trim_simple" 	layout = "edge_trim_layout" }
+		a = { textures = "tilmahtli_trim_simple" 	layout = "edge_trim_layout" }
+	}
+	
+	# Color palette textures are 4-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/tilmahtli_common_palette.dds" }	
+}
+
+variation = {
+	name = "tilmahtli_variation"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_tiny_layout" }
+		g = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_tiny_layout" }
+		b = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+		a = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+	}
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tilmahtli_spiral" 	layout = "plain_fabric_tiny_layout" }
+		g = { textures = "tilmahtli_spiral" 	layout = "plain_fabric_tiny_layout" }
+		b = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+		a = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+	}	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tilmahtli_eyes" 		layout = "plain_fabric_tiny_layout" }
+		g = { textures = "tilmahtli_eyes" 		layout = "plain_fabric_tiny_layout" }
+		b = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+		a = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+	}	
+		
+	# Color palette textures are 4-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/tilmahtli_high_palette.dds" }	
+}
+
+variation = {
+	name = "maxlatl_common_variation"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_medium_layout" }
+		g = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_medium_layout" }
+		b = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_medium_layout" }
+		a = { textures = "tilmahtli_trim_simple" 	layout = "medium_trim_layout" }
+	}
+		
+	# Color palette textures are 4-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/maxlatl_common_palette.dds" }	
+}
+
+variation = {
+	name = "maxlatl_low_variation"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_medium_layout" }
+		g = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_medium_layout" }
+		b = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_medium_layout" }
+		a = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+	}
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tilmahtli_spiral" 	layout = "plain_fabric_medium_layout" }
+		g = { textures = "tilmahtli_spiral" 	layout = "plain_fabric_medium_layout" }
+		b = { textures = "tilmahtli_spiral" 	layout = "plain_fabric_medium_layout" }
+		a = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+	}	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tilmahtli_eyes" 		layout = "plain_fabric_medium_layout" }
+		g = { textures = "tilmahtli_eyes" 		layout = "plain_fabric_medium_layout" }
+		b = { textures = "tilmahtli_eyes" 		layout = "plain_fabric_medium_layout" }
+		a = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+	}
+		
+	# Color palette textures are 4-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/maxlatl_high_palette.dds" }	
+}
+
+variation = {
+	name = "maxlatl_high_variation"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_medium_layout" }
+		g = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_medium_layout" }
+		b = { textures = "tilmahtli_chequers" 	layout = "plain_fabric_medium_layout" }
+		a = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+	}
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tilmahtli_spiral" 	layout = "plain_fabric_medium_layout" }
+		g = { textures = "tilmahtli_spiral" 	layout = "plain_fabric_medium_layout" }
+		b = { textures = "tilmahtli_spiral" 	layout = "plain_fabric_medium_layout" }
+		a = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+	}	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tilmahtli_eyes" 		layout = "plain_fabric_medium_layout" }
+		g = { textures = "tilmahtli_eyes" 		layout = "plain_fabric_medium_layout" }
+		b = { textures = "tilmahtli_eyes" 		layout = "plain_fabric_medium_layout" }
+		a = { textures = "tilmahtli_trim_01" 	layout = "medium_trim_layout" }
+	}	
+		
+	# Color palette textures are 4-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/maxlatl_high_palette.dds" }	
+}
