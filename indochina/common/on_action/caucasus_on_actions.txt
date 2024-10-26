@@ -3,6 +3,7 @@
 		armenianmerchants_action
 		ildeguzids_action
 		roa_gold_give
+		roa_caucasus_misc_effects_867
 	}
 }
 
@@ -21,18 +22,18 @@ on_birth_child = {
 
 thamade_action = {
     trigger = {
-        OR = {
-            is_ai = yes
-            is_courtier = yes
-        }
-        culture = {
-			OR = {
-        	has_cultural_pillar = heritage_aghvank
-        	has_cultural_pillar = heritage_ciscaucasian
-			}
-    	}
-        age > 50
-        OR = {
+	OR = {
+		is_ai = yes
+		is_courtier = yes
+	}
+	culture = {
+		OR = {
+			has_cultural_pillar = heritage_aghvank
+			has_cultural_pillar = heritage_ciscaucasian
+		}
+	}
+	age > 50
+	OR = {
 			has_trait = honest
 			has_trait = brave
 			has_trait = forgiving
@@ -40,7 +41,7 @@ thamade_action = {
 			has_trait = just
 			has_trait = patient
 			has_trait = compassionate
-    	}
+	}
 		NOT = {
 			OR = {
 				has_trait = thamade
@@ -86,7 +87,6 @@ thamade_action = {
     }
 }
 
-
 armenianmerchants_action = {
 	effect = {
 		set_global_variable = {
@@ -98,7 +98,7 @@ armenianmerchants_action = {
 
 ildeguzids_action = {
 	effect = {
-		character:144051 = {
+	   character:144051 = {
 			set_culture = culture:kipchak 
 	   }
 	   character:144052 = {
@@ -193,8 +193,20 @@ roa_gold_give = {
 	effect = {
 		title:c_derbent.holder = {
 			add_gold = 50			
-            add_trait = content
+			add_trait = content
 		}
 	}	
 }
 
+roa_caucasus_misc_effects_867 = {
+    trigger = {
+	OR = {
+		game_start_date >= 867.1.1
+		game_start_date < 870.1.1
+	}
+	effect = {
+		character:146077 = {
+			set_designated_heir = scope:159732
+		}
+	}
+}
