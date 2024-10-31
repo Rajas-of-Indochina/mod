@@ -359,7 +359,7 @@ on_yearly_spawn_roa_historical_characters = {
 	}
 }
 
-on_yearly_alevi_check = { #why isnt this working!!!
+on_yearly_alevi_check = { 
 	effect = {
 	if = {
 		limit = {
@@ -382,6 +382,32 @@ title:c_byzantion.holder = {
 					}
 
 	set_variable = alevi_spawned_flag
+}
+}
+}
+
+
+on_yearly_bolghar_check = { 
+	effect = {
+	if = {
+		limit = {
+		NOT = { has_variable = bolghar_islam_flag }
+		title:c_bolghar.holder = {
+			is_independent_ruler = yes
+			is_adult = yes
+			is_at_war = no
+		culture = culture:bolghar
+		NOT = { religion = religion:islam_religion }
+							}
+}
+title:c_bolghar.holder = {
+	trigger_event = {
+		id = alevi.0004
+		years = { 20 60 }
+	}
+					}
+
+	set_variable = bolghar_islam_flag
 }
 }
 }
