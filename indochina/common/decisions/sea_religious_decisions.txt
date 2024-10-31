@@ -296,7 +296,7 @@ renounce_vegetarianism_decision = {
 # 	}
 # }
 
-bolghar_islam_decision = {
+bolghar_islam_decision_dulo = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_golden_age.dds"
 	}
@@ -305,6 +305,7 @@ bolghar_islam_decision = {
 	sort_order = 100
 
 	is_shown = {
+		dynasty = 591
 		culture = culture:bolghar
 		NOT = {
 			religion = religion:islam_religion
@@ -319,6 +320,97 @@ bolghar_islam_decision = {
 	}
 
 	is_valid = {
+		dynasty = 591
+		culture = culture:bolghar		
+		NOT = {
+			religion = religion:islam_religion
+		}
+		highest_held_title_tier >= tier_duchy
+		NOT = {
+			has_trait = zealous
+		}
+		is_independent_ruler = yes
+		is_adult = yes
+		is_at_war = no
+		NOT = {	#You can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:bolghar_islam_dulo
+			}
+		}
+	}
+
+	effect = {
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:bolghar_islam_dulo
+		}
+		trigger_event = { 	
+		id = alevi.0004
+		months = 2 
+	}
+	}
+
+	cost = {
+		gold = 50
+		prestige = 500
+	}
+
+	ai_check_interval = 1
+	ai_potential = {
+		dynasty = 591
+		culture = culture:bolghar		
+		NOT = {
+			religion = religion:islam_religion
+		}
+		highest_held_title_tier >= tier_duchy
+		NOT = {
+			has_trait = zealous
+		}
+		is_independent_ruler = yes
+		is_adult = yes
+		is_at_war = no
+		NOT = {	#You can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:bolghar_islam
+			}
+		}
+	}
+	ai_will_do = {
+		base = 95
+	}
+}
+
+bolghar_islam_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_golden_age.dds"
+	}
+	decision_group_type = major
+	desc = bolghar_islam_decision_desc
+	sort_order = 100
+
+	is_shown = {
+		culture = culture:bolghar
+		NOT = {
+			religion = religion:islam_religion
+		}
+		NOT = {
+			dynasty = 591
+		}
+		NOT = {	#You can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:bolghar_islam
+			}
+		}
+
+	}
+
+	is_valid = {
+		NOT = {
+			dynasty = 591
+		}
 		culture = culture:bolghar		
 		NOT = {
 			religion = religion:islam_religion
@@ -357,13 +449,19 @@ bolghar_islam_decision = {
 	ai_check_interval = 1
 	ai_potential = {
 		NOT = {
-			religion = religion:islam_religion
+			dynasty = 591
 		}
 		culture = culture:bolghar		
+		NOT = {
+			religion = religion:islam_religion
+		}
 		highest_held_title_tier >= tier_kingdom
+		NOT = {
+			has_trait = zealous
+		}
 		is_independent_ruler = yes
 		is_adult = yes
-		is_at_war = no		
+		is_at_war = no
 		NOT = {	#You can only do it once.
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -375,3 +473,4 @@ bolghar_islam_decision = {
 		base = 50
 	}
 }
+
