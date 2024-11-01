@@ -992,10 +992,27 @@ sea_optional_admin_realms = {
     effect = {
         if = {
             limit = {
-                has_game_rule = historicity_extra_admin_liao_historic_always
+                has_game_rule = historicity_extra_admin_liao_historic_1178
                 exists = title:e_kara_khitai
             }
-            title:e_kara_khitai ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+            title:e_kara_khitai = {
+                holder = {
+                    convert_to_administrative_from_feudalism_game_start_effect = yes
+                }
+                set_state_faith = faith:mahayana
+            }
+        }
+        if = {
+            limit = {
+                has_game_rule = historicity_extra_admin_jin_historic_1178
+                exists = title:e_jin.holder
+            }
+            title:e_jin = {
+                holder = {
+                    convert_to_administrative_from_feudalism_game_start_effect = yes
+                }
+                set_state_faith = faith:jingxue
+            }
         }
         if = {
             limit = {
@@ -1011,31 +1028,79 @@ sea_optional_admin_realms = {
                 }
                 exists = title:e_kambujadesa
             }
-            title:e_kambujadesa.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+            title:e_kambujadesa = {
+                holder = {
+                    convert_to_administrative_from_feudalism_game_start_effect = yes
+                }
+                set_state_faith = faith:shaivism
+            }
         }
         if = {
             limit = {
                 has_game_rule = historicity_extra_admin_korea_historic_1066
-                exists = title:k_goryeo
+                exists = title:k_goryeo.holder
                 game_start_date > 1065.1.1
             }
-            title:k_goryeo.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+            title:k_goryeo = {
+                holder = {
+                    convert_to_administrative_from_feudalism_game_start_effect = yes
+                }
+                set_state_faith = faith:mahayana
+            }
+        }
+        if = {
+            limit = {
+                OR = {
+                    AND = {
+                        has_game_rule = historicity_extra_admin_japan_historic_867
+                        game_start_date < 868.1.1
+                    }
+                    AND = {
+                        has_game_rule = historicity_extra_admin_japan_historic_936
+                        game_start_date < 937.1.1
+                    }
+                    AND = {
+                        has_game_rule = historicity_extra_admin_japan_historic_1066
+                        game_start_date < 1067.1.1
+                    }
+                    AND = {
+                        has_game_rule = historicity_extra_admin_japan_historic_1178
+                        game_start_date < 1179.1.1
+                    }
+                }
+                exists = title:k_yamato.holder
+            }
+            title:k_yamato = {
+                holder = {
+                    convert_to_administrative_from_feudalism_game_start_effect = yes
+                }
+            }
         }
         if = {
             limit = {
                 has_game_rule = historicity_extra_admin_vietnam_historic_1066
-                exists = title:k_annam
+                exists = title:k_annam.holder
                 game_start_date > 1065.1.1
             }
-            title:k_annam.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+            title:k_annam = {
+                holder = {
+                    convert_to_administrative_from_feudalism_game_start_effect = yes
+                }
+                set_state_faith = faith:mahayana
+            }
         }
         if = {
             limit = {
                 has_game_rule = historicity_extra_admin_dali_historic_1066
-                exists = title:k_nanzhao
+                exists = title:k_nanzhao.holder
                 game_start_date > 1065.1.1
             }
-            title:k_nanzhao.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+            title:k_nanzhao = {
+                holder = {
+                    convert_to_administrative_from_feudalism_game_start_effect = yes
+                }
+                set_state_faith = faith:azhaliism
+            }
         }
     }
 }
