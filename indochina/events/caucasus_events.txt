@@ -688,6 +688,19 @@ caucasianroa.014 = {
 			}
 		}
 	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				capital_province = { geographical_region = struggle_region_armenia }
+				NOT = { THIS = scope:founder }
+			}
+			add_to_list = characters_to_notify
+		}
+		every_in_list = {
+			trigger_event = caucasianroa.015
+		}
+	}
 }
 
 # Inform others
@@ -758,6 +771,7 @@ caucasianroa.016 = {
 	immediate = {
 		play_music_cue = "mx_cue_positive_effect"
 		unify_armenian_principalities_decision_effect = yes
+		legend_seed_new_title_effect = yes
 	}
 
 	#I was motivated by nobility!
@@ -766,5 +780,66 @@ caucasianroa.016 = {
 
 		#Your legacy will be remembered.
 		add_prestige_experience = major_prestige_gain
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				capital_province = { geographical_region = struggle_region_armenia }
+				NOT = { THIS = scope:founder }
+			}
+			add_to_list = characters_to_notify
+		}
+		every_in_list = {
+			trigger_event = caucasianroa.017
+		}
+	}
+}
+
+caucasianroa.017 = {
+	type = character_event
+	title = caucasianroa.015.t
+	desc = caucasianroa.015.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = { reference = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+	}
+
+	#Kings and Emperors consider them an upstart.
+	option = {
+		name = east_europe.0102.a
+		trigger = { highest_held_title_tier >= tier_kingdom }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Same-culture rulers are probably quite happy.
+	option = {
+		name = east_europe.0102.b
+		trigger = { culture = scope:founder.culture }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Everyone else is a bit wary.
+	option = {
+		name = east_europe.0102.c
+		trigger = {
+			NOR = {
+				highest_held_title_tier >= tier_kingdom
+				culture = scope:founder.culture
+			}
+		}
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
 	}
 }
