@@ -1,8 +1,8 @@
-﻿version="3.5.1"
+﻿version="3.5.2"
 tags={
 	"Historical"
 	"Map"
 }
 name="Rajas of Asia"
-supported_version="1.13.*"
+supported_version="1.14.*"
 remote_file_id="2509174436"
