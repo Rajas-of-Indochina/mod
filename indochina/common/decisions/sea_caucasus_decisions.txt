@@ -2367,3 +2367,59 @@ unify_armenian_principalities_decision = {
 	}
 
 }
+
+circassian_decision_embrace_mtielta = {
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+    }
+
+	decision_group_type = major
+
+    desc = circassian_decision_embrace_mtielta_desc
+    selection_tooltip = circassian_decision_embrace_mtielta_tooltip
+	ai_check_interval = 60
+
+    is_shown = {
+		current_year >= 950
+		OR = {
+			culture = { this = culture:alan }
+			culture = {	this = culture:svan }
+				}
+			NOT = { religion = religion:christianity_religion }
+			NOT = { religion = religion:islam_religion }
+    }
+
+	is_valid = { 
+		current_year >= 950
+		OR = {
+			culture = { this = culture:alan }
+			culture = {	this = culture:svan }
+				}
+        NOT = { religion = religion:christianity_religion }
+        NOT = { religion = religion:islam_religion }
+		is_adult = yes
+		is_at_war = no
+	}
+
+    effect = {
+		set_character_faith_with_conversion = faith:mtielta
+		add_piety = 100
+		add_prestige = 100
+	}
+
+	ai_potential = {
+		current_year >= 950
+		OR = {
+			culture = { this = culture:alan }
+			culture = {	this = culture:svan }
+				}
+			NOT = { religion = religion:christianity_religion }
+			NOT = { religion = religion:islam_religion }
+		is_adult = yes
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 70
+	}
+}
