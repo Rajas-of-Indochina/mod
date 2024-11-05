@@ -802,6 +802,12 @@ call_ally_interaction = {
 	is_shown = {
 		scope:actor = {
 			is_at_war = yes
+			trigger_if = { # Avoid calling Adventurers without armies or landed rulers who have been devastated
+				limit = {
+					is_ai = yes
+				}
+				scope:recipient.current_military_strength >= 100
+			}
 		}
 		scope:recipient = {
 			OR = {
@@ -1092,6 +1098,9 @@ call_ally_interaction = {
 			scope:actor = {
 				trigger_event = call_ally.0101
 			}
+
+			# If we're a clan this interaction affects unity
+			refuse_call_to_arms_add_clan_unity_effect = yes
 		}
 	}
 
@@ -1140,6 +1149,25 @@ call_ally_interaction = {
 
 	ai_accept = {
 		base = 20
+
+		modifier = {  # Conquerors do not help anyone but themselves
+			add = -1000
+			desc = NO_FRIVOLOUS_ACTIVITIES_REASON
+			scope:recipient = { ai_has_conqueror_personality = yes }
+		}
+		modifier = {  # AI's that need to save gold will not help their lesser AI allies, unless it's a player war
+			add = -1000
+			desc = NO_FRIVOLOUS_ACTIVITIES_REASON
+			scope:actor = {
+				is_ai = yes
+				primary_title.tier < scope:recipient.primary_title.tier
+			}
+			scope:target.casus_belli = {
+				primary_attacker = { is_ai = yes }
+				primary_defender = { is_ai = yes }
+			}
+			scope:recipient = { ai_should_focus_on_building_in_their_capital = yes }
+		}
 
 		modifier = {  # Refuse call to conflicts of little benefit
 			add = -1000
@@ -1224,6 +1252,7 @@ call_ally_interaction = {
 			trigger = {
 				scope:actor = {
 					has_royal_court = yes
+					has_dlc_feature = royal_court
 					NOT = { knows_court_language_of = this }
 				}
 				NOT = {
@@ -1311,6 +1340,7 @@ call_ally_interaction = {
 			trigger = {
 				scope:actor = {
 					has_royal_court = yes
+					has_dlc_feature = royal_court
 					knows_court_language_of = this
 				}
 				NOT = {
@@ -1397,7 +1427,7 @@ call_ally_interaction = {
 			desc = ENTRENCHED_REGENT_WILL_SUPPORT_LIEGE
 			trigger_if = {
 				limit = { scope:recipient ?= scope:actor.diarch }
-				scope:actor = { has_diarchy_active_parameter = diarchy_type_is_entrenched_regency }
+				scope:actor = { has_diarchy_parameter = diarchy_type_is_entrenched_regency }
 			}
 			trigger_else = { always = no }
 		}
@@ -1483,6 +1513,7 @@ call_ally_interaction = {
 			trigger_else = {
 				has_relation_friend = scope:target.casus_belli.primary_defender
 			}
+			desc = WONT_FIGHT_FRIEND
 		}
 
 		modifier = { # Reluctant to join against Best Friends
@@ -1496,6 +1527,7 @@ call_ally_interaction = {
 			trigger_else = {
 				has_relation_best_friend = scope:target.casus_belli.primary_defender
 			}
+			desc = WONT_FIGHT_BEST_FRIEND
 		}
 		modifier = { # Reluctant to join against Lovers
 			add = -100
@@ -1508,8 +1540,9 @@ call_ally_interaction = {
 			trigger_else = {
 				has_relation_lover = scope:target.casus_belli.primary_defender
 			}
+			desc = WONT_FIGHT_LOVER
 		}
-		modifier = { # Reluctant to join against Soul mate
+		modifier = { # Reluctant to join against Soulmate
 			add = -200
 			trigger_if = {
 				limit = {
@@ -1520,6 +1553,7 @@ call_ally_interaction = {
 			trigger_else = {
 				has_relation_soulmate = scope:target.casus_belli.primary_defender
 			}
+			desc = WONT_FIGHT_SOULMATE
 		}
 		modifier = {  # Refuse call for hostages' safety
 			any_home_court_hostage = {
@@ -1562,6 +1596,14 @@ call_ally_interaction = {
 				any_character_war = {
 					primary_defender = scope:recipient
 				}
+			}
+			factor = 0
+		}
+
+		modifier = { # Do not call the player if they are in debt
+			scope:recipient = {
+				is_ai = no
+				gold <= -1
 			}
 			factor = 0
 		}
@@ -1677,8 +1719,8 @@ call_dynasty_member_to_war_interaction = {
 	is_valid_showing_failures_only = {
 		scope:actor.dynasty = { dynasty_prestige >= medium_dynasty_prestige_value }
 		scope:recipient = {
-			NOT = { has_government = mercenary_government }
-			NOT = { has_government = holy_order_government }
+			NOT = { government_has_flag = government_is_mercenary }
+			NOT = { government_has_flag = government_is_holy_order }
 		}
 		custom_description = {
 			text = "is_already_in_all_wars"
@@ -1922,6 +1964,8 @@ call_dynasty_member_to_war_interaction = {
 			}
 			desc = WONT_ATTACK_RELIGIOUS_BRETHREN_REASON
 		}
+
+		fp3_struggle_resist_allied_wars_modifier = yes
 	}
 
 	auto_accept = {
@@ -1952,6 +1996,7 @@ call_dynasty_member_to_war_interaction = {
 
 call_house_member_to_war_interaction = {
 	category = interaction_category_diplomacy
+	icon = alliance
 
 	interface_priority = 60
 
@@ -1986,7 +2031,7 @@ call_house_member_to_war_interaction = {
 		}
 
 		scope:recipient = {
-			is_landed = yes
+			is_playable_character = yes
 		}
 
 		scope:recipient = {
@@ -2066,7 +2111,7 @@ call_house_member_to_war_interaction = {
 			}
 		}
 
-		# If the Dynasty has Unity, the reciptien is rewarded with some Prestige
+		# If the Dynasty has the Unity Legacy perk, the recipient is rewarded with some Prestige
 		if = {
 			limit = { scope:actor.dynasty = { has_dynasty_perk = fp2_coterie_legacy_3 } }
 			scope:recipient = {	add_prestige = medium_prestige_gain	}
@@ -2103,6 +2148,9 @@ call_house_member_to_war_interaction = {
 					trigger_event = call_ally.0101
 				}
 			}
+
+			# If we're a clan this interaction affects unity
+			refuse_call_to_arms_add_clan_unity_effect = yes
 		}
 	}
 
@@ -2251,6 +2299,8 @@ call_house_member_to_war_interaction = {
 			dynasty = { has_dynasty_perk = fp2_coterie_legacy_3 }
 			desc = "UNITY_PERK_BONUS"
 		}
+
+		fp3_struggle_resist_allied_wars_modifier = yes
 	}
 
 	auto_accept = {
