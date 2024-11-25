@@ -4,6 +4,7 @@
 		ildeguzids_action
 		roa_gold_give
 		saladin_languages_action
+		abbasid_regnal_beginning
 		#roa_caucasus_misc_effects_867
 	}
 }
@@ -18,6 +19,7 @@ yearly_global_pulse = {
 	on_actions = {
 		avar_nutsal_action
 		rum_sultan_nickname_action
+		abbasid_regnal_check
 	}
 }
 
@@ -269,6 +271,75 @@ rum_sultan_nickname_action = {
 				50 = { give_nickname = nick_zayn_al_din }
 			}
 			set_variable = rum_sultan_nickname_flag
+		}
+	}
+}
+
+abbasid_regnal_beginning = {
+	character:34014 = {
+        effect = {
+            add_character_flag = has_regnal_name_abbasid
+        }
+	}
+	character:3084 = {
+        effect = {
+            add_character_flag = has_regnal_name_abbasid
+        }
+	}
+	character:144064 = {
+        effect = {
+            add_character_flag = has_regnal_name_abbasid
+        }
+	}
+}
+
+abbasid_regnal_check = {
+	trigger = {
+		title:d_sunni = {
+			exists = holder
+			holder ?= {
+				house = house:house_abbasid
+				NOT = { has_character_flag = has_regnal_name_abbasid }
+			}
+		}
+	}
+	effect = {
+		title:d_sunni.holder = {
+			random_list = {
+				60 = { 	change_first_name = Al-Nasir }
+				60 = { 	change_first_name = Al-Mustazhir }
+				60 = { 	change_first_name = Az-Zahir }
+				60 = { 	change_first_name = Al-Mustansir }
+				60 = { 	change_first_name = Al-Musta_sim }
+				60 = { 	change_first_name = Al-Hakim }
+				60 = { 	change_first_name = Al-Mustakfi }
+				60 = { 	change_first_name = Al-Musta_in }
+				60 = { 	change_first_name = Al-Mustamsik }
+				60 = { 	change_first_name = Al-Mustakfi }
+				50 = { 	change_first_name = As-Saffah }
+				50 = { 	change_first_name = Al-Hadi }
+				50 = { 	change_first_name = Al-Rashid }
+				50 = { 	change_first_name = Al-Amin }
+				50 = { 	change_first_name = Al-Wathiq }
+				50 = { 	change_first_name = Al-Mutawakkil }
+				50 = { 	change_first_name = Al-Muntasir }
+				50 = { 	change_first_name = Al-Musta_in }
+				50 = { 	change_first_name = Al-Mu_tazz }
+				50 = { 	change_first_name = Al-Muhtadi }
+				50 = { 	change_first_name = Al-Mu_tamid }
+				50 = { 	change_first_name = Al-Mu_tadid }
+				50 = { 	change_first_name = Al-Muktafi }
+				50 = { 	change_first_name = Al-Muqtadir }
+				50 = { 	change_first_name = Al-Qahir }
+				50 = { 	change_first_name = Ar-Radi }
+				50 = { 	change_first_name = Al-Muttaqi }
+				50 = { 	change_first_name = Al-Muti }
+				50 = { 	change_first_name = Al-Ta_i }
+				50 = { 	change_first_name = Al-Qa_im }
+				50 = { 	change_first_name = Al-Mustarshid }
+				50 = { 	change_first_name = Al-Mustanjid }
+			}
+		add_character_flag = has_regnal_name_abbasid
 		}
 	}
 }
