@@ -1,0 +1,530 @@
+﻿@camp_building_main_slot_construction_duration_t1 = 180
+@camp_building_main_slot_construction_duration_t2 = 210
+@camp_building_main_slot_construction_duration_t3 = 240
+@camp_building_main_slot_construction_duration_t4 = 300
+@camp_building_main_slot_construction_duration_t5 = 360
+@camp_building_main_slot_construction_duration_t6 = 420
+
+@camp_building_internal_slot_construction_duration_t1 = 180
+@camp_building_internal_slot_construction_duration_t2 = 240
+@camp_building_internal_slot_construction_duration_t3 = 300
+
+##################
+# CAMP BUILDINGS
+##################
+### Camp Main Building - Pavilion
+camp_main_01 = {
+	slot_type = main
+	# Always built, so construction time doesn't matter.
+	construction_time = 1
+	allowed_domicile_types = { camp }
+
+	character_modifier = {
+		health = 0.5
+		domicile_external_slots_capacity_add = 2
+	}
+
+	parameters = {
+		camp_unlocks_second_officer = yes
+	}
+	
+	# If you ever lose your main tent, for the love of god, get it back AQAP.
+	ai_value = { value = 10000 }
+
+	### WESTERN
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_western_culture_group_trigger = yes
+					has_graphical_india_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_01.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_01_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### TRIBAL
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_norse_culture_group_trigger = yes
+					has_graphical_african_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_tribal_level_01.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_tribal_level_01_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### STEPPE
+	asset = {
+		trigger = {
+			owner.culture = {
+				has_graphical_steppe_culture_group_trigger = yes
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_steppe_level_01.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_steppe_level_01_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### DESERT
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_mena_culture_group_trigger = yes
+					has_graphical_iranian_culture_group_trigger = yes
+					has_graphical_iberian_culture_group_trigger = yes
+					has_graphical_mediterranean_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_desert_level_01.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_desert_level_01_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### Fallback
+	asset = {
+		trigger = {
+			owner.culture = {
+				NOR = {
+					OR = {
+						has_graphical_western_culture_group_trigger = yes
+						has_graphical_india_culture_group_trigger = yes
+					}
+
+					OR = {
+						has_graphical_norse_culture_group_trigger = yes
+						has_graphical_african_culture_group_trigger = yes
+					}
+
+					has_graphical_steppe_culture_group_trigger = yes
+
+					OR = {
+						has_graphical_mena_culture_group_trigger = yes
+						has_graphical_iranian_culture_group_trigger = yes
+						has_graphical_iberian_culture_group_trigger = yes
+						has_graphical_mediterranean_culture_group_trigger = yes
+					}
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_01.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_01_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+}
+camp_main_02 = {
+	slot_type = main
+	construction_time = @camp_building_main_slot_construction_duration_t4
+	allowed_domicile_types = { camp }
+	previous_building = camp_main_01
+
+	cost = { gold = camp_main_02_domicile_building_gold_cost_value }
+	refund = {
+		gold = {
+			value = camp_main_02_domicile_building_gold_cost_value
+			multiply = camp_refund_mult_value
+			floor = yes
+		}
+	}
+
+	character_modifier = {
+		domicile_external_slots_capacity_add = 1
+		men_at_arms_cap = 1
+		enemy_hostile_scheme_phase_duration_add = miniscule_scheme_phase_duration_malus_value
+		character_travel_safety_mult = 0.02
+		provisions_capacity_add = 100
+	}
+
+	parameters = {
+		camp_unlocks_second_officer = yes
+	}
+	
+	ai_value = {
+		value = camp_main_main_path_value
+		if = {
+			limit = {
+				num_domicile_buildings >= 4
+			}
+			multiply = 10
+		}
+	}
+	
+	### WESTERN
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_western_culture_group_trigger = yes
+					has_graphical_india_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_02.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_02_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### TRIBAL
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_norse_culture_group_trigger = yes
+					has_graphical_african_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_tribal_level_02.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_tribal_level_02_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### STEPPE
+	asset = {
+		trigger = {
+			owner.culture = {
+				has_graphical_steppe_culture_group_trigger = yes
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_steppe_level_02.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_steppe_level_02_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### DESERT
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_mena_culture_group_trigger = yes
+					has_graphical_iranian_culture_group_trigger = yes
+					has_graphical_iberian_culture_group_trigger = yes
+					has_graphical_mediterranean_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_desert_level_02.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_desert_level_02_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### Fallback
+	asset = {
+		trigger = {
+			owner.culture = {
+				NOR = {
+					OR = {
+						has_graphical_western_culture_group_trigger = yes
+						has_graphical_india_culture_group_trigger = yes
+					}
+
+					OR = {
+						has_graphical_norse_culture_group_trigger = yes
+						has_graphical_african_culture_group_trigger = yes
+					}
+
+					has_graphical_steppe_culture_group_trigger = yes
+
+					OR = {
+						has_graphical_mena_culture_group_trigger = yes
+						has_graphical_iranian_culture_group_trigger = yes
+						has_graphical_iberian_culture_group_trigger = yes
+						has_graphical_mediterranean_culture_group_trigger = yes
+					}
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_02.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_02_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+}
+camp_main_03 = {
+	slot_type = main
+	construction_time = @camp_building_main_slot_construction_duration_t5
+	allowed_domicile_types = { camp }
+	previous_building = camp_main_02
+
+	cost = { gold = camp_main_03_domicile_building_gold_cost_value }
+	refund = {
+		gold = {
+			value = camp_main_03_domicile_building_gold_cost_value
+			add = camp_main_02_domicile_building_gold_cost_value
+			multiply = camp_refund_mult_value
+			floor = yes
+		}
+	}
+
+	character_modifier = {
+		maa_toughness_mult = 0.05
+		domicile_external_slots_capacity_add = 1
+		enemy_hostile_scheme_phase_duration_add = minor_scheme_phase_duration_malus_value
+		character_travel_safety_mult = 0.02
+		provisions_capacity_add = 150
+	}
+
+	parameters = {
+		camp_unlocks_second_officer = yes
+	}
+	
+	ai_value = {
+		value = camp_main_main_path_value
+		if = {
+			limit = {
+				num_domicile_buildings >= 8
+			}
+			multiply = 10
+		}
+	}
+	
+	### WESTERN
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_western_culture_group_trigger = yes
+					has_graphical_india_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_02.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_02_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### TRIBAL
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_norse_culture_group_trigger = yes
+					has_graphical_african_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_tribal_level_02.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_tribal_level_02_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### STEPPE
+	asset = {
+		trigger = {
+			owner.culture = {
+				has_graphical_steppe_culture_group_trigger = yes
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_steppe_level_02.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_steppe_level_02_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### DESERT
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_mena_culture_group_trigger = yes
+					has_graphical_iranian_culture_group_trigger = yes
+					has_graphical_iberian_culture_group_trigger = yes
+					has_graphical_mediterranean_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_desert_level_02.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_desert_level_02_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### Fallback
+	asset = {
+		trigger = {
+			owner.culture = {
+				NOR = {
+					OR = {
+						has_graphical_western_culture_group_trigger = yes
+						has_graphical_india_culture_group_trigger = yes
+					}
+
+					OR = {
+						has_graphical_norse_culture_group_trigger = yes
+						has_graphical_african_culture_group_trigger = yes
+					}
+
+					has_graphical_steppe_culture_group_trigger = yes
+
+					OR = {
+						has_graphical_mena_culture_group_trigger = yes
+						has_graphical_iranian_culture_group_trigger = yes
+						has_graphical_iberian_culture_group_trigger = yes
+						has_graphical_mediterranean_culture_group_trigger = yes
+					}
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_02.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_02_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+}
+camp_main_04 = {
+	slot_type = main
+	construction_time = @camp_building_main_slot_construction_duration_t6
+	allowed_domicile_types = { camp }
+	previous_building = camp_main_03
+
+	cost = { gold = camp_main_04_domicile_building_gold_cost_value }
+	refund = {
+		gold = {
+			value = camp_main_04_domicile_building_gold_cost_value
+			add = camp_main_03_domicile_building_gold_cost_value
+			add = camp_main_02_domicile_building_gold_cost_value
+			multiply = camp_refund_mult_value
+			floor = yes
+		}
+	}
+
+	character_modifier = {
+		maa_toughness_mult = 0.05
+		men_at_arms_cap = 1
+		enemy_hostile_scheme_phase_duration_add = medium_scheme_phase_duration_malus_value
+		character_travel_safety_mult = 0.02
+		provisions_capacity_add = 250
+	}
+
+	parameters = {
+		camp_unlocks_second_officer = yes
+	}
+	
+	ai_value = {
+		value = camp_main_main_path_value
+		if = {
+			limit = {
+				num_domicile_buildings >= 12
+			}
+			multiply = 10
+		}
+	}
+	
+	### WESTERN
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_western_culture_group_trigger = yes
+					has_graphical_india_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_03.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_03_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### TRIBAL
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_norse_culture_group_trigger = yes
+					has_graphical_african_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_tribal_level_03.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_tribal_level_03_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### STEPPE
+	asset = {
+		trigger = {
+			owner.culture = {
+				has_graphical_steppe_culture_group_trigger = yes
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_steppe_level_03.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_steppe_level_03_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### DESERT
+	asset = {
+		trigger = {
+			owner.culture = {
+				OR = {
+					has_graphical_mena_culture_group_trigger = yes
+					has_graphical_iranian_culture_group_trigger = yes
+					has_graphical_iberian_culture_group_trigger = yes
+					has_graphical_mediterranean_culture_group_trigger = yes
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_desert_level_03.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_desert_level_03_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+	### WESTERN
+	asset = {
+		trigger = {
+			owner.culture = {
+				NOR = {
+					OR = {
+						has_graphical_western_culture_group_trigger = yes
+						has_graphical_india_culture_group_trigger = yes
+					}
+
+					OR = {
+						has_graphical_norse_culture_group_trigger = yes
+						has_graphical_african_culture_group_trigger = yes
+					}
+
+					has_graphical_steppe_culture_group_trigger = yes
+
+					OR = {
+						has_graphical_mena_culture_group_trigger = yes
+						has_graphical_iranian_culture_group_trigger = yes
+						has_graphical_iberian_culture_group_trigger = yes
+						has_graphical_mediterranean_culture_group_trigger = yes
+					}
+				}
+			}
+		}
+		icon = "gfx/interface/icons/domicile_building/domicile_building_pavillion.dds"
+		texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_03.dds"
+		intersectionmask_texture = "gfx/interface/window_domiciles/laamp_building_pavillion_level_03_mask.png"
+		soundeffect = "event:/DLC/EP3/SFX/UI/camp_buildings/ep3_ui_domicile_buildings_main_building"
+	}
+
+}
