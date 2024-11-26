@@ -308,8 +308,82 @@ roa_headgear_base = {
 	###  Rajas of Asia  ###
 	#######################
 
-	# Using the Burmese crown for most of Southeast Asia
-	roa_sea_royalty = {
+	## Mainland SEA
+
+	sea_commoners = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = sea_common
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 80
+                portrait_commoner_headgear_fallback_trigger = {
+                    CULTURE_INPUT = sea
+                }
+			}
+			modifier = { # Non-european jesters should not use the jester hat
+				add = 1000
+				portrait_jester_trigger = {
+                    CULTURE_INPUT = sea
+                }
+			}
+			modifier = {
+				add = 20
+				portrait_commoner_clothing_trigger = {
+                    CULTURE_INPUT = sea
+                }
+			}
+		}
+	}
+
+	sea_low_nobles = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = sea_low_nobility
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		}
+		weight = {
+			base = 0
+			court_fashion_level_4_headgear_modifier = { INPUT_PARAMETER = sea }
+			modifier = {
+				add = 50
+                portrait_low_nobles_clothing_trigger = {
+                    CULTURE_INPUT = sea
+                }
+			}
+		}
+	}
+
+	sea_high_nobles = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = sea_high_nobility
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 50
+                portrait_high_nobles_headgear_trigger = {
+                    CULTURE_INPUT = sea
+                }
+			}
+		}
+	}
+
+	sea_ep1_high_nobles = {
 		dna_modifiers = {
 			accessory = {
 				mode = add
@@ -322,26 +396,162 @@ roa_headgear_base = {
 			base = 0
 			modifier = {
 				add = 100
-				portrait_high_nobles_headgear_trigger = {
-					CULTURE_INPUT = sea
-				}
-				is_independent_ruler = yes
-				has_ep1_dlc_trigger = yes
-			}
-			modifier = {
-				add = 100
-				portrait_royalty_trigger = {
-					CULTURE_INPUT = sea
-				}
-				has_ep1_dlc_trigger = yes
-			}
-			modifier = {
-                add = 100
-                portrait_imperial_nobles_headgear_trigger = {
+                portrait_high_nobles_headgear_trigger = {
                     CULTURE_INPUT = sea
                 }
 				has_ep1_dlc_trigger = yes
-            }
+			}
+		}
+	}
+
+#	sea_royalty = {
+#		dna_modifiers = {
+#			accessory = {
+#				mode = add
+#				gene = headgear
+#				template = sea_royalty
+#				range = { 0 1 } # For the randomness to work correctly
+#			}
+#		}
+#		weight = {
+#			base = 0
+#			modifier = {
+#				add = 50
+#				OR = {
+#					portrait_imperial_trigger = {
+#						CULTURE_INPUT = sea
+#					}
+#					portrait_royalty_trigger = {
+#						CULTURE_INPUT = sea
+#					}
+#				}
+#			}
+#		}
+#	}
+
+	## Maritime SEA
+
+	malay_commoners = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = sea_common
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 80
+                portrait_commoner_headgear_fallback_trigger = {
+                    CULTURE_INPUT = malay
+                }
+			}
+			modifier = { # Non-european jesters should not use the jester hat
+				add = 1000
+				portrait_jester_trigger = {
+                    CULTURE_INPUT = malay
+                }
+			}
+			modifier = {
+				add = 20
+				portrait_commoner_clothing_trigger = {
+                    CULTURE_INPUT = malay
+                }
+			}
+		}
+	}
+
+	malay_low_nobles = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = sea_low_nobility
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		}
+		weight = {
+			base = 0
+			court_fashion_level_4_headgear_modifier = { INPUT_PARAMETER = sea }
+			modifier = {
+				add = 50
+                portrait_low_nobles_clothing_trigger = {
+                    CULTURE_INPUT = malay
+                }
+			}
+		}
+	}
+
+	malay_high_nobles = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = sea_high_nobility
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 50
+                portrait_high_nobles_headgear_trigger = {
+                    CULTURE_INPUT = malay
+                }
+			}
+		}
+	}
+
+	malay_royalty = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = sea_royalty
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 50
+				OR = {
+					portrait_imperial_trigger = {
+						CULTURE_INPUT = malay
+					}
+					portrait_royalty_trigger = {
+						CULTURE_INPUT = malay
+					}
+				}
+			}
+		}
+	}
+
+	malay_ep1_royalty = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = headgear
+				template = ep1_indian_royalty
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 100
+				OR = {
+					portrait_imperial_trigger = {
+						CULTURE_INPUT = malay
+					}
+					portrait_royalty_trigger = {
+						CULTURE_INPUT = malay
+					}
+				}
+				has_ep1_dlc_trigger = yes
+			}
 		}
 	}
 
@@ -359,23 +569,16 @@ roa_headgear_base = {
 			base = 0
 			modifier = {
 				add = 100
-				portrait_high_nobles_headgear_trigger = {
-					CULTURE_INPUT = khmer
+				OR = {
+					portrait_imperial_trigger = {
+						CULTURE_INPUT = khmer
+					}
+					portrait_royalty_trigger = {
+						CULTURE_INPUT = khmer
+					}
 				}
 				is_independent_ruler = yes
 			}
-			modifier = {
-				add = 100
-				portrait_royalty_trigger = {
-					CULTURE_INPUT = khmer
-				}
-			}
-			modifier = {
-                add = 100
-                portrait_imperial_nobles_headgear_trigger = {
-                    CULTURE_INPUT = khmer
-                }
-            }
 		}
 	}
 

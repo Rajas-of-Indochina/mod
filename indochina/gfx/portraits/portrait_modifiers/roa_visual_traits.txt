@@ -216,4 +216,57 @@ visual_traits_tilak = {
 		}
 	}
 
+	visual_traits_dayak_tattoo = {
+		dna_modifiers = {
+			morph = {
+				mode = add
+				value = 1.0
+				gene = gene_dayak_neck
+				template = dayak_neck_00
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 50
+				culture = {
+					has_cultural_pillar = heritage_dayak
+				}
+			}
+		}
+	}
+}
+
+
+
+visual_traits_ainu = {
+	usage = game
+
+	visual_traits_ainu = {
+		dna_modifiers = {
+			morph = {
+				mode = add
+				gene = gene_ainu_face
+				template = ainu_face
+				value = 1.0
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 50
+				trigger_if = {
+					AND = {
+						OR = {
+							culture = { has_clothing_gfx = ainu_clothing_gfx }
+							culture = { has_cultural_pillar = heritage_okhot }
+						}
+						is_female = yes
+						age >= 10
+					}
+				}
+				trigger_else = { has_character_flag = ainu_tattoo_flag }
+			}
+		}
+	}
 }
