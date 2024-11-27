@@ -21,6 +21,8 @@ on_game_start = {
 
         # Optional admin realms via gamerules; PDX does it before and after lobby, so will we.
         sea_optional_admin_realms
+        # Add RoA Islamic faiths
+        roa_islamic_faiths
     }
 }
 
@@ -1020,6 +1022,71 @@ sea_optional_admin_realms = {
                 game_start_date > 1065.1.1
             }
             title:k_goryeo.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+        }
+    }
+}
+
+roa_islamic_faiths = {
+    effect = {
+		if = {
+			limit = { current_date = 867.1.1 }
+            title:d_yamama.holder = {
+
+                set_character_faith_with_conversion = faith:athari
+
+                every_dynasty_member = { 
+                limit = { faith = faith:ashari }
+                set_character_faith_with_conversion = faith:athari
+                 }
+
+                every_close_or_extended_family_member = {
+                limit = { faith = faith:ashari }
+                set_character_faith_with_conversion = faith:athari
+                }
+                every_vassal_or_below = {
+                    limit = { faith = faith:ashari }
+                    set_character_faith_with_conversion = faith:athari                    
+                }
+            }
+            title:d_najd.holder = {
+
+                set_character_faith_with_conversion = faith:athari
+
+                every_close_or_extended_family_member = {
+                limit = { faith = faith:ashari }
+                set_character_faith_with_conversion = faith:athari
+                }
+                every_vassal_or_below = {
+                    limit = { faith = faith:ashari }
+                    set_character_faith_with_conversion = faith:athari                    
+                }
+            }
+            title:c_thalabiya.holder = {
+
+                set_character_faith_with_conversion = faith:athari
+
+                every_close_or_extended_family_member = {
+                limit = { faith = faith:ashari }
+                set_character_faith_with_conversion = faith:athari
+                }
+                every_vassal_or_below = {
+                    limit = { faith = faith:ashari }
+                    set_character_faith_with_conversion = faith:athari                    
+                }
+            }
+            title:c_dhofar.holder = {
+
+                set_character_faith_with_conversion = faith:athari
+
+                every_close_or_extended_family_member = {
+                limit = { faith = faith:ashari }
+                set_character_faith_with_conversion = faith:athari
+                }
+                every_vassal_or_below = {
+                    limit = { faith = faith:ashari }
+                    set_character_faith_with_conversion = faith:athari                    
+                }
+            }
         }
     }
 }
