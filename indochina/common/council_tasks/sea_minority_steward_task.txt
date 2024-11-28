@@ -166,6 +166,15 @@ task_promote_culture = {
 		# Conversion speed game rules
 		if = {
 			limit = {
+				has_game_rule = no_culture_conversion
+			}
+			multiply = {
+				value = 0
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
+			}
+		}
+		if = {
+			limit = {
 				has_game_rule = slower_culture_conversion_speed
 			}
 			multiply = {
@@ -184,20 +193,42 @@ task_promote_culture = {
 		}
 		if = {
 			limit = {
-				has_game_rule = significantly_faster_culture_conversion_speed
+				has_game_rule = extremely_slow_culture_conversion_speed
 			}
 			multiply = {
-				value = significantly_faster_game_rule_value
-				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
+				value = 0.10 #significantly_slower_game_rule_value
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
 			}
 		}
 		if = {
 			limit = {
-				has_game_rule = faster_culture_conversion_speed
+				OR = {
+					has_game_rule = faster_culture_conversion_speed
+					AND = {
+						has_game_rule = faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
 			}
 			multiply = {
 				value = faster_game_rule_value
 				desc = GAME_RULE_FASTER_REASON
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_game_rule = significantly_faster_culture_conversion_speed
+					AND = {
+						has_game_rule = significantly_faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
+
+			}
+			multiply = {
+				value = significantly_faster_game_rule_value
+				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
 			}
 		}
 		# Faster conversion for FP2 Hostility ending, if county is in Iberia and culture was involved
@@ -292,6 +323,7 @@ task_promote_culture = {
 	}
 
 	potential_county = {
+		NOT = { has_game_rule = no_culture_conversion }
 		scope:county = {
 			### Minority stuff ###
 			scope:councillor_liege = { has_realm_law_flag = may_convert_culture }
@@ -864,6 +896,16 @@ task_promote_minority = {
 		# Conversion speed game rules
 		if = {
 			limit = {
+				has_game_rule = no_culture_conversion
+			}
+			multiply = {
+				value = 0
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
+			}
+		}
+
+		if = {
+			limit = {
 				has_game_rule = slower_culture_conversion_speed
 			}
 			multiply = {
@@ -882,20 +924,42 @@ task_promote_minority = {
 		}
 		if = {
 			limit = {
-				has_game_rule = significantly_faster_culture_conversion_speed
+				has_game_rule = extremely_slow_culture_conversion_speed
 			}
 			multiply = {
-				value = significantly_faster_game_rule_value
-				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
+				value = 0.10 #significantly_slower_game_rule_value
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
 			}
 		}
 		if = {
 			limit = {
-				has_game_rule = faster_culture_conversion_speed
+				OR = {
+					has_game_rule = faster_culture_conversion_speed
+					AND = {
+						has_game_rule = faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
 			}
 			multiply = {
 				value = faster_game_rule_value
 				desc = GAME_RULE_FASTER_REASON
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_game_rule = significantly_faster_culture_conversion_speed
+					AND = {
+						has_game_rule = significantly_faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
+
+			}
+			multiply = {
+				value = significantly_faster_game_rule_value
+				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
 			}
 		}
 
@@ -904,6 +968,7 @@ task_promote_minority = {
 	}
 
 	potential_county = {
+		NOT = { has_game_rule = no_culture_conversion }
 		scope:county = {
 			### Minority stuff ###
 			scope:councillor_liege = {

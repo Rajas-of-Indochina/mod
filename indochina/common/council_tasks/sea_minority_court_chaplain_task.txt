@@ -265,6 +265,24 @@ task_conversion = {
 		# Conversion speed game rules
 		if = {
 			limit = {
+				has_game_rule = no_faith_conversion
+			}
+			multiply = {
+				value = 0
+				desc = GAME_RULE_SLOWER_REASON
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = extremely_slow_faith_conversion_speed
+			}
+			multiply = {
+				value = 0.10 #significantly_slower_game_rule_value
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
+			}
+		}
+		if = {
+			limit = {
 				has_game_rule = slower_faith_conversion_speed
 			}
 			multiply = {
@@ -283,7 +301,13 @@ task_conversion = {
 		}
 		if = {
 			limit = {
-				has_game_rule = faster_faith_conversion_speed
+				OR = {
+					has_game_rule = faster_faith_conversion_speed
+					AND = {
+						has_game_rule = faster_faith_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
 			}
 			multiply = {
 				value = faster_game_rule_value
@@ -292,7 +316,14 @@ task_conversion = {
 		}
 		if = {
 			limit = {
-				has_game_rule = significantly_faster_faith_conversion_speed
+				OR = {
+					has_game_rule = significantly_faster_faith_conversion_speed
+					AND = {
+						has_game_rule = significantly_faster_faith_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
+
 			}
 			multiply = {
 				value = significantly_faster_game_rule_value
@@ -345,6 +376,7 @@ task_conversion = {
 	}
 
 	potential_county = {
+		NOT = { has_game_rule = no_faith_conversion }
 		scope:county = {
 			### Minority stuff ###
 			scope:councillor_liege = { has_realm_law_flag = may_convert_faith }
