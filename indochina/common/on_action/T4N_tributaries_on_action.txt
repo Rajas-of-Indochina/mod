@@ -111,64 +111,87 @@ on_title_lost = {
 
 T4N_tributaries_on_title_lost = {
     effect = {
-        switch = {
-            trigger = exists
-
-            var:my_suzerain = {
-                if = {
-                    limit = {
-                        OR = {
-                            is_landed = no
-                            is_independent_ruler = no
-                        }
-                        is_permanent_tributary = {
-                            SUZERAIN = var:my_suzerain
-                            TRIBUTARY = root
-                        }
+        if = {
+            limit = {
+                NOT = {
+                    OR = {
+                        scope:transfer_type = flag:granted
+                        scope:transfer_type = flag:revoked
+                        scope:transfer_type = flag:conquest
+                        scope:transfer_type = flag:leased_out
+                        scope:transfer_type = flag:lease_revoked
+                        #Flags that were missing that made conquerers suddenly finding themselves being made a tributary
+                        scope:transfer_type = flag:conquest_claim
+                        scope:transfer_type = flag:iberian_struggle
+                        scope:transfer_type = flag:persian_struggle
+                        scope:transfer_type = flag:conquest_holy_war
+                        scope:transfer_type = flag:conquest_populist
+                        scope:transfer_type = flag:abdication
+                        scope:transfer_type = flag:usurped
+                        scope:transfer_type = flag:faction_demand
                     }
-                    var:my_suzerain = {
-                        remove_list_variable = { name = permanent_tributaries target = root }
-                        remove_list_variable = { name = all_tributaries target = root }
-                    }
-                    remove_variable = my_suzerain
-                }
-                else_if = {
-                    limit = {
-                        OR = {
-                            is_landed = no
-                            is_independent_ruler = no
-                        }
-                        is_non_permanent_tributary = {
-                            SUZERAIN = var:my_suzerain
-                            TRIBUTARY = root
-                        }
-                    }
-                    var:my_suzerain = {
-                        remove_list_variable = { name = non_permanent_tributaries target = root }
-                        remove_list_variable = { name = all_tributaries target = root }
-                    }
-                    remove_variable = my_suzerain
                 }
             }
-            var:suzerain = {
-                if = {
-                    limit = {
-                        OR = {
-                            is_landed = no
-                            is_independent_ruler = no
-                            liege = scope:new_holder
-                        }
-                    }
-                    every_in_list = {
-                        variable = permanent_tributaries
 
-                        set_variable = { name = my_suzerain value = scope:new_holder }
-                        scope:new_holder = {
-                            add_to_variable_list = { name = permanent_tributaries target = prev }
+            switch = {
+                trigger = exists
+
+                var:my_suzerain = {
+                    if = {
+                        limit = {
+                            OR = {
+                                is_landed = no
+                                is_independent_ruler = no
+                            }
+                            is_permanent_tributary = {
+                                SUZERAIN = var:my_suzerain
+                                TRIBUTARY = root
+                            }
                         }
+                        var:my_suzerain = {
+                            remove_list_variable = { name = permanent_tributaries target = root }
+                            remove_list_variable = { name = all_tributaries target = root }
+                        }
+                        remove_variable = my_suzerain
                     }
-                    clear_variable_list = permanent_tributaries
-                    clear_variable_list = non_permanent_tributaries
+                    else_if = {
+                        limit = {
+                            OR = {
+                                is_landed = no
+                                is_independent_ruler = no
+                            }
+                            is_non_permanent_tributary = {
+                                SUZERAIN = var:my_suzerain
+                                TRIBUTARY = root
+                            }
+                        }
+                        var:my_suzerain = {
+                            remove_list_variable = { name = non_permanent_tributaries target = root }
+                            remove_list_variable = { name = all_tributaries target = root }
+                        }
+                        remove_variable = my_suzerain
+                    }
+                }
+                var:suzerain = {
+                    if = {
+                        limit = {
+                            OR = {
+                                is_landed = no
+                                is_independent_ruler = no
+                                liege = scope:new_holder
+                            }
+                        }
+                        every_in_list = {
+                            variable = permanent_tributaries
+
+                            set_variable = { name = my_suzerain value = scope:new_holder }
+                            scope:new_holder = {
+                                add_to_variable_list = { name = permanent_tributaries target = prev }
+                            }
+                        }
+                        clear_variable_list = permanent_tributaries
+                        clear_variable_list = non_permanent_tributaries
+                    }
                 }
             }
         }
