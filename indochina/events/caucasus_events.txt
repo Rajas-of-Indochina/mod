@@ -46,9 +46,802 @@ caucasianroa.001 = {
 	}
 }
 
+caucasianroa.002 = {
+	type = character_event
+	title = caucasianroa.002.t
+	desc = caucasianroa.002_desc
+
+	theme = stewardship_wealth_focus
+	right_portrait = {
+		character =  root
+		animation = steward
+	}
+
+	option = {
+		name = caucasianroa.002.a
+        add_gold = 800
+		add_prestige = 500
+				capital_county = {
+					save_scope_as = county
+					change_development_level = 1
+					add_culture_minority_effect = {
+						CULTURE = culture:cherkesogai
+						SIZE = small
+						COUNTY = scope:county
+					}
+					add_faith_minority_effect = {
+						FAITH = faith:armenian_apostolic
+						SIZE = small
+						COUNTY = scope:county
+					}
+				}
+
+				random_held_county = {
+					save_scope_as = county
+					change_development_level = 1
+					add_culture_minority_effect = {
+						CULTURE = culture:cherkesogai
+						SIZE = small
+						COUNTY = scope:county
+					}
+					add_faith_minority_effect = {
+						FAITH = faith:armenian_apostolic
+						SIZE = small
+						COUNTY = scope:county
+					}
+				}
+	}
+}
+
+caucasianroa.003 = {
+	type = character_event
+	title = caucasianroa.003.t
+	desc = caucasianroa.003_desc
+
+    immediate = {
+			create_character = {
+				age = { 73 74 }
+				location = root.capital_province
+				gender = male
+				name = "Abu Ishaq"
+				culture = culture:levantine
+				faith = faith:ashari
+				trait = brave
+				trait = zealous
+				trait = diligent
+				trait = intellect_good_1
+				trait = education_learning_3
+				learning = { 5 10 }
+
+				dynasty = none
+				after_creation = {
+					add_gold = { minor_gold_value medium_gold_value }
+					add_prestige = { minor_prestige_gain medium_prestige_gain }
+					add_piety = { minor_piety_gain medium_piety_gain }
+				}
+
+				save_scope_as = abu_ishaq
+			}
+
+			create_character = {
+				age = { 75 76 }
+				location = root.capital_province
+				gender = male
+				name = "Muhammad Kindi"
+				culture = culture:levantine
+				faith = faith:ashari
+				trait = honest
+				trait = zealous
+				trait = diligent
+				trait = intellect_good_1
+				trait = education_learning_3
+				learning = { 5 10 }
+
+				dynasty = none
+				after_creation = {
+					add_gold = { minor_gold_value medium_gold_value }
+					add_prestige = { minor_prestige_gain medium_prestige_gain }
+					add_piety = { minor_piety_gain medium_piety_gain }
+				}
+
+				save_scope_as = muhammad_kindi
+			}
+		cp:councillor_court_chaplain = { save_scope_as = chaplain }
+	}
+
+	theme = realm
+	right_portrait = {
+		character =  scope:abu_ishaq
+		animation = personality_zealous
+	}
+	left_portrait = {
+		character =  scope:muhammad_kindi
+		animation = chaplain
+	}
 
 
+	option = {
+		name = caucasianroa.003.a
+			trigger_event = {	id = caucasianroa.004 }
+
+	}
+	option = {
+		name = caucasianroa.003.b
+		add_piety = 100
+		add_gold = 100
+	}
+}
 
 
+caucasianroa.004 = {
+	type = character_event
+	title = caucasianroa.004.t
+	desc = caucasianroa.004_desc
 
 
+	theme = realm
+	right_portrait = {
+		character =  scope:abu_ishaq
+		animation = personality_zealous
+	}
+	left_portrait = {
+		character =  scope:muhammad_kindi
+		animation = chaplain
+	}
+
+	option = {
+		name = caucasianroa.004.a
+		random_held_county = {
+			save_scope_as = county1
+			change_development_level = 1
+			add_faith_minority_effect = {
+				FAITH = faith:ashari
+				SIZE = small
+				COUNTY = scope:county1
+			}
+		}
+		add_piety = -100
+	}
+	option = {
+		name = caucasianroa.004.b
+		add_piety = 100
+		add_prestige = 100
+	}
+	option = {
+		name = caucasianroa.003.b
+		add_piety = 50
+		add_gold = 100
+	}
+}
+
+caucasianroa.005 = {
+	type = character_event
+	title = caucasianroa.005.t
+	desc = caucasianroa.005_desc
+
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = celebrate_sword
+	}
+
+	override_background = { reference = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		unite_circassia_decision_effect = yes
+		save_scope_as = scoped_unifier
+	}
+
+	option = {
+		name = caucasianroa.005.a
+		add_trait = thamade
+		add_trait = achebeg
+		add_prestige = 2000
+		add_dynasty_prestige = 500
+		add_piety = 500
+		add_martial_skill = 1
+		add_diplomacy_skill = 1
+		add_prestige_level = 1
+		every_ruler = {
+			limit = {
+				NOT = { this = scope:scoped_unifier }
+				is_within_diplo_range = { CHARACTER = scoped_unifier }
+			}
+			trigger_event = caucasianroa.007
+		}
+				capital_county = {
+					change_development_level = 1
+				}
+		hidden_effect = {
+			save_scope_as = achebeg_progenitor
+			every_child = {
+				even_if_dead = yes
+				trigger_event = caucasianroa.017
+
+				every_child = {
+					even_if_dead = yes
+					limit = {
+						OR = {
+							is_grandchild_of = scope:achebeg_progenitor
+							is_great_grandchild_of = scope:achebeg_progenitor
+						}
+					}
+					trigger_event = caucasianroa.017
+
+					every_child = {
+						even_if_dead = yes
+						limit = {
+							OR = {
+								is_grandchild_of = scope:achebeg_progenitor
+								is_great_grandchild_of = scope:achebeg_progenitor
+							}
+						}
+						trigger_event = caucasianroa.017
+					}
+				}
+			}
+		}
+	}
+
+}
+
+caucasianroa.017 = {
+    type = character_event
+    hidden = yes
+
+    trigger = {
+                exists = father
+                father = {
+                    OR = {
+                        has_trait = achebeg
+                        has_trait = achebeg_descendant
+                    }
+                }
+        NOR = {
+            has_trait = achebeg # Just in case the tree was horribly tangled...
+            has_trait = achebeg_descendant
+        }
+    }
+
+    immediate = {
+        add_trait = achebeg_descendant
+        every_child = {
+            trigger_event = caucasianroa.017
+        }
+    }
+}
+
+# Notification of cultural name change
+
+caucasianroa.006 = {
+	type = character_event
+	theme = culture_change
+	title = caucasianroa.006.t
+	desc = caucasianroa.006.desc
+
+	left_portrait = {
+		character = culture:udi.culture_head
+		animation = personality_content
+	}
+
+	immediate = {
+		custom_tooltip = udi_name_change_tt
+	}
+
+	option = {
+		#Okay whatever
+		name = caucasianroa.006.whatever
+	}
+
+}
+
+caucasianroa.0061 = {
+	type = character_event
+	theme = culture_change
+	title = caucasianroa_alan_inform.006.t
+	desc = caucasianroa_alan_inform.006.desc
+
+	left_portrait = {
+		character = culture:alan.culture_head
+		animation = personality_content
+	}
+
+	immediate = {
+		custom_tooltip = alan_name_change_tt
+	}
+
+	option = {
+		#Okay whatever
+		name = caucasianroa.006.whatever
+	}
+
+}
+
+caucasianroa.007 = {
+	type = character_event
+	title = caucasianroa.007.t
+	desc = caucasianroa.007.desc
+	theme = realm
+	left_portrait = {
+		character =  scope:scoped_unifier
+		animation = personality_honorable
+	}
+
+	immediate = {
+		#Same-faith non-empire tier rulers are over-awed.
+		if = {
+			limit = { faith = scope:scoped_unifier.faith }
+			play_music_cue = "mx_cue_epic_sacral_moment"
+		}
+		#Otherwise, this is a tacit statement of imperial threat.
+		else = { play_music_cue = "mx_cue_combat_2" }
+	}
+	option = {
+		name = caucasianroa.007.ok
+	}
+}
+
+caucasianroa.008 = {
+	type = character_event
+	title = caucasianroa.008.t
+	desc = caucasianroa.008.desc
+
+	theme = dynasty
+	right_portrait = {
+		character =  root
+		animation = personality_honorable
+	}
+
+	trigger = {
+
+	}
+
+	immediate = {
+
+	}
+
+	option = {
+		name = caucasianroa.008.ok
+		custom_tooltip = {
+			text = avarsassanid_customtooltip
+			trigger_event = {
+			id = caucasianroa.009
+			days = 120 }
+		}
+	}
+}
+
+caucasianroa.009 = {
+	type = character_event
+	title = caucasianroa.009.t
+	desc = caucasianroa.009.desc
+
+	immediate = {
+		create_character = {
+			age = { 40 50 }
+			location = root.capital_province
+			gender = male
+			dynasty = generate
+			culture = culture:persian
+			faith = title:c_isfahan.holder.top_liege.faith
+			trait = deceitful
+			trait = eccentric
+			trait = greedy
+			trait = intellect_good_1
+			trait = education_diplomacy_2
+			trait = poet
+			random_traits = no
+
+			after_creation = {
+				add_gold = { minor_gold_value medium_gold_value }
+				add_prestige = { minor_prestige_gain medium_prestige_gain }
+				add_piety = { minor_piety_gain medium_piety_gain }
+			}
+
+			save_scope_as = persian_expert_sassanid
+		}
+	}
+
+	theme = dynasty
+	right_portrait = {
+		character = scope:persian_expert_sassanid
+		animation = chancellor
+	}
+	left_portrait = {
+		character =  root
+		animation = personality_honorable
+	}
+
+	trigger = {
+
+	}
+
+	option = {
+		name = caucasianroa.009.ok
+		custom_tooltip = {
+			text = avarsassanid_customtooltip
+			trigger_event = {
+			id = caucasianroa.010 }
+		}
+		add_gold = -25
+	}
+}
+
+caucasianroa.010 = {
+	type = character_event
+	title = caucasianroa.010.t
+	desc = caucasianroa.010.desc
+
+	immediate = {
+
+	}
+
+	theme = dynasty
+	right_portrait = {
+		character = scope:persian_expert_sassanid
+		animation = chancellor
+	}
+	left_portrait = {
+		character =  root
+		animation = personality_honorable
+	}
+
+	trigger = {
+
+	}
+
+	option = {
+		name = caucasianroa.010.ok
+		custom_tooltip = {
+			text = avarsassanid_customtooltip
+			trigger_event = {
+			id = caucasianroa.011 }
+		}
+		add_gold = -25
+	}
+}
+
+caucasianroa.011 = {
+	type = character_event
+	title = caucasianroa.011.t
+	desc = caucasianroa.011.desc
+
+	immediate = {
+
+	}
+
+	theme = dynasty
+	right_portrait = {
+		character = scope:persian_expert_sassanid
+		animation = personality_greedy
+	}
+	left_portrait = {
+		character =  root
+		animation = chancellor
+	}
+
+	trigger = {
+
+	}
+
+	option = {
+		name = caucasianroa.011.ok
+		custom_tooltip = {
+			text = avarsassanid_customtooltip
+			trigger_event = {
+			id = caucasianroa.012 }
+		}
+		add_gold = -25
+	}
+}
+
+caucasianroa.012 = {
+	type = character_event
+	title = caucasianroa.012.t
+	desc = caucasianroa.012.desc
+
+	immediate = {
+
+	}
+
+	theme = dynasty
+	right_portrait = {
+		character = scope:persian_expert_sassanid
+		animation = personality_dishonorable
+	}
+	left_portrait = {
+		character =  root
+		animation = personality_honorable
+	}
+
+	trigger = {
+
+	}
+
+	option = {
+		name = caucasianroa.012.ok
+		custom_tooltip = {
+			text = avarsassanid_customtooltip
+			trigger_event = {
+			id = caucasianroa.013
+		    days = 120 }
+		}
+		add_gold = -25
+	}
+}
+
+caucasianroa.013 = {
+	type = character_event
+	title = caucasianroa.013.t
+	desc = caucasianroa.013.desc
+
+	immediate = {
+
+	}
+
+	theme = dynasty
+	left_portrait = {
+		character =  root
+		animation = personality_honorable
+	}
+
+	trigger = {
+
+	}
+
+	option = {
+		name = caucasianroa.013.ok
+		add_prestige = 500
+		dynasty = {
+		add_dynasty_prestige = 800
+			add_dynasty_modifier = sassanid_claimant_avar
+		}
+	}
+	option = {
+		name = caucasianroa.013.islam
+		add_prestige = 500
+		dynasty = {
+		add_dynasty_prestige = 800
+			add_dynasty_modifier = sassanid_claimant_avar
+		}
+		set_character_faith_with_conversion = faith:maturidi
+	}
+	option = {
+		name = caucasianroa.013.zoroastrianism
+		add_prestige = 500
+		dynasty = {
+		add_dynasty_prestige = 800
+			add_dynasty_modifier = sassanid_claimant_avar
+		}
+		set_character_faith_with_conversion = faith:mazdayasna
+	}
+}
+
+# Unification of Georgia
+
+caucasianroa.014 = {
+	type = character_event
+	title = caucasianroa.014.t
+	desc = caucasianroa.014.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = {
+		reference = wilderness_mountains
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		form_georgia_decision_effect = yes
+		legend_seed_new_title_effect = yes
+	}
+
+	#I was motivated by nobility!
+	option = {
+		name = east_europe.0101.a
+
+		#Your legacy will be remembered.
+		add_prestige_experience = major_prestige_gain
+
+		stress_impact = { arrogant = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_boldness = 0.5
+			}
+		}
+	}
+
+	#I was motivated by faith!
+	option = {
+		name = east_europe.0101.b
+
+		#Your piety will be remembered.
+		add_piety_experience = major_piety_gain
+
+		stress_impact = { zealous = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_zeal = 0.5
+				ai_boldness = 0.25
+			}
+		}
+	}
+
+	#I was motivated by a cynical lust for power!
+	option = {
+		name = east_europe.0101.c
+
+		#Your wry smile walking away from your coronation will be remembered.
+		add_stress = major_stress_loss
+
+		stress_impact = { cynical = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_greed = 0.5
+				ai_rationality = 0.25
+				ai_honor = -0.25
+			}
+		}
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				capital_province = { geographical_region = struggle_region_armenia }
+				NOT = { THIS = scope:founder }
+			}
+			add_to_list = characters_to_notify
+		}
+		every_in_list = {
+			trigger_event = caucasianroa.015
+		}
+	}
+}
+
+# Inform others
+
+caucasianroa.015 = {
+	type = character_event
+	title = caucasianroa.015.t
+	desc = caucasianroa.015.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = { reference = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+	}
+
+	#Kings and Emperors consider them an upstart.
+	option = {
+		name = east_europe.0102.a
+		trigger = { highest_held_title_tier >= tier_kingdom }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Same-culture rulers are probably quite happy.
+	option = {
+		name = east_europe.0102.b
+		trigger = { culture = scope:founder.culture }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Everyone else is a bit wary.
+	option = {
+		name = east_europe.0102.c
+		trigger = {
+			NOR = {
+				highest_held_title_tier >= tier_kingdom
+				culture = scope:founder.culture
+			}
+		}
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+}
+
+# Unification of Armenian Principalities
+
+caucasianroa.016 = {
+	type = character_event
+	title = caucasianroa.016.t
+	desc = caucasianroa.016.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = {
+		reference = wilderness_mountains
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		unify_armenian_principalities_decision_effect = yes
+		legend_seed_new_title_effect = yes
+	}
+
+	#I was motivated by nobility!
+	option = {
+		name = caucasianroa.016.a
+
+		#Your legacy will be remembered.
+		add_prestige_experience = major_prestige_gain
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				capital_province = { geographical_region = struggle_region_armenia }
+				NOT = { THIS = scope:founder }
+			}
+			add_to_list = characters_to_notify
+		}
+		every_in_list = {
+			trigger_event = caucasianroa.018
+		}
+	}
+}
+
+caucasianroa.018 = {
+	type = character_event
+	title = caucasianroa.015.t
+	desc = caucasianroa.015.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = { reference = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+	}
+
+	#Kings and Emperors consider them an upstart.
+	option = {
+		name = east_europe.0102.a
+		trigger = { highest_held_title_tier >= tier_kingdom }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Same-culture rulers are probably quite happy.
+	option = {
+		name = east_europe.0102.b
+		trigger = { culture = scope:founder.culture }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Everyone else is a bit wary.
+	option = {
+		name = east_europe.0102.c
+		trigger = {
+			NOR = {
+				highest_held_title_tier >= tier_kingdom
+				culture = scope:founder.culture
+			}
+		}
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+}

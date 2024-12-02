@@ -454,9 +454,9 @@ on_game_start = {
 		title:b_perugia.title_province = { add_special_building_slot = generic_university }
 		title:b_malappuram.title_province = { add_special_building_slot = generic_university }
 		title:b_janakpur.title_province = { add_special_building_slot = generic_university }
-		title:b_uppsala.title_province = { add_special_building_slot = generic_university }
+		# title:b_uppsala.title_province = { add_special_building_slot = generic_university }
 		title:b_montlhery.title_province = { add_special_building_slot = generic_university } # Technically should be Paris, but that's occupied by Notre Dame
-		title:b_qartajana.title_province = { add_special_building_slot = generic_university } # Technically should be Tunis, but that's occupied by a cathedral
+		# title:b_qartajana.title_province = { add_special_building_slot = generic_university } # Technically should be Tunis, but that's occupied by a cathedral
 		title:b_wazwan.title_province = { add_special_building_slot = generic_university } # Technically should be Isfahan, but that's occupied by the Friday Mosque
 		title:b_sarsar.title_province = { add_special_building_slot = generic_university } # Technically should be Baghdad, but that's occupied by the House of Wisdom
 		title:b_speyer.title_province = { add_special_building_slot = generic_university } # 1350ish, should be in Heidelberg but that's a church
@@ -833,9 +833,9 @@ on_game_start = {
 				set_designated_heir = character:204508
 			}
 			## Teresa of Portugal for Afonso the Conqueror
-			character:209503 = {
+			character:209503 = { 
 				start_diarchy = regency
-				set_diarch = character:209510
+				set_diarch = character:209510 
 			}
 			# Plus remove all the generated opinions.
 			## Richard I and Eleanor of Aquitaine
@@ -1277,7 +1277,7 @@ on_game_start = {
 				add_legitimacy = major_legitimacy_gain
 			}
 		}
-
+		
 		# Cultural setup
 		if = {
 			limit = {
@@ -1482,7 +1482,7 @@ on_game_start = {
 				}
 			}
 		}
-
+		
 		# Byzantine name game rule
 		title:e_byzantium = {
 			if = {
@@ -1522,7 +1522,7 @@ on_game_start = {
 				set_title_name = e_unholy_roman_empire
 			}
 		}
-
+		
 		# Admin - Let's give existing governors the Governor trait on game start
 		every_independent_ruler = {
 			limit = { government_allows = administrative }
@@ -2422,6 +2422,15 @@ on_game_start_after_lobby = {
 				set_global_variable = fp3_the_umma_strikes_back_achievement_tracker # Is not removed (sad!)
 			}
 		}
+		
+		### ACHIEVEMENT: FROM RAGS TO RICHES TO RAGS TO RICHES 
+		every_player = {
+			limit = { highest_held_title_tier = tier_county }
+			add_achievement_global_variable_effect = {
+				VARIABLE = achievement_rags_to_riches_to_rags_to_riches_valid
+				VALUE = yes
+			}
+		}
 
 		### ACHIEVEMENT: FROM RAGS TO RICHES TO RAGS TO RICHES
 		every_player = {
@@ -3122,7 +3131,7 @@ on_game_start_after_lobby = {
 			}
 			add_legitimacy = base_legitimacy_value
 		}
-
+		
 		if = { # Special historical events for Matilda!
 			limit = {
 				character:7757 ?= { is_alive = yes }
@@ -3135,7 +3144,7 @@ on_game_start_after_lobby = {
 				}
 			}
 		}
-
+		
 		if = { # Special historical events for Vratislav!
 			limit = {
 				character:522 ?= { is_alive = yes }
@@ -3151,7 +3160,7 @@ on_game_start_after_lobby = {
 				}
 			}
 		}
-
+		
 		if = { # Special historical events for Robert the Fox!
 			limit = {
 				character:1128 ?= { is_alive = yes }
@@ -3167,7 +3176,7 @@ on_game_start_after_lobby = {
 				}
 			}
 		}
-
+		
 		if = { # Special historical events for Emir Yahya!
 			limit = {
 				character:3924 ?= { is_alive = yes }
@@ -3270,7 +3279,7 @@ on_game_start_after_lobby = {
 					days = { 1 2 }
 				}
 			}
-			## El Cid
+			## El Cid 
 			character:107590 ?= {
 				if = {
 					limit = {
@@ -3364,6 +3373,81 @@ on_game_start_after_lobby = {
 						is_landless_adventurer = yes
 					}
 					add_realm_law_skip_effects = camp_purpose_mercenaries
+				}
+			}
+			## Bakjur
+			character:bakjur_roa ?= {
+				if = {
+					limit = {
+						is_alive = yes
+						is_landless_adventurer = yes
+					}
+					add_realm_law_skip_effects = camp_purpose_mercenaries
+					if = {
+						limit = {
+							character:bakjur_companion_1 = {
+								NOT = { is_courtier_of = character:bakjur_roa }
+							}
+						}
+						add_courtier = character:bakjur_companion_1
+					}
+					if = {
+						limit = {
+							character:bakjur_companion_2 = {
+								NOT = { is_courtier_of = character:bakjur_roa }
+							}
+						}
+						add_courtier = character:bakjur_companion_2
+					}
+					if = {
+						limit = {
+							character:bakjur_companion_3 = {
+								NOT = { is_courtier_of = character:bakjur_roa }
+							}
+						}
+						add_courtier = character:bakjur_companion_3
+					}
+				}
+			}			
+			## Yusuf Al Lakzi
+			character:yusuf_lakzi ?= {
+				if = {
+					limit = {
+						is_alive = yes
+						is_landless_adventurer = yes
+					}
+					add_realm_law_skip_effects = camp_purpose_scholars
+					if = {
+						limit = {
+							character:musa_derbendi = {
+								NOT = { is_courtier_of = character:yusuf_lakzi }
+							}
+						}
+						add_courtier = character:musa_derbendi
+					}
+					if = {
+						limit = {
+							character:abubakr_derbendi = {
+								NOT = { is_courtier_of = character:yusuf_lakzi }
+							}
+						}
+						add_courtier = character:abubakr_derbendi
+					}
+				}
+			}
+			## Smbat Zarehawan
+			character:smbat_zarehawan ?= {
+				if = {
+					limit = {
+						is_alive= yes
+						is_landless_adventurer = yes
+					}
+					add_realm_law_skip_effects = camp_purpose_scholars
+								
+					domicile ?= {
+						move_domicile = title:b_manzikert.title_province
+					}
+					set_location = title:b_derjan.title_province
 				}
 			}
 			every_independent_ruler = {
@@ -3796,7 +3880,6 @@ on_game_start_after_lobby = {
 			}
 		}
 	}
-
 	events = {
 		game_rule.1000	#Autopopulate families.
 		game_rule.1011	#Hungarian Migration management.

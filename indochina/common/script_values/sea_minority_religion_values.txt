@@ -1,4 +1,8 @@
-﻿
+﻿# Modify (multiply) the doctrine cost when converting to a faith.
+# The returned value is interpreted as a multiplicative modifier (e.g. 0.5 means +50% cost).
+# scope:character = the converting character
+# scope:new_faith = the faith the character is converting to
+# There should be no subtract equal or higher than 1
 faith_conversion_cost_mult = {
 
 	#Adding 1 to apply properly the following multipliers
@@ -881,6 +885,53 @@ faith_conversion_cost_mult = {
 			}
 		}
 	}
+	else_if = {
+		limit = {
+			OR = {
+				AND = {
+					scope:character = {
+						any_character_struggle = {
+							has_struggle_phase_parameter = cheaper_to_convert_to_roman_struggle_faith
+							is_faith_involved_in_struggle = scope:new_faith
+						}
+						
+					}
+					NOT = { armenian_struggle_is_roman_faith_trigger = { FAITH = scope:character.faith } }
+					armenian_struggle_is_roman_faith_trigger = { FAITH = scope:new_faith }
+				}
+				AND = {
+					scope:character = {
+						any_character_struggle = {
+							has_struggle_phase_parameter = cheaper_to_convert_to_persian_struggle_faith
+							is_faith_involved_in_struggle = scope:new_faith
+						}
+						
+					}
+					NOT = { armenian_struggle_is_persian_faith_trigger = { FAITH = scope:character.faith } }
+					armenian_struggle_is_persian_faith_trigger = { FAITH = scope:new_faith }
+				}
+				AND = {
+					scope:character = {
+						any_character_struggle = {
+							has_struggle_phase_parameter = cheaper_to_convert_to_armenian_struggle_faith
+							is_faith_involved_in_struggle = scope:new_faith
+						}
+						
+					}
+					NOT = { armenian_struggle_is_local_faith_trigger = { FAITH = scope:character.faith } }
+					armenian_struggle_is_local_faith_trigger = { FAITH = scope:new_faith }
+				}
+			}
+		}
+		multiply = {
+			value = 1
+			subtract = {
+				desc = struggle_parameter_cheaper_to_convert_to_struggle_faith
+				format = "BREAKDOWN_FORMAT_PIETY_PERCENTAGE_POSITIVE_IS_BAD"
+				value = 0.5
+			}
+		}
+	}
 
 	########################################
 	# Conversion Discounts from Traditions #
@@ -916,4 +967,62 @@ faith_conversion_cost_mult = {
 		value = 1
 	}
 
+}
+
+
+# Modify (multiply) the doctrine cost when creating a faith.
+# The returned value is interpreted as a multiplicative modifier (e.g. 0.5 means +50% cost).
+# scope:character = the creation character
+# scope:old_faith = the faith the character is converting from
+faith_creation_cost_mult = {
+	subtract = {
+		value = scope:old_faith.faith_conversion_fervor_mult
+		desc = "faith_creation_cost_fervor_impact"
+		format = "[Faith.GetName]"
+	}
+	if = {
+		limit = {
+			OR ={
+				AND = {
+					scope:character = {
+						any_character_struggle = {
+							involvement = involved
+							has_struggle_phase_parameter = roman_faith_creation_cost_cheaper
+						}
+					}
+					armenian_struggle_would_be_roman_faith_trigger = yes
+				}
+			}
+			OR ={
+				AND = {
+					scope:character = {
+						any_character_struggle = {
+							involvement = involved
+							has_struggle_phase_parameter = persian_faith_creation_cost_cheaper
+						}
+					}
+					armenian_struggle_would_be_persian_faith_trigger = yes
+				}
+			}
+			OR ={
+				AND = {
+					scope:character = {
+						any_character_struggle = {
+							involvement = involved
+							has_struggle_phase_parameter = armenian_faith_creation_cost_cheaper
+						}
+					}
+					armenian_struggle_would_be_local_faith_trigger = yes
+				}
+			}
+		}
+		subtract = {
+			value = 0.25
+			desc = "faith_creation_cost_struggle_phase_impact"
+			format = "BREAKDOWN_FORMAT_PIETY_PERCENTAGE_POSITIVE_IS_BAD"
+		}
+	}
+	min = {
+		value = -0.75
+	}
 }

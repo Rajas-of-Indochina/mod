@@ -1,0 +1,1104 @@
+# root: is involved (or interloper) character
+# Scope:struggle is the currently pulsing struggle.
+yearly_struggle_playable_pulse = {}
+
+on_title_gain = {
+	on_actions = {
+		sea_armenian_struggle_on_title_conquest_revoke
+		sea_armenian_struggle_on_title_creation
+	}
+}
+
+on_vassal_gained = {
+	on_actions = {
+		sea_armenian_struggle_on_vassal_gained
+	}
+}
+
+on_faith_change = {
+	on_actions = {
+		sea_armenian_struggle_on_faith_change
+	}
+}
+
+on_culture_created = {
+	on_actions = {
+		sea_armenian_struggle_on_culture_created
+	}
+}
+
+on_building_completed = {
+	on_actions = {
+		sea_armenian_struggle_on_building_completed
+	}
+}
+
+on_death = {
+	on_actions = {
+		sea_armenian_struggle_on_death
+	}
+}
+
+on_title_destroyed = {
+	on_actions = {
+		sea_armenian_struggle_on_title_destroyed
+	}
+}
+
+on_title_gain_usurpation = {
+	on_actions = {
+		sea_armenian_title_on_title_gain_usurpation
+	}
+}
+
+# root: is involved (or interloper) character
+# Scope:struggle is the currently pulsing struggle.
+five_year_struggle_playable_pulse = {
+	on_actions = {
+		sea_five_year_struggle_playable_pulse		
+	}
+}
+
+sea_five_year_struggle_playable_pulse = {
+	trigger = {
+		basic_is_valid_for_yearly_events_trigger = yes
+		OR = {
+			any_character_struggle = { involvement = interloper is_struggle_type = armenian_struggle }
+			any_character_struggle = { involvement = involved is_struggle_type = armenian_struggle }
+		}
+	}
+	on_actions = {
+		# sea_armenian_struggle_random_events
+	}
+}
+
+sea_armenian_struggle_starting_events = {
+	events = {
+		#
+	}
+}
+
+# A title is transferred to a new character
+# root = the new holder
+# scope:title = the title that changes hands
+# scope:previous_holder = previous holder. Might be dead
+sea_armenian_struggle_on_title_conquest_revoke = {
+	trigger = {
+		# Only care if the title is at least partly in the struggle region (and isn't titular)
+		scope:title = {is_titular = no}
+		any_county_in_region = {
+			region = struggle_region_armenia
+			OR = {
+				this = scope:title
+				target_is_de_jure_liege_or_above = scope:title
+			}
+		}
+		OR = {
+			scope:transfer_type = flag:conquest
+			scope:transfer_type = flag:revoked
+			scope:transfer_type = flag:conquest_claim
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				ROOT = { has_trait = pro_roman }
+				scope:previous_holder = { NOT = {has_trait = pro_roman} }
+			}
+			every_character_struggle = {
+				switch = {
+					trigger = scope:title.tier
+					tier_county = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_roman_title_seized_by_pro_roman
+							TIER = county
+							CHARACTER = root
+						}
+					}
+					tier_duchy = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_roman_title_seized_by_pro_roman
+							TIER = duchy
+							CHARACTER = root
+						}
+					}
+					tier_kingdom = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_roman_title_seized_by_pro_roman
+							TIER = kingdom
+							CHARACTER = root
+						}
+					}
+					tier_empire = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_roman_title_seized_by_pro_roman
+							TIER = empire
+							CHARACTER = root
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				ROOT = { has_trait = pro_persian }
+				scope:previous_holder = { NOT = {has_trait = pro_persian} }
+			}
+			switch = {
+				trigger = scope:title.tier
+				tier_county = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_anti_persian_title_seized_by_pro_persian
+						TIER = county
+						CHARACTER = root
+					}
+				}
+				tier_duchy = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_anti_persian_title_seized_by_pro_persian
+						TIER = duchy
+						CHARACTER = root
+					}
+				}
+				tier_kingdom = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_anti_persian_title_seized_by_pro_persian
+						TIER = kingdom
+						CHARACTER = root
+					}
+				}
+				tier_empire = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_anti_persian_title_seized_by_pro_persian
+						TIER = empire
+						CHARACTER = root
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				ROOT = { has_trait = pro_armenian }
+				scope:previous_holder = { NOT = {has_trait = pro_armenian} }
+			}
+			switch = {
+				trigger = scope:title.tier
+				tier_county = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_anti_armenian_title_seized_by_pro_armenian
+						TIER = county
+						CHARACTER = root
+					}
+				}
+				tier_duchy = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_anti_armenian_title_seized_by_pro_armenian
+						TIER = duchy
+						CHARACTER = root
+					}
+				}
+				tier_kingdom = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_anti_armenian_title_seized_by_pro_armenian
+						TIER = kingdom
+						CHARACTER = root
+					}
+				}
+				tier_empire = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_anti_armenian_title_seized_by_pro_armenian
+						TIER = empire
+						CHARACTER = root
+					}
+				}
+			}
+			#
+		}
+		else_if = {
+			limit = {
+				ROOT = {
+					NOT = {
+						has_trait = pro_armenian
+						has_trait = pro_persian
+						has_trait = pro_roman
+					}
+				}
+				scope:previous_holder = {
+					OR = {
+						has_trait = pro_armenian
+						has_trait = pro_persian
+						has_trait = pro_roman
+					}
+				}
+			}
+			every_character_struggle = {
+				switch = {
+					trigger = scope:title.tier
+					tier_county = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_title_seized_by_interloper
+							TIER = county
+							CHARACTER = root
+						}
+					}
+					tier_duchy = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_title_seized_by_interloper
+							TIER = duchy
+							CHARACTER = root
+						}
+					}
+					tier_kingdom = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_title_seized_by_interloper
+							TIER = kingdom
+							CHARACTER = root
+						}
+					}
+					tier_empire = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_title_seized_by_interloper
+							TIER = empire
+							CHARACTER = root
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+sea_armenian_struggle_on_title_creation = {
+	trigger = {
+		scope:title = {is_titular = no}
+		any_county_in_region = {
+			region = struggle_region_armenia
+			OR = {
+				this = scope:title
+				target_is_de_jure_liege_or_above = scope:title
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = { ROOT = { has_trait = pro_roman } }
+			every_character_struggle = {
+				switch = {
+					trigger = scope:title.tier
+					tier_duchy = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_created_pro_roman
+							TIER = duchy
+							CHARACTER = root
+						}
+					}
+					tier_kingdom = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_created_pro_roman
+							TIER = kingdom
+							CHARACTER = root
+						}
+					}
+					tier_empire = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_created_pro_roman
+							TIER = empire
+							CHARACTER = root
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { ROOT = { has_trait = pro_persian } }
+			every_character_struggle = {
+				switch = {
+					trigger = scope:title.tier
+					tier_duchy = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_created_pro_persian
+							TIER = duchy
+							CHARACTER = root
+						}
+					}
+					tier_kingdom = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_created_pro_persian
+							TIER = kingdom
+							CHARACTER = root
+						}
+					}
+					tier_empire = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_created_pro_persian
+							TIER = empire
+							CHARACTER = root
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { ROOT = { has_trait = pro_armenian } }
+			every_character_struggle = {
+				switch = {
+					trigger = scope:title.tier
+					tier_duchy = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_created_pro_armenian
+							TIER = duchy
+							CHARACTER = root
+						}
+					}
+					tier_kingdom = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_created_pro_armenian
+							TIER = kingdom
+							CHARACTER = root
+						}
+					}
+					tier_empire = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_created_pro_armenian
+							TIER = empire
+							CHARACTER = root
+						}
+					}
+				}
+			}
+		}
+		else = {
+			every_character_struggle = {
+				switch = {
+					trigger = scope:title.tier
+					tier_duchy = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_title_created_interloper
+							TIER = duchy
+							CHARACTER = root
+						}
+					}
+					tier_kingdom = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_title_created_interloper
+							TIER = kingdom
+							CHARACTER = root
+						}
+					}
+					tier_empire = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_title_created_interloper
+							TIER = empire
+							CHARACTER = root
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# A character gains a vassal
+# root = character gaining vassal
+# scope:vassal = vassal being gained
+# scope:old_liege = the previous liege of the vassal. Might be the null character (vassal used to be a non-ruler or independent), so make sure to use "exists" checks where relevant
+sea_armenian_struggle_on_vassal_gained = {
+	trigger = {
+		# Technically only the vassal needs to be involved due to foreign rule mechanics
+		scope:vassal = {
+			any_character_struggle = {
+				is_struggle_type = armenian_struggle
+			}
+		}
+		scope:transfer_type = flag:swear_fealty
+	}
+	if = {
+		limit = {
+			ROOT = { has_trait = pro_roman }
+			NOT = { scope:vassal = {has_trait = pro_roman} }
+		}
+		scope:vassal = {
+			switch = {
+				trigger = highest_held_title_tier
+				tier_county = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_roman_vassalizes_anti_roman
+						TIER = county
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_duchy = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_roman_vassalizes_anti_roman
+						TIER = duchy
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_kingdom = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_roman_vassalizes_anti_roman
+						TIER = kingdom
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_empire = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_roman_vassalizes_anti_roman
+						TIER = empire
+						CHARACTER = scope:vassal
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			ROOT = { has_trait = pro_persian }
+			NOT = { scope:vassal = {has_trait = pro_persian} }
+		}
+		scope:vassal = {
+			switch = {
+				trigger = highest_held_title_tier
+				tier_county = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_persian_vassalizes_anti_persian
+						TIER = county
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_duchy = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_persian_vassalizes_anti_persian
+						TIER = duchy
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_kingdom = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_persian_vassalizes_anti_persian
+						TIER = kingdom
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_empire = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_persian_vassalizes_anti_persian
+						TIER = empire
+						CHARACTER = scope:vassal
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			ROOT = { has_trait = pro_armenian }
+			NOT = { scope:vassal = {has_trait = pro_armenian} }
+		}
+		scope:vassal = {
+			switch = {
+				trigger = highest_held_title_tier
+				tier_county = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_armenian_vassalizes_anti_armenian
+						TIER = county
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_duchy = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_armenian_vassalizes_anti_armenian
+						TIER = duchy
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_kingdom = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_armenian_vassalizes_anti_armenian
+						TIER = kingdom
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_empire = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_pro_armenian_vassalizes_anti_armenian
+						TIER = empire
+						CHARACTER = scope:vassal
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			ROOT = {
+				NOT = {
+					has_trait = pro_armenian
+					has_trait = pro_persian
+					has_trait = pro_roman
+				}
+			}
+			scope:vassal = {
+				OR = {
+					has_trait = pro_armenian
+					has_trait = pro_persian
+					has_trait = pro_roman
+				}
+			}
+		}
+		scope:vassal = {
+			switch = {
+				trigger = highest_held_title_tier
+				tier_county = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_interloper_vassalizes_local_
+						TIER = county
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_duchy = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_interloper_vassalizes_local_
+						TIER = duchy
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_kingdom = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_interloper_vassalizes_local_
+						TIER = kingdom
+						CHARACTER = scope:vassal
+					}
+				}
+				tier_empire = {
+					activate_tiered_struggle_catalyst = {
+						BASE_CATALYST = catalyst_interloper_vassalizes_local_
+						TIER = empire
+						CHARACTER = scope:vassal
+					}
+				}
+			}
+		}
+	}
+}
+
+# A title is usurped by a character
+# root = the new holder
+# scope:title = the title that changes hands
+# scope:previous_holder = previous holder. Shouldn't be dead
+sea_armenian_title_on_title_gain_usurpation = {
+	trigger = {
+		scope:previous_holder = {
+			any_character_struggle = {
+				is_struggle_type = armenian_struggle
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				ROOT = { has_trait = pro_roman }
+				NOT = { scope:previous_holder = {has_trait = pro_roman} }
+			}
+			every_character_struggle = {
+				switch = {
+					trigger = scope:title.tier
+					tier_county = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_roman_title_seized_by_pro_roman
+							TIER = county
+							CHARACTER = root
+						}
+					}
+					tier_duchy = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_roman_title_seized_by_pro_roman
+							TIER = duchy
+							CHARACTER = root
+						}
+					}
+					tier_kingdom = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_roman_title_seized_by_pro_roman
+							TIER = kingdom
+							CHARACTER = root
+						}
+					}
+					tier_empire = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_roman_title_seized_by_pro_roman
+							TIER = empire
+							CHARACTER = root
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				ROOT = { has_trait = pro_persian }
+				NOT = { scope:previous_holder = {has_trait = pro_persian} }
+			}
+			every_character_struggle = {
+				switch = {
+					trigger = scope:title.tier
+					tier_county = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_persian_title_seized_by_pro_persian
+							TIER = county
+							CHARACTER = root
+						}
+					}
+					tier_duchy = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_persian_title_seized_by_pro_persian
+							TIER = duchy
+							CHARACTER = root
+						}
+					}
+					tier_kingdom = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_persian_title_seized_by_pro_persian
+							TIER = kingdom
+							CHARACTER = root
+						}
+					}
+					tier_empire = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_persian_title_seized_by_pro_persian
+							TIER = empire
+							CHARACTER = root
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				ROOT = { has_trait = pro_roman }
+				NOT = { scope:previous_holder = {has_trait = pro_persian} }
+			}
+			every_character_struggle = {
+				switch = {
+					trigger = scope:title.tier
+					tier_county = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_armenian_title_seized_by_pro_armenian
+							TIER = county
+							CHARACTER = root
+						}
+					}
+					tier_duchy = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_armenian_title_seized_by_pro_armenian
+							TIER = duchy
+							CHARACTER = root
+						}
+					}
+					tier_kingdom = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_armenian_title_seized_by_pro_armenian
+							TIER = kingdom
+							CHARACTER = root
+						}
+					}
+					tier_empire = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_anti_armenian_title_seized_by_pro_armenian
+							TIER = empire
+							CHARACTER = root
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				ROOT = {
+					NOR = {
+						has_trait = pro_armenian
+						has_trait = pro_persian
+						has_trait = pro_roman
+					}
+				}
+				scope:previous_holder = {
+					OR = {
+						has_trait = pro_armenian
+						has_trait = pro_persian
+						has_trait = pro_roman
+					}
+				}
+			}
+			every_character_struggle = {
+				switch = {
+					trigger = scope:title.tier
+					tier_county = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_title_seized_by_interloper
+							TIER = county
+							CHARACTER = root
+						}
+					}
+					tier_duchy = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_title_seized_by_interloper
+							TIER = duchy
+							CHARACTER = root
+						}
+					}
+					tier_kingdom = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_title_seized_by_interloper
+							TIER = kingdom
+							CHARACTER = root
+						}
+					}
+					tier_empire = {
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_title_seized_by_interloper
+							TIER = empire
+							CHARACTER = root
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Code on-action: character changes faith. Not called when a character gets a faith on birth, creation, and similar
+# Root is the character
+# scope:old_faith is the faith they used to have
+sea_armenian_struggle_on_faith_change = {
+	effect = {
+		# Local conversion
+		if = {
+			limit = {
+				exists = root.capital_province
+				root.capital_province.faith = root.faith
+			}
+			if = {
+				limit = {
+					NOT = { armenian_struggle_is_roman_faith_trigger = { FAITH = scope:old_faith } }
+					armenian_struggle_is_roman_faith_trigger = { FAITH = root.faith }
+					any_character_struggle = {
+						involvement = involved
+						phase_has_catalyst = catalyst_convert_local_culture_faith_pro_roman
+						is_faith_involved_in_struggle = root.faith
+					}
+				}
+				every_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst = {
+						catalyst = catalyst_convert_local_culture_faith_pro_roman
+						character = root
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { armenian_struggle_is_persian_faith_trigger = { FAITH = scope:old_faith } }
+					armenian_struggle_is_persian_faith_trigger = { FAITH = root.faith }
+					any_character_struggle = {
+						involvement = involved
+						phase_has_catalyst = catalyst_convert_local_culture_faith_pro_persian
+						is_faith_involved_in_struggle = root.faith
+					}
+				}
+				every_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst = {
+						catalyst = catalyst_convert_local_culture_faith_pro_persian
+						character = root
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { armenian_struggle_is_local_faith_trigger = { FAITH = scope:old_faith } }
+					armenian_struggle_is_local_faith_trigger = { FAITH = root.faith }
+					any_character_struggle = {
+						involvement = involved
+						phase_has_catalyst = catalyst_convert_local_culture_faith_pro_armenian
+						is_faith_involved_in_struggle = root.faith
+					}
+				}
+				every_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst = {
+						catalyst = catalyst_convert_local_culture_faith_pro_armenian
+						character = root
+					}
+				}
+			}
+		}
+		# Forced Conversion
+		else = {
+			if = {
+				limit = {
+					NOT = { armenian_struggle_is_roman_faith_trigger = { FAITH = scope:old_faith } }
+					armenian_struggle_is_roman_faith_trigger = { FAITH = root.faith }
+					any_character_struggle = {
+						involvement = involved
+						phase_has_catalyst = catalyst_forced_conversion_pro_roman
+						is_faith_involved_in_struggle = root.faith
+					}
+				}
+				every_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst = {
+						catalyst = catalyst_convert_local_culture_faith_pro_roman
+						character = root
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { armenian_struggle_is_persian_faith_trigger = { FAITH = scope:old_faith } }
+					armenian_struggle_is_persian_faith_trigger = { FAITH = root.faith }
+					any_character_struggle = {
+						involvement = involved
+						phase_has_catalyst = catalyst_forced_conversion_pro_persian
+						is_faith_involved_in_struggle = root.faith
+					}
+				}
+				every_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst = {
+						catalyst = catalyst_convert_local_culture_faith_pro_persian
+						character = root
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { armenian_struggle_is_local_faith_trigger = { FAITH = scope:old_faith } }
+					armenian_struggle_is_local_faith_trigger = { FAITH = root.faith }
+					any_character_struggle = {
+						involvement = involved
+						phase_has_catalyst = catalyst_forced_conversion_pro_armenian
+						is_faith_involved_in_struggle = root.faith
+					}
+				}
+				every_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst = {
+						catalyst = catalyst_convert_local_culture_faith_pro_armenian
+						character = root
+					}
+				}
+			}
+		}
+	}
+}
+
+# Happens when a culture is created through hybridization or divergence
+# Root = The new culture
+# scope:founder = The founder of the new culture
+sea_armenian_struggle_on_culture_created = {
+	trigger = {
+		scope:founder = {
+			any_character_struggle = {
+				is_struggle_type = armenian_struggle
+			}
+		}
+	}
+	effect = {
+		struggle:armenian_struggle = {
+			set_culture_as_involved = ROOT
+		}
+		if = {
+			limit = {
+				armenian_struggle_is_roman_culture_trigger = { CULTURE = ROOT }
+			}
+			every_character_struggle = {
+				limit = {
+					phase_has_catalyst = catalyst_hybridise_or_diverge_regional_cultures_pro_roman
+				}
+				activate_struggle_catalyst = {
+					catalyst = catalyst_hybridise_or_diverge_regional_cultures_pro_roman
+					character = scope:character
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				armenian_struggle_is_roman_culture_trigger = { CULTURE = ROOT }
+			}
+			every_character_struggle = {
+				limit = {
+					phase_has_catalyst = catalyst_hybridise_or_diverge_regional_cultures_pro_persian
+				}
+				activate_struggle_catalyst = {
+					catalyst = catalyst_hybridise_or_diverge_regional_cultures_pro_persian
+					character = scope:character
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				armenian_struggle_is_roman_culture_trigger = { CULTURE = ROOT }
+			}
+			every_character_struggle = {
+				limit = {
+					phase_has_catalyst = catalyst_hybridise_or_diverge_regional_cultures_pro_armenian
+				}
+				activate_struggle_catalyst = {
+					catalyst = catalyst_hybridise_or_diverge_regional_cultures_pro_armenian
+					character = scope:character
+				}
+			}
+		}
+	}
+}
+
+# root: The province in which the building was completed
+# scope:character: The character that paid for the construction, if available
+sea_armenian_struggle_on_building_completed = {
+	effect = {
+
+		# Struggle catalysts
+		if = {
+			limit = {
+				scope:character = {
+					has_trait = pro_roman
+					any_character_struggle = {
+						involvement = involved
+						phase_has_catalyst = catalyst_new_building_by_pro_roman
+					}
+				}
+			}
+			scope:character = {
+				every_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst = {
+						catalyst = catalyst_new_building_by_pro_roman
+						character = scope:character
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:character = {
+					has_trait = pro_persian
+					any_character_struggle = {
+						involvement = involved
+						phase_has_catalyst = catalyst_new_building_by_pro_persian
+					}
+				}
+			}
+			scope:character = {
+				every_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst = {
+						catalyst = catalyst_new_building_by_pro_persian
+						character = scope:character
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:character = {
+					has_trait = pro_armenian
+					any_character_struggle = {
+						involvement = involved
+						phase_has_catalyst = catalyst_new_building_by_pro_armenian
+					}
+				}
+			}
+			scope:character = {
+				every_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst = {
+						catalyst = catalyst_new_building_by_pro_armenian
+						character = scope:character
+					}
+				}
+			}
+		}
+	}
+}
+
+# character just about to die in root scope
+# if a killer is known, it's set as scope:killer
+#Triggered by code
+sea_armenian_struggle_on_death = {
+	trigger = {
+		exists = scope:killer
+	}
+	effect = {
+		if = {
+			limit = {
+				is_important_or_vip_struggle_character = yes
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = armenian_struggle
+				}
+			}
+			switch = {
+				trigger = has_trait
+				pro_roman = {
+					every_character_struggle = {
+						involvement = involved
+						activate_struggle_catalyst = {
+							catalyst = catalyst_unnatural_death_of_important_pro_roman
+							character = root
+						}
+					}
+				}
+				pro_persian = {
+					every_character_struggle = {
+						involvement = involved
+						activate_struggle_catalyst = {
+							catalyst = catalyst_unnatural_death_of_important_pro_persian
+							character = root
+						}
+					}
+				}
+				pro_armenian = {
+					every_character_struggle = {
+						involvement = involved
+						activate_struggle_catalyst = {
+							catalyst = catalyst_unnatural_death_of_important_pro_armenian
+							character = root
+						}
+					}
+				}
+				fallback = {
+					every_character_struggle = {
+						involvement = involved
+						activate_struggle_catalyst = {
+							catalyst = catalyst_unnatural_death_of_important_interloper
+							character = root
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# A title is destroyed
+# root = the holder before destruction
+# scope:landed_title = the title that is being destroyed
+# Does *not* provide scope:transfer_type
+sea_armenian_struggle_on_title_destroyed = {
+	# trigger = {
+	# 	struggle:struggle_armenia = { exists = yes }
+	# }
+	effect = {
+		if = {
+			limit = {
+				scope:landed_title = title:k_armenian_principality
+				ROOT = {
+					any_character_struggle = {
+						is_struggle_type = armenian_struggle
+					}
+				}
+			}
+			armenian_dissolution_effect = yes
+		}
+	}
+}
