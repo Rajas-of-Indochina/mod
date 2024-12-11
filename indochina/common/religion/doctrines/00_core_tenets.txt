@@ -75,6 +75,7 @@
 							has_doctrine = tenet_christian_syncretism
 							doctrine:tenet_christian_syncretism = { is_in_list = selected_doctrines }
 						}
+						NOT = { religion_tag = islam_religion }
 					}
 					desc = tenet_alexandrian_catechism_name
 				}
@@ -85,6 +86,7 @@
 							has_doctrine = tenet_islamic_syncretism
 							doctrine:tenet_islamic_syncretism = { is_in_list = selected_doctrines }
 						}
+						NOT = { religion_tag = christianity_religion }
 					}
 					desc = tenet_islamic_rationalism_name
 				}
@@ -109,6 +111,7 @@
 							has_doctrine = tenet_christian_syncretism
 							doctrine:tenet_christian_syncretism = { is_in_list = selected_doctrines }
 						}
+						NOT = { religion_tag = islam_religion }
 					}
 					desc = tenet_alexandrian_catechism_desc
 				}
@@ -119,6 +122,7 @@
 							has_doctrine = tenet_islamic_syncretism
 							doctrine:tenet_islamic_syncretism = { is_in_list = selected_doctrines }
 						}
+						NOT = { religion_tag = christianity_religion }
 					}
 					desc = tenet_islamic_rationalism_desc
 				}
@@ -349,7 +353,7 @@
 			custom_description = {
 				text = incompatible_tenet_sacred_shadows_trigger
 				NOT = {
-					has_doctrine = tenet_sacred_shadows
+					doctrine:tenet_sacred_shadows = { is_in_list = selected_doctrines }
 				}
 			}
 		}
@@ -605,6 +609,7 @@
 		parameters = {
 			mendicant_preachers_conversion_active = yes
 			pilgrimage_decision_active = yes
+			unlock_voluntary_laampdom_faith = yes
 		}
 		traits = {
 			virtues = { temperate }
@@ -832,7 +837,6 @@
 						OR = {
 							has_doctrine = doctrine_heretic_branch_zandik
 							has_doctrine = tenet_pastoral_isolation
-							has_doctrine = tenet_communal_possessions
 						}
 					}
 					desc = tenet_unrelenting_faith_zandik_name
@@ -903,6 +907,7 @@
 
 		parameters = {
 			vows_of_poverty_active = yes
+			unlock_voluntary_laampdom_faith = yes
 		}
 
 		traits = {
@@ -940,6 +945,7 @@
 			is_christian_faith_pastoral_isolation_loc_override = 0
 			sanctioned_false_conversion = yes
 			unattractive_for_character_conversions = yes
+			tenet_unlocks_t3_withdraw_from_view = yes
 		}
 
 		character_modifier = {
@@ -1388,7 +1394,7 @@
 		is_shown = {
 			NOR = {
 				AND = {
-				religion_tag = christianity_religion
+					religion_tag = christianity_religion
 					NOT = { this = faith:cathar }
 				}
 				religion_tag = judaism_religion
@@ -1516,6 +1522,7 @@
 			ghw_no_hof_conversion_buffs_active = yes
 			bonus_holy_war_piety_active = yes
 			pilgrimage_decision_active = yes
+			unlock_voluntary_laampdom_faith = yes
 		}
 	}
 
@@ -1682,9 +1689,10 @@
 
 		parameters = {
 			meditation_mechanics_active = yes
+			unlock_voluntary_laampdom_faith = yes
 		}
 
-		#name = { #FP3 - Removed and saved for posterity. Zurvanism would fit a future hypotetical "Fatalism" tenet, but Asceticism isn't a good fit, per beta input. Ola's note. 
+		#name = { #FP3 - Removed and saved for posterity. Zurvanism would fit a future hypotetical "Fatalism" tenet, but Asceticism isn't a good fit, per beta input. Ola's note.
 		#	first_valid = {
 		#		triggered_desc = {
 		#			trigger = {
@@ -2617,6 +2625,46 @@
 		}
 	}
 
+	tenet_household_gods = {
+		icon = core_tenet_household_gods
+
+		name = tenet_household_gods_name
+
+		desc = tenet_household_gods_desc
+
+		piety_cost = faith_tenet_cost_mid
+
+		is_shown = {
+			religion_tag = hellenism_religion
+		}
+
+		can_pick = {
+			custom_description = {
+				text = rome_must_be_faithfully_restored_trigger
+				has_global_variable = household_gods_tenet_unlocked
+			}
+		}
+
+		parameters = {
+			same_culture_conversion_bonus_active = yes
+			same_faith_promote_culture_bonus_active = yes
+		}
+
+		character_modifier = {
+			monthly_influence = 0.5
+			ignore_opinion_of_different_faith = yes
+			different_faith_county_opinion_mult = -0.1
+			levy_reinforcement_rate_same_faith = 0.25
+			faith_conversion_piety_cost_mult = -0.15
+			# TODO_CD_EP3: Uncomment when this no longer causes startup errors (TIT-53560)
+			# christianity_religion_opinion = -20
+		}
+
+		traits = {
+			virtues = { augustus born_in_the_purple }
+		}
+	}
+
 	#############################
 	# Syncretic Faith Tenets	#
 	#############################
@@ -2878,7 +2926,7 @@
 			custom_description = {
 				text = incompatible_tenet_communion_trigger
 				NOT = {
-					has_doctrine = tenet_communion
+					doctrine:tenet_communion = { is_in_list = selected_doctrines }
 				}
 			}
 		}
@@ -2886,15 +2934,12 @@
 		parameters = {
 			piety_gain_from_successful_intrigue_schemes = yes
 			adherents_more_likely_to_join_schemes = yes
+			tenet_unlocks_t4_bounties_for_whispers = yes
 		}
 
 		traits = {
-			virtues = {
-				deceitful
-			}
-			sins = {
-				honest
-			}
+			virtues = { deceitful }
+			sins = { honest }
 		}
 	}
 
@@ -3078,7 +3123,7 @@
 	}
 
 	#############################
-	# FP3 Tenets 		#        
+	# FP3 Tenets 		#
 	#############################
 
 	tenet_fp3_fedayeen = {
@@ -3153,6 +3198,7 @@
 			master_assassin_court_position_unlocked = yes
 			death_is_glory = yes
 			sanctioned_assassinations = yes
+			unlock_voluntary_laampdom_faith = yes
 		}
 
 		character_modifier = {
@@ -3169,14 +3215,12 @@
 
 	tenet_communal_possessions = {
 		icon = core_tenet_communism
-		is_shown = {
-			always = yes
-		}
+		is_shown = {}
 		can_pick = {
-			# always = yes
 			NOT = {
-				has_doctrine = tenet_communion
-				has_doctrine = tenet_pursuit_of_power
+				#doctrine:tenet_yaoshun_kingdom = { is_in_list = selected_doctrines }
+				doctrine:tenet_communion = { is_in_list = selected_doctrines }
+				doctrine:tenet_pursuit_of_power = { is_in_list = selected_doctrines }
 			}
 		}
 
@@ -3209,7 +3253,7 @@
 		}
 
 		character_modifier = {
-			monthly_county_control_decline_factor = -0.2
+			monthly_county_control_growth_factor = -0.2
 			build_gold_cost = -0.1
 			county_opinion_add = 10
 		}
@@ -3236,6 +3280,7 @@
 					desc = tenet_headhunting_filipino_name
 				}
 				triggered_desc = {
+					trigger = { faith = faith:nias_animism }
 					desc = tenet_headhunting_nias_name
 				}
 				desc = tenet_headhunting_name
@@ -3391,6 +3436,57 @@
 			virtues = { possessed = 1 }
 		}
 	}
+
+# Temporarily out of order
+#	tenet_yaoshun_kingdom = {
+#		icon = core_tenet_communism
+#		is_shown = {
+#			has_doctrine = doctrine_three_teachings
+#		}
+#		can_pick = {
+#			has_doctrine = doctrine_three_teachings
+#			NOT = {
+#				doctrine:tenet_communal_possessions = { is_in_list = selected_doctrines }
+#				doctrine:tenet_communion = { is_in_list = selected_doctrines }
+#				doctrine:tenet_pursuit_of_power = { is_in_list = selected_doctrines }
+#			}
+#		}
+#
+#		piety_cost = {
+#			if = {
+#				limit = {
+#					religion_tag = confucianism_religion
+#				}
+#				value = faith_tenet_cost_mid
+#			}
+#			else = {
+#				value = faith_tenet_cost_high
+#			}
+#
+#			#Multiplier for keeping same tenet
+#			if = {
+#				limit = { has_doctrine = tenet_yaoshun_kingdom }
+#				multiply = faith_unchanged_doctrine_cost_mult
+#			}
+#		}
+#
+#		parameters = {
+#			piety_from_gifts_active = yes
+#			piety_from_marrying_lowborn_active = yes
+#		}
+#
+#		character_modifier = {
+#			tyranny_gain_mult = 2.00
+#			build_gold_cost = -0.1
+#			same_faith_opinion = 10
+#			vassal_opinion = -10
+#		}
+#
+#		traits = {
+#			virtues = { just = 2 }
+#			sins = { arbitrary = 2 }
+#		}
+#	}
 }
 
 	#############################

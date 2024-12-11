@@ -48,6 +48,11 @@ beards = {
 				exists = character:easteregg_daan_broekhof
 				this = character:easteregg_daan_broekhof
 			}
+			modifier = {
+				add = 1000
+				exists = this
+				has_character_flag = no_beard
+			}
             portrait_clean_shaven_clothing_modifier = yes
         }
     }
@@ -75,12 +80,9 @@ beards = {
                     has_gene = {
                         category = gene_hair_type
                         template = hair_wavy
-                    }
+                    }            
                 }
-                OR = {
-                    portrait_western_clothing_trigger = yes
-                    portrait_byzantine_clothing_trigger = yes
-                }
+                portrait_western_clothing_trigger = yes
             }
             modifier = { # Muslims should always have a beard
                 add = 200
@@ -121,12 +123,9 @@ beards = {
                      has_gene = {
                         category = gene_hair_type
                         template = hair_curly
-                    }
+                    }            
                 }
-                OR = {
-                    portrait_western_clothing_trigger = yes
-                    portrait_byzantine_clothing_trigger = yes
-                }
+                portrait_western_clothing_trigger = yes
             }
             modifier = { # Muslims should always have a beard
                 add = 200
@@ -247,6 +246,92 @@ beards = {
                     is_from_ruler_designer = yes
                     has_character_flag = has_scripted_appearance
                     this = character:33922 # Prophet Muhammad
+                }
+            }
+        }
+    }
+
+    byzantine_straight = {
+        dna_modifiers = {
+            accessory = {
+                mode = add
+                gene = beards
+                template = byzantine_beards_straight
+                range = { 0 1 } # For the randomness to work correctly
+            }
+        }   
+        # outfit_tags = { no_clothes }
+        weight = {
+            base = 0
+            modifier = {
+                add = 80
+                OR = {
+                    NOT = { exists = this }
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_straight
+                    }       
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_wavy
+                    }            
+                }
+                portrait_byzantine_clothing_trigger = yes
+            }
+            modifier = { # Muslims should always have a beard
+                add = 200
+                scope:faith.religion = religion:islam_religion
+                portrait_byzantine_clothing_trigger = yes
+            }
+            modifier = {
+                add = -100
+                exists = this
+                OR = {
+                    is_from_ruler_designer = yes
+                    has_character_flag = has_scripted_appearance
+                }
+            }
+        }
+    }
+
+    byzantine_curly = {
+        dna_modifiers = {
+            accessory = {
+                mode = add
+                gene = beards
+                template = byzantine_beards_curly
+                range = { 0 1 } # For the randomness to work correctly
+            }
+        }   
+        # outfit_tags = { no_clothes }
+        weight = {
+            base = 0
+            modifier = {
+                add = 80
+                OR = {
+                    NOT = { exists = this }
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_wavy
+                    }       
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_curly
+                    }            
+                }
+                portrait_byzantine_clothing_trigger = yes
+            }
+            modifier = { # Muslims should always have a beard
+                add = 200
+                scope:faith.religion = religion:islam_religion
+                portrait_byzantine_clothing_trigger = yes
+            }
+            modifier = {
+                add = -100
+                exists = this
+                OR = {
+                    is_from_ruler_designer = yes
+                    has_character_flag = has_scripted_appearance
                 }
             }
         }
@@ -637,9 +722,10 @@ beards = {
     }
 
     ### FP3 Beards ###
-#iranian
-fp3_iranian_beards_straight = {
-    dna_modifiers = {
+
+    #iranian
+    fp3_iranian_beards_straight = {
+        dna_modifiers = {
         accessory = {
             mode = add
             gene = beards
@@ -807,9 +893,10 @@ fp3_turkic_beards_curly = {
                 is_from_ruler_designer = yes
                 has_character_flag = has_scripted_appearance
             }
+            }
         }
     }
-}
+
     ### FP2 Beards ###
 
     fp2_beards_straight = {
@@ -1102,10 +1189,77 @@ fp3_turkic_beards_curly = {
                 OR = {
                     portrait_era3_trigger = yes
                     portrait_era4_trigger = yes
-                }
+                }                
+            }
+            modifier = {
+                factor = 0
+                portrait_western_clothing_trigger = no
             }
         }
     }
+
+    ### EP3 beards ###
+
+    ep3_beards_straight = {
+        dna_modifiers = {
+            accessory = {
+                mode = add
+                gene = beards
+                template = ep3_beards_straight
+                range = { 0 1 } # For the randomness to work correctly
+            }
+        }   
+        weight = {
+            base = 0
+            modifier = {
+                add = 75
+                OR = {
+                    NOT = { exists = this }
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_straight
+                    }
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_wavy
+                    }
+                }
+                portrait_byzantine_clothing_trigger = yes
+                has_ep3_dlc_trigger = yes
+            }
+        }
+    }
+
+    ep3_beards_curly = {
+        dna_modifiers = {
+            accessory = {
+                mode = add
+                gene = beards
+                template = ep3_beards_curly
+                range = { 0 1 } # For the randomness to work correctly
+            }
+        }   
+        weight = {
+            base = 0
+            modifier = {
+                add = 75
+                OR = {
+                    NOT = { exists = this }
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_wavy
+                    }
+                    has_gene = {
+                        category = gene_hair_type
+                        template = hair_curly
+                    }
+                }
+                portrait_byzantine_clothing_trigger = yes
+                has_ep3_dlc_trigger = yes
+            }
+        }
+    }
+
 }
 
 

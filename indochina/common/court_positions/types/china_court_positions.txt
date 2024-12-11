@@ -1,4 +1,13 @@
 ﻿
+# director_of_the_left_court_position
+# director_of_the_right_court_position
+# minister_of_personnel_court_position
+# minister_of_war_court_position
+# minister_of_rites_court_position
+# minister_of_revenue_court_position
+# minister_of_justice_court_position
+# minister_of_works_court_position
+
 # Director of the Left
 director_of_the_left_court_position = { #尚书左仆射
 	max_available_positions = 1
@@ -58,7 +67,7 @@ director_of_the_left_court_position = { #尚书左仆射
 				NOT = { is_spouse_of = scope:liege }
 			}
 			trigger_if = {
-				limit = { NOT = { has_court_position = minister_of_personnel_court_position } }
+				limit = { NOT = { has_court_position = director_of_the_left_court_position } }
 				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
 			}
 		}
@@ -119,12 +128,28 @@ director_of_the_left_court_position = { #尚书左仆射
 	on_court_position_invalidated = {
 		seneschal_title_invalidated_effect = yes
 	}
+
 	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
 	candidate_score = {
-		value = 50
+		value = 150
 		add = scope:base_value
 		add = court_position_candidate_score_base_value
 		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
 	}
 }
 
@@ -187,7 +212,7 @@ director_of_the_right_court_position = { #尚书右仆射
 				NOT = { is_spouse_of = scope:liege }
 			}
 			trigger_if = {
-				limit = { NOT = { has_court_position = minister_of_personnel_court_position } }
+				limit = { NOT = { has_court_position = director_of_the_right_court_position } }
 				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
 			}
 		}
@@ -250,10 +275,25 @@ director_of_the_right_court_position = { #尚书右仆射
 	}
 	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
 	candidate_score = {
-		value = 50
+		value = 150
 		add = scope:base_value
 		add = court_position_candidate_score_base_value
 		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
 	}
 }
 
@@ -384,10 +424,25 @@ minister_of_personnel_court_position = { #吏部
 	}
 	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
 	candidate_score = {
-		value = 50
+		value = 150
 		add = scope:base_value
 		add = court_position_candidate_score_base_value
 		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
 	}
 }
 
@@ -450,7 +505,7 @@ minister_of_war_court_position = { #兵部
 				NOT = { is_spouse_of = scope:liege }
 			}
 			trigger_if = {
-				limit = { NOT = { has_court_position = seneschal_court_position } }
+				limit = { NOT = { has_court_position = minister_of_war_court_position } }
 				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
 			}
 		}
@@ -518,10 +573,25 @@ minister_of_war_court_position = { #兵部
 	}
 	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
 	candidate_score = {
-		value = 50
+		value = 150
 		add = scope:base_value
 		add = court_position_candidate_score_base_value
 		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
 	}
 }
 
@@ -584,7 +654,7 @@ minister_of_rites_court_position = { #礼部
 				NOT = { is_spouse_of = scope:liege }
 			}
 			trigger_if = {
-				limit = { NOT = { has_court_position = seneschal_court_position } }
+				limit = { NOT = { has_court_position = minister_of_rites_court_position } }
 				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
 			}
 		}
@@ -652,10 +722,25 @@ minister_of_rites_court_position = { #礼部
 	}
 	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
 	candidate_score = {
-		value = 50
+		value = 150
 		add = scope:base_value
 		add = court_position_candidate_score_base_value
 		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
 	}
 }
 
@@ -718,7 +803,7 @@ minister_of_revenue_court_position = { #户部
 				NOT = { is_spouse_of = scope:liege }
 			}
 			trigger_if = {
-				limit = { NOT = { has_court_position = seneschal_court_position } }
+				limit = { NOT = { has_court_position = minister_of_revenue_court_position } }
 				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
 			}
 		}
@@ -781,10 +866,25 @@ minister_of_revenue_court_position = { #户部
 	}
 	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
 	candidate_score = {
-		value = 50
+		value = 150
 		add = scope:base_value
 		add = court_position_candidate_score_base_value
 		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
 	}
 }
 
@@ -847,7 +947,7 @@ minister_of_justice_court_position = { #刑部
 				NOT = { is_spouse_of = scope:liege }
 			}
 			trigger_if = {
-				limit = { NOT = { has_court_position = seneschal_court_position } }
+				limit = { NOT = { has_court_position = minister_of_justice_court_position } }
 				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
 			}
 		}
@@ -915,10 +1015,25 @@ minister_of_justice_court_position = { #刑部
 	}
 	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
 	candidate_score = {
-		value = 50
+		value = 150
 		add = scope:base_value
 		add = court_position_candidate_score_base_value
 		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
 	}
 }
 
@@ -981,7 +1096,7 @@ minister_of_works_court_position = { #工部
 				NOT = { is_spouse_of = scope:liege }
 			}
 			trigger_if = {
-				limit = { NOT = { has_court_position = seneschal_court_position } }
+				limit = { NOT = { has_court_position = minister_of_works_court_position } }
 				court_position_does_not_already_have_a_job_trigger = yes # This positions is considered a job, and cannot be held at the same tims as another similar position
 			}
 		}
@@ -1045,9 +1160,24 @@ minister_of_works_court_position = { #工部
 	}
 	# Scripted value to determine whether an AI will hire/fire a position or not. Hires over 0, fires under -50. Look in _court_positions.info for more extensive documentation!
 	candidate_score = {
-		value = 50
+		value = 150
 		add = scope:base_value
 		add = court_position_candidate_score_base_value
 		add = court_position_candidate_aptitude_value
+        if = {
+            limit = {
+                exists = scope:firing_court_position
+            }
+            add = 200
+            scope:employee = {
+                # Does the liege have a better candidate that they should be hiring instead?
+                if = {
+                    limit = {
+                        scope:highest_available_aptitude > scope:employee_aptitude
+                    }
+                    add = -150
+                }
+            }
+        }
 	}
 }

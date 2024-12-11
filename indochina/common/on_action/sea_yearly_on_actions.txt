@@ -8,6 +8,17 @@
 		###
 		delay = { days = { 30 330 } }
 		start_nanzhao_collapse
+		###
+		on_yearly_check_gunpowder_spread
+		###
+		on_yearly_spawn_roa_historical_characters
+	}
+}
+
+yearly_playable_pulse = {
+	on_actions = {
+		delay = { days = { 30 330 } }
+		spawn_lesbian_culture
 	}
 }
 
@@ -176,6 +187,172 @@ start_nanzhao_collapse = {
 		else_if = {
 			limit = { title:k_nanzhao = { has_variable = dayining } }
 			trigger_event = nanzhao_collapse.3001
+		}
+	}
+}
+
+#####
+
+spawn_lesbian_culture = {
+	trigger = {
+		trigger_if = {
+			limit = { is_landed = yes }
+			capital_county = title:c_lesbos
+		}
+		trigger_else_if = {
+			limit = { has_domicile = yes }
+			domicile.domicile_location.county = title:c_lesbos
+		}
+		is_female = yes
+		OR = {
+			has_sexuality = bisexual
+			has_sexuality = homosexual
+		}
+		culture = {
+			OR = {
+				this = culture:greek
+				any_parent_culture_or_above = { this = culture:greek }
+			}
+		}
+		NOT = { has_global_variable = lesbianism_spawned }
+		NOT = { has_game_rule = accepted_same_sex_relations } #No point in this if it's already normal to be gay
+	}
+	effect = {
+		random = {
+			chance = {
+				value = 1 #1% chance
+				if = {
+					limit = { has_trait = lustful }
+					add = 1
+				}
+				if = {
+					limit = { has_trait = gregarious }
+					add = 1
+				}
+				if = {
+					limit = { has_trait = eccentric }
+					add = 1
+				}
+				if = {
+					limit = { has_trait = seducer }
+					add = 2
+				}
+				add = {
+					# Learned characters are more likely to get this event
+					value = learning
+					multiply = 0.05
+				}
+				# As are characters that are already engaged in sapphic romance of some kind
+				# ESPECIALLY soulmates
+				if = {
+					limit = {
+						any_relation = {
+							type = lover
+							is_female = yes
+						}
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						any_spouse = {
+							is_female = yes
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						any_relation = {
+							type = soulmate
+							is_female = yes
+						}
+					}
+					add = 20
+				}
+			}
+			trigger_event = easter_egg.0001
+		}
+	}
+}
+
+on_yearly_check_gunpowder_spread = {
+	effect = {
+
+		# Fire Lance
+		every_culture_global = {
+			limit = { has_innovation = innovation_fire_lances }
+
+			save_scope_as = spreading_culture
+
+			every_culture_county = {
+				every_neighboring_county = {
+					limit = {
+						NOR = {
+							culture = scope:spreading_culture
+							culture = { has_innovation = innovation_fire_lances }
+							culture = { has_variable = exposed_to_fire_lances }
+							culture = { is_in_list = cultures_to_recieve_fire_lances }
+						}
+					}
+					culture = {
+						add_to_temporary_list = cultures_to_recieve_fire_lances
+					}
+				}
+			}
+		}
+		every_in_list = {
+			list = cultures_to_recieve_fire_lances
+
+			random = {
+				chance = 10 # 10% or 1/10
+				trigger_fire_lances_spread_effect = yes
+			}
+		}
+
+		# Hand Cannon
+		every_culture_global = {
+			limit = { has_innovation = innovation_hand_cannons }
+
+			save_scope_as = spreading_culture
+
+			every_culture_county = {
+				every_neighboring_county = {
+					limit = {
+						NOR = {
+							culture = scope:spreading_culture
+							culture = { has_innovation = innovation_hand_cannons }
+							culture = { has_variable = exposed_to_hand_cannons }
+							culture = { is_in_list = cultures_to_recieve_hand_cannons }
+						}
+					}
+					culture = {
+						add_to_temporary_list = cultures_to_recieve_hand_cannons
+					}
+				}
+			}
+		}
+		every_in_list = {
+			list = cultures_to_recieve_hand_cannons
+
+			random = {
+				chance = 10 # 10% or 1/10
+				trigger_hand_cannons_spread_effect = yes
+			}
+		}
+	}
+}
+
+on_yearly_spawn_roa_historical_characters = {
+	effect = {
+		# Historical character spawner
+		if = {
+			limit = {
+				NOT = {
+					has_game_rule = no_historical_characters
+				}
+			}
+			roa_spawn_historical_characters_effect = yes
 		}
 	}
 }

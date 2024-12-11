@@ -94,3 +94,172 @@ minority_faith_map_effect = {
 	}
 	is_valid = { NOT = { exists = global_var:custom_map_mode_changing } }
 }
+
+sea_tributary_map_effect = {
+    effect = {
+		set_global_variable = { name = custom_map_mode_changing value = 1 }
+		set_global_variable = { name = custom_map_mode value = flag:sea_tributary_map_effect }
+
+		every_county = {
+			every_county_province = { barony = { set_color_from_title = title:d_map_base_color } }
+		}
+		every_county = {
+			if = {
+				limit = {
+					holder.top_liege = {
+						exists = var:my_suzerain
+					}
+					holder.top_liege.var:my_suzerain = {
+						exists = primary_title
+					}
+				}
+				holder.top_liege.var:my_suzerain = { save_scope_as = suzerain }
+				every_county_province = { barony = { set_color_from_title = scope:suzerain.primary_title } }
+			}
+			else_if = {
+				limit = {
+					holder.top_liege = {
+						exists = primary_title
+					}
+					holder.top_liege.primary_title = {
+						any_in_de_facto_hierarchy = {
+							continue = { tier >= tier_duchy }
+
+							holder = { has_tributaries = yes }
+						}
+					}
+				}
+				holder.top_liege = { save_scope_as = suzerain }
+				every_county_province = { barony = { set_color_from_title = scope:suzerain.primary_title } }
+			}
+		}
+        remove_global_variable = custom_map_mode_changing
+    }
+	is_shown = {
+		exists = global_var:custom_map_mode
+		global_var:custom_map_mode = flag:sea_tributary_map_effect
+	}
+	is_valid = { NOT = { exists = global_var:custom_map_mode_changing } }
+}
+
+sea_languages_map_effect = {
+    effect = {
+		set_global_variable = { name = custom_map_mode_changing value = 1 }
+		set_global_variable = { name = custom_map_mode value = flag:sea_languages_map_effect }
+
+		every_county = {
+			every_county_province = { barony = { set_color_from_title = title:d_map_base_color } }
+		}
+		every_county = {
+
+			culture = {
+				save_scope_as = this_culture
+
+				if = {
+					limit = {
+						# is any culture sharing this language already in the list
+						any_in_global_list = {
+							variable = languages_map_cultures_list
+							has_same_culture_language = scope:this_culture
+						}
+					}
+
+					random_in_global_list = {
+						variable = languages_map_cultures_list
+						limit = {
+							has_same_culture_language = scope:this_culture
+						}
+
+						var:language_color_title = { save_scope_as = language_color_county }
+					}
+				}
+				else = {
+					random_county = {
+						save_scope_as = language_color_county
+					}
+
+					set_variable = {
+						name = language_color_title
+						value = scope:language_color_county
+					}
+
+					add_to_global_variable_list = {
+						name = languages_map_cultures_list
+						target = scope:this_culture
+					}
+				}
+
+				every_culture_county = {
+					every_county_province = { barony = { set_color_from_title = scope:language_color_county } }
+				}
+			}
+		}
+        remove_global_variable = custom_map_mode_changing
+    }
+	is_shown = {
+		exists = global_var:custom_map_mode
+		global_var:custom_map_mode = flag:sea_languages_map_effect
+	}
+	is_valid = { NOT = { exists = global_var:custom_map_mode_changing } }
+}
+
+sea_heritages_map_effect = {
+    effect = {
+		set_global_variable = { name = custom_map_mode_changing value = 1 }
+		set_global_variable = { name = custom_map_mode value = flag:sea_heritages_map_effect }
+
+		every_county = {
+			every_county_province = { barony = { set_color_from_title = title:d_map_base_color } }
+		}
+		every_county = {
+
+			culture = {
+				save_scope_as = this_culture
+
+				if = {
+					limit = {
+						# is any culture sharing this language already in the list
+						any_in_global_list = {
+							variable = heritages_map_cultures_list
+							has_same_culture_heritage = scope:this_culture
+						}
+					}
+
+					random_in_global_list = {
+						variable = heritages_map_cultures_list
+						limit = {
+							has_same_culture_heritage = scope:this_culture
+						}
+
+						var:heritage_color_title = { save_scope_as = heritage_color_county }
+					}
+				}
+				else = {
+					random_culture_county = {
+						save_scope_as = heritage_color_county
+					}
+
+					set_variable = {
+						name = heritage_color_title
+						value = scope:heritage_color_county
+					}
+
+					add_to_global_variable_list = {
+						name = heritages_map_cultures_list
+						target = scope:this_culture
+					}
+				}
+
+				every_culture_county = {
+					every_county_province = { barony = { set_color_from_title = scope:heritage_color_county } }
+				}
+			}
+		}
+        remove_global_variable = custom_map_mode_changing
+    }
+	is_shown = {
+		exists = global_var:custom_map_mode
+		global_var:custom_map_mode = flag:sea_heritages_map_effect
+	}
+	is_valid = { NOT = { exists = global_var:custom_map_mode_changing } }
+}

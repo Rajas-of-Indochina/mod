@@ -2,26 +2,24 @@
 claimant_faction_modifiers = {
 	# Gender concerns (general)
 	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_GENDER"
 		add = -50
 		NOT = { $FACTION_CLAIMANT$ = root }
 		OR = {
 			AND = {
 				faith = { has_doctrine = doctrine_gender_female_dominated }
-				$FACTION_CLAIMANT$ = {
-					is_male = yes
-				}
+				$FACTION_CLAIMANT$ = { is_male = yes }
 			}
 			AND = {
 				faith = { has_doctrine = doctrine_gender_male_dominated }
-				$FACTION_CLAIMANT$ = {
-					is_female = yes
-				}
+				$FACTION_CLAIMANT$ = { is_female = yes }
 			}
 		}
 	}
 
 	# Gender concerns (target of wrong gender)
 	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_GENDER_VS_TARGET"
 		add = 25
 		OR = {
 			AND = {
@@ -45,6 +43,7 @@ claimant_faction_modifiers = {
 
 	# Powerful vassals will be even more motivated to create claimant if unhappy with liege, if they like the claimant more than their liege
 	opinion_modifier = {
+		desc = "FACTION_REASON_POWERFUL_LIKES_CLAIMANT_MORE"
 		trigger = {
 			is_powerful_vassal_of = $FACTION_TARGET$
 			save_temporary_opinion_value_as = { name = opinion_of_current_liege target = $FACTION_TARGET$ }
@@ -58,19 +57,19 @@ claimant_faction_modifiers = {
 
 	# They do not like the claimant more than their liege, unless its a claimant of their own culture
 	modifier = {
+		desc = "FACTION_REASON_LIKES_LIEGE_UNLESS_CULTURE"
 		add = -50
 		NOT = {	$FACTION_CLAIMANT$ = root }
 		NAND = {
 			culture = $FACTION_CLAIMANT$.culture
-			NOT = {
-				culture = $FACTION_TARGET$.culture
-			}
+			NOT = { culture = $FACTION_TARGET$.culture }
 		}
 		save_temporary_opinion_value_as = { name = opinion_of_current_liege target = $FACTION_TARGET$ }
 		opinion = { target = $FACTION_CLAIMANT$ value < scope:opinion_of_current_liege }
 	}
 
 	modifier = { # If you like the Claimant better than your liege, increase the score
+		desc = "FACTION_REASON_LIKE_CLAIMANT_MORE_THAN_LIEGE"
 		NOT = {	$FACTION_CLAIMANT$ = root }
 		save_temporary_opinion_value_as = { name = opinion_of_current_liege target = $FACTION_TARGET$ }
 		save_temporary_opinion_value_as = { name = opinion_of_claimant target = $FACTION_CLAIMANT$ }
@@ -84,6 +83,7 @@ claimant_faction_modifiers = {
 	}
 
 	opinion_modifier = { # Reduce likelihood of joining if you have positive opinion of your liege
+		desc = "FACTION_REASON_LIKES_LIEGE"
 		who = root
 		opinion_target = $FACTION_TARGET$
 		multiplier = -0.5
@@ -91,56 +91,85 @@ claimant_faction_modifiers = {
 	}
 
 	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_TOO_OLD"
 		add = { # Claimant is too old
 			value = $FACTION_CLAIMANT$.age
 			subtract = 45
-			multiply = -2
+			multiply = -4
 		}
-		AND = {
-			NOT = {	$FACTION_CLAIMANT$ = root }
-			$FACTION_CLAIMANT$.age > 45
-		}
+		NOT = {	$FACTION_CLAIMANT$ = root }
+		$FACTION_CLAIMANT$.age > 45
 	}
 	modifier = { # Claimant is too young
+		desc = "FACTION_REASON_CLAIMANT_TOO_YOUNG"
 		add = -25
+		NOT = { $FACTION_CLAIMANT$ = root }
 		$FACTION_CLAIMANT$ = { is_adult = no }
 	}
 	modifier = {
+		desc = "FACTION_REASON_CLAIMAINT_DYING"
 		add = { # Claimant is dying
 			value = 1.5
 			subtract = $FACTION_CLAIMANT$.health
 			multiply = -20
 		}
-		AND = {
-			NOT = {	$FACTION_CLAIMANT$ = root }
-			$FACTION_CLAIMANT$.health < 1.5
-		}
+		NOT = {	$FACTION_CLAIMANT$ = root }
+		$FACTION_CLAIMANT$.health < 1.5
 	}
 	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_RARE_PRODUCE_HEIR"
 		add = -50
-		AND = { # Claimant does not have children and is unlikely to have any.
-			$FACTION_CLAIMANT$.fertility <= 0.1
-			NOT = {	$FACTION_CLAIMANT$ = root }
-			NOT = {
-				$FACTION_CLAIMANT$ = {
-					any_child = {
-						count >= 1
-					}
-				}
+		# Claimant does not have children and is unlikely to have any.
+		$FACTION_CLAIMANT$.fertility <= 0.1
+		NOT = {	$FACTION_CLAIMANT$ = root }
+		NOT = {
+			$FACTION_CLAIMANT$ = {
+				any_child = { count >= 1 }
 			}
 		}
 	}
 
 	# Infirmity of claimant
 	modifier = {
+		desc = "FACTION_REASON_INFIRM"
+		add = -50
+		NOT = { $FACTION_CLAIMANT$ = root }
+		$FACTION_CLAIMANT$ = { has_trait = infirm }
+	}
+
+	# Claimant has low Legitimacy
+	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_LOW_LEGITIMACY"
+		add = -100
+		$FACTION_CLAIMANT$ = {
+			has_legitimacy = yes
+			legitimacy_level = 0
+		}
+	}
+
+	# Claimant has low Legitimacy
+	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_LOW_LEGITIMACY"
 		add = -50
 		$FACTION_CLAIMANT$ = {
-			has_trait = infirm
+			has_legitimacy = yes
+			legitimacy_level = 1
+		}
+	}
+
+	# Claimant has low Legitimacy
+	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_LOW_LEGITIMACY"
+		add = -25
+		$FACTION_CLAIMANT$ = {
+			has_legitimacy = yes
+			legitimacy_level = 2
 		}
 	}
 
 	# I am the claimant!
 	modifier = {
+		desc = "FACTION_REASON_MEMBER_IS_CLAIMANT"
 		add = {
 			value = 50 # Basic 'self-love' bonus
 			add = {
@@ -150,24 +179,21 @@ claimant_faction_modifiers = {
 			}
 		}
 		AND = {
-			$FACTION_CLAIMANT$  = root
+			$FACTION_CLAIMANT$ = root
 			NOT = { has_trait = content } # Not opposed to acquiring more power/wealth
 		}
 	}
 
 	# Legacy
 	modifier = {
+		desc = "FACTION_REASON_GLORY_LEGACY_4"
 		add = -20
-		$FACTION_TARGET$ = {
-			exists = dynasty
-			dynasty = {
-				has_dynasty_perk = glory_legacy_4
-			}
-		}
+		$FACTION_TARGET$.dynasty ?= { has_dynasty_perk = glory_legacy_4 }
 	}
 
 	# Friends & Lovers don't want to join
 	modifier = {
+		desc = "FACTION_REASON_TARGET_FRIEND_LOVER"
 		add = -500
 		OR = {
 			has_secret_relation_lover = $FACTION_TARGET$
@@ -179,6 +205,7 @@ claimant_faction_modifiers = {
 	}
 	# Friends & Lovers want to support their claimants!
 	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_FRIEND_LOVER"
 		add = 25
 		OR = {
 			has_secret_relation_lover = $FACTION_CLAIMANT$
@@ -190,6 +217,7 @@ claimant_faction_modifiers = {
 	}
 	# Best Friends & Soulmates really want to support their claimants!
 	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_SUPER_FRIEND_LOVER"
 		add = 100
 		OR = {
 			has_relation_soulmate = $FACTION_CLAIMANT$
@@ -197,14 +225,92 @@ claimant_faction_modifiers = {
 		}
 	}
 
+	# Dynasty
+	modifier = {
+		NOT = { this = $FACTION_CLAIMANT$ }
+		exists = house
+		exists = $FACTION_CLAIMANT$.house
+		house != $FACTION_CLAIMANT$.house
+		dynasty = $FACTION_CLAIMANT$.dynasty
+		dynasty != $FACTION_TARGET$.dynasty
+		add = 5
+		desc = FACTION_REASON_CLAIMANT_DYNASTY
+	}
+	# House
+	modifier = {
+		NOT = { this = $FACTION_CLAIMANT$ }
+		exists = house
+		exists = $FACTION_CLAIMANT$.house
+		house = $FACTION_CLAIMANT$.house
+		house != $FACTION_TARGET$.house
+		add = 10
+		desc = FACTION_REASON_CLAIMANT_HOUSE
+	}
+	# Parent
+	modifier = {
+		NOT = { this = $FACTION_CLAIMANT$ }
+		is_parent_of = $FACTION_CLAIMANT$
+		NOT = { is_parent_of = $FACTION_TARGET$ }
+		desc = FACTION_REASON_CLAIMANT_PARENT
+		add = 30
+	}
+	# Close family
+	modifier = {
+		NOT = { this = $FACTION_CLAIMANT$ }
+		is_close_family_of = $FACTION_CLAIMANT$
+		NOT = { is_parent_of = $FACTION_CLAIMANT$ }
+		NOT = { is_close_family_of = $FACTION_TARGET$ }
+		add = 20
+		desc = FACTION_REASON_CLAIMANT_CLOSE_FAMILY
+	}
+	# Extended family
+	modifier = {
+		NOT = { this = $FACTION_CLAIMANT$ }
+		is_extended_family_of = $FACTION_CLAIMANT$
+		NOT = { is_extended_family_of = $FACTION_TARGET$ }
+		add = 10 
+		desc = FACTION_REASON_CLAIMANT_EXTENDED_FAMILY
+	}
+	# Heir
+	modifier = {
+		primary_title = {
+			place_in_line_of_succession = {
+				target = $FACTION_CLAIMANT$
+				value <= 5
+			}
+		}
+		$FACTION_CLAIMANT$ = {
+			OR = {
+				is_child_of = root
+				is_sibling_of = root
+				is_nibling_of = root
+			}
+			save_temporary_scope_as = faction_claimant_temp
+		}
+		add = {
+			value = 25
+			multiply = {
+				value = 5
+				subtract = "primary_title.place_in_line_of_succession(scope:faction_claimant_temp)"
+			}
+			if = {
+				limit = { primary_heir ?= $FACTION_CLAIMANT$ }
+				add = 25
+			}
+		}
+		desc = FACTION_REASON_CLAIMANT_PRIMARY_HEIR
+	}
+
 	# Liege is too young to rule
 	modifier = {
+		desc = "FACTION_REASON_TARGET_IS_CHILD"
 		add = 25
 		$FACTION_TARGET$ = { is_adult = no }
 	}
 
 	# Cultural reasons
 	modifier = {
+		desc = "FACTION_REASON_CULTURAL_REASONS"
 		culture = {
 			NOR = {
 				this = $FACTION_TARGET$.culture
@@ -218,83 +324,70 @@ claimant_faction_modifiers = {
 		}
 		add = {
 			value = 50
-			if = {
-				limit = {
-					culture = $FACTION_CLAIMANT$.culture
+			culture = {
+				if = {
+					limit = { this = $FACTION_CLAIMANT$.culture }
+					add = 50
 				}
-				add = 50
-			}
-			if = {
-				limit = {
-					culture = {
+				if = {
+					limit = {
 						cultural_acceptance = { target = $FACTION_TARGET$.culture value <= 20 }
 					}
+					add = 25
 				}
-				add = 25
-			}
-			if = {
-				limit = {
-					culture = {
+				if = {
+					limit = {
 						cultural_acceptance = { target = $FACTION_TARGET$.culture value <= 35 }
 					}
+					add = 15
 				}
-				add = 15
-			}
-			if = {
-				limit = {
-					culture = {
+				if = {
+					limit = {
 						cultural_acceptance = { target = $FACTION_TARGET$.culture value <= 50 }
 					}
+					add = 10
 				}
-				add = 10
-			}
-			if = {
-				limit = {
-					culture = {
+				if = {
+					limit = {
 						cultural_acceptance = { target = $FACTION_TARGET$.culture value <= 70 }
 					}
+					add = 5
 				}
-				add = 5
-			}
-			if = {
-				limit = {
-					culture = {
+				if = {
+					limit = {
 						cultural_acceptance = { target = $FACTION_TARGET$.culture value <= 80 }
 					}
+					add = 5
 				}
-				add = 5
 			}
 			if = { # The liege knowing your language cuts this penalty in half
 				limit = {
-					$FACTION_TARGET$ = {
-						knows_language_of_culture = prev.culture
-					}
+					$FACTION_TARGET$ = { knows_language_of_culture = prev.culture }
 				}
 				multiply = 0.5
 			}
 			if = { # Cultural reasons matter less in the HRE
 				limit = {
-					$FACTION_TITLE$ = {
-						has_title_law = princely_elective_succession_law
-					}
+					$FACTION_TITLE$ = { has_title_law = princely_elective_succession_law }
 				}
 				multiply = 0.25
 			}
 		}
 	}
 
+	# Faith
 	modifier = {
+		desc = "FACTION_REASON_CLAIMAINT_SAME_FAITH"
 		add = 100
 		NOT = { faith = $FACTION_TARGET$.faith }
 		faith = $FACTION_CLAIMANT$.faith
 		NOT = {
-			culture = {
-				has_cultural_parameter = doesnt_care_about_culture_faith_in_factions
-			}
+			culture = { has_cultural_parameter = doesnt_care_about_culture_faith_in_factions }
 		}
 	}
 
 	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_FAITH_ASTRAY"
 		add = -25
 		NOT = { faith = $FACTION_CLAIMANT$.faith }
 		faith = {
@@ -304,13 +397,12 @@ claimant_faction_modifiers = {
 			}
 		}
 		NOT = {
-			culture = {
-				has_cultural_parameter = doesnt_care_about_culture_faith_in_factions
-			}
+			culture = { has_cultural_parameter = doesnt_care_about_culture_faith_in_factions }
 		}
 	}
 
 	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_FAITH_HOSTILE"
 		add = -250
 		NOT = { faith = $FACTION_CLAIMANT$.faith }
 		faith = {
@@ -320,13 +412,12 @@ claimant_faction_modifiers = {
 			}
 		}
 		NOT = {
-			culture = {
-				has_cultural_parameter = doesnt_care_about_culture_faith_in_factions
-			}
+			culture = { has_cultural_parameter = doesnt_care_about_culture_faith_in_factions }
 		}
 	}
 
 	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_FAITH_EVIL"
 		add = -1000
 		NOT = { faith = $FACTION_CLAIMANT$.faith }
 		faith = {
@@ -336,14 +427,13 @@ claimant_faction_modifiers = {
 			}
 		}
 		NOT = {
-			culture = {
-				has_cultural_parameter = doesnt_care_about_culture_faith_in_factions
-			}
+			culture = { has_cultural_parameter = doesnt_care_about_culture_faith_in_factions }
 		}
 	}
 
 	# Don't support claims against the liege's lower tier titles
 	modifier = {
+		desc = "FACTION_REASON_LOW_TIER_TARGET_TITLE"
 		add = -500
 		$FACTION_TITLE$.tier < $FACTION_TARGET$.primary_title.tier
 		$FACTION_TITLE$.tier < tier_kingdom
@@ -351,49 +441,67 @@ claimant_faction_modifiers = {
 
 	# If I'm de jure of the Claimant, I want to support them
 	modifier = {
+		desc = "FACTION_REASON_CLAIMANT_IS_RIGHTFUL_LIEGE"
 		add = 100
-		is_rightful_liege_of = root
+		$FACTION_CLAIMANT$ = { is_rightful_liege_of = root }
 	}
 
 	# When creating a Faction, primarily care about Claims on Titles de jure above my primary title
 	modifier = {
+		desc = "FACTION_REASON_TITLE_DEJURE_ABOVE"
 		add = -100
+		root.primary_title = { is_noble_family_title = no }
 		NOT = {
-			$FACTION_TITLE$ = {
-				is_de_jure_liege_or_above_target = root.primary_title
-			}
+			$FACTION_TITLE$ = { is_de_jure_liege_or_above_target = root.primary_title }
 		}
-
 	}
 
 	# If I'm not a de jure vassal of my liege, and my liege is independent, prefer to create an independence faction
 	modifier = {
+		desc = "FACTION_REASON_PREFER_INDEPENDENCE_FACTION"
 		add = -200
 		liege = { is_independent_ruler = yes }
+		NOT = { government_allows = administrative }
 		NOT = {
-			is_rightful_liege_of = root
-
+			$FACTION_TARGET$ = { is_rightful_liege_of = root }
 		}
+	}
+
+	# If liege is Unpreferred heir, nudge towards claimant factions
+	modifier = {
+		desc = "FACTION_REASON_LIEGE_IS_UNPREFERRED_HEIR"
+		add = 25
+		NOT = { was_preferred_heir = $FACTION_TARGET$ }
+	}
+
+	# If liege is Preferred heir, nudge away from claimant factions
+	modifier = {
+		desc = "FACTION_REASON_LIEGE_IS_PREFERRED_HEIR"
+		add = -25
+		was_preferred_heir = $FACTION_TARGET$
+	}
+
+	# If an existing faction 
+	modifier = {
+		desc = "FACTION_REASON_LIEGE_IS_PREFERRED_HEIR"
+		add = -25
+		was_preferred_heir = $FACTION_TARGET$
 	}
 
 	# All else being equal, the AI might support a claimant over their current liege just to get better feudal obligations.
 	modifier = {
+		desc = "FACTION_REASON_BETTER_CROWN_AUTHORITY"
 		add = 10
 		AND = {
-			$FACTION_TARGET$ = {
-				has_realm_law = crown_authority_1
-			}
-			$FACTION_CLAIMANT$ = {
-				has_realm_law = crown_authority_0
-			}
+			$FACTION_TARGET$ = { has_realm_law = crown_authority_1 }
+			$FACTION_CLAIMANT$ = { has_realm_law = crown_authority_0 }
 		}
 	}
 	modifier = {
+		desc = "FACTION_REASON_BETTER_CROWN_AUTHORITY"
 		add = 15
 		AND = {
-			$FACTION_TARGET$ = {
-				has_realm_law = crown_authority_2
-			}
+			$FACTION_TARGET$ = { has_realm_law = crown_authority_2 }
 			$FACTION_CLAIMANT$ = {
 				OR = {
 					has_realm_law = crown_authority_0
@@ -403,11 +511,10 @@ claimant_faction_modifiers = {
 		}
 	}
 	modifier = {
+		desc = "FACTION_REASON_BETTER_CROWN_AUTHORITY"
 		add = 15
 		AND = {
-			$FACTION_TARGET$ = {
-				has_realm_law = crown_authority_3
-			}
+			$FACTION_TARGET$ = { has_realm_law = crown_authority_3 }
 			$FACTION_CLAIMANT$ = {
 				OR = {
 					has_realm_law = crown_authority_0
@@ -418,10 +525,60 @@ claimant_faction_modifiers = {
 		}
 	}
 
-	#More likely to create a claimant faction against a Ruler below their CGLevel
+	# More likely to create a claimant faction against a Ruler below their CGLevel
 	modifier = {
+		desc = "FACTION_REASON_LOWER_COURT_GRANDEUR"
 		add = 50
 		$FACTION_TARGET$.court_grandeur_current_level < $FACTION_TARGET$.court_grandeur_minimum_expected_level
+	}
+
+	# Unity - House members are more likely to join and create claimant factions with low levels of unity
+	modifier = { # Competitive unity level
+		add = 20
+		desc = "FACTION_REASON_unity_more_likely_claimant_factions"
+		exists = root.house
+		exists = $FACTION_TARGET$.house
+		house = $FACTION_TARGET$.house
+		house = { has_house_unity_parameter = unity_more_likely_claimant_factions }
+	}
+	modifier = { # Antagonistic unity level
+		add = 40
+		desc = "FACTION_REASON_unity_significantly_more_likely_claimant_factions"
+		exists = root.house
+		exists = $FACTION_TARGET$.house
+		house = $FACTION_TARGET$.house
+		house = { has_house_unity_parameter = unity_significantly_more_likely_claimant_factions }
+	}
+
+	modifier = {
+		desc = "FACTION_REASON_PERSIAN_STRUGGLE"
+		factor = 1.2
+		any_character_struggle = { is_struggle_type = persian_struggle }
+	}
+
+	# LOW LEGITIMACY
+	modifier = {
+		desc = "FACTION_REASON_LOW_LEGITIMACY"
+		$FACTION_TARGET$ = {
+			OR = {
+				has_legitimacy_flag = increased_factions
+				has_legitimacy_flag = very_increased_factions
+				has_legitimacy_flag = massively_increased_factions
+			}
+		}
+		add = {
+			value = 10
+			$FACTION_TARGET$ = {
+				if = {
+					limit = { has_legitimacy_flag = very_increased_factions }
+					add = 10
+				}
+				else_if = {
+					limit = { has_legitimacy_flag = massively_increased_factions }
+					add = 20
+				}
+			}
+		}
 	}
 
 	# Nanzhao stuff
@@ -431,11 +588,249 @@ claimant_faction_modifiers = {
 			story_type = nanzhao_collapse_story
 		}
 	}
+
+	# HIGH LEGITIMACY
+	modifier = {
+		desc = "FACTION_REASON_HIGH_LEGITIMACY"
+		$FACTION_TARGET$ = {
+			OR = {
+				has_legitimacy_flag = reduced_factions
+				has_legitimacy_flag = very_reduced_factions
+				has_legitimacy_flag = extra_reduced_factions
+			}
+		}
+		add = {
+			value = -10
+			$FACTION_TARGET$ = {
+				if = {
+					limit = { has_legitimacy_flag = very_reduced_factions }
+					add = -10
+				}
+				else_if = {
+					limit = { has_legitimacy_flag = extra_reduced_factions }
+					add = -20
+				}
+			}
+		}
+	}
+
+	### HARRYING OF THE NORTH
+	# Increases Claimant faction likelihood if Resistance is high
+	modifier = {
+		desc = "FACTION_REASON_HARRYING_RESISTANCE"
+		$FACTION_TARGET$ = {
+			AND = {
+				any_owned_story = {
+					story_type = story_cycle_harrying_of_the_north
+					var:resistance > 7
+					var:resistance > var:pacification
+				}
+			}
+		}
+		add = {
+			value = 0
+			if = {
+				limit = { 
+					$FACTION_TARGET$ = { 
+						any_owned_story = {
+							story_type = story_cycle_harrying_of_the_north
+							var:resistance > 7
+						}
+					} 
+				}
+				add = 15
+			}
+			else_if = {
+				limit = { 
+					$FACTION_TARGET$ = { 
+						any_owned_story = {
+							story_type = story_cycle_harrying_of_the_north
+							var:resistance > 10
+						}
+					} 
+				}
+				add = 30
+			}
+			else_if = {
+				limit = { 
+					$FACTION_TARGET$ = { 
+						any_owned_story = {
+							story_type = story_cycle_harrying_of_the_north
+							var:resistance > 13
+						}
+					} 
+				}
+				add = 50
+			}
+			else_if = {
+				limit = { 
+					$FACTION_TARGET$ = { 
+						any_owned_story = {
+							story_type = story_cycle_harrying_of_the_north
+							var:resistance > 16
+						}
+					} 
+				}
+				add = 80
+			}
+		}
+	}
+
+	# Decreases Claimant faction likelihood if Pacification is high
+	# This has lower thresholds but also lower rewards
+	modifier = {
+		desc = "FACTION_REASON_HARRYING_PACIFICATION"
+		$FACTION_TARGET$ = {
+			AND = {
+				any_owned_story = {
+					story_type = story_cycle_harrying_of_the_north
+					var:pacification > 5
+					var:pacification > var:resistance
+				}
+			}
+		}
+		add = {
+			value = 0
+			if = {
+				limit = { 
+					$FACTION_TARGET$ = { 
+						any_owned_story = {
+							story_type = story_cycle_harrying_of_the_north
+							var:pacification > 5
+						}
+					} 
+				}
+				add = -5
+			}
+			else_if = {
+				limit = { 
+					$FACTION_TARGET$ = { 
+						any_owned_story = {
+							story_type = story_cycle_harrying_of_the_north
+							var:pacification > 8
+						}
+					} 
+				}
+				add = -10
+			}
+			else_if = {
+				limit = { 
+					$FACTION_TARGET$ = { 
+						any_owned_story = {
+							story_type = story_cycle_harrying_of_the_north
+							var:pacification > 11
+						}
+					} 
+				}
+				add = -15
+			}
+			else_if = {
+				limit = { 
+					$FACTION_TARGET$ = { 
+						any_owned_story = {
+							story_type = story_cycle_harrying_of_the_north
+							var:pacification > 14
+						}
+					} 
+				}
+				add = -20
+			}
+		}
+	}
+
+	# Finally, multiplicative modifier for if they're Anglo-Saxon and you're Norman
+	modifier = {
+		desc = "FACTION_REASON_HARRYING_ANGLO_SAXON"
+		$FACTION_TARGET$ = {
+			AND = {
+				any_owned_story = {
+					story_type = story_cycle_harrying_of_the_north
+				}
+				culture = culture:norman
+			}
+		}
+		$FACTION_CLAIMANT$ = {
+			culture = culture:anglo_saxon
+		}
+		factor = 1.5
+	}
+
+	# If another Claimant Faction already exists, prefer to side with it
+	modifier = {
+		desc = "FACTION_REASON_SIDE_WITH_EXISTING"
+		add = -100
+		joined_faction ?= { save_temporary_scope_as = joined_faction_temp }
+		$FACTION_TARGET$ = {
+			any_targeting_faction = {
+				NOT = { this = scope:joined_faction_temp }
+				# Exists another claimant faction
+		  		faction_is_type = claimant_faction
+		  		# No player in that faction
+			  	NOT = {
+		  			any_faction_member = { is_ai = no }
+		  		}
+		  		# Faction claimant is one of following:
+		  		# 1. my soulmate
+		  		# 2. my best-friend
+		  		# 3. my primary heir, who I like, and is my child, sibling, or nibling
+		  		# 4. my opinion of them is higher than liege + higher than current faction claimant + their faith matches mine/is also pluralistic + their culture matches mine or is highly accepted
+				special_character = {
+					OR = {
+						has_relation_soulmate = root
+						has_relation_best_friend = root
+						AND = {
+							root.primary_heir ?= this
+							reverse_opinion = { target = root value >= medium_positive_opinion }
+							OR = {
+								is_child_of = root
+								is_sibling_of = root
+								is_nibling_of = root
+							}
+						}
+						AND = {
+							root = {
+								save_temporary_opinion_value_as = { name = opinion_of_current_liege target = $FACTION_TARGET$ }
+								opinion = { target = prev value > scope:opinion_of_current_liege }
+							}
+							trigger_if = {
+								limit = { exists = scope:joined_faction_temp.special_character }
+								root = {
+									save_temporary_opinion_value_as = { name = opinion_of_current_faction_claimant target = scope:joined_faction_temp.special_character }
+									opinion = { target = prev value > scope:opinion_of_current_faction_claimant }
+								}
+							}
+							OR = {
+								AND = {
+									root.faith = { has_doctrine = doctrine_pluralism_pluralistic }
+									faith = { has_doctrine = doctrine_pluralism_pluralistic }
+								}
+								faith = root.faith
+							}
+							culture = {
+								OR = {
+									this = root.culture
+									cultural_acceptance = { target = root.culture value >= 90 } # Essentially the same culture
+								}
+							}
+						}
+					}
+				}
+	  		}
+	  	}
+	}
+
+	# EP3 Dynasty Legacy Perk Malus
+	modifier = {
+		add = -50
+		$FACTION_TARGET$.dynasty ?= { has_dynasty_perk = ep3_administrative_legacy_5 }
+	}
 }
 
 nation_fracturing_faction_modifiers = {
+
 	# Short reign increase the change of NF
 	modifier = {
+		desc = "FACTION_REASON_SHORT_REIGN"
 		add = {
 			value = 0
 			if =  {
@@ -446,7 +841,7 @@ nation_fracturing_faction_modifiers = {
 						}
 					}
 				}
-				add = 20
+				add = 15
 			}
 			if =  {
 				limit =  {
@@ -466,13 +861,14 @@ nation_fracturing_faction_modifiers = {
 						}
 					}
 				}
-				add = 10
+				add = 5
 			}
 		}
 	}
 
 	# Lower the score if there are claimants of my culture
 	modifier = {
+		desc = "FACTION_REASON_CLAIMANTS_OF_MY_CULTURE"
 		add = -200
 		$FACTION_TARGET$ = {
 			primary_title = {
@@ -486,6 +882,7 @@ nation_fracturing_faction_modifiers = {
 
 	# Characters are less likely to join if cultural acceptance is high
 	modifier = {
+		desc = "FACTION_REASON_CULTURAL_ACCEPTANCE"
 		culture = {
 			NOR = {
 				this = $FACTION_TARGET$.culture
@@ -494,7 +891,7 @@ nation_fracturing_faction_modifiers = {
 			}
 		}
 		add = {
-			value = 15
+			value = 10
 			if = {
 				limit = {
 					culture = {
@@ -540,6 +937,7 @@ nation_fracturing_faction_modifiers = {
 
 	# More likely to happen if the target don't control the entirety of the de jure area of any of their title of the same rank as their primary title
 	modifier = {
+		desc = "FACTION_REASON_TARGET_NOT_FULL_CONTROL"
 		add = {
 			value = 0
 			$FACTION_TARGET$ = {
@@ -578,26 +976,28 @@ nation_fracturing_faction_modifiers = {
 
 	# more likely to happen if they lost wars or title recently
 	modifier = {
+		desc = "FACTION_REASON_RECENT_LOST_WAR"
 		add = {
 			value = 0
 			if = {
 				limit = { $FACTION_TARGET$ = { has_variable =  recently_lost_wars } }
 				add = $FACTION_TARGET$.var:recently_lost_wars
-				multiply = 30
+				multiply = 15
 			}
 		}
 	}
 
 	# more likely to happen to Tribal and Clans
 	modifier = {
+		desc = "FACTION_REASON_TRIBAL_CLAN"
 		add = {
 			value = 0
 			if = {
-				limit = { $FACTION_TARGET$ = { has_government = tribal_government } }
+				limit = { $FACTION_TARGET$ = { government_has_flag = government_is_tribal } }
 				add = 25
 			}
 			else_if = {
-				limit = { $FACTION_TARGET$ = { has_government = clan_government } }
+				limit = { $FACTION_TARGET$ = { government_has_flag = government_is_clan } }
 				# Increase for each powerful vassal you are not allied with
 				add = {
 					value = 0
@@ -669,17 +1069,100 @@ nation_fracturing_faction_modifiers = {
 
 	# Less likely for elective title
 	modifier = {
-		add = -100
+		desc = "FACTION_REASON_ELECTIVE_PRIMARY"
+		add = -125
 	 	$FACTION_TARGET$.primary_title = {
 			has_order_of_succession = election
 		}
 	}
 
+	# Less likely if you have low Crown Authority
+	modifier = {
+		desc = "FACTION_REASON_LOW_CROWN_AUTHORITY"
+		add = -50
+	 	$FACTION_TARGET$ = {
+			OR = {
+				has_realm_law = crown_authority_0
+				has_realm_law = crown_authority_1
+			}
+		}
+	}
+
+	# Less likely for French vassals
+	modifier = {
+		desc = "FACTION_REASON_FRENCH_VASSAL"
+		add = -200
+		culture = {
+			has_cultural_pillar = heritage_frankish
+		}
+	 	$FACTION_TARGET$.primary_title = title:k_france
+	}
+
+	# Less likely for Anglosaxons to want to destroy England
+	modifier = {
+		desc = "FACTION_REASON_ANGLOSAXON"
+		add = -200
+		culture = {
+			has_cultural_pillar = heritage_west_germanic
+		}
+	 	$FACTION_TARGET$.primary_title = title:k_england
+	}
+
+	# Less likely for Normans to want to destroy England
+	modifier = {
+		desc = "FACTION_REASON_NORMAN"
+		add = -200
+		culture = {
+			has_cultural_pillar = heritage_frankish
+		}
+	 	$FACTION_TARGET$.primary_title = title:k_england
+	}
+
+	# Less likely for Brythonic to want to destroy England
+	modifier = {
+		desc = "FACTION_REASON_BRYTHONIC"
+		add = -200
+		culture = {
+			has_cultural_pillar = heritage_brythonic
+		}
+	 	$FACTION_TARGET$.primary_title = title:k_england
+	}
+
+	# Less likely for vassals with Byzantine Traditions
+	modifier = {
+		desc = "FACTION_REASON_BYZANTINE"
+		add = -500
+	 	culture = {
+			has_cultural_parameter = byzantine_faction_differences
+		}
+	 	$FACTION_TARGET$ = {
+			has_title = title:e_byzantium
+		}
+	}
+
+	modifier = {
+		desc = "FACTION_REASON_BYZANTINE_RELIGION"
+		add = -200
+		religion = liege.religion
+	 	$FACTION_TARGET$ = {
+			has_title = title:e_byzantium
+		}
+	}
+
 	modifier = { # New vassals do not want to join independence factions
+		desc = "FACTION_REASON_NEW_VASSAL"
 		add = -1000
 		has_opinion_modifier = {
 			modifier = became_vassal
 			target = $FACTION_TARGET$
+		}
+	}
+
+	modifier = {
+		desc = "FACTION_REASON_PERSIAN_STRUGGLE"
+		add = -100
+		any_character_struggle = {
+			is_struggle_type = persian_struggle
 		}
 	}
 
@@ -722,14 +1205,46 @@ common_faction_modifiers = {
 		THRESHOLD = $THRESHOLD$
 	}
 
+	# Unity - House members are less likely to join factions against each other with high levels of unity
+	modifier = { # Friendly unity level
+		desc = "FACTION_REASON_unity_less_likely_claimant_factions"
+		add = -20
+		exists = root.house
+		exists = $FACTION_TARGET$.house
+		house = $FACTION_TARGET$.house
+		house = {
+			has_house_unity_parameter = unity_less_likely_factions
+		}
+	}
+	modifier = { # Harmonious unity level
+		desc = "FACTION_REASON_unity_significantly_less_likely_claimant_factions"
+		add = -40
+		exists = root.house
+		exists = $FACTION_TARGET$.house
+		house = $FACTION_TARGET$.house
+		house = {
+			has_house_unity_parameter = unity_significantly_less_likely_factions
+		}
+	}
+
 	# Debt: +10 to +60 join chance depending on how far in debt the top liege is
 	liege_debt_modifier = {
 		TARGET = $FACTION_TARGET$
 		SCORE_PER_DEBT_LEVEL = 10
 	}
 
+	# Duty Focus
+	modifier = {
+		desc = FACTION_REASON_duty_focus
+		add = duty_focus_value
+		$FACTION_TARGET$ = {
+			has_focus = stewardship_duty_focus
+		}
+	}
+
 	# Difficulty Settings
 	modifier = { # Easy
+		desc = "FACTION_REASON_DIFFICULTY_EASY"
 		add = -50
 		has_game_rule = easy_difficulty
 		$FACTION_TARGET$ = {
@@ -737,23 +1252,41 @@ common_faction_modifiers = {
 		}
 	}
 	modifier = { # Very Easy
+		desc = "FACTION_REASON_DIFFICULTY_VERY_EASY"
 		add = -150
 		has_game_rule = very_easy_difficulty
 		$FACTION_TARGET$ = {
 			is_ai = no
 		}
 	}
+	modifier = { # Conquerors
+		desc = "NO_FRIVOLOUS_ACTIVITIES_REASON"
+		add = -100
+		$FACTION_TARGET$ = {
+			ai_should_get_conqueror_bonuses = yes
+		}
+	}
+	modifier = { # Conquerors
+		desc = "NO_FRIVOLOUS_ACTIVITIES_REASON"
+		add = -250
+		$FACTION_TARGET$ = {
+			ai_should_get_extreme_conqueror_bonuses = yes
+		}
+	}
 
 	# Realm Stability Settings
 	modifier = {
+		desc = "FACTION_REASON_GAME_RULE_REALM_STABILITY_LESSER"
 		add = 50
 		has_game_rule = lesser_realm_stability
 	}
 	modifier = {
+		desc = "FACTION_REASON_GAME_RULE_REALM_STABILITY_HIGHER"
 		add = -50
 		has_game_rule = higher_realm_stability
 	}
 	modifier = {
+		desc = "FACTION_REASON_GAME_RULE_REALM_STABILITY_EXTREME"
 		add = -100
 		has_game_rule = extreme_realm_stability
 	}
@@ -763,19 +1296,76 @@ common_faction_modifiers = {
 		add = -10000
 		years_from_game_start < 1
 		$FACTION_TARGET$.primary_title.tier = tier_duchy
+		trigger_if = {
+			limit = { exists = scope:actor }
+			NOT = { # Not used for already warring factions
+				scope:actor.joined_faction ?= {
+					exists = faction_war
+					faction_target = $FACTION_TARGET$
+				}
+			}
+		}
+		desc = "FACTION_REASON_GAME_START_DUCHY"
 	}
 
 	modifier = {
 		add = -10000
 		years_from_game_start < 5
 		$FACTION_TARGET$.primary_title.tier = tier_kingdom
-
+		trigger_if = {
+			limit = { exists = scope:actor }
+			NOT = { # Not used for already warring factions
+				scope:actor.joined_faction ?= {
+					exists = faction_war
+					faction_target = $FACTION_TARGET$
+				}
+			}
+		}
+		desc = "FACTION_REASON_GAME_START_KINGDOM"
 	}
 
 	modifier = {
 		add = -10000
 		years_from_game_start < 10
 		$FACTION_TARGET$.primary_title.tier = tier_empire
+		trigger_if = {
+			limit = { exists = scope:actor }
+			NOT = { # Not used for already warring factions
+				scope:actor.joined_faction ?= {
+					exists = faction_war
+					faction_target = $FACTION_TARGET$
+				}
+			}
+		}
+		desc = "FACTION_REASON_GAME_START_EMPIRE"
+	}
+
+	modifier = { # Hostages
+		desc = "FACTION_REASON_HOSTAGE"
+		add = -50
+		any_home_court_hostage = { warden = $FACTION_TARGET$ }
+	}
+
+	modifier = {
+		desc = "FACTION_REASON_DETRACTORS_STICK_TOGETHER"
+		add = -50
+		has_trait = fp3_struggle_detractor
+		OR = {
+			culture = { has_same_culture_heritage = $FACTION_TARGET$.culture }
+			faith = $FACTION_TARGET$.faith
+		}
+		$FACTION_TARGET$ = {
+			has_trait = fp3_struggle_detractor
+		}
+	}
+
+	#FP3 Strengthern Caliphate
+	modifier = {
+		desc = "FACTION_REASON_FP3_SUPPORTER"
+		add = -50
+		global_var:fp3_struggle_ending ?= flag:fp3_struggle_strengthen_caliphate_ending
+		has_trait = fp3_struggle_supporter
+		$FACTION_TARGET$ = { has_title = title:d_sunni }
 	}
 
 	modifier = {

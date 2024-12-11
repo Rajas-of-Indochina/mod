@@ -8,10 +8,23 @@ claim_mandate_cb = {
 		OR  = {
 			is_independent_ruler = yes
 			# is vassal of china and imperial authority is 0
-			top_liege = {
-				has_realm_law = bureaucratic_authority_0
-				any_held_title = {
-					this = title:e_celestia_china
+			OR = {
+				trigger_if = {
+					limit = { has_dlc_feature = roads_to_power }
+					top_liege = {
+						has_realm_law = imperial_bureaucracy_0
+						any_held_title = {
+							this = title:e_celestia_china
+						}
+					}
+				}
+				trigger_else = {
+					top_liege = {
+						has_realm_law = bureaucratic_authority_0
+						any_held_title = {
+							this = title:e_celestia_china
+						}
+					}
 				}
 			}
 		}
@@ -141,6 +154,16 @@ claim_mandate_cb = {
 		hidden_effect = {
 			scope:attacker = {
 				if = {
+					limit = {
+						has_dlc_feature = roads_to_power
+					}
+					if = {
+						limit = { NOT = { has_government = administrative_government } }
+						change_to_administrative_effect = yes
+						add_realm_law_skip_effects = single_heir_succession_law
+					}
+				}
+				else_if = {
 					limit = { NOT = { has_government = chinese_government } }
 					change_government = chinese_government
 				}
@@ -173,7 +196,8 @@ claim_mandate_cb = {
 		# Take all tributaries
 		scope:defender = {
 	        # Add permanent tributaries to heir
-	        every_in_list = { variable = permanent_tributaries
+	        every_in_list = {
+				variable = permanent_tributaries
 
 				make_tributary = {
 	                TYPE = tributary_permanent
@@ -217,6 +241,9 @@ claim_mandate_cb = {
 
 		# FP1: note the victory for future memorialisation via stele (if applicable).
 		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_white_peace_desc = {
@@ -259,6 +286,9 @@ claim_mandate_cb = {
 		}
 
 		add_truce_white_peace_effect = yes
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_defeat_desc = {
@@ -318,6 +348,9 @@ claim_mandate_cb = {
 		add_truce_attacker_defeat_effect = yes
 
 		on_lost_aggression_war_discontent_loss = yes
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 
 	}
 
@@ -524,6 +557,9 @@ chinese_invasion_cb = {
 
 		# FP1: note the victory for future memorialisation via stele (if applicable).
 		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_white_peace_desc = {
@@ -564,6 +600,9 @@ chinese_invasion_cb = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_defeat_desc = {
@@ -616,6 +655,9 @@ chinese_invasion_cb = {
 			save_temporary_scope_as = loser
 		}
 		on_lost_aggression_war_discontent_loss = yes
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	transfer_behavior = transfer

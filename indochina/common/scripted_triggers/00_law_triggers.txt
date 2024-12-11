@@ -62,32 +62,38 @@ has_partition_succession_realm_law_trigger = {
 }
 
 realm_law_use_crown_authority = {
+	# We separate this out into a different trigger for moddability purposes, per community request: this allows more diverse authority laws to be easily modded in without needing to override 00_realm_laws.txt, and thus for greater inter-mod compatibility.
 	NOR = {
-		has_government = tribal_government
 		has_government = nomadic_government
 		has_government = mandala_government
 		has_government = chinese_government
+		has_government = administrative_government
 		has_government = anarchist_government
-		realm_law_use_imperial_authority = yes
 	}
+	# realm_law_use_imperial_authority = no
+	realm_law_use_tribal_authority = no
+	realm_law_use_camp_purpose = no
+	realm_law_use_imperial_bureaucracy = no
 }
 
 realm_law_use_tribal_authority = {
-	has_government = tribal_government
+	government_has_flag = government_is_tribal
+	realm_law_use_nomadic_authority = no
+	realm_law_use_stateless_authority = no
 }
 
-realm_law_use_imperial_authority = {
-	OR = {
-		has_government = imperial_government
-		has_government = imperial_cult_government
-		has_government = autocratic_government
-	}
+realm_law_use_camp_purpose = {
+	government_has_flag = government_is_landless_adventurer
+}
+
+realm_law_use_imperial_bureaucracy = {
+	government_allows = administrative
 }
 
 can_have_confederate_partition_succession_law_trigger = {
-		OR = {
-			government_has_flag = government_is_feudal
-			government_has_flag = government_is_tribal
+	OR = {
+		government_has_flag = government_is_feudal
+		government_has_flag = government_is_tribal
 	}
 }
 
@@ -176,13 +182,8 @@ can_keep_single_heir_succession_law_trigger = {
 		}
 		OR = {
 			can_have_single_heir_succession_law_trigger = yes
-			# Byzantine Empire
+			# Byzantine Empire et. al
 			historical_succession_access_single_heir_succession_law_trigger = yes
-			fallen_eagle_special_needs_trigger = yes
-			has_government = imperial_government
-			has_government = imperial_cult_government
-			has_government = autocratic_government
-			has_government = legion_government
 		}
 	}
 }
@@ -203,6 +204,7 @@ can_have_single_heir_succession_law_trigger = {
 				}
 			}
 		}
+		non_roman_administrative_gov_trigger = yes
 	}
 }
 
@@ -230,6 +232,10 @@ can_have_single_heir_youngest_succession_law_trigger = {
 			government_has_flag = government_is_feudal
 			government_has_flag = government_is_clan
 		}
+	}
+	OR = {
+		NOT = { government_allows = administrative }
+		non_roman_administrative_gov_trigger = yes
 	}
 }
 
@@ -277,6 +283,10 @@ can_have_single_heir_dynasty_house_trigger = {
 			government_has_flag = government_is_clan
 		}
 	}
+	OR = {
+		NOT = { government_allows = administrative }
+		non_roman_administrative_gov_trigger = yes
+	}
 }
 
 can_have_bishop_theocratic_succession_law_trigger = {
@@ -311,19 +321,19 @@ can_have_city_succession_law_trigger = {
 title_can_reduce_partition_law_trigger = {
 	OR = {
 		AND = {
-			has_title_law = single_heir_succession_law
+			has_realm_law = single_heir_succession_law
 			holder = {
 				can_have_high_partition_succession_law_trigger = yes
 			}
 		}
 		AND = {
-			has_title_law = high_partition_succession_law
+			has_realm_law = high_partition_succession_law
 			holder = {
 				can_have_high_partition_succession_law_trigger = yes
 			}
 		}
 		AND = {
-			has_title_law = partition_succession_law
+			has_realm_law = partition_succession_law
 			holder = {
 				can_have_confederate_partition_succession_law_trigger = yes
 			}
@@ -361,4 +371,38 @@ can_have_nasrani_partition_law_trigger = {
 		}
 	}
 	can_have_confederate_partition_succession_law_trigger = yes
+}
+
+non_roman_administrative_gov_trigger = {
+	government_allows = administrative
+	is_independent_ruler = yes
+	primary_title = {
+		NOR = {
+			this = title:e_roman_empire
+			this = title:e_byzantium
+		}
+	}
+}
+
+can_have_acclamation_succession_law_trigger = {
+	has_ep3_dlc_trigger = yes
+	non_roman_administrative_gov_trigger = no
+	is_independent_ruler = yes
+}
+
+can_keep_acclamation_succession_law_trigger = {
+	has_ep3_dlc_trigger = yes
+	trigger_if = {
+		limit = {
+			has_realm_law = acclamation_succession_law 
+		}
+		OR = {
+			can_have_acclamation_succession_law_trigger = yes
+			has_title = title:e_byzantium
+		}
+	}
+}
+
+can_change_acclamation_succession_law_trigger = {
+	has_ep3_dlc_trigger = yes
 }

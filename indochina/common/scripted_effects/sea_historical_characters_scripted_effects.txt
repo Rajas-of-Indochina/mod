@@ -1,0 +1,65 @@
+﻿
+roa_spawn_historical_characters_effect = {
+
+	# Nong Zhigao
+
+	# Bang Klang Hao (Sukhothai)
+
+	# Ken Arok
+	if = {
+		limit = {
+			current_year >= 1200
+			current_year <= 1205
+			NOT = { exists = global_var:hchar_ken_arok }
+		}
+		set_global_variable = { name = hchar_ken_arok value = yes }
+		title:b_tumapel = {
+			save_scope_as = birth_location
+			create_character = {
+				age = 20
+				name = Ken_Arok
+				dynasty_house = house:house_rajasa
+				gender_female_chance = 0
+				location = scope:birth_location.title_province
+				faith = faith:shaivism
+				culture = scope:birth_location.title_province.culture
+
+				trait = ambitious
+				trait = deceitful
+
+				trait = jungle_stalker
+				trait = wild_oat
+				trait = gallowsbait
+				trait = shrewd
+
+				trait = education_intrigue_4
+
+				diplomacy = { min_template_decent_skill max_template_decent_skill }
+				martial = { min_template_high_skill max_template_high_skill }
+				stewardship = { min_template_low_skill max_template_low_skill }
+				intrigue = { min_template_high_skill max_template_high_skill }
+				learning = { min_template_low_skill max_template_low_skill }
+				prowess = { min_template_decent_skill max_template_decent_skill }
+				save_scope_as = historical_character
+			}
+			scope:historical_character ?= {
+				historical_character_finalization_effect = yes
+				set_variable = ken_arok
+				save_scope_as = major
+				add_trait_xp = {
+					trait = gallowsbait
+					track = bandit
+					value = {
+						integer_range = {
+							min = medium_lifestyle_random_xp_low
+							max = medium_lifestyle_random_xp_high
+						}
+					}
+				}
+			}
+			if = { limit = { has_variable = ken_arok } } # Error suppression
+			spawn_historical_characters_boilerplate_effect = yes
+		}
+	}
+
+}

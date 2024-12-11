@@ -166,6 +166,15 @@ task_promote_culture = {
 		# Conversion speed game rules
 		if = {
 			limit = {
+				has_game_rule = no_culture_conversion
+			}
+			multiply = {
+				value = 0
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
+			}
+		}
+		if = {
+			limit = {
 				has_game_rule = slower_culture_conversion_speed
 			}
 			multiply = {
@@ -184,20 +193,42 @@ task_promote_culture = {
 		}
 		if = {
 			limit = {
-				has_game_rule = significantly_faster_culture_conversion_speed
+				has_game_rule = extremely_slow_culture_conversion_speed
 			}
 			multiply = {
-				value = significantly_faster_game_rule_value
-				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
+				value = 0.10 #significantly_slower_game_rule_value
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
 			}
 		}
 		if = {
 			limit = {
-				has_game_rule = faster_culture_conversion_speed
+				OR = {
+					has_game_rule = faster_culture_conversion_speed
+					AND = {
+						has_game_rule = faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
 			}
 			multiply = {
 				value = faster_game_rule_value
 				desc = GAME_RULE_FASTER_REASON
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_game_rule = significantly_faster_culture_conversion_speed
+					AND = {
+						has_game_rule = significantly_faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
+
+			}
+			multiply = {
+				value = significantly_faster_game_rule_value
+				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
 			}
 		}
 		# Faster conversion for FP2 Hostility ending, if county is in Iberia and culture was involved
@@ -267,10 +298,32 @@ task_promote_culture = {
 				desc = bp2_devoted_to_tradition_modifier_conversion_task_desc
 			}
 		}
-
+		if = {
+			limit = {
+				scope:councillor_liege = {
+					has_title = title:c_byzantion
+					title:c_byzantion = { has_county_modifier = pandidakterion_university_modifier }
+				}
+			}
+			multiply = {
+				value = 1.25
+				desc = pandidakterion_university_modifier
+			}
+		}
+		if = {
+			limit = {
+				scope:county = { has_county_modifier = improve_promote_culture_modifier }
+				scope:councillor_liege = scope:county.holder.top_liege
+			}
+			multiply = {
+				value = 1.20
+				desc = improve_promote_culture_modifier
+			}
+		}
 	}
 
 	potential_county = {
+		NOT = { has_game_rule = no_culture_conversion }
 		scope:county = {
 			### Minority stuff ###
 			scope:councillor_liege = { has_realm_law_flag = may_convert_culture }
@@ -302,7 +355,13 @@ task_promote_culture = {
 		}
 		trigger_if = {
 			limit = {
-				scope:councillor_liege = { is_ai = yes }
+				scope:councillor_liege = {
+					is_ai = yes
+					NAND = { # AI Directives override this
+						has_character_flag = vassal_directive_convert_culture
+						vassal_is_valid_and_follows_directive_trigger = { VASSAL = this LIEGE = liege }
+					}
+				}
 			}
 			NAND = { # Princes in the HRE tend to not convert each other's cultures
 				exists = title:e_hre.holder
@@ -479,6 +538,34 @@ task_promote_culture = {
 				}
 			}
 		}
+		trigger_else_if = { # But AI Directives should still try to look pretty
+			limit = {
+				scope:councillor_liege = {
+					is_ai = yes
+					has_character_flag = vassal_directive_convert_culture
+					vassal_is_valid_and_follows_directive_trigger = { VASSAL = this LIEGE = liege }
+				}
+			}
+			trigger_if = {
+				limit = {
+					scope:county = {
+						any_neighboring_county = {
+							culture = scope:councillor_liege.culture
+						}
+					}
+				}
+				scope:county = {
+					any_neighboring_county = {
+						culture = scope:councillor_liege.culture # The AI only wants to convert counties bordering their own culture
+					}
+				}
+			}
+			trigger_else = {
+				always = yes
+			}
+		}
+		trigger_else = {
+		}
 	}
 
 	county_modifier = {
@@ -605,6 +692,14 @@ task_promote_culture = {
 		}
 		if = {
 			limit = {
+				scope:councillor_liege.culture = {
+					has_cultural_parameter = less_likely_to_promote_culture
+				}
+			}
+			add = -250
+		}
+		if = {
+			limit = {
 				scope:councillor_liege = {
 					culture = {
 						OR = {
@@ -664,6 +759,17 @@ task_promote_culture = {
 				}
 			}
 			multiply = 0
+		}
+
+		# AI directive
+		if = {
+			limit = {
+				scope:councillor_liege = {
+					has_character_flag = vassal_directive_convert_culture
+					vassal_is_valid_and_follows_directive_trigger = { VASSAL = this LIEGE = liege }
+				}
+			}
+			add = 50000
 		}
 	}
 }
@@ -790,6 +896,16 @@ task_promote_minority = {
 		# Conversion speed game rules
 		if = {
 			limit = {
+				has_game_rule = no_culture_conversion
+			}
+			multiply = {
+				value = 0
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
+			}
+		}
+
+		if = {
+			limit = {
 				has_game_rule = slower_culture_conversion_speed
 			}
 			multiply = {
@@ -808,20 +924,42 @@ task_promote_minority = {
 		}
 		if = {
 			limit = {
-				has_game_rule = significantly_faster_culture_conversion_speed
+				has_game_rule = extremely_slow_culture_conversion_speed
 			}
 			multiply = {
-				value = significantly_faster_game_rule_value
-				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
+				value = 0.10 #significantly_slower_game_rule_value
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
 			}
 		}
 		if = {
 			limit = {
-				has_game_rule = faster_culture_conversion_speed
+				OR = {
+					has_game_rule = faster_culture_conversion_speed
+					AND = {
+						has_game_rule = faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
 			}
 			multiply = {
 				value = faster_game_rule_value
 				desc = GAME_RULE_FASTER_REASON
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_game_rule = significantly_faster_culture_conversion_speed
+					AND = {
+						has_game_rule = significantly_faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
+
+			}
+			multiply = {
+				value = significantly_faster_game_rule_value
+				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
 			}
 		}
 
@@ -830,6 +968,7 @@ task_promote_minority = {
 	}
 
 	potential_county = {
+		NOT = { has_game_rule = no_culture_conversion }
 		scope:county = {
 			### Minority stuff ###
 			scope:councillor_liege = {

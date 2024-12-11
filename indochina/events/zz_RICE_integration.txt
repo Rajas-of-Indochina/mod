@@ -4,6 +4,7 @@ namespace = tarim_basin
 namespace = siberia
 namespace = pamir
 namespace = sri_lanka
+namespace = sicily
 
 # NORMANDY STRUGGLE INTRO Just to shush errors
 normandy.0001 = { # Fullscreen Intro Event
@@ -567,7 +568,7 @@ sus.0030 = {
 			add = -0.1
 			AND = {
 				is_ruler = yes
-				has_government = tribal_government
+				government_has_flag = government_is_tribal
 			}
 		}
 		modifier = {
@@ -612,13 +613,10 @@ sus.0030 = {
 					region = world_innovation_camels
 					OR = {
 						culture = { has_cultural_pillar = heritage_arabic }
+						culture = { has_cultural_pillar = heritage_syriac }
 						AND = {
 							has_global_variable = RICE_game_started_on_TFE_start_date
 							culture = { has_cultural_pillar = heritage_kemetic }
-						}
-						AND = {
-							has_global_variable = RICE_game_started_on_TFE_start_date
-							culture = { has_cultural_pillar = heritage_semitic }
 						}
 						AND = {
 							has_global_variable = RICE_game_started_on_TFE_start_date
@@ -632,13 +630,10 @@ sus.0030 = {
 				limit = {
 					OR = {
 						culture = { has_cultural_pillar = heritage_arabic }
+						culture = { has_cultural_pillar = heritage_syriac }
 						AND = {
 							has_global_variable = RICE_game_started_on_TFE_start_date
 							culture = { has_cultural_pillar = heritage_kemetic }
-						}
-						AND = {
-							has_global_variable = RICE_game_started_on_TFE_start_date
-							culture = { has_cultural_pillar = heritage_semitic }
 						}
 						AND = {
 							has_global_variable = RICE_game_started_on_TFE_start_date
@@ -958,7 +953,7 @@ sus.0031 = {
 			add = -0.1
 			AND = {
 				is_ruler = yes
-				has_government = tribal_government
+				government_has_flag = government_is_tribal
 			}
 		}
 		modifier = {
@@ -1317,7 +1312,7 @@ sus.0032 = {
 			add = -0.1
 			AND = {
 				is_ruler = yes
-				has_government = tribal_government
+				government_has_flag = government_is_tribal
 			}
 		}
 		modifier = {
@@ -1647,7 +1642,7 @@ sus.0033 = {
 			add = -0.1
 			AND = {
 				is_ruler = yes
-				has_government = tribal_government
+				government_has_flag = government_is_tribal
 			}
 		}
 		modifier = {
@@ -1977,6 +1972,18 @@ tarim_basin.0020 = {
 				}
 				desc = tarim_basin.0020.desc.indian
 			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_silk_road_community_type = flag:east_african
+				}
+				desc = tarim_basin.0020.desc.east_african
+			}	
+			triggered_desc = {
+				trigger = {
+					var:RICE_silk_road_community_type = flag:southeast_asian
+				}
+				desc = tarim_basin.0020.desc.southeast_asian
+			}	
 		}
 	}
 	theme = realm
@@ -2006,6 +2013,14 @@ tarim_basin.0020 = {
 		name = {
 			trigger = { var:RICE_silk_road_community_type = flag:indian }
 			text = tarim_basin.0020.option.indian
+		}
+		name = {
+			trigger = { var:RICE_silk_road_community_type = flag:east_african }
+			text = tarim_basin.0020.option.east_african
+		}
+		name = {
+			trigger = { var:RICE_silk_road_community_type = flag:southeast_asian }
+			text = tarim_basin.0020.option.southeast_asian
 		}
 		if = {
 			limit = {
@@ -2132,6 +2147,56 @@ tarim_basin.0020 = {
 			custom_tooltip = tarim_basin.0020.tooltip.indian
 			do_silk_road_migration_effect = { REGION = RICE_silk_road_india }
 		}
+		if = {
+			limit = {
+				var:RICE_silk_road_community_type = flag:east_african
+			}
+			if = {
+				limit = {
+					exists = dynasty
+					dynasty = {
+						has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_3
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_east_african_contacts
+					years = 20
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_east_african_contacts
+					years = 10
+				}
+			}
+			custom_tooltip = tarim_basin.0020.tooltip.east_african
+			do_east_african_silk_road_migration_effect = yes
+		}
+		if = {
+			limit = {
+				var:RICE_silk_road_community_type = flag:southeast_asian
+			}
+			if = {
+				limit = {
+					exists = dynasty
+					dynasty = {
+						has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_3
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_southeast_asian_contacts
+					years = 20
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_southeast_asian_contacts
+					years = 10
+				}
+			}
+			custom_tooltip = tarim_basin.0020.tooltip.southeast_asian
+			do_silk_road_migration_effect = { REGION = RICE_silk_road_SEA }
+		}
 	}
 
 	after = {
@@ -2217,7 +2282,7 @@ siberia.0001 = {
 					# Don't spawn Evenk and Nivkh event courtiers in Manchuria, they aren't unusual here
 					any_realm_county = {
 						count <= 0
-						geographical_region = world_manchuria
+						title_province.geographical_region = world_manchuria
 					}
 				}
 				add_character_flag = RICE_siberia_evenk_maker
@@ -2234,7 +2299,7 @@ siberia.0001 = {
 					# Don't spawn Evenk and Nivkh event courtiers in Manchuria, they aren't unusual here
 					any_realm_county = {
 						count <= 0
-						geographical_region = world_manchuria
+						title_province.geographical_region = world_manchuria
 					}
 				}
 				add_character_flag = RICE_siberia_nivkh_maker
@@ -2975,7 +3040,7 @@ sri_lanka.0010 = {
 					NOT = { religion = religion:buddhism_religion }
 				}
 				# set_county_faith = scope:indian_faith
-				save_scope_as = scope:county
+				save_scope_as = county
 				promote_faith_minority_effect = { FAITH = scope:indian_faith }
 			}
 			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
@@ -3149,7 +3214,7 @@ sri_lanka.0010 = {
 					NOT = { religion = religion:hinduism_religion }
 				}
 				# set_county_faith = scope:indian_faith
-				save_scope_as = scope:county
+				save_scope_as = county
 				promote_faith_minority_effect = { FAITH = scope:indian_faith }
 			}
 			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
@@ -3159,7 +3224,7 @@ sri_lanka.0010 = {
 
 		else_if = {
 			limit = {
-				var:RICE_india_land_grant_type = flag:jainism
+				var:RICE_india_land_grant_type ?= flag:jainism
 			}
 			religion:jainism_religion = {
 				save_scope_as = religion
@@ -3303,7 +3368,7 @@ sri_lanka.0010 = {
 					NOT = { religion = religion:jainism_religion }
 				}
 				# set_county_faith = scope:indian_faith
-				save_scope_as = scope:county
+				save_scope_as = county
 				promote_faith_minority_effect = { FAITH = scope:indian_faith }
 			}
 			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
@@ -3313,7 +3378,7 @@ sri_lanka.0010 = {
 
 		else_if = {
 			limit = {
-				var:RICE_india_land_grant_type = flag:nasrani
+				var:RICE_india_land_grant_type ?= flag:nasrani
 			}
 			religion:christianity_religion = {
 				save_scope_as = religion
@@ -3404,7 +3469,7 @@ sri_lanka.0010 = {
 					}
 				}
 				every_held_title = {
-					custom = RICE_all_held_counties_india_church
+					custom_tooltip = RICE_all_held_counties_india_church
 					limit = {
 						tier = tier_county
 						any_county_province = {
@@ -3443,7 +3508,7 @@ sri_lanka.0010 = {
 					NOT = { religion = religion:christianity_religion }
 				}
 				# set_county_faith = scope:indian_faith
-				save_scope_as = scope:county
+				save_scope_as = county
 				promote_faith_minority_effect = { FAITH = scope:indian_faith }
 			}
 			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
@@ -3583,7 +3648,7 @@ sri_lanka.0010 = {
 					NOT = { religion = religion:judaism_religion }
 				}
 				# set_county_faith = scope:indian_faith
-				save_scope_as = scope:county
+				save_scope_as = county
 				promote_faith_minority_effect = { FAITH = scope:indian_faith }
 			}
 			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
@@ -3611,4 +3676,622 @@ sri_lanka.0010 = {
 		}
 	}
 
+}
+
+
+
+
+# Siculo-Arabic culture event
+sicily.0016 = {
+	type = character_event
+	title = sicily.0016.t
+	desc = sicily.0016.desc
+	theme = culture_change
+	override_background = { reference = RICE_background_sicily_travel }
+
+	left_portrait = root
+
+	trigger = {
+		# Not Sicilian
+		culture = {
+			NOR = {
+				this = culture:sicilian
+				any_parent_culture_or_above = {
+					this = culture:sicilian
+				}
+			}
+		}
+		RICE_sicily_arabic_trigger = yes
+		any_held_title = {
+			tier = tier_county
+			exists = holder
+			NOT = { exists = var:RICE_had_siculo_arabic_county_conversion }
+			title_province = {
+				geographical_region = custom_sicily
+			}
+			culture = {
+				NOR = {
+					this = culture:sicilian
+					any_parent_culture_or_above = {
+						this = culture:sicilian
+					}
+				}
+				NOR = {
+					this = culture:siculo_arabic
+					any_parent_culture_or_above = {
+						this = culture:siculo_arabic
+					}
+				}
+			}
+			OR = {
+				RICE_sicily_latin_trigger = yes
+				RICE_sicily_greek_trigger = yes
+				RICE_sicily_arabic_trigger = yes
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 2
+			culture = culture:norman
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				exists = holder
+				NOT = { exists = var:RICE_had_siculo_arabic_county_conversion }
+				title_province = {
+					geographical_region = custom_sicily
+				}
+				culture = {
+					NOR = {
+						this = culture:sicilian
+						any_parent_culture_or_above = {
+							this = culture:sicilian
+						}
+					}
+					NOR = {
+						this = culture:siculo_arabic
+						any_parent_culture_or_above = {
+							this = culture:siculo_arabic
+						}
+					}
+				}
+				OR = {
+					RICE_sicily_latin_trigger = yes
+					RICE_sicily_greek_trigger = yes
+					RICE_sicily_arabic_trigger = yes
+				}
+			}
+			weight = { # Try to approximate organic spread
+				base = 1
+				modifier = {
+					add = 4
+					any_neighboring_county = {
+						culture = culture:siqilli
+					}
+				}
+			}
+			save_scope_as = county_to_change
+			culture = {
+				save_scope_as = old_culture
+			}
+			set_variable = {
+				name = RICE_had_siculo_arabic_county_conversion
+				value = yes
+			}
+			# Necessary to prevent Sicilian from arising here later on
+			set_variable = {
+				name = had_sicilian_county_conversion
+				value = yes
+			}
+		}
+		culture = { save_scope_as = old_culture }
+		culture:siqilli = {
+			save_scope_as = siculo_arabic # For loc
+		}
+		debug_log = "Converted a province to Siculo-Arabic from sicily.0016"
+	}
+
+	option = {
+		name = sicily.0016.a
+		scope:county_to_change = {
+			set_county_culture = culture:siqilli
+		}
+		add_culture_minority_effect = {
+			CULTURE = scope:old_culture
+			SIZE = large
+			COUNTY = scope:county_to_change
+		}
+	}
+}
+
+
+
+# Locals are using other culture/religion legal courts
+sicily.0200 = {
+	type = character_event
+	title = sicily.0200.t
+	desc = sicily.0200.desc
+	theme = diplomacy
+	override_background = { reference = RICE_background_sicily_interior }
+
+	left_portrait = {
+		character = root
+		animation = stress
+	}
+
+
+	trigger = {
+		any_held_county = {
+			culture = root.culture
+			OR = {
+				any_in_list = {
+					variable = culture_minorities_large
+					NOT = { THIS = root.culture }
+				}
+				any_in_list = {
+					variable = culture_minorities_small
+					NOT = { THIS = root.culture }
+				}
+			}
+			any_county_province = {
+				geographical_region = custom_sicily
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = -0.2
+			has_trait = just
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = -0.2
+			has_trait = compassionate
+		}
+	}
+
+	immediate = {
+		random_held_county = {
+			limit = {
+				culture = root.culture
+				OR = {
+					any_in_list = {
+						variable = culture_minorities_large
+						NOT = { THIS = root.culture }
+					}
+					any_in_list = {
+						variable = culture_minorities_small
+						NOT = { THIS = root.culture }
+					}
+				}
+				any_county_province = {
+					geographical_region = custom_sicily
+				}
+			}
+			save_scope_as = county
+			if = {
+				limit = { has_variable_list = culture_minorities_large }
+				random_in_list = {
+					variable = culture_minorities_large
+					save_scope_as = other_culture
+				}
+			}
+			else = {
+				random_in_list = {
+					variable = culture_minorities_small
+					save_scope_as = other_culture
+				}
+			}
+		}
+		root.culture = {
+			save_scope_as = culture
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0200.a
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_sicily_legal_opportunism_cracking_down
+				years = 10
+			}
+		}
+		scope:culture = {
+			change_cultural_acceptance = {
+				target = scope:other_culture
+				value = -1
+				desc = "Cracked down on local courts"
+			}
+		}
+		if = {
+			limit = {
+				RICE_sicily_latin_culture_trigger = yes
+			}
+			RICE_sicily_signore_latin_track_minor_gain = yes
+		}
+		else_if = {
+			limit = {
+				RICE_sicily_greek_culture_trigger = yes
+			}
+			RICE_sicily_signore_greek_track_minor_gain = yes
+		}
+		else_if = {
+			limit = {
+				RICE_sicily_arabic_culture_trigger = yes
+			}
+			RICE_sicily_signore_arabic_track_minor_gain = yes
+		}
+		stress_impact = {
+			arbitrary = minor_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0200.b
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_sicily_legal_opportunism_ignoring
+				years = 10
+			}
+		}
+		scope:culture = {
+			change_cultural_acceptance = {
+				target = scope:other_culture
+				value = 1
+				desc = "Cracked down on local courts"
+			}
+		}
+		if = {
+			limit = {
+				RICE_sicily_latin_culture_trigger = no
+			}
+			RICE_sicily_signore_latin_track_minor_gain = yes
+		}
+		if = {
+			limit = {
+				RICE_sicily_greek_culture_trigger = no
+			}
+			RICE_sicily_signore_greek_track_minor_gain = yes
+		}
+		if = {
+			limit = {
+				RICE_sicily_arabic_culture_trigger = no
+			}
+			RICE_sicily_signore_arabic_track_minor_gain = yes
+		}
+		stress_impact = {
+			just = minor_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sicily.0200.info
+		}
+	}
+
+}
+
+# Muslim scholar's interpretation of "Port of Holy War" (i.e. a religious boder zone) causing problems?
+sicily.0201 = {
+	type = character_event
+	window = duel_event
+	title = sicily.0201.t
+	desc = sicily.0201.desc
+	theme = diplomacy
+	override_background = { reference = RICE_background_sicily_interior }
+
+	left_portrait = {
+		character = scope:courtier
+		animation = disapproval
+	}
+
+	right_portrait = {
+		character = scope:scholar
+		animation = beg
+	}
+
+
+	trigger = {
+		religion = religion:islam_religion
+		any_held_county = {
+			OR = {
+				religion = religion:islam_religion
+				any_in_list = {
+					variable = faith_minorities_large
+					religion = religion:islam_religion
+				}
+				any_in_list = {
+					variable = faith_minorities_small
+					religion = religion:islam_religion
+				}
+			}
+			any_county_province = {
+				geographical_region = custom_sicily
+			}
+		}
+		OR = {
+			any_courtier_or_guest = {
+				is_available_ai_adult = yes
+				OR = {
+					learning >= decent_skill_rating
+					has_trait = scholar
+					has_trait = theologian
+					has_trait = education_learning_3
+					has_trait = education_learning_4
+				}
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				OR = {
+					learning >= decent_skill_rating
+					has_trait = scholar
+					has_trait = theologian
+					has_trait = education_learning_3
+					has_trait = education_learning_4
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = -0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		random_held_county = {
+			limit = {
+				religion = religion:islam_religion
+				any_county_province = {
+					geographical_region = custom_sicily
+				}
+			}
+			save_scope_as = county
+		}
+		scope:county.faith = {
+			save_scope_as = sicily_faith
+		}
+		scope:county.culture = {
+			save_scope_as = sicily_culture
+		}
+
+		hidden_effect = {
+			create_character = {
+				location = root.capital_province
+				template = RICE_sicily_traveling_scholar_template
+				save_scope_as = scholar
+			}
+
+			scope:scholar = {
+				add_character_modifier = {
+					modifier = RICE_sicily_firebrand_legal_scholar
+				}
+			}
+
+		}
+
+		every_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				OR = {
+					learning >= decent_skill_rating
+					has_trait = scholar
+					has_trait = theologian
+					has_trait = education_learning_3
+					has_trait = education_learning_4
+				}
+			}
+			add_to_list = candidate_characters
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				OR = {
+					learning >= decent_skill_rating
+					has_trait = scholar
+					has_trait = theologian
+					has_trait = education_learning_3
+					has_trait = education_learning_4
+				}
+			}
+			add_to_list = candidate_characters
+		}
+		random_in_list = {
+			list = candidate_characters
+			save_scope_as = courtier
+		}
+
+		hidden_effect = {
+			scope:courtier = {
+				set_relation_rival = {
+					target = scope:scholar
+					reason = RICE_rival_reason_placeholder
+				}
+			}
+		}
+
+	}
+
+	option = { # Ok
+		name = sicily.0201.a
+		add_piety = 100
+		add_prestige = -100
+		scope:courtier = {
+			add_opinion = {
+				modifier = disappointed_opinion
+				target = root
+				opinion = -25
+			}
+		}
+		if = {
+			limit = {
+				can_add_hook = {
+					target = scope:entertainer
+					type = loyalty_hook
+				}
+			}
+			add_hook = {
+				target = scope:entertainer
+				type = loyalty_hook
+			}
+		}
+		add_courtier = scope:scholar
+		stress_impact = {
+			paranoid = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0201.b
+		add_gold = { 25 75 }
+		scope:scholar = {
+			add_opinion = {
+				modifier = disappointed_opinion
+				target = root
+				opinion = -25
+			}
+		}
+		scope:courtier = {
+			add_opinion = {
+				modifier = pleased_opinion
+				target = root
+				opinion = 10
+			}
+		}
+		stress_impact = {
+			arbitrary = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+		hidden_effect = {
+			scope:scholar = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0201.c
+		add_legitimacy = miniscule_legitimacy_gain
+		add_prestige = 50
+		add_piety = -50
+		scope:scholar = {
+			add_opinion = {
+				modifier = disappointed_opinion
+				target = root
+				opinion = -50
+			}
+		}
+		scope:courtier = {
+			add_opinion = {
+				modifier = impressed_opinion
+				target = root
+				opinion = 30
+			}
+		}
+		stress_impact = {
+			arbitrary = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+		hidden_effect = {
+			scope:scholar = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sicily.0201.info
+		}
+	}
+
+}
+
+# stronghold minority spawn
+sicily.9999 = {
+	hidden = yes
+
+	trigger = {
+		any_county_in_region = {
+			region = custom_sicily
+			RICE_sicily_has_stronghold_trigger = yes
+		}
+		has_global_variable = is_RICE_loaded_global_variable
+	}
+
+	immediate = {
+		random_chance = {
+			chance = 5
+			random_county_in_region = {
+				region = custom_sicily
+				limit = { RICE_sicily_has_stronghold_trigger = yes }
+				RoA_RICE_stronghold_minorities_effect = yes
+			}
+		}
+	}
 }

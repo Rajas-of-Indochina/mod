@@ -2,6 +2,7 @@
 k_armenia = {
 	867.1.1 = {	change_development_level = 5 }
 	1066.1.1 = { change_development_level = 8 }
+	1178.1.1 = { change_development_level = 24 }
 
 	#Previous Kings of Armenia removed to a separate title: Arsacid Armenia *was* a kingdom, but the regnal numbering is reset for Bagratid Armenia. Keeping them in the same title was therefore messing up medieval Armenia quite drastically (Ashot I became Ashot IV, etc).
 	654.1.1 = {
@@ -158,7 +159,7 @@ k_old_armenia = {
 
 
 d_mesopotamia = {
-    #Arabic
+	#Arabic
 	820.1.1 = {
 		holder = 159723
 	}
@@ -168,15 +169,29 @@ d_mesopotamia = {
 	863.1.1 = {
 		holder = 159725
 	}
-	936.1.1 = {
-		holder = 260990
+
+	890.1.1 = {
+		holder = 1234854
 	}
+
 	#Byz
 	965.1.1 = {
 		liege = "e_byzantium"
+		government = administrative_government
 	}
 	1060.1.1 = {
 		holder = 85001
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 	1067.1.1 = {
 		holder = 724
@@ -188,6 +203,22 @@ d_mesopotamia = {
 	}
 	1071.8.26 = {
 		holder = 144065
+		government = clan_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = {
+						holder = {
+							has_government = clan_government
+						}
+					}
+				}
+				holder = {
+					change_government = clan_government
+				}
+			}
+		}
 	}
 	1091.1.1 = {
 		holder = 144067
@@ -206,9 +237,6 @@ d_mesopotamia = {
 	}
 
 	#Rum
-	1178.1.1 = {
-		liege = "k_rum"
-	}
 	1185.1.1 = {
 		holder = 225010
 	}
@@ -272,9 +300,12 @@ c_melitene = {
 	863.1.1 = {
 		holder = 159725
 	}
+
 	936.1.1 = {
-		holder = 260990
+		liege = d_coloneia
+		holder = 145173 # Ioannes Kourkouas, Domestic of the Schools 923-945
 	}
+
 	1060.1.1 = {
 		holder = 85001
 	}
@@ -293,8 +324,15 @@ c_melitene = {
 	1144.1.1 = {
 		holder = 144071
 	}
-	1166.1.1 = {
-		holder = 144072
+	1162.1.1 = {
+		holder = 34217 # Mehmed Danishmend
+		liege = 0
+	}
+	1171.1.1 = {
+		holder = 34219 # Afridun
+	}
+	1175.2.15 = {
+		holder = 34217 # Mehmed Danishmend
 	}
 	1185.1.1 = {
 		holder = 225010
@@ -334,6 +372,18 @@ c_melitene = {
 c_theodosiopolis = {
 	330.1.1 = {
 		liege = "d_chaldia"
+		government = administrative_government
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 	769.1.1 = {
 		holder = 145845
@@ -347,9 +397,11 @@ c_theodosiopolis = {
 	863.1.1 = {
 		holder = 159725
 	}
-	936.1.1 = {
-		holder = 260990
+
+	935.1.1 = {
+		holder = 1234854
 	}
+
 	1060.1.1 = {
 		holder = 20544
 	}
@@ -401,7 +453,7 @@ c_theodosiopolis = {
 	}
 
 	1335.1.1 = {
-		liege = "d_charsianon"
+		liege = "k_eretnid"
 	}
 	1335.1.1 = {
 		holder = 476460
@@ -424,7 +476,7 @@ c_mesopotamia = {
 		liege = "d_mesopotamia"
 	}
 	820.1.1 = {
-	    holder = 159723
+		holder = 159723
 	}
 	855.1.1 = {
 		holder = 159724
@@ -432,9 +484,13 @@ c_mesopotamia = {
 	863.1.1 = {
 		holder = 159725
 	}
+
 	936.1.1 = {
-		holder = 260990
+		#liege = d_coloneia
+		liege = d_chaldia
+		holder = 145174 # Romanos Kourkous, son of Ioannes Kourkouas. Placeholder Lieutenant of his father in 936
 	}
+
 	1060.1.1 = {
 		holder = 85001
 	}
@@ -487,10 +543,7 @@ c_mesopotamia = {
 	1320.1.1 = {
 		holder = 34260
 	}
-	1337.1.1 = {
-		holder = 476460
-		liege = d_charsianon
-	}
+
 }
 
 
@@ -561,9 +614,21 @@ d_vaspurakan = {
 	#End of the kingdom of Vaspurakan
 	1021.1.1 = {
 		liege = "e_byzantium"
+		government = administrative_government
 	}
 	1060.1.1 = {
 		holder = 41585
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+				}
+			}
+		}
 	}
 
 	#Battle of Manzikert
@@ -572,6 +637,7 @@ d_vaspurakan = {
 	}
 	1071.8.26 = {
 		holder = 144044
+		government = clan_government
 	}
 	1100.1.1 = {
 		holder = 93410
@@ -584,10 +650,10 @@ d_vaspurakan = {
 	}
 	1128.1.1 = {
 		holder = 93413
+		liege = 0
 	}
 	1185.1.1 = {
 		holder = 93414
-		liege = 0
 	}
 	1193.1.1 = {
 		holder = 93415
@@ -684,7 +750,7 @@ c_turuberan = {
 		holder = 41560
 	}
 	863.1.1 = {
-	    liege = e_arabia
+		liege = e_arabia
 		holder = 159722
 	}
 	897.1.1 = {
@@ -694,6 +760,11 @@ c_turuberan = {
 	930.1.1 = {
 		holder = 260988
 	}
+
+	935.1.1 = {
+		holder = 1234854
+	}
+
 	1021.1.1 = {
 		liege = "e_byzantium"
 	}
@@ -702,6 +773,136 @@ c_turuberan = {
 	}
 	1060.1.1 = {
 		holder = 41585
+	}
+	1071.8.26 = {
+		liege = "d_erzerum"
+	}
+	1071.8.26 = {
+		holder = 144044
+	}
+	1100.1.1 = {
+		holder = 93410
+	}
+	1112.1.1 = {
+		holder = 93411
+	}
+	1126.1.1 = {
+		holder = 93412
+	}
+	1128.1.1 = {
+		holder = 93413
+	}
+	1168.1.1 = {
+		holder = 225025 # Muhammed
+	}
+	1185.1.1 = {
+		holder = 93414
+	}
+	1193.1.1 = {
+		holder = 93415
+	}
+	1197.1.1 = {
+		holder = 93416
+	}
+	1202.7.1 = {
+		holder = 34180
+	}
+	1225.1.1 = {
+		holder = 34233
+	}
+	#placeholders
+	1230.1.1 = {
+		holder = 34398
+	}
+	1247.1.1 = {
+		liege = "e_ilkhanate"
+	}
+	1247.1.1 = {
+		holder = 478011
+	}
+	1265.2.8 = {
+		holder = 478010
+	}
+	1282.1.1 = {
+		holder = 125523
+	}
+	1284.1.1 = {
+		holder = 478008
+	}
+	1291.1.1 = {
+		holder = 125525
+	}
+	1295.1.1 = {
+		holder = 125522
+	}
+	1295.8.1 = {
+		holder = 125524
+	}
+	1304.5.11 = {
+		holder = 478007
+	}
+	1316.12.16 = {
+		holder = 478006
+	}
+	1335.12.1 = {
+		holder = 125528
+	}
+	1336.4.10 = {
+		holder = 478030
+	}
+
+}
+
+
+c_apahunik = {
+	646.1.1 = {
+		liege = d_vaspurakan
+	}
+	646.1.1 = {
+		holder = 159898
+	}
+	647.1.1 = {
+		holder = 159899
+	}
+	693.1.1 = {
+		holder = 159900
+	}
+	705.1.1 = {
+		holder = 159902
+	}
+	708.1.1 = {
+		holder = 159903
+	}
+	748.1.1 = {
+		holder = 159904
+	}
+	762.1.1 = {
+		holder = 159906
+	}
+	772.1.1 = {
+		holder = 159907
+	}
+	785.1.1 = {
+		holder = 160014
+	}
+	830.1.1 = {
+		holder = 41559
+	}
+	836.1.1 = {
+		holder = 41560
+	}
+	863.1.1 = {
+		holder = 159722
+		liege = e_arabia
+	}
+	1021.1.1 = {
+		liege = "e_byzantium"
+	}
+	1045.1.1 = {
+		liege = d_vaspurakan
+	}
+	1060.1.1 = {
+		holder = 159238
 	}
 	1071.8.26 = {
 		liege = "d_erzerum"
@@ -770,139 +971,8 @@ c_turuberan = {
 	1316.12.16 = {
 		holder = 478006
 	}
-	1335.1.1 = {
-		liege = "d_charsianon"
-	}
-	1335.1.1 = {
-		holder = 476460
-	}
-
-}
-
-
-c_apahunik = {
-	646.1.1 = {
-		liege = d_vaspurakan
-	}
-	646.1.1 = {
-		holder = 159898
-	}
-	647.1.1 = {
-		holder = 159899
-	}
-	693.1.1 = {
-		holder = 159900
-	}
-	705.1.1 = {
-		holder = 159902
-	}
-	708.1.1 = {
-		holder = 159903
-	}
-	748.1.1 = {
-		holder = 159904
-	}
-	762.1.1 = {
-		holder = 159906
-	}
-	772.1.1 = {
-		holder = 159907
-	}
-	785.1.1 = {
-		holder = 160014
-	}
-	830.1.1 = {
-		holder = 41559
-	}
-	836.1.1 = {
-		holder = 41560
-	}
-	863.1.1 = {
-		holder = 159722
-		liege = e_arabia
-	}
-	908.1.1 = {
-		holder = 41563	#Gagik I Artsruni
-	}
-	1021.1.1 = {
-		liege = "e_byzantium"
-	}
-	1045.1.1 = {
-		liege = d_vaspurakan
-	}
-	1060.1.1 = {
-		holder = 159238
-	}
-	1071.8.26 = {
-		liege = "d_erzerum"
-	}
-	#1071.8.26 = { #Changed to make a more varied start
-		#holder = 144044
-	#}
-	1071.8.26 = {#1100.1.1 = { # Changed to make a more varied start
-		holder = 93410
-	}
-	1112.1.1 = {
-		holder = 93411
-	}
-	1126.1.1 = {
-		holder = 93412
-	}
-	1128.1.1 = {
-		holder = 93413
-	}
-	1185.1.1 = {
-		holder = 93414
-	}
-	1193.1.1 = {
-		holder = 93415
-	}
-	1197.1.1 = {
-		holder = 93416
-	}
-	1202.7.1 = {
-		holder = 34180
-	}
-	1225.1.1 = {
-		holder = 34233
-	}
-	#placeholders
-	1230.1.1 = {
-		holder = 34398
-	}
-	1247.1.1 = {
-		liege = "e_ilkhanate"
-	}
-	1247.1.1 = {
-		holder = 478011
-	}
-	1265.2.8 = {
-		holder = 478010
-	}
-	1282.1.1 = {
-		holder = 125523
-	}
-	1284.1.1 = {
-		holder = 478008
-	}
-	1291.1.1 = {
-		holder = 125525
-	}
-	1295.1.1 = {
-		holder = 125522
-	}
-	1295.8.1 = {
-		holder = 125524
-	}
-	1304.5.11 = {
-		holder = 478007
-	}
-	1316.12.16 = {
-		holder = 478006
-	}
 	1335.12.1 = {
-		holder = 93424
-		liege = d_diyarbakr
+		holder = 125528
 	}
 	1336.4.10 = {
 		holder = 478030
@@ -948,9 +1018,6 @@ c_vaspurakan = {
 	836.1.1 = {
 		holder = 41560
 	}
-	908.1.1 = {
-		holder = 41563	#Gagik I Artsruni
-	}
 	1021.1.1 = {
 		liege = "e_byzantium"
 	}
@@ -963,10 +1030,10 @@ c_vaspurakan = {
 	1071.8.26 = {
 		liege = "d_erzerum"
 	}
-	#1071.8.26 = {
-		#holder = 144044
-	#}
-	1071.8.26 = { #1100.1.1 = {
+	1071.8.26 = {
+		holder = 144044
+	}
+	1100.1.1 = {
 		holder = 93410
 	}
 	1112.1.1 = {
@@ -1028,8 +1095,10 @@ c_vaspurakan = {
 		holder = 478006
 	}
 	1335.12.1 = {
-		holder = 93424
-		liege = d_diyarbakr
+		holder = 125528
+	}
+	1336.4.10 = {
+		holder = 478030
 	}
 
 }
@@ -1133,14 +1202,11 @@ d_greater_armenia = {
 		holder = 0
 		liege = "e_byzantium"
 	}
-	1060.1.1 = {
-		holder = 41585
-	}
-	1071.8.26 = {
-		holder = 0
+	1178.1.1 = {
+		holder = 232758 # Sargis Zakarian
+		liege = k_georgia
 	}
 	1191.1.1 = {
-		liege = "k_georgia"
 		holder = 232759
 	}
 	1223.1.1 = {
@@ -1153,10 +1219,10 @@ d_greater_armenia = {
 
 
 c_hayk = {
-	867.1.1 = { change_development_level = 7 }
+	867.1.1 = {	change_development_level = 7 }
 	1066.1.1 = { change_development_level = 10 }
-	1187.1.1 = { change_development_level = 30 }
-	1337.1.1 = { change_development_level = 60 }
+	1178.1.1 = { change_development_level = 44 }
+
 
 	646.1.1 = {
 		liege = d_greater_armenia
@@ -1176,6 +1242,11 @@ c_hayk = {
 	928.1.1 = {
 		holder = 41508
 	}
+
+	936.1.1 = {
+		holder = 159261
+	}
+
 	1060.1.1 = {
 		holder = 41585
 	}
@@ -1200,16 +1271,19 @@ c_hayk = {
 	1168.1.1 = {
 		holder = 225025
 	}
+	1178.1.1 = {
+		holder = 232758 # Sargis Zakarian
+	}
 	1191.1.1 = {
 		liege = "k_georgia"
 		holder = 232759
 	}
-	#1202.1.1 = {
-	#	holder = 232760
-	#}
+	1202.1.1 = {
+		holder = 232760
+	}
 	1202.7.1 = {
 		liege = d_greater_armenia
-	#	holder = 159207
+		holder = 159207
 	}
 	1225.1.2 = {
 		liege = "d_erzerum"
@@ -1228,10 +1302,8 @@ c_hayk = {
 	1300.1.1 = {
 		holder = 34401
 	}
-	1320.1.1 = {
-		holder = 466500
-		liege = k_georgia
-	}
+
+
 }
 
 
@@ -1277,6 +1349,9 @@ c_bagrewand = {
 	1168.1.1 = {
 		holder = 225025
 	}
+	1178.1.1 = {
+		holder = saltukid_1 # Malikshah
+	}
 	1191.1.1 = {
 		liege = "k_georgia"
 		holder = 232759
@@ -1286,7 +1361,7 @@ c_bagrewand = {
 	}
 	1202.7.1 = {
 		liege = d_greater_armenia
-		#holder = 159207
+		holder = 159207
 	}
 	1225.1.2 = {
 		liege = "d_erzerum"
@@ -1304,7 +1379,6 @@ c_bagrewand = {
 	}
 	1300.1.1 = {
 		holder = 34401
-		liege = d_charsianon
 	}
 
 }
@@ -1329,6 +1403,11 @@ c_vanand = {
 	928.1.1 = {
 		holder = 41508
 	}
+
+	936.1.1 = {
+		holder = 159261
+	}
+
 	1060.1.1 = {
 		holder = 41585
 	}
@@ -1342,8 +1421,10 @@ c_vanand = {
 		holder = 144045
 	}
 
+	#To Georgia
 	1124.4.1 = {
 		holder = 144046
+		liege = k_georgia
 	}
 	1132.1.1 = {
 		holder = 144047
@@ -1352,20 +1433,14 @@ c_vanand = {
 		holder = 225025
 	}
 	1191.1.1 = {
-		holder = 34395
-	}
-	1200.1.1 = {
-		holder = 34396
+		holder = 232759
 	}
 	1202.1.1 = {
-		holder = 34397
+		holder = 232760
 	}
 	1202.7.1 = {
-		holder = 34180
-	}
-	1206.1.1 = {
 		liege = d_greater_armenia
-		holder = 232759
+		holder = 159207
 	}
 	1225.1.2 = {
 		liege = "d_erzerum"
@@ -1383,10 +1458,6 @@ c_vanand = {
 	}
 	1300.1.1 = {
 		holder = 34401
-	}
-	1320.1.1 = {
-		holder = 466500
-		liege = k_georgia
 	}
 }
 
@@ -1436,7 +1507,7 @@ c_khachen = {
 
 	#1064 : Seljuk take Ani/Armenia
 	1064.1.1 = {
-		liege = e_persia
+		liege = 0
 	}
 	1080.1.1 = {
 		holder = 159241	#Senekerim, son of Grigor
@@ -1457,10 +1528,6 @@ c_khachen = {
 	}
 
 	#1261 : End of KoA
-	1320.1.1 = {
-		holder = 466500
-		liege = k_georgia
-	}
 }
 
 
@@ -1500,6 +1567,11 @@ c_suenik = {
 	928.1.1 = {
 		holder = 41508
 	}
+
+	908.1.1 = {
+		holder = 159254
+	}
+
 	1045.1.1 = {
 		liege = 0
 	}
@@ -1574,18 +1646,16 @@ c_suenik = {
 	1318.1.1 = {
 		holder = 478006
 	}
-	1320.1.1 = {
-		holder = 466500
-		liege = k_georgia
+	1328.1.1 = {
+		holder = 478033
 	}
 }
 
 
 c_dvin = {
-	867.1.1 = { change_development_level = 7 }
+	867.1.1 = {	change_development_level = 7 }
 	1066.1.1 = { change_development_level = 10 }
-	1187.1.1 = { change_development_level = 30 }
-	1337.1.1 = { change_development_level = 60 }
+	1178.1.1 = { change_development_level = 24 }
 
 	646.1.1 = {
 		liege = d_greater_armenia
@@ -1671,6 +1741,12 @@ c_dvin = {
 	928.1.1 = {
 		holder = 41508
 	}
+
+	929.1.1 = {
+		liege = k_armenia
+		holder = 159261
+	}
+
 	951.1.1 = {
 		holder = 41509
 	}
@@ -1686,9 +1762,9 @@ c_dvin = {
 	1041.1.1 = {
 		holder = 41521
 	}
-	1066.1.1 = {
+	1053.1.1 = {
 		liege = 0
-		holder = 41600
+		holder = shaddadid_1 # Eskender
 	}
 	1067.1.1 = {
 		holder = 41601
@@ -1708,20 +1784,8 @@ c_dvin = {
 	1124.1.1 = {
 		liege = "k_georgia"
 	}
-	1124.1.1 = {
-		holder = 216517
-	}
-	1125.1.24 = {
-		holder = 216516
-	}
-	1154.1.1 = {
-		holder = 144010
-	}
-	1155.1.1 = {
-		holder = 216516
-	}
-	1156.1.1 = {
-		holder = 216515
+	1173.1.1 = {
+		holder = 232758 # Sargis Zakarian
 	}
 	1184.4.6 = {
 		holder = 232758
@@ -1763,7 +1827,13 @@ c_dvin = {
 		holder = 478006
 	}
 	1335.12.1 = {
-		holder = 478033
+		holder = 125528
+	}
+	1336.4.10 = {
+		holder = 478000
+	}
+	1336.7.24 = {
+		holder = 478030
 	}
 
 }

@@ -1546,3 +1546,326 @@ RoA_RICE_setup_magadha_flavor_pack_effect = {
 
 
 }
+
+# call from county scope
+RoA_RICE_stronghold_minorities_effect = {
+	save_scope_as = county
+	switch = {
+		trigger = has_county_modifier
+		RICE_sicily_stronghold_latin = {
+			# Check for a religious minority of the right type then if none are found default to Catholic
+			if = {
+				limit = {
+					county_has_large_faith_minority_with_trigger = {
+						TRIGGER = RICE_sicily_faith_is_latin_trigger
+					}
+				}
+				random_in_list = {
+					variable = faith_minorities_large
+					limit = { RICE_sicily_faith_is_latin_trigger = yes }
+					save_scope_as = county_faith
+				}
+			}
+			else_if = {
+				limit = {
+					county_has_small_faith_minority_with_trigger = {
+						TRIGGER = RICE_sicily_faith_is_latin_trigger
+					}
+				}
+				random_in_list = {
+					variable = faith_minorities_small
+					limit = { RICE_sicily_faith_is_latin_trigger = yes }
+					save_scope_as = county_faith
+				}
+			}
+			else = {
+				faith:catholic = { save_scope_as = county_faith }
+			}
+			# Do the same for cultures, defaulting to Lombard
+			if = {
+				limit = {
+					county_has_large_culture_minority_with_trigger = {
+						TRIGGER = RICE_sicily_culture_is_latin_trigger
+					}
+				}
+				random_in_list = {
+					variable = culture_minorities_large
+					limit = { RICE_sicily_culture_is_latin_trigger = yes }
+					save_scope_as = county_culture
+				}
+			}
+			else_if = {
+				limit = {
+					county_has_small_culture_minority_with_trigger = {
+						TRIGGER = RICE_sicily_culture_is_latin_trigger
+					}
+				}
+				random_in_list = {
+					variable = culture_minorities_small
+					limit = { RICE_sicily_culture_is_latin_trigger = yes }
+					save_scope_as = county_culture
+				}
+			}
+			else = {
+				culture:lombard = { save_scope_as = county_culture }
+			}
+		}
+		RICE_sicily_stronghold_greek = {
+			# Check for a religious minority of the right type then if none are found default to Orthodox
+			if = {
+				limit = {
+					county_has_large_faith_minority_with_trigger = {
+						TRIGGER = RICE_sicily_faith_is_greek_trigger
+					}
+				}
+				random_in_list = {
+					variable = faith_minorities_large
+					limit = { RICE_sicily_faith_is_greek_trigger = yes }
+					save_scope_as = county_faith
+				}
+			}
+			else_if = {
+				limit = {
+					county_has_small_faith_minority_with_trigger = {
+						TRIGGER = RICE_sicily_faith_is_greek_trigger
+					}
+				}
+				random_in_list = {
+					variable = faith_minorities_small
+					limit = { RICE_sicily_faith_is_greek_trigger = yes }
+					save_scope_as = county_faith
+				}
+			}
+			else = {
+				faith:orthodox = { save_scope_as = county_faith }
+			}
+			# Do the same for cultures, defaulting to Greek
+			if = {
+				limit = {
+					county_has_large_culture_minority_with_trigger = {
+						TRIGGER = RICE_sicily_culture_is_greek_trigger
+					}
+				}
+				random_in_list = {
+					variable = culture_minorities_large
+					limit = { RICE_sicily_culture_is_greek_trigger = yes }
+					save_scope_as = county_culture
+				}
+			}
+			else_if = {
+				limit = {
+					county_has_small_culture_minority_with_trigger = {
+						TRIGGER = RICE_sicily_culture_is_greek_trigger
+					}
+				}
+				random_in_list = {
+					variable = culture_minorities_small
+					limit = { RICE_sicily_culture_is_greek_trigger = yes }
+					save_scope_as = county_culture
+				}
+			}
+			else = {
+				culture:greek = { save_scope_as = county_culture }
+			}
+		}
+		RICE_sicily_stronghold_arabic = {
+			# Check for a religious minority of the right type then if none are found default to Ashari
+			if = {
+				limit = {
+					county_has_large_faith_minority_with_trigger = {
+						TRIGGER = RICE_sicily_faith_is_latin_trigger
+					}
+				}
+				random_in_list = {
+					variable = faith_minorities_large
+					limit = { RICE_sicily_faith_is_latin_trigger = yes }
+					save_scope_as = county_faith
+				}
+			}
+			else_if = {
+				limit = {
+					county_has_small_faith_minority_with_trigger = {
+						TRIGGER = RICE_sicily_faith_is_latin_trigger
+					}
+				}
+				random_in_list = {
+					variable = faith_minorities_small
+					limit = { RICE_sicily_faith_is_latin_trigger = yes }
+					save_scope_as = county_faith
+				}
+			}
+			else = {
+				faith:ashari = { save_scope_as = county_faith }
+			}
+			# Do the same for cultures, defaulting to Maghrebi
+			if = {
+				limit = {
+					county_has_large_culture_minority_with_trigger = {
+						TRIGGER = RICE_sicily_culture_is_arabic_trigger
+					}
+				}
+				random_in_list = {
+					variable = culture_minorities_large
+					limit = { RICE_sicily_culture_is_arabic_trigger = yes }
+					save_scope_as = county_culture
+				}
+			}
+			else_if = {
+				limit = {
+					county_has_small_culture_minority_with_trigger = {
+						TRIGGER = RICE_sicily_culture_is_arabic_trigger
+					}
+				}
+				random_in_list = {
+					variable = culture_minorities_small
+					limit = { RICE_sicily_culture_is_arabic_trigger = yes }
+					save_scope_as = county_culture
+				}
+			}
+			else = {
+				culture:maghrebi = { save_scope_as = county_culture }
+			}
+		}
+	}
+	promote_culture_minority_effect = { CULTURE = scope:county_culture }
+	promote_faith_minority_effect = { FAITH = scope:county_faith }
+	notify_characters_of_fake_migration_effect = { MESSAGE = tt_culture_faith_stronghold_minority }
+	debug_log = tt_culture_faith_stronghold_minority
+}
+
+# Attract immigrants! Now actually attracts immigrants!
+RICE_sicily_attract_immigrants_effect = {
+	add_prestige = RICE_sicily_resource_gain_per_sicilian_county
+	add_piety = RICE_sicily_resource_gain_per_sicilian_county
+	struggle:RICE_sicily_struggle ?= {
+		activate_struggle_catalyst = {
+			catalyst = catalyst_RICE_sicily_attract_immigrants
+			character = root
+		}
+	}
+	if = {
+		limit = { RICE_sicily_greek_trigger = yes }
+		random_culture_global = {
+			limit = {
+				RICE_sicily_culture_is_greek_trigger = yes
+				culture_number_of_counties > 1
+			}
+			save_scope_as = immigrant_culture
+		}
+		religion:christianity_religion = {
+			random_faith = {
+				limit = {
+					has_followers_trigger = yes
+					RICE_sicily_faith_is_greek_trigger = yes
+				}
+				save_scope_as = immigrant_faith
+			}
+		}
+	}
+	else_if = {
+		limit = { RICE_sicily_latin_trigger = yes }
+		random_culture_global = {
+			limit = {
+				RICE_sicily_culture_is_latin_trigger = yes
+				culture_number_of_counties > 1
+			}
+			save_scope_as = immigrant_culture
+		}
+		religion:christianity_religion = {
+			random_faith = {
+				limit = {
+					has_followers_trigger = yes
+					RICE_sicily_faith_is_latin_trigger = yes
+				}
+				save_scope_as = immigrant_faith
+			}
+		}
+	}
+	else_if = {
+		limit = { RICE_sicily_arabic_trigger = yes }
+		random_culture_global = {
+			limit = {
+				RICE_sicily_culture_is_arabic_trigger = yes
+				culture_number_of_counties > 1
+			}
+			save_scope_as = immigrant_culture
+		}
+		random_list = {
+			1 = {
+				modifier = {
+					factor = 0
+					religion:islam_religion = {
+						any_faith = {
+							count = all
+							has_followers_trigger = no
+						}
+					}
+				}
+				religion:islam_religion = {
+					random_faith = {
+						limit = {
+							has_followers_trigger = yes
+						}
+						save_scope_as = immigrant_faith
+					}
+				}
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					religion:amazigh_religion = {
+						any_faith = {
+							count = all
+							has_followers_trigger = no
+						}
+					}
+				}
+				religion:amazigh_religion = {
+					random_faith = {
+						limit = {
+							has_followers_trigger = yes
+						}
+						save_scope_as = immigrant_faith
+					}
+				}
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					religion:semitic_religion = {
+						any_faith = {
+							count = all
+							has_followers_trigger = no
+						}
+					}
+				}
+				religion:semitic_religion = {
+					random_faith = {
+						limit = {
+							has_followers_trigger = yes
+						}
+						save_scope_as = immigrant_faith
+					}
+				}
+			}
+		}
+	}
+	else = {
+		ROOT.culture = { save_scope_as = immigrant_culture }
+		ROOT.faith = { save_scope_as = immigrant_faith }
+	}
+	every_county_in_region = {
+		region = custom_sicily
+		limit = {
+			holder = root
+		}
+		save_scope_as = county
+		random = {
+			chance = 5
+			promote_culture_minority_effect = { CULTURE = scope:immigrant_culture }
+			promote_faith_minority_effect = { FAITH = scope:immigrant_faith }
+			notify_characters_of_fake_migration_effect = { MESSAGE = sicilian_immigration_tt }
+		}
+	}
+	RICE_sicily_administer_frontier_ruling_class_bonus_effect = yes
+}

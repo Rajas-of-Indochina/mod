@@ -47,7 +47,7 @@ select_local_animal_effect = {
 						NOT = { exists = scope:harmless_local_game }
 						NOT = { exists = scope:prowling_local_game }
 					}
-					# they're everywhere, but Muslims and Jews wouldn't hunt them 
+					# they're everywhere, but Muslims and Jews wouldn't hunt them
 					modifier = {
 						factor = 0
 						faith = {
@@ -1005,7 +1005,10 @@ hunt_individual_guest_awards_effect = {
 			}
 			trigger_if = {
 				limit = { is_clergy = yes }
-				faith = { has_doctrine_parameter = clergy_can_fight }
+				OR = {
+					faith = { has_doctrine_parameter = clergy_can_fight }
+					culture = { has_cultural_parameter = culture_clergy_can_fight }
+				}
 			}
 		}
 		if = {
@@ -2322,6 +2325,13 @@ hunt_activity_sighting_master_effect = {
 		}
 		court_position:master_of_hunt_court_position = { save_scope_as = sighting_character }
 	}
+	else_if = {
+		limit = {
+			employs_court_position = huntperson_camp_officer
+			court_position:huntperson_camp_officer = { is_available_adult = yes }
+		}
+		court_position:huntperson_camp_officer = { save_scope_as = sighting_character }
+	}
 	else = {
 		every_vassal_or_below = {
 			limit = {
@@ -2363,8 +2373,9 @@ hunt_activity_sighting_master_effect = {
 					factor = 0
 					# Exclude clergy who don't fight
 					is_clergy = yes
-					NOT = {
+					NOR = {
 						faith = { has_doctrine_parameter = clergy_can_fight }
+						culture = { has_cultural_parameter = culture_clergy_can_fight }
 					}
 				}
 				modifier = {
@@ -2377,6 +2388,22 @@ hunt_activity_sighting_master_effect = {
 			}
 			save_scope_as = sighting_character
 		}
+	}
+	scope:sighting_character ?= { save_scope_as = portrait_character }
+	if = {
+		limit = {
+			NOT = { exists = scope:sighting_character }
+			is_ai = no
+		}
+		create_character = {
+			location = root.location
+			template = hunter_template
+			culture = root.location.culture
+			faith = root.location.faith
+			dynasty = none
+			save_scope_as = new_hunter
+		}
+		scope:new_hunter = { save_scope_as = portrait_character }
 	}
 }
 
@@ -2605,7 +2632,7 @@ hunt_wound_apply_effect = {
 				}
 			}
 			flag:incapable = { add_trait_force_tooltip = incapable }
-			flag:maimed = { add_trait_force_tooltip = maimed }
+			flag:maimed = { apply_maimed_trait_and_modifier_effect = yes }
 			flag:one_eyed = { add_trait_force_tooltip = one_eyed }
 			flag:one_legged = { add_trait_force_tooltip = one_legged }
 			flag:disfigured = { add_trait_force_tooltip = disfigured }
@@ -2656,7 +2683,7 @@ hunt_wound_tooltip_effect = {
 				trigger = scope:wound
 				flag:wound = {}
 				flag:incapable = { add_trait_force_tooltip = incapable }
-				flag:maimed = { add_trait_force_tooltip = maimed }
+				flag:maimed = { apply_maimed_trait_and_modifier_effect = yes }
 				flag:one_eyed = { add_trait_force_tooltip = one_eyed }
 				flag:one_legged = { add_trait_force_tooltip = one_legged }
 				flag:disfigured = { add_trait_force_tooltip = disfigured }
@@ -2707,11 +2734,11 @@ hunt_save_murder_target_effect = {
 						scheme_type = murder
 						OR = {
 							scheme_owner = root
-							any_scheme_agent = { this = root }
+							any_scheme_agent_character = { this = root }
 						}
 					}
 					save_scope_as = scheme
-					every_scheme_agent = { add_to_list = murder_agents }
+					every_scheme_agent_character = { add_to_list = murder_agents }
 					scheme_owner = { save_scope_as = murder_schemer }
 					hunt_save_hostile_accomplice_effect = {
 						SCHEME = murder
@@ -3869,6 +3896,10 @@ hunt_invalidation_event_effect = {
 
 # Unified effect for adding sightings to counties
 hunt_create_sighting_effect = {
+	if = {
+        limit = { NOT = { exists = scope:sighting_county } }
+        save_scope_as = sighting_county
+    }
 	# Track who can use the sighting
 	set_variable = {
 		name = animal_type

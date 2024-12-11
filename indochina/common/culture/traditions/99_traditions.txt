@@ -313,3 +313,833 @@ tradition_horse_lords = {
 		value = 100
 	}
 }
+
+tradition_agrarian = {
+	category = realm
+
+	layers = {
+		0 = steward
+		1 = indian
+		4 = farmland.dds
+	}
+
+	can_pick = {
+		custom_tooltip = {
+			text = culture_in_farmlands_or_floodplains_terrain_desc
+			any_culture_county = {
+				any_county_province = {
+					OR = {
+						terrain = farmlands
+						terrain = floodplains
+						terrain = plains
+					}
+				}
+			}
+		}
+	}
+
+	parameters = {
+		content_trait_more_common = yes
+		martial_education_worse_outcomes = yes
+		hard_working_traits_more_valued = yes
+	}
+	character_modifier = {
+		men_at_arms_recruitment_cost = 0.25
+		prowess = -2
+		floodplains_travel_danger = floodplains_medium_danger_reduction
+	}
+	county_modifier = {
+		farmlands_development_growth_factor = 0.3
+		farmlands_construction_gold_cost = -0.1
+		floodplains_development_growth_factor = 0.3
+		floodplains_construction_gold_cost = -0.1
+		plains_development_growth_factor = 0.3
+		plains_construction_gold_cost = -0.1
+		farmlands_levy_size = 0.1
+		floodplains_levy_size = 0.1
+		plains_levy_size = 0.1
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					culture_pillar:ethos_bellicose = { is_in_list = traits }
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = culture_not_bellicose
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							count >= 5
+							any_county_province = {
+								OR = {
+									terrain = farmlands
+									terrain = floodplains
+									terrain = plains
+								}
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = culture_in_farmlands_or_floodplains_terrain_count_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							count >= 2
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+									terrain = farmlands
+									terrain = floodplains
+									terrain = plains
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+		if = {
+			limit = {
+				scope:character = {
+					government_has_flag = government_is_tribal
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
+tradition_mountaineers = {
+	category = combat
+
+	layers = {
+		0 = martial
+		1 = western
+		4 = mountain.dds
+	}
+
+	is_shown = { #Replaced by Horn Mountain Skirmishing & Caucasian Wolves
+		NOR = {
+			has_cultural_pillar = heritage_somalian
+			has_cultural_pillar = heritage_east_african
+			has_cultural_tradition = tradition_horn_mountain_skirmishing
+			has_cultural_tradition = tradition_caucasian_wolves
+			has_cultural_tradition = tradition_caucasian_tenacity
+			has_cultural_tradition = tradition_heirs_of_illuminator
+		}
+	}
+
+	can_pick = {
+		culture_not_pacifistic_trigger = yes
+		custom_description = {
+			text = culture_in_mountains_desc
+			any_culture_county = {
+				any_county_province = {
+					OR = {
+						terrain = mountains
+						terrain = desert_mountains
+					}
+				}
+			}
+		}
+	}
+	parameters = {
+		rough_terrain_expert_trait_more_common = yes
+		mountain_trait_bonuses = yes
+		can_recruit_mountain_specialist = yes
+	}
+	character_modifier = {
+		mountains_travel_danger = mountains_low_danger_reduction
+		desert_mountains_travel_danger = desert_mountains_low_danger_reduction
+	}
+	province_modifier = {
+		mountains_levy_size = 0.1
+		desert_mountains_levy_size = 0.1
+		mountains_supply_limit_mult = 0.25
+		desert_mountains_supply_limit_mult = 0.25
+	}
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = desert_mountains
+								}
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = mountain_percentage_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							percent >= 0.2
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = desert_mountains
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
+tradition_horn_mountain_skirmishing = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = mena
+		4 = desert_mountains.dds
+	}
+
+	#In the Horn of Africa this replaces the Mountaineers tradition
+	is_shown = {
+		OR ={
+			has_cultural_pillar = heritage_somalian
+			has_cultural_pillar = heritage_east_african
+		}
+		NOR = {
+			has_cultural_tradition = tradition_mountaineers
+			has_cultural_tradition = tradition_caucasian_wolves
+			has_cultural_tradition = tradition_caucasian_tenacity
+			has_cultural_tradition = tradition_heirs_of_illuminator
+		}
+	}
+	can_pick = {
+		custom_description = {
+			text = culture_in_mountains_desc
+			any_culture_county = {
+				any_county_province = {
+					OR = {
+						terrain = mountains
+						terrain = desert_mountains
+					}
+				}
+			}
+		}
+	}
+
+	parameters = {
+		unlock_maa_horn_warrior = yes
+		rough_terrain_expert_trait_more_common = yes
+		mountain_trait_bonuses = yes
+		can_recruit_mountain_specialist = yes
+	}
+	province_modifier = {
+		mountains_levy_size = 0.1
+		desert_mountains_levy_size = 0.1
+		mountains_supply_limit_mult = 0.25
+		desert_mountains_supply_limit_mult = 0.25
+	}
+	character_modifier = {
+		mountains_travel_danger = mountains_medium_danger_reduction
+		desert_mountains_travel_danger = desert_mountains_medium_danger_reduction
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_spiritual_or_communal_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = desert_mountains
+								}
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = mountain_percentage_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = desert_mountains
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
+tradition_caucasian_wolves = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = mena
+		4 = mountain.dds
+	}
+
+	#For Transcaucasian heritage cultures (Georgians, Svan, etc), Abkhaz and Dval this replaces the Mountaineers and Highland Warriors tradition
+	is_shown = {
+		OR = {
+			has_cultural_pillar = heritage_caucasian
+			this = culture:dval
+			any_parent_culture_or_above = {
+				this = culture:dval
+			}
+			this = culture:abkhaz
+			any_parent_culture_or_above = {
+				this = culture:abkhaz
+			}
+		}
+		NOR = {
+			has_cultural_tradition = tradition_mountaineers
+			has_cultural_tradition = tradition_highland_warriors
+			has_cultural_tradition = tradition_highland_warriors
+			has_cultural_tradition = tradition_horn_mountain_skirmishing
+			has_cultural_tradition = tradition_caucasian_tenacity
+			has_cultural_tradition = tradition_heirs_of_illuminator
+		}
+	}
+	can_pick = {
+		custom_description = {
+			text = culture_in_mountains_or_hills_desc
+			any_culture_county = {
+				any_county_province = {
+					OR = {
+						terrain = mountains
+						terrain = hills
+						terrain = desert_mountains
+					}
+				}
+			}
+		}
+	}
+
+	parameters = {
+		unlock_maa_monaspa = yes
+		rough_terrain_expert_trait_more_common = yes
+		mountain_trait_bonuses = yes
+		hill_trait_bonuses = yes
+		can_recruit_mountain_specialist = yes
+		can_recruit_hill_specialist = yes
+	}
+	province_modifier = {
+		mountains_levy_size = 0.1
+		desert_mountains_levy_size = 0.1
+		hills_levy_size = 0.1
+		mountains_supply_limit_mult = 0.25
+		desert_mountains_supply_limit_mult = 0.25
+		hills_supply_limit_mult = 0.25
+	}
+	character_modifier = {
+		mountains_travel_danger = mountains_medium_danger_reduction
+		desert_mountains_travel_danger = desert_mountains_medium_danger_reduction
+		hills_travel_danger = hills_low_danger_reduction
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = hills
+									terrain = desert_mountains
+								}
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = mountain_percentage_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 1000
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = hills
+									terrain = desert_mountains
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
+tradition_isolationist = {
+	category = realm
+
+	layers = {
+		0 = intrigue
+		1 = mediterranean
+		4 = noble.dds
+	}
+
+	is_shown = {
+		NOR = {
+			has_cultural_tradition = tradition_endogamous
+		}
+	}
+
+	parameters = {
+		courtiers_less_likely_to_leave_same_culture_court = yes
+		dislikes_marrying_outside_of_culture = yes
+		ai_doesnt_marry_outside_culture = yes
+	}
+	culture_modifier = {
+		cultural_acceptance_gain_mult = -0.35
+	}
+	character_modifier = {
+		diplomatic_range_mult = -0.25
+		same_culture_opinion = 5
+
+		ai_war_chance = -0.5
+		ai_war_cooldown = 5
+	}
+	county_modifier = {
+		monthly_county_control_growth_add = 0.5
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_spiritual_or_stoic_desc
+				}
+			}
+			if = {
+				limit = {
+					scope:character = {
+						any_sub_realm_county = {
+							culture = scope:character.culture
+							any_neighboring_county = {
+								NOT = {
+									culture = scope:character.culture
+								}
+								culture = {
+									cultural_acceptance = { target = scope:character.culture value >= 40 }
+								}
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = non_tolerated_cultures_desc
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						has_variable = defensive_traditionalist_discount
+						has_variable = aggressive_traditionalist_discount
+					}
+				}
+				add = {
+					value = traditionalist_discount
+					desc = traditionalist_discount_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					is_divergent_culture = yes
+				}
+			}
+			multiply = 0
+		}
+		if = {
+			limit = {
+				culture_pillar:ethos_egalitarian = { is_in_list = traits }
+			}
+			multiply = 0
+		}
+	}
+}
+
+tradition_mountaineer_ruralism = {
+	category = regional
+
+	layers = {
+		0 = martial
+		1 = western
+		4 = mountain.dds
+	}
+
+	is_shown = {
+		has_cultural_pillar = heritage_west_slavic
+		NOR = {
+			has_cultural_tradition = tradition_himalayan_settlers
+			has_cultural_tradition = tradition_mountain_homes
+			has_cultural_tradition = tradition_highland_tower_architects
+			any_culture_county = {
+				title_province = {
+					geographical_region = world_himalaya
+				}
+			}
+		}
+	}
+
+	can_pick = {
+		has_cultural_pillar = heritage_west_slavic
+		NOT = {
+			has_cultural_tradition = tradition_mountain_homes
+		}
+		custom_description = {
+			text = culture_in_mountains_desc
+			any_culture_county = {
+				any_county_province = {
+					OR = {
+						terrain = mountains
+						terrain = desert_mountains
+					}
+				}
+			}
+		}
+	}
+
+	parameters = {
+		unlock_maa_zbrojnosh = yes
+		quarries_building_bonuses = yes
+		hill_farms_building_bonuses = yes
+		rough_terrain_expert_trait_more_common = yes
+		mountain_trait_bonuses = yes
+		can_recruit_mountain_specialist = yes
+	}
+
+	character_modifier = {
+		mountains_travel_danger = mountains_high_danger_reduction
+		hills_travel_danger = hills_high_danger_reduction
+	}
+
+	county_modifier = {
+		hills_development_growth_factor = 0.1
+		mountains_development_growth_factor = 0.1
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOT = {
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_stoic_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								terrain = mountains
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = mountain_true_percentage_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+									terrain = mountains
+									terrain = hills
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
+tradition_highland_warriors = {
+	category = combat
+
+	layers = {
+		0 = intrigue
+		1 = western
+		4 = mountain.dds
+	}
+
+	is_shown = { #Replaced by Upland Skirmishing
+		NOR = {
+			has_cultural_pillar = heritage_west_african
+			has_cultural_tradition = tradition_upland_skirmishing
+			has_cultural_tradition = tradition_heirs_of_illuminator
+			has_cultural_tradition = tradition_caucasian_wolves
+			has_cultural_tradition = tradition_caucasian_tenacity
+		}
+	}
+	can_pick = {
+		culture_not_pacifistic_trigger = yes
+		custom_description = {
+			text = culture_in_hills_desc
+			any_culture_county = {
+				any_county_province = {
+					terrain = hills
+				}
+			}
+		}
+	}
+
+	parameters = {
+		rough_terrain_expert_trait_more_common = yes
+		hill_trait_bonuses = yes
+		can_recruit_hill_specialist = yes
+	}
+	province_modifier = {
+		hills_levy_size = 0.1
+		hills_supply_limit_mult = 0.25
+	}
+	character_modifier = {
+		hills_travel_danger = hills_low_danger_reduction
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								terrain = hills
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = hill_percentage_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							percent >= 0.2
+							culture = scope:character.culture
+							any_county_province = {
+								terrain = hills
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}

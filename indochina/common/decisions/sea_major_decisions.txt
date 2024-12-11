@@ -1,8 +1,10 @@
 ﻿
 #A more lenient decision to convert if your liege is feudal
 convert_to_feudalism_liege_converted_decision = { #by Linnéa Thimrén
-	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = major
 	desc = convert_to_feudalism_liege_converted_decision_desc
 
 	selection_tooltip = {
@@ -34,8 +36,6 @@ convert_to_feudalism_liege_converted_decision = { #by Linnéa Thimrén
 		liege = {
 			OR = {
 				has_government = feudal_government
-				has_government = autocratic_government
-				has_government = imperial_government
 				has_government = clan_government
 				has_government = mandala_government
 			}
@@ -86,8 +86,10 @@ convert_to_feudalism_liege_converted_decision = { #by Linnéa Thimrén
 
 #A decision to feudalize the entire realm (wow!)
 convert_whole_realm_to_feudalism_decision = { #by Linnéa Thimrén
-	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = major
 	desc = convert_whole_realm_to_feudalism_decision_desc
 
 	selection_tooltip = {
@@ -123,8 +125,6 @@ convert_whole_realm_to_feudalism_decision = { #by Linnéa Thimrén
 				liege = {
 					NOR = {
 						has_government = feudal_government
-						has_government = autocratic_government
-						has_government = imperial_government
 						has_government = clan_government
 						has_government = mandala_government
 					}
@@ -196,8 +196,10 @@ convert_whole_realm_to_feudalism_decision = { #by Linnéa Thimrén
 }
 
 abandon_tributary_status_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	}
+	decision_group_type = major
 	desc = abandon_tributary_status_decision_desc
 
 	ai_check_interval = 36
@@ -273,17 +275,21 @@ abandon_tributary_status_decision = {
 }
 
 found_angkor_wat_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_angkor_wat.dds"
-	major = yes
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_angkor_wat.dds"
+	}
+	decision_group_type = major
 	desc = found_angkor_wat_decision_desc
 
 	ai_check_interval = 36
 
 	is_shown = {
+		exists = capital_county
 		capital_county = title:c_aninditapura
 		title:c_aninditapura.title_province = {
 			has_special_building_slot = no
 		}
+		NOT = { government_has_flag = government_is_stateless }
 		culture = { has_cultural_tradition = tradition_angkorian_architecture }
 	}
 
@@ -323,5 +329,197 @@ found_angkor_wat_decision = {
 
 	ai_potential = {
 		always = no
+	}
+}
+
+##################################################
+# DE JURE DECISIONS - modified to exclude Stateless
+
+##################################################
+# Found New Kingdom
+# by some unknown hero
+##################################################
+
+found_kingdom_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_found_kingdom.dds"
+	}
+	decision_group_type = major
+	ai_check_interval = 60
+	desc = found_kingdom_decision_desc
+
+	is_shown = {
+		highest_held_title_tier = tier_duchy
+		NOT = { has_game_rule = off_custom_kingdoms }
+		NOT = { government_has_flag = government_is_stateless }
+	}
+
+	is_valid = {
+		prestige_level >= 3
+		is_independent_ruler = yes
+		OR = {
+			custom_description = {
+				text = found_kingdom_decision_three_duchies_held
+				any_held_title = {
+					count > 2
+					tier = tier_duchy
+				}
+			}
+			sub_realm_size >= 30
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 300
+		prestige = 500
+		piety = 200
+	}
+
+	effect = {
+		create_custom_kingdom_effect = yes
+		if = {
+			limit = {
+				is_ai = no
+				NOT = { exists = global_var:found_kingdom_decision  }
+			}
+			set_global_variable = {
+				name = found_kingdom_decision
+				value = root
+			}
+			set_global_variable = {
+				name = found_kingdom_decision_kingdom
+				value = root.primary_title
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+##################################################
+# Found New Empire
+# by some unknown hero
+##################################################
+
+found_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	}
+	decision_group_type = major
+	ai_check_interval = 60
+	desc = found_empire_decision_desc
+
+	is_shown = {
+		highest_held_title_tier = tier_kingdom
+		OR = {
+			is_independent_ruler = yes
+			any_held_title = {
+				count >= 3
+				tier = tier_kingdom
+			}
+		}
+		NOT = { has_game_rule = off_custom_kingdoms }
+		NOT = { government_has_flag = government_is_stateless }
+	}
+
+	is_valid = {
+		prestige_level >= 4
+		OR = {
+			sub_realm_size >= 120
+			AND = {
+				custom_description = {
+					text = found_empire_decision_three_kingdoms_held
+					any_held_title = {
+						count >= 3
+						tier = tier_kingdom
+					}
+				}
+				sub_realm_size >= 80
+			}
+		}
+
+		trigger_if = {
+			limit = {
+				exists = struggle:iberian_struggle
+				# only display the condition for people from relevant faiths and cultures
+				struggle:iberian_struggle = {
+					OR = {
+						is_culture_involved_in_struggle = root.culture
+						is_faith_involved_in_struggle = root.faith
+					}
+				}
+				# and living nearby
+				any_realm_county = {
+ 					title_province = {
+ 						OR = {
+ 							geographical_region = ghw_region_north_africa
+ 							geographical_region = world_europe_west
+ 							geographical_region = world_europe_south
+					 	}
+ 					}
+ 				}
+			}
+			custom_description = {
+				text = found_empire_decision_not_part_of_iberian_struggle
+				NOT = {
+					any_character_struggle = {
+						is_struggle_type = iberian_struggle
+					}
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_independent_ruler = yes
+		is_available_adult = yes
+		is_at_war = no
+	}
+
+	cost = {
+		gold = 1200
+		prestige = 2000
+		piety = 600
+	}
+
+	effect = {
+		create_custom_empire_effect = yes
+		gain_heroic_legend_seed_tooltip_effect = yes
+		hidden_effect = {
+			legend_seed_new_title_effect = yes
+		}
+		if = {
+			limit = {
+				is_ai = no
+				NOT = { exists = global_var:found_empire_decision  }
+			}
+			set_global_variable = {
+				name = found_empire_decision
+				value = root
+			}
+			set_global_variable = {
+				name = found_empire_decision_empire
+				value = root.primary_title
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
 	}
 }
