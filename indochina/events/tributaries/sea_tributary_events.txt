@@ -1,5 +1,54 @@
 ﻿namespace = tributaries
 
+# Death management: A Suzerain has died. Pass on their tributaries to the heir.
+tributaries.0001 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        is_suzerain = yes
+    }
+    immediate = {
+        save_scope_as = dead_suzerain
+        primary_heir = {
+            save_scope_as = new_suzerain
+        }
+
+        every_relation = {
+            type = tributary
+            add_to_list = tributaries_to_pass
+        }
+
+        every_in_list = {
+            list = tributaries_to_pass
+            add_relation_suzerain = scope:new_suzerain
+        }
+    }
+}
+# Death management: A tributary has died. Give their heir their tributary status
+tributaries.0002 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        is_tributary = yes
+    }
+    immediate = {
+        save_scope_as = dead_tributary
+        primary_heir = {
+            save_scope_as = new_tributary
+        }
+
+        every_relation = {
+            type = suzerain
+            add_to_list = suzerainties_to_pass
+        }
+
+        every_in_list = {
+            list = suzerainties_to_pass
+            add_relation_tributary = scope:new_tributary
+        }
+    }
+}
+
 #Clear "Roadblocks"
 
 #Attacker may or may mot become new suzerain
@@ -160,7 +209,7 @@ tributaries.2006 = {
                         target = scope:suzerain
                         gold = {
                             value = yearly_character_income
-                            multiply = var:tribute_gold_percent
+                            multiply = 0.05
                             multiply = 3
                         }
                     }
@@ -351,7 +400,7 @@ tributaries.9 = {
                 target = root
                 gold = {
                     value = yearly_character_income
-                    multiply = var:tribute_gold_percent
+                    multiply = 0.05
                     multiply = 3
                 }
             }

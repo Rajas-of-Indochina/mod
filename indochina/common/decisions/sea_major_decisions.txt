@@ -205,12 +205,13 @@ abandon_tributary_status_decision = {
 	ai_check_interval = 36
 
 	is_shown = {
-		has_variable = my_suzerain
+		is_tributary = yes
 	}
 
 	is_valid_showing_failures_only = {
 		NOT = {
-			any_relation = { type = suzerain
+			any_relation = {
+				type = suzerain
 				has_truce = root
 			}
 		}
@@ -223,7 +224,8 @@ abandon_tributary_status_decision = {
 			custom_description = {
 				text = suzerain_has_negative_prestige
 				NOT = {
-					any_relation = { type = suzerain
+					any_relation = {
+						type = suzerain
 						prestige_level > 0
 					}
 				}
@@ -231,7 +233,8 @@ abandon_tributary_status_decision = {
 			custom_description = {
 				text = suzerain_has_lower_prestige_than_me
 				NOT = {
-					any_relation = { type = suzerain
+					any_relation = {
+						type = suzerain
 						prestige_level <= {
 							value = root.prestige_level
 							add = -2
@@ -246,26 +249,30 @@ abandon_tributary_status_decision = {
 		custom_description = {
 			text = stops_being_a_tributary
     	}
-    	every_relation = { type = suzerain
+    	every_relation = {
+			type = suzerain
 			add_opinion = {
 	            modifier = refused_to_give_tribute_opinion
 	            target = root
 	        }
     	}
 		hidden_effect = {
-			every_relation = { type = suzerain
+			every_relation = {
+				type = suzerain
 				trigger_event = { id = tributaries.2004 }
+				save_scope_as = my_suzerain
 			}
-		    var:my_suzerain = {
-		        remove_list_variable = { name = permanent_tributaries target = prev }
-		    }
-		    var:my_suzerain = {
-		        remove_list_variable = { name = all_tributaries target = prev }
-		    }
-		    var:my_suzerain = {
+			remove_relation_suzerain = scope:my_suzerain
+		    # var:my_suzerain = {
+		    #     remove_list_variable = { name = permanent_tributaries target = prev }
+		    # }
+		    # var:my_suzerain = {
+		    #     remove_list_variable = { name = all_tributaries target = prev }
+		    # }
+		    # var:my_suzerain = {
 
-		    }
-			remove_variable = my_suzerain
+		    # }
+			# remove_variable = my_suzerain
 		}
 	}
 

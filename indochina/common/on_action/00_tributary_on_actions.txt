@@ -21,7 +21,8 @@ quarterly_playable_pulse = {
 
 tributary_on_yearly_tribute = {
     effect = {
-        every_relation = { type = suzerain
+        every_relation = {
+            type = suzerain
             # Determine if still a suzerain
             # This shouldn't be necessary?
             # trigger_event = { id = tributaries.2004 }
@@ -77,19 +78,20 @@ on_war_started = {
 
 tributary_on_war_started = {
     effect = {
-        every_relation = { type = suzerain
+        every_relation = {
+            type = suzerain
             save_scope_as = suzerain
+        }
 
-            limit = {
-                scope:war = {
-                    any_war_participant = { NOT = { this = scope:suzerain } }
-                }
+        limit = {
+            scope:war = {
+                any_war_participant = { NOT = { this = scope:suzerain } }
+            }
 
-                scope:defender = {
-                    save_scope_as = call_to_arms_tribute
-                    var:my_suzerain = {
-                        trigger_event = { id = tributaries.2016 }
-                    }
+            scope:defender = {
+                save_scope_as = call_to_arms_tribute
+                var:my_suzerain = {
+                    trigger_event = { id = tributaries.2016 }
                 }
             }
         }
@@ -110,31 +112,44 @@ tributaries_on_death = {
         # Suzerain dies
         # Copy old Ruler tributaries list to his primary heir (on_death)
         if = {
-            limit = { is_suzerain = yes }
+            limit = { ROOT = { is_suzerain = yes } }
+            ROOT.primary_heir = {
+                save_scope_as = heir
+            }
 
-            pass_suzerainship_to_heir = {
-                SUZERAIN = this
+            every_relation = {
+                type = tributary
+                limit = { NOT = { this = scope:heir } }
+                set_relation_suzerain = scope:heir
+                remove_relation_suzerain = ROOT
             }
         }
 
         # Tributary dies
-        # give the heir var:my_suzerain
+        # give the heir root's suzerain
         if = {
-            limit = { is_tributary = yes }
+            limit = { ROOT = { is_tributary = yes } }
+            ROOT.primary_heir = {
+                save_scope_as = heir
+            }
 
-            pass_tributary_type_to_heir = {
-                TRIBUTARY = this
+            every_relation = {
+                type = suzerain
+                limit = { NOT = { this = scope:heir } }
+                set_relation_tributary = scope:heir
+                remove_relation_tributary = ROOT
             }
         }
     }
+    # events = {
+    #     tributaries.0001
+    #     tributaries.0002
+    # }
 }
 
 quarterly_trib_housekeeping_pulse = {
     trigger = {
-        OR = {
-            has_variable = my_suzerain
-            has_variable_list = permanent_tributaries
-        }
+        is_tributary = yes
     }
     effect = {
         if = { # Reassign tribs to their suzerain if they got detached somehow

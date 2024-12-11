@@ -1111,14 +1111,13 @@ free_tributary_interaction = {
 
     is_shown = {
         scope:actor = {
-            NOT = {
-                has_variable = my_suzerain
-            }
+            is_tributary = no
             NOT = { this = scope:recipient }
         }
         scope:recipient = {
-            has_variable = my_suzerain
-            var:my_suzerain = {
+            is_tributary = yes
+            any_relation = {
+                type = suzerain
                 this = scope:actor
             }
         }
@@ -1228,9 +1227,7 @@ independent_tributary_interaction = {
         NOT = { scope:actor = { is_at_war_with = scope:recipient } }
         scope:actor = {
             is_independent_ruler = yes
-            NOT = {
-                is_at_war = yes
-            }
+            is_at_war = no
         }
         custom_description = {
             text = is_at_war_with_another_vassal
