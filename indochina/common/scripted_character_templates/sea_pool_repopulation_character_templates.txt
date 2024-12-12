@@ -371,6 +371,17 @@ pool_repopulate_local_flavor = {
 				}
 			}
 		}
+		culture:turkmen = {
+			trigger = {
+				AND = {
+					root.faith = { religion = religion:islam_religion }
+					OR = {
+					root.culture = { this = culture:turkmen }	
+					root.any_parent_culture_or_above = { this = culture:turkmen }
+					}
+			   }
+			}
+		}
 		culture:mon = {
 			trigger = {
 				root.capital_province = {
@@ -728,6 +739,12 @@ pool_repopulate_local_flavor = {
 					add_trait = berserker
 				}
 			}
+		}
+		else_if = {
+			limit = {
+				culture = culture:turkmen
+			}
+			set_character_faith = faith:alevi
 		}
 		
 		# Learn flavorful & appropriate languages
