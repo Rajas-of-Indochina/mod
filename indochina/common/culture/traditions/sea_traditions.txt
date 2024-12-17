@@ -2612,3 +2612,108 @@ tradition_sapphic_romance = {
 		}
 	}
 }
+
+tradition_storied_goldsmiths = {
+	category = ritual
+
+	layers = {
+		0 = learning
+		1 = "default_todo.dds"
+		2 = "rec3 copy 2.dds"
+		4 = tools.dds
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_spiritual_or_communal_desc
+				}
+			}
+			if = {
+				limit = {
+					trigger_if = {
+						limit = {
+							scope:character = {
+								is_ai = no
+							}
+						}
+						NOT = {
+							any_culture_county = {
+								any_county_province = {
+									province_has_gold_mine = yes
+								}
+							}
+						}
+					}
+					trigger_else = {
+						always = no
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = culture_no_gold_mines_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	character_modifier = {
+		
+	}
+	province_modifier = {
+		
+	}
+	county_modifier = {
+		
+	}
+	doctrine_character_modifier = {
+		doctrine = tenet_sacred_goldsmithing
+		same_faith_opinion = 5
+		same_culture_opinion = 5
+	}
+
+	is_shown = {
+
+	}
+
+	can_pick = {
+		OR = {
+			custom_description = {
+				text = culture_has_gold_mines_desc
+				any_culture_county = {
+					any_county_province = {
+						province_has_gold_mine = yes
+					}
+				}
+			}
+			has_cultural_pillar = heritage_andean
+			scope:character = {
+				faith = {
+					has_doctrine = tenet_sacred_goldsmithing
+				}
+			}
+		}
+	}
+
+	parameters = {
+		more_expensive_goldsmithing_inspiration = yes
+		improved_goldsmithing_inspiration = yes
+		gold_mine_culture_bonuses = yes
+		unlock_commission_gold_statue_for_prestige = yes
+	}
+}

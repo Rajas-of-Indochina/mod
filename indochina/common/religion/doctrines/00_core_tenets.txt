@@ -1,4 +1,4 @@
-﻿doctrine_core_tenets = {
+doctrine_core_tenets = {
 	group = "core_tenets"
 	number_of_picks = 3
 
@@ -38,6 +38,10 @@
 			custom_description = {
 				text = incompatible_doctrine_mummification_trigger
 				NOT = { doctrine:doctrine_funeral_mummification = { is_in_list = selected_doctrines } }
+			}
+			custom_description = {
+				text = incompatible_tenet_sacred_goldsmithing_trigger
+				NOT = { doctrine:tenet_sacred_goldsmithing = { is_in_list = selected_doctrines } }
 			}
 		}
 
@@ -3434,6 +3438,77 @@
 		traits = {
 			virtues = { transgender = 4 }
 			virtues = { possessed = 1 }
+		}
+	}
+
+	tenet_sacred_goldsmithing = {
+		piety_cost = {
+			if = {
+				limit = {
+					OR = {
+						religion_tag = andean_religion
+						religion_tag = kushitism_religion # Egyptian religion, sorta
+					}
+				}
+				value = faith_tenet_cost_low
+			}
+			else_if = {
+				limit = {
+					# As far as I can tell, gold has a lot of symbolic importance in Hinduism and Buddhism
+					# So a Hindu or Buddhist sect deciding that gold is sacred is semi-plausible
+					# But since the AI can't make new faiths this will just be for players to use
+					# So it's kinda w/e
+					OR = {
+						religion_tag = hinduism_religion
+						religion_tag = buddhism_religion
+					}
+				}
+				value = faith_tenet_cost_mid
+			}
+			else = {
+				value = faith_tenet_cost_high
+			}
+
+			# Multiplier for keeping same tenet
+			if = {
+				limit = { has_doctrine = tenet_sacred_goldsmithing }
+				multiply = faith_unchanged_doctrine_cost_mult
+			}
+		}
+
+		parameters = {
+			gold_mine_faith_bonuses = yes
+			more_expensive_goldsmithing_inspiration = yes
+			improved_goldsmithing_inspiration = yes
+			unlock_commission_gold_statue_for_piety = yes
+		}
+
+		is_shown = {
+			NOR = {
+				religion_tag = christianity_religion
+				religion_tag = judaism_religion
+				religion_tag = islam_religion
+			}
+		}
+		can_pick = {
+			custom_description = {
+				text = incompatible_tenet_aniconism_trigger
+				NOT = { doctrine:tenet_aniconism = { is_in_list = selected_doctrines } }
+			}
+		}
+
+		character_modifier = {
+			theocracy_government_tax_contribution_mult = -0.05 # Gold being diverted from taxes to furnishing temples...
+			monthly_piety_from_buildings_mult = 0.1 #But you get piety from them
+			build_piety_cost = -0.05 # And any buildings that cost piety cost way way less piety...
+			holding_piety_cost = -0.05
+			church_holding_build_gold_cost = 0.1 #...At the cost of being more monetarily expensive
+		}
+		doctrine_character_modifier = {
+			# Give specific synergy to Sun Worship because of Andean religion
+			doctrine = tenet_sun_worship
+			learning_per_piety_level = 1
+			diplomacy_per_piety_level = 1
 		}
 	}
 
