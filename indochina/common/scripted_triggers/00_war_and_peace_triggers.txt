@@ -171,23 +171,25 @@ can_potentially_call_ally_trigger = {
 			trigger_if = {
 				limit = {
 					# Diarchs can join against other vassals.
-					NOT = { this ?= $WARRIOR$.diarch }
-					NOT = {
-						government_has_flag = government_is_nomadic
-						$WARRIOR$ = {
+					NOR = {
+						this ?= $WARRIOR$.diarch
+						AND = {
 							government_has_flag = government_is_nomadic
+							$WARRIOR$ = {
+								government_has_flag = government_is_nomadic
+							}
 						}
-					}
-					NOT = {
-						government_has_flag = government_is_mandala
-						$WARRIOR$ = {
+						AND = {
 							government_has_flag = government_is_mandala
+							$WARRIOR$ = {
+								government_has_flag = government_is_mandala
+							}
 						}
-					}
-					NOT = {
-						government_has_flag = government_is_stateless
-						$WARRIOR$ = {
+						AND = {
 							government_has_flag = government_is_stateless
+							$WARRIOR$ = {
+								government_has_flag = government_is_stateless
+							}
 						}
 					}
 				}
