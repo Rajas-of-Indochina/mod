@@ -382,3 +382,66 @@ bolghar_islam_decision = {
 	}
 }
 
+become_fatih_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/constantinople.dds"
+	}
+	desc = become_fatih_decision_desc
+	sort_order = 100
+	decision_group_type = major
+
+	is_shown = {
+        religion = religion:islam_religion
+		OR = {
+		capital_province = { geographical_region = world_asia_minor }
+		capital_province = { geographical_region = world_europe_south_east }
+		}
+		NOT = {	#You can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:become_fatih_decision
+			}
+		}
+	}
+
+	is_valid = {
+		has_title = title:c_byzantion	
+        religion = religion:islam_religion
+		highest_held_title_tier >= tier_kingdom
+		is_independent_ruler = yes
+		NOT = {	#You can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:become_fatih_decision
+			}
+		}
+	}
+
+	effect = {
+		save_scope_as = scoped_fatih
+		trigger_event = { 	
+			id = alevi.0010
+		}	
+	}
+
+	cost = {
+	piety = 200
+	}
+
+	ai_check_interval = 32
+	ai_potential = {
+		has_title = title:c_byzantion	
+        religion = religion:islam_religion
+		highest_held_title_tier >= tier_kingdom
+		is_independent_ruler = yes
+		NOT = {	#You can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:become_fatih_decision
+			}
+		}
+	}
+	ai_will_do = {
+		base = 100
+	}
+}

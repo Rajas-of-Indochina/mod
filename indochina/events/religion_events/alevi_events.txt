@@ -285,7 +285,7 @@ alevi.0005 = {
 	}
 
 	immediate = {
-		
+
 	}
 
 	option = {
@@ -412,6 +412,200 @@ alevi.0009 = {
 		id = alevi.0004
 		months = 2 
 	}
+	}
+}
+
+alevi.0010 = {
+	type = character_event
+	title = alevi.0010.t
+	desc = alevi.0010.desc
+
+	theme = realm
+	right_portrait = { 
+		character = root
+		animation = celebrate_sword
+	}
+	if = {
+		limit = { has_dlc_feature = roads_to_power }
+		override_background = { reference = ep3_constantinople}
+		}
+
+	immediate = {
+		play_music_cue = "sea_mood_turkic_track_13"				
+		every_vassal_or_below = {
+			if = {
+				limit = {
+					NOT = {
+						religion = religion:islam_religion
+					}
+				}
+				trigger_event = alevi.0013
+			}
+			else = {
+				trigger_event = alevi.0014
+			}
+			add_to_temporary_list = received_notification_constantinople
+		}
+		every_ruler = {
+			limit = {
+				NOT = { this = scope:scoped_fatih }
+				NOT = {
+					is_in_list = received_notification_constantinople
+				}
+        religion = religion:islam_religion
+			}
+			trigger_event = alevi.0011
+		}
+		every_ruler = {
+			limit = {
+				NOT = { this = scope:scoped_fatih }
+				NOT = {
+					is_in_list = received_notification_constantinople
+				}
+        religion = religion:christianity_religion
+			}
+			trigger_event = alevi.0012
+		}
+	}
+
+	option = {
+		name = alevi.0010.a
+
+		add_martial_skill = 1
+		prestige = 500
+		piety = 500
+		give_nickname = ROA_nick_the_fatih
+		add_trait = conqueror
+
+		faith = {
+			change_fervor = {
+				value = medium_fervor_gain
+			}
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:become_fatih_decision
+		}			
+	}
+}
+
+alevi.0011 = {
+	type = character_event
+	title = alevi.0011.t
+	desc = alevi.0011.desc
+
+	theme = realm
+	right_portrait = { 
+		character = root
+		animation = admiration
+	}
+	left_portrait = { 
+		character = scope:scoped_fatih
+		animation = celebrate_sword
+	}	
+	if = {
+	limit = { has_dlc_feature = roads_to_power }
+	override_background = { reference = ep3_constantinople}
+	}
+
+	immediate = {
+		play_music_cue = sea_mood_turkic_track_13
+	}
+
+	option = {
+		name = alevi.0011.a
+
+		piety = 10
+	}
+}
+
+alevi.0012 = {
+	type = character_event
+	title = alevi.0012.t
+	desc = alevi.0012.desc
+
+	theme = realm
+	right_portrait = { 
+		character = root
+		animation = shock
+	}
+	left_portrait = { 
+		character = scope:scoped_fatih
+		animation = celebrate_sword
+	}
+
+	if = {
+	limit = { has_dlc_feature = roads_to_power }
+	override_background = { reference = ep3_constantinople}
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_negative"				
+	}
+
+	option = {
+		name = alevi.0012.a
+	
+	}
+}
+
+alevi.0013 = {
+	type = character_event
+	title = alevi.0013.t
+	desc = alevi.0013.desc
+
+	theme = realm
+	right_portrait = { 
+		character = root
+		animation = thinking
+	}
+	left_portrait = { 
+		character = scope:scoped_fatih
+		animation = celebrate_sword
+	}
+
+	if = {
+	limit = { has_dlc_feature = roads_to_power }
+	override_background = { reference = ep3_constantinople}
+	}
+
+	immediate = {
+	
+	}
+
+	option = {
+		name = alevi.0013.a
+	
+	}
+}
+
+alevi.0014 = {
+	type = character_event
+	title = alevi.0014.t
+	desc = alevi.0014.desc
+
+	theme = realm
+	right_portrait = { 
+		character = root
+		animation = admiration
+	}
+	left_portrait = { 
+		character = scope:scoped_fatih
+		animation = celebrate_sword
+	}	
+	if = {
+	limit = { has_dlc_feature = roads_to_power }
+	override_background = { reference = ep3_constantinople}
+	}
+
+	immediate = {
+		play_music_cue = sea_mood_turkic_track_13	
+	}
+
+	option = {
+		name = alevi.0014.a
+
+		piety = 10
 	}
 }
 
