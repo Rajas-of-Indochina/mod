@@ -435,6 +435,40 @@ become_fatih_decision = {
 		add_piety = 1000
 		add_piety_level = 1
 		add_dynasty_prestige = 500
+		every_vassal_or_below = {
+			if = {
+				limit = {
+					NOT = {
+						religion = religion:islam_religion
+					}
+				}
+				trigger_event = alevi.0013
+			}
+			else = {
+				trigger_event = alevi.0014
+			}
+			add_to_temporary_list = received_notification_constantinople
+		}
+		every_ruler = {
+			limit = {
+				NOT = { this = scope:scoped_fatih }
+				NOT = {
+					is_in_list = received_notification_constantinople
+				}
+        religion = religion:islam_religion
+			}
+			trigger_event = alevi.0011
+		}
+		every_ruler = {
+			limit = {
+				NOT = { this = scope:scoped_fatih }
+				NOT = {
+					is_in_list = received_notification_constantinople
+				}
+        religion = religion:christianity_religion
+			}
+			trigger_event = alevi.0012
+		}
 	}
 
 	cost = {
