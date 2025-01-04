@@ -12,6 +12,12 @@
 	}
 }
 
+on_game_start_after_lobby = {
+    on_actions = {
+		intro_event
+    }
+}
+
 on_birthday = {
 	on_actions = { 
 		thamade_action 
@@ -586,5 +592,39 @@ abkhazia_regnal_check = {
 			}
 			add_character_flag = { flag = has_regnal_name_abkhazia }
 		}
+	}
+}
+
+intro_event = {
+	effect = {
+		if = {
+			current_date = 867.1.1
+			current_date = 936.1.1
+			current_date = 1066.1.1
+			current_date = 1178.10.1
+		}
+	every_ruler = {
+		limit = {
+			is_landed = yes
+			is_ai = no
+			OR = {
+			culture = culture:circassian
+			culture = culture:abkhaz
+			culture = culture:ubykh
+			}
+		  }
+		trigger_event = ROAintro.001
+	  }
+	  every_ruler = {
+		limit = {
+			is_landed = yes
+			is_ai = no
+			OR = {
+			culture = culture:nakh
+			culture = culture:paranakh
+			}
+		  }
+		trigger_event = ROAintro.002
+	  }
 	}
 }
