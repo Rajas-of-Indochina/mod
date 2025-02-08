@@ -99,9 +99,9 @@ armenia_struggle_reset_de_jure = {
 	title:k_armenian_principality = { set_de_jure_liege_title = title:e_caucasia }
 	title:k_shirvan = { set_de_jure_liege_title = title:e_caucasia }
 	#e_byzantium
-	title:k_pontus = { sort_out_roman_existence = yes }
-	title:k_anatolia = { sort_out_roman_existence = yes }
-	title:k_rum = { sort_out_roman_existence = yes }
+	title:k_pontus = { do_roman_drift = yes }
+	title:k_anatolia = { do_roman_drift = yes }
+	title:k_rum = { do_roman_drift = yes }
 	# e_persia
 	title:k_adurbadagan = { set_de_jure_liege_title = title:e_persia }
 	title:k_jazira = { set_de_jure_liege_title = title:e_persia }
@@ -215,29 +215,29 @@ setup_communalist_leader_effect = {
 			scope:peasant_county.faith ={
 				save_scope_as = leader_faith
 			}
-			else_if = {
-				limit = { scope:peasant_county = { county_has_large_faith_minority_with_trigger = { TRIGGER = is_communalist_faith } } }
-				scope:peasant_county = {
-					random_in_list = {
-						variable = faith_minorities_large
-						limit = { is_communalist_faith = yes }
-						save_scope_as = leader_faith
-					}
+		}
+		else_if = {
+			limit = { scope:peasant_county = { county_has_large_faith_minority_with_trigger = { TRIGGER = is_communalist_faith } } }
+			scope:peasant_county = {
+				random_in_list = {
+					variable = faith_minorities_large
+					limit = { is_communalist_faith = yes }
+					save_scope_as = leader_faith
 				}
 			}
-			else_if = {
-				limit = { scope:peasant_county = { county_has_small_faith_minority_with_trigger = { TRIGGER = is_communalist_faith } } }
-				scope:peasant_county = {
-					random_in_list = {
-						variable = faith_minorities_small
-						limit = { is_communalist_faith = yes }
-						save_scope_as = leader_faith
-					}
+		}
+		else_if = {
+			limit = { scope:peasant_county = { county_has_small_faith_minority_with_trigger = { TRIGGER = is_communalist_faith } } }
+			scope:peasant_county = {
+				random_in_list = {
+					variable = faith_minorities_small
+					limit = { is_communalist_faith = yes }
+					save_scope_as = leader_faith
 				}
 			}
-			else = {
-				faith:tondrakian = { save_scope_as = leader_faith }
-			}
+		}
+		else = {
+			faith:tondrakian = { save_scope_as = leader_faith }
 		}
 		create_character = {
 			location = scope:peasant_county.title_province
@@ -490,8 +490,8 @@ armenian_struggle_ending_effect = {
 		list = player_to_notify
 		limit = {
 			NOT = { THIS = ROOT }
-			trigger_event = $EVENT$
 		}
+		trigger_event = $EVENT$
 	}
 	struggle:armenian_struggle ?= { end_struggle = $ENDING$ }
 }

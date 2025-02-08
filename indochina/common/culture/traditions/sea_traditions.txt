@@ -2612,3 +2612,64 @@ tradition_sapphic_romance = {
 		}
 	}
 }
+
+## Just to fix a crash, won't actually appear without RICE
+tradition_RICE_silk_road = {
+	category = regional
+
+	layers = {
+		0 = diplo
+		1 = mena
+		4 = RICE_silk.dds
+	}
+	
+	is_shown = {
+		has_global_variable = is_RICE_loaded_global_variable
+		any_culture_county = {
+			title_province = {
+				geographical_region = RICE_land_silk_road_region
+			}
+		}
+	}
+	can_pick = {
+		has_global_variable = is_RICE_loaded_global_variable
+		any_culture_county = {
+			count >= 4
+			title_province = {
+				geographical_region = RICE_land_silk_road_region
+			}
+		}
+	}
+	
+	parameters = {
+		city_buildings_more_powerful = yes
+		unlock_rice_silk_road_dynasty_legacy = yes
+		rice_decision_reinforce_relations_multiple = yes
+		unlock_silk_road_entertainers = yes
+		unlock_sincization = yes
+		#unlock_rice_tarim_basin_establish_translation_bureau = yes
+		#rice_decision_reinforce_relations_no_limit = yes
+	}
+
+	character_modifier = {
+		diplomatic_range_mult = 0.2
+		different_culture_opinion = 5
+		different_faith_opinion = 5
+		character_travel_speed_mult = 0.05
+		character_travel_safety_mult = 0.05
+	}	
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = { value = 100 }
+}
