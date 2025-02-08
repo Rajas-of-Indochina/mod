@@ -127,12 +127,17 @@ minority_management = {
     }
     is_shown = {
         is_ai = no
-        any_held_county = {
+        any_sub_realm_county = {
             OR = {
                 county_has_minority_faith_trigger = yes
                 county_has_minority_culture_trigger = yes
             }
         }
+    }
+}
+mysgui = {
+    is_shown = {
+        culture = culture:baranis
     }
 }
 
@@ -202,6 +207,96 @@ minority_management_enslave_minority_culture_trader = {
                 CULTURE = scope:culture
                 COUNTY = THIS
             }
+        }
+    }
+}
+
+minority_management_expel_minority_culture_small = {
+    scope = character
+    saved_scopes = {
+        culture
+    }
+    effect = {
+        var:selected_county = {
+            add_county_modifier = {
+                modifier = small_minority_expelled_modifier
+                years = 10
+            }
+            remove_list_variable = {
+                name = culture_minorities_small
+                target = scope:culture
+            }
+        }
+        scope:culture = {save_scope_as = minority_culture}
+        random_neighboring_and_across_water_top_liege_realm_owner = {
+            random_realm_county = {
+                save_scope_as = county
+                promote_culture_minority_effect = { CULTURE = scope:expelled_culture }
+                scope:expelled_culture = { save_scope_as = minority_culture }
+                notify_recipient_of_culture_migration_effect = yes
+            }
+        }
+        add_gold = var:selected_county.development_level
+    }
+}
+
+minority_management_expel_minority_culture_large = {
+    scope = character
+    saved_scopes = {
+        culture
+    }
+    effect = {
+        var:selected_county = {
+            add_county_modifier = {
+                modifier = large_minority_expelled_modifier
+                years = 10
+            }
+            remove_list_variable = {
+                name = culture_minorities_large
+                target = scope:culture
+            }
+        }
+        scope:culture = {save_scope_as = minority_culture}
+        random_neighboring_and_across_water_top_liege_realm_owner = {
+            random_realm_county = {
+                save_scope_as = county
+                promote_culture_minority_effect = { CULTURE = scope:expelled_culture }
+                scope:expelled_culture = { save_scope_as = minority_culture }
+                notify_recipient_of_culture_migration_effect = yes
+            }
+        }
+        add_gold = {
+            value = var:selected_county.development_level
+            multilply = 2
+        }
+    }
+}
+
+minority_management_expel_minority_culture_trader = {
+    scope = character
+    saved_scopes = {
+        culture
+    }
+    effect = {
+        var:selected_county = {
+            remove_list_variable = {
+                name = culture_minorities_trader
+                target = scope:culture
+            }
+        }
+        add_tyranny = 1
+        scope:culture = {save_scope_as = minority_culture}
+        random_neighboring_and_across_water_top_liege_realm_owner = {
+            random_realm_county = {
+                save_scope_as = county
+                promote_culture_minority_effect = { CULTURE = scope:expelled_culture }
+                scope:expelled_culture = { save_scope_as = minority_culture }
+                notify_recipient_of_culture_migration_effect = yes
+            }
+        }
+        add_gold = {
+            value = var:selected_county.development_level
+            multilply = 2
         }
     }
 }

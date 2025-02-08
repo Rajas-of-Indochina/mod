@@ -1,38 +1,68 @@
-types minoritywidgets {
-	type minoritywindow = window {
-		layer = middle
-		movable = yes
-		size = {1100 783}
-		parentanchor = center
-		using = Window_Decoration
-		using = Window_Movable
-		using = Window_Background
-		position = { 1500 100 }
-		datacontext = "[GetPlayer]"
-		visible = "[GetVariableSystem.Exists('minority_window')]"
+window = {
+	name = "minority_ledger_window"
+	layer = top
+	movable = yes
+	size = {1100 783}
+	parentanchor = center
+	using = Window_Decoration
+	using = Window_Movable
+	using = Window_Background
+	position = { 1500 100 }
+	datacontext = "[GetPlayer]"
+	visible = "[GetVariableSystem.Exists('minority_ledger')]"
 
-		state = {
-			name = _hide
-			using = Animation_FadeOut_Quick
-			using = Sound_WindowHide_Standard
-			using = Window_Position_MainTab_Hide
-			trigger_when = "[IsRightWindowOpen]"
-			on_start = "[GetVariableSystem.Clear( 'minority_view')]"
-			alpha = 0
-		}
-		state = {
-			name = _show
-			using = Animation_FadeIn_Quick
-			using = Sound_WindowShow_Standard
-			using = Window_Position_MainTab
-			on_start = "[GetVariableSystem.Set( 'minority_view', 'all' )]"
-			alpha = 1
-		}
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+		using = Sound_WindowHide_Standard
+		using = Window_Position_MainTab_Hide
+		trigger_when = "[IsRightWindowOpen]"
+		on_start = "[GetVariableSystem.Clear( 'minority_ledger')]"
+		alpha = 0
+	}
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+		using = Sound_WindowShow_Standard
+		using = Window_Position_MainTab
+		on_start = "[GetVariableSystem.Set( 'minority_ledger', 'all' )]"
+		alpha = 1
+	}
 
-		margin_widget = {
-			size = { 100% 100% }
-			margin = { 0 26 }
+	margin_widget = {
+		size = { 100% 100% }
+		margin = { 0 26 }
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			widget = {
+				name = "header"
+				size = { 1000 56 }
 
+				blockoverride "header_text"
+				{
+					text = "Minority Ledger"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[GetVariableSystem.Clear( 'minority_ledger')]"
+				}
+
+				background = {
+					using = Background_Header
+				}
+		
+				buttons_window_control = {
+					parentanchor = top|right
+				}
+		
+				header_text = {
+					name = "header_text"
+					parentanchor = top|hcenter
+					position = { 0 5 }
+				}
+			}
 			hbox = {
 				margin_left = 50
 				margin_right = 50
@@ -144,14 +174,8 @@ types minoritywidgets {
 										item = {
 											culture_minority_ledger_entry = {
 												blockoverride "buttons" {
-													button = {
-														size = { 64 64 }
-														datacontext = "[GetScriptedGui('minority_management_enslave_minority_culture_small')]"
-														onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Scope.Culture.MakeScope ).End )]"
-										
-														texture = "gfx/interface/icons/traits/slave.dds"
-														tooltip = "ENSLAVE_MINORITY_TOOLTIP"
-													}
+													enslave_small_culture_minority_button = {}
+													expel_small_culture_minority_button = {}
 												}
 											}
 										}
@@ -171,14 +195,8 @@ types minoritywidgets {
 													text = "[minority_culture_large|E]"
 												}
 												blockoverride "buttons" {
-													button = {
-														size = { 64 64 }
-														datacontext = "[GetScriptedGui('minority_management_enslave_minority_culture_large')]"
-														onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Scope.Culture.MakeScope ).End )]"
-										
-														texture = "gfx/interface/icons/traits/slave.dds"
-														tooltip = "ENSLAVE_MINORITY_TOOLTIP"
-													}
+													enslave_large_culture_minority_button = {}
+													expel_large_culture_minority_button = {}
 												}
 											}
 										}
@@ -413,9 +431,9 @@ types minoritywidgets {
 											datacontext = "[Culture.GetMartial]"
 											layoutpolicy_horizontal = expanding
 				
-											 # Only show Martial if culture affects martial customs,
-											 # which is only the case if we are able to modify
-											 # the culture pillars.
+												# Only show Martial if culture affects martial customs,
+												# which is only the case if we are able to modify
+												# the culture pillars.
 											visible = "[HasDlcFeature( 'diverge_culture' )]"
 				
 											spacing = 10
@@ -1117,6 +1135,7 @@ types minoritywidgets {
 			}
 		}
 	}
+
 }
 
 types Ledger_entries
@@ -1154,7 +1173,10 @@ types Ledger_entries
 			}
 		}
 		expand = {}
-		block buttons {  }
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			block buttons {  }
+		}
 		expand = {}
 	}
 	type faith_minority_ledger_entry = hbox {
@@ -1199,5 +1221,49 @@ types Ledger_entries
 		expand = {}
 		block buttons {  }
 		expand = {}
+	}
+}
+
+types ledger_buttons
+{
+	type enslave_small_culture_minority_button = button_normal {
+		size = { 64 64 }
+		datacontext = "[GetScriptedGui('minority_management_enslave_minority_culture_small')]"
+		onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Scope.Culture.MakeScope ).End )]"
+
+		texture = "gfx/interface/icons/traits/slave.dds"
+		tooltip = "ENSLAVE_SMALL_CULTURE_MINORITY_TOOLTIP"
+	}
+	type enslave_large_culture_minority_button = button_normal {
+		size = { 64 64 }
+		datacontext = "[GetScriptedGui('minority_management_enslave_minority_culture_large')]"
+		onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Scope.Culture.MakeScope ).End )]"
+
+		texture = "gfx/interface/icons/traits/slave.dds"
+		tooltip = "ENSLAVE_LARGE_CULTURE_MINORITY_TOOLTIP"
+	}
+	type enslave_trader_culture_minority_button = button_normal {
+		size = { 64 64 }
+		datacontext = "[GetScriptedGui('minority_management_enslave_minority_culture_trader')]"
+		onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Scope.Culture.MakeScope ).End )]"
+
+		texture = "gfx/interface/icons/traits/slave.dds"
+		tooltip = "ENSLAVE_TRADER_CULTURE_MINORITY_TOOLTIP"
+	}
+	type expel_small_culture_minority_button = button_normal {
+		size = {64 64}
+		datacontext = "[GetScriptedGui('minority_management_expel_minority_culture_small')]"
+		onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Scope.Culture.MakeScope ).End )]"
+
+		texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
+		tooltip = "EXPEL_SMALL_CULTURE_MINORITY_TOOLTIP"
+	}
+	type expel_large_culture_minority_button = button_normal {
+		size = {64 64}
+		datacontext = "[GetScriptedGui('minority_management_expel_minority_culture_large')]"
+		onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Scope.Culture.MakeScope ).End )]"
+
+		texture = "gfx/interface/icons/army_status/army_status_raiding.dds"
+		tooltip = "EXPEL_LARGE_CULTURE_MINORITY_TOOLTIP"
 	}
 }

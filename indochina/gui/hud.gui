@@ -3471,6 +3471,11 @@ widget = {
 					button_struggle_banner = {}
 				}
 			}
+			
+			button_minority_ledger = {
+				name = "minority_ledger"
+				visible = "[GetScriptedGui('minority_management').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			}
 		}
 
 		## Map Modes
@@ -4707,6 +4712,48 @@ types HUD
 			text = "[GetPlayer.GetRaidHostilityEnd( Character.Self ).GetTimeDiffFromNow]"
 
 		}
+	}
+
+	type button_minority_ledger = button_normal {
+		size = {64 64}
+		texture = "gfx/interface/icons/modifiers/sea_culture_minority_large.dds"
+
+		modify_texture = {
+			name = "glow"
+			texture = "gfx/interface/component_effects/effect_shimmer.dds"
+			blend_mode = colordodge
+			translate_uv = { 1 0 }
+			alpha = 0
+		}
+
+		state = {
+			name = _mouse_enter
+			duration = 0.03
+
+			using = Animation_Curve_Default
+
+			modify_texture = {
+				name = "glow"
+				translate_uv = { 0 0 }
+				alpha = 0.4
+			}
+		}
+
+		state = {
+			name = _mouse_leave
+			duration = 0.1
+
+			using = Animation_Curve_Default
+
+			modify_texture = {
+				name = "glow"
+				translate_uv = { 1 0 }
+				alpha = 0
+			}
+		}
+		onclick = "[GetVariableSystem.Toggle( 'minority_ledger' )]"
+		onclick = "[GetScriptedGui('minority_management').Execute(GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+		tooltip = "[GetVariableSystem.Exists('minority_ledger')]"
 	}
 
 	type button_hud_character_bar = button_normal {
