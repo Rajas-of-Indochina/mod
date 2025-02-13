@@ -51,6 +51,18 @@ on_title_gain_usurpation = {
 	}
 }
 
+on_war_won_attacker = {
+	on_actions = {
+		sea_armenian_crusade_in_levant
+	}
+}
+
+on_county_faith_change = {
+	on_actions = {
+		sea_armenian_convert_county
+	}
+}
+
 # root: is involved (or interloper) character
 # Scope:struggle is the currently pulsing struggle.
 five_year_struggle_playable_pulse = {
@@ -1101,6 +1113,90 @@ sea_armenian_struggle_on_title_destroyed = {
 				}
 			}
 			armenian_dissolution_effect = yes
+		}
+	}
+}
+
+# If a crusade succeeds in the Levant, that will weaken the Perso-Arabic standing in Armenia
+sea_armenian_crusade_in_levant = {
+	trigger = {
+		OR = {
+			using_cb = undirected_great_holy_war
+			using_cb = directed_great_holy_war
+		}
+		OR = {
+			scope:target_title = title:k_jerusalem
+			scope:target_title = title:k_syria
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				scope:attacker = { 
+					OR = {
+						has_trait = pro_roman
+						has_trait = pro_armenian
+					}
+				}
+			}
+			scope:attacker = {
+				every_character_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_successful_crusade
+						character = scope:attacker
+					}
+				}
+			}
+		}
+	}
+}
+
+
+# County changes faith.
+# Root is the county title
+# scope:old_faith is the faith it used to have
+sea_armenian_convert_county = {
+	trigger = {
+		title_province = {
+			geographical_region = struggle_region_armenia
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				NOT = { armenian_struggle_is_roman_faith_trigger = { FAITH = scope:old_faith } }
+				armenian_struggle_is_roman_faith_trigger = { FAITH = ROOT.faith }
+			}
+			every_county_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_forced_conversion_pro_roman
+					character = ROOT.holder
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = { armenian_struggle_is_persian_faith_trigger = { FAITH = scope:old_faith } }
+				armenian_struggle_is_persian_faith_trigger = { FAITH = ROOT.faith }
+			}
+			every_county_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_forced_conversion_pro_persian
+					character = ROOT.holder
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = { armenian_struggle_is_armenian_faith_trigger = { FAITH = scope:old_faith } }
+				armenian_struggle_is_armenian_faith_trigger = { FAITH = ROOT.faith }
+			}
+			every_county_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_forced_conversion_pro_armenian
+					character = ROOT.holder
+				}
+			}
 		}
 	}
 }
