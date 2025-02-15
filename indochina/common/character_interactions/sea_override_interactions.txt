@@ -375,7 +375,7 @@ incite_revolts_interaction = {
 	ai_potential = {
 		OR = {
 			any_character_struggle = {
-				is_struggle_type = iberian_struggle
+				limit = {is_struggle_type = iberian_struggle}
 				has_struggle_phase_parameter = unlocks_incite_revolts_interaction
 				involvement = involved
 				OR = {
@@ -1171,8 +1171,8 @@ support_feudalize_tribal_holding_interaction = {
 		}
 		# The AI only does this if they have plenty of gold to spare
 		modifier = {
-			scope:actor.gold <= { value = scope:target.feudalize_tribal_holding_interaction_cost multiply = 4 }
-			factor = 0
+			scope:actor.gold >= { value = scope:target.feudalize_tribal_holding_interaction_cost multiply = 4 }
+			multiply = 0
 		}
 	}
 }
