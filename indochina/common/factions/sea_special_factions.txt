@@ -162,6 +162,26 @@
 			}
 			desc = "COMMUNALIST_FACTION_STRUGGLE_PHASE_TT"
 		}
+
+		modifier = {
+			add = -50
+			acope:target = {
+				OR = {
+					has_title = title:e_byzantium
+					has_title = title:e_roman_empire
+					top_liege = {
+						OR = {
+							has_title = title:e_byzantium
+							has_title = title:e_roman_empire
+						}
+					}
+				}
+			}
+			title_province = { geographical_region = struggle_region_armenia }
+			exists = global_var:armenian_struggle_ending
+			global_var:armenian_struggle_ending = flag:armenian_struggle_roman_rule
+			desc = "ARMENIAN_STRUGGLE_ENDING_ROMAN_RULE"
+		}
 		
 		compare_modifier = {
 			trigger = {
@@ -267,13 +287,30 @@
 
 		modifier = {
 			add = 100
-			custom_tooltip = {
-				any_county_struggle = {
-					has_struggle_phase_parameter = communalist_uprisings_more_common
-				}
-				text = "COMMUNALIST_FACTION_STRUGGLE_PHASE_TT"
+			any_county_struggle = {
+				has_struggle_phase_parameter = communalist_uprisings_more_common
 			}
-			# desc = "COMMUNALIST_FACTION_STRUGGLE_PHASE_TT"
+			desc = "COMMUNALIST_FACTION_STRUGGLE_PHASE_TT"
+		}
+
+		modifier = {
+			add = -50
+			acope:target = {
+				OR = {
+					has_title = title:e_byzantium
+					has_title = title:e_roman_empire
+					top_liege = {
+						OR = {
+							has_title = title:e_byzantium
+							has_title = title:e_roman_empire
+						}
+					}
+				}
+			}
+			title_province = { geographical_region = struggle_region_armenia }
+			exists = global_var:armenian_struggle_ending
+			global_var:armenian_struggle_ending = flag:armenian_struggle_roman_rule
+			desc = "ARMENIAN_STRUGGLE_ENDING_ROMAN_RULE"
 		}
 
 		
@@ -432,6 +469,26 @@
 					NOT = { joined_faction = scope:faction }
 				}
 			}
+		}
+
+		modifier = {
+			add = -50
+			acope:target = {
+				OR = {
+					has_title = title:e_byzantium
+					has_title = title:e_roman_empire
+					top_liege = {
+						OR = {
+							has_title = title:e_byzantium
+							has_title = title:e_roman_empire
+						}
+					}
+				}
+			}
+			any_held_title = { continue = { tier > tier_county } title_province = { geographical_region = struggle_region_armenia } }
+			exists = global_var:armenian_struggle_ending
+			global_var:armenian_struggle_ending = flag:armenian_struggle_roman_rule
+			desc = "ARMENIAN_STRUGGLE_ENDING_ROMAN_RULE"
 		}
 
 		# Block characters from joining if they have a high opinion of the target
