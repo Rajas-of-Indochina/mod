@@ -9,7 +9,7 @@
 		cappadocian_action
 		georgia_councillor
 		vanilla_characters_action_1066
-		#roa_caucasus_misc_effects_867
+		sea_caucasus_muslim_troops_action
 	}
 }
 
@@ -609,8 +609,8 @@ intro_event = {
 					is_landed = yes
 					is_ai = no
 					OR = {
-					culture = culture:circassian
-					culture = culture:ubykh
+						culture = culture:circassian
+						culture = culture:ubykh
 					}
 				}
 				trigger_event = ROAintro.001
@@ -620,8 +620,8 @@ intro_event = {
 					is_landed = yes
 					is_ai = no
 					OR = {
-					culture = culture:nakh
-					culture = culture:paranakh
+						culture = culture:nakh
+						culture = culture:paranakh
 					}
 				}
 				trigger_event = ROAintro.002
@@ -631,7 +631,7 @@ intro_event = {
 					is_landed = yes
 					is_ai = no
 					OR = {
-					culture = culture:alan
+						culture = culture:alan
 					}
 				}
 				trigger_event = ROAintro.003
@@ -641,14 +641,103 @@ intro_event = {
 					is_landed = yes
 					is_ai = no
 					OR = {
-					culture = culture:abkhaz
-					culture = culture:abasgi
+						culture = culture:abkhaz
+						culture = culture:abasgi
 					}
 				}
 				trigger_event = ROAintro.004
 			}
 		}
 	}
+}
+
+sea_caucasus_muslim_troops_action = {
+	effect = {
+		title:d_derbent.holder = {
+			learn_language_of_culture = culture:levantine
+			add_gold = 150
+			spawn_army = {
+				name = event_troop_default_name
+				levies = 500
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 1
+				}
+				location = root.capital_province
+				origin = root.capital_province
+				inheritable = yes # boost Derbent power
+			}
+		}
+	if = {
+		limit = {
+			game_start_date < 1122.1.1
+		}
+		title:d_tiflis.holder = {
+			add_gold = 100
+			spawn_army = {
+				name = event_troop_default_name
+				levies = 500
+				location = root.capital_province
+				origin = root.capital_province
+				inheritable = yes
+			}
+		}
+	}
+	if = {
+		limit = {
+			game_start_date < 890.1.1
+		}
+		title:c_nakhichevan.holder = {
+			add_gold = 100
+			spawn_army = {
+				name = event_troop_default_name
+				levies = 500
+				location = root.capital_province
+				origin = root.capital_province
+				inheritable = yes
+			}
+		}
+	}
+	if = {
+		limit = {
+			game_start_date >= 920.1.1
+			game_start_date < 970.1.1
+		}
+		title:c_nakhichevan.holder = {
+			add_gold = 100
+			spawn_army = {
+				name = event_troop_default_name
+				levies = 500
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				location = root.capital_province
+				origin = root.capital_province
+				inheritable = yes
+			}
+		}
+	}
+	if = {
+		limit = {
+			game_start_date < 878.1.1
+		}
+		title:c_tephrice.holder = {
+			add_gold = 50
+			spawn_army = {
+				name = event_troop_default_name
+				levies = 500
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				location = root.capital_province
+				origin = root.capital_province
+				inheritable = yes
+			}
+		}
+	}
+    }
 }
 
 vanilla_characters_action_1066 = {
