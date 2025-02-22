@@ -652,50 +652,35 @@ intro_event = {
 }
 
 sea_caucasus_muslim_troops_action = {
-	effect = {
-		title:d_derbent.holder = {
-			learn_language_of_culture = culture:levantine
-			add_gold = 150
-			spawn_army = {
-				name = event_troop_default_name
-				levies = 500
-				men_at_arms = {
-					type = light_horsemen
-					stacks = 1
-				}
-				location = root.capital_province
-				origin = root.capital_province
-				inheritable = yes # boost Derbent power
-			}
-		}
+   effect = {
 	if = {
 		limit = {
-			game_start_date < 1122.1.1
+			game_start_date >= 744.1.1
 		}
-		title:d_tiflis.holder = {
-			add_gold = 100
-			spawn_army = {
-				name = event_troop_default_name
-				levies = 500
-				location = root.capital_province
-				origin = root.capital_province
-				inheritable = yes
-			}
+		character:d_derbent.holder = {
+			learn_language_of_culture = culture:levantine
+			add_gold = 150
+			spawn_army_caucasus_muslim_effect
 		}
 	}
 	if = {
 		limit = {
+			game_start_date >= 800.1.1
+			game_start_date < 1122.1.1
+		}
+		title:d_tiflis.holder = {
+			add_gold = 100
+			spawn_army_caucasus_muslim_effect
+		}
+	}
+	if = {
+		limit = {
+			game_start_date >= 860.1.1
 			game_start_date < 890.1.1
 		}
 		title:c_nakhichevan.holder = {
 			add_gold = 100
-			spawn_army = {
-				name = event_troop_default_name
-				levies = 500
-				location = root.capital_province
-				origin = root.capital_province
-				inheritable = yes
-			}
+			spawn_army_caucasus_muslim_effect
 		}
 	}
 	if = {
@@ -705,39 +690,35 @@ sea_caucasus_muslim_troops_action = {
 		}
 		title:c_nakhichevan.holder = {
 			add_gold = 100
-			spawn_army = {
-				name = event_troop_default_name
-				levies = 500
-				men_at_arms = {
-					type = light_footmen
-					stacks = 1
-				}
-				location = root.capital_province
-				origin = root.capital_province
-				inheritable = yes
-			}
+			spawn_army_caucasus_muslim_effect
 		}
 	}
 	if = {
 		limit = {
+			game_start_date >= 843.1.1
 			game_start_date < 878.1.1
 		}
 		title:c_tephrice.holder = {
 			add_gold = 50
-			spawn_army = {
-				name = event_troop_default_name
-				levies = 500
-				men_at_arms = {
-					type = light_footmen
-					stacks = 1
-				}
-				location = root.capital_province
-				origin = root.capital_province
-				inheritable = yes
-			}
+			spawn_army_caucasus_muslim_effect
 		}
 	}
     }
+}
+
+spawn_army_caucasus_muslim_effect = {
+	spawn_army = {
+		name = event_troop_default_name
+		levies = 500
+		men_at_arms = {
+			type = light_footmen
+			stacks = 1
+		}
+		location = root.capital_province
+		origin = root.capital_province
+		uses_supply = yes
+		inheritable = yes
+	}
 }
 
 vanilla_characters_action_1066 = {
