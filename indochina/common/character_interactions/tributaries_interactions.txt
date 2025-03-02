@@ -90,33 +90,29 @@ declare_war_interaction = {
         trigger_if = {
             limit = {
                 scope:actor = {
-                    has_variable = my_suzerain
+                    is_tributary = yes
                 }
             }
             custom_tooltip = {
                 text = declare_war_target_is_suzerain
                 scope:actor = {
                     NOT = {
-                        var:my_suzerain = {
-                            this = scope:recipient
-                        }
+                        has_relation_suzerain = scope:recipient
                     }
                 }
             }
         }
 		trigger_if = {
             limit = {
-                scope:recipient = {
-                    has_variable = my_suzerain
+                scope:actor = {
+                    has_tributaries = yes
                 }
             }
             custom_tooltip = {
                 text = declare_war_target_is_tributary
-                scope:recipient = {
+                scope:actor = {
                     NOT = {
-                        var:my_suzerain = {
-                            this = scope:actor
-                        }
+                        has_relation_tributary = scope:recipient
                     }
                 }
             }

@@ -2502,7 +2502,7 @@ join_war_interaction = {
 				any_character_struggle = {
 					has_struggle_phase_parameter = armenians_join_defensive_wars_against_outsiders
 				}
-				any_war_enemy = { NOT = { has_trait = pro_armenian } }
+				primary_attacker = { NOT = { has_trait = pro_armenian } }
 			}
 		}
 		# Ciscaucasians and Aghvanks will defend each other.
@@ -2929,7 +2929,7 @@ join_war_interaction = {
 caucasus_call_to_war = {
 	category = interaction_category_diplomacy
 	desc = caucasus_call_to_war_interaction
-	interface_priority = 70
+	interface_priority = 15
 	interface = call_ally
 	special_interaction = call_ally_interaction
 	popup_on_receive = yes
@@ -2940,16 +2940,13 @@ caucasus_call_to_war = {
 	notification_text = caucasus_call_to_war_notification
 
 	is_shown = {
+		NOT = { scope:recipient = scope:actor }
 		scope:actor = {
-			is_at_war = yes
-			trigger_if = { # Avoid calling Adventurers without armies or landed rulers who have been devastated
-				limit = { is_ai = yes }
-				scope:recipient.current_military_strength >= 100
+			any_character_war = {
+				is_war_leader = scope:actor
 			}
-			NOR = {
-				this = scope:recipient
+			NOT = {
 				is_at_war_with = scope:recipient
-				any_war_defender = { this = scope:recipient }
 			}
 		}
 		trigger_if = {
@@ -2979,6 +2976,10 @@ caucasus_call_to_war = {
 			}
 			scope:recipient.culture = { has_cultural_pillar = heritage_aghvank }
 		}
+	}
+
+	has_valid_target = {
+		exists = scope:target
 	}
 
 	can_be_picked = {
@@ -3645,9 +3646,28 @@ caucasus_call_to_war = {
 		fp3_struggle_resist_allied_wars_modifier = yes
 	}
 
+	ai_potential = {
+		is_imprisoned = no
+		is_at_war = no
+		OR = {
+			culture = { has_cultural_pillar = heritage_aghvank }
+			culture = { has_cultural_pillar = heritage_ciscaucasian }
+			has_trait = pro_armenian
+		}
+	}
+	ai_target_quick_trigger = {
+		adult = yes
+	}
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		ai_recipients = vassals
+	}
+	ai_frequency = 24
+
 	# Score above 0 means the AI will call this ally. Note that DESIRED_WAR_SIDE_STRENGTH still applies and can prevent calling the ally
 	ai_will_do = {
-		base = 100
+		base = 1000
 
 		modifier = { # Do not call the player if they are in debt
 			scope:recipient = {

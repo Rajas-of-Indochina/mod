@@ -1,5 +1,6 @@
 ﻿
 on_declared_war = {
+	debug_log_scopes = yes
 	###############################
 	##### Attacker music
 	###############################
@@ -197,6 +198,151 @@ on_declared_war = {
 				target = scope:attacker.culture
 				value = declare_war_culture_acceptance_impact
 				desc = cultural_acceptance_loss_declared_war
+			}
+		}
+	}
+
+	custom_tooltip = {
+		text = suzerain_joins_wars_tt
+		#tributary/suzerain
+		if = {
+			limit = {
+				scope:defender = {
+					is_tributary = yes
+					NOT = {
+						any_relation = {
+							type = suzerain
+							any_relation = {
+								type = tributary
+								this = scope:attacker
+							}
+						}
+					}
+				}
+			}
+			scope:defender = {
+				random_relation = {
+					type = suzerain
+					# limit = { is_ai = yes }
+					if = {
+						limit = { is_ai = yes }
+						save_temporary_scope_as = suzerain
+						scope:war = {
+							add_defender = scope:suzerain
+						}
+					}
+					else = {
+						trigger_event = { id = tributaries.2016 }
+					}
+				}
+			}
+		}
+	}
+
+	#Caucasus Stuff
+	if = {
+		limit = {
+			OR ={
+				AND = {
+					scope:defender.culture = { has_cultural_tradition = tradition_xabze }
+					NOT = {
+						scope:attacker.culture = { has_cultural_tradition = tradition_xabze }
+					}				
+				}
+				AND = {
+					scope:defender.culture = { has_cultural_tradition = tradition_adat }
+					NOT = {
+						scope:attacker.culture = { has_cultural_tradition = tradition_adat }
+					}				
+				}
+			}
+			scope:defender = { is_independent_ruler = yes }
+		}
+		if = {
+			limit = { scope:defender.culture = { has_cultural_tradition = tradition_xabze } }
+			custom_tooltip = xabze_defense_warning_tt
+		}
+		if = {
+			limit = { scope:defender.culture = { has_cultural_tradition = tradition_adat } }
+			custom_tooltip = adat_defense_warning_tt
+		}
+		hidden_effect = {
+			every_ruler = {
+				limit = {
+					is_ai = yes
+					is_landed = yes
+					is_independent_ruler = yes
+					OR = {
+						any_neighboring_top_liege_realm_owner = { this = scope:defender }
+						is_spouse_of = scope:defender
+						player_heir = scope:defender
+						has_relation_friend = scope:defender
+						has_relation_best_friend = scope:defender
+						has_relation_lover = scope:defender
+						has_relation_soulmate = scope:defender
+					}
+					NOT = { any_liege_or_above = { this = scope:attacker } }
+					NOR = {
+						ai_has_conqueror_personality = yes
+					}
+					OR = { #It's technically possible to have a hybrid Aghvan/Ciscaucasian culture that has both so I gotta do this janky check for that
+						AND = {
+							scope:defender.culture = { has_cultural_tradition = tradition_xabze }
+							culture = { has_cultural_tradition = tradition_xabze }
+						}
+						AND = {
+							scope:defender.culture = { has_cultural_tradition = tradition_adat }
+							culture = { has_cultural_tradition = tradition_adat }
+						}
+					}
+					NOR = {
+						# Don't call the attacker's spouse or anyone whose player heir is the attacker, or friends and lovers of the attacker
+						is_spouse_of = scope:attacker
+						player_heir = scope:attacker
+						has_relation_friend = scope:attacker
+						has_relation_best_friend = scope:attacker
+						has_relation_lover = scope:attacker
+						has_relation_soulmate = scope:attacker
+						is_allied_to = scope:attacker
+						has_relation_tributary = scope:attacker
+						has_relation_suzerain = scope:attacker
+					}
+					trigger_if = {
+						limit = { highest_held_title_tier >= tier_empire }
+						opinion = {
+							target = scope:defender
+							value >= medium_positive_opinion
+						}
+					}
+					trigger_else_if = {
+						limit = { highest_held_title_tier >= tier_kingdom }
+						opinion = {
+							target = scope:defender
+							value >= low_high_positive_opinion
+						}
+					}
+					trigger_else_if = {
+						limit = { highest_held_title_tier >= tier_duchy }
+						opinion = {
+							target = scope:defender
+							value >= neutral_opinion
+						}
+					}
+					trigger_else = {
+						opinion = {
+							target = scope:defender
+							value >= low_negative_opinion
+						}
+					}
+					trigger_if = {
+						limit = { scope:war = { using_cb = fp2_border_raid } }
+						OR = {
+							has_trait = viking
+							has_trait = reaver
+						}
+					}
+				}
+				scope:war = { add_defender = PREV }
 			}
 		}
 	}
