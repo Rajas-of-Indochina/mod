@@ -1,4 +1,4 @@
-﻿# Choose A Stance in the Armenian Struggle
+# Choose A Stance in the Armenian Struggle
 armenian_struggle_declare_stance = {
 	title = armenian_struggle_declare_stance_decision
 	desc = armenian_struggle_declare_stance_decision_desc
@@ -56,14 +56,14 @@ armenian_struggle_declare_stance = {
 					limit = {
 						armenian_struggle_is_local_culture_trigger = { CULTURE = culture }
 					}
-					add = 20
+					add = 10
 				}
 				if = {
 					limit = {
 						armenian_struggle_is_local_faith_trigger = { FAITH = faith }
 					}
 					add = {
-						value = 20
+						value = 40
 						if = {
 							limit = {has_trait = zealous}
 							multiply = 5
@@ -72,7 +72,13 @@ armenian_struggle_declare_stance = {
 				}
 				if = {
 					limit = { faith = { has_doctrine = tenet_communal_possessions } }
-					add = 20
+					add = {
+						value = 40
+						if = {
+							limit = {has_trait = zealous}
+							multiply = 5
+						}
+					}
 				}
 				if = {
 					limit = {
@@ -170,14 +176,14 @@ armenian_struggle_declare_stance = {
 					limit = {
 						armenian_struggle_is_roman_culture_trigger = { CULTURE = culture }
 					}
-					add = 20
+					add = 10
 				}
 				if = {
 					limit = {
 						armenian_struggle_is_roman_faith_trigger = { FAITH = faith }
 					}
 					add = {
-						value = 20
+						value = 40
 						if = {
 							limit = {has_trait = zealous}
 							multiply = 5
@@ -280,14 +286,14 @@ armenian_struggle_declare_stance = {
 					limit = {
 						armenian_struggle_is_persian_culture_trigger = { CULTURE = culture }
 					}
-					add = 20
+					add = 10
 				}
 				if = {
 					limit = {
 						armenian_struggle_is_persian_faith_trigger = { FAITH = faith }
 					}
 					add = {
-						value = 20
+						value = 40
 						if = {
 							limit = {has_trait = zealous}
 							multiply = 5
@@ -780,6 +786,58 @@ armenian_struggle_ending_armenian_empire = {
 	ai_potential = { always = yes }
 
 	ai_will_do = { base = 100 }
+}
+
+armenian_struggle_expand_empire = {
+	decision_group_type = major
+	title = armenian_struggle_expand_empire_decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_family_tree.dds"
+	}
+	desc = armenian_struggle_expand_empire_desc
+	ai_check_interval = 60
+	is_shown = {
+		has_title = title:e_armenia
+		dynasty = {
+			has_dynasty_modifier = heir_of_tigranes
+		}
+		NOT = { has_character_flag = lifetime_armenian_kingdom_drift }
+	}
+
+	is_valid = {
+		legitimacy_level >= 4
+		any_kingdom = {
+			NOT = { empire = title:e_armenia }
+			holder = ROOT
+			OR = {
+				is_armenian_struggle_kingdom = yes
+				this = title:k_jerusalem
+				this = title:k_daylam
+				this = title:k_israel
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_adult = yes
+		is_available = yes
+		is_independent_ruler = yes
+	}
+
+	cost = {
+		prestige = {
+			value = major_prestige_value
+		}
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = select_kingdom_to_drift_tt
+			add_character_flag = lifetime_armenian_kingdom_drift
+			trigger_event = armenian_struggle.2000
+		}
+	}
 }
 
 # Armenian confederation

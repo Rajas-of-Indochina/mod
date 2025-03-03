@@ -1,6 +1,5 @@
 ﻿
 on_declared_war = {
-	debug_log_scopes = yes
 	###############################
 	##### Attacker music
 	###############################
@@ -201,25 +200,25 @@ on_declared_war = {
 			}
 		}
 	}
-
-	custom_tooltip = {
-		text = suzerain_joins_wars_tt
-		#tributary/suzerain
-		if = {
-			limit = {
-				scope:defender = {
-					is_tributary = yes
-					NOT = {
+	#tributary/suzerain
+	if = {
+		limit = {
+			scope:defender = {
+				is_tributary = yes
+				NOT = {
+					any_relation = {
+						type = suzerain
 						any_relation = {
-							type = suzerain
-							any_relation = {
-								type = tributary
-								this = scope:attacker
-							}
+							type = tributary
+							this = scope:attacker
 						}
 					}
 				}
 			}
+		}
+
+		custom_tooltip = {
+			text = suzerain_joins_wars_tt
 			scope:defender = {
 				random_relation = {
 					type = suzerain
@@ -287,6 +286,50 @@ on_declared_war = {
 				}
 				trigger_event = { id = caucasianroa.021 }
 			}
+		}
+	}
+	if = {
+		limit = {
+			scope:defender.capital_county.title_province.geographical_region = struggle_region_armenia
+			NOT = { scope:attack.capital_county.title_province.geographical_region = struggle_region_armenia }
+			exists = global_var:armenian_struggle_ending
+			global_var:armenian_struggle_ending = flag:armenian_struggle_armenian_confederation
+		}
+		custom_tooltip = armenian_defense_warning_tt
+		hidden_effect = {
+			every_ruler = {
+				limit = {
+					is_landed = yes
+					any_neighboring_top_liege_realm_owner = { this = scope:defender }
+					NOT = { any_liege_or_above = { this = scope:attacker } }
+					capital_county.title_province.geographical_region = struggle_region_armenia
+				}
+				trigger_event = { id = caucasianroa.021 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:defender = {
+				has_trait = pro_armenian
+				any_character_struggle = {
+					has_struggle_phase_parameter = armenians_join_defensive_wars_against_outsiders
+				}
+			}
+			NOT = { scope:attacker = { has_trait = pro_armenian } }
+		}
+		custom_tooltip = armenian_struggle_defense_warning_tt
+		hidden_effect = {
+			every_ruler = {
+				is_landed = yes
+				any_neighboring_top_liege_realm_owner = { this = scope:defender }
+				NOT = { any_liege_or_above = { this = scope:attacker } }
+				has_trait = pro_armenian
+				any_character_struggle = {
+					has_struggle_phase_parameter = armenians_join_defensive_wars_against_outsiders
+				}
+			}
+			trigger_event = { id = caucasianroa.021 }
 		}
 	}
 }

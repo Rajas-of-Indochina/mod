@@ -2505,6 +2505,20 @@ join_war_interaction = {
 				primary_attacker = { NOT = { has_trait = pro_armenian } }
 			}
 		}
+		trigger_else_if = {
+			limit = {
+				exists = global_var:armenian_struggle_ending
+				global_var:armenian_struggle_ending = flag:armenian_struggle_armenian_confederation
+			}
+			AND = {
+				scope:actor = {
+					capital_county.title_province = { geographical_region = struggle_region_armenia }
+				}
+				scope:recipient = {
+					capital_county.title_province = { geographical_region = struggle_region_armenia }
+				}
+			}
+		}
 		# Ciscaucasians and Aghvanks will defend each other.
 		trigger_else_if = {
 			limit = {
@@ -2680,6 +2694,23 @@ join_war_interaction = {
 					}
 				}
 				primary_attacker = { NOT = { has_trait = pro_armenian } }
+			}
+			trigger_else_if = {
+				limit = {
+					exists = global_var:armenian_struggle_ending
+					global_var:armenian_struggle_ending = flag:armenian_struggle_armenian_confederation
+					scope:actor = {
+						capital_county.title_province = { geographical_region = struggle_region_armenia }
+					}
+					scope:recipient = {
+						capital_county.title_province = { geographical_region = struggle_region_armenia }
+					}
+				}
+				AND = {
+					primary_attacker = {
+						NOT = { capital_county.title_province = { geographical_region = struggle_region_armenia } }
+					}
+				}
 			}
 			# ...otherwise, recipient must be an ally...
 			trigger_else_if = {

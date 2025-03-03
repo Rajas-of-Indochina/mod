@@ -63,16 +63,38 @@ armenian_struggle.0001 = {
 		name = armenian_struggle.0001.pro_roman
 		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
 		add_trait = pro_roman
+		trigger = {
+			NOR = {
+				has_title = title:e_arabia
+				has_title = title:k_persia
+				has_title = title:e_persia
+			}
+		}
 	}
 	option = {
 		name = armenian_struggle.0001.pro_persian
 		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
 		add_trait = pro_persian
+		trigger = {
+			NOR = {
+				has_title = title:e_byzantium
+				has_title = title:e_roman_empire
+			}
+		}
 	}
 	option = {
 		name = armenian_struggle.0001.pro_armenian
 		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
 		add_trait = pro_armenian
+		trigger = {
+			NOR = {
+				has_title = title:e_arabia
+				has_title = title:k_persia
+				has_title = title:e_persia
+				has_title = title:e_byzantium
+				has_title = title:e_roman_empire
+			}
+		}
 	}
 }
 
@@ -698,5 +720,195 @@ armenian_struggle.1601 = { #Notification
 
 	after = {
 		remove_character_flag = struggle_end_notification
+	}
+}
+
+armenian_struggle.2000 = {
+	type = character_event
+	title = armenian_struggle.2000.t
+	desct = armenian_struggle.2000.desc
+	theme = martial
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		random_kingdom = {
+			limit = {
+				holder = ROOT
+				OR = {
+					is_armenian_struggle_kingdom = yes
+					this = title:k_jerusalem
+					this = title:k_daylam
+					this = title:k_israel
+				}
+				NOT = { empire = title:e_armenia }
+				NOT = { this = root.primary_title }
+			}
+			save_scope_as = kingdom_01
+		}
+		random_kingdom = {
+			limit = {
+				holder = ROOT
+				OR = {
+					is_armenian_struggle_kingdom = yes
+					this = title:k_jerusalem
+					this = title:k_daylam
+					this = title:k_israel
+				}
+				NOT = { empire = title:e_armenia }
+				NOT = {
+					this = root.primary_title
+					this = scope:kingdom_01
+				}
+			}
+			save_scope_as = kingdom_02
+		}
+		random_kingdom = {
+			limit = {
+				holder = ROOT
+				OR = {
+					is_armenian_struggle_kingdom = yes
+					this = title:k_jerusalem
+					this = title:k_daylam
+					this = title:k_israel
+				}
+				NOT = { empire = title:e_armenia }
+				NOT = {
+					this = root.primary_title
+					this = scope:kingdom_01
+					this = scope:kingdom_02
+				}
+			}
+			save_scope_as = kingdom_03
+		}
+		random_kingdom = {
+			limit = {
+				holder = ROOT
+				OR = {
+					is_armenian_struggle_kingdom = yes
+					this = title:k_jerusalem
+					this = title:k_daylam
+					this = title:k_israel
+				}
+				NOT = { empire = title:e_armenia }
+				NOT = {
+					this = root.primary_title
+					this = scope:kingdom_01
+					this = scope:kingdom_02
+					this = scope:kingdom_03
+				}
+			}
+			save_scope_as = kingdom_04
+		}
+		random_kingdom = {
+			limit = {
+				holder = ROOT
+				OR = {
+					is_armenian_struggle_kingdom = yes
+					this = title:k_jerusalem
+					this = title:k_daylam
+					this = title:k_israel
+				}
+				NOT = { empire = title:e_armenia }
+				NOT = {
+					this = root.primary_title
+					this = scope:kingdom_01
+					this = scope:kingdom_02
+					this = scope:kingdom_03
+					this = scope:kingdom_04
+				}
+			}
+			save_scope_as = kingdom_05
+		}
+		random_kingdom = {
+			limit = {
+				holder = ROOT
+				OR = {
+					is_armenian_struggle_kingdom = yes
+					this = title:k_jerusalem
+					this = title:k_daylam
+					this = title:k_israel
+				}
+				NOT = { empire = title:e_armenia }
+				NOT = {
+					this = root.primary_title
+					this = scope:kingdom_01
+					this = scope:kingdom_02
+					this = scope:kingdom_03
+					this = scope:kingdom_04
+					this = scope:kingdom_05
+				}
+			}
+			save_scope_as = kingdom_06
+		}
+	}
+
+	option = { #Kingdom 1 please
+		name = ce1_decision_events.1000.a.empire
+		trigger = {
+			exists = scope:kingdom_01
+		}
+		scope:kingdom_01 = { set_de_jure_liege_title = title:e_armenia }
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { #Kingdom 2 please
+		name = ce1_decision_events.1000.b.empire
+		trigger = {
+			exists = scope:kingdom_02
+		}
+		scope:kingdom_02 = { set_de_jure_liege_title = title:e_armenia }
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { #Kingdom 3 please
+		name = ce1_decision_events.1000.c.empire
+		trigger = {
+			exists = scope:kingdom_03
+		}
+		scope:kingdom_03 = { set_de_jure_liege_title = title:e_armenia }
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { #Kingdom 4 please
+		name = ce1_decision_events.1000.d
+		trigger = {
+			exists = scope:kingdom_04
+		}
+		scope:kingdom_04 = { set_de_jure_liege_title = title:e_armenia }
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { #Kingdom 5 please
+		name = ce1_decision_events.1000.e
+		trigger = {
+			exists = scope:kingdom_05
+		}
+		scope:kingdom_05 = { set_de_jure_liege_title = title:e_armenia }
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { #Kingdom 6 please
+		name = ce1_decision_events.1000.f
+		trigger = {
+			exists = scope:kingdom_06
+		}
+		scope:kingdom_06 = { set_de_jure_liege_title = title:e_armenia }
+		ai_chance = {
+			base = 10
+		}
 	}
 }

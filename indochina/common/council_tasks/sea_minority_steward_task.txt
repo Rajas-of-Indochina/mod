@@ -176,6 +176,18 @@ task_promote_culture = {
 				desc = STRUGGLE_EASIER_TO_CULTURE_CONVERT_DUE_TO_STRUGGLE_PHASE_MODIFIER
 			}
 		}
+		if = {
+			# Armenian Resurgence
+			limit = {
+				exists = global_var:armenian_struggle_ending
+				global_var:armenian_struggle_ending = flag:armenian_struggle_armenian_empire
+				armenian_struggle_is_local_culture_trigger = { CULTURE = scope:councillor_liege.culture }
+			}
+			add = {
+				value = scope:councillor.boost_county_conversion_phase_bonus_value
+				desc = armenian_struggle_armenian_resurgence_conversion_boost
+			}
+		}
 
 		if = { # Development reduces the speed. Should be the last non-multiply modifier applied to avoid negative values
 			limit = {
@@ -959,6 +971,26 @@ task_promote_minority = {
 			add = {
 				value = conversion_culture_accepting_of_culture_change_due_to_struggle_phase_value
 				desc = CHAPLAIN_CONVERT_COUNTY_STRUGGLE_BONUS
+			}
+		}
+		
+		if = {
+			# Armenian Resurgence
+			limit = {
+				exists = global_var:armenian_struggle_ending
+				global_var:armenian_struggle_ending = flag:armenian_struggle_armenian_empire
+				trigger_if = {
+					limit = { exists = scope:county.var:culture_to_convert }
+					armenian_struggle_is_local_culture_trigger = { CULTURE = scope:county.var:culture_to_convert }
+				}
+				trigger_else_if = {
+					limit = { exists = scope:county.var:faith_to_convert }
+					armenian_struggle_is_local_faith_trigger = { FAITH = scope:county.var:faith_to_convert }
+				}
+			}
+			add = {
+				value = scope:councillor.boost_county_conversion_phase_bonus_value
+				desc = armenian_struggle_armenian_resurgence_conversion_boost
 			}
 		}
 
