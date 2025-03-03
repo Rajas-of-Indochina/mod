@@ -269,22 +269,10 @@ on_declared_war = {
 		hidden_effect = {
 			every_ruler = {
 				limit = {
-					is_ai = yes
 					is_landed = yes
 					is_independent_ruler = yes
-					OR = {
-						any_neighboring_top_liege_realm_owner = { this = scope:defender }
-						is_spouse_of = scope:defender
-						player_heir = scope:defender
-						has_relation_friend = scope:defender
-						has_relation_best_friend = scope:defender
-						has_relation_lover = scope:defender
-						has_relation_soulmate = scope:defender
-					}
+					any_neighboring_top_liege_realm_owner = { this = scope:defender }
 					NOT = { any_liege_or_above = { this = scope:attacker } }
-					NOR = {
-						ai_has_conqueror_personality = yes
-					}
 					OR = { #It's technically possible to have a hybrid Aghvan/Ciscaucasian culture that has both so I gotta do this janky check for that
 						AND = {
 							scope:defender.culture = { has_cultural_tradition = tradition_xabze }
@@ -295,54 +283,9 @@ on_declared_war = {
 							culture = { has_cultural_tradition = tradition_adat }
 						}
 					}
-					NOR = {
-						# Don't call the attacker's spouse or anyone whose player heir is the attacker, or friends and lovers of the attacker
-						is_spouse_of = scope:attacker
-						player_heir = scope:attacker
-						has_relation_friend = scope:attacker
-						has_relation_best_friend = scope:attacker
-						has_relation_lover = scope:attacker
-						has_relation_soulmate = scope:attacker
-						is_allied_to = scope:attacker
-						has_relation_tributary = scope:attacker
-						has_relation_suzerain = scope:attacker
-					}
-					trigger_if = {
-						limit = { highest_held_title_tier >= tier_empire }
-						opinion = {
-							target = scope:defender
-							value >= medium_positive_opinion
-						}
-					}
-					trigger_else_if = {
-						limit = { highest_held_title_tier >= tier_kingdom }
-						opinion = {
-							target = scope:defender
-							value >= low_high_positive_opinion
-						}
-					}
-					trigger_else_if = {
-						limit = { highest_held_title_tier >= tier_duchy }
-						opinion = {
-							target = scope:defender
-							value >= neutral_opinion
-						}
-					}
-					trigger_else = {
-						opinion = {
-							target = scope:defender
-							value >= low_negative_opinion
-						}
-					}
-					trigger_if = {
-						limit = { scope:war = { using_cb = fp2_border_raid } }
-						OR = {
-							has_trait = viking
-							has_trait = reaver
-						}
-					}
+					culture = { has_same_culture_heritage = scope:defender.culture }
 				}
-				scope:war = { add_defender = PREV }
+				trigger_event = { id = caucasianroa.021 }
 			}
 		}
 	}

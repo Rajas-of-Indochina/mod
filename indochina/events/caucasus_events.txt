@@ -935,3 +935,480 @@ caucasianroa.020 = {
 		ai_chance = { base = 100 }
 	}
 }
+
+# Call to war (Xabze/Adat)
+caucasianroa.021 = {
+	type = character_event
+	title = caucasianroa.021.t
+	desc = caucasianroa.021.desc
+	theme = battle
+	override_background = { reference = burning_building }
+	left_portrait = {
+		character = scope:defender
+		animation = personality_vengeful
+	}
+	right_portrait = {
+		character = scope:attacker
+		animation = personality_greedy
+	}
+	immediate = {
+		save_scope_as = invitee
+	}
+
+	option = {
+		# To war!
+		name = caucasianroa.021.a
+		scope:war = {
+			every_war_defender = { send_interface_toast = {
+				type = sea_caucasus_join_war_ally
+				left_icon = scope:invitee
+			} }
+			every_war_attacker = { send_interface_toast = {
+				type = sea_caucasus_join_war_enemy
+				left_icon = scope:invitee
+			} }
+			add_defender = scope:invitee
+		}
+		ai_chance = {
+			base = 70
+
+			modifier = {  # Conquerors do not help anyone but themselves
+				add = -1000
+				desc = NO_FRIVOLOUS_ACTIVITIES_REASON
+				scope:invitee = { ai_has_conqueror_personality = yes }
+			}
+			modifier = {  # AI's that need to save gold will not help their lesser AI allies, unless it's a player war
+				add = -1000
+				desc = NO_FRIVOLOUS_ACTIVITIES_REASON
+				scope:defender = {
+					is_ai = yes
+					primary_title.tier < scope:invitee.primary_title.tier
+				}
+				scope:war = {
+					primary_attacker = { is_ai = yes }
+					primary_defender = { is_ai = yes }
+				}
+				scope:invitee = { ai_should_focus_on_building_in_their_capital = yes }
+			}
+	
+			modifier = {  # Refuse call to conflicts of little benefit
+				add = -1000
+				desc = WONT_FIGHT_MEANINGLESS_REASON
+				trigger_if = {
+					limit = { exists = scope:war }
+					scope:war = { using_cb = fp2_border_raid }
+					scope:invitee = { # Unless they like going on raids
+						NOR = {
+							has_trait = viking
+							has_trait = reaver
+						}
+					}
+				}
+				trigger_else = { always = no }
+			}
+	
+			modifier = {  # Refuse call against Heir
+				add = -1000
+				exists = scope:invitee.player_heir
+				trigger_if = {
+					limit = { scope:war.primary_defender = scope:defender }
+					scope:war.primary_attacker = scope:invitee.player_heir
+				}
+				trigger_else = {
+					scope:war.primary_defender = scope:invitee.player_heir
+				}
+				desc = WONT_FIGHT_HEIR_REASON
+			}
+	
+			modifier = {  # Refuse call against Spouse
+				add = -1000
+				scope:invitee = {
+					trigger_if = {
+						limit = { scope:war.primary_defender = scope:defender }
+						any_spouse = {
+							this = scope:war.primary_attacker
+						}
+					}
+					trigger_else = {
+						any_spouse = {
+							this = scope:war.primary_defender
+						}
+					}
+	
+				}
+				desc = WONT_FIGHT_SPOUSE_REASON
+			}
+	
+			opinion_modifier = { # Opinion Factor
+				who = scope:invitee
+				opinion_war = scope:defender
+				multiplier = 1.0
+				desc = AI_OPINION_REASON
+			}
+	
+			# Honor factor
+			ai_value_modifier = {
+				ai_honor = 1
+				min = 0
+			}
+	
+			modifier = { # Same language
+				add = 5
+				desc = speaks_same_language_interaction_reason
+				trigger = {
+					scope:defender = {
+						knows_language_of_culture = scope:invitee.culture
+					}
+				}
+			}
+	
+			modifier = { # Shared Court Language (non-spoken)
+				add = 10
+				desc = foreign_realm_court_language_non_spoken_interaction_reason
+				trigger = {
+					scope:defender = {
+						has_royal_court = yes
+						has_dlc_feature = royal_court
+						NOT = { knows_court_language_of = this }
+					}
+					NOT = {
+						scope:defender.top_liege = scope:invitee.top_liege
+					}
+					OR = {
+						AND = {
+							scope:invitee = {
+								has_royal_court = yes
+							}
+							scope:defender = { # You share Court Language
+								has_same_court_language = scope:invitee
+							}
+						}
+	
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege does
+							is_independent_ruler = no
+							has_royal_court = no
+							liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							exists = liege.liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege's liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							exists = liege.liege.liege
+							exists = liege.liege.liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+					}
+				}
+			}
+	
+			modifier = { # Shared Court Language (spoken)
+				add = 30
+				desc = foreign_realm_court_language_spoken_interaction_reason
+				trigger = {
+					scope:defender = {
+						has_royal_court = yes
+						has_dlc_feature = royal_court
+						knows_court_language_of = this
+					}
+					NOT = {
+						scope:defender.top_liege = scope:invitee.top_liege
+					}
+					OR = {
+						AND = {
+							scope:invitee = {
+								has_royal_court = yes
+							}
+							scope:defender = { # You share Court Language
+								has_same_court_language = scope:invitee
+							}
+						}
+	
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege does
+							is_independent_ruler = no
+							has_royal_court = no
+							liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							exists = liege.liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege's liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							exists = liege.liege.liege
+							exists = liege.liege.liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+					}
+				}
+			}
+	
+			modifier = {  # Serious diarchs wish to support their liege
+				add = 50
+				desc = ENTRENCHED_REGENT_WILL_SUPPORT_LIEGE
+				trigger_if = {
+					limit = { scope:invitee ?= scope:defender.diarch }
+					scope:defender = { has_diarchy_parameter = diarchy_type_is_entrenched_regency }
+				}
+				trigger_else = { always = no }
+			}
+	
+			compare_modifier = { # Likes fighting infidels
+				trigger = {
+					scope:invitee.faith = scope:defender.faith
+					OR = {
+						AND = {
+							scope:war.primary_attacker = {
+								this = scope:defender
+								faith = {
+									faith_hostility_level = {
+										war = scope:war.primary_defender.faith
+										value >= religious_cb_enabled_hostility_level
+									}
+								}
+							}
+						}
+						AND = {
+							scope:war.primary_defender = {
+								this = scope:defender
+								faith = {
+									faith_hostility_level = {
+										war = scope:war.primary_defender.faith
+										value >= religious_cb_enabled_hostility_level
+									}
+								}
+							}
+						}
+					}
+				}
+				war = scope:invitee
+				value = ai_zeal
+				desc = "ZEAL_AGAINST_INFIDELS"
+				min = 0
+				multiplier = 0.5
+			}
+	
+			modifier = {  # Reluctant to attack another ally
+				add = -50
+				scope:war.primary_attacker = scope:defender
+				scope:invitee = {
+					is_allied_to = scope:war.primary_defender
+				}
+				desc = ATTACK_ON_ALLY_REASON
+			}
+	
+			modifier = {  # Reluctant to defend against another ally
+				add = -25
+				scope:war.primary_defender = scope:defender
+				scope:invitee = {
+					is_allied_to = scope:war.primary_attacker
+				}
+				desc = WAR_WITH_ALLY_REASON
+			}
+	
+			modifier = {  # Reluctant to join wars against religious brethren.
+				add = -50
+				NOT = { scope:invitee.faith = scope:defender.faith }
+				scope:war.primary_attacker = scope:defender
+				scope:war.primary_defender.faith = scope:invitee.faith
+				scope:war.war = {
+					OR = {
+						using_cb = minor_religious_war
+						using_cb = religious_war
+						using_cb = major_religious_war
+						using_cb = undirected_great_holy_war
+						using_cb = directed_great_holy_war
+					}
+				}
+				desc = WONT_ATTACK_RELIGIOUS_BRETHREN_REASON
+			}
+	
+			modifier = { # Reluctant to join against Friends
+				add = -50
+				trigger_if = {
+					limit = {
+						scope:war.primary_defender = scope:defender
+					}
+					has_relation_friend = scope:war.primary_attacker
+				}
+				trigger_else = {
+					has_relation_friend = scope:war.primary_defender
+				}
+				desc = WONT_FIGHT_FRIEND
+			}
+	
+			modifier = { # Reluctant to join against Best Friends
+				add = -100
+				trigger_if = {
+					limit = {
+						scope:war.primary_defender = scope:defender
+					}
+					has_relation_best_friend = scope:war.primary_attacker
+				}
+				trigger_else = {
+					has_relation_best_friend = scope:war.primary_defender
+				}
+				desc = WONT_FIGHT_BEST_FRIEND
+			}
+			modifier = { # Reluctant to join against Lovers
+				add = -100
+				trigger_if = {
+					limit = {
+						scope:war.primary_defender = scope:defender
+					}
+					has_relation_lover = scope:war.primary_attacker
+				}
+				trigger_else = {
+					has_relation_lover = scope:war.primary_defender
+				}
+				desc = WONT_FIGHT_LOVER
+			}
+			modifier = { # Reluctant to join against Soulmate
+				add = -200
+				trigger_if = {
+					limit = {
+						scope:war.primary_defender = scope:defender
+					}
+					has_relation_soulmate = scope:war.primary_attacker
+				}
+				trigger_else = {
+					has_relation_soulmate = scope:war.primary_defender
+				}
+				desc = WONT_FIGHT_SOULMATE
+			}
+			modifier = {  # Refuse call for hostages' safety
+				any_home_court_hostage = {
+					warden = {
+						OR = {
+							is_at_war_with = scope:defender
+							any_ally = { is_at_war_with = scope:defender }
+						}
+					}
+				}
+				add = {
+					value = 0
+					every_home_court_hostage = {
+						limit = {
+							warden = {
+								OR = {
+									is_at_war_with = scope:defender
+									any_ally = { is_at_war_with = scope:defender }
+								}
+							}
+						}
+						subtract = call_to_arms_hostage_value
+					}
+					multiply = 0.25
+				}
+				desc = HOSTAGE_ENEMY_CALL_TO_ARMS_REASON
+			}
+		}
+	}
+
+	option = {
+		# Nah I don't really feel like it
+		name = caucasianroa.021.b
+		add_prestige = {
+			value = minor_prestige_loss
+			multiply = highest_held_title_tier
+		}
+		ai_chance = {
+			base = 1
+		}
+	}
+}
