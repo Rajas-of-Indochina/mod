@@ -83,8 +83,75 @@ do_roman_drift = {
 	else = { set_de_jure_liege_title = title:e_byzantium }
 }
 
+# do_persian_drift = {
+# 	set_de_jure_liege_title = title:e_persia
+# }
 do_persian_drift = {
-	set_de_jure_liege_title = title:e_persia
+	if = {
+		limit = {
+			OR = {
+				this = title:k_pontus
+				this = title:k_anatolia
+				this = title:k_rum
+				this = title:k_armenian_cilicia
+				this = title:k_syria
+				AND = {
+					any_de_jure_county = {
+						any_neighboring_county = {
+							empire = title:e_arabia
+							holder.top_liege = { has_title = title:e_arabia }
+						}
+					}
+				}
+			}
+			NOT = {	empire = title:e_persia }
+		}
+		set_de_jure_liege_title = title:e_arabia
+	}
+	else_if = {
+		limit = {
+
+			OR = {
+				this = title:k_jazira
+				this = title:k_adurbadagan
+				this = title:k_abkhazia
+				this = title:k_iberia
+				this = title:k_kakheti
+				this = title:k_georgia
+				this = title:k_syunik
+				this = title:k_ayrarat
+				this = title:k_armenia
+				this = title:k_armenian_principality
+				this = title:k_shirvan
+			}
+			NOT = {	empire = title:e_arabia }
+		}
+		set_de_jure_liege_title = title:e_persia
+	}
+}
+
+do_persian_drift_cleanup = {
+	title:e_persia = {
+		every_in_de_jure_hierarchy = {
+			limit = {
+				tier = tier_kingdom
+			}
+			save_temporary_scope_as = exclave
+			if = {
+				limit = {
+					NOT = {
+						any_de_jure_county = {
+							any_neighboring_county = {
+								empire = title:e_persia
+								NOT = { kingdom = scope:exclave }
+							}
+						}
+					}
+				}
+				set_de_jure_liege_title = title:e_arabia
+			}
+		}
+	}
 }
 
 armenia_struggle_reset_de_jure = {

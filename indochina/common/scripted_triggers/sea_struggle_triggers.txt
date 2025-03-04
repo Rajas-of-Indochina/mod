@@ -24,11 +24,14 @@ does_this_player_care_about_the_armenian_struggle = {
 armenian_struggle_is_roman_culture_trigger = {
 	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
 	$CULTURE$ = {
-		OR = {
-			this = culture:greek
-			this = culture:roman
-			this = culture:cappadocian
-			has_cultural_parameter = heritage_family_european
+		custom_description = {
+			text = armenian_struggle_is_roman_culture_trigger_tt
+			OR = {
+				this = culture:greek
+				this = culture:roman
+				this = culture:cappadocian
+				has_cultural_parameter = heritage_family_european
+			}
 		}
 	}
 }
@@ -36,24 +39,27 @@ armenian_struggle_is_roman_culture_trigger = {
 armenian_struggle_is_roman_faith_trigger = {
 	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
 	$FAITH$ = {
-		NOT = {
-			this = faith:mtielta # TODO: Add is_local_faith to mtielta on start
-			has_variable = is_local_faith
-			has_variable = is_persian_faith
-		}
-		OR = {
-			AND = {
-				OR = {
-					this = faith:orthodox
-					this = faith:paulician
-					religious_head_title = title:k_orthodox
-					# religious_head_title = title:d_georgian_patriarchate
-					religious_head_title = title:k_papal_state
-					religious_head_title = title:d_iconoclast
-					religion = religion:hellenism_religion
-				}
+		custom_description = {
+			text = armenian_struggle_is_roman_faith_trigger_tt
+			NOT = {
+				this = faith:mtielta # TODO: Add is_local_faith to mtielta on start
+				has_variable = is_local_faith
+				has_variable = is_persian_faith
 			}
-			has_variable = is_pro_roman
+			OR = {
+				AND = {
+					OR = {
+						this = faith:orthodox
+						this = faith:paulician
+						religious_head_title = title:k_orthodox
+						# religious_head_title = title:d_georgian_patriarchate
+						religious_head_title = title:k_papal_state
+						religious_head_title = title:d_iconoclast
+						religion = religion:hellenism_religion
+					}
+				}
+				has_variable = is_pro_roman
+			}
 		}
 	}
 }
@@ -76,45 +82,51 @@ armenian_struggle_would_be_roman_faith_trigger = {
 }
 
 armenian_struggle_is_persian_culture_trigger = {
-	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
 	$CULTURE$ = {
-		OR = {
-			this = culture:adhari
-			this = culture:kurdish
-			this = culture:persian
-			this = culture:turkish
-			this = culture:turkmen
-			has_cultural_pillar = heritage_iranian
-			has_cultural_pillar = language_iranian
-			has_cultural_pillar = heritage_arabic
+		custom_description = {
+			text = armenian_struggle_is_persian_culture_trigger_tt
+			OR = {
+				this = culture:adhari
+				this = culture:kurdish
+				this = culture:persian
+				this = culture:turkish
+				this = culture:turkmen
+				has_cultural_pillar = heritage_iranian
+				has_cultural_pillar = language_iranian
+				has_cultural_pillar = heritage_arabic
+			}
 		}
 	}
+	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
 }
 
 armenian_struggle_is_persian_faith_trigger = {
 	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
 	$FAITH$ = {
-		NOR = {
-			has_variable = is_local_faith
-			has_variable = is_roman_faith
-			this = faith:urartuism
-		}
-		OR = {
-			religion = religion:zoroastrianism_religion
-			religious_head_title = title:d_patriarchate_in_the_east
-			AND = {
-				religion = religion:islam_religion
-				OR = {
-					NOT = { exists = religious_head }
-					religious_head = {
-						OR = {
-							has_trait = pro_persian
-							NOT = { any_character_struggle = { is_struggle_type = armenian_struggle } }
+		custom_description = {
+			text = armenian_struggle_is_persian_faith_trigger_tt
+			NOR = {
+				has_variable = is_local_faith
+				has_variable = is_roman_faith
+				this = faith:urartuism
+			}
+			OR = {
+				religion = religion:zoroastrianism_religion
+				religious_head_title = title:d_patriarchate_in_the_east
+				AND = {
+					religion = religion:islam_religion
+					OR = {
+						NOT = { exists = religious_head }
+						religious_head = {
+							OR = {
+								has_trait = pro_persian
+								NOT = { any_character_struggle = { is_struggle_type = armenian_struggle } }
+							}
 						}
 					}
 				}
+				has_variable = is_persian_faith
 			}
-			has_variable = is_persian_faith
 		}
 	}
 }
@@ -139,12 +151,15 @@ armenian_struggle_would_be_persian_faith_trigger = {
 armenian_struggle_is_local_culture_trigger = {
 	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
 	$CULTURE$ = {
-		OR = {
-			this = culture:armenian
-			this = culture:udi
-			has_cultural_pillar = heritage_ciscaucasian
-			has_cultural_pillar = heritage_caucasian
-			has_cultural_pillar = heritage_aghvank
+		custom_description = {
+			text = armenian_struggle_is_local_culture_trigger_tt
+			OR = {
+				this = culture:armenian
+				this = culture:udi
+				has_cultural_pillar = heritage_ciscaucasian
+				has_cultural_pillar = heritage_caucasian
+				has_cultural_pillar = heritage_aghvank
+			}
 		}
 	}
 }
@@ -152,23 +167,26 @@ armenian_struggle_is_local_culture_trigger = {
 armenian_struggle_is_local_faith_trigger = {
 	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
 	$FAITH$ = {
-		NOR = {
-			has_variable = is_roman_faith
-			has_variable = is_persian_faith
-		}
-		OR = {
-			this = faith:armenian_apostolic
-			this = faith:tondrakian
-			# this = faith:mtielta
-			this = faith:urartuism
-			AND = {
-				religion = religion:islam_religion
-				religious_head = {
-					has_trait = pro_armenian
-				}
+		custom_description = {
+			text = armenian_struggle_is_local_faith_trigger_tt
+			NOR = {
+				has_variable = is_roman_faith
+				has_variable = is_persian_faith
 			}
-			religious_head_title = title:d_georgian_patriarchate
-			has_variable = is_local_faith
+			OR = {
+				this = faith:armenian_apostolic
+				this = faith:tondrakian
+				# this = faith:mtielta
+				this = faith:urartuism
+				AND = {
+					religion = religion:islam_religion
+					religious_head = {
+						has_trait = pro_armenian
+					}
+				}
+				religious_head_title = title:d_georgian_patriarchate
+				has_variable = is_local_faith
+			}
 		}
 	}
 }

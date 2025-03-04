@@ -674,17 +674,13 @@ armenian_struggle_ending_persian_rule = {
 				highest_held_title_tier >= tier_kingdom
 			}
 		}
-		culture = {
-			# Needs to be in the broader Persian cultural sphere
-			custom_tooltip = {
-				text = has_iranian_heritage_group
-				has_culture_heritage_group = { GROUP = iranian }
-			}
+		custom_tooltip = {
+			text = perso_arabic_culture_tt # has_iranian_heritage_group
+			armenian_struggle_is_persian_culture_trigger = { CULTURE = root.culture }
 		}
-		OR = {
-			religion = religion:zoroastrianism_religion
-			religion = religion:islam_religion
-			faith = faith:nestorian
+		custom_tooltip = {
+			text = perso_arabic_faith_tt
+			armenian_struggle_is_persian_faith_trigger = { FAITH = root.faith }
 		}
 		legitimacy_level >= 4
 
@@ -722,6 +718,75 @@ armenian_struggle_ending_persian_rule = {
 	ai_potential = { always = yes }
 
 	ai_will_do = { base = 100 }
+}
+
+tax_armenian_trade_routes = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_opening.dds"
+	}
+	sort_order = 300
+	decision_group_type = struggle
+
+	is_shown = {
+		exists = global_var:armenian_struggle_ending
+		global_var:armenian_struggle_ending = flag:armenian_struggle_persian_rule
+		OR = {
+			armenian_struggle_is_persian_culture_trigger = { CULTURE = root.culture }
+			armenian_struggle_is_persian_faith_trigger = { FAITH = root.faith }
+		}
+		any_sub_realm_county = {
+			title_province = { geographical_region = struggle_region_armenia }
+		}
+	}
+
+	is_valid = {
+		OR = {
+			armenian_struggle_is_persian_culture_trigger = { CULTURE = root.culture }
+			armenian_struggle_is_persian_faith_trigger = { FAITH = root.faith }
+		}
+		any_sub_realm_county = {
+			title_province = { geographical_region = struggle_region_armenia }
+			NOT = { religion = root.religion }
+		}
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = armenian_trade_tax_tt
+			every_sub_realm_county = {
+				limit = {
+					title_province = { geographical_region = struggle_region_armenia }
+					NOT = { religion = root.religion }
+				}
+				add_county_modifier = {
+					modifier = armenian_trade_tax
+					years = 5
+				}
+			}
+		}
+	}
+
+	cost = { gold = 1 }
+
+	ai_check_interval = 30
+	ai_will_do = {
+		base = 50
+		modifier = {
+			add = stewardship
+			always = yes
+		}
+		modifier = {
+			add = -50
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = greedy
+		}
+	}
+
+	cooldown = { years = 5 }
+
 }
 
 # Armenian Resurgence
@@ -806,14 +871,17 @@ armenian_struggle_expand_empire = {
 
 	is_valid = {
 		legitimacy_level >= 4
-		any_kingdom = {
-			NOT = { empire = title:e_armenia }
-			holder = ROOT
-			OR = {
-				is_armenian_struggle_kingdom = yes
-				this = title:k_jerusalem
-				this = title:k_daylam
-				this = title:k_israel
+		any_held_title = {
+			custom_tooltip = {
+				text = armenian_kingdom_tt
+				NOT = { empire = title:e_armenia }
+				tier = tier_kingdom
+				OR = {
+					is_armenian_struggle_kingdom = yes
+					this = title:k_jerusalem
+					this = title:k_daylam
+					this = title:k_israel
+				}
 			}
 		}
 	}
@@ -913,6 +981,125 @@ armenian_struggle_ending_armenian_confederation = {
 	ai_will_do = { base = 100 }
 }
 
+# Override vanilla Armenian Empire decision
+create_armenian_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	desc = create_armenian_empire_decision_desc
+	selection_tooltip = create_armenian_empire_decision_tooltip
+	decision_group_type = major
+
+	ai_check_interval = 0
+
+	is_shown = {
+		is_playable_character = yes # Normally this will always be true, but if in DEBUG mode and playing as an unlanded ruler this will cause error spam without it.
+		highest_held_title_tier <= tier_kingdom
+		capital_province = { geographical_region = custom_greater_armenia }
+		culture = {
+			OR = {
+				this = culture:armenian
+				any_parent_culture_or_above = { this = culture:armenian }
+			}
+		}
+		NOT = {  #Can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_created_armenian_empire
+			}
+		}
+		OR = {
+			government_has_flag = government_is_feudal
+			government_has_flag = government_is_republic
+			government_has_flag = government_is_clan
+			government_allows = administrative
+			government_has_flag = government_is_landless_adventurer
+		}
+		exists = global_var:armenian_struggle_ending
+		global_var:armenian_struggle_ending = armenian_struggle_armenian_confederation
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		highest_held_title_tier = tier_kingdom
+		OR = {
+			AND = {
+				religion = religion:christianity_religion
+				NOT = {
+					faith.religious_head_title = title:k_orthodox
+					faith.religious_head_title = title:k_papal_state
+					faith.religious_head_title = title:d_georgian_patriarchate
+				}
+			}
+			AND = {
+				religion = religion:islam_religion
+				faith.religious_head = ROOT
+			}
+			religion = religion:zoroastrianism_religion
+		}
+		culture = {
+			OR = {
+				this = culture:armenian
+				any_parent_culture_or_above = { this = culture:armenian }
+			}
+		}
+		completely_controls_region = custom_greater_armenia
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_available_adult = yes
+	}
+
+	cost = {
+		prestige = 2000
+		piety = 1000
+	}
+
+	effect = {
+		show_as_tooltip = {
+			# revive_armenian_empire_decision_scripted_effect = yes
+			custom_tooltip = undo_confederation_ending_effect_tt
+			struggle_ending_armenian_empire_effect = yes
+		}
+		save_scope_as = founder
+		trigger_event = {
+			id = middle_east_decisions.1001
+		}
+		#Notify other players.
+		every_player = {
+			limit = {
+				NOT = { this = root }
+				is_within_diplo_range = { CHARACTER = root }
+			}
+			trigger_event = middle_east_decisions.1002
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_created_armenian_empire
+			}
+			set_global_variable = {
+				name = flag_created_armenian_empire
+				value = scope:founder
+			}
+			# Changes how the struggle "really" ended, consequently removes the effects of the previous ending
+			set_global_variable = {
+				name = armenian_struggle_ending
+				value = flag:armenian_struggle_armenian_empire
+			}
+		}
+	}
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
 # Armenian Stalemate
 # Persians and Romans agree after centuries of fighting that neither of them will rule Armenia uncontested
 # But Armenia itself isn't strong enough to assert independence longterm
@@ -929,6 +1116,10 @@ armenian_struggle_ending_armenian_stalemate = {
 	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
 	is_invisible = yes
 	sort_order = 80
+
+	is_shown = {
+		always = no
+	}
 
 	is_valid = {
 		OR = {
@@ -1080,12 +1271,15 @@ armenian_struggle_ending_complicity = {
 
 		OR = {
 			highest_held_title_tier = tier_kingdom
-			custom_description = {
-				text = found_kingdom_decision_three_duchies_held
-				any_held_title = {
-					count > 2
-					tier = tier_duchy
+			AND = {
+				custom_description = {
+					text = found_kingdom_decision_three_duchies_held
+					any_held_title = {
+						count > 2
+						tier = tier_duchy
+					}
 				}
+				highest_held_title_tier = tier_duchy
 			}
 		}
 
@@ -1122,7 +1316,9 @@ armenian_struggle_ending_complicity = {
 		trigger_event = armenian_struggle.1200
 	}
 
-	cost = {}
+	cost = {
+		prestige = major_prestige_value
+	}
 
 	ai_check_interval = 120
 
