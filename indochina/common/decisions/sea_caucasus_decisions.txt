@@ -2326,3 +2326,128 @@ circassian_decision_embrace_mtielta = {
 		base = 70
 	}
 }
+
+circassian_decision_abazinia = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/abazinia.dds"
+	}
+
+	desc = circassian_decision_abazinia_desc
+	selection_tooltip = circassian_decision_abazinia_tooltip
+
+	decision_group_type = major
+
+	is_shown = {
+		NOT = {	#You can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:circassian_decision_abazinia
+			}
+		}
+		culture = {	this = culture:abasgi }
+		OR = {
+			has_title = title:c_abazinia
+			has_title = title:c_sapakhi
+			has_title = title:c_skhimar
+			has_title = title:c_maghas
+		}
+	}
+
+	is_valid = {
+		OR = {
+			completely_controls = title:c_abazinia
+			has_title = title:c_abazinia
+		}
+		OR = {
+			completely_controls = title:c_sapakhi
+			has_title = title:c_sapakhi
+		}
+		OR = {
+			completely_controls = title:c_skhimar
+			has_title = title:c_skhimar	
+		}
+		OR = {
+			completely_controls = title:c_maghas
+			has_title = title:c_maghas		
+		}
+		}
+
+	effect = {
+		give_nickname = nick_the_great
+		show_as_tooltip = {
+			greater_abazinia_effect = yes
+		}
+		spawn_army = {
+			name = event_troop_default_name
+	        levies = {
+		        value = 500 #new army
+        	}
+			men_at_arms = {
+				type = jigit_riders
+				stacks = 1
+			}
+			location = root.capital_province
+			origin = root.capital_province
+			inheritable = no
+		}
+		title:c_abazinia = {
+			set_de_jure_liege_title = title:d_greater_abazinia
+		}
+		title:c_sapakhi = {
+			set_de_jure_liege_title = title:d_greater_abazinia
+		}
+		title:c_skhimar = {
+			set_de_jure_liege_title = title:d_greater_abazinia
+		}
+		title:c_maghas = {
+			set_de_jure_liege_title = title:d_greater_abazinia
+		}
+		title:d_greater_abazinia = {
+			set_capital_county = title:c_abazinia
+		}		
+		title:c_temir = {
+			set_de_jure_liege_title = title:d_kassogia
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:circassian_decision_abazinia
+		}
+	}
+
+	cost = {
+		gold = 50
+		prestige = 200
+	}
+
+	ai_check_interval = 1
+
+	ai_potential = {
+		NOT = {	#You can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:circassian_decision_abazinia
+			}
+		}
+		culture = {	this = culture:abasgi }
+		OR = {
+			completely_controls = title:c_abazinia
+			has_title = title:c_abazinia
+		}
+		OR = {
+			completely_controls = title:c_sapakhi
+			has_title = title:c_sapakhi
+		}
+		OR = {
+			completely_controls = title:c_skhimar
+			has_title = title:c_skhimar	
+		}
+		OR = {
+			completely_controls = title:c_maghas
+			has_title = title:c_maghas		
+		}
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
