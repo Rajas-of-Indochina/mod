@@ -2228,3 +2228,164 @@ south_asia.0045 = {
 		}
 	}
 }
+
+#Empire of Hindustan (Sultans of Delhi)
+
+#	I founded the Empire of Hindustan
+south_asia.0050 = {
+	type = character_event
+	title = south_asia.0050.t
+	desc = south_asia.0050.desc
+	theme = realm
+	override_background = { reference = bp2_study_indian }
+	left_portrait =	{
+		character = scope:founder
+		animation = sword_coup_degrace
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		found_empire_of_hindustan_scripted_effect = yes
+	}
+
+	#
+	option = {
+		name = south_asia.0050.a
+		trigger = {
+			NOT = {
+				capital_county = title:c_delhi
+			}
+		}
+		title:b_indraprastha = {
+			set_title_name = c_delhi
+		}
+		set_realm_capital = title:c_delhi
+		title:e_hindustan = {
+			set_capital_county = title:c_delhi
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	option = {
+		name = south_asia.0050.b
+		trigger = {
+			NOT = {
+				capital_county = title:c_lahur
+			}
+			title:c_lahur.holder = root
+		}
+		set_realm_capital = title:c_lahur
+		title:e_hindustan = {
+			set_capital_county = title:c_lahur
+		}
+		ai_chance = {
+			base = 0
+		}
+	}
+
+
+
+	option = {
+		name = south_asia.0050.c #Stay with current capital
+		trigger = {
+			capital_province = {
+				geographical_region = world_india
+			}
+		}
+		#
+		ai_chance = {
+			base = 0
+			modifier = {
+				NOR = {
+					has_title = title:c_lahur
+					has_title = title:c_delhi
+				}
+				add = 100
+			}
+		}
+	}
+
+	after = {
+		give_nickname = nick_the_great
+		add_prestige_experience = monumental_fame_gain
+		every_vassal = {
+			add_opinion = {
+				modifier = found_the_empire_of_hindustan_opinion
+				target = root
+			}
+			custom = found_the_empire_of_hindustan_decision_effects_vassal_opinion.tt
+		}
+		hidden_effect = {
+			title:e_hindustan = {
+				set_capital_county = root.capital_county
+			} #Regardless of outcome we still update the default capital for e_hindustan.
+			domicile ?= { move_domicile = root.top_liege.capital_province }
+		}
+		legend_seed_new_title_effect = yes
+	}
+	
+}
+
+#Someone else founded the Empire of Hindustan
+south_asia.0051 = {
+	type = character_event
+	title = south_asia.0051.t
+	desc = south_asia.0051.desc
+	theme = realm
+	override_background = { reference = bp2_study_indian }
+	left_portrait =	{
+		character = scope:founder
+		animation = sword_coup_degrace
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+
+	#
+	#Well, that happened.
+	option = {
+		name = {	#Other emperors are threatened.
+			trigger = {
+				highest_held_title_tier = tier_empire
+			}
+			text = south_asia.0051.a
+		}
+		name = {	#The old emperor of this region is not happy
+			trigger = { has_title = title:e_rajastan }
+			text = south_asia.0051.b
+		}
+		name = {
+			trigger = {
+				NOR = {
+					highest_held_title_tier = tier_empire
+					any_liege_or_above = { this = scope:founder }
+				}
+				faith.religion = religion:islam_religion
+			}
+			text = south_asia.0051.c 
+		}
+		name = {
+			trigger = {
+				NOR = {
+					highest_held_title_tier = tier_empire
+					any_liege_or_above = { this = scope:founder }
+					faith.religion = religion:islam_religion
+				}
+			}
+			text = south_asia.0051.d 
+		}
+		name = {
+			trigger = {
+				any_liege_or_above = { this = scope:founder }
+			}
+			text = south_asia.0051.e
+		}
+		ai_chance = {	#Solo option.
+			base = 100
+		}
+	}
+	
+}
