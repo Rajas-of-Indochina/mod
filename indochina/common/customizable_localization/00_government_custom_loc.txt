@@ -70,6 +70,29 @@ GetChamberPlural = {
 	suffix = _plural
 }
 
+GetChambersOrTent = {
+	type = character
+
+	text = {
+		trigger = {
+			trigger_if = {
+				limit = { is_ruler = yes }
+				is_landless_adventurer = yes
+			}
+			trigger_else = {
+				liege ?= { is_landless_adventurer = yes }
+			}
+		}
+		localization_key = tent
+	}
+	text = {
+		trigger = { always = no }
+		localization_key = chamber_plural
+		fallback = yes
+	}
+}
+
+
 GetRoom = {
 	type = character
 
@@ -553,6 +576,20 @@ GetRealmOrDomicileConcept = {
 	text = {
 		trigger = { always = no }
 		localization_key = activity_filter_realm
+		fallback = yes
+	}
+}
+
+GetCourtPosition = {
+	type = character
+
+	text = {
+		trigger = { is_landed = no }
+		localization_key = game_concept_officer
+	}
+	text = {
+		trigger = { always = no }
+		localization_key = game_concept_court_position
 		fallback = yes
 	}
 }
