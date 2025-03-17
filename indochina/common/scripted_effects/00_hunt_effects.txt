@@ -100,21 +100,18 @@ select_local_animal_effect = {
 				10 = { # Wolf, Hyena, Lynx
 					trigger = {
 						NOT = { exists = scope:harmless_local_game }
+						scope:animal_location = {
+							OR = {
+								hunt_animal_wolf_trigger = yes
+								hunt_animal_hyena_trigger = yes
+								hunt_animal_lynx_trigger = yes
+							}
+						}
 					}
 					random_list = {
 						10 = { # Wolf
 							trigger = {
-								scope:animal_location = {
-									NAND = {
-										geographical_region = world_africa_west
-										OR = {
-											terrain = hills
-											terrain = forest
-											terrain = jungle
-											terrain = mountains
-										}
-									}
-								}
+								scope:animal_location = { hunt_animal_wolf_trigger = yes }
 							}
 							set_variable = { name = animal_type value = flag:wolf years = 3 }
 						}
@@ -132,7 +129,7 @@ select_local_animal_effect = {
 						}
 					}
 				}
-				0.5 = { # Hare
+				1 = { # Hare
 					trigger = {
 						NOT = { exists = scope:dangerous_local_game }
 						NOT = { exists = scope:prowling_local_game }
@@ -152,18 +149,25 @@ select_local_animal_effect = {
 				}
 				5 = { # Bear
 					trigger = {
-						scope:animal_location = { hunt_animal_bear_trigger = yes }
 						NOT = { exists = scope:small_local_game }
 						NOT = { exists = scope:harmless_local_game }
 						NOT = { exists = scope:prowling_local_game }
+						scope:animal_location = { hunt_animal_bear_trigger = yes }
 					}
 					set_variable = { name = animal_type value = flag:bear years = 3 }
 				}
 				5 = { # Big Cat
 					trigger = {
-						scope:animal_location = { hunt_animal_big_cat_trigger = yes }
 						NOT = { exists = scope:small_local_game }
 						NOT = { exists = scope:harmless_local_game }
+						scope:animal_location = {
+							hunt_animal_big_cat_trigger = yes
+							OR = {
+								hunt_animal_lion_trigger = yes
+								hunt_animal_tiger_trigger = yes
+								hunt_animal_leopard_trigger = yes
+							}
+						}
 					}
 					random_list = {
 						5 = { # Lion
@@ -171,7 +175,7 @@ select_local_animal_effect = {
 								scope:animal_location = { hunt_animal_lion_trigger = yes }
 							}
 							modifier = {
-								factor = 5
+								factor = 5							
 								scope:animal_location = {
 									OR = {
 										terrain = desert
@@ -186,7 +190,7 @@ select_local_animal_effect = {
 								scope:animal_location = { hunt_animal_tiger_trigger = yes }
 							}
 							modifier = {
-								factor = 5
+								factor = 5							
 								scope:animal_location = { terrain = jungle }
 							}
 							set_variable = { name = animal_type value = flag:tiger years = 3 }
@@ -208,7 +212,7 @@ select_local_animal_effect = {
 						}
 					}
 				}
-				0.1 = { # Unicorn
+				1 = { # Unicorn
 					# they're nowhere
 					trigger = {
 						NOT = { exists = scope:small_local_game }
@@ -216,8 +220,8 @@ select_local_animal_effect = {
 						NOT = { exists = scope:prowling_local_game }
 					}
 					modifier = {
-						add = 10
-						has_trait = lunatic
+						factor = 0
+						NOT = { has_trait = lunatic }
 					}
 					set_variable = {
 						name = animal_type
@@ -225,7 +229,7 @@ select_local_animal_effect = {
 						years = 3
 					}
 				}
-				0.1 = { # Dragon
+				1 = { # Dragon
 					trigger = {
 						NOT = { exists = scope:small_local_game }
 						NOT = { exists = scope:harmless_local_game }
@@ -233,8 +237,8 @@ select_local_animal_effect = {
 					}
 					# they're nowhere
 					modifier = {
-						add = 10
-						has_trait = lunatic
+						factor = 0
+						NOT = { has_trait = lunatic }
 					}
 					set_variable = {
 						name = animal_type
@@ -244,6 +248,11 @@ select_local_animal_effect = {
 				}
 			}
 		}
+	}
+	# Fallback
+	if = {
+		limit = { NOT = { exists = var:animal_type } }
+		set_variable = { name = animal_type value = flag:stag years = 3 }
 	}
 }
 
@@ -283,13 +292,19 @@ start_hunt_mystical_animal_story_cycle_effect = {
 
 #Effect to end the story and apply everything - You got the animal!
 end_hunt_mystical_animal_story_cycle_effect = {
-	create_legend_seed = {
-		type = heroic
-		quality = famed
-		chronicle = beast_slayer
-		properties = {
-			beast = scope:activity.var:animal_type
-			location = root.location
+	if = {
+		limit = {
+			has_dlc_feature = legends
+			NOT = { has_game_rule = historical_legends_only }
+		}
+		create_legend_seed = {
+			type = heroic
+			quality = famed
+			chronicle = beast_slayer
+			properties = {
+				beast = scope:activity.var:animal_type
+				location = root.location
+			}
 		}
 	}
 	add_prestige = major_prestige_gain
@@ -321,7 +336,7 @@ end_hunt_mystical_animal_story_cycle_effect = {
 					ANIMAL = scope:activity.var:animal_type
 				}
 			}
-		}
+		}		
 	}
 	create_artifact_animal_hide_effect = {
 		OWNER = root
@@ -398,7 +413,7 @@ hunt_activity_standard_game_effect = {
 				NOT = { exists = scope:big_local_game }
 			}
 			set_variable = { name = animal_type value = flag:fox }
-		}
+		} 
 		5 = { # Hare
 			modifier = {
 				exists = scope:big_local_game
@@ -406,6 +421,11 @@ hunt_activity_standard_game_effect = {
 			}
 			set_variable = { name = animal_type value = flag:hare }
 		}
+	}
+	# Fallback
+	if = {
+		limit = { NOT = { exists = var:animal_type } }
+		set_variable = { name = animal_type value = flag:stag years = 3 }
 	}
 }
 
@@ -511,6 +531,11 @@ hunt_activity_deer_game_effect = {
 			}
 		}
 	}
+	# Fallback
+	if = {
+		limit = { NOT = { exists = var:animal_type } }
+		set_variable = { name = animal_type value = flag:stag years = 3 }
+	}
 }
 
 hunt_activity_dangerous_game_effect = {
@@ -523,17 +548,7 @@ hunt_activity_dangerous_game_effect = {
 			random_list = {
 				10 = { # Wolf
 					trigger = {
-						$PROVINCE$ = {
-							NAND = {
-								geographical_region = world_africa_west
-								OR = {
-									terrain = hills
-									terrain = forest
-									terrain = jungle
-									terrain = mountains
-								}
-							}
-						}
+						$PROVINCE$ = { hunt_animal_wolf_trigger = yes }
 					}
 					set_variable = { name = animal_type value = flag:wolf years = 3 }
 				}
@@ -553,7 +568,14 @@ hunt_activity_dangerous_game_effect = {
 		}
 		5 = { # Lion/Tiger/Leopard - Occasional (outside Europe)
 			trigger = {
-				$PROVINCE$ = { hunt_animal_big_cat_trigger = yes }
+				$PROVINCE$ = {
+					hunt_animal_big_cat_trigger = yes
+					OR = {
+						hunt_animal_lion_trigger = yes
+						hunt_animal_tiger_trigger = yes
+						hunt_animal_leopard_trigger = yes
+					}
+				}
 			}
 			modifier = {
 				exists = scope:small_local_game
@@ -612,7 +634,18 @@ hunt_activity_dangerous_game_effect = {
 			}
 			set_variable = { name = animal_type value = flag:bear years = 3 }
 		}
+		10 = { # Boar
+			trigger = {
+				$PROVINCE$ = { hunt_animal_boar_trigger = yes }
+			}
+			modifier = {
+				exists = scope:small_local_game
+				factor = 0
+			}
+			set_variable = { name = animal_type value = flag:boar years = 3 }
+		}
 	}
+	# Fallback
 	if = {
 		limit = { NOT = { exists = var:animal_type } }
 		set_variable = { name = animal_type value = flag:wolf years = 3 }
@@ -1738,11 +1771,13 @@ hunt_animal_melee_kill_group_effect = {
 		limit = {
 			NOT = { exists = scope:group_capture }
 		}
-		every_in_list = {
-			list = animal_slayers
-			custom = hunt_every_slay_beast_hunter_tt
-			# Complete activity intent if relevant
-			hunt_complete_slay_beast_intent_effect = yes
+		hidden_effect = {
+			every_in_list = {
+				list = animal_slayers
+				custom = hunt_every_slay_beast_hunter_tt
+				# Complete activity intent if relevant
+				hunt_complete_slay_beast_intent_effect = yes
+			}
 		}
 	}
 	scope:activity ?= {
@@ -1937,6 +1972,12 @@ animal_artifact_wealth_quality_effect = {
 			value = 0
 			if = {
 				limit = {
+					exists = scope:excellent_animal_artifacts
+				}
+				add = 500
+			}
+			if = {
+				limit = {
 					OR = {
 						scope:owner.var:animal_type ?= flag:hare
 						AND = {
@@ -2034,6 +2075,12 @@ animal_artifact_wealth_quality_effect = {
 	save_scope_value_as = {
 		name = wealth
 		value = {
+			if = {
+				limit = {
+					exists = scope:excellent_animal_artifacts
+				}
+				add = 500
+			}
 			if = {
 				# If our artifact already has a quality, set base wealth equal to 1/4th quality value.
 				limit = { exists = scope:quality }
