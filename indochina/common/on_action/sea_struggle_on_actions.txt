@@ -54,12 +54,33 @@ on_title_gain_usurpation = {
 on_war_won_attacker = {
 	on_actions = {
 		sea_armenian_crusade_in_levant
+		seljuk_war_victory_aftermath
 	}
 }
 
 on_county_faith_change = {
 	on_actions = {
 		sea_armenian_convert_county
+	}
+}
+
+on_game_start_after_lobby = {
+	on_actions = {
+		flag_seljuk_invasion
+	}
+}
+
+flag_seljuk_invasion = {
+	trigger = {
+		character:3040 = { is_alive = yes }
+	}
+	effect = {
+		character:3040 = {
+			random_character_war = {
+				set_variable = seljuk_invasion
+				debug_log_scopes = yes
+			}
+		}
 	}
 }
 
@@ -114,7 +135,13 @@ sea_armenian_struggle_on_title_conquest_revoke = {
 	effect = {
 		if = {
 			limit = {
-				ROOT = { has_trait = pro_roman }
+				ROOT = {
+					OR = {
+						has_trait = pro_roman
+						has_title = title:e_byzantium
+						has_title = title:e_roman_empire
+					}
+				}
 				scope:previous_holder = { NOT = {has_trait = pro_roman} }
 			}
 			every_character_struggle = {
@@ -153,7 +180,14 @@ sea_armenian_struggle_on_title_conquest_revoke = {
 		}
 		else_if = {
 			limit = {
-				ROOT = { has_trait = pro_persian }
+				ROOT = {
+					OR = {
+						has_trait = pro_persian
+						has_title = title:e_persia
+						has_title = title:k_persia
+						has_title = title:e_arabia
+					}
+				}
 				scope:previous_holder = { NOT = {has_trait = pro_persian} }
 			}
 			switch = {
@@ -1148,6 +1182,15 @@ sea_armenian_crusade_in_levant = {
 				}
 			}
 		}
+	}
+}
+
+seljuk_war_victory_aftermath = {
+	trigger = {
+		scope:war = {has_variable = seljuk_invasion}
+	}
+	effect = {
+		seljuk_victory_handler_effect = { SELJUK = scope:attacker }
 	}
 }
 
