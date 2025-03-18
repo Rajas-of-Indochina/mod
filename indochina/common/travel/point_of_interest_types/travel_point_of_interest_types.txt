@@ -276,7 +276,7 @@ poi_special_buildings_martial = {
 				}
 				poi_lifestyle_experience_effect = {
 					LIFESTYLE = martial
-					VALUE = miniscule_lifestyle_xp
+					VALUE = travel_miniscule_lifestyle_xp
 				}
 				traveler_travel_xp_effect = {
 					MIN = 1
@@ -500,19 +500,20 @@ poi_grand_city = {
 					has_trait = lifestyle_traveler
 				}
 			}
-			send_interface_toast = {
-				title = poi_grand_city.visit
-				left_icon = root
-				add_trait = lifestyle_traveler
-				traveler_travel_xp_effect = {
-					MIN = 1
-					MAX = 3
+			add_trait = lifestyle_traveler
+			traveler_travel_xp_effect = {
+				MIN = 1
+				MAX = 3
+			}
+			if = {
+				limit = {
+					is_landless_adventurer = yes
+					has_perk = organized_muster_rolls_perk
 				}
-				if = {
-					limit = {
-						is_landless_adventurer = yes
-						has_perk = organized_muster_rolls_perk
-					}
+				send_interface_toast = {
+					title = poi_grand_city.visit
+					left_icon = root
+					
 					add_gold = minor_gold_laamps_value
 				}
 			}
@@ -811,13 +812,13 @@ poi_battles = {
 						number_of_commander_traits > 1
 					}
 				}
-				poi_lifestyle_experience_effect = {
-					LIFESTYLE = martial
-					VALUE = travel_major_xp
-				}
+				add_poi_martial_experience_effect = yes
 			}
 			else = {
-				add_poi_martial_experience_effect = yes
+				poi_lifestyle_experience_effect = {
+					LIFESTYLE = martial
+					VALUE = travel_minor_lifestyle_xp
+				}
 			}
 			# Prestige for Wanderers
 			wanderer_lifestyle_destination_effect = yes
@@ -853,10 +854,12 @@ poi_battles = {
 							jungle = { battle_poi_trait_effect = { TRAIT = jungle_stalker } }
 							floodplains = { battle_poi_trait_effect = { TRAIT = flexible_leader } }
 						}
+						root = {
+							set_variable = battle_poi_trait_gained
+						}
 					}
 				}
 			}
-			set_variable = battle_poi_trait_gained
 		}
 
 		traveler_danger_xp_effect = {
@@ -1033,9 +1036,9 @@ poi_battles_historical = {
 								province:9966 = { battle_poi_trait_effect = { TRAIT = logistician } }
 							}
 						}
+						set_variable = battle_poi_trait_gained
 					}
 				}
-				set_variable = battle_poi_trait_gained
 			}
 
 			traveler_danger_xp_effect = {
