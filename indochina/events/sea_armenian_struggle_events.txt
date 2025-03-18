@@ -912,3 +912,111 @@ armenian_struggle.2000 = {
 		}
 	}
 }
+
+# Seljuk Invasion of Armenia: Offering Adventurers a Beylik
+
+armenian_struggle.9999 = {
+	type = character_event
+	title = armenian_struggle.9999.t
+	desc = armenian_struggle.9999.desc
+	theme = landless_adventurer
+
+	left_portrait = {
+		character = scope:recipient
+		animation = random_weapon_celebrate
+	}
+
+	right_portrait = {
+		character = scope:actor
+		animation = war_over_win
+	}
+
+	lower_center_portrait = {
+		character = scope:canned_bey
+		animation = honorable
+	}
+
+	immediate = {
+		hidden_effect = {
+			scope:beylik = {
+				if = {
+					limit = {
+						OR = {
+							holder = scope:actor
+							is_title_created = no
+						}
+					}
+					add_to_list = offered_titles
+				}
+				every_de_jure_county = {
+					limit = { holder = scope:actor }
+					add_to_list = offered_titles
+				}
+			}
+		}
+		create_character = {
+			location = scope:actor.location
+			template = fp3_turko-mongol_leader
+			culture = scope:actor.culture
+			faith = scope:actor.faith
+			trait = pro_persian
+			save_scope_as = canned_bey
+		}
+	}
+
+	# Free land? Hell yeah.
+	option = {
+		name = armenian_struggle.9999.accept
+		negotiate_settlement_interaction_effect = yes
+		hidden_effect = {
+			remove_character_modifier = ep3_ennobled_adventurer_modifier_1
+			remove_character_modifier = ep3_ennobled_adventurer_modifier_2
+			remove_character_modifier = ep3_ennobled_adventurer_modifier_3
+		}
+		ai_chance = {
+			base = 30
+			modifier = {
+				has_trait = greedy
+				add = 10
+			}
+			modifier = {
+				has_trait = ambitious
+				add = 15
+			}
+			modifier = {
+				has_trait = arrogant
+				add = 15
+			}
+		}
+	}
+
+	# Nah I just did it for the love of the game
+	option = {
+		name = armenian_struggle.9999.decline
+		scope:beylik = {
+			handout_conquered_duchy = {
+				INVADER = scope:actor
+				RECIPIENT = scope:canned_bey
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				has_trait = content
+				add = 15
+			}
+			modifier = {
+				has_trait = lazy
+				add = 15
+			}
+			modifier = {
+				has_trait = humble
+				add = 20
+			}
+			modifier = {
+				has_trait = gallivanter
+				add = 100
+			}
+		}
+	}
+}
