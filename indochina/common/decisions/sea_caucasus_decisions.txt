@@ -411,7 +411,6 @@ circassian_decision.6 = {
     effect = {
 
 		add_trait = thamade
-		add_trait = trait_thamade
 
     }
 
@@ -584,7 +583,7 @@ circassian_decision_armenians = {
 	selection_tooltip = circassian_decision_nine_tooltip
 
         is_shown = {
-			has_title = k_circassia
+			has_title = title:k_circassia
 			NOT = {	#You can only do it once.
 				is_target_in_global_variable_list = {
 					name = unavailable_unique_decisions
@@ -649,9 +648,9 @@ circassian_decision_armenians = {
 			custom_tooltip = {
 				text = cherkesogai_customtooltip
 				trigger_event = {
-				id = caucasianroa.002
-				days = 15
-			}
+					id = caucasianroa.002
+					days = 15
+				}
 			}
 			capital_county = {
 				change_development_level = 1
@@ -659,10 +658,6 @@ circassian_decision_armenians = {
 			add_to_global_variable_list = {
 				name = unavailable_unique_decisions
 				target = flag:circassian_decision_armenians
-			}
-			set_global_variable = {
-				name = circassian_decision_armenians
-				value = scope:traded
 			}
 			create_character = {
 				age = { 20 32 }
@@ -2252,8 +2247,14 @@ unify_armenian_principalities_decision = {
 			has_primary_title = title:k_ayrarat
 			has_primary_title = title:k_syunik
 		}
-
-		legitimacy_level >= 4
+		trigger_if = {
+			limit = { has_legitimacy = yes }
+			legitimacy_level >= 4
+		}
+		trigger_else = {
+			prestige_level >= 4
+		}
+		
 	}
 
 	effect = {

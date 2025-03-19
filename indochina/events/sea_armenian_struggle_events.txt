@@ -591,7 +591,7 @@ armenian_struggle.1500 = {
 	option = {
 		name = armenian_struggle.1500.a
 		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_positive"
-		struggle_ending_persian_rule_effect = yes
+		struggle_ending_georgian_empire_effect = yes
 	}
 	after = {
 		save_scope_as = georgia_founder
@@ -599,6 +599,16 @@ armenian_struggle.1500 = {
 			ENDING = armenian_struggle_ending_georgian_empire_decision
 			EVENT = armenian_struggle.1501
 			FLAG = flag:armenian_struggle_georgian_empire
+		}
+		every_ruler = {
+			limit = {
+				is_landed = yes
+				NOT = { THIS = ROOT }
+				primary_title = {
+					empire = title:e_caucasia
+				}
+			}
+			trigger_event = { id = armenian_struggle.1501 }
 		}
 	}
 }
@@ -620,6 +630,7 @@ armenian_struggle.1501 = { #Notification
 		show_as_tooltip = {
 			struggle:armenian_struggle = { end_struggle = yes }
 		}
+		save_scope_as = recipient
 		add_character_flag = struggle_end_notification
 		play_music_cue = struggleend_cue
 	}
@@ -627,21 +638,51 @@ armenian_struggle.1501 = { #Notification
 	option = {
 		# Option to just go "yeah cool whatever"
 		name = armenian_struggle.1501.a
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 10
+				OR = {
+					has_relation_rival = scope:georgia_founder
+					has_relation_nemesis = scope:georgia_founder
+					has_relation_grudge = scope:georgia_founder
+					has_opinion_modifier = {
+						modifier = granted_independence_opinion
+						target = scope:georgia_founder
+					}
+					AND = {
+						any_truce_holder = {
+							this = scope:georgia_founder
+						}
+						NOR = {
+							has_purchased_truce_with_char = { TARGET = scope:georgia_founder }
+							scope:georgia_founder = {has_purchased_truce_with_char = { TARGET = scope:recipient }}
+						}
+					}
+					scope:recipient = {
+						exists = var:independence_war_former_liege
+						var:independence_war_former_liege = scope:actor
+					}
+					scope:georgia_founder.gold <= -1
+				}
+			}
+		}
 	}
 
 	option = {
 		# Option to change allegiance to the Empire of Caucasia
 		# (only allowed to people in the de_jure)
-		# Also unless you're independent you need to at least be a duke to avoid bordergore
+		# Independent rulers only!
+		ai_will_do = {
+			base = 1
+		}
 		name = armenian_struggle.1501.b
 		trigger = {
+			is_landed = yes
 			primary_title = {
 				empire = title:e_caucasia
 			}
-			OR = {
-				is_independent_ruler = yes
-				highest_held_title_tier >= tier_duchy
-			}
+			is_independent_ruler = yes
 		}
 		if = {
 			limit = { is_independent_ruler = no }
@@ -654,7 +695,7 @@ armenian_struggle.1501 = { #Notification
 			save_scope_as = change
 		}
 		change_liege = {
-			liege = scope:georgie_founder
+			liege = scope:georgia_founder
 			change = scope:change
 		}
 		resolve_title_and_vassal_change = scope:change
@@ -677,7 +718,7 @@ armenian_struggle.1600 = {
 
 	immediate = {
 		play_music_cue = struggleend_cue
-		armenian_struggle_reset_de_jure = yes
+		armenia_struggle_reset_de_jure = yes
 	}
 
 	option = {
