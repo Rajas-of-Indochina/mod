@@ -6,6 +6,8 @@ on_title_gain = {
 	on_actions = {
 		sea_armenian_struggle_on_title_conquest_revoke
 		sea_armenian_struggle_on_title_creation
+		sea_georgian_incorporation
+		force_armenian_struggle_traits_on_title_gain
 	}
 }
 
@@ -80,6 +82,9 @@ flag_seljuk_invasion = {
 				set_variable = seljuk_invasion
 				debug_log_scopes = yes
 			}
+		}
+		struggle:armenian_struggle = {
+			change_struggle_phase_duration = { duration = { points = -400 } }
 		}
 	}
 }
@@ -440,6 +445,50 @@ sea_armenian_struggle_on_title_creation = {
 					}
 				}
 			}
+		}
+	}
+}
+
+sea_georgian_incorporation = {
+	trigger = {
+		OR = {
+			scope:title = title:k_abkhazia
+			scope:title = title:k_iberia
+			scope:title = title:k_kakheti
+		}
+		has_title = title:k_georgia
+	}
+	effect = {
+		trigger_event = { id = caucasianroa.999 }
+	}
+}
+
+force_armenian_struggle_traits_on_title_gain = {
+	trigger = {
+		exists = struggle:armenian_struggle
+		OR = {
+			scope:title = title:e_byzantium
+			scope:title = title:e_roman_empire
+			scope:title = title:e_arabia
+			scope:title = title:e_persia
+			scope:title = title:k_persia
+		}
+	}
+	effect = {
+		remove_trait = pro_armenian
+		if = {
+			limit = {
+				OR = {
+					scope:title = title:e_byzantium
+					scope:title = title:e_roman_empire
+				}
+				remove_trait = pro_persian
+				add_trait = pro_roman
+			}
+		}
+		else = {
+			remove_trait = pro_roman
+			add_trait = pro_armenian
 		}
 	}
 }
@@ -1190,6 +1239,13 @@ seljuk_war_victory_aftermath = {
 		scope:war = {has_variable = seljuk_invasion}
 	}
 	effect = {
+		# scope defender is almost guaranteed to be the basileus so just scope to him.
+		scope:defender = {
+			random_character_struggle = {
+				limit = { is_struggle_type = armenian_struggle }
+				activate_struggle_catalyst = catalyst_seljuk_invasion
+			}
+		}
 		seljuk_victory_handler_effect = { SELJUK = scope:attacker }
 	}
 }

@@ -1416,40 +1416,77 @@ caucasianroa.021 = {
 	}
 }
 
+
 #temporarily here until we integrate the islam events from other branch
 
-caucasianroa.022 = { #ramadan event
+caucasianroa.998 = { #ramadan event
 	hidden = yes
 
 	immediate = {
 		trigger_event = {
-			id = caucasianroa.022
-		    days = 354 }
-
-			religion:islam_religion = {
-				every_faith = {	
+			id = caucasianroa.998
+		    days = 354
+		}
+		religion:islam_religion = {
+			every_faith = {	
+				limit = {
+					NOT = { this = faith:alawite }
+					NOT = { this = faith:druze }
+					NOT = { this = faith:qarmatian }
+				}
+				every_faith_character  = {
 					limit = {
-						NOT = { this = faith:alawite }
-						NOT = { this = faith:druze }
-						NOT = { this = faith:qarmatian }
-					}
-					every_faith_character  = {
-						limit = {
-							NOT = {
-								has_any_disease_trigger = yes
-								has_trait = cynical
-								age < 14
-								has_trait = ill
-								has_trait = pregnant
-								#has crypto faith
-							}
-						}	
-						add_character_modifier = {
-							modifier = ramadan_fasting_roa
-							days = 30
-						}					
-					}
+						NOT = {
+							has_any_disease_trigger = yes
+							has_trait = cynical
+							age < 14
+							has_trait = ill
+							has_trait = pregnant
+							#has crypto faith
+						}
+					}	
+					add_character_modifier = {
+						modifier = ramadan_fasting_roa
+						days = 30
+					}					
 				}
 			}
 		}
 	}
+}
+
+caucasianroa.999 = {
+	type = character_event
+	title = caucasianroa.999.t
+	desc = caucasianroa.999.desc
+	theme = realm
+	left_portrait = {
+		character = ROOT
+		animation = personality_bold
+	}
+	immediate = {
+		scope:title = {
+			every_in_de_jure_hierarchy = {
+				limit = { tier = tier_duchy }
+				add_to_list = incoporated_duchies
+			}
+		}
+	}
+
+	option = {
+		name = caucasianroa.999.accept
+		every_in_list = {
+			list = incoporated_duchies
+			set_de_jure_liege_title = title:k_georgia
+		}
+		destroy_title = scope:title
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = caucasianroa.999.refuse
+		ai_chance = {
+			base = 0
+		}
+	}
+}
