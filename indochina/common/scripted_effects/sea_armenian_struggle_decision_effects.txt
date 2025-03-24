@@ -325,4 +325,24 @@ decision_form_armenian_cilicia_effect = {
 	}
 	resolve_title_and_vassal_change = scope:title_change
 	set_primary_title_to = title:k_armenian_cilicia
+
+	if = {
+		limit = {
+			exists = liege
+			OR = {
+				liege.primary_title ?= title:e_roman_empire
+				liege.primary_title ?= title:e_byzantium
+				liege.primary_title ?= title:e_caucasia
+				liege.primary_title ?= title:e_arabia
+				liege.primary_title ?= title:e_persia
+				liege.primary_title ?= title:e_armenia
+				liege.primary_title ?= title:e_outremer
+				liege.primary_title ?= title:e_beth_nahrain
+			}
+		}
+		liege = {
+			primary_title = { save_scope_as = empire }
+		}
+		title:k_armenian_cilicia = { set_de_jure_liege_title = scope:empire }
+	}
 }

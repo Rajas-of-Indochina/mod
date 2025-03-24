@@ -1413,10 +1413,15 @@ decision_form_armenian_cilicia = {
 			}
 		}
 		highest_held_title_tier <= tier_duchy
+		is_titular = title:k_armenian_cilicia
 
 	}
 
 	is_valid = {
+		OR = {
+			is_independent_ruler = yes
+			liege = {highest_held_title_tier >= tier_empire}
+		}
 		OR = {
 			has_title = title:d_cilicia
 			completely_controls = title:d_cilicia
@@ -1429,13 +1434,54 @@ decision_form_armenian_cilicia = {
 			legitimacy_level >= 3
 			dynasty.dynasty_prestige_level >= 5
 		}
+		trigger_if = {
+			limit = {
+				is_independent_ruler = yes
+				any_neighboring_top_liege_realm_owner = {
+					highest_held_title_tier >= tier_empire
+				}
+			}
+			any_neighboring_top_liege_realm_owner = {
+				highest_held_title_tier >= tier_empire
+				OR = {
+					opinion = {
+						target = ROOT
+						value >= high_positive_opinion
+					}
+					ROOT = { has_strong_hook = PREV }
+					has_dread_level_towards = {
+						target = ROOT
+						level >= 2
+					}
+				}
+			}
+		}
+		trigger_else_if = {
+			limit = {
+				liege.highest_held_title_tier >= tier_empire
+			}
+			OR = {
+				has_strong_hook = liege
+				liege = {
+					opinion = {
+						target = ROOT
+						value >= high_positive_opinion
+					}
+				}
+				liege = {
+					has_dread_level_towards = {
+						target = ROOT
+						level >= 2
+					}
+				}
+			}
+		}
 	}
 
 	is_valid_showing_failures_only = {
 		is_landed = yes
 		is_adult = yes
 		is_available = yes
-		is_independent_ruler = yes
 	}
 
 	cost = {
