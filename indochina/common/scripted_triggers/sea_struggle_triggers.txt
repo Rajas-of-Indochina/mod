@@ -22,22 +22,27 @@ does_this_player_care_about_the_armenian_struggle = {
 }
 
 armenian_struggle_is_roman_culture_trigger = {
-	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
+	struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
 	$CULTURE$ = {
 		custom_description = {
 			text = armenian_struggle_is_roman_culture_trigger_tt
+			NOT = {
+				has_variable = is_local_culture
+				has_variable = is_persian_culture
+			}
 			OR = {
 				this = culture:greek
 				this = culture:roman
 				this = culture:cappadocian
 				has_cultural_parameter = heritage_family_european
+				has_variable = is_roman_culture
 			}
 		}
 	}
 }
 
 armenian_struggle_is_roman_faith_trigger = {
-	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
 	$FAITH$ = {
 		custom_description = {
 			text = armenian_struggle_is_roman_faith_trigger_tt
@@ -57,7 +62,7 @@ armenian_struggle_is_roman_faith_trigger = {
 						religion = religion:hellenism_religion
 					}
 				}
-				has_variable = is_pro_roman
+				has_variable = is_roman_faith
 			}
 		}
 	}
@@ -68,7 +73,7 @@ armenian_struggle_would_be_roman_faith_trigger = {
 		limit = {
 			armenian_struggle_is_roman_faith_trigger = { FAITH = scope:old_faith }
 		}
-		scope:character = {
+		ROOT = {
 			NOR = {
 				has_trait = pro_persian
 				has_trait = pro_armenian
@@ -76,7 +81,7 @@ armenian_struggle_would_be_roman_faith_trigger = {
 		}
 	}
 	trigger_else = {
-		scope:character = { has_trait = pro_roman }
+		ROOT = { has_trait = pro_roman }
 	}
 }
 
@@ -84,20 +89,25 @@ armenian_struggle_is_persian_culture_trigger = {
 	$CULTURE$ = {
 		custom_description = {
 			text = armenian_struggle_is_persian_culture_trigger_tt
+			NOT = {
+				has_variable = is_local_culture
+				has_variable = is_roman_culture
+			}
 			OR = {
 				has_cultural_pillar = language_turkic
 				has_cultural_pillar = heritage_on_oq
 				has_cultural_pillar = heritage_iranian
 				has_cultural_pillar = language_iranian
 				has_cultural_pillar = heritage_arabic
+				has_variable = is_persian_culture
 			}
 		}
 	}
-	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
+	struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
 }
 
 armenian_struggle_is_persian_faith_trigger = {
-	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
 	$FAITH$ = {
 		custom_description = {
 			text = armenian_struggle_is_persian_faith_trigger_tt
@@ -106,6 +116,8 @@ armenian_struggle_is_persian_faith_trigger = {
 				has_variable = is_roman_faith
 				this = faith:urartuism
 				this = faith:barhailism
+				this = faith:mazdakism
+				this = faith:khurramism
 			}
 			OR = {
 				religion = religion:zoroastrianism_religion
@@ -133,7 +145,7 @@ armenian_struggle_would_be_persian_faith_trigger = {
 		limit = {
 			armenian_struggle_is_persian_faith_trigger = { FAITH = scope:old_faith }
 		}
-		scope:character = {
+		ROOT = {
 			NOR = {
 				has_trait = pro_roman
 				has_trait = pro_armenian
@@ -141,28 +153,33 @@ armenian_struggle_would_be_persian_faith_trigger = {
 		}
 	}
 	trigger_else = {
-		scope:character = { has_trait = pro_persian }
+		ROOT = { has_trait = pro_persian }
 	}
 }
 
 armenian_struggle_is_local_culture_trigger = {
-	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
+	struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
 	$CULTURE$ = {
 		custom_description = {
 			text = armenian_struggle_is_local_culture_trigger_tt
+			NOT = {
+				has_variable = is_roman_culture
+				has_variable = is_persian_culture
+			}
 			OR = {
 				this = culture:armenian
 				this = culture:udi
 				has_cultural_pillar = heritage_ciscaucasian
 				has_cultural_pillar = heritage_caucasian
 				has_cultural_pillar = heritage_aghvank
+				has_variable = is_local_culture
 			}
 		}
 	}
 }
 
 armenian_struggle_is_local_faith_trigger = {
-	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
 	$FAITH$ = {
 		custom_description = {
 			text = armenian_struggle_is_local_faith_trigger_tt
@@ -175,6 +192,8 @@ armenian_struggle_is_local_faith_trigger = {
 				this = faith:tondrakian
 				this = faith:barhailism
 				this = faith:urartuism
+				this = faith:mazdakism
+				this = faith:khurramism
 				AND = {
 					religion = religion:islam_religion
 					religious_head = {
@@ -197,7 +216,7 @@ armenian_struggle_would_be_local_faith_trigger = {
 		limit = {
 			armenian_struggle_is_local_faith_trigger = { FAITH = scope:old_faith }
 		}
-		scope:character = {
+		ROOT = {
 			NOR = {
 				has_trait = pro_roman
 				has_trait = pro_persian
@@ -205,7 +224,7 @@ armenian_struggle_would_be_local_faith_trigger = {
 		}
 	}
 	trigger_else = {
-		scope:character = { has_trait = pro_armenian }
+		ROOT = { has_trait = pro_armenian }
 	}
 }
 
