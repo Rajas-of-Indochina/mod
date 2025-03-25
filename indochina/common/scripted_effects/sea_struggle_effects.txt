@@ -195,6 +195,12 @@ activate_tiered_struggle_catalyst = {
 armenian_struggle_assign_stance_on_join = {
 	if = {
 		limit = {
+			is_ai = no
+		}
+		#
+	}
+	else_if = {
+		limit = {
 			OR = {
 				has_title = title:e_byzantium
 				has_title = title:e_roman_empire
@@ -209,6 +215,7 @@ armenian_struggle_assign_stance_on_join = {
 			OR = {
 				has_title = title:e_persia
 				has_title = title:k_persia
+				has_title = title:e_arabia
 			}
 		}
 		remove_trait = pro_armenian
@@ -220,26 +227,38 @@ armenian_struggle_assign_stance_on_join = {
 	# Anyone left over will just have to take the decision ig
 	else_if = {
 		limit = { armenian_struggle_is_local_faith_trigger = { FAITH = this.faith } }
+		remove_trait = pro_roman
+		remove_trait = pro_persian
 		add_trait = pro_armenian
 	}
 	else_if = {
 		limit = { armenian_struggle_is_persian_faith_trigger = { FAITH = this.faith } }
+		remove_trait = pro_armenian
+		remove_trait = pro_roman
 		add_trait = pro_persian
 	}
 	else_if = {
 		limit = { armenian_struggle_is_roman_faith_trigger = { FAITH = this.faith } }
+		remove_trait = pro_armenian
+		remove_trait = pro_persian
 		add_trait = pro_roman
 	}
 	else_if = {
 		limit = { armenian_struggle_is_local_culture_trigger = { CULTURE = this.culture } }
+		remove_trait = pro_roman
+		remove_trait = pro_persian
 		add_trait = pro_armenian
 	}
 	else_if = {
 		limit = { armenian_struggle_is_persian_culture_trigger = { CULTURE = this.culture } }
+		remove_trait = pro_armenian
+		remove_trait = pro_roman
 		add_trait = pro_persian
 	}
 	else_if = {
 		limit = { armenian_struggle_is_roman_culture_trigger = { CULTURE = this.culture } }
+		remove_trait = pro_armenian
+		remove_trait = pro_persian
 		add_trait = pro_roman
 	}
 }
