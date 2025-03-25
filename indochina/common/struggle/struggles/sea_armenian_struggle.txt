@@ -535,13 +535,11 @@
 	}
 	start_phase = armenian_struggle_phase_persian_dominance
 	on_start = {
-		# trigger_event = { on_action = sea_armenian_struggle_starting_events }
-		# every_involved_ruler = {
-		# 	if = {
-		# 		limit = { is_ai = yes }
-		# 		armenian_struggle_assign_stance_on_join = yes
-		# 	}
-		# }
+		title:e_byzantium.holder ?= { add_trait = pro_roman }
+		title:e_roman_empire.holder ?= { add_trait = pro_roman }
+		title:e_arabia.holder ?= { add_trait = pro_persian }
+		title:e_persia.holder ?= { add_trait = pro_persian }
+		title:k_persia.holder ?= { add_trait = pro_persian }
 	}
 	on_end = {}
 	on_change_phase = {
@@ -561,10 +559,40 @@
 	}
 	on_join = {
 		if = {
-			limit = { is_ai = yes }
-			armenian_struggle_assign_stance_on_join = yes
+			limit = {
+				NOR = {
+					has_trait = pro_armenian
+					has_trait = pro_persian
+					has_trait = pro_roman
+				}
+			}
+			if = {
+				limit = {armenian_struggle_is_local_faith_trigger = { FAITH = THIS.faith }}
+				add_trait = pro_armenian
+			}
+			else_if = {
+				limit = {armenian_struggle_is_roman_faith_trigger = { FAITH = THIS.faith }}
+				add_trait = pro_roman
+			}
+			else_if = {
+				limit = {armenian_struggle_is_persian_faith_trigger = { FAITH = THIS.faith }}
+				add_trait = pro_persian
+			}
+			else_if = {
+				limit = {armenian_struggle_is_local_culture_trigger = { CULTURE = THIS.culture }}
+				add_trait = pro_armenian
+			}
+			else_if = {
+				limit = {armenian_struggle_is_roman_culture_trigger = { CULTURE = THIS.culture }}
+				add_trait = pro_roman
+			}
+			else_if = {
+				limit = {armenian_struggle_is_persian_culture_trigger = { CULTURE = THIS.culture }}
+				add_trait = pro_persian
+			}
 		}
-		else = {
+		if = {
+			limit = { is_ai = no }
 			trigger_event = armenian_struggle.0001
 		}
 	}

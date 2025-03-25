@@ -1201,6 +1201,8 @@ window = {
 
 	struggle_mini_map_mode = {}
 
+	struggle_mini_map_mode_extra = {}
+
 	window_ending_phase_effects = {}
 }
 
@@ -1614,6 +1616,118 @@ types Struggle
 		parentanchor = bottom|left
 		widgetanchor = bottom|right
 		position = { -350 -25 }
+	}
+
+	type struggle_mini_map_mode_extra = widget {
+		parentanchor = bottom|left
+		widgetanchor = bottom|right
+		position = { -350 -85 }
+		allow_outside = yes
+		filter_mouse = all
+		alwaystransparent = yes
+		datacontext = "[GetScriptedGui('struggle_has_map_modes')]"
+		visible = "[ScriptedGui.IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('struggle',Struggle.MakeScope).End)]"
+
+		size = { 320 80 }
+
+		background = {
+			using = Background_Area_Dark
+			margin = { 10 0 }
+			color = { 0.15 0.15 0.15 0.75 }
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			text_label_center = {
+				text = "Special Map Modes"
+			}
+
+			hbox = {
+	
+				expand = {}
+	
+				icon_button_mapmode = {
+					blockoverride 'mm_datacontext'
+					{
+						datacontext = "[GetScriptedGui('armenian_struggle_realm_alignment_map')]"
+						datacontext = "[GetMapMode('armenian_struggle_realm_alignment_map')]"
+						datacontext = "[StruggleWindow.GetStruggle]"
+					}
+	
+					blockoverride "mm_button"
+					{
+						visible = "[GetScriptedGui('is_armenian_struggle_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('struggle',Struggle.MakeScope).End)]"
+						onclick = "[ScriptedGui.Execute(GuiScope.End)]"
+					}
+	
+					blockoverride "mm_icon"
+					{
+						texture = "gfx/interface/icons/flat_icons/mapmode_armenian_struggle.dds"
+					}
+				}
+	
+				icon_button_mapmode = {
+					blockoverride 'mm_datacontext'
+					{
+						datacontext = "[GetScriptedGui('armenian_struggle_culture_alignment_map')]"
+						datacontext = "[GetMapMode('armenian_struggle_culture_alignment_map')]"
+						datacontext = "[StruggleWindow.GetStruggle]"
+					}
+	
+					blockoverride "mm_button"
+					{
+						visible = "[GetScriptedGui('is_armenian_struggle_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('struggle',Struggle.MakeScope).End)]"
+						onclick = "[ScriptedGui.Execute(GuiScope.End)]"
+					}
+	
+					blockoverride "mm_icon"
+					{
+						texture = "gfx/interface/icons/flat_icons/map_modes/cultures.dds"
+					}
+				}
+	
+				icon_button_mapmode = {
+					blockoverride 'mm_datacontext'
+					{
+						datacontext = "[GetScriptedGui('armenian_struggle_faith_alignment_map')]"
+						datacontext = "[GetMapMode('armenian_struggle_faith_alignment_map')]"
+						datacontext = "[StruggleWindow.GetStruggle]"
+					}
+	
+					blockoverride "mm_button"
+					{
+						visible = "[GetScriptedGui('is_armenian_struggle_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('struggle',Struggle.MakeScope).End)]"
+						onclick = "[ScriptedGui.Execute(GuiScope.End)]"
+					}
+	
+					blockoverride "mm_icon"
+					{
+						texture = "gfx/interface/icons/flat_icons/map_modes/religions.dds"
+					}
+				}
+	
+				icon_button_mapmode = {
+					blockoverride 'mm_datacontext'
+					{
+						datacontext = "[GetScriptedGui('armenian_struggle_communalist_anger_map')]"
+						datacontext = "[GetMapMode('armenian_struggle_communalist_anger_map')]"
+						datacontext = "[StruggleWindow.GetStruggle]"
+					}
+	
+					blockoverride "mm_button"
+					{
+						visible = "[GetScriptedGui('is_armenian_struggle_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('struggle',Struggle.MakeScope).End)]"
+						onclick = "[ScriptedGui.Execute(GuiScope.End)]"
+					}
+	
+					blockoverride "mm_icon"
+					{
+						texture = "gfx/interface/icons/flat_icons/army_detach.dds"
+					}
+				}
+			}
+		}
+		
 	}
 
 	type window_ending_phase_effects = window {
