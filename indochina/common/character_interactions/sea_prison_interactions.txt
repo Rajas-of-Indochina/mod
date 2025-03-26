@@ -291,31 +291,18 @@ release_from_prison_interaction = {
 						limit = {
 							AND = {
 								scope:actor = { has_trait = pro_roman }
-								NOT = { scope:recipient = { has_trait = pro_roman } }
-							}
-							scope:actor = {
-								any_character_struggle = {
-									involvement = involved
-									activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-										CATALYST = catalyst_demanding_important_conversion_pro_roman
-										CHAR = scope:recipient
-									}
+								armenian_struggle_is_roman_faith_trigger = { FAITH = scope:actor.faith }
+								NOT = {
+									scope:recipient = { has_trait = pro_roman }
+									armenian_struggle_is_roman_faith_trigger = { FAITH = scope:recipient.faith }
 								}
 							}
+							exists = struggle:armenian_struggle
 						}
-						scope:actor = {
-							every_character_struggle = {
-								involvement = involved
-								limit = {
-									activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-										CATALYST = catalyst_demanding_important_conversion_pro_roman
-										CHAR = scope:recipient
-									}
-								}
-								activate_struggle_catalyst = {
-									catalyst = catalyst_demanding_important_conversion_pro_roman
-									character = scope:actor
-								}
+						struggle:armenian_struggle = {
+							activate_struggle_catalyst = {
+								catalyst = catalyst_demanding_important_conversion_pro_roman
+								character = scope:actor
 							}
 						}
 					}
@@ -323,31 +310,18 @@ release_from_prison_interaction = {
 						limit = {
 							AND = {
 								scope:actor = { has_trait = pro_persian }
-								NOT = { scope:recipient = { has_trait = pro_persian } }
-							}
-							scope:actor = {
-								any_character_struggle = {
-									involvement = involved
-									activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-										CATALYST = catalyst_demanding_important_conversion_pro_persian
-										CHAR = scope:recipient
-									}
+								armenian_struggle_is_persian_faith_trigger = { FAITH = scope:actor.faith }
+								NOT = {
+									scope:recipient = { has_trait = pro_persian }
+									armenian_struggle_is_persian_faith_trigger = { FAITH = scope:recipient.faith }
 								}
 							}
+							exists = struggle:armenian_struggle
 						}
-						scope:actor = {
-							every_character_struggle = {
-								involvement = involved
-								limit = {
-									activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-										CATALYST = catalyst_demanding_important_conversion_pro_persian
-										CHAR = scope:recipient
-									}
-								}
-								activate_struggle_catalyst = {
-									catalyst = catalyst_demanding_important_conversion_pro_persian
-									character = scope:actor
-								}
+						struggle:armenian_struggle = {
+							activate_struggle_catalyst = {
+								catalyst = catalyst_demanding_important_conversion_pro_persian
+								character = scope:actor
 							}
 						}
 					}
@@ -355,31 +329,18 @@ release_from_prison_interaction = {
 						limit = {
 							AND = {
 								scope:actor = { has_trait = pro_armenian }
-								NOT = { scope:recipient = { has_trait = pro_armenian } }
-							}
-							scope:actor = {
-								any_character_struggle = {
-									involvement = involved
-									activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-										CATALYST = catalyst_demanding_important_conversion_pro_armenian
-										CHAR = scope:recipient
-									}
+								armenian_struggle_is_local_faith_trigger = { FAITH = scope:actor.faith }
+								NOT = {
+									scope:recipient = { has_trait = pro_armenian }
+									armenian_struggle_is_local_faith_trigger = { FAITH = scope:recipient.faith }
 								}
 							}
+							exists = struggle:armenian_struggle
 						}
-						scope:actor = {
-							every_character_struggle = {
-								involvement = involved
-								limit = {
-									activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-										CATALYST = catalyst_demanding_important_conversion_pro_armenian
-										CHAR = scope:recipient
-									}
-								}
-								activate_struggle_catalyst = {
-									catalyst = catalyst_demanding_important_conversion_pro_armenian
-									character = scope:actor
-								}
+						struggle:armenian_struggle = {
+							activate_struggle_catalyst = {
+								catalyst = catalyst_demanding_important_conversion_pro_armenian
+								character = scope:actor
 							}
 						}
 					}
@@ -2833,16 +2794,9 @@ execute_prisoner_interaction = {
 							NOT = { has_trait = pro_roman }
 							is_important_or_vip_struggle_character = yes
 						}
-						any_character_struggle = {
-							involvement = involved
-							activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-								CATALYST = catalyst_execute_by_pro_roman
-								CHAR = scope:recipient
-							}
-						}
+						exists = struggle:armenian_struggle
 					}
-					every_character_struggle = {
-						involvement = involved
+					struggle:armenian_struggle = {
 						limit = {
 							activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
 								CATALYST = catalyst_execute_by_pro_roman
@@ -2862,16 +2816,9 @@ execute_prisoner_interaction = {
 							NOT = { has_trait = pro_persian }
 							is_important_or_vip_struggle_character = yes
 						}
-						any_character_struggle = {
-							involvement = involved
-							activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-								CATALYST = catalyst_execute_by_pro_persian
-								CHAR = scope:recipient
-							}
-						}
+						exists = struggle:armenian_struggle
 					}
-					every_character_struggle = {
-						involvement = involved
+					struggle:armenian_struggle = {
 						limit = {
 							activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
 								CATALYST = catalyst_execute_by_pro_persian
@@ -2891,16 +2838,9 @@ execute_prisoner_interaction = {
 							NOT = { has_trait = pro_armenian }
 							is_important_or_vip_struggle_character = yes
 						}
-						any_character_struggle = {
-							involvement = involved
-							activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-								CATALYST = catalyst_execute_by_pro_armenian
-								CHAR = scope:recipient
-							}
-						}
+						exists = struggle:armenian_struggle
 					}
-					every_character_struggle = {
-						involvement = involved
+					struggle:armenian_struggle = {
 						limit = {
 							activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
 								CATALYST = catalyst_execute_by_pro_armenian
@@ -2927,16 +2867,9 @@ execute_prisoner_interaction = {
 								has_trait = pro_roman
 							}
 						}
-						any_character_struggle = {
-							involvement = involved
-							activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-								CATALYST = catalyst_execute_by_interloper
-								CHAR = scope:recipient
-							}
-						}
+						exists = struggle:armenian_struggle
 					}
-					every_character_struggle = {
-						involvement = involved
+					struggle:armenian_struggle = {
 						limit = {
 							activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
 								CATALYST = catalyst_execute_by_interloper
