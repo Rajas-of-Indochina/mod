@@ -158,9 +158,7 @@ sea_armenian_struggle_on_title_conquest_revoke = {
 	effect = {
 		if = {
 			limit = {
-				ROOT = {
-					has_trait = pro_roman
-				}
+				ROOT = { has_trait = pro_roman }
 				scope:previous_holder = { NOT = {has_trait = pro_roman} }
 			}
 			struggle:armenian_struggle = {
@@ -184,15 +182,15 @@ sea_armenian_struggle_on_title_conquest_revoke = {
 					limit = { scope:title.tier = tier_kingdom }
 					activate_tiered_struggle_catalyst = {
 						BASE_CATALYST = catalyst_anti_roman_title_seized_by_pro_roman
-						TIER = county
+						TIER = kingdom
 						CHARACTER = root
 					}
 				}
 				else_if = {
-					limit = { scope:title.tier = tier_county }
+					limit = { scope:title.tier = tier_empire }
 					activate_tiered_struggle_catalyst = {
 						BASE_CATALYST = catalyst_anti_roman_title_seized_by_pro_roman
-						TIER = county
+						TIER = empire
 						CHARACTER = root
 					}
 				}
@@ -224,15 +222,15 @@ sea_armenian_struggle_on_title_conquest_revoke = {
 					limit = { scope:title.tier = tier_kingdom }
 					activate_tiered_struggle_catalyst = {
 						BASE_CATALYST = catalyst_anti_persian_title_seized_by_pro_persian
-						TIER = county
+						TIER = kingdom
 						CHARACTER = root
 					}
 				}
 				else_if = {
-					limit = { scope:title.tier = tier_county }
+					limit = { scope:title.tier = tier_empire }
 					activate_tiered_struggle_catalyst = {
 						BASE_CATALYST = catalyst_anti_persian_title_seized_by_pro_persian
-						TIER = county
+						TIER = kingdom
 						CHARACTER = root
 					}
 				}
@@ -264,15 +262,15 @@ sea_armenian_struggle_on_title_conquest_revoke = {
 					limit = { scope:title.tier = tier_kingdom }
 					activate_tiered_struggle_catalyst = {
 						BASE_CATALYST = catalyst_anti_armenian_title_seized_by_pro_armenian
-						TIER = county
+						TIER = kingdom
 						CHARACTER = root
 					}
 				}
 				else_if = {
-					limit = { scope:title.tier = tier_county }
+					limit = { scope:title.tier = tier_empire }
 					activate_tiered_struggle_catalyst = {
 						BASE_CATALYST = catalyst_anti_armenian_title_seized_by_pro_armenian
-						TIER = county
+						TIER = empire
 						CHARACTER = root
 					}
 				}
@@ -338,6 +336,14 @@ sea_armenian_struggle_on_title_creation = {
 	trigger = {
 		scope:transfer_type = flag:created
 		scope:title = {is_titular = no}
+		scope:title = {
+			NOR = {
+				this = title:k_aluank
+				this = title:k_georgia
+				this = title:k_armenian_principality
+				this = title:k_armenian_cilicia
+			}
+		}
 		any_county_in_region = {
 			region = struggle_region_armenia
 			OR = {

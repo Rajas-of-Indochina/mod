@@ -1,4 +1,4 @@
-﻿
+
 ##################################
 ###### Religious & Cultural ######
 ##################################
@@ -2530,5 +2530,73 @@ circassian_decision_return_xabze = {
 
 	ai_will_do = {
 		base = 30
+	}
+}
+
+form_aluank_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_destiny_goal.dds"
+	}
+
+	decision_group_type = major
+	desc = form_aluank_decision_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		capital_county = {
+			title_province = { geographical_region = custom_caucasian_albania }
+		}
+		title:k_aluank = {is_titular = yes}
+		highest_held_title_tier <= tier_duchy
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		capital_county = {
+			title_province = { geographical_region = custom_caucasian_albania_proper }
+		}
+		has_title = title:d_arran
+		completely_controls_region = custom_caucasian_albania_proper
+		culture = {
+			OR = {
+				has_cultural_pillar = heritage_aghvank
+				this = culture:armenian
+				any_parent_culture = { this = culture:armenian }
+			}
+			armenian_struggle_is_local_culture_trigger = { CULTURE = THIS }
+		}
+		armenian_struggle_is_local_faith_trigger = { FAITH = ROOT.faith }
+		trigger_if = {
+			limit = { exists = struggle:armenian_struggle }
+			has_trait = pro_armenian
+		}
+		trigger_if = {
+			limit = { has_legitimacy = yes }
+			legitimacy_level >= 4
+		}
+		trigger_else = {
+			prestige_level >= 4
+		}
+	}
+
+	effect = {
+		show_as_tooltip = {
+			form_aluank_decision_effect = yes
+		}
+
+		hidden_effect = {
+			save_scope_as = founder
+			trigger_event = caucasianroa.022
+		}
+	}
+
+	cost = {
+		gold = {
+			value = massive_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
 	}
 }

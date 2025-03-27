@@ -1,4 +1,4 @@
-﻿namespace = caucasianroa
+namespace = caucasianroa
 
 caucasianroa.001 = {
 	type = character_event
@@ -1416,6 +1416,92 @@ caucasianroa.021 = {
 	}
 }
 
+caucasianroa.022 = {
+	type = character_event
+	title = caucasianroa.022.t
+	desc = caucasianroa.022.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		form_aluank_decision_effect = yes
+		legend_seed_new_title_effect = yes
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				capital_province = { geographical_region = struggle_region_armenia }
+				NOT = { THIS = scope:founder }
+			}
+			add_to_list = characters_to_notify
+		}
+		every_in_list = {
+			list = characters_to_notify
+			trigger_event = caucasianroa.023
+		}
+	}
+
+	#I was motivated by nobility!
+	option = {
+		name = caucasianroa.022.a
+
+		#Your legacy will be remembered.
+		add_prestige_experience = major_prestige_gain
+	}
+}
+
+caucasianroa.023 = {
+	type = character_event
+	title = caucasianroa.023.t
+	desc = caucasianroa.023.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = { reference = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+	}
+
+	#Kings and Emperors consider them an upstart.
+	option = {
+		name = east_europe.0102.a
+		trigger = { highest_held_title_tier >= tier_kingdom }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Same-culture rulers are probably quite happy.
+	option = {
+		name = east_europe.0102.b
+		trigger = { culture = scope:founder.culture }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Everyone else is a bit wary.
+	option = {
+		name = east_europe.0102.c
+		trigger = {
+			NOR = {
+				highest_held_title_tier >= tier_kingdom
+				culture = scope:founder.culture
+			}
+		}
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+}
 
 #temporarily here until we integrate the islam events from other branch
 
