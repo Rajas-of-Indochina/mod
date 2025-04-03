@@ -1,4 +1,4 @@
-
+﻿
 task_conversion = {
 	position = councillor_court_chaplain
 
@@ -223,67 +223,6 @@ task_conversion = {
 			multiply = {
 				value = fp3_struggle_ending_conversion_modifier_value
 				desc = fp3_struggle_ending_conversion_modifier_desc
-			}
-		}
-
-		# Armenian Struggle Phase Stuff
-		if = {
-			limit = {
-				exists = scope:county
-				OR = {
-					scope:county = {
-						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_roman }
-						NOT = { armenian_struggle_is_roman_faith_trigger = { FAITH = scope:county.faith } }
-						armenian_struggle_is_roman_faith_trigger = { FAITH = scope:councillor_liege.faith }
-					}
-					scope:county = {
-						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_persian }
-						NOT = { armenian_struggle_is_persian_faith_trigger = { FAITH = scope:county.faith } }
-						armenian_struggle_is_persian_faith_trigger = { FAITH = scope:councillor_liege.faith }
-					}
-					scope:county = {
-						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_armenian }
-						NOT = { armenian_struggle_is_local_faith_trigger = { FAITH = scope:county.faith } }
-						armenian_struggle_is_local_faith_trigger = { FAITH = scope:councillor_liege.faith }
-					}
-				}
-			}
-			add = {
-				value = scope:councillor.boost_county_conversion_phase_bonus_value
-				desc = CHAPLAIN_CONVERT_COUNTY_STRUGGLE_BONUS
-			}
-		}
-		# Armenian Struggle Endings
-		if = {
-			limit = {
-				scope:county.title_province = { geographical_region = struggle_region_armenia }
-			}
-			if = {
-				# Roman Rule
-				limit = {
-					exists = global_var:armenian_struggle_ending
-					global_var:armenian_struggle_ending = flag:armenian_struggle_roman_rule
-					scope:councillor.top_liege.primary_title.state_faith ?= {
-						NOT = { this = scope:county.faith }
-						this = scope:councillor.top_liege.faith
-					}
-				}
-				add = {
-					value = scope:councillor.boost_county_conversion_phase_bonus_value
-					desc = armenian_struggle_roman_rule_state_faith_conversion_boost
-				}
-			}
-			else_if = {
-				# Armenian resurgence
-				limit = {
-					exists = global_var:armenian_struggle_ending
-					global_var:armenian_struggle_ending = flag:armenian_struggle_armenian_empire
-					armenian_struggle_is_local_faith_trigger = { FAITH = scope:councillor_liege.faith }
-				}
-				add = {
-					value = scope:councillor.boost_county_conversion_phase_bonus_value
-					desc = armenian_struggle_armenian_resurgence_conversion_boost
-				}
 			}
 		}
 		# Court events

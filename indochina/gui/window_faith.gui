@@ -187,10 +187,10 @@ window = {
 							}
 						}
 
-						# spacer = {
-						# 	visible = "[ObjectsEqual( GetPlayer.GetFaith, Faith.Self )]"
-						# 	size = { 40 0 }
-						# }
+						spacer = {
+							visible = "[ObjectsEqual( GetPlayer.GetFaith, Faith.Self )]"
+							size = { 40 0 }
+						}
 						spacer = {
 							visible = "[Not(ObjectsEqual( GetPlayer.GetFaith, Faith.Self ))]"
 							size = { -10 0 }
@@ -230,48 +230,6 @@ window = {
 								text = "FAITH_VIEW_THEIR_VIEW"
 								align = nobaseline|center
 							}
-
-							text_single = {
-								visible = "[And( Not( Faith.GetReligion.HasPaganRoots ), Not( Faith.IsUnreformed ) )]"
-								text = "FAITH_VIEW_SUBHEADING"
-								align = nobaseline|center
-								alpha = 0.9
-							}
-				
-							text_single = {
-								visible = "[Faith.IsUnreformed]"
-								text = "FAITH_VIEW_UNREFORMED_SUBHEADING"
-								align = nobaseline|center
-								alpha = 0.8
-							}
-				
-							text_single = {
-								visible = "[And( Faith.GetReligion.HasPaganRoots, Not( Faith.IsUnreformed ) )]"
-								text = "FAITH_VIEW_REFORMED_SUBHEADING"
-								align = nobaseline|center
-								alpha = 0.8
-							}
-				
-							text_single = {
-								visible = "[GetScriptedGui('is_persian_aligned_faith').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', Faith.MakeScope ).End )]"
-								text = "[persian_faith|E]"
-								align = nobaseline|center
-								alpha = 0.8
-							}
-				
-							text_single = {
-								visible = "[GetScriptedGui('is_local_aligned_faith').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', Faith.MakeScope ).End )]"
-								text = "[local_faith|E]"
-								align = nobaseline|center
-								alpha = 0.8
-							}
-				
-							text_single = {
-								visible = "[GetScriptedGui('is_roman_aligned_faith').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', Faith.MakeScope ).End )]"
-								text = "[roman_faith|E]"
-								align = nobaseline|center
-								alpha = 0.8
-							}
 						}
 
 						expand = {}
@@ -298,6 +256,33 @@ window = {
 						}
 					}
 				}
+			}
+
+			text_single = {
+				visible = "[And( Not( Faith.GetReligion.HasPaganRoots ), Not( Faith.IsUnreformed ) )]"
+				text = "FAITH_VIEW_SUBHEADING"
+				align = center
+				parentanchor = top|hcenter
+				position = {0 40}
+				alpha = 0.9
+			}
+
+			text_label_center = {
+				visible = "[Faith.IsUnreformed]"
+				text = "FAITH_VIEW_UNREFORMED_SUBHEADING"
+				align = center
+				parentanchor = top|hcenter
+				position = {0 40}
+				alpha = 0.8
+			}
+
+			text_label_center = {
+				visible = "[And( Faith.GetReligion.HasPaganRoots, Not( Faith.IsUnreformed ) )]"
+				text = "FAITH_VIEW_REFORMED_SUBHEADING"
+				align = center
+				parentanchor = top|hcenter
+				position = {0 40}
+				alpha = 0.8
 			}
 		}
 
@@ -546,12 +531,12 @@ window = {
 									datamodel = "[FaithWindow.GetGroupingHelper( 'main_group' ).GetGrouping]"
 									#spacing = 15
 									layoutpolicy_vertical = expanding
-									minimumsize = { 0 98 }
+									minimumsize = { 0 108 }
 
 									item = {
 										vbox = {
 											layoutpolicy_vertical = expanding
-											minimumsize = { 90 0 }
+											minimumsize = { 100 0 }
 											name = "doctrine_list_item"
 											datacontext = "[GuiFaithDoctrineItem.GetDoctrine]"
 											visible = "[FaithDoctrine.IsVisible]"

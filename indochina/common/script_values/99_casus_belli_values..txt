@@ -54,7 +54,7 @@ common_cb_cost_multiplier_core = {
 			desc = CB_TRIBAL_COST
 		}
 	}
-	
+
 	# Clan Unity modifiers
 	if = {
 		limit = {
@@ -186,18 +186,6 @@ common_cb_cost_multiplier_core = {
 			desc = CB_GAME_RULE_NO_COST
 		}
 	}
-
-	if = {
-		limit = {
-			scope:attacker = {
-				ai_should_get_conqueror_bonuses = yes
-			}
-		}
-		multiply = {
-			value = 0
-			desc = ai_conqueror_modifier
-		}
-	}
 }
 
 common_cb_cost_multiplier = {
@@ -214,60 +202,6 @@ common_cb_cost_multiplier = {
 					any_character_struggle = {
 						involvement = interloper
 						is_struggle_parameter_active_variable_cb_target_secondary_county_trigger = { PARAMETER = involved_or_interloper_wars_in_struggle_region_cheaper_costs }
-					}
-				}
-			}
-		}
-		multiply = {
-			value = 0.5
-			desc = CB_STRUGGLE_PHASE_DISCOUNT
-		}
-	}
-	else_if = {
-		limit = {
-			scope:attacker = {
-				OR = {
-					AND = {
-						NOT = { has_trait = pro_roman }
-						scope:defender = {has_trait = pro_roman}
-						OR = {
-							any_character_struggle = {
-								involvement = involved
-								is_struggle_parameter_active_variable_cb_target_secondary_county_trigger = { PARAMETER = anti_roman_wars_in_struggle_region_cheaper_prestige_costs }
-							}
-							any_character_struggle = {
-								involvement = interloper
-								is_struggle_parameter_active_variable_cb_target_secondary_county_trigger = { PARAMETER = anti_roman_wars_in_struggle_region_cheaper_prestige_costs }
-							}
-						}
-					}
-					AND = {
-						NOT = { has_trait = pro_persian }
-						scope:defender = {has_trait = pro_persian}
-						OR = {
-							any_character_struggle = {
-								involvement = involved
-								is_struggle_parameter_active_variable_cb_target_secondary_county_trigger = { PARAMETER = anti_persian_wars_in_struggle_region_cheaper_prestige_costs }
-							}
-							any_character_struggle = {
-								involvement = interloper
-								is_struggle_parameter_active_variable_cb_target_secondary_county_trigger = { PARAMETER = anti_persian_wars_in_struggle_region_cheaper_prestige_costs }
-							}
-						}
-					}
-					AND = {
-						NOT = { has_trait = pro_armenian }
-						scope:defender = {has_trait = pro_armenian}
-						OR = {
-							any_character_struggle = {
-								involvement = involved
-								is_struggle_parameter_active_variable_cb_target_secondary_county_trigger = { PARAMETER = anti_armenian_wars_in_struggle_region_cheaper_prestige_costs }
-							}
-							any_character_struggle = {
-								involvement = interloper
-								is_struggle_parameter_active_variable_cb_target_secondary_county_trigger = { PARAMETER = anti_armenian_wars_in_struggle_region_cheaper_prestige_costs }
-							}
-						}
 					}
 				}
 			}
@@ -651,17 +585,6 @@ claim_cb_prestige_cost = {
 						add = -200
 					}
 				}
-			}
-
-			# Player adventurers pay much more.
-			if = {
-				limit = {
-					scope:attacker = {
-						is_landless_adventurer = yes
-						is_ai = no
-					}
-				}
-				multiply = 10
 			}
 
 			desc = "CB_CLAIM_COST_TARGET_TITLES"
@@ -1202,47 +1125,6 @@ struggle_cb_phase_modifier_cost = {
 					max = 2
 				}
 				desc = CB_BASE_COST
-			}
-		}
-	}
-}
-
-common_claim_reduction_cost_multiplier_core = {
-	value = 1
-	# Claim discounts
-	scope:attacker = {
-		if = {
-			limit = {
-				any_claim = {
-					is_in_list = target_titles
-				}
-			}
-			multiply = {
-				value = 1
-				every_claim = {
-					limit = { is_in_list = target_titles }
-					multiply = 0.75
-				}
-				min = 0.2
-				desc = CLAIMED_TITLES_DESC
-			}
-		}
-		if = {
-			limit = {
-				any_claim = {
-					de_jure_liege = { is_in_list = target_titles }
-				}
-			}
-			multiply = {
-				value = 1
-				every_claim = {
-					limit = { 
-						de_jure_liege = { is_in_list = target_titles }
-					}
-					multiply = 0.9
-				}
-				min = 0.2
-				desc = CLAIMED_DE_JURE_TITLES_DESC
 			}
 		}
 	}

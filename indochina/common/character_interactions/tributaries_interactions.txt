@@ -90,29 +90,16 @@ declare_war_interaction = {
         trigger_if = {
             limit = {
                 scope:actor = {
-                    is_tributary = yes
+                    has_variable = my_suzerain
                 }
             }
             custom_tooltip = {
                 text = declare_war_target_is_suzerain
                 scope:actor = {
                     NOT = {
-                        has_relation_suzerain = scope:recipient
-                    }
-                }
-            }
-        }
-		trigger_if = {
-            limit = {
-                scope:actor = {
-                    has_tributaries = yes
-                }
-            }
-            custom_tooltip = {
-                text = declare_war_target_is_tributary
-                scope:actor = {
-                    NOT = {
-                        has_relation_tributary = scope:recipient
+                        var:my_suzerain = {
+                            this = scope:recipient
+                        }
                     }
                 }
             }
@@ -440,8 +427,8 @@ call_suzerain_to_war = {
     is_valid_showing_failures_only = {
         scope:actor = {
             NOT = {
-                any_relation = {
-                    type = suzerain
+                any_relation = { type = suzerain
+                    save_scope_as = suzerain
                     scope:actor = {
                         any_war_ally = {
                             this = scope:suzerain
@@ -866,26 +853,26 @@ demand_tribute_from_recipient = {
                 }
             }
 
-            # if = {
-            #     limit = {
-            #         scope:one_time_trib = yes
-            #     }
-            #     add_opinion = {
-            #         modifier = accepted_to_give_tribute_opinion
-            #         target = scope:actor
-            #     }
-            #     scope:recipient = {
-            #         pay_short_term_gold = {
-            #             gold = 2
-            #             target = scope:actor
-            #             yearly_income = yes
-            #         }
-            #     }
-            #     save_scope_as = trib
-            #     scope:actor = {
-            #         trigger_event = { id = tributaries.10 }
-            #     }
-            # }
+            if = {
+                limit = {
+                    scope:one_time_trib = yes
+                }
+                add_opinion = {
+                    modifier = accepted_to_give_tribute_opinion
+                    target = scope:actor
+                }
+                scope:recipient = {
+                    pay_short_term_gold = {
+                        gold = 2
+                        target = scope:actor
+                        yearly_income = yes
+                    }
+                }
+                save_scope_as = trib
+                scope:actor = {
+                    trigger_event = { id = tributaries.10 }
+                }
+            }
         }
         scope:actor = {
             add_truce_both_ways = {
@@ -910,12 +897,12 @@ demand_tribute_from_recipient = {
                 target = scope:recipient
             }
 
-            # if = {
-            #     limit = {
-            #         scope:one_time_trib = yes
-            #     }
-            #     trigger_event = { id = tributaries.101 }
-            # }
+            if = {
+                limit = {
+                    scope:one_time_trib = yes
+                }
+                trigger_event = { id = tributaries.101 }
+            }
             else = {
                 trigger_event = { id = tributaries.11 }
             }
@@ -1144,10 +1131,10 @@ demand_tribute_from_recipient = {
     ai_will_do = {
         base = 100
 
-#       modifier = {
-#           add = 2
-#           scope:one_time_trib = yes
-#       }
+        modifier = {
+            add = 2
+            scope:one_time_trib = yes
+        }
         modifier = {
             add = 3
             scope:permanent_trib = yes

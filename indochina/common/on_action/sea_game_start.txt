@@ -12,13 +12,15 @@ on_game_start = {
         fix_government_types
         #generate_shangshu
         nerf_japan
-        misc_ROA_stuff
+
+        # Struggles
+        iberian_struggle_on_game_start
+        # indian_struggle_on_game_start
+        # tibetan_struggle_on_game_start
+        # chinese_struggle_on_game_start
 
         # Optional admin realms via gamerules; PDX does it before and after lobby, so will we.
         sea_optional_admin_realms
-
-        # update title CoAs
-        sea_title_coa_on_start
     }
 }
 
@@ -227,6 +229,53 @@ ruler_popup_events = {
                     id = ruler_popups.0001
                 }
             }
+        }
+    }
+}
+
+######
+
+iberian_struggle_on_game_start = {
+    # Going here because we overwrote `history/titles/k_andalusia.txt` and starting it in history is STUPID ANYWAY AUUUGH
+    effect = {
+        if = {
+            limit = {
+                has_dlc_feature = the_fate_of_iberia
+                game_start_date >= 718.1.1
+            }
+            start_struggle = {
+                struggle_type = iberian_struggle
+                start_phase = struggle_iberia_phase_opportunity # TODO: We should add phase changes in History to get two different entry point
+            }
+        }
+    }
+}
+tibetan_struggle_on_game_start = {
+    effect = {
+        if = {
+            limit = {
+                game_start_date >= 842.1.1
+            }
+            start_struggle = {
+                struggle_type = tibetan_struggle
+                start_phase = struggle_tibet_phase_hostility
+            }
+        }
+    }
+}
+chinese_struggle_on_game_start = {
+    effect = {
+        start_struggle = {
+            struggle_type = chinese_struggle
+            start_phase = struggle_iberia_phase_opportunity # TODO: We should add phase changes in History to get two different entry point
+        }
+    }
+}
+indian_struggle_on_game_start = {
+    effect = {
+        start_struggle = {
+            struggle_type = indian_struggle
+            start_phase = struggle_iberia_phase_opportunity # TODO: We should add phase changes in History to get two different entry point
         }
     }
 }
@@ -794,14 +843,6 @@ set_court_languages = {
             limit = { exists = title:k_annam.holder }
             title:k_annam.holder = { set_court_language = language_chinese }
         }
-        if = {
-            limit = { exists = title:k_abkhazia.holder }
-            title:k_abkhazia.holder = { set_court_language = language_georgian }
-        }
-        if = {
-            limit = { exists = title:k_sarir_roa.holder }
-            title:k_sarir_roa.holder = { set_court_language = language_iranian }
-        }
     }
 }
 
@@ -1088,31 +1129,4 @@ sea_optional_admin_realms = {
             }
         }
     }
-}
-
-sea_title_coa_on_start = {
-	effect = {
-		if = {
-			limit = { game_start_date > 1000.1.1 }
-			title:k_georgia = {
-				set_variable = k_georgia_abkhazia
-				set_coa = k_georgia_abkhazia_christian
-			}
-			title:c_zichia = {set_coa = c_middlesex}
-		}
-		#if = {
-			#limit = { game_start_date >= 895.1.1 }
-			#title:k_arran = {
-				#set_coa = d_hereti
-			#}
-		#}
-	}
-}
-
-misc_ROA_stuff = {
-	effect = {
-		character:302700 = {
-			culture = culture:sindhi
-		}
-	}
 }

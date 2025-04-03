@@ -37,6 +37,8 @@
 	}
 }
 
+
+
 unite_india_decision_effect = {
 	#Create the title and make it primary
 	create_title_and_vassal_change = {
@@ -93,62 +95,4 @@ unite_india_decision_effect = {
 			destroy_title = title:e_hindustan
 		}
 	}
-}
-
-fp3_end_persian_struggle_effect = {
-	if = {
-		limit = {
-			exists = title:e_arabia.holder
-			title:e_arabia.holder = { has_character_modifier = fp3_struggle_caliph_super_suspicious_modifier }
-		}
-		title:e_arabia.holder = { remove_character_modifier = fp3_struggle_caliph_super_suspicious_modifier }
-	}
-
-	every_in_global_list = { # We de-flag chars (surprisingly performance friendly, from all possible options)
-		variable = fp3_intro_flag_character_list
-		if = {
-			limit = { has_character_flag = fp3_struggle_intro_event_flag } # Since only alive chars have flags, we don't need to check for anything else
-			remove_character_flag = fp3_struggle_intro_event_flag
-		}
-	}
-
-	# Global variable tracking.
-	## For usage in councillor tasks.
-	set_global_variable = {
-		name = fp3_struggle_ending
-		value = $FLAG$
-	}
-	## For debug purposes.
-	if = {
-		limit = { gather_debug_variables_for_persian_struggle_trigger = yes }
-		increment_global_variable_effect = {
-			VAL = current_year
-			VAR = sp_end_date
-		}
-	}
-
-	every_player = {
-		limit = { fp3_does_this_player_care_about_the_persian_struggle = yes } # Needs to be checked before the struggle ends due to race condition issues
-		add_to_list = player_to_notify # Making a list so stuff is tiggered after the struggle ends, to make extra sure I don't break anything.
-	}
-
-	every_in_list = { # Then we *actually* notify palyers, making sure the struggle has already ended
-		list = player_to_notify
-		limit = {
-			NOT = { this = root }
-		}
-		trigger_event = $EVENT$
-	}
-
-	if = {
-		limit = {
-			exists = struggle:armenian_struggle
-			global_var:fp3_struggle_ending = flag:fp3_struggle_concession_ending
-		}
-		struggle:armenian_struggle ?= {
-			activate_struggle_catalyst = catalyst_intermezzo_victory
-		}
-	}
-
-	struggle:persian_struggle ?= { end_struggle = $ENDING$ }
 }
