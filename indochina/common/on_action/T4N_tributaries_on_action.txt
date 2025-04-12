@@ -27,37 +27,37 @@ T4N_on_yearly_tribute = {
 }
 
 
-# on_war_won_attacker = {
-# 	# The war notifications are handled in `effect` instead of `events` due to order of operations.
-# 	# `effect` fires on THIS tick, `events` fires on the NEXT tick, and the war gets destroyed between this tick and the next.
-# 	on_actions = {
-# 		T4N_tributaries_on_war_won_attacker
-# 	}
-# }
+on_war_won_attacker = {
+	# The war notifications are handled in `effect` instead of `events` due to order of operations.
+	# `effect` fires on THIS tick, `events` fires on the NEXT tick, and the war gets destroyed between this tick and the next.
+	on_actions = {
+		T4N_tributaries_on_war_won_attacker
+	}
+}
 
-# T4N_tributaries_on_war_won_attacker = {
-# 	effect = {
-#         if = {
-#             limit = {
-#                 scope:defender = {
-#                     OR = {
-#                         is_tributary = yes
-#                         is_suzerain = yes
-#                     }
-#                 }
-#             }
-#             scope:attacker = {
-#                 save_scope_as = tributaries_slash_suzerain_war_winner
-#             }
-#             scope:defender = {
-#                 save_scope_as = tributary_slash_suzerain_loser
-#             }
-#             scope:tributaries_slash_suzerain_war_winner = {
-#                 trigger_event = { id = tributaries.3 days = 1 }
-#             }
-#         }
-# 	}
-# }
+T4N_tributaries_on_war_won_attacker = {
+	effect = {
+        if = {
+            limit = {
+                scope:defender = {
+                    OR = {
+                        is_tributary = yes
+                        is_suzerain = yes
+                    }
+                }
+            }
+            scope:attacker = {
+                save_scope_as = tributaries_slash_suzerain_war_winner
+            }
+            scope:defender = {
+                save_scope_as = tributary_slash_suzerain_loser
+            }
+            scope:tributaries_slash_suzerain_war_winner = {
+                trigger_event = { id = tributaries.3 days = 1 }
+            }
+        }
+	}
+}
 
 # called when a war is started.
 # same scopes are available in these events as in the CBs' on_declaration, this just fires for all CBs instead of a specific CB.
@@ -108,49 +108,85 @@ T4N_tributaries_on_title_lost = {
     effect = {
         if = {
             limit = {
-                NOR = {
-                    scope:transfer_type = flag:granted
-                    scope:transfer_type = flag:revoked
-                    scope:transfer_type = flag:conquest
-                    scope:transfer_type = flag:leased_out
-                    scope:transfer_type = flag:lease_revoked
-                    #Flags that were missing that made conquerers suddenly finding themselves being made a tributary
-                    scope:transfer_type = flag:conquest_claim
-                    scope:transfer_type = flag:iberian_struggle
-                    scope:transfer_type = flag:persian_struggle
-                    scope:transfer_type = flag:conquest_holy_war
-                    scope:transfer_type = flag:conquest_populist
-                    scope:transfer_type = flag:abdication
-                    scope:transfer_type = flag:usurped
-                    scope:transfer_type = flag:faction_demand
-                }
-            }
-            
-            if = {
-                limit = {
-                    is_suzerain = yes
-                    NOR = {
-                        is_landed = yes
-                        is_independent_ruler = yes
+                NOT = {
+                    OR = {
+                        scope:transfer_type = flag:granted
+                        scope:transfer_type = flag:revoked
+                        scope:transfer_type = flag:conquest
+                        scope:transfer_type = flag:leased_out
+                        scope:transfer_type = flag:lease_revoked
+                        #Flags that were missing that made conquerers suddenly finding themselves being made a tributary
+                        scope:transfer_type = flag:conquest_claim
+                        scope:transfer_type = flag:iberian_struggle
+                        scope:transfer_type = flag:persian_struggle
+                        scope:transfer_type = flag:conquest_holy_war
+                        scope:transfer_type = flag:conquest_populist
+                        scope:transfer_type = flag:abdication
+                        scope:transfer_type = flag:usurped
+                        scope:transfer_type = flag:faction_demand
                     }
-                }
-                every_relation = {
-                    type = tributary
-                    remove_relation_suzerain = PREV
                 }
             }
 
-            if = {
-                limit = {
-                    is_tributary = yes
-                    NOR = {
-                        is_landed = yes
-                        is_independent_ruler = yes
+            switch = {
+                trigger = exists
+
+                var:my_suzerain = {
+                    if = {
+                        limit = {
+                            OR = {
+                                is_landed = no
+                                is_independent_ruler = no
+                            }
+                            is_permanent_tributary = {
+                                SUZERAIN = var:my_suzerain
+                                TRIBUTARY = root
+                            }
+                        }
+                        var:my_suzerain = {
+                            remove_list_variable = { name = permanent_tributaries target = root }
+                            remove_list_variable = { name = all_tributaries target = root }
+                        }
+                        remove_variable = my_suzerain
+                    }
+                    else_if = {
+                        limit = {
+                            OR = {
+                                is_landed = no
+                                is_independent_ruler = no
+                            }
+                            is_non_permanent_tributary = {
+                                SUZERAIN = var:my_suzerain
+                                TRIBUTARY = root
+                            }
+                        }
+                        var:my_suzerain = {
+                            remove_list_variable = { name = non_permanent_tributaries target = root }
+                            remove_list_variable = { name = all_tributaries target = root }
+                        }
+                        remove_variable = my_suzerain
                     }
                 }
-                every_relation = {
-                    type = suzerain
-                    remove_relation_suzerain = PREV
+                var:suzerain = {
+                    if = {
+                        limit = {
+                            OR = {
+                                is_landed = no
+                                is_independent_ruler = no
+                                liege = scope:new_holder
+                            }
+                        }
+                        every_in_list = {
+                            variable = permanent_tributaries
+
+                            set_variable = { name = my_suzerain value = scope:new_holder }
+                            scope:new_holder = {
+                                add_to_variable_list = { name = permanent_tributaries target = prev }
+                            }
+                        }
+                        clear_variable_list = permanent_tributaries
+                        clear_variable_list = non_permanent_tributaries
+                    }
                 }
             }
         }

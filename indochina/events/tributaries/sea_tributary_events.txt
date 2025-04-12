@@ -74,9 +74,11 @@ tributaries.2003 = {
                             is_landed = no
                         }
                     }
-                    every_relation = {
-                        type = tributary
-                        remove_relation_suzerain = PREV
+                    every_relation = { type = tributary
+                        set_variable = { name = my_suzerain value = root }
+                        root = {
+                            add_to_variable_list = { name = permanent_tributaries target = prev }
+                        }
                     }
                     clear_variable_list = permanent_tributaries
                     clear_variable_list = non_permanent_tributaries
@@ -88,9 +90,23 @@ tributaries.2003 = {
                     limit = {
                         is_landed = no
                     }
-                    every_relation = {
-                        type = suzerain
-                        remove_relation_tributary = PREV
+                    if = {
+                        limit = {
+                            is_permanent_tributary = {
+                                SUZERAIN = var:my_suzerain
+                                TRIBUTARY = this
+                            }
+                        }
+                        var:my_suzerain = {
+                            remove_list_variable = { name = permanent_tributaries target = prev }
+                            remove_list_variable = { name = all_tributaries target = prev }
+                        }
+                    }
+                    else = {
+                        var:my_suzerain = {
+                            remove_list_variable = { name = non_permanent_tributaries target = prev }
+                            remove_list_variable = { name = all_tributaries target = prev }
+                        }
                     }
                 }
             }
