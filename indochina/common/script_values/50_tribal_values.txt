@@ -2,15 +2,17 @@
 	value = 300
 	if = {
 		limit = {
-			is_ai = yes
-			capital_province = { has_holding_type = tribal_holding }
+			holder = {
+				is_ai = yes
+				capital_province = prev.title_province
+			}
 		}
 		add = -150
 	}
 	multiply = { # Reduce total cost by 2% per point of development in the county, max 50% discount
 		value = 1
 		subtract = {
-			value = scope:recipient.development_level
+			value = scope:target.development_level
 			divide = 100
 		}
 		min = 0.5

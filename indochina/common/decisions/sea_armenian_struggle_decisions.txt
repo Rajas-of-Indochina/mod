@@ -1,0 +1,1499 @@
+# Choose A Stance in the Armenian Struggle
+armenian_struggle_declare_stance = {
+	title = armenian_struggle_declare_stance_decision
+	desc = armenian_struggle_declare_stance_decision_desc
+	selection_tooltip = armenian_struggle_declare_stance_decision_tooltip
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp3/fp3_decision_foundation.dds"
+	}
+	decision_group_type = major
+
+	cooldown = { years = 10 }
+
+	is_shown = {
+		any_character_struggle = { is_struggle_type = armenian_struggle }
+		is_playable_character = yes
+	}
+
+	is_valid_showing_failures_only = {
+		# The Basileus and the Shah aren't allowed to change stances, no matter how severe their self-loathing.
+		NOR = {
+			has_title = title:e_byzantium
+			has_title = title:e_roman_empire
+			has_title = title:e_persia
+			has_title = title:k_persia
+			has_title = title:e_arabia
+		}
+	}
+
+	is_valid = {
+
+	}
+
+	widget = {
+		gui = "decision_view_widget_generic_multichoice_with_effects"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "CHOOSE_ARMENIAN_STANCE"
+		show_from_start = yes
+
+		### Pro-Armenian
+		item = {
+			value = stance_pro_armenian
+			is_valid = { NOT = { has_trait = pro_armenian } }
+			current_description = stance_pro_armenian_desc
+			localization = stance_pro_armenian_name
+			icon = "gfx/interface/icons/traits/peasant_leader.dds"
+			ai_chance = {
+				value = 0
+				if = {
+					limit = {
+						highest_held_title_tier >= tier_kingdom
+						ai_boldness >= 25
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						armenian_struggle_is_local_culture_trigger = { CULTURE = culture }
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						armenian_struggle_is_local_faith_trigger = { FAITH = faith }
+					}
+					add = {
+						value = 40
+						if = {
+							limit = {has_trait = zealous}
+							multiply = 5
+						}
+					}
+				}
+				if = {
+					limit = { faith = { has_doctrine = tenet_communal_possessions } }
+					add = {
+						value = 40
+						if = {
+							limit = {has_trait = zealous}
+							multiply = 5
+						}
+					}
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							armenian_struggle_is_local_culture_trigger = { CULTURE = this.culture }
+						}
+						add = 10
+					}
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							armenian_struggle_is_local_faith_trigger = { FAITH = this.faith }
+						}
+						add = 10
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							AND = {
+								exists = title:e_byzantium.holder
+								opinion = {
+									target = title:e_byzantium.holder
+									value < -20
+								}
+							}
+							AND = {
+								exists = title:e_roman_empire.holder
+								opinion = {
+									target = title:e_roman_empire.holder
+									value < -20
+								}
+							}
+						}
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						OR = {
+							AND = {
+								exists = title:e_persia.holder
+								opinion = {
+									target = title:e_persia.holder
+									value < -20
+								}
+							}
+							AND = {
+								exists = title:k_persia.holder
+								opinion = {
+									target = title:e_persia.holder
+									value < -20
+								}
+							}
+							AND = {
+								exists = title:e_arabia.holder
+								opinion = {
+									target = title:e_arabia.holder
+									value < -20
+								}
+							}
+						}
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						any_independent_ruler = {
+							any_character_struggle = { is_struggle_type = armenian_struggle }
+							has_trait = pro_armenian
+						}
+					}
+					multiply = 4
+				}
+			}
+		}
+		### Pro-Roman
+		item = {
+			value = stance_pro_roman
+			is_valid = { NOT = { has_trait = pro_roman } }
+			current_description = stance_pro_roman_desc
+			localization = stance_pro_roman_name
+			icon = "gfx/interface/icons/traits/augustus.dds"
+			ai_chance = {
+				value = 0
+				if = {
+					limit = {
+						highest_held_title_tier >= tier_kingdom
+						ai_boldness >= 25
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						armenian_struggle_is_roman_culture_trigger = { CULTURE = culture }
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						armenian_struggle_is_roman_faith_trigger = { FAITH = faith }
+					}
+					add = {
+						value = 40
+						if = {
+							limit = {has_trait = zealous}
+							multiply = 5
+						}
+					}
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							armenian_struggle_is_roman_culture_trigger = { CULTURE = this.culture }
+						}
+						add = 10
+					}
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							armenian_struggle_is_roman_faith_trigger = { FAITH = this.faith }
+						}
+						add = 10
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							AND = {
+								exists = title:e_byzantium.holder
+								opinion = {
+									target = title:e_byzantium.holder
+									value > 50
+								}
+							}
+							AND = {
+								exists = title:e_roman_empire.holder
+								opinion = {
+									target = title:e_roman_empire.holder
+									value > 50
+								}
+							}
+						}
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						OR = {
+							AND = {
+								exists = title:e_persia.holder
+								opinion = {
+									target = title:e_persia.holder
+									value < -20
+								}
+							}
+							AND = {
+								exists = title:k_persia.holder
+								opinion = {
+									target = title:e_persia.holder
+									value < -20
+								}
+							}
+							AND = {
+								exists = title:e_arabia.holder
+								opinion = {
+									target = title:e_arabia.holder
+									value < -20
+								}
+							}
+						}
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						any_independent_ruler = {
+							any_character_struggle = { is_struggle_type = armenian_struggle }
+							has_trait = pro_roman
+						}
+					}
+					multiply = 4
+				}
+			}
+		}
+		### Pro-Persian
+		item = {
+			value = stance_pro_persian
+			is_valid = { NOT = { has_trait = pro_persian } }
+			current_description = stance_pro_persian_desc
+			localization = stance_pro_persian_name
+			icon = "gfx/interface/icons/traits/fp3_struggle_supporter.dds"
+			ai_chance = {
+				value = 0
+				if = {
+					limit = {
+						highest_held_title_tier >= tier_kingdom
+						ai_boldness >= 25
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						armenian_struggle_is_persian_culture_trigger = { CULTURE = culture }
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						armenian_struggle_is_persian_faith_trigger = { FAITH = faith }
+					}
+					add = {
+						value = 40
+						if = {
+							limit = {has_trait = zealous}
+							multiply = 5
+						}
+					}
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							armenian_struggle_is_persian_culture_trigger = { CULTURE = this.culture }
+						}
+						add = 10
+					}
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							armenian_struggle_is_persian_faith_trigger = { FAITH = this.faith }
+						}
+						add = 10
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							AND = {
+								exists = title:e_byzantium.holder
+								opinion = {
+									target = title:e_byzantium.holder
+									value < -20
+								}
+							}
+							AND = {
+								exists = title:e_roman_empire.holder
+								opinion = {
+									target = title:e_roman_empire.holder
+									value < -20
+								}
+							}
+						}
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						OR = {
+							AND = {
+								exists = title:e_persia.holder
+								opinion = {
+									target = title:e_persia.holder
+									value > 50
+								}
+							}
+							AND = {
+								exists = title:k_persia.holder
+								opinion = {
+									target = title:e_persia.holder
+									value > 50
+								}
+							}
+							AND = {
+								exists = title:e_arabia.holder
+								opinion = {
+									target = title:e_arabia.holder
+									value > 50
+								}
+							}
+						}
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						any_independent_ruler = {
+							any_character_struggle = { is_struggle_type = armenian_struggle }
+							has_trait = pro_persian
+						}
+					}
+					multiply = 4
+				}
+			}
+		}
+	}
+
+	effect = {
+		if = {
+			limit = { scope:stance_pro_armenian = yes }
+			hidden_effect = {
+				remove_trait = pro_roman
+				remove_trait = pro_persian
+			}
+			add_trait_force_tooltip = pro_armenian
+			if = {
+				limit = {
+					any_character_struggle = { is_struggle_type = armenian_struggle }
+				}
+				random_character_struggle = {
+					limit = { is_struggle_type = armenian_struggle }
+					if = {
+						limit = { highest_held_title_tier = tier_county }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_armenian_stance
+							TIER = county
+							CHARACTER = ROOT
+						}
+					}
+					else_if = {
+						limit = { highest_held_title_tier = tier_duchy }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_armenian_stance
+							TIER = duchy
+							CHARACTER = ROOT
+						}
+					}
+					else_if = {
+						limit = { highest_held_title_tier = tier_kingdom }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_armenian_stance
+							TIER = kingdom
+							CHARACTER = ROOT
+						}
+					}
+					else_if = {
+						limit = { highest_held_title_tier = tier_empire }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_armenian_stance
+							TIER = empire
+							CHARACTER = ROOT
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { scope:stance_pro_roman = yes }
+			hidden_effect = {
+				remove_trait = pro_armenian
+				remove_trait = pro_persian
+			}
+			add_trait_force_tooltip = pro_roman
+			if = {
+				limit = {
+					any_character_struggle = { is_struggle_type = armenian_struggle }
+				}
+				random_character_struggle = {
+					limit = { is_struggle_type = armenian_struggle }
+					if = {
+						limit = { highest_held_title_tier = tier_county }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_roman_stance
+							TIER = county
+							CHARACTER = ROOT
+						}
+					}
+					else_if = {
+						limit = { highest_held_title_tier = tier_duchy }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_roman_stance
+							TIER = duchy
+							CHARACTER = ROOT
+						}
+					}
+					else_if = {
+						limit = { highest_held_title_tier = tier_kingdom }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_roman_stance
+							TIER = kingdom
+							CHARACTER = ROOT
+						}
+					}
+					else_if = {
+						limit = { highest_held_title_tier = tier_empire }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_roman_stance
+							TIER = empire
+							CHARACTER = ROOT
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { scope:stance_pro_persian = yes }
+			hidden_effect = {
+				remove_trait = pro_roman
+				remove_trait = pro_armenian
+			}
+			add_trait_force_tooltip = pro_persian
+			if = {
+				limit = {
+					any_character_struggle = { is_struggle_type = armenian_struggle }
+				}
+				random_character_struggle = {
+					limit = { is_struggle_type = armenian_struggle }
+					if = {
+						limit = { highest_held_title_tier = tier_county }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_persian_stance
+							TIER = county
+							CHARACTER = ROOT
+						}
+					}
+					else_if = {
+						limit = { highest_held_title_tier = tier_duchy }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_persian_stance
+							TIER = duchy
+							CHARACTER = ROOT
+						}
+					}
+					else_if = {
+						limit = { highest_held_title_tier = tier_kingdom }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_persian_stance
+							TIER = kingdom
+							CHARACTER = ROOT
+						}
+					}
+					else_if = {
+						limit = { highest_held_title_tier = tier_empire }
+						activate_tiered_struggle_catalyst = {
+							BASE_CATALYST = catalyst_pro_persian_stance
+							TIER = empire
+							CHARACTER = ROOT
+						}
+					}
+				}
+			}
+		}
+	}
+
+	cost = {
+		prestige = {
+			value = major_prestige_value
+		}
+	}
+
+	ai_potential = {
+		highest_held_title_tier >= tier_county
+		is_landed_or_landless_administrative = yes
+	}
+
+	ai_will_do = {
+		base = 20
+		
+		modifier = {
+			add = -20
+			has_trait = craven
+		}
+		
+		modifier = {
+			add = 20
+			has_trait = ambitious
+		}
+	}
+}
+
+# Cement Roman Rule
+# Roman Ending
+# Armenia becomes permanently a part of Rome (yes the Byzantines are Rome, shut up)
+
+armenian_struggle_ending_roman_rule = {
+	decision_group_type = major
+	title = armenian_struggle_ending_roman_rule_decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/fp2_decision_hostility.dds"
+	desc = armenian_struggle_ending_roman_rule_decision_desc
+	selection_tooltip = armenian_struggle_ending_roman_rule_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+	sort_order = 80
+
+	is_valid = {
+		OR = {
+			# Must be the Roman Emperor or a king-tier pro-Roman ruler
+			has_title = title:e_byzantium
+			has_title = title:e_roman_empire
+			AND = {
+				has_trait = pro_roman
+				is_independent_ruler = yes
+				highest_held_title_tier >= tier_kingdom
+			}
+		}
+		culture = {
+			OR = {
+				this = culture:roman
+				has_cultural_pillar = heritage_byzantine
+			}
+		}
+		faith = {
+			OR = {
+				religion = religion:christianity_religion
+				religion = religion:hellenism_religion
+			}
+		}
+		NOR = {
+			faith = faith:tondrakian
+			faith = faith:armenian_apostolic
+		}
+		legitimacy_level >= 4
+
+		# Control more than 50% of all counties in the Armenian Struggle Region
+		custom_tooltip = {
+			text = armenian_struggle_ending_roman_rule_control_tt
+			ROOT.armenian_struggle_root_control_amount >= 50
+		}
+
+
+		# Neither Pro-armenian nor Pro-persian forces hold more than 20% of the struggle region
+		# NOTE: This is DIRECT HOLDERS
+		# So top-level rulers will have to enforce some unity to block opponents from taking this
+		custom_tooltip = {
+			text = armenian_struggle_ending_armenian_control_tt
+			armenian_struggle_ending_armenian_control_tt < 20
+		}
+		custom_tooltip = {
+			text = armenian_struggle_ending_persian_control_tt
+			armenian_struggle_ending_persian_control_tt < 20
+		}
+
+	}
+
+	effect = {
+		show_as_tooltip = {
+			struggle_ending_roman_rule_effect = yes
+		}
+		trigger_event = armenian_struggle.1300
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+# Persian Armanestan
+# Persian Ending
+# Armenia becomes a permanent part of Persia
+
+armenian_struggle_ending_persian_rule = {
+	decision_group_type = major
+	title = armenian_struggle_ending_persian_rule_decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/fp2_decision_hostility.dds"
+	desc = armenian_struggle_ending_persian_rule_decision_desc
+	selection_tooltip = armenian_struggle_ending_persian_rule_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+	sort_order = 80
+
+	is_valid = {
+		OR = {
+			# Must be the Emperor of Persia, Arabia or a pro-Persian King
+			has_title = title:e_persia
+			has_title = title:e_arabia
+			AND = {
+				has_trait = pro_persian
+				is_independent_ruler = yes
+				highest_held_title_tier >= tier_kingdom
+			}
+		}
+		custom_tooltip = {
+			text = perso_arabic_culture_tt # has_iranian_heritage_group
+			armenian_struggle_is_persian_culture_trigger = { CULTURE = root.culture }
+		}
+		custom_tooltip = {
+			text = perso_arabic_faith_tt
+			armenian_struggle_is_persian_faith_trigger = { FAITH = root.faith }
+		}
+		legitimacy_level >= 4
+
+		# Control more than 50% of all counties in the Armenian Struggle Region
+		custom_tooltip = {
+			text = armenian_struggle_ending_roman_rule_control_tt
+			ROOT.armenian_struggle_root_control_amount >= 50
+		}
+
+
+		# Neither Pro-armenian nor Pro-persian forces hold more than 20% of the struggle region
+		# NOTE: This is DIRECT HOLDERS
+		# So top-level rulers will have to enforce some unity to block opponents from taking this
+		custom_tooltip = {
+			text = armenian_struggle_ending_armenian_control_tt
+			armenian_struggle_ending_armenian_control_tt < 20
+		}
+		custom_tooltip = {
+			text = armenian_struggle_ending_roman_control_tt
+			armenian_struggle_ending_roman_control_tt < 20
+		}
+	}
+
+	effect = {
+		show_as_tooltip = {
+			struggle_ending_persian_rule_effect = yes
+		}
+		trigger_event = armenian_struggle.1400
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+tax_armenian_trade_routes = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_opening.dds"
+	}
+	sort_order = 300
+	decision_group_type = struggle
+
+	is_shown = {
+		exists = global_var:armenian_struggle_ending
+		global_var:armenian_struggle_ending = flag:armenian_struggle_persian_rule
+		OR = {
+			armenian_struggle_is_persian_culture_trigger = { CULTURE = root.culture }
+			armenian_struggle_is_persian_faith_trigger = { FAITH = root.faith }
+		}
+		any_sub_realm_county = {
+			title_province = { geographical_region = struggle_region_armenia }
+		}
+	}
+
+	is_valid = {
+		OR = {
+			armenian_struggle_is_persian_culture_trigger = { CULTURE = root.culture }
+			armenian_struggle_is_persian_faith_trigger = { FAITH = root.faith }
+		}
+		any_sub_realm_county = {
+			title_province = { geographical_region = struggle_region_armenia }
+			NOT = { religion = root.religion }
+		}
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = armenian_trade_tax_tt
+			every_sub_realm_county = {
+				limit = {
+					title_province = { geographical_region = struggle_region_armenia }
+					NOT = { religion = root.religion }
+				}
+				add_county_modifier = {
+					modifier = armenian_trade_tax
+					years = 5
+				}
+			}
+		}
+	}
+
+	cost = { gold = 1 }
+
+	ai_check_interval = 30
+	ai_will_do = {
+		base = 50
+		modifier = {
+			add = stewardship
+			always = yes
+		}
+		modifier = {
+			add = -50
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = greedy
+		}
+	}
+
+	cooldown = { years = 5 }
+
+}
+
+# Armenian Resurgence
+# Best Armenian Ending
+# Recreate the old Armenian Empire!
+
+armenian_struggle_ending_armenian_empire = {
+	decision_group_type = major
+	title = armenian_struggle_ending_armenian_empire_decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/fp2_decision_hostility.dds"
+	desc = armenian_struggle_ending_armenian_empire_decision_desc
+	selection_tooltip = armenian_struggle_ending_armenian_empire_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+	sort_order = 80
+
+	is_shown = {
+		culture = {
+			OR = {
+				this = culture:armenian
+				any_parent_culture_or_above = { this = culture:armenian }
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		highest_held_title_tier = tier_kingdom
+		completely_controls_region = custom_greater_armenia
+		has_trait = pro_armenian
+		OR = {
+			AND = {
+				religion = religion:christianity_religion
+				NOT = {
+					faith.religious_head_title = title:k_orthodox
+					faith.religious_head_title = title:k_papal_state
+					faith.religious_head_title = title:d_georgian_patriarchate
+				}
+			}
+			AND = {
+				religion = religion:islam_religion
+				faith.religious_head = ROOT
+			}
+			religion = religion:zoroastrianism_religion
+		}
+	}
+
+	effect = {
+		show_as_tooltip = {
+			struggle_ending_armenian_empire_effect = yes
+		}
+		trigger_event = armenian_struggle.1000
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+armenian_struggle_expand_empire = {
+	decision_group_type = major
+	title = armenian_struggle_expand_empire_decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_family_tree.dds"
+	}
+	desc = armenian_struggle_expand_empire_desc
+	ai_check_interval = 60
+	is_shown = {
+		has_title = title:e_armenia
+		dynasty = {
+			has_dynasty_modifier = heir_of_tigranes
+		}
+		NOT = { has_character_flag = lifetime_armenian_kingdom_drift }
+	}
+
+	is_valid = {
+		legitimacy_level >= 4
+		any_held_title = {
+			custom_tooltip = {
+				text = armenian_kingdom_tt
+				NOT = { empire = title:e_armenia }
+				tier = tier_kingdom
+				OR = {
+					is_armenian_struggle_kingdom = yes
+					this = title:k_jerusalem
+					this = title:k_daylam
+					this = title:k_israel
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_adult = yes
+		is_available = yes
+		is_independent_ruler = yes
+	}
+
+	cost = {
+		prestige = {
+			value = major_prestige_value
+		}
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = select_kingdom_to_drift_tt
+			add_character_flag = lifetime_armenian_kingdom_drift
+			trigger_event = armenian_struggle.2000
+		}
+	}
+}
+
+# Armenian confederation
+# Bargain bin Armenian ending
+# Armenia remains de jure independent but the Armenian Empire doesn't yet reform. It could later though!
+# Armenians will join defensive wars to keep everyone else out and can wage wars to liberate Armenian lands from foreign rulers
+
+armenian_struggle_ending_armenian_confederation = {
+	decision_group_type = major
+	title = armenian_struggle_ending_confederation_decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/fp2_decision_hostility.dds"
+	desc = armenian_struggle_ending_confederation_decision_desc
+	selection_tooltip = armenian_struggle_ending_confederation_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+	sort_order = 80
+
+	is_valid = {
+		is_independent_ruler = yes
+		any_character_struggle = {
+			involvement = involved
+			is_struggle_type = armenian_struggle
+			is_struggle_phase = armenian_struggle_phase_armenian_independence
+		}
+		has_trait = pro_armenian
+		OR = {
+			AND = {
+				religion = religion:christianity_religion
+				NOT = {
+					faith = {religious_head_title = title:k_orthodox}
+					faith = {religious_head_title = title:k_papal_state}
+					faith = {religious_head_title = title:d_georgian_patriarchate}
+				}
+			}
+			AND = {
+				religion = religion:islam_religion
+				faith.religious_head = ROOT
+			}
+			religion = religion:zoroastrianism_religion
+		}
+
+		NOT = { completely_controls_region = custom_greater_armenia }
+
+		struggle:armenian_struggle = {
+			any_involved_ruler = {
+				count > 5
+				is_independent_ruler = yes
+				primary_title = { is_mercenary_company = no }
+				primary_title = { is_holy_order = no }
+				has_trait = pro_armenian
+				NOT = { this = root }
+				is_allied_to = root
+			}
+		}
+	}
+
+	effect = {
+		show_as_tooltip = {
+			struggle_ending_armenian_confederation_effect = yes
+		}
+		trigger_event = armenian_struggle.1100
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+# Override vanilla Armenian Empire decision
+create_armenian_empire_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	desc = create_armenian_empire_decision_desc
+	selection_tooltip = create_armenian_empire_decision_tooltip
+	decision_group_type = major
+
+	ai_check_interval = 0
+
+	is_shown = {
+		is_playable_character = yes # Normally this will always be true, but if in DEBUG mode and playing as an unlanded ruler this will cause error spam without it.
+		highest_held_title_tier <= tier_kingdom
+		capital_province = { geographical_region = custom_greater_armenia }
+		culture = {
+			OR = {
+				this = culture:armenian
+				any_parent_culture_or_above = { this = culture:armenian }
+			}
+		}
+		NOT = {  #Can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_created_armenian_empire
+			}
+		}
+		OR = {
+			government_has_flag = government_is_feudal
+			government_has_flag = government_is_republic
+			government_has_flag = government_is_clan
+			government_allows = administrative
+			government_has_flag = government_is_landless_adventurer
+		}
+		exists = global_var:armenian_struggle_ending
+		global_var:armenian_struggle_ending = flag:armenian_struggle_armenian_confederation
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		highest_held_title_tier = tier_kingdom
+		OR = {
+			AND = {
+				religion = religion:christianity_religion
+				NOT = {
+					faith.religious_head_title = title:k_orthodox
+					faith.religious_head_title = title:k_papal_state
+					faith.religious_head_title = title:d_georgian_patriarchate
+				}
+			}
+			AND = {
+				religion = religion:islam_religion
+				faith.religious_head = ROOT
+			}
+			religion = religion:zoroastrianism_religion
+		}
+		culture = {
+			OR = {
+				this = culture:armenian
+				any_parent_culture_or_above = { this = culture:armenian }
+			}
+		}
+		completely_controls_region = custom_greater_armenia
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_available_adult = yes
+	}
+
+	cost = {
+		prestige = 2000
+		piety = 1000
+	}
+
+	effect = {
+		show_as_tooltip = {
+			# revive_armenian_empire_decision_scripted_effect = yes
+			custom_tooltip = undo_confederation_ending_effect_tt
+			struggle_ending_armenian_empire_effect = yes
+		}
+		save_scope_as = founder
+		trigger_event = {
+			id = middle_east_decisions.1001
+		}
+		#Notify other players.
+		every_player = {
+			limit = {
+				NOT = { this = root }
+				is_within_diplo_range = { CHARACTER = root }
+			}
+			trigger_event = middle_east_decisions.1002
+		}
+		hidden_effect = {
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_created_armenian_empire
+			}
+			set_global_variable = {
+				name = flag_created_armenian_empire
+				value = scope:founder
+			}
+			# Changes how the struggle "really" ended, consequently removes the effects of the previous ending
+			set_global_variable = {
+				name = armenian_struggle_ending
+				value = flag:armenian_struggle_armenian_empire
+			}
+		}
+	}
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+# Armenian Stalemate
+# Persians and Romans agree after centuries of fighting that neither of them will rule Armenia uncontested
+# But Armenia itself isn't strong enough to assert independence longterm
+
+armenian_struggle_ending_armenian_stalemate = {
+	decision_group_type = major
+	title = armenian_struggle_ending_armenian_stalemate_decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/fp2_decision_hostility.dds"
+	desc = armenian_struggle_ending_armenian_stalemate_decision_desc
+	selection_tooltip = armenian_struggle_ending_armenian_stalemate_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+	sort_order = 80
+
+	is_shown = {
+		always = no
+	}
+
+	is_valid = {
+		OR = {
+			has_trait = pro_armenian
+			has_trait = pro_persian
+			has_trait = pro_roman
+		}
+		AND = {
+			custom_tooltip = {
+				text = armenian_struggle_stalemate_armenian_tt
+				armenian_struggle_ending_armenian_control_tt <= 40
+			}
+			custom_tooltip = {
+				text = armenian_struggle_stalemate_persian_tt
+				armenian_struggle_ending_persian_control_tt <= 40
+			}
+			custom_tooltip = {
+				text = armenian_struggle_stalemate_roman_tt
+				armenian_struggle_ending_roman_control_tt <= 40
+			}
+		}
+		struggle:armenian_struggle = {
+			trigger_if = {
+				limit = { ROOT = { NOT = { has_trait = pro_roman } } }
+				any_involved_ruler = {
+					highest_held_title_tier >= tier_kingdom
+					has_trait = pro_roman
+					has_truce = ROOT
+				}
+			}
+			trigger_if = {
+				limit = { ROOT = { NOT = { has_trait = pro_armenian } } }
+				any_involved_ruler = {
+					highest_held_title_tier >= tier_kingdom
+					has_trait = pro_armenian
+					has_truce = ROOT
+				}
+			}
+			trigger_if = {
+				limit = { ROOT = { NOT = { has_trait = pro_persian } } }
+				any_involved_ruler = {
+					highest_held_title_tier >= tier_kingdom
+					has_trait = pro_persian
+					has_truce = ROOT
+				}
+			}
+		}
+	}
+
+	effect = {
+		show_as_tooltip = {
+			struggle:armenian_struggle = { end_struggle = yes }
+		}
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+# Armenian Collaboration
+# An Armenian King of sufficient power can see the way the wind blows and accept a foreign master
+# Voluntarily swearing fealty to Persia or Rome in exchange for being promised exarchy over Armenia for their dynasty
+# Armenians will fucking hate you for this
+# But you get a real cushy vassal contract and the protection of an empire, letting you consolidate an Armenian Exarchy with near impunity
+
+armenian_struggle_ending_complicity = {
+	decision_group_type = major
+	title = armenian_struggle_ending_complicity_decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/fp2_decision_hostility.dds"
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = armenian_struggle
+						is_struggle_phase = armenian_struggle_phase_roman_dominance
+					}
+				}
+				desc = armenian_struggle_ending_complicity_decision_desc.roman
+			}
+			triggered_desc = {
+				trigger = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = armenian_struggle
+						is_struggle_phase = armenian_struggle_phase_persian_dominance
+					}
+				}
+				desc = armenian_struggle_ending_complicity_decision_desc.persian
+			}
+		}
+		desc = armenian_struggle_ending_complicity_decision_desc
+	}
+	selection_tooltip = armenian_struggle_ending_complicity_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+	sort_order = 80
+
+	is_valid = {
+		is_independent_ruler = yes
+		trigger_if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = armenian_struggle
+					is_struggle_phase = armenian_struggle_phase_roman_dominance
+				}
+			}
+			has_trait = pro_roman
+			any_neighboring_top_liege_realm_owner = {
+				OR = {
+					has_title = title:e_roman_empire
+					has_title = title:e_byzantium
+				}
+			}
+		}
+		trigger_else_if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = armenian_struggle
+					is_struggle_phase = armenian_struggle_phase_persian_dominance
+				}
+			}
+			has_trait = pro_persian
+			any_neighboring_top_liege_realm_owner = {
+				OR = {
+					has_title = title:e_persia
+					has_title = title:e_arabia
+					AND = {
+						highest_held_title_tier >= tier_empire
+						has_trait = pro_persian
+					}
+				}
+			}
+		}
+		trigger_else = {
+			always = no
+		}
+
+		OR = {
+			highest_held_title_tier = tier_kingdom
+			AND = {
+				custom_description = {
+					text = found_kingdom_decision_three_duchies_held
+					any_held_title = {
+						count > 2
+						tier = tier_duchy
+					}
+				}
+				highest_held_title_tier = tier_duchy
+			}
+		}
+
+		OR = {
+			realm_size >= 50
+			completely_controls_region = world_armenia
+		}
+	}
+
+	effect = {
+		if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_phase = armenian_struggle_phase_persian_dominance
+				}
+			}
+			get_persian_overlord_effect = yes
+			add_character_flag = persian_complicity
+		}
+		else_if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_phase = armenian_struggle_phase_roman_dominance
+				}
+			}
+			get_roman_overlord_effect = yes
+			add_character_flag = roman_complicity
+		}
+		show_as_tooltip = {
+			struggle_ending_complicity_effect = yes
+		}
+		trigger_event = armenian_struggle.1200
+	}
+
+	cost = {
+		prestige = major_prestige_value
+	}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+armenian_struggle_georgian_empire = {
+	decision_group_type = major
+	title = armenian_struggle_georgian_empire_decision
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/fp2_decision_hostility.dds"
+	desc = armenian_struggle_georgian_empire_decision_desc
+	selection_tooltip = armenian_struggle_georgian_empire_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+	sort_order = 80
+
+	is_shown = {
+		culture = {
+			NOR = {
+				this = culture:armenian
+				any_parent_culture_or_above = { this = culture:armenian }
+			}
+			OR = {
+				this = culture:georgian
+				this = culture:megrel
+				this = culture:abkhaz
+				AND = {
+					any_parent_culture_or_above = {
+						OR = {
+							this = culture:georgian
+							this = culture:megrel
+							this = culture:abkhaz
+						}
+					}
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		highest_held_title_tier = tier_kingdom
+		title:e_caucasia = {
+			any_de_jure_county = {
+				percent > 0.5
+				holder.top_liege = ROOT
+			}
+		}
+		has_title = title:k_georgia
+		legitimacy_level >= 5
+	}
+
+	effect = {
+		show_as_tooltip = {
+			struggle_ending_georgian_empire_effect = yes
+		}
+		trigger_event = armenian_struggle.1500
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+decision_form_armenian_cilicia = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp3/fp3_decision_foundation.dds"
+	}
+	decision_group_type = major
+	desc = decision_form_armenian_cilicia_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		OR = {
+			culture = culture:armenian
+			culture = {
+				any_parent_culture_or_above = { this = culture:armenian }
+				has_cultural_pillar = heritage_caucasian
+			}
+			capital_county = {
+				title_province = { geographical_region = custom_armenian_cilicia }
+			}
+		}
+		highest_held_title_tier <= tier_duchy
+		is_titular = title:k_armenian_cilicia
+
+	}
+
+	is_valid = {
+		OR = {
+			is_independent_ruler = yes
+			liege = {highest_held_title_tier >= tier_empire}
+		}
+		OR = {
+			has_title = title:d_cilicia
+			completely_controls = title:d_cilicia
+		}
+		OR = {
+			has_title = title:d_edessa
+			completely_controls = title:d_edessa
+		}
+		OR = {
+			legitimacy_level >= 3
+			dynasty.dynasty_prestige_level >= 5
+		}
+		trigger_if = {
+			limit = {
+				is_independent_ruler = yes
+				any_neighboring_top_liege_realm_owner = {
+					highest_held_title_tier >= tier_empire
+				}
+			}
+			any_neighboring_top_liege_realm_owner = {
+				highest_held_title_tier >= tier_empire
+				OR = {
+					opinion = {
+						target = ROOT
+						value >= high_positive_opinion
+					}
+					ROOT = { has_strong_hook = PREV }
+					custom_description = {
+						text = FIRST_IS_COWED
+						has_dread_level_towards = {
+							target = ROOT
+							level < 2
+						}
+					}
+				}
+			}
+		}
+		trigger_else_if = {
+			limit = {
+				liege.highest_held_title_tier >= tier_empire
+			}
+			OR = {
+				has_strong_hook = liege
+				liege = {
+					opinion = {
+						target = ROOT
+						value >= high_positive_opinion
+					}
+				}
+				liege = {
+					custom_description = {
+						text = FIRST_IS_COWED
+						has_dread_level_towards = {
+							target = ROOT
+							level < 2
+						}
+					}
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_landed = yes
+		is_adult = yes
+		is_available = yes
+	}
+
+	cost = {
+		gold = {
+			value = major_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
+	}
+
+	effect = {
+		# add_piety = 1
+		show_as_tooltip = {
+			decision_form_armenian_cilicia_effect = yes	
+		}
+		save_scope_as = founder
+		trigger_event = caucasianroa.019
+	}
+	
+}

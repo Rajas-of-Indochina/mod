@@ -1,0 +1,366 @@
+does_this_player_care_about_the_armenian_struggle = {
+	save_temporary_scope_as = char_temp
+	OR = {
+		capital_province ?= {
+			geographical_region = struggle_region_armenia
+		}
+		AND = {
+			global_var:armenian_struggle_ending = flag:armenian_struggle_georgian_empire
+			capital_province ?= {
+				geographical_region = world_north_caucasus
+			}
+		}
+		struggle:armenian_struggle = { is_culture_involved_in_struggle = scope:char_temp.culture }
+		struggle:armenian_struggle = { is_faith_involved_in_struggle = scope:char_temp.faith }
+		# Ping islamic, zoroastrian players as they might be interested
+		religion = religion:islam_religion
+		religion = religion:zoroastrianism_religion
+		any_character_struggle = {
+			is_struggle_type = armenian_struggle
+		}
+	}
+}
+
+armenian_struggle_is_roman_culture_trigger = {
+	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
+	$CULTURE$ = {
+		custom_description = {
+			text = armenian_struggle_is_roman_culture_trigger_tt
+			NOT = {
+				has_variable = is_local_culture
+				has_variable = is_persian_culture
+			}
+			OR = {
+				this = culture:greek
+				this = culture:roman
+				this = culture:cappadocian
+				has_cultural_parameter = heritage_family_european
+				has_variable = is_roman_culture
+			}
+		}
+	}
+}
+
+armenian_struggle_is_roman_faith_trigger = {
+	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	$FAITH$ = {
+		custom_description = {
+			text = armenian_struggle_is_roman_faith_trigger_tt
+			NOT = {
+				this = faith:mtielta # TODO: Add is_local_faith to mtielta on start
+				has_variable = is_local_faith
+				has_variable = is_persian_faith
+			}
+			OR = {
+				AND = {
+					OR = {
+						this = faith:orthodox
+						this = faith:paulician
+						religious_head_title = title:k_orthodox
+						religious_head_title = title:k_papal_state
+						religious_head_title = title:d_iconoclast
+						religion = religion:hellenism_religion
+					}
+				}
+				has_variable = is_roman_faith
+			}
+		}
+	}
+}
+
+armenian_struggle_would_be_roman_faith_trigger = {
+	trigger_if = {
+		limit = {
+			armenian_struggle_is_roman_faith_trigger = { FAITH = scope:old_faith }
+		}
+		ROOT = {
+			NOR = {
+				has_trait = pro_persian
+				has_trait = pro_armenian
+			}
+		}
+	}
+	trigger_else = {
+		ROOT = { has_trait = pro_roman }
+	}
+}
+
+armenian_struggle_is_persian_culture_trigger = {
+	$CULTURE$ = {
+		custom_description = {
+			text = armenian_struggle_is_persian_culture_trigger_tt
+			NOT = {
+				has_variable = is_local_culture
+				has_variable = is_roman_culture
+			}
+			OR = {
+				has_cultural_pillar = language_turkic
+				has_cultural_pillar = heritage_on_oq
+				has_cultural_pillar = heritage_iranian
+				has_cultural_pillar = language_iranian
+				has_cultural_pillar = heritage_arabic
+				has_variable = is_persian_culture
+			}
+		}
+	}
+	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
+}
+
+armenian_struggle_is_persian_faith_trigger = {
+	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	$FAITH$ = {
+		custom_description = {
+			text = armenian_struggle_is_persian_faith_trigger_tt
+			NOR = {
+				has_variable = is_local_faith
+				has_variable = is_roman_faith
+				this = faith:urartuism
+				this = faith:barhailism
+				this = faith:mazdakism
+				this = faith:khurramism
+			}
+			OR = {
+				religion = religion:zoroastrianism_religion
+				religious_head_title = title:d_patriarchate_in_the_east
+				AND = {
+					religion = religion:islam_religion
+					OR = {
+						NOT = { exists = religious_head }
+						religious_head = {
+							OR = {
+								has_trait = pro_persian
+								NOT = { any_character_struggle = { is_struggle_type = armenian_struggle } }
+							}
+						}
+					}
+				}
+				has_variable = is_persian_faith
+			}
+		}
+	}
+}
+
+armenian_struggle_would_be_persian_faith_trigger = {
+	trigger_if = {
+		limit = {
+			armenian_struggle_is_persian_faith_trigger = { FAITH = scope:old_faith }
+		}
+		ROOT = {
+			NOR = {
+				has_trait = pro_roman
+				has_trait = pro_armenian
+			}
+		}
+	}
+	trigger_else = {
+		ROOT = { has_trait = pro_persian }
+	}
+}
+
+armenian_struggle_is_local_culture_trigger = {
+	# struggle:armenian_struggle = { is_culture_involved_in_struggle = $CULTURE$ }
+	$CULTURE$ = {
+		custom_description = {
+			text = armenian_struggle_is_local_culture_trigger_tt
+			NOT = {
+				has_variable = is_roman_culture
+				has_variable = is_persian_culture
+			}
+			OR = {
+				this = culture:armenian
+				this = culture:udi
+				has_cultural_pillar = heritage_ciscaucasian
+				has_cultural_pillar = heritage_caucasian
+				has_cultural_pillar = heritage_aghvank
+				has_variable = is_local_culture
+			}
+		}
+	}
+}
+
+armenian_struggle_is_local_faith_trigger = {
+	# struggle:armenian_struggle = { is_faith_involved_in_struggle = $FAITH$ }
+	$FAITH$ = {
+		custom_description = {
+			text = armenian_struggle_is_local_faith_trigger_tt
+			NOR = {
+				has_variable = is_roman_faith
+				has_variable = is_persian_faith
+			}
+			OR = {
+				this = faith:armenian_apostolic
+				this = faith:tondrakian
+				this = faith:barhailism
+				this = faith:urartuism
+				this = faith:mazdakism
+				this = faith:khurramism
+				AND = {
+					religion = religion:islam_religion
+					religious_head = {
+						has_trait = pro_armenian
+					}
+				}
+				religious_head_title = title:d_georgian_patriarchate
+				has_variable = is_local_faith
+			}
+		}
+	}
+}
+
+is_communalist_faith = {
+	has_doctrine = tenet_communal_possessions
+}
+
+armenian_struggle_would_be_local_faith_trigger = {
+	trigger_if = {
+		limit = {
+			armenian_struggle_is_local_faith_trigger = { FAITH = scope:old_faith }
+		}
+		ROOT = {
+			NOR = {
+				has_trait = pro_roman
+				has_trait = pro_persian
+			}
+		}
+	}
+	trigger_else = {
+		ROOT = { has_trait = pro_armenian }
+	}
+}
+
+# We use a hard trigger so that this can be easily adjusted without overwriting the rest of the fp2_interactions file by modders.
+struggle_can_access_unlocks_bargain_fealty_interaction_trigger = {
+	# Just uhh, use an OR if you add something else.
+	OR = {
+		is_struggle_type = iberian_struggle
+		is_struggle_type = armenian_struggle
+	}
+}
+
+is_armenian_struggle_kingdom = {
+	OR = {
+		#e_caucasia
+		this = title:k_abkhazia
+		this = title:k_iberia
+		this = title:k_kakheti
+		this = title:k_georgia
+		this = title:k_syunik
+		this = title:k_ayrarat
+		this = title:k_armenia
+		this = title:k_armenian_principality
+		this = title:k_shirvan
+		this = title:k_aluank
+		#e_byzantium
+		this = title:k_pontus
+		this = title:k_anatolia
+		this = title:k_rum
+		this = title:k_armenian_cilicia
+		# e_persia
+		this = title:k_adurbadagan
+		this = title:k_jazira
+		# e_arabia
+		this = title:k_syria
+	}
+}
+
+is_going_roman = {
+	trigger_if = {
+		limit = { exists = holder }
+		OR = {
+			holder ?= { is_roman_emperor_ish_trigger = yes }
+			holder ?= {
+				AND = {
+					is_independent_ruler = yes
+					has_trait = pro_roman
+				}
+			}
+		}		
+	}
+	trigger_else = {
+		any_ruler = {
+			OR = {
+				is_roman_emperor_ish_trigger = yes
+				AND = {
+					is_independent_ruler = yes
+					has_trait = pro_roman
+				}			
+			}
+			completely_controls = PREV
+		}
+	}
+	any_title_to_title_neighboring_kingdom = {
+		OR = {
+			empire = title:e_byzantium
+			empire = title:e_roman_empire
+		}
+	}
+}
+
+is_going_persian = {
+	trigger_if = {
+		limit = { exists = holder }
+		OR = {
+			holder ?= { has_title = title:e_persia }
+			holder ?= {
+				AND = {
+					is_independent_ruler = yes
+					has_trait = pro_persian
+				}
+			}
+		}		
+	}
+	trigger_else = {
+		any_ruler = {
+			OR = {
+				has_title = title:e_persia
+				AND = {
+					is_independent_ruler = yes
+					has_trait = pro_persian
+				}			
+			}
+			completely_controls = PREV
+		}
+	}
+}
+
+is_roman_emperor_ish_trigger = {
+	OR = {
+		has_title = title:e_hre
+		has_title = title:e_byzantium
+		has_title = title:e_latin_empire
+		has_title = title:e_roman_empire
+		has_title = title:e_italy
+	}
+}
+
+armenian_dissolution_is_vaspurakan_duchy = {
+	OR = {
+		this = title:d_derzene
+		this = title:d_mesopotamia
+		this = title:d_shavarshan
+		this = title:d_taron
+		this = title:d_turuberan
+		this = title:d_vaspurakan
+	}
+}
+
+armenian_dissolution_is_ayrarat_duchy = {
+	OR = {
+		this = title:d_bagrevand
+		this = title:d_greater_armenia
+		this = title:d_hayk-dvin
+		this = title:d_hayk-shirak
+		this = title:d_kars
+		this = title:d_tashir
+	}
+}
+
+armenian_dissolution_is_syunik_duchy = {
+	OR = {
+		this = title:d_artsakh
+		this = title:d_gardman
+		this = title:d_nakhichevan
+		this = title:d_syunik-baghk
+		this = title:d_syunik-vayotsdzor
+	}
+}

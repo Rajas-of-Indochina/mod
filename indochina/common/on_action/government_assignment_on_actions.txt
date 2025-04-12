@@ -5,6 +5,12 @@
 	}
 }
 
+on_game_start_after_lobby = {
+	on_actions = {
+		set_anarchist_coas
+	}
+}
+
 on_government_assign_start = {
 	effect = {
 		every_ruler = {
@@ -22,7 +28,7 @@ on_government_assign_start = {
 						culture = culture:shatuo
 						AND = {
 							top_liege.primary_title = title:k_hungary
-							game_start_date > 907.1.1
+							game_start_date > 1000.1.1
 						}
 					}
 				}
@@ -115,6 +121,7 @@ on_government_assign_start = {
 								NOT = {
 									this = culture:muong
 									has_cultural_parameter = heritage_group_austronesian
+									has_cultural_pillar = heritage_aghvank
 								}
 							}
 							AND = {
@@ -164,54 +171,6 @@ on_government_assign_start = {
 						generate_coa = yes
 						set_color_from_title = scope:commune_capital
 					}
-				}
-
-				add_realm_law_skip_effects = single_heir_dynasty_house
-				primary_title = {
-					add_title_law = anarchist_elective_succession_law
-				}
-				every_held_title = {
-					limit = { tier = tier_county }
-					save_scope_as = title
-					scope:ruler = { trigger_event = sea_title_event.2001 }
-				}
-			}
-			if = {
-				limit = {
-					has_government = anarchist_government
-					#is_independent_ruler = yes
-					highest_held_title_tier < tier_duchy
-				}
-
-				capital_county = { save_scope_as = commune_capital }
-
-				# Create a titular duchy
-				# scope:new_title
-				create_title_and_vassal_change = {
-					type = created
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				create_dynamic_title = {
-					tier = duchy
-					name = ANARCHIST_TITLE_NAME
-				}
-				scope:new_title = {
-					set_destroy_on_gain_same_tier = yes
-					set_no_automatic_claims = yes
-					set_can_be_named_after_dynasty = no
-					change_title_holder = {
-						holder = scope:ruler
-						change = scope:change
-					}
-				}
-				resolve_title_and_vassal_change = scope:change
-
-				# Generate a new CoA
-				## We do this in a separate block so that the effect has time to see that the title has a holder, since it'll error otherwise.
-				scope:new_title = {
-					generate_coa = yes
-					set_color_from_title = scope:commune_capital
 				}
 
 				add_realm_law_skip_effects = single_heir_dynasty_house
@@ -401,4 +360,21 @@ add_right_to_rule_doctrines_on_game_start = {
             }
         }
     }
+}
+
+set_anarchist_coas = {
+	effect = {
+		every_ruler = {
+			limit = {
+				has_government = anarchist_government
+				is_independent_ruler = yes
+				exists = capital_county
+				exists = primary_title
+			}
+
+			primary_title = {
+				set_coa = prev.capital_county
+			}
+		}
+	}
 }

@@ -1,4 +1,4 @@
-﻿namespace = caucasianroa
+namespace = caucasianroa
 
 caucasianroa.001 = {
 	type = character_event
@@ -46,9 +46,1534 @@ caucasianroa.001 = {
 	}
 }
 
+caucasianroa.002 = {
+	type = character_event
+	title = caucasianroa.002.t
+	desc = caucasianroa.002_desc
+
+	theme = stewardship_wealth_focus
+	right_portrait = {
+		character =  root
+		animation = steward
+	}
+
+	option = {
+		name = caucasianroa.002.a
+        add_gold = 800
+		add_prestige = 500
+		capital_county = {
+			save_scope_as = county
+			change_development_level = 1
+			add_culture_minority_effect = {
+				CULTURE = culture:cherkesogai
+				SIZE = small
+				COUNTY = scope:county
+			}
+			add_faith_minority_effect = {
+				FAITH = faith:armenian_apostolic
+				SIZE = small
+				COUNTY = scope:county
+			}
+		}
+
+		random_held_county = {
+			save_scope_as = county
+			change_development_level = 1
+			add_culture_minority_effect = {
+				CULTURE = culture:cherkesogai
+				SIZE = small
+				COUNTY = scope:county
+			}
+			add_faith_minority_effect = {
+				FAITH = faith:armenian_apostolic
+				SIZE = small
+				COUNTY = scope:county
+			}
+		}
+	}
+}
+
+caucasianroa.003 = {
+	type = character_event
+	title = caucasianroa.003.t
+	desc = caucasianroa.003_desc
+
+    immediate = {
+			create_character = {
+				age = { 73 74 }
+				location = root.capital_province
+				gender = male
+				name = "Abu Ishaq"
+				culture = culture:levantine
+				faith = faith:ashari
+				trait = brave
+				trait = zealous
+				trait = diligent
+				trait = intellect_good_1
+				trait = education_learning_3
+				learning = { 5 10 }
+
+				dynasty = none
+				after_creation = {
+					add_gold = { minor_gold_value medium_gold_value }
+					add_prestige = { minor_prestige_gain medium_prestige_gain }
+					add_piety = { minor_piety_gain medium_piety_gain }
+				}
+
+				save_scope_as = abu_ishaq
+			}
+
+			create_character = {
+				age = { 75 76 }
+				location = root.capital_province
+				gender = male
+				name = "Muhammad Kindi"
+				culture = culture:levantine
+				faith = faith:ashari
+				trait = honest
+				trait = zealous
+				trait = diligent
+				trait = intellect_good_1
+				trait = education_learning_3
+				learning = { 5 10 }
+
+				dynasty = none
+				after_creation = {
+					add_gold = { minor_gold_value medium_gold_value }
+					add_prestige = { minor_prestige_gain medium_prestige_gain }
+					add_piety = { minor_piety_gain medium_piety_gain }
+				}
+
+				save_scope_as = muhammad_kindi
+			}
+		cp:councillor_court_chaplain = { save_scope_as = chaplain }
+	}
+
+	theme = realm
+	right_portrait = {
+		character =  scope:abu_ishaq
+		animation = personality_zealous
+	}
+	left_portrait = {
+		character =  scope:muhammad_kindi
+		animation = chaplain
+	}
 
 
+	option = {
+		name = caucasianroa.003.a
+			trigger_event = {	id = caucasianroa.004 }
+
+	}
+	option = {
+		name = caucasianroa.003.b
+		add_piety = 100
+		add_gold = 100
+	}
+}
 
 
+caucasianroa.004 = {
+	type = character_event
+	title = caucasianroa.004.t
+	desc = caucasianroa.004_desc
 
 
+	theme = realm
+	right_portrait = {
+		character =  scope:abu_ishaq
+		animation = personality_zealous
+	}
+	left_portrait = {
+		character =  scope:muhammad_kindi
+		animation = chaplain
+	}
+
+	option = {
+		name = caucasianroa.004.a
+		random_held_county = {
+			save_scope_as = county1
+			change_development_level = 1
+			add_faith_minority_effect = {
+				FAITH = faith:ashari
+				SIZE = small
+				COUNTY = scope:county1
+			}
+		}
+		add_piety = -100
+	}
+	option = {
+		name = caucasianroa.004.b
+		add_piety = 100
+		add_prestige = 100
+	}
+	option = {
+		name = caucasianroa.003.b
+		add_piety = 50
+		add_gold = 100
+	}
+}
+
+caucasianroa.005 = {
+	type = character_event
+	title = caucasianroa.005.t
+	desc = caucasianroa.005_desc
+
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = celebrate_sword
+	}
+
+	override_background = { reference = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		unite_circassia_decision_effect = yes
+		save_scope_as = scoped_unifier
+	}
+
+	option = {
+		name = caucasianroa.005.a
+		add_trait = thamade
+		add_trait = achebeg
+		add_prestige = 1000
+		add_dynasty_prestige = 500
+		add_piety = 500
+		add_martial_skill = 1
+		add_diplomacy_skill = 1
+		add_prestige_level = 1
+		every_ruler = {
+			limit = {
+				NOT = { this = scope:scoped_unifier }
+				is_within_diplo_range = { CHARACTER = scope:scoped_unifier }
+			}
+			trigger_event = caucasianroa.007
+		}
+				capital_county = {
+					change_development_level = 1
+				}
+		hidden_effect = {
+			save_scope_as = achebeg_progenitor
+			every_child = {
+				even_if_dead = yes
+				trigger_event = caucasianroa.017
+
+				every_child = {
+					even_if_dead = yes
+					limit = {
+						OR = {
+							is_grandchild_of = scope:achebeg_progenitor
+							is_great_grandchild_of = scope:achebeg_progenitor
+						}
+					}
+					trigger_event = caucasianroa.017
+
+					every_child = {
+						even_if_dead = yes
+						limit = {
+							OR = {
+								is_grandchild_of = scope:achebeg_progenitor
+								is_great_grandchild_of = scope:achebeg_progenitor
+							}
+						}
+						trigger_event = caucasianroa.017
+					}
+				}
+			}
+		}
+	}
+
+}
+
+caucasianroa.017 = {
+    type = character_event
+    hidden = yes
+
+    trigger = {
+                exists = father
+                father = {
+                    OR = {
+                        has_trait = achebeg
+                        has_trait = achebeg_descendant
+                    }
+                }
+        NOR = {
+            has_trait = achebeg # Just in case the tree was horribly tangled...
+            has_trait = achebeg_descendant
+        }
+    }
+
+    immediate = {
+        add_trait = achebeg_descendant
+        every_child = {
+            trigger_event = caucasianroa.017
+        }
+    }
+}
+
+# Notification of cultural name change
+
+caucasianroa.006 = {
+	type = character_event
+	theme = culture_change
+	title = caucasianroa.006.t
+	desc = caucasianroa.006.desc
+
+	left_portrait = {
+		character = culture:udi.culture_head
+		animation = personality_content
+	}
+
+	immediate = {
+		custom_tooltip = udi_name_change_tt
+	}
+
+	option = {
+		#Okay whatever
+		name = caucasianroa.006.whatever
+	}
+
+}
+
+caucasianroa.0061 = {
+	type = character_event
+	theme = culture_change
+	title = caucasianroa_alan_inform.006.t
+	desc = caucasianroa_alan_inform.006.desc
+
+	left_portrait = {
+		character = culture:alan.culture_head
+		animation = personality_content
+	}
+
+	immediate = {
+		custom_tooltip = alan_name_change_tt
+	}
+
+	option = {
+		#Okay whatever
+		name = caucasianroa.006.whatever
+	}
+
+}
+
+caucasianroa.007 = {
+	type = character_event
+	title = caucasianroa.007.t
+	desc = caucasianroa.007.desc
+	theme = realm
+	left_portrait = {
+		character =  scope:scoped_unifier
+		animation = personality_honorable
+	}
+
+	immediate = {
+		#Same-faith non-empire tier rulers are over-awed.
+		if = {
+			limit = { faith = scope:scoped_unifier.faith }
+			play_music_cue = "mx_cue_epic_sacral_moment"
+		}
+		#Otherwise, this is a tacit statement of imperial threat.
+		else = { play_music_cue = "mx_cue_combat_2" }
+	}
+	option = {
+		name = caucasianroa.007.ok
+	}
+}
+
+caucasianroa.008 = {
+	type = character_event
+	title = caucasianroa.008.t
+	desc = caucasianroa.008.desc
+
+	theme = dynasty
+	right_portrait = {
+		character =  root
+		animation = personality_honorable
+	}
+
+	trigger = {
+
+	}
+
+	immediate = {
+
+	}
+
+	option = {
+		name = caucasianroa.008.ok
+		custom_tooltip = {
+			text = avarsassanid_customtooltip
+			trigger_event = {
+			id = caucasianroa.009
+			days = 120 }
+		}
+	}
+}
+
+caucasianroa.009 = {
+	type = character_event
+	title = caucasianroa.009.t
+	desc = caucasianroa.009.desc
+
+	immediate = {
+		create_character = {
+			age = { 40 50 }
+			location = root.capital_province
+			gender = male
+			dynasty = generate
+			culture = culture:persian
+			faith = title:c_isfahan.holder.top_liege.faith
+			trait = deceitful
+			trait = eccentric
+			trait = greedy
+			trait = intellect_good_1
+			trait = education_diplomacy_2
+			trait = poet
+			random_traits = no
+
+			after_creation = {
+				add_gold = { minor_gold_value medium_gold_value }
+				add_prestige = { minor_prestige_gain medium_prestige_gain }
+				add_piety = { minor_piety_gain medium_piety_gain }
+			}
+
+			save_scope_as = persian_expert_sassanid
+		}
+	}
+
+	theme = dynasty
+	right_portrait = {
+		character = scope:persian_expert_sassanid
+		animation = chancellor
+	}
+	left_portrait = {
+		character =  root
+		animation = personality_honorable
+	}
+
+	trigger = {
+
+	}
+
+	option = {
+		name = caucasianroa.009.ok
+		custom_tooltip = {
+			text = avarsassanid_customtooltip
+			trigger_event = {
+			id = caucasianroa.010 }
+		}
+		add_gold = -25
+	}
+}
+
+caucasianroa.010 = {
+	type = character_event
+	title = caucasianroa.010.t
+	desc = caucasianroa.010.desc
+
+	immediate = {
+
+	}
+
+	theme = dynasty
+	right_portrait = {
+		character = scope:persian_expert_sassanid
+		animation = chancellor
+	}
+	left_portrait = {
+		character =  root
+		animation = personality_honorable
+	}
+
+	trigger = {
+
+	}
+
+	option = {
+		name = caucasianroa.010.ok
+		custom_tooltip = {
+			text = avarsassanid_customtooltip
+			trigger_event = {
+			id = caucasianroa.011 }
+		}
+		add_gold = -25
+	}
+}
+
+caucasianroa.011 = {
+	type = character_event
+	title = caucasianroa.011.t
+	desc = caucasianroa.011.desc
+
+	immediate = {
+
+	}
+
+	theme = dynasty
+	right_portrait = {
+		character = scope:persian_expert_sassanid
+		animation = personality_greedy
+	}
+	left_portrait = {
+		character =  root
+		animation = chancellor
+	}
+
+	trigger = {
+
+	}
+
+	option = {
+		name = caucasianroa.011.ok
+		custom_tooltip = {
+			text = avarsassanid_customtooltip
+			trigger_event = {
+			id = caucasianroa.012 }
+		}
+		add_gold = -25
+	}
+}
+
+caucasianroa.012 = {
+	type = character_event
+	title = caucasianroa.012.t
+	desc = caucasianroa.012.desc
+
+	immediate = {
+
+	}
+
+	theme = dynasty
+	right_portrait = {
+		character = scope:persian_expert_sassanid
+		animation = personality_dishonorable
+	}
+	left_portrait = {
+		character =  root
+		animation = personality_honorable
+	}
+
+	trigger = {
+
+	}
+
+	option = {
+		name = caucasianroa.012.ok
+		custom_tooltip = {
+			text = avarsassanid_customtooltip
+			trigger_event = {
+			id = caucasianroa.013
+		    days = 120 }
+		}
+		add_gold = -25
+	}
+}
+
+caucasianroa.013 = {
+	type = character_event
+	title = caucasianroa.013.t
+	desc = caucasianroa.013.desc
+
+	immediate = {
+
+	}
+
+	theme = dynasty
+	left_portrait = {
+		character =  root
+		animation = personality_honorable
+	}
+
+	trigger = {
+
+	}
+
+	option = {
+		name = caucasianroa.013.ok
+		add_prestige = 500
+		dynasty = {
+		add_dynasty_prestige = 800
+			add_dynasty_modifier = sassanid_claimant_avar
+		}
+	}
+	option = {
+		name = caucasianroa.013.islam
+		add_prestige = 500
+		dynasty = {
+		add_dynasty_prestige = 800
+			add_dynasty_modifier = sassanid_claimant_avar
+		}
+		set_character_faith_with_conversion = faith:maturidi
+	}
+	option = {
+		name = caucasianroa.013.zoroastrianism
+		add_prestige = 500
+		dynasty = {
+		add_dynasty_prestige = 800
+			add_dynasty_modifier = sassanid_claimant_avar
+		}
+		set_character_faith_with_conversion = faith:mazdayasna
+	}
+}
+
+# Unification of Georgia
+
+caucasianroa.014 = {
+	type = character_event
+	title = caucasianroa.014.t
+	desc = caucasianroa.014.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = {
+		reference = wilderness_mountains
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		form_georgia_decision_effect = yes
+		legend_seed_new_title_effect = yes
+	}
+
+	#I was motivated by nobility!
+	option = {
+		name = east_europe.0101.a
+
+		#Your legacy will be remembered.
+		add_prestige_experience = major_prestige_gain
+
+		stress_impact = { arrogant = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_boldness = 0.5
+			}
+		}
+	}
+
+	#I was motivated by faith!
+	option = {
+		name = east_europe.0101.b
+
+		#Your piety will be remembered.
+		add_piety_experience = major_piety_gain
+
+		stress_impact = { zealous = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_zeal = 0.5
+				ai_boldness = 0.25
+			}
+		}
+	}
+
+	#I was motivated by a cynical lust for power!
+	option = {
+		name = east_europe.0101.c
+
+		#Your wry smile walking away from your coronation will be remembered.
+		add_stress = major_stress_loss
+
+		stress_impact = { cynical = minor_stress_impact_loss }
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_greed = 0.5
+				ai_rationality = 0.25
+				ai_honor = -0.25
+			}
+		}
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				capital_province = { geographical_region = struggle_region_armenia }
+				NOT = { THIS = scope:founder }
+			}
+			add_to_list = characters_to_notify
+		}
+		every_in_list = {
+			list = characters_to_notify
+			trigger_event = caucasianroa.015
+		}
+	}
+}
+
+# Inform others
+
+caucasianroa.015 = {
+	type = character_event
+	title = caucasianroa.015.t
+	desc = caucasianroa.015.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = { reference = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+	}
+
+	#Kings and Emperors consider them an upstart.
+	option = {
+		name = east_europe.0102.a
+		trigger = { highest_held_title_tier >= tier_kingdom }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Same-culture rulers are probably quite happy.
+	option = {
+		name = east_europe.0102.b
+		trigger = { culture = scope:founder.culture }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Everyone else is a bit wary.
+	option = {
+		name = east_europe.0102.c
+		trigger = {
+			NOR = {
+				highest_held_title_tier >= tier_kingdom
+				culture = scope:founder.culture
+			}
+		}
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+}
+
+# Unification of Armenian Principalities
+
+caucasianroa.016 = {
+	type = character_event
+	title = caucasianroa.016.t
+	desc = caucasianroa.016.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = {
+		reference = wilderness_mountains
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		unify_armenian_principalities_decision_effect = yes
+		legend_seed_new_title_effect = yes
+	}
+
+	#I was motivated by nobility!
+	option = {
+		name = caucasianroa.016.a
+
+		#Your legacy will be remembered.
+		add_prestige_experience = major_prestige_gain
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				capital_province = { geographical_region = struggle_region_armenia }
+				NOT = { THIS = scope:founder }
+			}
+			add_to_list = characters_to_notify
+		}
+		every_in_list = {
+			list = characters_to_notify
+			trigger_event = caucasianroa.018
+		}
+	}
+}
+
+caucasianroa.018 = {
+	type = character_event
+	title = caucasianroa.015.t
+	desc = caucasianroa.015.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = { reference = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+	}
+
+	#Kings and Emperors consider them an upstart.
+	option = {
+		name = east_europe.0102.a
+		trigger = { highest_held_title_tier >= tier_kingdom }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Same-culture rulers are probably quite happy.
+	option = {
+		name = east_europe.0102.b
+		trigger = { culture = scope:founder.culture }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Everyone else is a bit wary.
+	option = {
+		name = east_europe.0102.c
+		trigger = {
+			NOR = {
+				highest_held_title_tier >= tier_kingdom
+				culture = scope:founder.culture
+			}
+		}
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+}
+
+# Armenian Cilicia
+caucasianroa.019 = {
+	type = character_event
+	title = caucasianroa.019.t
+	desc = caucasianroa.019.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = {
+		reference = wilderness_mountains
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		decision_form_armenian_cilicia_effect = yes	
+		legend_seed_new_title_effect = yes
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				capital_province = { geographical_region = struggle_region_armenia }
+				NOT = { THIS = scope:founder }
+			}
+			add_to_list = characters_to_notify
+		}
+		every_in_list = {
+			list = characters_to_notify
+			trigger_event = caucasianroa.020
+		}
+	}
+
+	#I was motivated by nobility!
+	option = {
+		name = caucasianroa.019.a
+
+		#Your legacy will be remembered.
+		add_prestige_experience = major_prestige_gain
+	}
+}
+
+caucasianroa.020 = {
+	type = character_event
+	title = caucasianroa.020.t
+	desc = caucasianroa.020.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = { reference = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+	}
+
+	#Kings and Emperors consider them an upstart.
+	option = {
+		name = east_europe.0102.a
+		trigger = { highest_held_title_tier >= tier_kingdom }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Same-culture rulers are probably quite happy.
+	option = {
+		name = east_europe.0102.b
+		trigger = { culture = scope:founder.culture }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Everyone else is a bit wary.
+	option = {
+		name = east_europe.0102.c
+		trigger = {
+			NOR = {
+				highest_held_title_tier >= tier_kingdom
+				culture = scope:founder.culture
+			}
+		}
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+}
+
+# Call to war (Xabze/Adat)
+caucasianroa.021 = {
+	type = character_event
+	title = caucasianroa.021.t
+	desc = caucasianroa.021.desc
+	theme = battle
+	override_background = { reference = burning_building }
+	left_portrait = {
+		character = scope:defender
+		animation = personality_vengeful
+	}
+	right_portrait = {
+		character = scope:attacker
+		animation = personality_greedy
+	}
+	immediate = {
+		save_scope_as = invitee
+	}
+
+	option = {
+		# To war!
+		name = caucasianroa.021.a
+		scope:war = {
+			every_war_defender = { send_interface_toast = {
+				type = sea_caucasus_join_war_ally
+				left_icon = scope:invitee
+			} }
+			every_war_attacker = { send_interface_toast = {
+				type = sea_caucasus_join_war_enemy
+				left_icon = scope:invitee
+			} }
+			add_defender = scope:invitee
+		}
+		ai_chance = {
+			base = 70
+
+			modifier = {  # Conquerors do not help anyone but themselves
+				add = -1000
+				desc = NO_FRIVOLOUS_ACTIVITIES_REASON
+				scope:invitee = { ai_has_conqueror_personality = yes }
+			}
+			modifier = {  # AI's that need to save gold will not help their lesser AI allies, unless it's a player war
+				add = -1000
+				desc = NO_FRIVOLOUS_ACTIVITIES_REASON
+				scope:defender = {
+					is_ai = yes
+					primary_title.tier < scope:invitee.primary_title.tier
+				}
+				scope:war = {
+					primary_attacker = { is_ai = yes }
+					primary_defender = { is_ai = yes }
+				}
+				scope:invitee = { ai_should_focus_on_building_in_their_capital = yes }
+			}
+	
+			modifier = {  # Refuse call to conflicts of little benefit
+				add = -1000
+				desc = WONT_FIGHT_MEANINGLESS_REASON
+				trigger_if = {
+					limit = { exists = scope:war }
+					scope:war = { using_cb = fp2_border_raid }
+					scope:invitee = { # Unless they like going on raids
+						NOR = {
+							has_trait = viking
+							has_trait = reaver
+						}
+					}
+				}
+				trigger_else = { always = no }
+			}
+	
+			modifier = {  # Refuse call against Heir
+				add = -1000
+				exists = scope:invitee.player_heir
+				trigger_if = {
+					limit = { scope:war.primary_defender = scope:defender }
+					scope:war.primary_attacker = scope:invitee.player_heir
+				}
+				trigger_else = {
+					scope:war.primary_defender = scope:invitee.player_heir
+				}
+				desc = WONT_FIGHT_HEIR_REASON
+			}
+	
+			modifier = {  # Refuse call against Spouse
+				add = -1000
+				scope:invitee = {
+					trigger_if = {
+						limit = { scope:war.primary_defender = scope:defender }
+						any_spouse = {
+							this = scope:war.primary_attacker
+						}
+					}
+					trigger_else = {
+						any_spouse = {
+							this = scope:war.primary_defender
+						}
+					}
+	
+				}
+				desc = WONT_FIGHT_SPOUSE_REASON
+			}
+	
+			opinion_modifier = { # Opinion Factor
+				who = scope:invitee
+				opinion_target = scope:defender
+				multiplier = 1.0
+				desc = AI_OPINION_REASON
+			}
+	
+			# Honor factor
+			ai_value_modifier = {
+				ai_honor = 1
+				min = 0
+			}
+	
+			modifier = { # Same language
+				add = 5
+				desc = speaks_same_language_interaction_reason
+				trigger = {
+					scope:defender = {
+						knows_language_of_culture = scope:invitee.culture
+					}
+				}
+			}
+	
+			modifier = { # Shared Court Language (non-spoken)
+				add = 10
+				desc = foreign_realm_court_language_non_spoken_interaction_reason
+				trigger = {
+					scope:defender = {
+						has_royal_court = yes
+						has_dlc_feature = royal_court
+						NOT = { knows_court_language_of = this }
+					}
+					NOT = {
+						scope:defender.top_liege = scope:invitee.top_liege
+					}
+					OR = {
+						AND = {
+							scope:invitee = {
+								has_royal_court = yes
+							}
+							scope:defender = { # You share Court Language
+								has_same_court_language = scope:invitee
+							}
+						}
+	
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege does
+							is_independent_ruler = no
+							has_royal_court = no
+							liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							exists = liege.liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege's liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							exists = liege.liege.liege
+							exists = liege.liege.liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+					}
+				}
+			}
+	
+			modifier = { # Shared Court Language (spoken)
+				add = 30
+				desc = foreign_realm_court_language_spoken_interaction_reason
+				trigger = {
+					scope:defender = {
+						has_royal_court = yes
+						has_dlc_feature = royal_court
+						knows_court_language_of = this
+					}
+					NOT = {
+						scope:defender.top_liege = scope:invitee.top_liege
+					}
+					OR = {
+						AND = {
+							scope:invitee = {
+								has_royal_court = yes
+							}
+							scope:defender = { # You share Court Language
+								has_same_court_language = scope:invitee
+							}
+						}
+	
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege does
+							is_independent_ruler = no
+							has_royal_court = no
+							liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							exists = liege.liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+						scope:invitee = { # The invitee doesn't have a royal court, but their liege's liege's liege's liege does, while their liege doesn't have a royal court
+							is_independent_ruler = no
+							has_royal_court = no
+							exists = liege.liege
+							exists = liege.liege.liege
+							exists = liege.liege.liege.liege
+							liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege = {
+								is_independent_ruler = no
+								has_royal_court = no
+							}
+							liege.liege.liege.liege = {
+								has_royal_court = yes
+								has_same_court_language = scope:defender
+							}
+						}
+					}
+				}
+			}
+	
+			modifier = {  # Serious diarchs wish to support their liege
+				add = 50
+				desc = ENTRENCHED_REGENT_WILL_SUPPORT_LIEGE
+				trigger_if = {
+					limit = { scope:invitee ?= scope:defender.diarch }
+					scope:defender = { has_diarchy_parameter = diarchy_type_is_entrenched_regency }
+				}
+				trigger_else = { always = no }
+			}
+	
+			compare_modifier = { # Likes fighting infidels
+				trigger = {
+					scope:invitee.faith = scope:defender.faith
+					OR = {
+						AND = {
+							scope:war.primary_attacker = {
+								this = scope:defender
+								faith = {
+									faith_hostility_level = {
+										target = scope:war.primary_defender.faith
+										value >= religious_cb_enabled_hostility_level
+									}
+								}
+							}
+						}
+						AND = {
+							scope:war.primary_defender = {
+								this = scope:defender
+								faith = {
+									faith_hostility_level = {
+										target = scope:war.primary_defender.faith
+										value >= religious_cb_enabled_hostility_level
+									}
+								}
+							}
+						}
+					}
+				}
+				target = scope:invitee
+				value = ai_zeal
+				desc = "ZEAL_AGAINST_INFIDELS"
+				min = 0
+				multiplier = 0.5
+			}
+	
+			modifier = {  # Reluctant to attack another ally
+				add = -50
+				scope:war.primary_attacker = scope:defender
+				scope:invitee = {
+					is_allied_to = scope:war.primary_defender
+				}
+				desc = ATTACK_ON_ALLY_REASON
+			}
+	
+			modifier = {  # Reluctant to defend against another ally
+				add = -25
+				scope:war.primary_defender = scope:defender
+				scope:invitee = {
+					is_allied_to = scope:war.primary_attacker
+				}
+				desc = WAR_WITH_ALLY_REASON
+			}
+	
+			modifier = {  # Reluctant to join wars against religious brethren.
+				add = -50
+				NOT = { scope:invitee.faith = scope:defender.faith }
+				scope:war.primary_attacker = scope:defender
+				scope:war.primary_defender.faith = scope:invitee.faith
+				scope:war.war = {
+					OR = {
+						using_cb = minor_religious_war
+						using_cb = religious_war
+						using_cb = major_religious_war
+						using_cb = undirected_great_holy_war
+						using_cb = directed_great_holy_war
+					}
+				}
+				desc = WONT_ATTACK_RELIGIOUS_BRETHREN_REASON
+			}
+	
+			modifier = { # Reluctant to join against Friends
+				add = -50
+				trigger_if = {
+					limit = {
+						scope:war.primary_defender = scope:defender
+					}
+					has_relation_friend = scope:war.primary_attacker
+				}
+				trigger_else = {
+					has_relation_friend = scope:war.primary_defender
+				}
+				desc = WONT_FIGHT_FRIEND
+			}
+	
+			modifier = { # Reluctant to join against Best Friends
+				add = -100
+				trigger_if = {
+					limit = {
+						scope:war.primary_defender = scope:defender
+					}
+					has_relation_best_friend = scope:war.primary_attacker
+				}
+				trigger_else = {
+					has_relation_best_friend = scope:war.primary_defender
+				}
+				desc = WONT_FIGHT_BEST_FRIEND
+			}
+			modifier = { # Reluctant to join against Lovers
+				add = -100
+				trigger_if = {
+					limit = {
+						scope:war.primary_defender = scope:defender
+					}
+					has_relation_lover = scope:war.primary_attacker
+				}
+				trigger_else = {
+					has_relation_lover = scope:war.primary_defender
+				}
+				desc = WONT_FIGHT_LOVER
+			}
+			modifier = { # Reluctant to join against Soulmate
+				add = -200
+				trigger_if = {
+					limit = {
+						scope:war.primary_defender = scope:defender
+					}
+					has_relation_soulmate = scope:war.primary_attacker
+				}
+				trigger_else = {
+					has_relation_soulmate = scope:war.primary_defender
+				}
+				desc = WONT_FIGHT_SOULMATE
+			}
+			modifier = {  # Refuse call for hostages' safety
+				any_home_court_hostage = {
+					warden = {
+						OR = {
+							is_at_war_with = scope:defender
+							any_ally = { is_at_war_with = scope:defender }
+						}
+					}
+				}
+				add = {
+					value = 0
+					every_home_court_hostage = {
+						limit = {
+							warden = {
+								OR = {
+									is_at_war_with = scope:defender
+									any_ally = { is_at_war_with = scope:defender }
+								}
+							}
+						}
+						subtract = call_to_arms_hostage_value
+					}
+					multiply = 0.25
+				}
+				desc = HOSTAGE_ENEMY_CALL_TO_ARMS_REASON
+			}
+		}
+	}
+
+	option = {
+		# Nah I don't really feel like it
+		name = caucasianroa.021.b
+		add_prestige = {
+			value = minor_prestige_loss
+			multiply = highest_held_title_tier
+		}
+		ai_chance = {
+			base = 1
+		}
+	}
+}
+
+caucasianroa.022 = {
+	type = character_event
+	title = caucasianroa.022.t
+	desc = caucasianroa.022.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		form_aluank_decision_effect = yes
+		legend_seed_new_title_effect = yes
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				capital_province = { geographical_region = struggle_region_armenia }
+				NOT = { THIS = scope:founder }
+			}
+			add_to_list = characters_to_notify
+		}
+		every_in_list = {
+			list = characters_to_notify
+			trigger_event = caucasianroa.023
+		}
+	}
+
+	#I was motivated by nobility!
+	option = {
+		name = caucasianroa.022.a
+
+		#Your legacy will be remembered.
+		add_prestige_experience = major_prestige_gain
+	}
+}
+
+caucasianroa.023 = {
+	type = character_event
+	title = caucasianroa.023.t
+	desc = caucasianroa.023.desc
+	theme = crown
+	left_portrait = {
+		character = scope:founder
+		animation = personality_bold
+	}
+	override_background = { reference = wilderness_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+	}
+
+	#Kings and Emperors consider them an upstart.
+	option = {
+		name = east_europe.0102.a
+		trigger = { highest_held_title_tier >= tier_kingdom }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Same-culture rulers are probably quite happy.
+	option = {
+		name = east_europe.0102.b
+		trigger = { culture = scope:founder.culture }
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+
+	#Everyone else is a bit wary.
+	option = {
+		name = east_europe.0102.c
+		trigger = {
+			NOR = {
+				highest_held_title_tier >= tier_kingdom
+				culture = scope:founder.culture
+			}
+		}
+
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+}
+
+#temporarily here until we integrate the islam events from other branch
+
+caucasianroa.998 = { #ramadan event
+	hidden = yes
+
+	immediate = {
+		trigger_event = {
+			id = caucasianroa.998
+		    days = 354
+		}
+		religion:islam_religion = {
+			every_faith = {	
+				limit = {
+					NOT = { this = faith:alawite }
+					NOT = { this = faith:druze }
+					NOT = { this = faith:qarmatian }
+				}
+				every_faith_character  = {
+					limit = {
+						NOT = {
+							has_any_disease_trigger = yes
+							has_trait = cynical
+							age < 14
+							has_trait = ill
+							has_trait = pregnant
+							has_trait = infirm
+							#has crypto faith
+						}
+					}	
+					add_character_modifier = {
+						modifier = ramadan_fasting_roa
+						days = 30
+					}					
+				}
+			}
+		}
+	}
+}
+
+caucasianroa.999 = {
+	type = character_event
+	title = caucasianroa.999.t
+	desc = caucasianroa.999.desc
+	theme = realm
+	left_portrait = {
+		character = ROOT
+		animation = personality_bold
+	}
+	immediate = {
+		scope:title = {
+			every_in_de_jure_hierarchy = {
+				limit = { tier = tier_duchy }
+				add_to_list = incoporated_duchies
+			}
+		}
+	}
+
+	option = {
+		name = caucasianroa.999.accept
+		every_in_list = {
+			list = incoporated_duchies
+			set_de_jure_liege_title = title:k_georgia
+		}
+		destroy_title = scope:title
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = caucasianroa.999.refuse
+		ai_chance = {
+			base = 0
+		}
+	}
+}

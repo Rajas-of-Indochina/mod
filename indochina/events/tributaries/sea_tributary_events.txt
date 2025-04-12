@@ -20,7 +20,7 @@ tributaries.0001 = {
 
         every_in_list = {
             list = tributaries_to_pass
-            add_relation_suzerain = scope:new_suzerain
+            set_relation_suzerain = scope:new_suzerain
         }
     }
 }
@@ -44,7 +44,7 @@ tributaries.0002 = {
 
         every_in_list = {
             list = suzerainties_to_pass
-            add_relation_tributary = scope:new_tributary
+            set_relation_tributary = scope:new_tributary
         }
     }
 }
@@ -74,11 +74,9 @@ tributaries.2003 = {
                             is_landed = no
                         }
                     }
-                    every_relation = { type = tributary
-                        set_variable = { name = my_suzerain value = root }
-                        root = {
-                            add_to_variable_list = { name = permanent_tributaries target = prev }
-                        }
+                    every_relation = {
+                        type = tributary
+                        remove_relation_suzerain = PREV
                     }
                     clear_variable_list = permanent_tributaries
                     clear_variable_list = non_permanent_tributaries
@@ -90,23 +88,9 @@ tributaries.2003 = {
                     limit = {
                         is_landed = no
                     }
-                    if = {
-                        limit = {
-                            is_permanent_tributary = {
-                                SUZERAIN = var:my_suzerain
-                                TRIBUTARY = this
-                            }
-                        }
-                        var:my_suzerain = {
-                            remove_list_variable = { name = permanent_tributaries target = prev }
-                            remove_list_variable = { name = all_tributaries target = prev }
-                        }
-                    }
-                    else = {
-                        var:my_suzerain = {
-                            remove_list_variable = { name = non_permanent_tributaries target = prev }
-                            remove_list_variable = { name = all_tributaries target = prev }
-                        }
+                    every_relation = {
+                        type = suzerain
+                        remove_relation_tributary = PREV
                     }
                 }
             }
@@ -339,6 +323,7 @@ tributaries.2016 = {
             }
             # trigger_event = { id = tributaries.8 } #tributary gets a positive response
         }
+        ai_chance = { base = 100 } # This should be more complex than this
     }
 
     option = {
@@ -348,6 +333,7 @@ tributaries.2016 = {
         scope:call_to_arms_tribute = {
             trigger_event = { id = tributaries.7 } #tributary gets a negative response
         }
+        ai_chance = { base = 0 }
     }
 }
 

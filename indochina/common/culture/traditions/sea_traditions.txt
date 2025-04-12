@@ -1741,8 +1741,19 @@ tradition_caucasian_tenacity = {
 	}
 
 	is_shown = {
-		has_cultural_pillar = heritage_ciscaucasian
+		OR = {
+			has_cultural_pillar = heritage_ciscaucasian
+			has_cultural_pillar = heritage_aghvank
+			this = culture:svan
+			any_parent_culture_or_above = {
+				this = culture:svan
+			}
+		}
 		NOR = {
+			this = culture:udi
+			any_parent_culture_or_above = {
+				this = culture:udi
+			}
 			has_cultural_tradition = tradition_mountaineers
 			has_cultural_tradition = tradition_highland_warriors
 			has_cultural_tradition = tradition_horn_mountain_skirmishing
@@ -1751,7 +1762,6 @@ tradition_caucasian_tenacity = {
 		}
 	}
 	can_pick = {
-		has_cultural_pillar = heritage_ciscaucasian
 		custom_description = {
 			text = culture_in_mountains_or_hills_desc
 			any_culture_county = {
@@ -1767,6 +1777,7 @@ tradition_caucasian_tenacity = {
 	}
 
 	parameters = {
+		unlock_maa_sea_caucasian_highlander = yes
 		rough_terrain_expert_trait_more_common = yes
 		mountain_trait_bonuses = yes
 		hill_trait_bonuses = yes
@@ -1775,16 +1786,13 @@ tradition_caucasian_tenacity = {
 	}
 	province_modifier = {
 		mountains_levy_size = 0.1
-		desert_mountains_levy_size = 0.1
 		hills_levy_size = 0.1
 		mountains_supply_limit_mult = 0.25
-		desert_mountains_supply_limit_mult = 0.25
 		hills_supply_limit_mult = 0.25
 		garrison_size = 0.25
 	}
 	character_modifier = {
 		mountains_travel_danger = mountains_medium_danger_reduction
-		desert_mountains_travel_danger = desert_mountains_medium_danger_reduction
 		hills_travel_danger = hills_medium_danger_reduction
 		defender_advantage = 5
 	}
@@ -1864,7 +1872,7 @@ tradition_jigit_riders = {
 	layers = {
 		0 = martial
 		1 = mena
-		4 = rider.dds
+		4 = indomitable_azatani.dds
 	}
 
 	is_shown = {
@@ -1921,7 +1929,9 @@ tradition_jigit_riders = {
 	}
 }
 
-tradition_xabze = {
+tradition_xabze = { #Representing adat traditions in Northwest Caucasus
+#https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=хабзэ&btnG=
+#https://en.wikipedia.org/wiki/Adyghe_Xabze
 	category = regional
 
 	layers = {
@@ -1949,18 +1959,20 @@ tradition_xabze = {
 	}
 
 	parameters = {
-		honest_trait_more_common = yes
-		harder_to_hybridize = yes
 		number_of_spouses = 1
 		dislikes_marrying_outside_of_culture = yes
+		ai_doesnt_marry_outside_culture = yes
 		prowess_from_martial_education = yes
+		harder_to_hybridize = yes
 		harder_to_convert_county_culture_without_heritage = yes
 		has_access_to_shieldmaidens = yes
+		xabze_defense = yes
 	}
 
 	character_modifier = {
 		tyranny_gain_mult = 0.5
 		stress_gain_mult = 0.05
+		diplomatic_range_mult = -0.15
 		prowess = 1
 	}
 
@@ -1993,7 +2005,7 @@ tradition_xabze = {
 	}
 }
 
-tradition_adat = {
+tradition_adat = { #Representing adat traditions in Northeast Caucasus
 	category = regional
 
 	layers = {
@@ -2024,17 +2036,19 @@ tradition_adat = {
 	}
 
 	parameters = {
-		honest_trait_more_common = yes
 		dislikes_marrying_outside_of_culture = yes
+		ai_doesnt_marry_outside_culture = yes
 		prowess_from_martial_education = yes
 		harder_to_hybridize = yes
 		harder_to_convert_county_culture_without_heritage = yes
 		has_access_to_shieldmaidens = yes
+		adat_defense = yes
 	}
 
 	character_modifier = {
 		tyranny_gain_mult = 0.5
 		stress_gain_mult = 0.05
+		diplomatic_range_mult = -0.15
 		prowess = 1
 	}
 
@@ -2229,6 +2243,7 @@ tradition_highland_tower_architects = {
 		hill_trait_bonuses = yes
 		can_recruit_mountain_specialist = yes
 		can_recruit_hill_specialist = yes
+		tribals_can_into_temples = yes
 	}
 	character_modifier = {
 		mountains_travel_danger = mountains_medium_danger_reduction
@@ -2244,8 +2259,6 @@ tradition_highland_tower_architects = {
 		hills_holding_construction_gold_cost = -0.1
 		mountains_construction_gold_cost = -0.1
 		mountains_holding_construction_gold_cost = -0.1
-		desert_mountains_construction_gold_cost = -0.1
-		desert_mountains_holding_construction_gold_cost = -0.1
 	}
 
 	cost = {
@@ -2352,7 +2365,7 @@ tradition_heirs_of_illuminator = {
 	}
 
 	parameters = {
-		unlock_maa_ayrudzi = yes
+		unlock_maa_sea_ayrudzi = yes
 		rough_terrain_expert_trait_more_common = yes
 		mountain_trait_bonuses = yes
 		hill_trait_bonuses = yes
@@ -2566,7 +2579,7 @@ tradition_sapphic_romance = {
 				desc = "[GetFaithDoctrine('doctrine_homosexuality_shunned').GetBaseName]"
 			}
 			if = {
-				limit = { scope:character.faith = { has_doctrine_parameter = homosexuality_crime } }
+				limit = { scope:character.faith = { has_doctrine_parameter = homosexuality_illegal } }
 				add = tradition_base_cost
 				desc = "[GetFaithDoctrine('doctrine_homosexuality_crime').GetBaseName]"
 			}
@@ -2611,4 +2624,65 @@ tradition_sapphic_romance = {
 			add = 1000
 		}
 	}
+}
+
+## Just to fix a crash, won't actually appear without RICE
+tradition_RICE_silk_road = {
+	category = regional
+
+	layers = {
+		0 = diplo
+		1 = mena
+		4 = RICE_silk.dds
+	}
+	
+	is_shown = {
+		has_global_variable = is_RICE_loaded_global_variable
+		any_culture_county = {
+			title_province = {
+				geographical_region = RICE_land_silk_road_region
+			}
+		}
+	}
+	can_pick = {
+		has_global_variable = is_RICE_loaded_global_variable
+		any_culture_county = {
+			count >= 4
+			title_province = {
+				geographical_region = RICE_land_silk_road_region
+			}
+		}
+	}
+	
+	parameters = {
+		city_buildings_more_powerful = yes
+		unlock_rice_silk_road_dynasty_legacy = yes
+		rice_decision_reinforce_relations_multiple = yes
+		unlock_silk_road_entertainers = yes
+		unlock_sincization = yes
+		#unlock_rice_tarim_basin_establish_translation_bureau = yes
+		#rice_decision_reinforce_relations_no_limit = yes
+	}
+
+	character_modifier = {
+		diplomatic_range_mult = 0.2
+		different_culture_opinion = 5
+		different_faith_opinion = 5
+		character_travel_speed_mult = 0.05
+		character_travel_safety_mult = 0.05
+	}	
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = { value = 100 }
 }

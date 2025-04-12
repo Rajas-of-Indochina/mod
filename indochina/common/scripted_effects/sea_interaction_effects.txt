@@ -673,3 +673,196 @@ marriage_interaction_on_accept_effect = {
 		}
 	}
 }
+
+# Switch a character to the specified faith and keep their old faith as a secret (or not)
+# Assumes that spouses and family to convert have already been grabbed
+convert_family_to_faith_effect = {
+	every_in_list = {
+		list = spouses_and_family_to_convert
+		# Make crypto-religionists of them, if applicable
+		if = {
+			limit = {
+				$FALSE_CONVERSION$ = yes
+				faith = scope:recipient.faith
+			}
+			scope:recipient.faith = { save_temporary_scope_as = old_faith }
+			set_character_faith = scope:actor.faith
+			make_character_crypto_religionist_effect = { CRYPTO_RELIGION = scope:old_faith }
+			# Grab the character's recently added crypto secret
+			if = {
+				limit = {
+					any_secret = { secret_type = secret_crypto_religionist }
+					exists = secret_faith
+					# Ignore the crypto secret if it's not new
+					# This prevents the edge case of family members finding out about other family's different crypto faiths
+					secret_faith = scope:old_faith
+				}
+				random_secret = {
+					limit = {
+						secret_type = secret_crypto_religionist
+					}
+					save_scope_as = crypto_religionist_secret
+				}
+			}
+			# Make the secret known to all other family members
+			every_in_list = {
+				list = spouses_and_family_to_convert
+				if = {
+					limit = {
+						exists = scope:crypto_religionist_secret
+						NOT = { prev = this }
+					}
+					scope:crypto_religionist_secret = {
+						reveal_to_without_events_effect = { CHARACTER = prev }
+					}
+				}
+			}
+		}
+		else = {
+			set_character_faith = scope:actor.faith
+		}
+		if = {
+			limit = {
+				$FORCED$ = yes
+			}
+			hidden_effect = {
+				add_character_flag = {
+					flag = converted_by_forced_conversion_interaction
+					years = 5
+				}
+			}
+		}
+	}
+	scope:recipient = {
+		bastard_to_wild_oat_conversion_interaction_effect = yes
+	}
+	# Struggle Catalysts.
+	if = {
+		limit = {
+			scope:recipient = { is_important_or_vip_struggle_character = yes }
+			scope:actor = {
+				any_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+						CATALYST = catalyst_demanding_important_conversion
+						CHAR = scope:recipient
+					}
+				}
+			}
+		}
+		scope:actor = {
+			every_character_struggle = {
+				involvement = involved
+				limit = {
+					activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+						CATALYST = catalyst_demanding_important_conversion
+						CHAR = scope:recipient
+					}
+				}
+				activate_struggle_catalyst = {
+					catalyst = catalyst_demanding_important_conversion
+					character = scope:actor
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:recipient = {
+				is_important_or_vip_struggle_character = yes
+				NOT = {has_trait = pro_roman}
+			}
+			scope:actor = {
+				has_trait = pro_roman
+				any_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+						CATALYST = catalyst_demanding_important_conversion_pro_roman
+						CHAR = scope:recipient
+					}
+				}
+			}
+		}
+		scope:actor = {
+			every_character_struggle = {
+				involvement = involved
+				limit = {
+					activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+						CATALYST = catalyst_demanding_important_conversion_pro_roman
+						CHAR = scope:recipient
+					}
+				}
+				activate_struggle_catalyst = {
+					catalyst = catalyst_demanding_important_conversion_pro_roman
+					character = scope:actor
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:recipient = {
+				is_important_or_vip_struggle_character = yes
+				NOT = {has_trait = pro_persian}
+			}
+			scope:actor = {
+				has_trait = pro_persian
+				any_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+						CATALYST = catalyst_demanding_important_conversion_pro_persian
+						CHAR = scope:recipient
+					}
+				}
+			}
+		}
+		scope:actor = {
+			every_character_struggle = {
+				involvement = involved
+				limit = {
+					activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+						CATALYST = catalyst_demanding_important_conversion_pro_persian
+						CHAR = scope:recipient
+					}
+				}
+				activate_struggle_catalyst = {
+					catalyst = catalyst_demanding_important_conversion_pro_persian
+					character = scope:actor
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:recipient = {
+				is_important_or_vip_struggle_character = yes
+				NOT = {has_trait = pro_armenian}
+			}
+			scope:actor = {
+				has_trait = pro_armenian
+				any_character_struggle = {
+					involvement = involved
+					activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+						CATALYST = catalyst_demanding_important_conversion_pro_armenian
+						CHAR = scope:recipient
+					}
+				}
+			}
+		}
+		scope:actor = {
+			every_character_struggle = {
+				involvement = involved
+				limit = {
+					activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+						CATALYST = catalyst_demanding_important_conversion_pro_armenian
+						CHAR = scope:recipient
+					}
+				}
+				activate_struggle_catalyst = {
+					catalyst = catalyst_demanding_important_conversion_pro_armenian
+					character = scope:actor
+				}
+			}
+		}
+	}
+}

@@ -200,4 +200,138 @@ on_declared_war = {
 			}
 		}
 	}
+	#tributary/suzerain
+	if = {
+		limit = {
+			scope:defender = {
+				is_tributary = yes
+				NOT = {
+					any_relation = {
+						type = suzerain
+						any_relation = {
+							type = tributary
+							this = scope:attacker
+						}
+					}
+				}
+			}
+		}
+
+		custom_tooltip = {
+			text = suzerain_joins_wars_tt
+			scope:defender = {
+				random_relation = {
+					type = suzerain
+					# limit = { is_ai = yes }
+					if = {
+						limit = { is_ai = yes }
+						save_temporary_scope_as = suzerain
+						scope:war = {
+							add_defender = scope:suzerain
+						}
+					}
+					else = {
+						trigger_event = { id = tributaries.2016 }
+					}
+				}
+			}
+		}
+	}
+
+	#Caucasus Stuff
+	if = {
+		limit = {
+			OR ={
+				AND = {
+					scope:defender.culture = { has_cultural_tradition = tradition_xabze }
+					NOT = {
+						scope:attacker.culture = { has_cultural_tradition = tradition_xabze }
+					}				
+				}
+				AND = {
+					scope:defender.culture = { has_cultural_tradition = tradition_adat }
+					NOT = {
+						scope:attacker.culture = { has_cultural_tradition = tradition_adat }
+					}				
+				}
+			}
+			scope:defender = { is_independent_ruler = yes }
+		}
+		if = {
+			limit = { scope:defender.culture = { has_cultural_tradition = tradition_xabze } }
+			custom_tooltip = xabze_defense_warning_tt
+		}
+		if = {
+			limit = { scope:defender.culture = { has_cultural_tradition = tradition_adat } }
+			custom_tooltip = adat_defense_warning_tt
+		}
+		hidden_effect = {
+			every_ruler = {
+				limit = {
+					is_landed = yes
+					is_independent_ruler = yes
+					any_neighboring_top_liege_realm_owner = { this = scope:defender }
+					NOT = { any_liege_or_above = { this = scope:attacker } }
+					OR = { #It's technically possible to have a hybrid Aghvan/Ciscaucasian culture that has both so I gotta do this janky check for that
+						AND = {
+							scope:defender.culture = { has_cultural_tradition = tradition_xabze }
+							culture = { has_cultural_tradition = tradition_xabze }
+						}
+						AND = {
+							scope:defender.culture = { has_cultural_tradition = tradition_adat }
+							culture = { has_cultural_tradition = tradition_adat }
+						}
+					}
+					culture = { has_same_culture_heritage = scope:defender.culture }
+				}
+				trigger_event = { id = caucasianroa.021 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:defender.capital_county.title_province.geographical_region = struggle_region_armenia
+			NOT = { scope:attack.capital_county.title_province.geographical_region = struggle_region_armenia }
+			exists = global_var:armenian_struggle_ending
+			global_var:armenian_struggle_ending = flag:armenian_struggle_armenian_confederation
+		}
+		custom_tooltip = armenian_defense_warning_tt
+		hidden_effect = {
+			every_ruler = {
+				limit = {
+					is_landed = yes
+					any_neighboring_top_liege_realm_owner = { this = scope:defender }
+					NOT = { any_liege_or_above = { this = scope:attacker } }
+					capital_county.title_province.geographical_region = struggle_region_armenia
+				}
+				trigger_event = { id = caucasianroa.021 }
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:defender = {
+				has_trait = pro_armenian
+				any_character_struggle = {
+					has_struggle_phase_parameter = armenians_join_defensive_wars_against_outsiders
+				}
+			}
+			NOT = { scope:attacker = { has_trait = pro_armenian } }
+		}
+		custom_tooltip = armenian_struggle_defense_warning_tt
+		hidden_effect = {
+			every_ruler = {
+				limit = {
+					is_landed = yes
+					any_neighboring_top_liege_realm_owner = { this = scope:defender }
+					NOT = { any_liege_or_above = { this = scope:attacker } }
+					has_trait = pro_armenian
+					any_character_struggle = {
+						has_struggle_phase_parameter = armenians_join_defensive_wars_against_outsiders
+					}
+				}
+				trigger_event = { id = caucasianroa.021 }
+			}
+		}
+	}
 }

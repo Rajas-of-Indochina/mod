@@ -177,3 +177,293 @@ debug_character_pools = {
 
 	}
 }
+
+armenian_struggle_realm_alignment_map = {
+	color_mode = baronies
+	small_map_names = selected_character_realms
+	large_map_names = selected_character_realms
+	selection = selected_character_realms_or_holdings
+	fill_in_impassable = no
+
+	barony_description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { county = { any_county_struggle = { is_struggle_type = armenian_struggle } } }
+				}
+				desc = "Outside Struggle Area"
+			}
+			desc = {
+				triggered_desc = {
+					trigger = {
+						county.holder = { has_trait = pro_roman }
+					}
+					desc = roman_aligned_county_holder
+				}
+				triggered_desc = {
+					trigger = {
+						county.holder = { has_trait = pro_persian }
+					}
+					desc = persian_aligned_county_holder
+				}
+				triggered_desc = {
+					trigger = {
+						county.holder = { has_trait = pro_armenian }
+					}
+					desc = local_aligned_county_holder
+				}
+			}
+
+			desc = "Foreign-Controlled"
+
+		}
+	}
+
+	gradient_parameters = {
+		zoom_step =					2
+		gradient_alpha_inside = 	1
+		gradient_alpha_outside = 	1
+		gradient_width = 			0.4
+		gradient_color_mult =		1
+		edge_width = 				0
+		edge_sharpness = 			0
+		edge_alpha = 				0
+		edge_color_mult = 			0
+		before_lighting_blend =		1
+		after_lighting_blend =		0.5
+	}
+}
+
+armenian_struggle_culture_alignment_map = {
+	color_mode = baronies
+	small_map_names = cultures
+	large_map_names = cultures
+	selection = cultures
+	fill_in_impassable = yes
+
+	barony_description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { county = { any_county_struggle = { is_struggle_type = armenian_struggle } } }
+				}
+				desc = "Outside Struggle Area"
+			}
+			desc = {
+				triggered_desc = {
+					trigger = {
+						armenian_struggle_is_roman_culture_trigger = { CULTURE = county.culture }
+					}
+					desc = "[ROOT.GetProvince.GetCounty.GetCulture.GetNameNoTooltip] is a [roman_culture|E]"
+				}
+				triggered_desc = {
+					trigger = {
+						armenian_struggle_is_persian_culture_trigger = { CULTURE = county.culture }
+					}
+					desc = "[ROOT.GetProvince.GetCounty.GetCulture.GetNameNoTooltip] is a [persian_culture|E]"
+				}
+				triggered_desc = {
+					trigger = {
+						armenian_struggle_is_local_culture_trigger = { CULTURE = county.culture }
+					}
+					desc = "[ROOT.GetProvince.GetCounty.GetCulture.GetNameNoTooltip] is a [local_culture|E]"
+				}
+			}
+
+			desc = "Foreign Culture"
+		}
+	}
+
+	gradient_parameters = {
+		zoom_step =					2
+		gradient_alpha_inside = 	1
+		gradient_alpha_outside = 	1
+		gradient_width = 			0.4
+		gradient_color_mult =		1
+		edge_width = 				0
+		edge_sharpness = 			0
+		edge_alpha = 				0
+		edge_color_mult = 			0
+		before_lighting_blend =		1
+		after_lighting_blend =		0.5
+	}
+}
+armenian_struggle_faith_alignment_map = {
+	color_mode = baronies
+	small_map_names = religions
+	large_map_names = religions
+	selection = faiths
+	fill_in_impassable = yes
+
+	barony_description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { county = { any_county_struggle = { is_struggle_type = armenian_struggle } } }
+				}
+				desc = "Outside Struggle Area"
+			}
+			desc = {
+				triggered_desc = {
+					trigger = {
+						armenian_struggle_is_roman_faith_trigger = { FAITH = county.faith }
+					}
+					desc = "[ROOT.GetProvince.GetCounty.GetFaith.GetNameNoTooltip] is a [roman_faith|E]"
+				}
+				triggered_desc = {
+					trigger = {
+						armenian_struggle_is_persian_faith_trigger = { FAITH = county.faith }
+					}
+					desc = "[ROOT.GetProvince.GetCounty.GetFaith.GetNameNoTooltip] is a [persian_faith|E]"
+				}
+				triggered_desc = {
+					trigger = {
+						armenian_struggle_is_local_faith_trigger = { FAITH = county.faith }
+					}
+					desc = "[ROOT.GetProvince.GetCounty.GetFaith.GetNameNoTooltip] is a [local_faith|E]"
+				}
+			}
+			desc = "[ROOT.GetProvince.GetCounty.GetFaith.GetNameNoTooltip] is a Foreign Faith"
+		}
+	}
+
+	gradient_parameters = {
+		zoom_step =					2
+		gradient_alpha_inside = 	1
+		gradient_alpha_outside = 	1
+		gradient_width = 			0.4
+		gradient_color_mult =		1
+		edge_width = 				0
+		edge_sharpness = 			0
+		edge_alpha = 				0
+		edge_color_mult = 			0
+		before_lighting_blend =		1
+		after_lighting_blend =		0.5
+	}
+}
+
+armenian_struggle_communalist_anger_map = {
+	color_mode = baronies
+	small_map_names = dejure_counties
+	large_map_names = dejure_counties
+	fill_in_impassable = no
+	selection = holding
+
+	barony_description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						AND = {
+							county.faith = { is_communalist_faith = yes }
+							county.county_opinion <= -40
+						}
+						AND = {
+							county = { county_has_faith_minority_with_trigger = { TRIGGER = is_communalist_faith } }
+							county.county_opinion <= -60
+						}
+					}
+				}
+				desc = armenia_communalist_anger_map_high_tt
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						AND = {
+							county.faith = { is_communalist_faith = yes }
+							county.county_opinion <= -20
+						}
+						AND = {
+							county = { county_has_faith_minority_with_trigger = { TRIGGER = is_communalist_faith } }
+							county.county_opinion <= -40
+						}
+					}
+				}
+				desc = armenia_communalist_anger_map_medium_tt
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						county.faith = { is_communalist_faith = yes }
+						AND = {
+							county = { county_has_faith_minority_with_trigger = { TRIGGER = is_communalist_faith } }
+							county.county_opinion <= -20
+						}
+					}
+				}
+				desc = armenia_communalist_anger_map_low_tt
+			}
+			desc = armenia_communalist_anger_map_no_tt
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					county.faith = { is_communalist_faith = yes }
+				}
+				desc = armenia_communalist_anger_communalist_majority
+			}
+			triggered_desc = {
+				trigger = {
+					county = {
+						county_has_faith_minority_with_trigger = { TRIGGER = is_communalist_faith }
+						county.county_opinion <= -20
+					}
+				}
+				desc = armenia_communalist_anger_communalist_minority
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					county = {
+						OR = {
+							faith = { is_communalist_faith = yes }
+							county_has_faith_minority_with_trigger = { TRIGGER = is_communalist_faith }
+						}
+						county_opinion <= -60
+					}
+				}
+				desc = armenia_communalist_anger_extremely_low_opinion
+			}
+			triggered_desc = {
+				trigger = {
+					county = {
+						OR = {
+							faith = { is_communalist_faith = yes }
+							county_has_faith_minority_with_trigger = { TRIGGER = is_communalist_faith }
+						}
+						county_opinion <= -40
+					}
+				}
+				desc = armenia_communalist_anger_very_low_opinion
+			}
+			triggered_desc = {
+				trigger = {
+					county = {
+						OR = {
+							faith = { is_communalist_faith = yes }
+							county_has_faith_minority_with_trigger = { TRIGGER = is_communalist_faith }
+						}
+						county_opinion <= -20
+					}
+				}
+				desc = armenia_communalist_anger_low_opinion
+			}
+		}
+	}
+
+	gradient_parameters = {
+		zoom_step =					@zoom_step_near
+
+		gradient_alpha_inside = 	@data_gradient_alpha_inside
+		gradient_alpha_outside = 	@data_gradient_alpha_outside
+		gradient_width = 			@data_gradient_width
+		gradient_color_mult =		@data_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@data_edge_sharpness
+		edge_alpha = 				@data_edge_alpha
+		edge_color_mult = 			@data_edge_color_mult
+		before_lighting_blend =		@data_before_lighting_blend
+		after_lighting_blend =		@data_after_lighting_blend
+	}
+}

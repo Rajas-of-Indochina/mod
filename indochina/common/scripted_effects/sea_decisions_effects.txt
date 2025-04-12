@@ -1,4 +1,4 @@
-﻿
+
 # Override Vanilla
 
 #####
@@ -234,20 +234,99 @@ convert_whole_realm_to_feudalism_effect = {
 		every_vassal = {
 			capital_county = {
 				every_county_province = {
-					barony = {
-						if = {
-							limit = { has_holding_type = tribal_holding }
-							set_holding_type = castle_holding
-							add_province_modifier = {
-								modifier = converted_to_feudal_county_modifier
-								years = 10
-							}
+					if = {
+						limit = { has_holding_type = tribal_holding }
+						set_holding_type = castle_holding
+						add_province_modifier = {
+							modifier = converted_to_feudal_county_modifier
+							years = 10
 						}
 					}
 				}
 			}
 		}
 	}
+}
+
+unite_circassia_decision_effect = {
+    #Create the title and make it primary
+    create_title_and_vassal_change = {
+        type = created
+        save_scope_as = title_change
+        add_claim_on_loss = no
+    }
+    title:k_circassia = {
+        change_title_holder = {
+            holder = root
+            change = scope:title_change
+        }
+    }
+
+    resolve_title_and_vassal_change = scope:title_change
+    set_primary_title_to = title:k_circassia
+
+    title:d_kassogia = { add_to_list = circassian_kingdom }
+    title:d_papagia = { add_to_list = circassian_kingdom }
+    title:d_eudusia = { add_to_list = circassian_kingdom }
+    title:d_khegayk = { add_to_list = circassian_kingdom }
+    title:d_zichia = { add_to_list = circassian_kingdom }
+    title:d_greater_abazinia = { add_to_list = circassian_kingdom }
+
+    every_in_list = {
+        list = circassian_kingdom
+        every_in_de_jure_hierarchy = {
+            limit = {
+                tier = tier_duchy
+            }
+            set_de_jure_liege_title = title:k_circassia
+        }
+    }
+
+	title:d_eudusia = {
+	set_title_name = d_zhaneqo
+	set_coa = d_eudusia_zhaneqo
+	}
+	title:d_papagia = {
+	set_title_name = d_chemguy
+	set_coa = d_papagia_chemguy
+	}
+	title:d_kassogia = {
+	set_title_name = d_besleney
+	set_coa = d_kassogia_besleney
+	}
+	title:d_zichia = {
+	set_title_name = d_ubykhia
+	set_coa = d_zichia_ubykhia
+	}
+
+    hidden_effect = {
+        if = {
+            limit = { has_title = title:d_alania }
+            title:d_alania = { add_to_list = circassian_kingdom }
+        }
+        if = {
+            limit = { has_title = title:d_abkhazia }
+            title:d_abkhazia = { add_to_list = circassian_kingdom }
+        }
+        if = {
+            limit = { has_title = title:d_tmutarakan }
+            title:d_tmutarakan = { add_to_list = circassian_kingdom }
+            }
+        if = {
+            limit = { has_title = title:d_karabulakia }
+            title:d_karabulakia = { add_to_list = circassian_kingdom }
+		}
+
+		every_in_list = {
+			list = circassian_kingdom
+			every_in_de_jure_hierarchy = {
+				limit = {
+					tier = tier_duchy
+				}
+				set_de_jure_liege_title = title:k_circassia
+			}
+		}
+    }
 }
 
 unite_india_decision_effect = {
@@ -1385,4 +1464,143 @@ malayan_sultanate_effect = {
 		get_title = capital_county.kingdom
 	}
 	add_piety = major_piety_loss
+}
+
+form_georgia_decision_effect = {
+	custom_tooltip = georgia_de_jure_tt
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_georgia = {
+		change_title_holder = {
+			holder = ROOT
+			change = scope:title_change
+		}
+	}
+
+	if = {
+		limit = {
+			primary_title = title:k_abkhazia
+		}
+		title:k_georgia = { set_variable = k_georgia_abkhazia }
+	}
+	else_if = {
+		limit = {
+			primary_title = title:k_iberia
+		}
+		title:k_georgia = { set_variable = k_georgia_iberia }
+	}
+	else_if = {
+		limit = {
+			primary_title = title:k_kakheti
+		}
+		title:k_georgia = { set_variable = k_georgia_kakheti }
+	}
+
+	resolve_title_and_vassal_change = scope:title_change
+	set_primary_title_to = title:k_georgia
+
+	title:k_abkhazia = { add_to_list = georgian_kingdoms }
+	title:k_iberia = { add_to_list = georgian_kingdoms }
+	title:k_kakheti = { add_to_list = georgian_kingdoms }
+
+	hidden_effect = {
+		every_in_list = {
+			list = georgian_kingdoms
+			limit = { holder = ROOT }
+			every_in_de_jure_hierarchy = {
+				limit = {
+					tier = tier_duchy
+				}
+				set_de_jure_liege_title = title:k_georgia
+			}
+			if = {
+				limit = { exists = yes }
+				scope:founder = {destroy_title = PREV}
+			}
+		}
+
+	}
+}
+
+unify_armenian_principalities_decision_effect = {
+	title:k_armenia = { add_to_list = armenian_princedoms }
+	title:k_ayrarat = { add_to_list = armenian_princedoms }
+	title:k_syunik = { add_to_list = armenian_princedoms }
+
+	if = {
+		limit = { NOT = { has_title = title:k_armenian_principality } }
+
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = title_change
+			add_claim_on_loss = no
+		}
+		title:k_armenian_principality = {
+			change_title_holder = {
+				holder = root
+				change = scope:title_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:title_change
+		set_primary_title_to = title:k_armenian_principality
+	}
+	title:k_armenia = {
+		custom_tooltip = {
+			text = drift_into_principalities_tt
+			every_in_de_jure_hierarchy = {
+				limit = { tier = tier_duchy }
+				set_de_jure_liege_title = title:k_armenian_principality
+			}
+			PREV = { destroy_title = title:k_armenia }
+		}
+	}
+	title:k_ayrarat = {
+		custom_tooltip = {
+			text = drift_into_principalities_tt
+			every_in_de_jure_hierarchy = {
+				limit = { tier = tier_duchy }
+				set_de_jure_liege_title = title:k_armenian_principality
+			}
+			PREV = { destroy_title = title:k_ayrarat }
+		}
+	}
+
+	if = {
+		limit = {
+			OR = {
+				has_title = title:k_syunik
+				completely_controls = title:k_syunik
+			}
+		}
+		title:k_syunik = {
+			custom_tooltip = {
+				text = drift_into_principalities_tt
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_duchy }
+					set_de_jure_liege_title = title:k_armenian_principality
+				}
+			}
+			PREV = { destroy_title = title:k_syunik }
+		}
+	}
+}
+
+greater_abazinia_effect = {
+    create_title_and_vassal_change = {
+        type = created
+        save_scope_as = title_change
+        add_claim_on_loss = no
+    }
+	title:d_greater_abazinia = {
+		change_title_holder = {
+			holder = ROOT
+			change = scope:title_change
+		}
+	}	
+    resolve_title_and_vassal_change = scope:title_change
+    set_primary_title_to = title:d_greater_abazinia
 }
