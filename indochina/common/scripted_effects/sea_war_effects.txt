@@ -284,7 +284,16 @@ on_declared_war = {
 					}
 					culture = { has_same_culture_heritage = scope:defender.culture }
 				}
-				trigger_event = { id = caucasianroa.021 }
+				save_scope_as = scope:prospective_ally
+				if = {
+					limit = {
+						joiner_not_already_in_another_war_with_any_target_war_participants_trigger = {
+							WARRIOR = scope:defender
+							JOINER = scope:scope:prospective_ally
+						}
+					}
+					trigger_event = { id = caucasianroa.021 }
+				}
 			}
 		}
 	}
