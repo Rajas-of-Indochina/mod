@@ -1,5 +1,5 @@
 ﻿
-
+# Override to prevent anarchists from joining claimant factions
 claimant_faction = {
 	casus_belli = claimant_faction_war
 
@@ -38,44 +38,50 @@ claimant_faction = {
 	is_valid = { # If the FACTION itself is valid
 		# see also invalidate_claimant_factions_on_death_effect for what happens when the claimant dies
 
-		exists = special_character
-		special_title.holder = faction_target
-		OR = {
-			special_character = {
-				is_alive = yes
-				#has_claim_on = root.special_title
-				NOR = {
-					has_trait = incapable
-					this = root.faction_target
-					has_government = anarchist_government # (We don't want stateless rulers cheesing their way to becoming an emperor)
-				}
-				# Byzantium does not brook
-				trigger_if = {
-					limit = {
-						root.special_title = {
-							OR = {
-								has_title_law = acclamation_succession_law
-								holder ?= { has_realm_law = acclamation_succession_law }
-							}
-						}
-					}
-					NOR = {
-						is_eunuch_trigger = yes
-						has_trait = blind
-					}
-				}
-				trigger_if = { #If they're imprisoned by the faction target they can only be so for five years before invalidating
-					limit = {
-						is_imprisoned_by = root.faction_target
-					}
-					time_in_prison_type = {
-						years < 5
-					}
+		trigger_if = {
+			limit = {
+				OR = {
+					exists = special_character
+					exists = faction_war
 				}
 			}
-			exists = faction_war
+			special_title.holder ?= faction_target
+			OR = {
+				special_character ?= {
+					is_alive = yes
+					#has_claim_on = root.special_title
+					NOR = {
+						has_trait = incapable
+						this = root.faction_target
+						has_government = anarchist_government # (We don't want stateless rulers cheesing their way to becoming an emperor)
+					}
+					# Byzantium does not brook
+					trigger_if = {
+						limit = {
+							root.special_title = {
+								OR = {
+									has_title_law = acclamation_succession_law
+									holder ?= { has_realm_law = acclamation_succession_law }
+								}
+							}
+						}
+						NOR = {
+							is_eunuch_trigger = yes
+							has_trait = blind
+						}
+					}
+					trigger_if = { #If they're imprisoned by the faction target they can only be so for five years before invalidating
+						limit = {
+							is_imprisoned_by = root.faction_target
+						}
+						time_in_prison_type = {
+							years < 5
+						}
+					}
+				}
+				exists = faction_war
+			}
 		}
-		has_valid_faction_members_trigger = yes
 	}
 
 	demand = { # The effect of pressing demand
@@ -204,6 +210,7 @@ claimant_faction = {
 				is_independent_ruler = yes
 			}
 		}
+		has_valid_faction_members_trigger = yes
 	}
 
 	can_character_create_ui = {
@@ -291,53 +298,6 @@ claimant_faction = {
 			FACTION_TARGET = scope:target
 			FACTION_CLAIMANT = scope:claimant
 		}
-
-		# If another Claimant Faction already exists, prefer to side with it
-		modifier = {
-			add = -100
-			scope:target = {
-				any_targeting_faction = {
-			  		faction_is_type = claimant_faction
-				  	NOT = {
-			  			any_faction_member = {
-			  				is_ai = no
-			  			}
-			  		}
-					special_character = {
-						OR = {
-							OR = {
-								has_relation_soulmate = root
-								has_relation_best_friend = root
-							}
-							AND = {
-								root = {
-									save_temporary_opinion_value_as = { name = opinion_of_current_liege target = scope:target }
-									opinion = { target = prev value > scope:opinion_of_current_liege }
-								}
-								OR = {
-									AND = {
-										root.faith = {
-											has_doctrine = doctrine_pluralism_pluralistic
-										}
-										faith = {
-											has_doctrine = doctrine_pluralism_pluralistic
-										}
-									}
-									faith = root.faith
-								}
-								culture = {
-									OR = {
-										this = root.culture
-										cultural_acceptance = { target = root.culture value >= 90 } # Essentially the same culture
-									}
-								}
-							}
-						}
-					}
-		  		}
-		  	}
-		}
-
 	}
 
 	ai_join_score = { # How likely is an AI to join an existing faction?
