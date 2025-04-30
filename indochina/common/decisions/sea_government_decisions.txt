@@ -269,163 +269,50 @@ reform_government_decision = {
 	}
 }
 
-settle_nomadic_realm_decision = {
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	}
-	decision_group_type = major
-	desc = settle_nomadic_realm_decision_desc
-	ai_check_interval = 36
-
-	is_shown = {
-		has_government = nomadic_government
-		OR = {
-			is_independent_ruler = yes
-			liege = {
-				NOT = { has_government = nomadic_government }
-			}
-		}
-	}
-
-	is_valid = {
-		is_at_war = no
-		culture = {
-			OR = {
-				has_innovation = innovation_crop_rotation
-				has_innovation = innovation_city_planning
-			}
-		}
-		trigger_if = {
-			limit = { is_independent_ruler = yes }
-			has_realm_law = nomadic_authority_3
-		}
-		trigger_else = {
-			OR = {
-				has_realm_law = nomadic_authority_2
-				has_realm_law = nomadic_authority_3
-			}
-		}
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	cost = {
-		prestige = massive_prestige_value
-		gold = massive_gold_value
-	}
-
-	effect = {
-		# TODO: Add flavor event
-		settle_nomadic_realm_effect = yes
-		every_vassal = {
-			add_opinion = {
-				modifier = settled_tribe_opinion
-				target = ROOT
-			}
-		}
-	}
-}
-
-unsettle_nomadic_realm_decision = {
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	}
-	decision_group_type = major
-	desc = unsettle_nomadic_realm_decision_desc
-	ai_check_interval = 36
-
-	is_shown = {
-		has_government = tribal_government
-		culture = { has_cultural_tradition = tradition_horse_lords }
-		OR = {
-			is_independent_ruler = yes
-			liege = {
-				has_government = nomadic_government
-			}
-		}
-	}
-
-	is_valid = {
-		is_at_war = no
-		trigger_if = {
-			limit = { is_independent_ruler = yes }
-			has_realm_law = tribal_authority_3
-		}
-		trigger_else = {
-			OR = {
-				has_realm_law = tribal_authority_2
-				has_realm_law = tribal_authority_3
-			}
-		}
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	cost = {
-		prestige = massive_prestige_value
-		gold = massive_gold_value
-	}
-
-	effect = {
-		# TODO: Add flavor event
-		unsettle_nomadic_realm_effect = yes
-		every_vassal = {
-			add_opinion = {
-				modifier = unsettled_tribe_opinion
-				target = ROOT
-			}
-		}
-	}
-}
-
-stateless_confederation_decision = {
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	}
-	decision_group_type = major
-	desc = stateless_confederation_decision_desc
-	ai_check_interval = 36
-
-	is_shown = {
-		has_government = anarchist_government
-		highest_held_title_tier < tier_duchy
-	}
-
-	is_valid = {
-		OR = {
-			is_independent_ruler = yes
-			liege = { highest_held_title_tier >= tier_kingdom }
-		}
-		is_at_war = no
-		prestige_level >= 3
-		OR = {
-			realm_size >= 5
-			custom_tooltip = {
-				text = controls_capital_duchy_tt
-				completely_controls = capital_county.duchy
-			}
-		}
-	}
-
-	is_valid_showing_failures_only = {
-		is_capable_adult = yes
-	}
-
-	effect = {
-		show_as_tooltip = {
-			form_stateless_confederation_duchy_effect = yes
-		}
-		hidden_effect = {
-			trigger_event = sea_gov_event.1001
-		}
-	}
-
-	cost = {
-		prestige = major_prestige_value
-		gold = major_gold_value
-	}
-}
+#stateless_confederation_decision = {
+#	picture = {
+#		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+#	}
+#	decision_group_type = major
+#	desc = stateless_confederation_decision_desc
+#	ai_check_interval = 36
+#
+#	is_shown = {
+#		has_government = anarchist_government
+#		highest_held_title_tier < tier_duchy
+#	}
+#
+#	is_valid = {
+#		OR = {
+#			is_independent_ruler = yes
+#			liege = { highest_held_title_tier >= tier_kingdom }
+#		}
+#		is_at_war = no
+#		prestige_level >= 3
+#		OR = {
+#			realm_size >= 5
+#			custom_tooltip = {
+#				text = controls_capital_duchy_tt
+#				completely_controls = capital_county.duchy
+#			}
+#		}
+#	}
+#
+#	is_valid_showing_failures_only = {
+#		is_capable_adult = yes
+#	}
+#
+#	effect = {
+#		show_as_tooltip = {
+#			form_stateless_confederation_duchy_effect = yes
+#		}
+#		hidden_effect = {
+#			trigger_event = sea_gov_event.1001
+#		}
+#	}
+#
+#	cost = {
+#		prestige = major_prestige_value
+#		gold = major_gold_value
+#	}
+#}
