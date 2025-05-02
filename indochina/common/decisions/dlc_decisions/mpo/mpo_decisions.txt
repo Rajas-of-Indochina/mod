@@ -70,8 +70,12 @@
 			has_trait = family_first
 			custom_tooltip = {
 				OR = {
-					has_cultural_parameter = xabze_defense
-					has_cultural_parameter = adat_defense
+					culture = {
+						has_cultural_parameter = xabze_defense
+					}
+					culture = {
+						has_cultural_parameter = adat_defense
+					}
 				}
 				text = xabze_adat_trigger_tt
 			}
@@ -187,6 +191,7 @@
 		OR = {
 			government_has_flag = government_is_tribal
 			government_has_flag = government_is_nomadic
+			government_has_flag = government_is_stateless
 		}
 		is_independent_ruler = yes
 		highest_held_title_tier <= tier_duchy
@@ -6359,8 +6364,13 @@ confederation_kingdom_decision = {
 		is_confederation_member = yes
 	}
 
+	# We want Circassians to be forming Circassia
 	ai_will_do = {
 		base = 100
+		modifier = {
+			factor = 0.25
+			culture = { has_cultural_parameter = xabze_defense }
+		}
 	}
 }
 

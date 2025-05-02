@@ -716,14 +716,90 @@ circassian_decision_unify = {
 	}
 
 	is_valid = {
-		calc_true_if = {
-			amount >= 4
-			completely_controls = title:d_papagia
-			completely_controls = title:d_eudusia
-			completely_controls = title:d_khegayk
-			completely_controls = title:d_zichia
-			completely_controls = title:d_kassogia
-			completely_controls = title:d_tmutarakan
+		save_temporary_scope_as = saved_scope
+		trigger_if = {
+			limit = {
+				is_ai = no
+			}
+			trigger_if = {
+				limit = { is_confederation_member = yes }
+				confederation = {
+					calc_true_if = {
+						amount >= 4
+						confederation_completely_controls = { TITLE = title:d_papagia }
+						confederation_completely_controls = { TITLE = title:d_eudusia }
+						confederation_completely_controls = { TITLE = title:d_khegayk }
+						confederation_completely_controls = { TITLE = title:d_zichia }
+						confederation_completely_controls = { TITLE = title:d_kassogia }
+						confederation_completely_controls = { TITLE = title:d_tmutarakan }
+					}
+					any_confederation_member = {
+						count = all
+						limit = { not = { THIS = ROOT } }
+						OR = {
+							custom_tooltip = {
+								max_military_strength <= ROOT.max_military_strength
+								text = you_have_bigger_army
+							}
+							is_allied_to = ROOT
+							custom_tooltip = { ROOT = { has_strong_usable_hook = PREV } text = you_have_strong_usable_hook }
+							custom_tooltip = { house.house_head = ROOT.house.house_head text = you_are_house_head }
+						}
+					}
+				}
+			}
+			trigger_else = {
+				calc_true_if = {
+					amount >= 4
+					completely_controls = title:d_papagia
+					completely_controls = title:d_eudusia
+					completely_controls = title:d_khegayk
+					completely_controls = title:d_zichia
+					completely_controls = title:d_kassogia
+					completely_controls = title:d_tmutarakan
+				}
+				
+			}
+		}
+		trigger_else = {
+			trigger_if = {
+				limit = { is_confederation_member = yes }
+				confederation = {
+					calc_true_if = {
+						amount >= 3
+						confederation_completely_controls = { TITLE = title:d_papagia }
+						confederation_completely_controls = { TITLE = title:d_eudusia}
+						confederation_completely_controls = { TITLE = title:d_khegayk }
+						confederation_completely_controls = { TITLE = title:d_zichia }
+						confederation_completely_controls = { TITLE = title:d_kassogia }
+						confederation_completely_controls = { TITLE = title:d_tmutarakan }
+					}
+					any_confederation_member = {
+						count = all
+						limit = { not = { THIS = ROOT } }
+						OR = {
+							custom_tooltip = {
+								max_military_strength <= ROOT.max_military_strength
+								text = you_have_bigger_army
+							}
+							is_allied_to = ROOT
+							custom_tooltip = { ROOT = { has_strong_usable_hook = PREV } text = you_have_strong_usable_hook }
+							custom_tooltip = { house.house_head = ROOT.house.house_head text = you_are_house_head }
+						}
+					}
+				}
+			}
+			trigger_else = {
+				calc_true_if = {
+					amount >= 3
+					completely_controls = title:d_papagia
+					completely_controls = title:d_eudusia
+					completely_controls = title:d_khegayk
+					completely_controls = title:d_zichia
+					completely_controls = title:d_kassogia
+					completely_controls = title:d_tmutarakan
+				}
+			}
 		}
 		custom_tooltip = {
 			text = circassiannotstateless_requirement
@@ -741,6 +817,10 @@ circassian_decision_unify = {
 			text = unify_customtooltip
 			trigger_event = {	id = caucasianroa.005 }
 			give_nickname = ROA_nick_the_radiant
+		}
+
+		show_as_tooltip = {
+			unite_circassia_decision_effect = yes
 		}
 
 	    add_trait = werqibze
@@ -769,182 +849,6 @@ circassian_decision_unify = {
 	}
 
 	ai_check_interval = 0
-
-	ai_potential = {
-		always = no
-	}
-
-	ai_will_do = {
-		base = 0
-	}
-}
-
-circassian_decision_unify_ai = {
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/unify.dds"
-	}
-
-	desc = circassian_decision_unify_desc
-	selection_tooltip = circassian_decision_unify_tooltip
-
-	decision_group_type = major
-
-	is_shown = {
-		is_ai = yes
-		NOT = {	#You can only do it once.
-		is_target_in_global_variable_list = {
-			name = unavailable_unique_decisions
-			target = flag:circassian_decision_unify
-		}
-	}
-		OR = {
-			culture = {	this = culture:circassian }
-			culture = {	this = culture:ubykh }
-			culture = {	this = culture:afrabasgi }
-			culture = {	this = culture:abkhaz }
-			culture = {	this = culture:abasgi }
-		}
-	}
-
-	is_valid = {
-		is_ai = yes
-		calc_true_if = {
-			amount >= 3
-			OR = {
-			has_title = title:d_papagia
-			completely_controls = title:d_papagia
-				any_vassal = {
-					OR = {
-						has_title = title:d_papagia
-						completely_controls = title:d_papagia
-					}
-				}
-			}
-			OR = {
-				has_title = title:d_eudusia
-				completely_controls = title:d_eudusia
-				any_vassal = {
-				OR = {
-					has_title = title:d_eudusia
-					completely_controls = title:d_eudusia
-					}
-				}
-			}
-			OR = {
-				has_title = title:k_zichia
-				completely_controls = title:k_zichia
-				any_vassal = {
-				OR = {
-					has_title = title:k_zichia
-					completely_controls = title:k_zichia
-					}
-				}
-			}
-			OR = {
-				has_title = title:d_zichia
-				completely_controls = title:d_zichia
-				any_vassal = {
-					OR = {
-						has_title = title:d_zichia
-						completely_controls = title:d_zichia
-					}
-				}
-			}
-			OR = {
-				has_title = title:d_tmutarakan
-				completely_controls = title:d_tmutarakan
-				any_vassal = {
-					OR = {
-						has_title = title:d_tmutarakan
-						completely_controls = title:d_tmutarakan
-					}
-				}
-			}
-			OR = {
-				has_title = title:d_khegayk
-				completely_controls = title:d_khegayk
-				any_vassal = {
-				OR = {
-					has_title = title:d_khegayk
-					completely_controls = title:d_khegayk
-					}
-				}
-			}
-			OR = {
-				has_title = title:d_kassogia
-				completely_controls = title:d_kassogia
-				any_vassal = {
-					OR = {
-						has_title = title:d_kassogia
-						completely_controls = title:d_kassogia
-					}
-				}
-			}
-		}
-		custom_tooltip = {
-			text = circassiannotstateless_requirement
-			NOT = {
-				has_government	= anarchist_government
-			}
-		}
-	}
-
-	effect = {
-		title:d_alania = {
-			set_de_jure_liege_title = title:k_circassia
-		}
-		custom_tooltip = {
-			text = unify_customtooltip
-			trigger_event = { id = caucasianroa.005 }
-			give_nickname = ROA_nick_the_radiant
-		}
-		add_trait = werqibze
-		add_gold = 200
-		spawn_army = {
-			name = event_troop_default_name
-			levies = {
-				value = 500 #King's new army, AI
-			}
-			men_at_arms = {
-				type = jigit_riders
-				stacks = 1
-			}
-			men_at_arms = {
-				type = pikemen_unit
-				stacks = 1
-			}
-			location = province:15596
-			origin = province:15596
-			inheritable = no
-		}
-		spawn_army = {
-			name = event_troop_default_name
-			levies = {
-				value = 500 #King's new army
-			}
-			men_at_arms = {
-				type = jigit_riders
-				stacks = 1
-			}
-			men_at_arms = {
-				type = pikemen_unit
-				stacks = 1
-			}
-			location = province:15596
-			origin = province:15596
-			inheritable = no
-		}
-		add_to_global_variable_list = {
-			name = unavailable_unique_decisions
-			target = flag:circassian_decision_unify
-		}
-	}
-
-	cost = {
-
-	}
-
-	ai_check_interval = 1
 
 	ai_potential = {
 		NOT = {	#You can only do it once.
