@@ -944,10 +944,12 @@ armenian_struggle_ending_armenian_confederation = {
 			any_involved_ruler = {
 				count > 5
 				is_independent_ruler = yes
-				primary_title = { is_mercenary_company = no }
-				primary_title = { is_holy_order = no }
+				hidden_trigger = {
+					primary_title = { is_mercenary_company = no }
+					primary_title = { is_holy_order = no }
+					NOT = { this = root }
+				}
 				has_trait = pro_armenian
-				NOT = { this = root }
 				is_allied_to = root
 			}
 		}
@@ -1008,6 +1010,7 @@ create_armenian_empire_decision = {
 	}
 
 	is_valid = {
+		save_temporary_scope_as = saved_scope
 		is_independent_ruler = yes
 		highest_held_title_tier = tier_kingdom
 		OR = {
@@ -1031,7 +1034,31 @@ create_armenian_empire_decision = {
 				any_parent_culture_or_above = { this = culture:armenian }
 			}
 		}
-		completely_controls_region = custom_greater_armenia
+		OR = {
+			completely_controls_region = custom_greater_armenia
+			AND = {
+				# custom_tooltip = {
+					confederation = { confederation_completely_controls_region = { REGION = custom_greater_armenia } }
+					# text = confederation_controls_armenia
+				# }
+				confederation = {
+					any_confederation_member = {
+						count = all
+						limit = { not = { THIS = ROOT } }
+						OR = {
+							custom_tooltip = {
+								max_military_strength <= ROOT.max_military_strength
+								text = you_have_bigger_army
+							}
+							is_allied_to = ROOT
+							custom_tooltip = { ROOT = { has_strong_usable_hook = PREV } text = you_have_strong_usable_hook }
+							custom_tooltip = { house.house_head = ROOT.house.house_head text = you_are_house_head }
+						}
+					}
+				}
+			}
+		}
+		
 	}
 
 	is_valid_showing_failures_only = {
@@ -1047,7 +1074,6 @@ create_armenian_empire_decision = {
 	effect = {
 		show_as_tooltip = {
 			# revive_armenian_empire_decision_scripted_effect = yes
-			custom_tooltip = undo_confederation_ending_effect_tt
 			struggle_ending_armenian_empire_effect = yes
 		}
 		save_scope_as = founder
