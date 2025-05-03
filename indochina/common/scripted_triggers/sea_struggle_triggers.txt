@@ -364,3 +364,27 @@ armenian_dissolution_is_syunik_duchy = {
 		this = title:d_syunik-vayotsdzor
 	}
 }
+
+confederation_completely_controls_region = {
+	save_temporary_scope_as = our_confederation
+	any_county_in_region = {
+		region = $REGION$
+		count = all
+		exists = holder.top_liege.confederation
+		holder.top_liege.confederation ?= scope:our_confederation
+	}
+}
+
+confederation_completely_controls = {
+	save_temporary_scope_as = our_confederation
+	$TITLE$ = {
+		save_temporary_scope_as = this_title
+		custom_tooltip = {
+			text = "Your [confederation|E] [completely_controls|E] [this_title.GetName]"
+			any_de_jure_county = {
+				count = all
+				holder.top_liege.confederation ?= scope:our_confederation
+			}
+		}
+	}
+}
