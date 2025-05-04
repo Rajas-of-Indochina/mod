@@ -64,7 +64,6 @@ has_partition_succession_realm_law_trigger = {
 realm_law_use_crown_authority = {
 	# We separate this out into a different trigger for moddability purposes, per community request: this allows more diverse authority laws to be easily modded in without needing to override 00_realm_laws.txt, and thus for greater inter-mod compatibility.
 	NOR = {
-		has_government = nomadic_government
 		has_government = mandala_government
 		has_government = chinese_government
 		has_government = administrative_government
@@ -74,6 +73,7 @@ realm_law_use_crown_authority = {
 	realm_law_use_tribal_authority = no
 	realm_law_use_camp_purpose = no
 	realm_law_use_imperial_bureaucracy = no
+	realm_law_use_nomadic_authority = no
 }
 
 realm_law_use_tribal_authority = {
@@ -88,6 +88,10 @@ realm_law_use_camp_purpose = {
 
 realm_law_use_imperial_bureaucracy = {
 	government_allows = administrative
+}
+
+realm_law_use_nomadic_authority = {
+	government_has_flag = government_is_nomadic
 }
 
 can_have_confederate_partition_succession_law_trigger = {
@@ -160,7 +164,7 @@ can_keep_high_partition_succession_law_trigger = {
 can_have_high_partition_succession_law_trigger = {
 	trigger_if = {
 		limit = {
-			NOT = {
+			NOT = { 
 				culture = { has_cultural_parameter = can_enact_high_partition_succession_law }
 			}
 		}
@@ -189,13 +193,16 @@ can_keep_single_heir_succession_law_trigger = {
 can_have_single_heir_succession_law_trigger = {
 	OR = {
 		government_has_flag = government_should_be_primo
-		AND = {
-			culture = {
-				has_innovation = innovation_primogeniture
+		culture = {
+			has_innovation = innovation_primogeniture
+		}
+		# Non-tribals only
+		trigger_if = { # We split the tooltip into two, to make sure we don't show admin unless you actually have it
+			limit = {
+				has_ep3_dlc_trigger = yes
 			}
-			# Non-tribals only
-			custom_description = {
-				text = succession_laws_must_have_organised_government_tooltip
+			custom_tooltip = {
+				text = must_be_feudal_clan_or_admin
 				OR = {
 					government_has_flag = government_is_feudal
 					government_has_flag = government_is_clan
@@ -203,7 +210,21 @@ can_have_single_heir_succession_law_trigger = {
 				}
 			}
 		}
-		non_roman_administrative_gov_trigger = yes
+		trigger_else = {
+			custom_description = {
+				text = succession_laws_must_have_organised_government_tooltip
+				OR = {
+					government_has_flag = government_is_feudal
+					government_has_flag = government_is_clan
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				government_allows = administrative
+			}
+			is_independent_ruler = yes
+		}
 	}
 }
 
@@ -225,16 +246,33 @@ can_have_single_heir_youngest_succession_law_trigger = {
 		has_innovation = innovation_primogeniture
 	}
 	# Non-tribals only
-	custom_description = {
-		text = succession_laws_must_have_organised_government_tooltip
-		OR = {
-			government_has_flag = government_is_feudal
-			government_has_flag = government_is_clan
+	trigger_if = { # We split the tooltip into two, to make sure we don't show admin unless you actually have it
+		limit = {
+			has_ep3_dlc_trigger = yes
+		}
+		custom_tooltip = {
+			text = must_be_feudal_clan_or_admin
+			OR = {
+				government_has_flag = government_is_feudal
+				government_has_flag = government_is_clan
+				government_allows = administrative
+			}
 		}
 	}
-	OR = {
-		NOT = { government_allows = administrative }
-		non_roman_administrative_gov_trigger = yes
+	trigger_else = {
+		custom_description = {
+			text = succession_laws_must_have_organised_government_tooltip
+			OR = {
+				government_has_flag = government_is_feudal
+				government_has_flag = government_is_clan
+			}
+		}
+	}
+	trigger_if = {
+		limit = {
+			government_allows = administrative
+		}
+		is_independent_ruler = yes
 	}
 }
 
@@ -257,7 +295,7 @@ can_have_single_heir_dynasty_house_trigger = {
 		limit = { government_has_flag = government_should_be_seniority }
 		always = yes
 	}
-	trigger_if = {
+	trigger_else_if = {
 		limit = {
 			culture = {
 				OR = {
@@ -317,25 +355,23 @@ can_have_city_succession_law_trigger = {
 	government_has_flag = government_is_republic
 }
 
+can_have_herder_succession_law_trigger = {
+	government_has_flag = government_is_herder
+}
+
 title_can_reduce_partition_law_trigger = {
-	OR = {
-		AND = {
+	holder ?= {
+		OR = {
 			has_realm_law = single_heir_succession_law
-			holder = {
-				can_have_high_partition_succession_law_trigger = yes
-			}
+			can_have_high_partition_succession_law_trigger = yes
 		}
-		AND = {
+		OR = {
 			has_realm_law = high_partition_succession_law
-			holder = {
-				can_have_high_partition_succession_law_trigger = yes
-			}
+			can_have_high_partition_succession_law_trigger = yes
 		}
-		AND = {
+		OR = {
 			has_realm_law = partition_succession_law
-			holder = {
-				can_have_confederate_partition_succession_law_trigger = yes
-			}
+			can_have_confederate_partition_succession_law_trigger = yes
 		}
 	}
 }
@@ -387,8 +423,8 @@ can_have_acclamation_succession_law_trigger = {
 	has_ep3_dlc_trigger = yes
 	NOT = { government_has_flag = government_is_tribal }
 	non_roman_administrative_gov_trigger = no
-	is_independent_ruler = yes
 	government_allows = administrative
+	is_independent_ruler = yes
 }
 
 can_keep_acclamation_succession_law_trigger = {
