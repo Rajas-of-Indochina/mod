@@ -1,33 +1,4 @@
 ﻿
-action_can_call_suzerain = {
-	priority = 1000
-	combine_into_one = yes
-	check_create_action = {
-		if = {
-			limit = {
-				has_variable = my_suzerain
-				is_character_interaction_valid = {
-					recipient = var:my_suzerain
-					interaction = call_suzerain_to_war
-				}
-			}
-			try_create_important_action = {
-				important_action_type = action_can_call_suzerain
-				actor = root
-				recipient = var:my_suzerain
-			}
-		}
-	}
-
-	effect = {
-		open_interaction_window = {
-			interaction = call_suzerain_to_war
-			actor = scope:actor
-			recipient = scope:recipient
-		}
-	}
-}
-
 action_can_propose_alliance_mandala_vassal = {
 	priority = 300
 	combine_into_one = yes
@@ -52,37 +23,6 @@ action_can_propose_alliance_mandala_vassal = {
 	effect = {
 		open_interaction_window = {
 			interaction = mandala_alliance_interaction
-			actor = scope:actor
-			recipient = scope:recipient
-		}
-	}
-}
-
-action_can_propose_alliance_steppe_confederations = {
-	priority = 300
-	combine_into_one = yes
-	check_create_action = {
-		every_ruler = {
-			limit = {
-				#is_independent_ruler = yes
-				root = {
-					is_character_interaction_potentially_accepted = {
-						recipient = prev
-						interaction = steppe_alliance_interaction
-					}
-				}
-			}
-			try_create_important_action = {
-				important_action_type = action_can_propose_alliance_steppe_confederations
-				actor = root
-				recipient = this
-			}
-		}
-	}
-
-	effect = {
-		open_interaction_window = {
-			interaction = steppe_alliance_interaction
 			actor = scope:actor
 			recipient = scope:recipient
 		}
