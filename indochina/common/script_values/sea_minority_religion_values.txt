@@ -1026,3 +1026,26 @@ faith_creation_cost_mult = {
 		value = -0.75
 	}
 }
+
+num_same_faith_counties = {
+	base = 0
+	every_realm_county = {
+		limit = { faith = PREV.faith }
+		add = 1
+	}
+}
+
+num_faith_counties = {
+	base = 0
+	every_county = {
+		limit = { faith = PREV }
+		add = 1
+	}
+}
+
+circassian_alignment_threshold = {
+	base = 0
+	add = faith.num_faith_counties
+	divide = 2
+	add = 1
+}

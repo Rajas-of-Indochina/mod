@@ -321,6 +321,9 @@ hunt_animal_leopard_trigger = {
 		geographical_region = world_middle_east
 		geographical_region = world_india
 		geographical_region = world_burma
+		geographical_region = world_steppe_east
+		geographical_region = world_tibet
+		geographical_region = world_asia_minor
 
 		geographical_region = world_china
 		geographical_region = world_mainland_southeast_asia
@@ -527,12 +530,10 @@ hunt_activity_recent_hunt_sighting_trigger = {
 
 hunt_sighting_event_trigger = {
 	is_available_adult = yes
+	is_landless_adventurer = no
 	NOT = { has_character_flag = recent_hunt_sighting }
 	trigger_if = {
-		limit = {
-			is_landed = no
-			is_landless_adventurer = no
-		}
+		limit = { is_landed = no }
 		NOT = { domicile.domicile_location ?= province:496 }
 	}
 	OR = {
@@ -745,7 +746,8 @@ hunt_murder_scheme_target_trigger = {
 		scheme_owner = root
 		any_scheme_agent_character = { this = root }
 	}
-	scheme_progress > 3
+	save_temporary_scope_as = scheme
+	scheme_progress > scheme_progress_33
 }
 
 hunt_murder_intent_target_trigger = {
@@ -1104,5 +1106,18 @@ hunt_ongoing_sighting_trigger = {
 			holder.top_liege = root.top_liege
 		}
 		hunt_activity_recent_hunt_sighting_trigger = no
+	}
+}
+
+hunt_is_nerge_type = {
+	has_activity_option = {
+		category = special_type
+		option = hunt_type_nerge
+	}
+}
+
+activity_is_nerge_type = {
+	scope:activity ?= {
+		hunt_is_nerge_type = yes
 	}
 }

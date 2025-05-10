@@ -1503,6 +1503,141 @@ caucasianroa.023 = {
 	}
 }
 
+caucasianroa.024 = {
+	# Congratulating you on picking a direction for the Circassian church
+	type = character_event
+	title = caucasianroa.024.t
+	desc = {
+		desc = caucasianroa.024.desc.opening
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						scope:align_orthodox = yes
+						scope:align_iconoclast = yes
+					}
+				}
+				desc = caucasianroa.024.desc.orthodox
+			}
+			triggered_desc = {
+				trigger = {
+					scope:align_catholic = yes
+				}
+				desc = caucasianroa.024.desc.catholic
+			}
+			triggered_desc = {
+				trigger = {
+					scope:align_georgian_orthodox = yes
+				}
+				desc = caucasianroa.024.desc.georgian_orthodox
+			}
+			triggered_desc = {
+				trigger = {
+					scope:align_armenian_apostolic = yes
+				}
+				desc = caucasianroa.024.desc.armenian_apostolic
+			}
+			triggered_desc = {
+				trigger = {
+					scope:align_independent = yes
+				}
+				desc = caucasianroa.024.desc.independent
+			}
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = ROOT
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = ROOT.faith.religious_head
+		animation = personality_content
+	}
+	immediate = {
+		play_music_cue = "mx_cue_positive_effect"
+		align_circassian_church_decision_effect = yes
+	}
+	option = {
+		name = caucasianroa.024.accept
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+	after = {
+		every_ruler = {
+			limit = {
+				is_landed_or_landless_administrative = yes
+				OR = {
+					capital_province = { geographical_region = world_north_caucasus }
+					domicile.domicile_location = { geographical_region = world_north_caucasus }
+					faith = faith:circassian_christianity
+				}
+			}
+			trigger_event = caucasianroa.025
+		}
+	}
+}
+
+caucasianroa.025 = {
+	type = character_event
+	title = caucasianroa.024.t
+	desc = {
+		desc = caucasianroa.025.desc.opening
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:align_orthodox = yes
+				}
+				desc = caucasianroa.025.desc.orthodox
+			}
+			triggered_desc = {
+				trigger = {
+					scope:align_iconoclast = yes
+				}
+				desc = caucasianroa.025.desc.iconoclast
+			}
+			triggered_desc = {
+				trigger = {
+					scope:align_catholic = yes
+				}
+				desc = caucasianroa.025.desc.catholic
+			}
+			triggered_desc = {
+				trigger = {
+					scope:align_georgian_orthodox = yes
+				}
+				desc = caucasianroa.025.desc.georgian_orthodox
+			}
+			triggered_desc = {
+				trigger = {
+					scope:align_armenian_apostolic = yes
+				}
+				desc = caucasianroa.025.desc.armenian_apostolic
+			}
+			triggered_desc = {
+				trigger = {
+					scope:align_independent = yes
+				}
+				desc = caucasianroa.025.desc.independent
+			}
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = ROOT
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = ROOT.faith.religious_head
+		animation = personality_content
+	}
+	option = {
+		name = caucasianroa.024.accept
+		#AI option is inconsequential.
+		ai_chance = { base = 100 }
+	}
+}
+
 
 
 #temporarily here until we integrate the islam events from other branch

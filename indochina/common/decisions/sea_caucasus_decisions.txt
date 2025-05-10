@@ -95,7 +95,7 @@ circassian_decision.1 = {
         religion = religion:christianity_religion
 		OR = {
 			has_government	= tribal_government
-			has_government	= nomadic_government
+			has_government	= nomad_government
 			has_government	= anarchist_government
 			has_government	= landless_adventurer_government
 		}
@@ -532,7 +532,7 @@ circassian_decision.8 = {
 				text = circassiantribal_requirement
 				NOR = {
 					has_government	= tribal_government
-					has_government	= nomadic_government
+					has_government	= nomad_government
 					has_government	= anarchist_government
 					has_government = landless_adventurer_government
 				}
@@ -558,7 +558,7 @@ circassian_decision.8 = {
 		AND = {
 			NOR = {
 				has_government	= tribal_government
-				has_government	= nomadic_government
+				has_government	= nomad_government
 				has_government	= anarchist_government
 				has_government = landless_adventurer_government
 			}
@@ -1327,7 +1327,7 @@ circassian_decision_mtielta = {
         religion = religion:christianity_religion
 		OR = {
 			has_government	= tribal_government
-			has_government	= nomadic_government
+			has_government	= nomad_government
 			has_government	= anarchist_government
 			has_government	= landless_adventurer_government
 		}
@@ -1435,10 +1435,10 @@ circassian_decision_aghvank = {
         NOT = { faith = faith:NEC_orthodox }
         religion = religion:christianity_religion
 		OR = {
-			has_government	= tribal_government
-			has_government	= nomadic_government
-			has_government	= anarchist_government
-			has_government	= landless_adventurer_government
+			has_government = tribal_government
+			has_government = nomad_government
+			has_government = anarchist_government
+			has_government = landless_adventurer_government
 		}
     }
 
@@ -2138,7 +2138,7 @@ unify_armenian_principalities_decision = {
 		}
 		OR = {
 			has_title = title:k_ayrarat
-			completely_controls = title:k_armenia
+			completely_controls = title:k_ayrarat
 		}
 		trigger_if = {
 			limit = { exists = title:k_armenian_principality.holder }
@@ -2501,6 +2501,209 @@ form_aluank_decision = {
 		}
 		prestige = {
 			value = medium_prestige_value
+		}
+	}
+}
+
+align_circassian_church_decision = {
+    picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_circassian_christianity.dds"
+    }
+	decision_group_type = major
+
+	desc = {
+		desc = align_circassian_church_decision_desc
+		first_valid = {
+			triggered_desc = {
+				trigger = { faith:circassian_christianity.religious_head_title = title:d_circassian_patriarchate }
+				desc = align_circassian_church_decision_desc.independent
+			}
+			desc = align_circassian_church_decision_desc.communion
+		}
+	}
+	selection_tooltip = align_circassian_church_decision_tooltip
+	ai_check_interval = 60
+
+	is_shown = {
+		faith = faith:circassian_christianity
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			culture = {
+				any_parent_culture_or_above = {
+					OR = {
+						culture = {	this = culture:circassian }
+						culture = {	this = culture:ubykh }
+					}
+				}
+				has_cultural_pillar = language_circassian
+			}
+		}
+		NOT = {
+			has_global_variable = align_circassian_church_decision_cooldown
+		}
+	}
+
+	is_valid = {
+		piety_level >= very_high_piety_level
+		custom_tooltip = {
+			text = circassian_alignment_threshold_tt
+			num_same_faith_counties >= circassian_alignment_threshold
+		}		
+		capital_province = {
+			geographical_region = world_north_caucasus
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	widget = {
+		gui = "decision_view_widget_align_church"
+		controller = decision_option_list_controller
+
+		decision_to_second_step_button = "align_circassian_church_decision_second_step"
+
+		item = {
+			value = align_orthodox
+			current_description = align_orthodox_desc
+			localization = align_orthodox
+			icon = "gfx/interface/icons/faith/orthodox.dds"
+			ai_chance = {
+				value = 10
+			}
+			is_shown = {
+				exists = title:k_orthodox.holder
+				# Accounting for possible Iconoclast Patriarchate
+				NOT = { faith:circassian_christianity.religious_head_title = title:k_orthodox }
+			}
+		}
+
+		item = {
+			value = align_iconoclast
+			current_description = align_iconoclast_desc
+			localization = align_iconoclast
+			icon = "gfx/interface/icons/faith/christianity_iconoclasm.dds"
+			ai_chance = {
+				value = 10
+			}
+			is_shown = {
+				exists = title:d_iconoclast.holder
+				# In case somebody restored the Iconoclast Patriarch
+				NOT = { faith:circassian_christianity.religious_head_title = title:d_iconoclast }
+			}
+		}
+
+		item = {
+			value = align_catholic
+			current_description = align_catholic_desc
+			localization = align_catholic
+			icon = "gfx/interface/icons/faith/catholic.dds"
+			ai_chance = {
+				value = 10
+			}
+			is_shown = {
+				exists = title:k_papal_state.holder
+				# In case somebody dismantled the papacy
+				NOT = { faith:circassian_christianity.religious_head_title = title:k_papal_state }
+			}
+		}
+
+		item = {
+			value = align_georgian_orthodox
+			current_description = align_georgian_orthodox_desc
+			localization = align_georgian_orthodox
+			icon = "gfx/interface/icons/faith/georgian_orthodox.dds"
+			ai_chance = {
+				value = 10
+			}
+			is_shown = {
+				exists = title:d_georgian_patriarchate.holder
+				NOT = { faith:circassian_christianity.religious_head_title = title:d_georgian_patriarchate }
+			}
+			is_valid = {
+				custom_tooltip = {
+					text = strong_georgian_neighbor
+					any_ruler = {
+						limit = { capital_province = { geographical_region = ghw_region_caucasus } }
+						realm_size >= 30
+						faith.religious_head_title = title:d_georgian_patriarchate
+					}
+				}
+			}
+		}
+
+		item = {
+			value = align_armenian_apostolic
+			current_description = align_armenian_apostolic_desc
+			localization = align_armenian_apostolic
+			icon = "gfx/interface/icons/faith/christianity_armenian.dds"
+			ai_chance = {
+				value = 10
+			}
+			is_shown = {
+				exists = title:d_apostolic_church.holder
+				NOT = { faith:circassian_christianity.religious_head_title = title:d_apostolic_church }
+			}
+			is_valid = {
+				custom_tooltip = {
+					text = strong_apostolic_neighbor
+					any_ruler = {
+						limit = { capital_province = { geographical_region = ghw_region_caucasus } }
+						realm_size >= 30
+						faith.religious_head_title = title:d_apostolic_church
+					}
+				}
+			}
+		}
+
+		item = {
+			value = align_independent
+			current_description = align_independent_desc
+			localization = align_independent
+			icon = "gfx/interface/icons/faith/circassian_christianity.dds"
+			is_shown = {
+				NOT = { exists = title:d_circassian_patriarchate.holder }
+				NOT = { faith:circassian_christianity.religious_head_title = title:d_circassian_patriarchate }
+			}
+		}
+
+	}
+
+	effect = {
+		hidden_effect = {
+			trigger_event = caucasianroa.024
+			# 20 year global cooldown so we don't risk people going nuts with it
+			set_global_variable = {
+				name = align_circassian_church_decision_cooldown
+				value = flag:yes
+				days = 7300
+			}
+		}
+		if = {
+			limit = { exists = title:d_circassian_patriarchate.holder }
+			custom_tooltip = align_circassian_church_decision_effect_tooltip_currently_independent
+		}
+		else = {
+			custom_tooltip = align_circassian_church_decision_effect_tooltip_not_independent
+		}
+	}
+
+	cost = {
+		piety = {
+			value = massive_piety_value
+		}
+		prestige = {
+			value = major_prestige_value
+		}
+	}
+
+	ai_will_do = {
+		base = 100
+		ai_value_modifier = {
+			ai_zeal = -5
+			ai_greed = 5
 		}
 	}
 }
