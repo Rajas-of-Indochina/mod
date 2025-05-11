@@ -28,6 +28,8 @@ become_greatest_of_khans_decision = {
 				target = flag:become_greatest_of_khans_decision
 			}
 		}
+		#TRUE DLC-OWNING NOMADS HAVE THEIR OWN PATH
+		has_mpo_dlc_trigger = no
 	}
 
 	is_valid = {
@@ -311,19 +313,22 @@ establish_yamagate_in_samarkand_decision = {
 			}
 		}
 	}
-
+	
 	ai_potential = {
 		faith = faith:manichean
-		title:c_samarkand.holder = {
-			OR = {
-				is_ai = no
-				any_liege_or_above = { is_ai = no }  # AI will never take provinces away from a player.
-			}
-		}
 	}
 
 	ai_will_do = { #Do it always, for coherence.
 		base = 100
+		modifier = {
+			factor = 0
+			title:c_samarkand.holder = {
+				OR = {
+					is_ai = no
+					any_liege_or_above = { is_ai = no }  # AI will never take provinces away from a player.
+				}
+			}
+		}
 		modifier = {
 			factor = 0
 			has_trait = cynical

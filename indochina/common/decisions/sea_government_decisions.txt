@@ -172,125 +172,125 @@ reform_anarchy_to_tribalism_decision = {
 	}
 }
 
-reform_government_decision = {
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	}
-	decision_group_type = major
-	desc = reform_government_decision_desc
-	ai_check_interval = 36
-
-	is_shown = {
-		faith = {
-			OR = {
-				has_doctrine = doctrine_right_to_rule_divine
-				has_doctrine = doctrine_right_to_rule_material
-				has_doctrine = doctrine_right_to_rule_rajadharma
-			}
-		}
-		OR = {
-			AND = {
-				has_government = feudal_government
-				faith = {
-					NOT = { has_doctrine = doctrine_right_to_rule_divine }
-				}
-			}
-			AND = {
-				has_government = clan_government
-				faith = {
-					NOT = { has_doctrine = doctrine_right_to_rule_material }
-				}
-			}
-			AND = {
-				has_government = mandala_government
-				faith = {
-					NOT = { has_doctrine = doctrine_right_to_rule_rajadharma }
-				}
-			}
-		}
-	}
-
-	is_valid = {
-		is_independent_ruler = yes
-		is_at_war = no
-	}
-
-	effect = {
-		custom_tooltip = reform_government_decision_help_text
-
-		save_scope_as = liege
-		faith = { save_scope_as = liege_faith }
-		add_to_temporary_list = characters_to_convert
-
-		every_vassal_or_below = {
-			limit = {
-				OR = {
-					AND = {
-						has_government = feudal_government
-						scope:liege = { has_government = feudal_government }
-					}
-					AND = {
-						has_government = clan_government
-						scope:liege = { has_government = clan_government }
-					}
-					AND = {
-						has_government = mandala_government
-						scope:liege = { has_government = mandala_government }
-					}
-				}
-				OR = {
-					AND = {
-						faith = { has_doctrine = doctrine_right_to_rule_divine }
-						scope:liege_faith = { has_doctrine = doctrine_right_to_rule_divine }
-					}
-					AND = {
-						faith = { has_doctrine = doctrine_right_to_rule_material }
-						scope:liege_faith = { has_doctrine = doctrine_right_to_rule_material }
-					}
-					AND = {
-						faith = { has_doctrine = doctrine_right_to_rule_rajadharma }
-						scope:liege_faith = { has_doctrine = doctrine_right_to_rule_rajadharma }
-					}
-				}
-			}
-			add_to_temporary_list = characters_to_convert
-		}
-
-		if = {
-			limit = { faith = { has_doctrine = doctrine_right_to_rule_divine } }
-			every_in_list = {
-				list = characters_to_convert
-				change_government = feudal_government
-			}
-		}
-		else_if = {
-			limit = { faith = { has_doctrine = doctrine_right_to_rule_rajadharma } }
-			every_in_list = {
-				list = characters_to_convert
-				change_government = mandala_government
-			}
-		}
-		else_if = {
-			limit = { faith = { has_doctrine = doctrine_right_to_rule_material } }
-			every_in_list = {
-				list = characters_to_convert
-				change_government = clan_government
-			}
-		}
-	}
-
-	cost = {
-		prestige = medium_prestige_value
-	}
-
-	ai_potential = {
-		always = no
-	}
-
-	ai_will_do = {
-		base = 0
-	}
-}
+#reform_government_decision = {
+#	picture = {
+#		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+#	}
+#	decision_group_type = major
+#	desc = reform_government_decision_desc
+#	ai_check_interval = 36
+#
+#	is_shown = {
+#		faith = {
+#			OR = {
+#				has_doctrine = doctrine_right_to_rule_divine
+#				has_doctrine = doctrine_right_to_rule_material
+#				has_doctrine = doctrine_right_to_rule_rajadharma
+#			}
+#		}
+#		OR = {
+#			AND = {
+#				has_government = feudal_government
+#				faith = {
+#					NOT = { has_doctrine = doctrine_right_to_rule_divine }
+#				}
+#			}
+#			AND = {
+#				has_government = clan_government
+#				faith = {
+#					NOT = { has_doctrine = doctrine_right_to_rule_material }
+#				}
+#			}
+#			AND = {
+#				has_government = mandala_government
+#				faith = {
+#					NOT = { has_doctrine = doctrine_right_to_rule_rajadharma }
+#				}
+#			}
+#		}
+#	}
+#
+#	is_valid = {
+#		is_independent_ruler = yes
+#		is_at_war = no
+#	}
+#
+#	effect = {
+#		custom_tooltip = reform_government_decision_help_text
+#
+#		save_scope_as = liege
+#		faith = { save_scope_as = liege_faith }
+#		add_to_temporary_list = characters_to_convert
+#
+#		every_vassal_or_below = {
+#			limit = {
+#				OR = {
+#					AND = {
+#						has_government = feudal_government
+#						scope:liege = { has_government = feudal_government }
+#					}
+#					AND = {
+#						has_government = clan_government
+#						scope:liege = { has_government = clan_government }
+#					}
+#					AND = {
+#						has_government = mandala_government
+#						scope:liege = { has_government = mandala_government }
+#					}
+#				}
+#				OR = {
+#					AND = {
+#						faith = { has_doctrine = doctrine_right_to_rule_divine }
+#						scope:liege_faith = { has_doctrine = doctrine_right_to_rule_divine }
+#					}
+#					AND = {
+#						faith = { has_doctrine = doctrine_right_to_rule_material }
+#						scope:liege_faith = { has_doctrine = doctrine_right_to_rule_material }
+#					}
+#					AND = {
+#						faith = { has_doctrine = doctrine_right_to_rule_rajadharma }
+#						scope:liege_faith = { has_doctrine = doctrine_right_to_rule_rajadharma }
+#					}
+#				}
+#			}
+#			add_to_temporary_list = characters_to_convert
+#		}
+#
+#		if = {
+#			limit = { faith = { has_doctrine = doctrine_right_to_rule_divine } }
+#			every_in_list = {
+#				list = characters_to_convert
+#				change_government = feudal_government
+#			}
+#		}
+#		else_if = {
+#			limit = { faith = { has_doctrine = doctrine_right_to_rule_rajadharma } }
+#			every_in_list = {
+#				list = characters_to_convert
+#				change_government = mandala_government
+#			}
+#		}
+#		else_if = {
+#			limit = { faith = { has_doctrine = doctrine_right_to_rule_material } }
+#			every_in_list = {
+#				list = characters_to_convert
+#				change_government = clan_government
+#			}
+#		}
+#	}
+#
+#	cost = {
+#		prestige = medium_prestige_value
+#	}
+#
+#	ai_potential = {
+#		always = no
+#	}
+#
+#	ai_will_do = {
+#		base = 0
+#	}
+#}
 
 #stateless_confederation_decision = {
 #	picture = {

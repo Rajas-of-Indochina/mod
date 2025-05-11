@@ -25,7 +25,6 @@
 		}
 		should_start_with = {
 			NOR = {
-				government_has_flag = government_should_be_primo
 				historical_succession_access_single_heir_succession_law_trigger = yes
 				historical_succession_access_single_heir_succession_law_youngest_trigger = yes
 				historical_succession_access_single_heir_dynasty_house_trigger = yes
@@ -56,6 +55,7 @@
 		modifier = {
 			glory_hound_opinion = 10
 			parochial_opinion = 5
+			belligerent_opinion = -10
 			dynasty_house_opinion = 5
 			eligible_child_opinion = 10
 		}
@@ -105,6 +105,7 @@
 		modifier = {
 			glory_hound_opinion = 10
 			parochial_opinion = 5
+			belligerent_opinion = -10
 			player_heir_opinion = 10
 			eligible_child_except_player_heir_opinion = 5
 		}
@@ -133,6 +134,7 @@
 			can_change_partition_succession_law_trigger = yes
 		}
 		can_have = {
+			NOT = { government_has_flag = government_is_nomadic }
 			can_have_high_partition_succession_law_trigger = yes
 		}
 		should_start_with = {
@@ -160,6 +162,7 @@
 		flag = partition_succession_law
 		modifier = {
 			glory_hound_opinion = 5
+			belligerent_opinion = -10
 			player_heir_opinion = 15
 		}
 		pass_cost = {
@@ -197,6 +200,7 @@
 			}
 		}
 		can_have = {
+			NOT = { government_has_flag = government_is_nomadic }
 			can_have_single_heir_succession_law_trigger = yes
 		}
 		can_pass = {
@@ -257,6 +261,7 @@
 		}
 
 		potential = {
+			NOT = { government_has_flag = government_is_nomadic }
 			trigger_if = {
 				limit = {
 					government_has_flag = government_is_administrative
@@ -321,6 +326,7 @@
 			}
 		}
 		can_have = {
+			NOT = { government_has_flag = government_is_nomadic }
 			can_have_single_heir_youngest_succession_law_trigger = yes
 		}
 		can_pass = {
@@ -380,6 +386,7 @@
 				}
 				is_independent_ruler = yes
 			}
+			NOT = { government_has_flag = government_is_nomadic }
 		}
 	}
 
@@ -396,6 +403,7 @@
 			}
 		}
 		can_have = {
+			NOT = { government_has_flag = government_is_nomadic }
 			can_have_single_heir_dynasty_house_trigger = yes
 		}
 		can_pass = {
@@ -446,6 +454,7 @@
 		ai_will_do = {
 			if = {
 				limit = {
+					exists = primary_title
 					primary_title.tier > tier_county
 					OR = {
 						#West Slavic
@@ -469,6 +478,7 @@
 			can_change_acclamation_succession_law_trigger = yes
 		}
 		can_have = {
+			NOT = { government_has_flag = government_is_nomadic }
 			can_have_acclamation_succession_law_trigger = yes
 		}
 		should_start_with = {
@@ -518,6 +528,7 @@
 			}
 		}
 		can_have = {
+			NOT = { government_has_flag = government_is_nomadic }
 			can_have_appointment_succession_law_trigger = yes
 		}
 		can_pass = {
@@ -730,6 +741,7 @@
 			dynasty_house_opinion = -10
 			glory_hound_opinion = 15
 			zealot_opinion = 10
+			belligerent_opinion = -10
 			player_heir_opinion = 10
 			eligible_child_except_player_heir_opinion = 5
 		}
@@ -784,6 +796,7 @@
 		modifier = {
 			glory_hound_opinion = 10
 			zealot_opinion = 5
+			belligerent_opinion = -5
 			player_heir_opinion = 10
 			eligible_child_except_player_heir_opinion = 5
 		}
@@ -1235,6 +1248,7 @@ succession_gender_laws = {
 					text = equal_law_culture_faith_or_innovation_trigger
 					OR = {
 						culture = { has_cultural_parameter = gender_equal_inheritance }
+						#culture = { has_innovation = innovation_visigothic_codes }
 						faith = { has_doctrine = doctrine_gender_equal }
 						AND = { #Culture is female dominated but religion is male dominated
 							faith = { has_doctrine = doctrine_gender_male_dominated }
@@ -1290,6 +1304,7 @@ succession_gender_laws = {
 		ai_will_do = {
 			if = {
 				limit = {
+					exists = primary_title
 					primary_title.tier > tier_county
 					faith = {
 						NOT = {

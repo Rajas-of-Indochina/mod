@@ -18,17 +18,25 @@
 			NOT = { has_doctrine_parameter = unreformed }
 			NOT = { has_doctrine_parameter = holy_wars_forbidden }
 		}
-		NOT = {
+		NOR = {
 			government_has_flag = government_is_landless_adventurer
+			government_has_flag = government_is_nomadic
 		}
 	}
 
 	allowed_for_character_display_regardless = {
 		trigger_if = {
 			limit = {
-				is_alive = yes
-				has_variable_list = humsacd_hofs
-				is_target_in_variable_list = {
+				highest_held_title_tier >= tier_kingdom
+			}
+			NOT = { piety_level = -1 }
+		}
+		trigger_else = {
+			trigger_if = {
+				limit = {
+					is_alive = yes
+					has_variable_list = humsacd_hofs
+					is_target_in_variable_list = {
 					name = humsacd_hofs
 					target = scope:attacker.faith
 				}
@@ -48,13 +56,13 @@
 									has_house_modifier = fp2_struggle_hostility_house_combined_modifier
 								}
 							}
+							}
 						}
 					}
+					piety_level >= 0
 				}
-				piety_level >= -1
-			}
-			trigger_else = {
-				piety_level >= 0
+				trigger_else = {
+					piety_level >= 0
 			}
 		}
 		trigger_else = {
@@ -80,6 +88,7 @@
 			}
 			trigger_else = {
 				piety_level >= 1
+				}
 			}
 		}
 	}
@@ -198,6 +207,18 @@
 				add = 1
 			}
 		}
+
+		# As a feudal gov, do not attack owner of tribal holdings  if you have a tribal holding to convert already
+		add = {
+			every_in_list = {
+				list = target_titles
+				if = {
+					limit = { feudal_clan_tribal_conquest_constraints = yes }
+					add = -1000
+				}
+			}
+		}
+		
 		# Holy War are limited to connected neighbour to limit big empire expansions over weak realms.
 		add = {
 			if = {
@@ -376,6 +397,9 @@
 
 		# FP1: note the victory for future memorialisation via stele (if applicable).
 		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_white_peace_desc = {
@@ -410,6 +434,9 @@
 				arrogant = medium_stress_impact_gain
 			}
 		}
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_defeat_desc = {
@@ -489,6 +516,9 @@
 			save_temporary_scope_as = loser
 		}
 		on_lost_aggression_war_discontent_loss = yes
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_primary_attacker_death = inherit
@@ -536,14 +566,22 @@ religious_war = {
 			NOT = { has_doctrine_parameter = unreformed }
 			NOT = { has_doctrine_parameter = holy_wars_forbidden }
 		}
+		NOT = { government_has_flag = government_is_nomadic }
 	}
 
 	allowed_for_character_display_regardless = {
 		trigger_if = {
 			limit = {
-				is_alive = yes
-				has_variable_list = humsacd_hofs
-				is_target_in_variable_list = {
+				highest_held_title_tier >= tier_kingdom
+			}
+			NOT = { piety_level = -1 }
+		}
+		trigger_else = {
+			trigger_if = {
+				limit = {
+					is_alive = yes
+					has_variable_list = humsacd_hofs
+					is_target_in_variable_list = {
 					name = humsacd_hofs
 					target = scope:attacker.faith
 				}
@@ -595,6 +633,7 @@ religious_war = {
 			}
 			trigger_else = {
 				piety_level >= 2
+				}
 			}
 		}
 	}
@@ -913,6 +952,9 @@ religious_war = {
 
 		# FP1: note the victory for future memorialisation via stele (if applicable).
 		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_white_peace_desc = {
@@ -950,6 +992,9 @@ religious_war = {
 				arrogant = medium_stress_impact_gain
 			}
 		}
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_defeat_desc = {
@@ -1029,6 +1074,9 @@ religious_war = {
 			save_temporary_scope_as = loser
 		}
 		on_lost_aggression_war_discontent_loss = yes
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_primary_attacker_death = inherit
@@ -1069,6 +1117,18 @@ religious_war = {
 				add = 1
 			}
 		}
+
+		# As a feudal gov, do not attack owner of tribal holdings  if you have a tribal holding to convert already
+		add = {
+			every_in_list = {
+				list = target_titles
+				if = {
+					limit = { feudal_clan_tribal_conquest_constraints = yes }
+					add = -1000
+				}
+			}
+		}
+		
 		# Holy War are limited to connected neighbour to limit big empire expansions over weak realms.
 		add = {
 			if = {
@@ -1113,6 +1173,7 @@ major_religious_war = {
 		scope:attacker.faith = {
 			NOT = { has_doctrine_parameter = unreformed }
 		}
+		NOR = { government_has_flag = government_is_nomadic }
 	}
 
 	allowed_for_character_display_regardless = {
@@ -1493,6 +1554,9 @@ major_religious_war = {
 
 		# FP1: note the victory for future memorialisation via stele (if applicable).
 		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_white_peace_desc = {
@@ -1531,6 +1595,9 @@ major_religious_war = {
 
 		# Truce
 		add_truce_white_peace_effect = yes
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_defeat_desc = {
@@ -1610,6 +1677,9 @@ major_religious_war = {
 			save_temporary_scope_as = loser
 		}
 		on_lost_aggression_war_discontent_loss = yes
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_primary_attacker_death = inherit
@@ -1650,6 +1720,18 @@ major_religious_war = {
 				add = 1
 			}
 		}
+
+		# As a feudal gov, do not attack owner of tribal holdings  if you have a tribal holding to convert already
+		add = {
+			every_in_list = {
+				list = target_titles
+				if = {
+					limit = { feudal_clan_tribal_conquest_constraints = yes }
+					add = -1000
+				}
+			}
+		}
+		
 		# Holy War are limited to connected neighbour to limit big empire expansions over weak realms.
 		add = {
 			if = {
@@ -1775,6 +1857,9 @@ excommunication_war = {
 
 		# Truce
 		add_truce_attacker_victory_effect = yes
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_white_peace_desc = {
@@ -1811,6 +1896,9 @@ excommunication_war = {
 
 		# Truce
 		add_truce_white_peace_effect = yes
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_defeat_desc = {
@@ -1864,6 +1952,9 @@ excommunication_war = {
 
 		# Truce
 		add_truce_attacker_defeat_effect = yes
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 	
 	should_invalidate = {
@@ -2481,6 +2572,9 @@ flowery_war_cb = {
 		# Truce
 		add_truce_attacker_victory_effect = yes
 
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
+
 	}
 
 	on_white_peace_desc = {
@@ -2529,6 +2623,8 @@ flowery_war_cb = {
 		# Truce
 		add_truce_attacker_victory_effect = yes
 
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_defeat_desc = {
@@ -2976,6 +3072,9 @@ flowery_war_cb = {
 
 		scope:attacker = { save_temporary_scope_as = loser }
 		on_lost_aggression_war_discontent_loss = yes
+
+		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
+		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_primary_attacker_death = inherit
@@ -3261,6 +3360,19 @@ undirected_great_holy_war = {
 
 		#EP2 Accolade glory gain to the holy knights of the faith head
 		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
+		
+		scope:attacker.faith.great_holy_war = { # Make sure steppe crusades do not make silly cultures
+			every_pledged_attacker = {
+				limit = { exists = ghw_beneficiary }
+				ghw_beneficiary = {
+					add_character_flag = {
+						flag = domicile_culture_and_faith_check
+						days = 1
+					}
+					add_to_list = beneficiary_fixing_list
+				}
+			}
+		}
 
 		create_title_and_vassal_change = {
 			type = conquest_holy_war
@@ -3515,6 +3627,27 @@ undirected_great_holy_war = {
 						refill_levy = yes
 						refill_garrison = yes
 					}
+					if = {
+						limit = {
+							has_government = herder_government
+						}
+						every_held_title = {
+							limit = {
+								tier = tier_county
+								title_province = {
+									has_holding_type = herder_holding
+								}
+							}
+							title_province = {
+								set_holding_type = nomad_holding
+							}
+						}
+						change_government = nomad_government
+						domicile = {
+							set_domicile_culture = prev.capital_county.culture
+							set_domicile_faith = prev.capital_county.faith
+						}
+					}
 				}
 			}
 			if = { #If Recipient was landless give him the Crusader King buff.
@@ -3636,6 +3769,30 @@ undirected_great_holy_war = {
 							}
 						}
 						trigger_event = { id = great_holy_war.0070 days = 5 }
+					}
+				}
+			}
+			every_in_list = {
+				list = beneficiary_fixing_list
+				if = {
+					limit = {
+						has_government = herder_government
+					}
+					every_held_title = {
+						limit = {
+							tier = tier_county
+							title_province = {
+								has_holding_type = herder_holding
+							}
+						}
+						title_province = {
+							set_holding_type = nomad_holding
+						}
+					}
+					change_government = nomad_government
+					domicile = {
+						set_domicile_culture = prev.capital_county.culture
+						set_domicile_faith = prev.capital_county.faith
 					}
 				}
 			}
@@ -3777,6 +3934,32 @@ undirected_great_holy_war = {
 
 		#Set 30 years cooldown.
 		hidden_effect = {
+			if = {
+				limit = { exists = scope:title_recipient }
+				scope:title_recipient = {
+					if = {
+						limit = {
+							has_government = herder_government
+						}
+						every_held_title = {
+							limit = {
+								tier = tier_county
+								title_province = {
+									has_holding_type = herder_holding
+								}
+							}
+							title_province = {
+								set_holding_type = nomad_holding
+							}
+						}
+						change_government = nomad_government
+						domicile = {
+							set_domicile_culture = prev.capital_county.culture
+							set_domicile_faith = prev.capital_county.faith
+						}
+					}
+				}
+			}
 			scope:attacker.faith = {
 				set_variable = {
 					name = variable_ghw_cooldown
@@ -4032,6 +4215,19 @@ directed_great_holy_war = {
 
 		#EP2 Accolade glory gain to the holy warriors of the faith head
 		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
+		
+		scope:attacker.faith.great_holy_war = { # Make sure steppe crusades do not make silly cultures
+			every_pledged_attacker = {
+				limit = { exists = ghw_beneficiary }
+				ghw_beneficiary = {
+					add_character_flag = {
+						flag = domicile_culture_and_faith_check
+						days = 1
+					}
+					add_to_list = beneficiary_fixing_list
+				}
+			}
+		}
 
 		scope:attacker.faith.great_holy_war.ghw_target_title = { #Loc keys for localization fluff.
 			save_scope_as = target_kingdom
@@ -4208,6 +4404,33 @@ directed_great_holy_war = {
 
 		scope:title_recipient = {
 			custom_tooltip = legend_seed_ghw.tt
+		}
+		
+		hidden_effect = {
+			every_in_list = {
+				list = beneficiary_fixing_list
+				if = {
+					limit = {
+						has_government = herder_government
+					}
+					every_held_title = {
+						limit = {
+							tier = tier_county
+							title_province = {
+								has_holding_type = herder_holding
+							}
+						}
+						title_province = {
+							set_holding_type = nomad_holding
+						}
+					}
+					change_government = nomad_government
+					domicile = {
+						set_domicile_culture = prev.capital_county.culture
+						set_domicile_faith = prev.capital_county.faith
+					}
+				}
+			}
 		}
 	}
 

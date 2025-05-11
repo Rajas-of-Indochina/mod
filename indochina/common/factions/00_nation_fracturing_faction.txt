@@ -29,16 +29,13 @@
 		}
 	}
 
-	is_valid = {
-		has_valid_faction_members_trigger = yes
-	}
-
 	is_character_valid = {
 		common_character_validity_trigger = {
 			FACTION_TARGET = scope:faction.faction_target
 		}
+		has_valid_faction_members_trigger = yes
 	}
-
+	
 	demand = {
 		save_scope_as = faction
 
@@ -88,21 +85,16 @@
 			OR = {
 				has_realm_law = crown_authority_0
 				has_realm_law = tribal_authority_0
-				has_realm_law = nomadic_authority_1
 				has_realm_law = mandala_authority_0
 				has_realm_law = bureaucratic_authority_0
 				has_realm_law = bureaucratic_vassal_authority_0
-				# has_realm_law = stateless_authority_0
 			}
 		}
 
-		# Only powerfull vassals can create such factions and they need to have either another culture or faith
+		# Only powerful vassals can create such factions and they need to have either another culture or faith
 		OR = {
 			is_powerful_vassal = yes
-			OR = {
-				NOT = { faith = liege.faith }
-				NOT = { culture = liege.culture }
-			}
+			government_has_flag = government_is_nomadic
 			is_ai = no
 		}
 
@@ -152,12 +144,9 @@
 			OR = {
 				has_realm_law = crown_authority_0
 				has_realm_law = tribal_authority_0
-				has_realm_law = nomadic_authority_1
 				has_realm_law = mandala_authority_0
-				# has_realm_law = imperial_authority_0
 				has_realm_law = bureaucratic_authority_0
 				has_realm_law = bureaucratic_vassal_authority_0
-				# has_realm_law = stateless_authority_0
 			}
 		}
 
@@ -358,7 +347,6 @@
 			value = county_opinion
 			multiplier = -1.0
 		}
-
 	}
 
 	is_county_valid = {
