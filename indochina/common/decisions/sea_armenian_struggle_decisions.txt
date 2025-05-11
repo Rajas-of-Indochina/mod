@@ -576,6 +576,7 @@ armenian_struggle_ending_roman_rule = {
 			AND = {
 				has_trait = pro_roman
 				is_independent_ruler = yes
+				is_tributary = no
 				highest_held_title_tier >= tier_kingdom
 			}
 		}
@@ -1252,10 +1253,20 @@ armenian_struggle_ending_complicity = {
 				}
 			}
 			has_trait = pro_roman
-			any_neighboring_top_liege_realm_owner = {
-				OR = {
-					has_title = title:e_roman_empire
-					has_title = title:e_byzantium
+			OR = {
+				custom_tooltip = {
+					text = "Top [suzerain|E] holds the [GetTitleByKey('e_byzantium').GetName]"
+					top_suzerain ?= title:e_byzantium.holder
+				}
+				custom_tooltip = {
+					text = "Top [suzerain|E] holds the [GetTitleByKey('e_roman_empire').GetName]"
+					top_suzerain ?= title:e_roman_empire.holder
+				}
+				any_neighboring_top_liege_realm_owner = {
+					OR = {
+						has_title = title:e_roman_empire
+						has_title = title:e_byzantium
+					}
 				}
 			}
 		}
@@ -1268,13 +1279,23 @@ armenian_struggle_ending_complicity = {
 				}
 			}
 			has_trait = pro_persian
-			any_neighboring_top_liege_realm_owner = {
-				OR = {
-					has_title = title:e_persia
-					has_title = title:e_arabia
-					AND = {
-						highest_held_title_tier >= tier_empire
-						has_trait = pro_persian
+			OR = {
+				custom_tooltip = {
+					text = "Top [suzerain|E] holds the [GetTitleByKey('e_persia').GetName]"
+					top_suzerain ?= title:e_persia.holder
+				}
+				custom_tooltip = {
+					text = "Top [suzerain|E] holds the [GetTitleByKey('e_arabia').GetName]"
+					top_suzerain ?= title:e_arabia.holder
+				}
+				any_neighboring_top_liege_realm_owner = {
+					OR = {
+						has_title = title:e_persia
+						has_title = title:e_arabia
+						AND = {
+							highest_held_title_tier >= tier_empire
+							has_trait = pro_persian
+						}
 					}
 				}
 			}
