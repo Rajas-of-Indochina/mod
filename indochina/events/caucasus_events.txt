@@ -1572,8 +1572,33 @@ caucasianroa.024 = {
 					domicile.domicile_location = { geographical_region = world_north_caucasus }
 					faith = faith:circassian_christianity
 				}
+				NOT = { THIS = ROOT }
 			}
 			trigger_event = caucasianroa.025
+		}
+		if = {
+			limit = {
+				ROOT = {highest_held_title_tier >= tier_kingdom}
+				faith:circassian_christianity = { religious_head_title = title:d_circassian_patriarchate }
+			}
+			ROOT.faith.religious_head = { save_scope_as = new_pope }
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			scope:new_pope = {
+				change_liege = {
+					liege = ROOT
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+			assign_councillor_type = {
+				type = councillor_court_chaplain
+				remove_existing_councillor = yes
+				target = scope:new_pope
+			}
 		}
 	}
 }
