@@ -64,20 +64,47 @@
 		}
 
 		potential = {
-			NOT = { government_has_flag = government_is_clan }
-			NOT = { government_has_flag = government_is_administrative }
+			NOR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_clan
+				government_has_flag = government_is_administrative
+			}
 		}
 	}
 
 	partition_succession_law = {
 		can_keep = {
-			can_keep_partition_succession_law_trigger = yes
+			OR = {
+				can_keep_partition_succession_law_trigger = yes
+				trigger_if = {
+					limit = {
+						exists = primary_title
+					}
+					is_confederation_member = yes
+				}
+			}
 		}
 		can_pass = {
-			can_change_partition_succession_law_trigger = yes
+			OR = {
+				can_change_partition_succession_law_trigger = yes
+				trigger_if = {
+					limit = {
+						exists = primary_title
+					}
+					is_confederation_member = yes
+				}
+			}
 		}
 		can_have = {
-			can_have_partition_succession_law_trigger = yes
+			OR = {
+				can_have_partition_succession_law_trigger = yes
+				trigger_if = {
+					limit = {
+						exists = primary_title
+					}
+					is_confederation_member = yes
+				}
+			}
 		}
 		should_start_with = {
 			NOR = {
@@ -87,8 +114,7 @@
 			}
 			government_has_flag = government_is_feudal
 			culture = {
-				has_innovation = innovation_plenary_assemblies
-				#has_innovation = innovation_hereditary_rule
+				has_innovation = innovation_hereditary_rule
 				NOT = {
 					has_innovation = innovation_heraldry
 				}
@@ -121,8 +147,11 @@
 		}
 
 		potential = {
-			NOT = { government_has_flag = government_is_clan }
-			NOT = { government_has_flag = government_is_administrative }
+			NOR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_clan
+				government_has_flag = government_is_administrative
+			}
 		}
 	}
 
@@ -182,8 +211,11 @@
 		}
 
 		potential = {
-			NOT = { government_has_flag = government_is_clan }
-			NOT = { government_has_flag = government_is_administrative }
+			NOR = {
+				government_has_flag = government_is_nomadic
+				government_has_flag = government_is_clan
+				government_has_flag = government_is_administrative
+			}
 		}
 	}
 
@@ -466,7 +498,10 @@
 		}
 
 		potential = {
-			NOT = { government_has_flag = government_is_administrative }
+			NOR = {
+				government_has_flag = government_is_administrative
+				government_has_flag = government_is_nomadic
+			}
 		}
 	}
 
@@ -1125,8 +1160,7 @@ succession_gender_laws = {
 						has_doctrine = doctrine_gender_male_dominated
 						religion_tag = islam_religion
 					}
-					culture = { has_cultural_parameter = male_only_inheritance }
-	
+
 					# China and Japan do be like that
 					culture = { has_cultural_pillar = heritage_chinese }
 					culture = { has_cultural_pillar = heritage_yamato }
@@ -1203,11 +1237,32 @@ succession_gender_laws = {
 						}
 						has_doctrine = doctrine_gender_male_dominated
 					}
-					has_realm_law = male_only_law # For when male_only_law ceases to be a legal option
+					AND = {
+						has_realm_law = male_only_law # For when male_only_law ceases to be a legal option
+						trigger_if = {
+							limit = {
+								is_independent_ruler = no
+								government_allows = administrative
+							}
+							NOT = {
+								top_liege = { has_realm_law = male_only_law }
+							}
+						}
+						trigger_else = {
+							custom_tooltip = {
+								text = culture_not_female_only_tt
+								NOR = {
+									faith = { has_doctrine = doctrine_gender_male_dominated }
+									NOT = {
+										culture = { has_cultural_parameter = female_only_inheritance }
+									}
+								}
+							}
+						}
+					}
 				}
-
-				# China and Japan do be like that
 				NOR = {
+					# China and Japan do be like that
 					culture = { has_cultural_pillar = heritage_chinese }
 					culture = { has_cultural_pillar = heritage_yamato }
 				}
