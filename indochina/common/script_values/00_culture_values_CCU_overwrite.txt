@@ -1,17 +1,4 @@
-﻿
-# Score for a given court language
-# Referenced by code!
-# Only used by the AI
-# Numbers get truncated; 10.3 and 10.4 is the same score
-# root = ruler
-# scope:target = ruler to copy language from
-# scope:my_language_counties = counties in the AI's realm with a culture with their native language
-# scope:their_language_counties = counties in the AI's realm with a culture with the target court language
-# scope:total_counties = counties in the AI's realm
-# scope:courts_with_language = how many royal courts use the same court language? Includes the target
-# scope:checking_native_language = are we scoring our own language?
-# See also the can_adopt_court_language scripted rule
-court_language_ai_score = {
+﻿court_language_ai_score = {
 	add = scope:their_language_counties
 
 	# Bit of relative score for percentage too
@@ -230,38 +217,48 @@ court_language_ai_score = {
 		}
 		multiply = 1.5
 	}
-
+	
 	# CCU: Prefer not to switch from native language to very different languages
 	if = {
 		limit = {
 			scope:checking_native_language = yes
-			NOT = { culture = { has_same_language_family_as = { TARGET = scope:target.culture } } }
+			NOT = { culture = { has_same_language_family_as_trigger = { TARGET = scope:target.culture } } }
 		}
-		multiply = 0.6
+		multiply = 0.2
 	}
 	else_if = {
 		limit = {
 			scope:checking_native_language = yes
-			NOT = { culture = { has_same_language_group_as = { TARGET = scope:target.culture } } }
+			NOT = { culture = { has_same_language_branch_as_trigger = { TARGET = scope:target.culture } } }
+		}
+		multiply = 0.4
+	}
+	else_if = {
+		limit = {
+			scope:checking_native_language = yes
+			NOT = { culture = { has_same_language_group_as_trigger = { TARGET = scope:target.culture } } }
 		}
 		multiply = 0.8
+	}
+	else_if = {
+		limit = {
+			scope:checking_native_language = yes
+			NOT = { culture = { has_same_dialect_continuum_as_trigger = { TARGET = scope:target.culture } } }
+		}
+		multiply = 1.0
 	}
 	if = {
 		limit = {
 			scope:checking_native_language = yes
-			culture = { is_in_language_union_with = { TARGET = scope:target.culture } }
+			culture = { is_in_language_union_with_trigger = { TARGET = scope:target.culture } }
 		}
-		multiply = 1.2
+		multiply = 2.0 #Reverts not in same family effect
 	}
-}
-
-thalassocratic_coastal_holdings_value = 0.20
-thalassocratic_coastal_holdings_value_tt = {
-	value = thalassocratic_coastal_holdings_value
-	multiply = 100
-}
-thalassocratic_non_coastal_holdings_value = -0.20
-thalassocratic_non_coastal_holdings_value_tt = {
-	value = thalassocratic_non_coastal_holdings_value
-	multiply = 100
+	if = {
+		limit = {
+			scope:checking_native_language = yes
+			culture = { has_a_creole_language_trigger = { TARGET = scope:target.culture } }
+		}
+		multiply = 4.0 #Reverts not in same family/group effect
+	}
 }

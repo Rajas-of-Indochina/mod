@@ -92,7 +92,7 @@
 	# Base Chances
 	base_success_chance = {
 		base = 0
-		
+
 		modifier = {
 			add = {
 				value = scope:owner.learning
@@ -101,7 +101,7 @@
 			desc = SCHEME_LEARNING_MODIFIER
 			scope:owner.learning > 0
 		}
-		
+
 		modifier = {
 			add = {
 				value = scope:owner.piety_level
@@ -113,14 +113,14 @@
 				has_cultural_parameter = language_success_chance_per_piety_level
 			}
 		}
-		
+
 		modifier = {
 			add = scope:owner.cp:councillor_court_chaplain.learning
 			desc = SCHEME_CHAPLAIN_HELP_LEARNING_MODIFIER
 			exists = scope:owner.cp:councillor_court_chaplain
 			scope:owner.cp:councillor_court_chaplain.learning > 0
 		}
-		
+
 		modifier = {
 			add = {
 				value = 5
@@ -133,22 +133,41 @@
 			scope:owner.num_of_known_languages > 1
 		}
 
+		##### Changed from Vanilla vvvvv
+		modifier = {
+			add = 15
+			scope:owner.culture = { has_same_dialect_continuum_as_trigger = { TARGET = scope:target.culture } }
+			desc = SCHEME_SAME_LANGUAGE_DIALECT_CONTINUUM_AS_NATIVE_LANGUAGE
+		}
 		modifier = {
 			add = 10
-			scope:owner.culture = { has_same_language_group_as = { TARGET = scope:target.culture } }
+			NOT = { scope:owner.culture = { has_same_dialect_continuum_as_trigger = { TARGET = scope:target.culture } } }
+			scope:owner.culture = { has_same_language_group_as_trigger = { TARGET = scope:target.culture } }
 			desc = SCHEME_SAME_LANGUAGE_GROUP_AS_NATIVE_LANGUAGE
 		}
 		modifier = {
 			add = 5
-			NOT = { scope:owner.culture = { has_same_language_group_as = { TARGET = scope:target.culture } } }
-			scope:owner.culture = { has_same_language_family_as = { TARGET = scope:target.culture } }
+			NOT = { scope:owner.culture = { has_same_language_group_as_trigger = { TARGET = scope:target.culture } } }
+			scope:owner.culture = { has_same_language_branch_as_trigger = { TARGET = scope:target.culture } }
+			desc = SCHEME_SAME_LANGUAGE_BRANCH_AS_NATIVE_LANGUAGE
+		}
+		modifier = {
+			add = 10
+			scope:owner.culture = { has_a_creole_language_trigger = { TARGET = scope:target.culture } }
+			desc = SCHEME_CREOLE_WITH_NATIVE_LANGUAGE
+		}
+		modifier = {
+			add = 1
+			NOT = { scope:owner.culture = { has_same_language_branch_as_trigger = { TARGET = scope:target.culture } } }
+			scope:owner.culture = { has_same_language_family_as_trigger = { TARGET = scope:target.culture } }
 			desc = SCHEME_SAME_LANGUAGE_FAMILY_AS_NATIVE_LANGUAGE
 		}
 		modifier = {
 			add = 5
-			scope:owner.culture = { is_in_language_union_with = { TARGET = scope:target.culture } }
+			scope:owner.culture = { is_in_language_union_with_trigger = { TARGET = scope:target.culture } }
 			desc = SCHEME_SAME_LANGUAGE_UNION_AS_NATIVE_LANGUAGE
 		}
+		##### Changed from Vanilla ^^^^^
 
 		modifier = {
 			add = {
@@ -159,7 +178,7 @@
 			desc = SCHEME_YOUTH_MODIFIER
 			scope:owner.age < 30
 		}
-		
+
 		modifier = {
 			add = 25
 			desc = SCHEME_HERITAGE_MODIFIER
@@ -167,7 +186,7 @@
 				has_same_culture_heritage = scope:owner.culture
 			}
 		}
-		
+
 		modifier = {
 			add = 50
 			desc = SCHEME_LOYAL_SOLDIERS_MODIFIER
@@ -180,7 +199,7 @@
 				}
 			}
 		}
-		
+
 		modifier = {
 			add = 30
 			desc = SCHEME_CULTURE_BLENDING_MODIFIER
@@ -197,33 +216,33 @@
 			scope:owner = { has_trait = intellect_good_1 }
 			add = 10
 		}
-		
+
 		modifier = {
 			desc = "scheme_intellect_good_2"
 			scope:owner = { has_trait = intellect_good_2 }
 			add = 20
 		}
-		
+
 		modifier = {
 			desc = "scheme_intellect_good_3"
 			scope:owner = { has_trait = intellect_good_3 }
 			add = 30
 		}
-		
+
 		modifier = {
 			scope:target = { has_trait = stubborn }
 			desc = "SCHEME_TRAIT_STUBBORN"
 			add = 10
 		}
-		
+
 		modifier = {
 			scope:target = { has_trait = ambitious }
 			desc = "SCHEME_TRAIT_AMBITIOUS"
 			add = 5
 		}
-		
-		#Paranoid value is added automatically because of trait	parameter enemy_personal_scheme_success_chance_add 
-		
+
+		#Paranoid value is added automatically because of trait	parameter enemy_personal_scheme_success_chance_add
+
 		# Lifestyles
 
 		# Dynasty Kin Personal Scheme Success Chance on Dynasty Perk
