@@ -16,7 +16,8 @@
 
 on_game_start_after_lobby = {
     on_actions = {
-		intro_event
+		intro_event_action
+		character_intro_event_action
     }
 }
 
@@ -607,7 +608,30 @@ abkhazia_regnal_check = {
 	}
 }
 
-intro_event = {
+character_intro_event_action = {
+	effect = {
+		if = {
+			limit = {
+				game_start_date = 867.1.1
+			}
+			if = {
+				limit = {
+					exists = character:159976
+					character:159976 = {
+						is_alive = yes
+						is_landed = yes
+						has_title = title:d_arran
+					}
+				}
+			}
+			character:159976 = {
+				trigger_event = caucasianroa.026
+			}
+		}
+	}
+}
+
+intro_event_action = {
 	effect = {
 		if = {
 			limit = {
