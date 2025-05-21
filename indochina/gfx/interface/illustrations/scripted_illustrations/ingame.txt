@@ -1,4 +1,4 @@
-﻿### Character interior background
+### Character interior background
 character_view_bg = {
 
 	######################################
@@ -2239,12 +2239,20 @@ character_view_bg = {
 				AND = {
 					is_landed = no
 					domicile ?= { is_domicile_type = estate }
-					has_graphical_india_region_trigger = yes
+					OR = {
+						has_graphical_india_region_trigger = yes
+						has_graphical_sea_region_trigger = yes
+						has_graphical_burma_region_trigger = yes
+					}
 				}
 				primary_spouse ?= { # Primary Spouse
 					is_landed = no
 					domicile ?= { is_domicile_type = estate }
-					has_graphical_india_region_trigger = yes
+					OR = {
+						has_graphical_india_region_trigger = yes
+						has_graphical_sea_region_trigger = yes
+						has_graphical_burma_region_trigger = yes
+					}
 				}
 			}
 		}
@@ -2258,12 +2266,20 @@ character_view_bg = {
 				AND = {
 					is_landed = no
 					domicile ?= { is_domicile_type = estate }
-					has_graphical_india_region_trigger = yes
+					OR = {
+						has_graphical_india_region_trigger = yes
+						has_graphical_sea_region_trigger = yes
+						has_graphical_burma_region_trigger = yes
+					}
 				}
 				primary_spouse ?= { # Primary Spouse
 					is_landed = no
 					domicile ?= { is_domicile_type = estate }
-					has_graphical_india_region_trigger = yes
+					OR = {
+						has_graphical_india_region_trigger = yes
+						has_graphical_sea_region_trigger = yes
+						has_graphical_burma_region_trigger = yes
+					}
 				}
 			}
 		}
@@ -6448,6 +6464,7 @@ character_view_bg = {
 			has_government = tribal_government
 			OR = {
 				has_graphical_india_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
 				has_graphical_burma_region_trigger = yes
 				has_graphical_tibet_region_trigger = yes
 			}
@@ -8035,7 +8052,11 @@ character_view_bg = {
 		trigger = {
 			exists = primary_title
 			primary_title.tier >= tier_empire
-			has_graphical_india_region_trigger = yes
+			OR = {
+				has_graphical_india_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
+				has_graphical_burma_region_trigger = yes
+			}
 		}
 	}
 
@@ -8045,7 +8066,11 @@ character_view_bg = {
 		trigger = {
 			exists = primary_title
 			primary_title.tier >= tier_empire
-			has_graphical_india_region_trigger = yes
+			OR = {
+				has_graphical_india_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
+				has_graphical_burma_region_trigger = yes
+			}
 			is_character_window_main_character = yes
 		}
 	}
@@ -8060,7 +8085,11 @@ character_view_bg = {
 					primary_spouse = {
 						exists = primary_title
 						primary_title.tier >= tier_empire
-						has_graphical_india_region_trigger = yes
+						OR = {
+							has_graphical_india_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
+							has_graphical_burma_region_trigger = yes
+						}
 					}
 				}
 				AND = {
@@ -8068,7 +8097,11 @@ character_view_bg = {
 					betrothed = {
 						exists = primary_title
 						primary_title.tier >= tier_empire
-						has_graphical_india_region_trigger = yes
+						OR = {
+							has_graphical_india_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
+							has_graphical_burma_region_trigger = yes
+						}
 					}
 				}
 				AND = {
@@ -8076,7 +8109,11 @@ character_view_bg = {
 					liege ?= {
 						exists = primary_title
 						primary_title.tier >= tier_empire
-						has_graphical_india_region_trigger = yes
+						OR = {
+							has_graphical_india_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
+							has_graphical_burma_region_trigger = yes
+						}
 					}
 				}
 			}
@@ -8093,9 +8130,21 @@ character_view_bg = {
 		trigger = {
 			trigger_if = {
 				limit = { is_in_prison_type = house_arrest }
-				imprisoner = { has_graphical_india_region_trigger = yes }
+				imprisoner = {
+					OR = {
+						has_graphical_india_region_trigger = yes
+						has_graphical_sea_region_trigger = yes
+						has_graphical_burma_region_trigger = yes
+					}
+				}
 			}
-			trigger_else = { has_graphical_india_region_trigger = yes }
+			trigger_else = {
+				OR = {
+					has_graphical_india_region_trigger = yes
+					has_graphical_sea_region_trigger = yes
+					has_graphical_burma_region_trigger = yes
+				}
+			}
 		}
 	}
 
@@ -8105,9 +8154,21 @@ character_view_bg = {
 		trigger = {
 			trigger_if = {
 				limit = { is_in_prison_type = house_arrest }
-				imprisoner = { has_graphical_india_region_trigger = yes }
+				imprisoner = {
+					OR = {
+						has_graphical_india_region_trigger = yes
+						has_graphical_sea_region_trigger = yes
+						has_graphical_burma_region_trigger = yes
+					}
+				}
 			}
-			trigger_else = { has_graphical_india_region_trigger = yes }
+			trigger_else = {
+				OR = {
+					has_graphical_india_region_trigger = yes
+					has_graphical_sea_region_trigger = yes
+					has_graphical_burma_region_trigger = yes
+				}
+			}
 			is_character_window_main_character = yes
 		}
 	}
@@ -8120,25 +8181,61 @@ character_view_bg = {
 				primary_spouse ?= {
 					trigger_if = {
 						limit = { is_in_prison_type = house_arrest }
-						imprisoner = { has_graphical_india_region_trigger = yes }
+						imprisoner = {
+							OR = {
+								has_graphical_india_region_trigger = yes
+								has_graphical_sea_region_trigger = yes
+								has_graphical_burma_region_trigger = yes
+							}
+						}
 					}
-					trigger_else = { has_graphical_india_region_trigger = yes }
+					trigger_else = {
+						OR = {
+							has_graphical_india_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
+							has_graphical_burma_region_trigger = yes
+						}
+					}
 				}
 				betrothed ?= {
 					trigger_if = {
 						limit = { is_in_prison_type = house_arrest }
-						imprisoner = { has_graphical_india_region_trigger = yes }
+						imprisoner = {
+							OR = {
+								has_graphical_india_region_trigger = yes
+								has_graphical_sea_region_trigger = yes
+								has_graphical_burma_region_trigger = yes
+							}
+						}
 					}
-					trigger_else = { has_graphical_india_region_trigger = yes }
+					trigger_else = {
+						OR = {
+							has_graphical_india_region_trigger = yes
+							has_graphical_sea_region_trigger = yes
+							has_graphical_burma_region_trigger = yes
+						}
+					}
 				}
 				AND = {
 					liege.diarch ?= this
 					liege ?= {
 						trigger_if = {
 							limit = { is_in_prison_type = house_arrest }
-							imprisoner = { has_graphical_india_region_trigger = yes }
+							imprisoner = {
+								OR = {
+									has_graphical_india_region_trigger = yes
+									has_graphical_sea_region_trigger = yes
+									has_graphical_burma_region_trigger = yes
+								}
+							}
 						}
-						trigger_else = { has_graphical_india_region_trigger = yes }
+						trigger_else = {
+							OR = {
+								has_graphical_india_region_trigger = yes
+								has_graphical_sea_region_trigger = yes
+								has_graphical_burma_region_trigger = yes
+							}
+						}
 					}
 				}
 			}
@@ -8573,6 +8670,8 @@ character_location_exterior = {
 		trigger = {
 			OR = {
 				has_graphical_india_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
+				has_graphical_burma_region_trigger = yes
 				has_graphical_mena_region_trigger = yes
 				has_graphical_mediterranean_region_trigger = yes
 			}
@@ -9595,7 +9694,11 @@ character_private = {
 				is_landed = yes
 				domicile ?= { is_domicile_type = estate }
 			}
-			has_graphical_india_region_trigger = yes
+			OR = {
+				has_graphical_india_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
+				has_graphical_burma_region_trigger = yes
+			}
 		}
 	}
 
@@ -9606,7 +9709,11 @@ character_private = {
 		reference = "event_scenes/bp1_courtyard_indian.dds"
 
 		trigger = {
-			has_graphical_india_region_trigger = yes
+			OR = {
+				has_graphical_india_region_trigger = yes
+				has_graphical_sea_region_trigger = yes
+				has_graphical_burma_region_trigger = yes
+			}
 		}
 	}
 
