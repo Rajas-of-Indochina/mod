@@ -34,6 +34,7 @@ yearly_global_pulse = {
 		ildeguzid_nickname_action
 		abbasid_regnal_check
 		abkhazia_regnal_check
+		caucasus_character_events_action
 	}
 }
 
@@ -608,21 +609,36 @@ abkhazia_regnal_check = {
 	}
 }
 
+caucasus_character_events_action = {
+	effect = {
+		if = {
+			limit = { 
+				current_date = 871.1.1
+				exists = character:sea_baghuashi_1
+				character:sea_baghuashi_1 = {
+					is_alive = yes
+					is_landed = yes
+					has_title = title:c_argveti
+				}
+				exists = title:k_abkhazia
+			}
+			title:k_abkhazia.holder = {
+				trigger_event = caucasianroa.029
+			}
+		}
+	}
+}
+
 character_intro_event_action = {
 	effect = {
 		if = {
 			limit = {
 				game_start_date = 867.1.1
-			}
-			if = {
-				limit = {
-					exists = character:159976
-					character:159976 = {
-						is_ai = no
-						is_alive = yes
-						is_landed = yes
-						has_title = title:d_arran
-					}
+				exists = character:159976
+				character:159976 = {
+					is_alive = yes
+					is_landed = yes
+					has_title = title:d_arran
 				}
 			}
 			character:159976 = {
