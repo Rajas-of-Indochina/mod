@@ -64,9 +64,17 @@ historical_succession_access_single_heir_succession_law_trigger = {
 		top_liege.primary_title = title:e_celestia_china
 
 		# Caucasus
-		has_title = title:k_georgia
-		has_title = title:k_armenian_principality
-		has_title = title:k_ayrarat
+		AND = {
+			OR = {
+				has_title = title:k_georgia
+				has_title = title:k_armenian_principality
+				has_title = title:k_ayrarat
+			}
+			OR = {
+				culture = culture:abkhaz
+				culture = { has_cultural_pillar = heritage_caucasian }
+			}
+		}
 	}
 	# NOT = { government_allows = administrative }
 }
@@ -88,6 +96,11 @@ historical_succession_access_single_heir_dynasty_house_trigger = {
 }
 
 ### ROA Stuff ###
+historical_succession_access_partition_succession_law_trigger = {
+	OR = {
+		has_title = title:k_bulgaria
+	}
+}
 historical_succession_access_high_partition_succession_law_trigger = {
 	AND = {
 		OR = {
