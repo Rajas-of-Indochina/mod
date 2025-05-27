@@ -107,16 +107,22 @@
 			}
 		}
 		should_start_with = {
-			NOR = {
-				historical_succession_access_single_heir_succession_law_trigger = yes
-				historical_succession_access_single_heir_succession_law_youngest_trigger = yes
-				historical_succession_access_single_heir_dynasty_house_trigger = yes
-			}
-			government_has_flag = government_is_feudal
-			culture = {
-				has_innovation = innovation_hereditary_rule
-				NOT = {
-					has_innovation = innovation_heraldry
+			OR = {
+				historical_succession_access_partition_succession_law_trigger = yes
+				AND = {
+					NOR = {
+						historical_succession_access_high_partition_succession_law_trigger = yes
+						historical_succession_access_single_heir_succession_law_trigger = yes
+						historical_succession_access_single_heir_succession_law_youngest_trigger = yes
+						historical_succession_access_single_heir_dynasty_house_trigger = yes
+					}
+					government_has_flag = government_is_feudal
+					culture = {
+						has_innovation = innovation_hereditary_rule
+						NOT = {
+							has_innovation = innovation_heraldry
+						}
+					}
 				}
 			}
 			NOT = { government_allows = administrative }
