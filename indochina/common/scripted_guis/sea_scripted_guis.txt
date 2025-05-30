@@ -344,3 +344,265 @@ is_armenian_struggle_gui = {
 		}
 	}
 }
+
+reset_custom_map_mode_effect = {
+	effect = {
+		if = {
+			limit = { exists = global_var:custom_map_mode }
+			remove_global_variable = custom_map_mode
+		}
+	}
+}
+
+minority_any_map_mode = {
+	effect = {
+		root = { save_temporary_scope_as = the_culture }
+		set_global_variable = { name = custom_map_mode_changing value = 1 }
+		set_global_variable = { name = custom_map_mode value = flag:minority_cultures_map_mode }
+		every_county = {
+			if = {
+				limit = {
+					county_has_minority_faith_trigger = yes
+					county_has_minority_culture_trigger = yes
+				}
+				every_county_province = { barony = { set_color_from_title = title:k_andalusia } }
+			}
+			else_if = {
+				limit = {
+					county_has_minority_faith_trigger = yes
+					county_has_minority_culture_trigger = no
+				}
+				every_county_province = { barony = { set_color_from_title = title:k_france } }
+			}
+			else_if = {
+				limit = {
+					county_has_minority_faith_trigger = no
+					county_has_minority_culture_trigger = yes
+				}
+				every_county_province = { barony = { set_color_from_title = title:k_castille } }
+			}
+			else = {
+				every_county_province = { barony = { set_color_from_title = title:d_map_base_color } }
+			}
+		}
+		remove_global_variable = custom_map_mode_changing
+	}
+	is_shown = {
+		exists = global_var:custom_map_mode
+		global_var:custom_map_mode = flag:minority_cultures_map_mode
+	}
+	is_valid = {
+		NOT = { exists = global_var:custom_map_mode_changing }
+	}
+}
+
+minority_cultures_map_mode = {
+	effect = {
+		root = { save_temporary_scope_as = the_culture }
+		set_global_variable = { name = custom_map_mode_changing value = 1 }
+		set_global_variable = { name = custom_map_mode value = flag:minority_cultures_map_mode }
+		every_county = {
+			if = {
+				limit = { THIS.culture = scope:the_culture }
+				every_county_province = { barony = { set_color_from_title = title:k_france } }
+			}
+			else_if = {
+				limit = {
+					county_has_specific_large_minority_culture_trigger = {
+						CULTURE = scope:the_culture
+					}
+				}
+				every_county_province = { barony = { set_color_from_title = title:k_andalusia } }
+			}
+			else_if = {
+				limit = {
+					county_has_specific_small_minority_culture_trigger = {
+						CULTURE = scope:the_culture
+					}
+				}
+				every_county_province = { barony = { set_color_from_title = title:e_spain } }
+			}
+			else = {
+				every_county_province = { barony = { set_color_from_title = title:d_map_base_color } }
+			}
+		}
+		remove_global_variable = custom_map_mode_changing
+	}
+	is_shown = {
+		exists = global_var:custom_map_mode
+		global_var:custom_map_mode = flag:minority_cultures_map_mode
+	}
+	is_valid = {
+		NOT = { exists = global_var:custom_map_mode_changing }
+	}
+}
+
+minority_faiths_map_mode = {
+	effect = {
+		root = { save_temporary_scope_as = the_faith }
+		set_global_variable = { name = custom_map_mode_changing value = 1 }
+		set_global_variable = { name = custom_map_mode value = flag:minority_faiths_map_mode }
+		every_county = {
+			if = {
+				limit = {
+					this.faith = scope:the_faith
+				}
+				every_county_province = { barony = { set_color_from_title = title:k_france } }
+			}
+			else_if = {
+				limit = {
+					exists = scope:the_faith.religious_head
+					this.faith.religious_head = scope:the_faith.religious_head
+				}
+				every_county_province = { barony = { set_color_from_title = title:e_persia } }
+			}
+			else_if = {
+				limit = {
+					county_has_specific_large_minority_faith_trigger = {
+						FAITH = scope:the_faith
+					}
+				}
+				every_county_province = { barony = { set_color_from_title = title:k_andalusia } }
+			}
+			else_if = {
+				limit = {
+					county_has_specific_small_minority_faith_trigger = {
+						FAITH = scope:the_faith
+					}
+				}
+				every_county_province = { barony = { set_color_from_title = title:e_spain } }
+			}
+			else = {
+				every_county_province = { barony = { set_color_from_title = title:d_map_base_color } }
+			}
+		}
+		remove_global_variable = custom_map_mode_changing
+	}
+	is_shown = {
+		exists = global_var:custom_map_mode
+		global_var:custom_map_mode = flag:minority_faiths_map_mode
+	}
+	is_valid = { NOT = { exists = global_var:custom_map_mode_changing } }
+}
+
+sea_languages_map_effect = {
+    effect = {
+		set_global_variable = { name = custom_map_mode_changing value = 1 }
+		set_global_variable = { name = custom_map_mode value = flag:sea_languages_map_effect }
+
+		every_county = {
+			every_county_province = { barony = { set_color_from_title = title:d_map_base_color } }
+		}
+		every_county = {
+
+			culture = {
+				save_scope_as = this_culture
+
+				if = {
+					limit = {
+						# is any culture sharing this language already in the list
+						any_in_global_list = {
+							variable = languages_map_cultures_list
+							has_same_culture_language = scope:this_culture
+						}
+					}
+
+					random_in_global_list = {
+						variable = languages_map_cultures_list
+						limit = {
+							has_same_culture_language = scope:this_culture
+						}
+
+						var:language_color_title = { save_scope_as = language_color_county }
+					}
+				}
+				else = {
+					random_county = {
+						save_scope_as = language_color_county
+					}
+
+					set_variable = {
+						name = language_color_title
+						value = scope:language_color_county
+					}
+
+					add_to_global_variable_list = {
+						name = languages_map_cultures_list
+						target = scope:this_culture
+					}
+				}
+
+				every_culture_county = {
+					every_county_province = { barony = { set_color_from_title = scope:language_color_county } }
+				}
+			}
+		}
+        remove_global_variable = custom_map_mode_changing
+    }
+	is_shown = {
+		exists = global_var:custom_map_mode
+		global_var:custom_map_mode = flag:sea_languages_map_effect
+	}
+	is_valid = { NOT = { exists = global_var:custom_map_mode_changing } }
+}
+
+sea_heritages_map_effect = {
+    effect = {
+		set_global_variable = { name = custom_map_mode_changing value = 1 }
+		set_global_variable = { name = custom_map_mode value = flag:sea_heritages_map_effect }
+
+		every_county = {
+			every_county_province = { barony = { set_color_from_title = title:d_map_base_color } }
+		}
+		every_county = {
+
+			culture = {
+				save_scope_as = this_culture
+
+				if = {
+					limit = {
+						# is any culture sharing this language already in the list
+						any_in_global_list = {
+							variable = heritages_map_cultures_list
+							has_same_culture_heritage = scope:this_culture
+						}
+					}
+
+					random_in_global_list = {
+						variable = heritages_map_cultures_list
+						limit = {
+							has_same_culture_heritage = scope:this_culture
+						}
+
+						var:heritage_color_title = { save_scope_as = heritage_color_county }
+					}
+				}
+				else = {
+					random_culture_county = {
+						save_scope_as = heritage_color_county
+					}
+
+					set_variable = {
+						name = heritage_color_title
+						value = scope:heritage_color_county
+					}
+
+					add_to_global_variable_list = {
+						name = heritages_map_cultures_list
+						target = scope:this_culture
+					}
+				}
+
+				every_culture_county = {
+					every_county_province = { barony = { set_color_from_title = scope:heritage_color_county } }
+				}
+			}
+		}
+        remove_global_variable = custom_map_mode_changing
+    }
+	is_shown = {
+		exists = global_var:custom_map_mode
+		global_var:custom_map_mode = flag:sea_heritages_map_effect
+	}
+	is_valid = { NOT = { exists = global_var:custom_map_mode_changing } }
+}
