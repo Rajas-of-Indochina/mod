@@ -485,10 +485,10 @@ minority_faiths_map_mode = {
 	is_valid = { NOT = { exists = global_var:custom_map_mode_changing } }
 }
 
-sea_languages_map_effect = {
+sea_languages_map_mode = {
     effect = {
 		set_global_variable = { name = custom_map_mode_changing value = 1 }
-		set_global_variable = { name = custom_map_mode value = flag:sea_languages_map_effect }
+		set_global_variable = { name = custom_map_mode value = flag:sea_languages_map_mode }
 
 		every_county = {
 			every_county_province = { barony = { set_color_from_title = title:d_map_base_color } }
@@ -513,17 +513,17 @@ sea_languages_map_effect = {
 							has_same_culture_language = scope:this_culture
 						}
 
-						var:language_color_title = { save_scope_as = language_color_county }
+						var:language_color_title = { save_scope_as = language_color_title }
 					}
 				}
 				else = {
-					random_county = {
-						save_scope_as = language_color_county
+					random_kingdom = {
+						save_scope_as = language_color_title
 					}
 
 					set_variable = {
 						name = language_color_title
-						value = scope:language_color_county
+						value = scope:language_color_title
 					}
 
 					add_to_global_variable_list = {
@@ -533,7 +533,7 @@ sea_languages_map_effect = {
 				}
 
 				every_culture_county = {
-					every_county_province = { barony = { set_color_from_title = scope:language_color_county } }
+					every_county_province = { barony = { set_color_from_title = scope:language_color_title } }
 				}
 			}
 		}
@@ -541,15 +541,15 @@ sea_languages_map_effect = {
     }
 	is_shown = {
 		exists = global_var:custom_map_mode
-		global_var:custom_map_mode = flag:sea_languages_map_effect
+		global_var:custom_map_mode = flag:sea_languages_map_mode
 	}
 	is_valid = { NOT = { exists = global_var:custom_map_mode_changing } }
 }
 
-sea_heritages_map_effect = {
+sea_heritages_map_mode = {
     effect = {
 		set_global_variable = { name = custom_map_mode_changing value = 1 }
-		set_global_variable = { name = custom_map_mode value = flag:sea_heritages_map_effect }
+		set_global_variable = { name = custom_map_mode value = flag:sea_heritages_map_mode }
 
 		every_county = {
 			every_county_province = { barony = { set_color_from_title = title:d_map_base_color } }
@@ -574,17 +574,17 @@ sea_heritages_map_effect = {
 							has_same_culture_heritage = scope:this_culture
 						}
 
-						var:heritage_color_title = { save_scope_as = heritage_color_county }
+						var:heritage_color_title = { save_scope_as = heritage_color_title }
 					}
 				}
 				else = {
-					random_culture_county = {
-						save_scope_as = heritage_color_county
+					random_kingdom = {
+						save_scope_as = heritage_color_title
 					}
 
 					set_variable = {
 						name = heritage_color_title
-						value = scope:heritage_color_county
+						value = scope:heritage_color_title
 					}
 
 					add_to_global_variable_list = {
@@ -594,7 +594,7 @@ sea_heritages_map_effect = {
 				}
 
 				every_culture_county = {
-					every_county_province = { barony = { set_color_from_title = scope:heritage_color_county } }
+					every_county_province = { barony = { set_color_from_title = scope:heritage_color_title } }
 				}
 			}
 		}
@@ -602,7 +602,38 @@ sea_heritages_map_effect = {
     }
 	is_shown = {
 		exists = global_var:custom_map_mode
-		global_var:custom_map_mode = flag:sea_heritages_map_effect
+		global_var:custom_map_mode = flag:sea_heritages_map_mode
+	}
+	is_valid = { NOT = { exists = global_var:custom_map_mode_changing } }
+}
+
+sea_winter_map_mode = {
+    effect = {
+		set_global_variable = { name = custom_map_mode_changing value = 1 }
+		set_global_variable = { name = custom_map_mode value = flag:sea_winter_map_mode }
+
+		every_barony = {
+			if = {
+				limit = { title_province  = { has_province_modifier = winter_mild_modifier } }
+				set_color_from_title = title:k_sibir
+			}
+			else_if = {
+				limit = { title_province  = { has_province_modifier = winter_normal_modifier } }
+				set_color_from_title = title:k_otuken
+			}
+			else_if = {
+				limit = { title_province  = { has_province_modifier = winter_harsh_modifier } }
+				set_color_from_title = title:k_vychegda
+			}
+			else = {
+				set_color_from_title = title:d_siro_map_base
+			}
+		}
+        remove_global_variable = custom_map_mode_changing
+    }
+	is_shown = {
+		exists = global_var:custom_map_mode
+		global_var:custom_map_mode = flag:sea_winter_map_mode
 	}
 	is_valid = { NOT = { exists = global_var:custom_map_mode_changing } }
 }
