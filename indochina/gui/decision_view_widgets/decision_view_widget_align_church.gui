@@ -1,0 +1,82 @@
+﻿# Required controller: decision_option_list_controller
+
+vbox = {
+	name = "decision_view_widget_align_church"
+	layoutpolicy_horizontal = expanding
+	layoutpolicy_vertical = expanding
+	ignoreinvisible = yes
+
+	margin_top = 10
+	spacing = 10
+
+	text_label_center = {
+		text = "align_church_gui"
+	}
+
+	hbox = {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			blockoverride "scrollbox_content" {
+				vbox = {
+					datamodel = "[DecisionViewWidgetOptionList.GetEntries]"
+					spacing = 6
+
+					item = {
+						align_church_gui_item = {}
+					}
+				}
+			}
+
+			blockoverride "scrollbox_backgroun_fade" {}
+		}
+	}
+}
+
+
+types align_church_guis
+{
+	type align_church_gui_item = button_standard {
+		size = { 450 70 }
+		margin = { 10 10 }
+
+		onclick = "[DecisionViewWidgetOptionList.OnSelect(Entry.Self)]"
+		enabled = "[Entry.IsEnabled]"
+		tooltip = "[Entry.GetTooltip]"
+		down = "[Entry.IsSelected]"
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 10
+			margin_left = 10
+
+			icon = {
+				name = "algn_church_gui_icon"
+				size = { 50 50 } # size = { 30 30 }
+				texture = "[Entry.GetIcon]"
+			}
+
+			vbox = {
+				name = "align_church_gui_info"
+
+				layoutpolicy_vertical = expanding
+				margin_left = 15
+				margin_bottom = 5
+
+				text_single = {
+					name = "align_church_gui_type"
+					text = "[Entry.GetName]"
+					max_width = 400
+					align = left
+				}
+			}
+
+			expand = {}
+		}
+	}
+}

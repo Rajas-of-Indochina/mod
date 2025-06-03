@@ -103,14 +103,30 @@ window = {
 
 			hbox = {
 				name = "whos_culture"
-				margin_top = 5
+				margin_top = -10
 
 				vbox = {
 					layoutpolicy_vertical = expanding
+					ignoreinvisible = yes
 
 					text_label_center = {
 						text = "[Culture.GetPlayerRelationString]"
 						default_format = "#low"
+					}
+
+					text_single = {
+						text = "[persian_culture|E]"
+						visible = "[GetScriptedGui('is_persian_aligned_culture').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Culture.MakeScope ).End )]"
+					}
+
+					text_single = {
+						text = "[local_culture|E]"
+						visible = "[GetScriptedGui('is_local_aligned_culture').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Culture.MakeScope ).End )]"
+					}
+
+					text_single = {
+						text = "[roman_culture|E]"
+						visible = "[GetScriptedGui('is_roman_aligned_culture').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'culture', Culture.MakeScope ).End )]"
 					}
 
 					text_single = {
@@ -121,6 +137,7 @@ window = {
 			}
 
 			##### Changed from Vanilla vvvvvv
+
 			flowcontainer = {
 				ignoreinvisible = yes
 				parentanchor = vcenter|left
@@ -131,13 +148,13 @@ window = {
 
 					size = { 50 50 }
 
-					datacontext = "[GetScriptedGui('minority_culture_map_effect')]"
+					datacontext = "[GetScriptedGui('minority_cultures_map_mode')]"
 
 					onclick = "[SetMapMode('minority_cultures_map_mode')]"
 					onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( CultureWindow.GetCulture.MakeScope ).End )]"
 					onclick = "[GetVariableSystem.Toggle('custom_legend_window')]"
-					down = "[And( GetScriptedGui('minority_culture_map_effect').IsShown(GuiScope.End), IsMapMode('minority_cultures_map_mode') )]"
-					enabled = "[GetScriptedGui('minority_culture_map_effect').IsValid(GuiScope.End)]"
+					down = "[And( GetScriptedGui('minority_cultures_map_mode').IsShown(GuiScope.End), IsMapMode('minority_cultures_map_mode') )]"
+					enabled = "[GetScriptedGui('minority_cultures_map_mode').IsValid(GuiScope.End)]"
 
 					texture = "gfx/interface/buttons/button_round_frame.dds"
 
@@ -150,6 +167,7 @@ window = {
 						size = { 30 30 }
 					}
 				}
+
 				#Reset Minorities Map Mode
 				button_round = {
 					name = "culture_minority_map_revert_mode"
@@ -178,9 +196,9 @@ window = {
 					}
 				}
 			}
+
 			##### Changed from Vanilla ^^^^^
 		}
-
 
 		hbox = {
 			name = "tabs"
@@ -399,7 +417,7 @@ window = {
 
 								icon_culture_pillar = {
 									visible = "[ObjectsEqual( Culture.GetLanguage, GetPlayer.GetCulture.GetLanguage )]"
-									texture = "gfx/interface/icons/culture_pillars/language.dds"
+									texture = "gfx/interface/icons/flat_icons/map_modes/court_languages.dds"
 								}
 
 								icon_culture_pillar = {
@@ -1653,7 +1671,7 @@ types CultureShared
 					name = "name"
 					text = "[CulturePillar.GetNameNoTooltip]"
 					default_format = "#high"
-					maximumsize = { 130 44 }
+					maximumsize = { 150 44 }
 					fontsize_min = 12
 					multiline = yes
 					align = center

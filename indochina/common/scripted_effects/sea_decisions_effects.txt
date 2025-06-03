@@ -1,4 +1,4 @@
-﻿
+
 # Override Vanilla
 
 #####
@@ -234,20 +234,146 @@ convert_whole_realm_to_feudalism_effect = {
 		every_vassal = {
 			capital_county = {
 				every_county_province = {
-					barony = {
-						if = {
-							limit = { has_holding_type = tribal_holding }
-							set_holding_type = castle_holding
-							add_province_modifier = {
-								modifier = converted_to_feudal_county_modifier
-								years = 10
-							}
+					if = {
+						limit = { has_holding_type = tribal_holding }
+						set_holding_type = castle_holding
+						add_province_modifier = {
+							modifier = converted_to_feudal_county_modifier
+							years = 10
 						}
 					}
 				}
 			}
 		}
 	}
+}
+
+unite_circassia_decision_effect = {
+
+    title:d_papagia = { add_to_list = circassian_kingdom }
+    title:d_eudusia = { add_to_list = circassian_kingdom }
+    title:d_khegayk = { add_to_list = circassian_kingdom }
+    title:d_zichia = { add_to_list = circassian_kingdom }
+	title:d_kassogia = { add_to_list = circassian_kingdom }
+
+    every_in_list = {
+        list = circassian_kingdom
+        every_in_de_jure_hierarchy = {
+            limit = {
+                tier = tier_duchy
+            }
+            set_de_jure_liege_title = title:k_circassia
+        }
+    }
+
+	title:d_eudusia = {
+		set_title_name = d_zhaneqo
+		set_coa = d_eudusia_zhaneqo
+	}
+	title:d_papagia = {
+		set_title_name = d_chemguy
+		set_coa = d_papagia_chemguy
+	}
+	title:d_kassogia = {
+		set_title_name = d_besleney
+		set_coa = d_kassogia_besleney
+	}
+	title:d_zichia = {
+		set_title_name = d_ubykhia
+		set_coa = d_zichia_ubykhia
+	}
+    hidden_effect = {
+        if = {
+            limit = {
+				OR = {
+					has_title = title:d_alania
+					completely_controls = title:d_alania
+					confederation = { confederation_completely_controls = { TITLE = title:d_alania } }
+				}
+			}
+            title:d_alania = { add_to_list = circassian_kingdom }
+        }
+        if = {
+            limit = {
+				OR = {
+					has_title = title:d_abkhazia
+					completely_controls = title:d_abkhazia
+					confederation = { confederation_completely_controls = { TITLE = title:d_abkhazia } }
+				}
+			}
+            title:d_abkhazia = { add_to_list = circassian_kingdom }
+        }
+        if = {
+            limit = {
+				OR = {
+					has_title = title:d_tmutarakan
+					completely_controls = title:d_tmutarakan
+					confederation = { confederation_completely_controls = { TITLE = title:d_tmutarakan } }
+				}
+			}
+            title:d_tmutarakan = { add_to_list = circassian_kingdom }
+		}
+        if = {
+            limit = {
+				OR = {
+					has_title = title:d_karabulakia
+					completely_controls = title:d_karabulakia
+					confederation = { confederation_completely_controls = { TITLE = title:d_karabulakia } }
+				}
+			}
+            title:d_karabulakia = { add_to_list = circassian_kingdom }
+		}
+
+		every_in_list = {
+			list = circassian_kingdom
+			every_in_de_jure_hierarchy = {
+				limit = {
+					tier = tier_duchy
+				}
+				set_de_jure_liege_title = title:k_circassia
+			}
+		}
+    }
+	if = {
+		limit = {
+			is_confederation_member = yes
+		}
+		hidden_effect = {
+			confederation = {
+				every_confederation_member = {
+					add_to_list = confederation_vassals
+					every_tributary = {
+						limit = {
+							highest_held_title_tier <= tier_duchy
+						}
+						add_to_list = confederation_vassals
+					}
+				}
+			}			
+			#Create the title and make it primary
+			create_title_and_vassal_change = {
+				type = created
+				save_scope_as = title_change
+				add_claim_on_loss = no
+			}
+			every_in_list = {
+				list = confederation_vassals
+				change_liege = {
+					liege = root
+					change = scope:title_change
+				}
+			}
+		}
+	}
+    title:k_circassia = {
+        change_title_holder = {
+            holder = root
+            change = scope:title_change
+        }
+    }
+
+    resolve_title_and_vassal_change = scope:title_change
+    set_primary_title_to = title:k_circassia
 }
 
 unite_india_decision_effect = {
@@ -310,7 +436,7 @@ adopt_bureaucracy_effect = {
 		limit = {
 			OR = {
 				has_government = tribal_government
-				has_government = nomadic_government
+				has_government = nomad_government
 			}
 		}
 		capital_county = {
@@ -375,7 +501,7 @@ adopt_bureaucracy_effect = {
 			limit = {
 				OR = {
 					has_government = tribal_government
-					has_government = nomadic_government
+					has_government = nomad_government
 				}
 			}
 			#Nuke tribal authorities.
@@ -465,10 +591,6 @@ feudalize_into_islamic_effect = {
 		if = {
 			limit = { has_realm_law = stateless_authority_3 }
 			remove_realm_law = stateless_authority_3
-		}
-		if = {
-			limit = { has_realm_law = nomadic_authority_0 }
-			remove_realm_law = nomadic_authority_0
 		}
 		if = {
 			limit = { has_realm_law = nomadic_authority_1 }
@@ -729,10 +851,6 @@ settle_nomadic_realm_effect = {
 	change_government = tribal_government
 	hidden_effect = {
 		if = {
-			limit = { has_realm_law = nomadic_authority_0 }
-			remove_realm_law = nomadic_authority_0
-		}
-		if = {
 			limit = { has_realm_law = nomadic_authority_1 }
 			remove_realm_law = nomadic_authority_1
 		}
@@ -753,10 +871,6 @@ settle_nomadic_realm_effect = {
 		every_vassal_or_below = {
 			change_government = tribal_government
 			if = {
-				limit = { has_realm_law = nomadic_authority_0 }
-				remove_realm_law = nomadic_authority_0
-			}
-			if = {
 				limit = { has_realm_law = nomadic_authority_1 }
 				remove_realm_law = nomadic_authority_1
 			}
@@ -775,7 +889,7 @@ settle_nomadic_realm_effect = {
 
 unsettle_nomadic_realm_effect = {
 	#Sort out new laws
-	change_government = nomadic_government
+	change_government = nomad_government
 	hidden_effect = {
 		if = {
 			limit = { has_realm_law = tribal_authority_0 }
@@ -793,7 +907,7 @@ unsettle_nomadic_realm_effect = {
 			limit = { has_realm_law = tribal_authority_3 }
 			remove_realm_law = tribal_authority_3
 		}
-		add_realm_law_skip_effects = nomadic_authority_0
+		add_realm_law_skip_effects = nomadic_authority_1
 	}
 
 	#VASSAL EFFECTS
@@ -805,7 +919,7 @@ unsettle_nomadic_realm_effect = {
 				culture = { has_cultural_tradition = tradition_horse_lords }
 			}
 
-			change_government = nomadic_government
+			change_government = nomad_government
 			hidden_effect = {
 				if = {
 					limit = { has_realm_law = tribal_authority_0 }
@@ -823,7 +937,7 @@ unsettle_nomadic_realm_effect = {
 					limit = { has_realm_law = tribal_authority_3 }
 					remove_realm_law = tribal_authority_3
 				}
-				add_realm_law_skip_effects = nomadic_authority_0
+				add_realm_law_skip_effects = nomadic_authority_1
 			}
 		}
 	}
@@ -1026,6 +1140,7 @@ unite_nasrani_decision_effect = {
 		set_de_jure_liege_title = title:e_dravida
 	}
 	resolve_title_and_vassal_change = scope:title_change
+	choose_nasrani_faith_head_effect = yes
 
 	title:d_chera_nadu = { set_de_jure_liege_title = title:k_nasrani }
 	title:d_konkana = { set_de_jure_liege_title = title:k_nasrani }
@@ -1063,6 +1178,99 @@ unite_nasrani_decision_effect = {
 			save_scope_as = county
 			promote_faith_minority_effect = { FAITH = faith:indian_catholic }
 		}
+	}
+}
+
+choose_nasrani_faith_head_effect = {
+	faith:indian_catholic = {
+		if = {
+			limit = { scope:align_orthodox = yes }
+			set_religious_head_title = title:k_orthodox
+			activate_holy_site = constantinople_nasrani
+		}
+		if = {
+			limit = { scope:align_catholic = yes }
+			set_religious_head_title = title:k_papal_state
+			activate_holy_site = rome_nasrani
+		}
+		if = {
+			limit = { scope:align_nestorian = yes }
+			set_religious_head_title = title:d_patriarchate_in_the_east
+		}
+		if = {
+			limit = { scope:align_nasrani = yes }
+			set_religious_head_title = title:d_indian_catholic_papacy
+			activate_holy_site = st_thomas_church
+			ROOT = { create_indian_catholic_papacy_effect = yes }
+		}
+	}
+}
+
+create_indian_catholic_papacy_effect = {
+	if = { # Pick your chaplain first.
+		limit = {
+			exists = cp:councillor_court_chaplain
+			cp:councillor_court_chaplain = { faith = faith:circassian_christianity }
+		}
+		cp:councillor_court_chaplain = { save_scope_as = new_pope }
+	}
+	else = {
+		hidden_effect = {
+			create_character = {
+				employer = root
+				template = religious_leader_character
+				random_traits = no
+				save_scope_as = new_pope
+				dynasty = generate
+			}
+		}
+		scope:new_pope = {
+			add_trait = education_learning_3
+			add_trait = zealous
+			add_trait = intellect_good_1
+			random_list = {
+				1 = { add_trait = lustful }
+				1 = { add_trait = chaste }
+				1 = { add_trait = wrathful }
+				1 = { add_trait = diligent }
+				1 = { add_trait = impatient }
+				1 = { add_trait = arrogant }
+				1 = { add_trait = humble }
+				1 = { add_trait = gregarious }
+			}
+			random_list = {
+				1 = { add_trait = honest }
+				1 = { add_trait = ambitious }
+				1 = { add_trait = just }
+				1 = { add_trait = cynical }
+				1 = { add_trait = zealous }
+				1 = { add_trait = compassionate }
+				1 = { add_trait = stubborn }
+			}
+		}
+	}
+	create_title_and_vassal_change = {
+		type = returned
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:d_indian_catholic_papacy = {
+		change_title_holder = {
+			holder = scope:new_pope
+			change = scope:change
+		}
+	}
+	scope:new_pope = {
+		change_liege = {
+			liege = ROOT
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+	assign_councillor_type = {
+		type = councillor_court_chaplain
+		remove_existing_councillor = yes
+		target = scope:new_pope
 	}
 }
 
@@ -1236,126 +1444,123 @@ give_commune_county_effect = {
 
 rename_china_title_effect = {
 	if = {
-	    limit = { primary_title = title:k_qin_china }
+	    limit = { any_held_title = { this = title:k_qin_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_qin_china
-	    	set_coa = e_qin
+	    	#set_coa = e_qin
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_yan_china }
+	    limit = { any_held_title = { this = title:k_yan_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_yan_china
-	    	set_coa = e_yan
+	    	#set_coa = e_yan
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_zhao_china }
+	    limit = { any_held_title = { this = title:k_zhao_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_zhao_china
-	    	set_coa = e_zhao
+	    	#set_coa = e_zhao
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_jin_china }
+	    limit = { any_held_title = { this = title:k_jin_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_jin_china
-	    	set_coa = e_later_jin
+	    	#set_coa = e_later_jin
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_xia_china }
+	    limit = {
+	    	any_held_title = {
+	    		OR = {
+		    		this = title:k_xia
+		    		this = title:k_xia_china
+	    		}
+    		}
+		}
 	    title:e_celestia_china = {
 	    	set_title_name = k_xia_china
-	    	set_coa = k_xia_china
+	    	#set_coa = k_xia_china
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_shu_china }
+	    limit = { any_held_title = { this = title:k_shu_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_shu_china
-	    	set_coa = e_shu
+	    	#set_coa = e_shu
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_han_china }
+	    limit = { any_held_title = { this = title:k_han_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_han_china
-	    	set_coa = e_han
+	    	#set_coa = e_han
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_zhou_china }
+	    limit = { any_held_title = { this = title:k_zhou_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_zhou_china
-	    	set_coa = e_zhou
+	    	#set_coa = e_zhou
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_liang_china }
+	    limit = { any_held_title = { this = title:k_liang_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_liang_china
-	    	set_coa = e_liang
+	    	#set_coa = e_liang
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_qi_china }
+	    limit = { any_held_title = { this = title:k_qi_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_qi_china
-	    	set_coa = e_qi
+	    	#set_coa = e_qi
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_chu_china }
+	    limit = { any_held_title = { this = title:k_chu_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_chu_china
-	    	set_coa = e_chu
+	    	#set_coa = e_chu
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_wu_china }
+	    limit = { any_held_title = { this = title:k_wu_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_wu_china
-	    	set_coa = e_wu
+	    	#set_coa = e_wu
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_yue_china }
+	    limit = { any_held_title = { this = title:k_yue_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_yue_china
-	    	set_coa = e_yue
+	    	#set_coa = e_yue
 	    }
 	}
 	else_if = {
-	    limit = { primary_title = title:k_min_china }
+	    limit = { any_held_title = { this = title:k_min_china } }
 	    title:e_celestia_china = {
 	    	set_title_name = k_min_china
-	    	set_coa = e_min
+	    	#set_coa = e_min
 	    }
 	}
-	# Else pick a new name, I'm lazy to do this right now
-	else = {
-		# Trigger event to select another name
-		# Tang, Yuan, Liao, Ba
-		# Qi 齐
-		# Liang 梁
-		# Wu 吴
-		# Chu 楚
-		# Shu 蜀
-		# Han 汉
-		# Min 闽
-		# Yue 越
-		# Chen 陈
-		# Song 宋
-		# Wei 魏
-		# Zhao 赵
-		# Yan 燕
-		# Jin 晋
-		# Qin 秦
-		# Zhou 周
-		# Liang 凉
-		# Dali 大理
-		# Xia 夏
+	else_if = {
+	    limit = { any_held_title = { this = title:k_nanzhao } }
+	    title:e_celestia_china = {
+	    	set_title_name = k_dali
+	    	##set_coa = e_min
+	    }
+	}
+	else_if = {
+	    limit = { any_held_title = { this = title:e_liao } }
+	    title:e_celestia_china = {
+	    	set_title_name = E_LIAO
+	    	##set_coa = e_min
+	    }
 	}
 }
 
@@ -1385,4 +1590,328 @@ malayan_sultanate_effect = {
 		get_title = capital_county.kingdom
 	}
 	add_piety = major_piety_loss
+}
+
+form_georgia_decision_effect = {
+	custom_tooltip = georgia_de_jure_tt
+
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_georgia = {
+		change_title_holder = {
+			holder = ROOT
+			change = scope:title_change
+		}
+	}
+
+	if = {
+		limit = {
+			primary_title = title:k_abkhazia
+		}
+		title:k_georgia = { set_variable = k_georgia_abkhazia }
+	}
+	else_if = {
+		limit = {
+			primary_title = title:k_iberia
+		}
+		title:k_georgia = { set_variable = k_georgia_iberia }
+	}
+	else_if = {
+		limit = {
+			primary_title = title:k_kakheti
+		}
+		title:k_georgia = { set_variable = k_georgia_kakheti }
+	}
+
+	resolve_title_and_vassal_change = scope:title_change
+	set_primary_title_to = title:k_georgia
+
+	title:k_abkhazia = { add_to_list = georgian_kingdoms }
+	title:k_iberia = { add_to_list = georgian_kingdoms }
+	title:k_kakheti = { add_to_list = georgian_kingdoms }
+
+	hidden_effect = {
+		every_in_list = {
+			list = georgian_kingdoms
+			limit = { holder = ROOT }
+			every_in_de_jure_hierarchy = {
+				limit = {
+					tier = tier_duchy
+				}
+				set_de_jure_liege_title = title:k_georgia
+			}
+			if = {
+				limit = { exists = yes }
+				scope:founder = {destroy_title = PREV}
+			}
+		}
+
+	}
+}
+
+unify_armenian_principalities_decision_effect = {
+	title:k_armenia = { add_to_list = armenian_princedoms }
+	title:k_ayrarat = { add_to_list = armenian_princedoms }
+	title:k_syunik = { add_to_list = armenian_princedoms }
+
+	if = {
+		limit = { NOT = { has_title = title:k_armenian_principality } }
+
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = title_change
+			add_claim_on_loss = no
+		}
+		title:k_armenian_principality = {
+			change_title_holder = {
+				holder = root
+				change = scope:title_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:title_change
+		set_primary_title_to = title:k_armenian_principality
+	}
+	title:k_armenia = {
+		custom_tooltip = {
+			text = drift_into_principalities_tt
+			every_in_de_jure_hierarchy = {
+				limit = { tier = tier_duchy }
+				set_de_jure_liege_title = title:k_armenian_principality
+			}
+			PREV = { destroy_title = title:k_armenia }
+		}
+	}
+	title:k_ayrarat = {
+		custom_tooltip = {
+			text = drift_into_principalities_tt
+			every_in_de_jure_hierarchy = {
+				limit = { tier = tier_duchy }
+				set_de_jure_liege_title = title:k_armenian_principality
+			}
+			PREV = { destroy_title = title:k_ayrarat }
+		}
+	}
+
+	if = {
+		limit = {
+			OR = {
+				has_title = title:k_syunik
+				completely_controls = title:k_syunik
+			}
+		}
+		title:k_syunik = {
+			custom_tooltip = {
+				text = drift_into_principalities_tt
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_duchy }
+					set_de_jure_liege_title = title:k_armenian_principality
+				}
+			}
+			PREV = { destroy_title = title:k_syunik }
+		}
+	}
+}
+
+greater_abazinia_effect = {
+    create_title_and_vassal_change = {
+        type = created
+        save_scope_as = title_change
+        add_claim_on_loss = no
+    }
+	title:d_greater_abazinia = {
+		change_title_holder = {
+			holder = ROOT
+			change = scope:title_change
+		}
+	}	
+    resolve_title_and_vassal_change = scope:title_change
+    set_primary_title_to = title:d_greater_abazinia
+}
+
+align_circassian_church_decision_effect = {
+	faith:circassian_christianity = {
+		if = {
+			limit = { ROOT = {is_ai = yes} }
+			random_list = {
+				10 = {
+					modifier = {
+						add = 20
+						opinion = {
+							target = title:k_orthodox.holder
+							value >= 50
+						}
+					}
+					trigger = {
+						NOT = { religious_head_title = title:k_orthodox }
+						exists = title:k_orthodox.holder
+					}
+					set_religious_head_title = title:k_orthodox
+				}
+				10 = {
+					modifier = {
+						add = 20
+						opinion = {
+							target = title:d_iconoclast.holder
+							value >= 50
+						}
+					}
+					trigger = {
+						NOT = { religious_head_title = title:d_iconoclast }
+						exists = title:d_iconoclast.holder
+					}
+					set_religious_head_title = title:d_iconoclast
+				}
+				10 = {
+					modifier = {
+						add = 20
+						opinion = {
+							target = title:k_papal_state.holder
+							value >= 50
+						}
+					}
+					trigger = {
+						NOT = { religious_head_title = title:k_papal_state }
+						exists = title:k_papal_state.holder
+					}
+					set_religious_head_title = title:k_papal_state
+				}
+				10 = {
+					modifier = {
+						add = 20
+						opinion = {
+							target = title:d_georgian_patriarchate.holder
+							value >= 50
+						}
+					}
+					trigger = {
+						NOT = { religious_head_title = title:d_georgian_patriarchate }
+						exists = title:d_georgian_patriarchate.holder
+					}
+					set_religious_head_title = title:d_georgian_patriarchate
+				}
+				10 = {
+					modifier = {
+						add = 20
+						opinion = {
+							target = title:d_apostolic_church.holder
+							value >= 50
+						}
+					}
+					trigger = {
+						NOT = { religious_head_title = title:d_apostolic_church }
+						exists = title:d_apostolic_church.holder
+					}
+					set_religious_head_title = title:d_apostolic_church
+				}
+				10 = {
+					modifier = {
+						add = 20
+						OR = {
+							has_trait = arrogant
+							has_trait = ambitious
+							has_trait = cynical
+						}
+					}
+					trigger = {
+						NOT = { religious_head_title = title:d_circassian_patriarchate }
+						NOT = { exists = title:d_circassian_patriarchate.holder }
+					}
+					set_religious_head_title = title:d_circassian_patriarchate
+					ROOT = { create_circassian_partiarchate_effect = yes }
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:align_orthodox = yes
+			}
+			set_religious_head_title = title:k_orthodox
+		}
+		else_if = {
+			limit = {
+				scope:align_iconoclast = yes
+			}
+			set_religious_head_title = title:d_iconoclast
+		}
+		else_if = {
+			limit = {
+				scope:align_catholic = yes
+			}
+			set_religious_head_title = title:k_papal_state
+		}
+		else_if = {
+			limit = {
+				scope:align_georgian_orthodox = yes
+			}
+			set_religious_head_title = title:d_georgian_patriarchate
+		}
+		else_if = {
+			limit = {
+				scope:align_armenian_apostolic = yes
+			}
+			set_religious_head_title = title:d_apostolic_church
+		}
+		else_if = {
+			limit = {
+				scope:align_independent = yes
+			}
+			set_religious_head_title = title:d_circassian_patriarchate
+			ROOT = { create_circassian_patriarchate_effect = yes }
+		}
+	}
+	if = {
+		limit = { NOT = { faith:circassian_christianity = { religious_head_title = title:d_circassian_patriarchate } } }
+		destroy_title = title:d_circassian_patriarchate
+	}
+}
+
+create_circassian_patriarchate_effect = {
+	hidden_effect = {
+		create_character = {
+			employer = root
+			template = religious_leader_character
+			random_traits = no
+			save_scope_as = new_pope
+			dynasty = generate
+		}
+		scope:new_pope = {
+			add_trait = education_learning_3
+			add_trait = zealous
+			add_trait = intellect_good_1
+			random_list = {
+				1 = { add_trait = lustful }
+				1 = { add_trait = chaste }
+				1 = { add_trait = wrathful }
+				1 = { add_trait = diligent }
+				1 = { add_trait = impatient }
+				1 = { add_trait = arrogant }
+				1 = { add_trait = humble }
+				1 = { add_trait = gregarious }
+			}
+			random_list = {
+				1 = { add_trait = honest }
+				1 = { add_trait = ambitious }
+				1 = { add_trait = just }
+				1 = { add_trait = cynical }
+				1 = { add_trait = zealous }
+				1 = { add_trait = compassionate }
+				1 = { add_trait = stubborn }
+			}
+		}
+		create_title_and_vassal_change = {
+			type = returned
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		title:d_circassian_patriarchate = {
+			change_title_holder = {
+				holder = scope:new_pope
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
 }

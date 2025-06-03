@@ -1,0 +1,82 @@
+﻿@ai_standard_liege_desire = 2
+@ai_standard_vassal_desire = 1
+# Everything below this line is 'Fine Print'
+
+iqta_special_rights = {
+	display_mode = checkbox
+	is_shown = {
+		scope:vassal.religion = religion:islam_religion
+	}
+	obligation_levels = {
+		iqta_special_rights_default = {
+			default = yes
+			position = { 0 0 }
+
+			ai_liege_desire = 1
+			ai_vassal_desire = 0
+		}
+		iqta_special_rights_granted = {
+			parent = iqta_special_rights_default
+			position = { 1 0 }
+
+			vassal_opinion = 5
+			tax_factor = -0.5
+			levies_factor = -0.5
+
+			liege_modifier = {
+				men_at_arms_maintenance = -0.02
+				men_at_arms_recruitment_cost = -0.02
+			}
+
+			vassal_modifier = {
+				men_at_arms_maintenance = -0.1
+				men_at_arms_recruitment_cost = -0.1
+			}
+
+			ai_liege_desire = 0
+			ai_vassal_desire = @ai_standard_vassal_desire
+		}
+	}
+}
+
+ghazi_special_rights = {
+	display_mode = checkbox
+	is_shown = {
+		scope:vassal.religion = religion:islam_religion
+		scope:vassal.faith = scope:liege.faith
+	}
+	obligation_levels = {
+		ghazi_special_rights_default = {
+			default = yes
+			position = { 0 0 }
+
+			ai_liege_desire = 1
+			ai_vassal_desire = 0
+		}
+		ghazi_special_rights_granted = {
+			is_valid = {
+				scope:vassal.faith = scope:liege.faith
+			}
+			parent = ghazi_special_rights_default
+			position = { 1 0 }
+
+			vassal_opinion = 10
+			levies_factor = -0.25
+
+			liege_modifier = {
+				monthly_piety_gain_mult = 0.1
+			}
+
+			vassal_modifier = {
+				monthly_piety_gain_mult = 0.1
+
+			}
+
+			flag = vassal_contract_cheaper_religious_war
+			flag = vassal_contract_increase_prestige_cb_cost
+
+			ai_liege_desire = @ai_standard_liege_desire
+			ai_vassal_desire = @ai_standard_vassal_desire
+		}
+	}
+}

@@ -4,7 +4,10 @@
 	name = dharma_councillor_chancellor
 
 	valid_position = {
-		NOT = { government_has_flag = government_is_landless_adventurer }
+		NOR = { 
+			government_has_flag = government_is_landless_adventurer 
+			government_has_flag = government_is_nomadic
+		}
 	}
 
 	tooltip = game_concept_chancellor_desc
@@ -70,7 +73,10 @@ councillor_steward = {
 	tooltip = game_concept_steward_desc
 
 	valid_position = {
-		NOT = { government_has_flag = government_is_landless_adventurer }
+		NOR = { 
+			government_has_flag = government_is_landless_adventurer 
+			government_has_flag = government_is_nomadic
+		}
 	}
 
 	modifier = {
@@ -135,7 +141,10 @@ councillor_marshal = {
 	tooltip = game_concept_marshal_desc
 
 	valid_position = {
-		NOT = { government_has_flag = government_is_landless_adventurer }
+		NOR = { 
+			government_has_flag = government_is_landless_adventurer 
+			government_has_flag = government_is_nomadic
+		}
 	}
 
 	modifier = {
@@ -265,14 +274,27 @@ councillor_spymaster = {
 councillor_court_chaplain = {
 	skill = learning
 
-	auto_fill = yes
+	auto_fill = {
+		trigger_if = {
+			limit = { is_ai = yes }
+			always = yes
+		}
+		trigger_else = {
+			faith = {
+				NOT = { has_doctrine_parameter = clerical_appointment_ruler }
+			}
+		}
+	}
 	fill_from_pool = yes
 
 	can_fire = {
 		custom_description = {
 			text = "court_chaplain_cant_fire_doctrines"
-			faith = {
-				NOT = { has_doctrine_parameter = clerical_appointment_fixed }
+			OR = {
+				faith = {
+					NOT = { has_doctrine_parameter = clerical_appointment_fixed }
+				}
+				NOT = { exists = cp:councillor_court_chaplain }
 			}
 		}
 	}
@@ -729,7 +751,10 @@ councillor_court_chaplain = {
 	}
 
 	valid_position = {
-		NOT = { government_has_flag = government_is_landless_adventurer }
+		NOR = { 
+			government_has_flag = government_is_landless_adventurer 
+			government_has_flag = government_is_nomadic
+		}
 	}
 
 	on_get_position = {

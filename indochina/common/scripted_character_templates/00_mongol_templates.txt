@@ -7,19 +7,21 @@ genghis_khan_character_template = { # (history database char id 125501)
 	diplomacy = 12
 	intrigue = 9
 	stewardship = 12
-	prowess = 30
+	prowess = 20
 	faith = faith:eastern_tengri
 	culture = culture:mongol
 	trait = ambitious
 	trait = diligent
-	trait = callous
+	trait = vengeful
 	trait = lifestyle_hunter
 	trait = education_martial_5
 	trait = flexible_leader
 	trait = open_terrain_expert
-	trait = athletic
+	trait = shrewd
 	random_traits = no
 	after_creation = {
+		copy_inheritable_appearance_from = character:dynamic_mongol_1
+
 		if = {
 			limit = { has_dlc_feature = tours_and_tournaments }
 			add_trait = tourney_participant
@@ -59,11 +61,14 @@ borte_character_template = { # (history database char id 172004)
 		min_template_high_skill
 		max_template_high_skill
 	}
-	prowess = 30
+	prowess = 15
 	diplomacy = 9
 	intrigue = 12
 	stewardship = 10
 	random_traits = no
+	after_creation = {
+		copy_inheritable_appearance_from = character:dynamic_mongol_2
+	}
 }
 
 jochi_character_template = {  # (history database char id 125502)
@@ -258,4 +263,178 @@ yesu_gei_character_template = { # (history database char id 93055)
 	trait = diligent
 	trait = wrathful
 	trait = education_martial_1
+}
+
+dynamic_genghis_character_template = {
+	age = { 30 42 } # Temujin's age around 1198
+	gender_female_chance = {
+		if = {
+			limit = { faith:eastern_tengri = { has_doctrine = doctrine_gender_male_dominated } }
+			add = 0
+		}
+		else_if = {
+			limit = { faith:eastern_tengri = { has_doctrine = doctrine_gender_female_dominated } }
+			add = 100
+		}
+		else = {
+			add = 50
+		}
+	}
+	martial = { 10 20 }
+	diplomacy = { 8 16 }
+	intrigue = { 4 14 }
+	stewardship = { 8 16 }
+	prowess = { 15 25 }
+	faith = faith:eastern_tengri
+	culture = culture:mongol
+	random_traits = no
+	random_traits_list = {
+		count = 3
+		# Personality traits
+		lustful = {}
+		gluttonous = {}
+		greedy = {}
+		diligent = {}
+		wrathful = {}
+		impatient = {}
+		arrogant = {}
+		deceitful = {}
+		brave = {}
+		gregarious = {}
+		ambitious = {}
+		arbitrary = {}
+		zealous = {}
+		callous = {}
+		sadistic = {}
+		stubborn = {}
+		vengeful = {}
+		just = {}
+		honest = {}
+	}
+	random_traits_list = {
+		count = 1
+		# Commander traits
+		logistician = {}
+		aggressive_attacker = {}
+		unyielding_defender = {}
+		forder = {}
+		flexible_leader = {}
+		desert_warrior = {}
+		reckless = {}
+		organizer = {}
+	}
+	trait = lifestyle_hunter
+	trait = education_martial_5
+	trait = open_terrain_expert
+	after_creation = {
+		set_interesting_traits_and_modifiers_effect = yes
+		if = {
+			limit = { has_dlc_feature = tours_and_tournaments }
+			add_trait = tourney_participant
+			add_random_tiered_trait_track_xp_effect = {
+				TRAIT = lifestyle_hunter
+				TRACK = hunter
+				LEVEL_1 = yes
+				LEVEL_3 = no
+			}
+			add_random_tiered_trait_track_xp_effect = {
+				TRAIT = tourney_participant
+				TRACK = horse
+				LEVEL_1 = yes
+				LEVEL_3 = yes
+			}
+			add_random_tiered_trait_track_xp_effect = {
+				TRAIT = tourney_participant
+				TRACK = bow
+				LEVEL_1 = yes
+				LEVEL_3 = yes
+			}
+		}
+		change_current_weight = 25
+	}
+}
+
+dynamic_genghis_spouse_template = {
+	age = { 26 42 }
+	faith = faith:eastern_tengri
+	culture = culture:mongol
+	random_traits = no
+	random_traits_list = {
+		count = 3
+		# Personality traits
+		lustful = {}
+		gluttonous = {}
+		greedy = {}
+		diligent = {}
+		wrathful = {}
+		impatient = {}
+		arrogant = {}
+		deceitful = {}
+		brave = {}
+		gregarious = {}
+		ambitious = {}
+		arbitrary = {}
+		zealous = {}
+		callous = {}
+		sadistic = {}
+		stubborn = {}
+		vengeful = {}
+		calm = {}
+		patient = {}
+		cynical = {}
+		just = {}
+		honest = {}
+	}
+	random_traits_list = {
+		count = 1
+		education_learning_4 = {}
+		education_learning_3 = {}
+		education_diplomacy_4 = {}
+		education_diplomacy_3 = {}
+		education_stewardship_4 = {}
+		education_stewardship_3 = {}
+		education_intrigue_4 = {}
+		education_intrigue_3 = {}
+		education_martial_4 = {}
+		education_martial_3 = {}
+	}
+	martial = {
+		min_template_decent_skill
+		max_template_decent_skill
+	}
+	stewardship = {
+		min_template_decent_skill
+		max_template_decent_skill
+	}
+	diplomacy = {
+		min_template_decent_skill
+		max_template_decent_skill
+	}
+	intrigue = {
+		min_template_decent_skill
+		max_template_decent_skill
+	}
+	learning = {
+		min_template_decent_skill
+		max_template_decent_skill
+	}
+	prowess = { 8 16 }
+}
+
+dynamic_genghis_child_template = {
+	age = { 2 14 }
+	gender_female_chance = {
+		add = 50
+	}
+	faith = faith:eastern_tengri
+	culture = culture:mongol
+	dynasty_house = scope:temujin.house
+	random_traits = yes
+	intrigue = {
+		min_template_decent_skill
+		max_template_decent_skill
+	}
+	after_creation = {
+		set_interesting_traits_and_modifiers_effect = yes
+	}
 }

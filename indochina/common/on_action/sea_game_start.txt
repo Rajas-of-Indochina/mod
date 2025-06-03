@@ -12,15 +12,13 @@ on_game_start = {
         fix_government_types
         #generate_shangshu
         nerf_japan
-
-        # Struggles
-        iberian_struggle_on_game_start
-        # indian_struggle_on_game_start
-        # tibetan_struggle_on_game_start
-        # chinese_struggle_on_game_start
+        misc_ROA_stuff
 
         # Optional admin realms via gamerules; PDX does it before and after lobby, so will we.
         sea_optional_admin_realms
+
+        # update title CoAs
+        sea_title_coa_on_start
     }
 }
 
@@ -29,7 +27,7 @@ fix_government_types = {
         has_dlc_feature = roads_to_power
     }
     effect = {
-        # title:k_qocho.holder = {
+        # title:k_dzungaria.holder = {
         #     if = {
         #         limit = { has_government = clan_government }
         #         change_government = feudal_government
@@ -229,53 +227,6 @@ ruler_popup_events = {
                     id = ruler_popups.0001
                 }
             }
-        }
-    }
-}
-
-######
-
-iberian_struggle_on_game_start = {
-    # Going here because we overwrote `history/titles/k_andalusia.txt` and starting it in history is STUPID ANYWAY AUUUGH
-    effect = {
-        if = {
-            limit = {
-                has_dlc_feature = the_fate_of_iberia
-                game_start_date >= 718.1.1
-            }
-            start_struggle = {
-                struggle_type = iberian_struggle
-                start_phase = struggle_iberia_phase_opportunity # TODO: We should add phase changes in History to get two different entry point
-            }
-        }
-    }
-}
-tibetan_struggle_on_game_start = {
-    effect = {
-        if = {
-            limit = {
-                game_start_date >= 842.1.1
-            }
-            start_struggle = {
-                struggle_type = tibetan_struggle
-                start_phase = struggle_tibet_phase_hostility
-            }
-        }
-    }
-}
-chinese_struggle_on_game_start = {
-    effect = {
-        start_struggle = {
-            struggle_type = chinese_struggle
-            start_phase = struggle_iberia_phase_opportunity # TODO: We should add phase changes in History to get two different entry point
-        }
-    }
-}
-indian_struggle_on_game_start = {
-    effect = {
-        start_struggle = {
-            struggle_type = indian_struggle
-            start_phase = struggle_iberia_phase_opportunity # TODO: We should add phase changes in History to get two different entry point
         }
     }
 }
@@ -843,6 +794,14 @@ set_court_languages = {
             limit = { exists = title:k_annam.holder }
             title:k_annam.holder = { set_court_language = language_chinese }
         }
+        if = {
+            limit = { exists = title:k_abkhazia.holder }
+            title:k_abkhazia.holder = { set_court_language = language_georgian }
+        }
+        if = {
+            limit = { exists = title:k_sarir_roa.holder }
+            title:k_sarir_roa.holder = { set_court_language = language_iranian }
+        }
     }
 }
 
@@ -990,6 +949,7 @@ sea_optional_admin_realms = {
         has_dlc_feature = roads_to_power
     }
     effect = {
+        # Kara Khitai
         if = {
             limit = {
                 has_game_rule = historicity_extra_admin_liao_historic_1178
@@ -1002,6 +962,8 @@ sea_optional_admin_realms = {
                 set_state_faith = faith:mahayana
             }
         }
+
+        # Jin
         if = {
             limit = {
                 has_game_rule = historicity_extra_admin_jin_historic_1178
@@ -1014,27 +976,44 @@ sea_optional_admin_realms = {
                 set_state_faith = faith:jingxue
             }
         }
-        if = {
+        else_if = {
             limit = {
-                OR = {
-                    AND = {
-                        has_game_rule = historicity_extra_admin_khmer_historic_936
-                        game_start_date > 935.1.1
-                    }
-                    AND = {
-                        has_game_rule = historicity_extra_admin_khmer_historic_1066
-                        game_start_date > 1065.1.1
-                    }
-                }
-                exists = title:e_kambujadesa
+                exists = title:e_jin.holder
             }
-            title:e_kambujadesa = {
-                holder = {
-                    convert_to_administrative_from_feudalism_game_start_effect = yes
+            title:e_jin.holder = {
+                every_vassal_or_below = {
+                    limit = {
+                        has_government = administrative_government
+                    }
+                    change_government = feudal_government
                 }
-                set_state_faith = faith:shaivism
             }
         }
+
+        # Khmer
+        #if = {
+            #limit = {
+                #OR = {
+                    #AND = {
+                        #has_game_rule = historicity_extra_admin_khmer_historic_936
+                        #game_start_date > 935.1.1
+                    #}
+                    #AND = {
+                        #has_game_rule = historicity_extra_admin_khmer_historic_1066
+                        #game_start_date > 1065.1.1
+                    #}
+                #}
+                #exists = title:e_kambujadesa
+            #}
+            #title:e_kambujadesa = {
+                #holder = {
+                    #convert_to_administrative_from_feudalism_game_start_effect = yes
+                #}
+                #set_state_faith = faith:shaivism
+            #}
+        #}
+
+        # Korea
         if = {
             limit = {
                 has_game_rule = historicity_extra_admin_korea_historic_1066
@@ -1048,6 +1027,8 @@ sea_optional_admin_realms = {
                 set_state_faith = faith:mahayana
             }
         }
+
+        # Japan
         if = {
             limit = {
                 OR = {
@@ -1076,6 +1057,8 @@ sea_optional_admin_realms = {
                 }
             }
         }
+
+        # Vietnam
         if = {
             limit = {
                 has_game_rule = historicity_extra_admin_vietnam_historic_1066
@@ -1089,6 +1072,8 @@ sea_optional_admin_realms = {
                 set_state_faith = faith:mahayana
             }
         }
+
+        # Dali
         if = {
             limit = {
                 has_game_rule = historicity_extra_admin_dali_historic_1066
@@ -1103,4 +1088,31 @@ sea_optional_admin_realms = {
             }
         }
     }
+}
+
+sea_title_coa_on_start = {
+	effect = {
+		if = {
+			limit = { game_start_date > 1070.1.1 }
+			title:k_georgia = {
+				set_variable = k_georgia_abkhazia
+				set_coa = k_georgia_abkhazia_christian
+			}
+			title:c_zichia = {set_coa = c_middlesex}
+		}
+		#if = {
+			#limit = { game_start_date >= 895.1.1 }
+			#title:k_arran = {
+				#set_coa = d_hereti
+			#}
+		#}
+	}
+}
+
+misc_ROA_stuff = {
+	effect = {
+		character:302700 = {
+			culture = culture:sindhi
+		}
+	}
 }

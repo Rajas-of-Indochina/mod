@@ -193,6 +193,40 @@ start_nanzhao_collapse = {
 
 #####
 
+on_yearly_dynamic_culture_renames = {
+	effect = {
+		if = {
+			limit = {
+				current_date >= 1200.1.1
+				not = { has_global_variable = aghvan_renamed }
+			}
+			culture:udi = {
+				set_culture_name = {
+					noun = udi_later_date
+					collective_noun = udi_later_date_collective_noun
+					prefix = udi_later_date_prefix
+				}
+				# Build list of characters to notify
+				culture_head = { add_to_list = udi_characters }
+				every_county = {
+					limit = { empire = title:e_caucasia }
+					if = {
+						limit = {
+							NOT = { is_in_list = udi_name_change_notification }
+						}
+						add_to_list = udi_name_change_notification
+					}
+				}
+			}
+			every_in_list = {
+				list = udi_name_change_notification
+				trigger_event = caucasianroa.006
+			}
+			set_global_variable = aghvan_renamed
+		}
+	}
+}
+
 spawn_lesbian_culture = {
 	trigger = {
 		trigger_if = {
@@ -202,6 +236,9 @@ spawn_lesbian_culture = {
 		trigger_else_if = {
 			limit = { has_domicile = yes }
 			domicile.domicile_location.county = title:c_lesbos
+		}
+		trigger_else = {
+			always = no
 		}
 		is_female = yes
 		OR = {

@@ -213,7 +213,7 @@
 			size = { 50 50 }
 			visible = "[And(CanChangeMapMode, Not( GreaterThan_CFixedPoint( GetPlayer.MakeScope.Var('hide_ui_timeline').GetValue, '(CFixedPoint)0' ) ))]"
 
-			blockoverride 'mm_datacontext'
+			blockoverride "mm_datacontext"
 			{
 				datacontext = "[GetMapMode('realms')]"
 			}
@@ -259,7 +259,7 @@
 
 					size = { 38 38 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode('dejure_duchies')]"
 					}
@@ -279,7 +279,7 @@
 					name = "map_mode_kingdoms_button"
 					size = { 38 38 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode('dejure_kingdoms')]"
 					}
@@ -299,7 +299,7 @@
 					name = "map_mode_empires_button"
 					size = { 38 38 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode('dejure_empires')]"
 					}
@@ -330,7 +330,7 @@
 					size = { 32 32 }
 					parentanchor = vcenter
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode('religions')]"
 					}
@@ -346,7 +346,7 @@
 					size = { 32 32 }
 					parentanchor = vcenter
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode('cultures')]"
 					}
@@ -362,7 +362,7 @@
 					size = { 32 32 }
 					parentanchor = vcenter
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode('houses')]"
 					}
@@ -507,20 +507,215 @@
 				ignoreinvisible = yes
 				parentanchor = hcenter
 
+				### ROA ADDED ###
+
+				# Minorities Map
+			    icon_button_mapmode_custom_additional = {
+			        name = "map_mode_minorities_button"
+			        parentanchor = vcenter
+
+			        blockoverride "mm_datacontext"
+			        {
+			            datacontext = "[GetMapMode( 'minority_any_map_mode' )]"
+			        }
+
+			        blockoverride "mm_icon"
+			        {
+			            texture = "gfx/interface/icons/flat_icons/multiple_people.dds"
+			            size = { 24 24 }
+			        }
+
+		            blockoverride "mm_glow"
+		            {
+		                visible = "[IsMapMode( 'minority_any_map_mode' )]"
+		            }
+
+			        button_round = {
+			            size = { 100% 100% }
+			            using = tooltip_nw
+
+			            onclick = "[SetMapMode('minority_any_map_mode')]"
+			            onclick = "[GetScriptedGui('minority_any_map_mode').Execute(GuiScope.End)]"
+			            down = "[And( GetScriptedGui('minority_any_map_mode').IsShown(GuiScope.End), IsMapMode('minority_any_map_mode') )]"
+			            enabled = "[GetScriptedGui('minority_any_map_mode').IsValid(GuiScope.End)]"
+			            tooltip = "minority_any_map_mode_tooltip"
+
+			            block "mm_button" {}
+
+			            button_icon = {
+			                parentanchor = center
+			                alwaystransparent = yes
+			                down = "[And( GetScriptedGui('minority_any_map_mode').IsShown(GuiScope.End), IsMapMode('minority_any_map_mode') )]"
+			                texture = "[MapMode.GetIcon]"
+
+			                block "mm_icon" {}
+			            }
+			        }
+			    }
+
+				# Language Map
+			    icon_button_mapmode_custom_additional = {
+			        name = "map_mode_languages_button"
+			        parentanchor = vcenter
+
+			        blockoverride "mm_datacontext"
+			        {
+			            datacontext = "[GetMapMode( 'sea_languages_map_mode' )]"
+			        }
+
+			        blockoverride "mm_icon"
+			        {
+			            texture = "gfx/interface/icons/flat_icons/mapmode_language.dds"
+			            size = { 24 24 }
+			        }
+
+		            blockoverride "mm_glow"
+		            {
+		                visible = "[IsMapMode( 'sea_languages_map_mode' )]"
+		            }
+
+			        button_round = {
+			            size = { 100% 100% }
+			            using = tooltip_nw
+
+			            onclick = "[SetMapMode('sea_languages_map_mode')]"
+			            onclick = "[GetScriptedGui('sea_languages_map_mode').Execute(GuiScope.End)]"
+			            down = "[And( GetScriptedGui('sea_languages_map_mode').IsShown(GuiScope.End), IsMapMode('sea_languages_map_mode') )]"
+			            enabled = "[GetScriptedGui('sea_languages_map_mode').IsValid(GuiScope.End)]"
+			            tooltip = "sea_languages_map_mode_tooltip"
+
+			            block "mm_button" {}
+
+			            button_icon = {
+			                parentanchor = center
+			                alwaystransparent = yes
+			                down = "[And( GetScriptedGui('sea_languages_map_mode').IsShown(GuiScope.End), IsMapMode('sea_languages_map_mode') )]"
+			                texture = "[MapMode.GetIcon]"
+
+			                block "mm_icon" {}
+			            }
+			        }
+			    }
+
+				# Heritage Map
+			    icon_button_mapmode_custom_additional = {
+			        name = "map_mode_heritages_button"
+			        parentanchor = vcenter
+
+			        blockoverride "mm_datacontext"
+			        {
+			            datacontext = "[GetMapMode( 'sea_heritages_map_mode' )]"
+			        }
+
+			        blockoverride "mm_icon"
+			        {
+			            texture = "gfx/interface/icons/flat_icons/mapmode_heritage.dds"
+			            size = { 24 24 }
+			        }
+
+		            blockoverride "mm_glow"
+		            {
+		                visible = "[IsMapMode( 'sea_heritages_map_mode' )]"
+		            }
+
+			        button_round = {
+			            size = { 100% 100% }
+			            using = tooltip_nw
+
+			            onclick = "[SetMapMode('sea_heritages_map_mode')]"
+			            onclick = "[GetScriptedGui('sea_heritages_map_mode').Execute(GuiScope.End)]"
+			            down = "[And( GetScriptedGui('sea_heritages_map_mode').IsShown(GuiScope.End), IsMapMode('sea_heritages_map_mode') )]"
+			            enabled = "[GetScriptedGui('sea_heritages_map_mode').IsValid(GuiScope.End)]"
+			            tooltip = "sea_heritages_map_mode_tooltip"
+
+			            block "mm_button" {}
+
+			            button_icon = {
+			                parentanchor = center
+			                alwaystransparent = yes
+			                down = "[And( GetScriptedGui('sea_heritages_map_mode').IsShown(GuiScope.End), IsMapMode('sea_heritages_map_mode') )]"
+			                texture = "[MapMode.GetIcon]"
+
+			                block "mm_icon" {}
+			            }
+			        }
+			    }
+
+				### END ROA ADDED ###
+			}
+
+			widget ={
+				size = {0 4}
+			}
+
+			divider_light = {
+				min_width = 100
+				parentanchor = hcenter
+			}
+			widget ={
+				size = {0 4}
+			}
+
+			flowcontainer = {
+				ignoreinvisible = yes
+				parentanchor = hcenter
+
+				### ROA ADDED ###
+
+				# Winter Map
+			    icon_button_mapmode_custom_additional = {
+			        name = "map_mode_winter_button"
+			        parentanchor = vcenter
+
+			        blockoverride "mm_datacontext"
+			        {
+			            datacontext = "[GetMapMode( 'sea_winter_map_mode' )]"
+			        }
+
+			        blockoverride "mm_icon"
+			        {
+			            texture = "gfx/interface/icons/flat_icons/mapmode_winter.dds"
+			            size = { 24 24 }
+			        }
+
+		            blockoverride "mm_glow"
+		            {
+		                visible = "[IsMapMode( 'sea_winter_map_mode' )]"
+		            }
+
+			        button_round = {
+			            size = { 100% 100% }
+			            using = tooltip_nw
+
+			            onclick = "[SetMapMode('sea_winter_map_mode')]"
+			            onclick = "[GetScriptedGui('sea_winter_map_mode').Execute(GuiScope.End)]"
+			            down = "[And( GetScriptedGui('sea_winter_map_mode').IsShown(GuiScope.End), IsMapMode('sea_winter_map_mode') )]"
+			            enabled = "[GetScriptedGui('sea_winter_map_mode').IsValid(GuiScope.End)]"
+			            tooltip = "sea_winter_map_mode_tooltip"
+
+			            block "mm_button" {}
+
+			            button_icon = {
+			                parentanchor = center
+			                alwaystransparent = yes
+			                down = "[And( GetScriptedGui('sea_winter_map_mode').IsShown(GuiScope.End), IsMapMode('sea_winter_map_mode') )]"
+			                texture = "[MapMode.GetIcon]"
+
+			                block "mm_icon" {}
+			            }
+			        }
+			    }
+
+				### END ROA ADDED ###
+
 				icon_button_mapmode = {
 					name = "map_mode_epidemics_button"
 					parentanchor = vcenter
 					size = { 32 32 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode( 'epidemics' )]"
-					}
-
-					blockoverride "mm_icon"
-					{
-						texture = "gfx/interface/icons/flat_icons/map_modes/epidemics.dds"
-						size = { 28 28 }
 					}
 
 					blockoverride "mm_button"
@@ -535,15 +730,9 @@
 					parentanchor = vcenter
 					size = { 32 32 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode( 'legends' )]"
-					}
-
-					blockoverride "mm_icon"
-					{
-						texture = "gfx/interface/icons/flat_icons/legends.dds"
-						size = { 30 30 }
 					}
 
 					blockoverride "mm_button"
@@ -553,71 +742,19 @@
 				}
 
 				icon_button_mapmode = {
-					name = "map_mode_tributaries_button"
+					name = "county_fertility"
 					parentanchor = vcenter
 					size = { 32 32 }
+					visible = "[HasDlcFeature( 'khans_of_the_steppe' )]"
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
-						datacontext = "[GetScriptedGui('sea_tributary_map_effect')]"
-						datacontext = "[GetMapMode('tributaries_map_mode')]"
-					}
-
-					blockoverride "mm_icon"
-					{
-						texture = "gfx/interface/icons/flat_icons/mapmode_tributaries.dds"
-						size = { 28 28 }
+						datacontext = "[GetMapMode( 'migration_counties' )]"
 					}
 
 					blockoverride "mm_button"
 					{
-						onclick = "[GetScriptedGui('sea_tributary_map_effect').Execute(GuiScope.End)]"
-					}
-				}
-
-				icon_button_mapmode = {
-					name = "map_mode_languages_button"
-					parentanchor = vcenter
-					size = { 32 32 }
-
-					blockoverride 'mm_datacontext'
-					{
-						datacontext = "[GetScriptedGui('sea_languages_map_effect')]"
-						datacontext = "[GetMapMode('languages_map_mode')]"
-					}
-
-					blockoverride "mm_icon"
-					{
-						texture = "gfx/interface/icons/flat_icons/mapmode_language.dds"
-						size = { 28 28 }
-					}
-
-					blockoverride "mm_button"
-					{
-						onclick = "[GetScriptedGui('sea_languages_map_effect').Execute(GuiScope.End)]"
-					}
-				}
-
-				icon_button_mapmode = {
-					name = "map_mode_heritages_button"
-					parentanchor = vcenter
-					size = { 32 32 }
-
-					blockoverride 'mm_datacontext'
-					{
-						datacontext = "[GetScriptedGui('sea_heritages_map_effect')]"
-						datacontext = "[GetMapMode('heritages_map_mode')]"
-					}
-
-					blockoverride "mm_icon"
-					{
-						texture = "gfx/interface/icons/flat_icons/mapmode_heritage.dds"
-						size = { 28 28 }
-					}
-
-					blockoverride "mm_button"
-					{
-						onclick = "[GetScriptedGui('sea_heritages_map_effect').Execute(GuiScope.End)]"
+						shortcut = "map_mode_19"
 					}
 				}
 			}
@@ -643,14 +780,13 @@
 					parentanchor = vcenter
 					size = { 32 32 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode( 'dejure_counties' )]"
 					}
 
 					blockoverride "mm_icon"
 					{
-						texture = "gfx/interface/icons/flat_icons/county_crown.dds"
 						size = { 20 20 }
 					}
 
@@ -665,14 +801,13 @@
 					parentanchor = vcenter
 					size = { 32 32 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode( 'government' )]"
 					}
 
 					blockoverride "mm_icon"
 					{
-						texture = "gfx/interface/icons/flat_icons/government.dds"
 						size = { 20 20 }
 					}
 
@@ -688,14 +823,13 @@
 					parentanchor = vcenter
 					size = { 32 32 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode('court_languages')]"
 					}
 
 					blockoverride "mm_icon"
 					{
-						texture = "gfx/interface/icons/culture_pillars/language.dds"
 						size = { 20 20 }
 					}
 
@@ -711,14 +845,13 @@
 					parentanchor = vcenter
 					size = { 32 32 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode( 'landless_rulers' )]"
 					}
 
 					blockoverride "mm_icon"
 					{
-						texture = "gfx/interface/icons/flat_icons/adventurer.dds"
 						size = { 20 20 }
 					}
 
@@ -734,14 +867,13 @@
 					parentanchor = vcenter
 					size = { 32 32 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode( 'players' )]"
 					}
 
 					blockoverride "mm_icon"
 					{
-						texture = "gfx/interface/icons/flat_icons/map_modes/players.dds"
 						size = { 26 26 }
 					}
 
@@ -767,20 +899,19 @@
 			flowcontainer = {
 				ignoreinvisible = yes
 				parentanchor = hcenter
-
+				
 				icon_button_mapmode = {
 					name = "economy_buildings"
 					parentanchor = vcenter
 					size = { 32 32 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode( 'economy_buildings' )]"
 					}
 
 					blockoverride "mm_icon"
 					{
-						texture = "gfx/interface/icons/flat_icons/economy.dds"
 						size = { 20 20 }
 					}
 
@@ -795,14 +926,13 @@
 					parentanchor = vcenter
 					size = { 32 32 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode( 'county_development' )]"
 					}
 
 					blockoverride "mm_icon"
 					{
-						texture = "gfx/interface/icons/flat_icons/development.dds"
 						size = { 20 20 }
 					}
 
@@ -817,14 +947,13 @@
 					parentanchor = vcenter
 					size = { 32 32 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode( 'county_control' )]"
 					}
 
 					blockoverride "mm_icon"
 					{
-						texture = "gfx/interface/icons/flat_icons/county_control.dds"
 						size = { 22 22 }
 					}
 
@@ -839,20 +968,41 @@
 					parentanchor = vcenter
 					size = { 32 32 }
 
-					blockoverride 'mm_datacontext'
+					blockoverride "mm_datacontext"
 					{
 						datacontext = "[GetMapMode( 'simple_terrain' )]"
 					}
 
 					blockoverride "mm_icon"
 					{
-						texture = "gfx/interface/icons/flat_icons/terrain.dds"
+						texture = "[MapMode.GetIcon]"
 						size = { 20 20 }
 					}
 
 					blockoverride "mm_button"
 					{
 						shortcut = "map_mode_12"
+					}
+				}
+
+				icon_button_mapmode = {
+					name = "diplomatic_relations"
+					parentanchor = vcenter
+					size = { 32 32 }
+
+					blockoverride "mm_datacontext"
+					{
+						datacontext = "[GetMapMode( 'diplomatic_relations' )]"
+					}
+
+					blockoverride "mm_icon"
+					{
+						size = { 20 20 }
+					}
+
+					blockoverride "mm_button"
+					{
+						shortcut = "map_mode_diplomatic_relations"
 					}
 				}
 			}
@@ -936,6 +1086,36 @@
 						max_height = 18
 					}
 				}
+
+				button_checkbox_label = {
+					onclick = "[ToggleShowDetailedRaidMapIcons]"
+					tooltip = "SETTING_SHOW_DETAILED_RAID_MAP_ICON_TOOLTIP"
+
+					state = {
+						name = _show
+						using = Animation_FadeIn_Standard
+					}
+
+					state = {
+						name = _hide
+						using = Animation_FadeOut_Standard
+					}
+
+					blockoverride "checkbox"
+					{
+						checked = "[ShowDetailedRaidMapIcons]"
+						size = { 20 20 }
+					}
+
+					blockoverride "text"
+					{
+						text = "SETTING_SHOW_DETAILED_RAID_MAP_ICON"
+						min_width = 120
+						max_width = 125
+						fontsize = 14
+						max_height = 18
+					}
+				}
 			}
 		}
 	}
@@ -945,7 +1125,10 @@
 		filter_mouse = all
 		alwaystransparent = yes
 
-		size = { 320 60 }
+		block "widget_size"
+		{
+			size = { 320 60 }
+		}
 
 		background = {
 			using = Background_Area_Dark
@@ -956,7 +1139,7 @@
 		hbox = {
 			vbox = {
 				layoutpolicy_horizontal = expanding
-
+				
 				text_single = {
 					text = MAP_MODE
 				}
@@ -969,36 +1152,10 @@
 
 			expand = {}
 
-			icon_button_mapmode = {
-				blockoverride 'mm_datacontext'
-				{
-					datacontext = "[GetMapMode( 'struggle' )]"
-				}
-			}
-
-			icon_button_mapmode = {
-				blockoverride 'mm_datacontext'
-				{
-					datacontext = "[GetMapMode( 'realms' )]"
-				}
-			}
-
-			icon_button_mapmode = {
-				blockoverride 'mm_datacontext'
-				{
-					datacontext = "[GetMapMode( 'religions' )]"
-				}
-			}
-
-			icon_button_mapmode = {
-				blockoverride 'mm_datacontext'
-				{
-					datacontext = "[GetMapMode( 'cultures' )]"
-				}
-			}
+			block "map_mode_buttons" {}
 
 			widget = {
-				size = {32 32}
+				size = { 32 32 }
 
 				button_round = {
 					size = { 30 30 }
@@ -1064,4 +1221,32 @@
 			}
 		}
 	} # type mini_map_mode = widget {...}
+
+    type icon_button_mapmode_custom_additional = widget {
+        size = { 32 32 }
+
+        icon = {
+            size = { 100% 100% }
+            texture = "gfx/interface/component_masks/mask_circle.dds"
+
+            block = "mm_glow"
+            {
+                visible = "[IsMapMode( MapMode.GetKey )]"
+            }
+
+            glow = {
+                color = { 0.93 0.65 0.45 1.0 }
+                glow_radius = 6
+
+                glow_generation_rules = {
+                    glow_alpha_mask = 0
+                    glow_blur_passes = 15
+                    glow_texture_downscale = 5.5f
+                    glow_ignore_inside_pixels = yes
+                }
+            }
+
+            using = Animation_Glow_Pulse
+        }
+    }
 }

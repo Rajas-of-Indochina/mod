@@ -15,6 +15,11 @@ namespace = south_asia
 # south_asia.0001 - 0004
 #
 
+################
+# by Henrik Lohmander
+# Found the Empire of Hindustan (Sultans of Delhi)
+# south_asia.0050
+
 #I united India
 south_asia.0001 = {
 	type = character_event
@@ -42,6 +47,7 @@ south_asia.0001 = {
 		play_music_cue = "mx_cue_epic_sacral_moment"
 		unite_india_decision_effect = yes
 		add_trait = chakravarti
+		legend_seed_new_title_effect = yes
 	}
 
 	option = {
@@ -62,7 +68,10 @@ south_asia.0001 = {
 		}
 	}
 }
-south_asia.0002 = {# My ruler became Chakravarti - Same Religon
+
+
+#My ruler became Chakravarti
+south_asia.0002 = {
 	type = character_event
 	title = south_asia.0002.t
 	desc = {
@@ -171,6 +180,7 @@ south_asia.0003 = {
 				}
 			}
 		}
+		legend_seed_new_title_effect = yes
 	}
 
 	option = {
@@ -200,6 +210,7 @@ south_asia.0003 = {
 		}
 	}
 }
+
 
 #Someone became Chakravarti
 south_asia.0004 = {
@@ -492,20 +503,7 @@ south_asia.0021 = {
 
 	immediate = {
 		unite_bene_israel_effect = yes
-		# legend_seed_new_title_effect = yes
-		if = {
-			limit = { has_dlc_feature = legends }
-			create_legend_seed = {
-				type = holy
-				quality = famed
-				chronicle = new_title
-				properties = {
-					title = title:k_bene_israel
-					# faith = root.faith
-					founder = root
-				}
-			}
-		}
+		legend_seed_new_title_effect = yes
 	}
 
 	option = {
@@ -1001,7 +999,7 @@ south_asia.0031 = {
 				}
 			}
 		}
-		else = {
+		else_if = {
 			limit = { exists = scope:string }
 			title:k_pagan.holder = {
 				trigger_event = {
@@ -1096,7 +1094,7 @@ south_asia.0032 = {
 		}
 
 		send_interface_message = {
-			type = good_omen
+			type = event_religious_good_text
 			title = south_asia.0032.a.tt
 			desc = south_asia.0032.a.lankan
 			left_icon = scope:lankan1
@@ -1771,7 +1769,7 @@ south_asia.0039 = {
 	}
 	right_portrait = {
 		character = root
-		animation = personality_worry
+		animation = worry
 	}
 
 	option = {
@@ -1835,7 +1833,7 @@ south_asia.0040 = {
 	}
 	right_portrait = {
 		character = root
-		animation = personality_idle
+		animation = idle
 	}
 
 	option = {
@@ -2057,40 +2055,8 @@ south_asia.0044 = {
 	# Your choices: Nestorian, Catholic, Orthodox, or our own church
 
 	option = {
-		name = chaldean_nasrani
+		name = caucasianroa.024.accept
 		add_piety = massive_piety_gain
-	}
-	option = {
-		name = catholic_nasrani
-		trigger = {
-			scope:old_faith.religious_head_title = title:k_papal_state
-		}
-		faith:indian_catholic = {
-			remove_doctrine = tenet_communal_identity
-			add_doctrine = tenet_communion
-			set_religious_head_title = title:k_papal_state
-		}
-	}
-	option = {
-		name = orthodox_nasrani
-		trigger = {
-			scope:old_faith.religious_head_title = title:k_orthodox
-		}
-		faith:indian_catholic = {
-			remove_doctrine = tenet_communal_identity
-			add_doctrine = tenet_pentarchy
-			set_religious_head_title = title:k_orthodox
-		}
-	}
-	option = {
-		name = independent_nasrani
-		add_prestige = massive_prestige_gain
-		faith:indian_catholic = {
-			remove_doctrine = tenet_rite
-			add_doctrine = tenet_adaptive
-			set_religious_head_title = title:d_indian_catholic_papacy
-		}
-		trigger_event = south_asia.0045
 	}
 
 	option = {
@@ -2227,4 +2193,165 @@ south_asia.0045 = {
 			resolve_title_and_vassal_change = scope:change
 		}
 	}
+}
+
+#Empire of Hindustan (Sultans of Delhi)
+
+#	I founded the Empire of Hindustan
+south_asia.0050 = {
+	type = character_event
+	title = south_asia.0050.t
+	desc = south_asia.0050.desc
+	theme = realm
+	override_background = { reference = bp2_study_indian }
+	left_portrait =	{
+		character = scope:founder
+		animation = sword_coup_degrace
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		found_empire_of_hindustan_scripted_effect = yes
+	}
+
+	#
+	option = {
+		name = south_asia.0050.a
+		trigger = {
+			NOT = {
+				capital_county = title:c_delhi
+			}
+		}
+		title:b_indraprastha = {
+			set_title_name = c_delhi
+		}
+		set_realm_capital = title:c_delhi
+		title:e_hindustan = {
+			set_capital_county = title:c_delhi
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	option = {
+		name = south_asia.0050.b
+		trigger = {
+			NOT = {
+				capital_county = title:c_lahur
+			}
+			title:c_lahur.holder = root
+		}
+		set_realm_capital = title:c_lahur
+		title:e_hindustan = {
+			set_capital_county = title:c_lahur
+		}
+		ai_chance = {
+			base = 0
+		}
+	}
+
+
+
+	option = {
+		name = south_asia.0050.c #Stay with current capital
+		trigger = {
+			capital_province = {
+				geographical_region = world_india
+			}
+		}
+		#
+		ai_chance = {
+			base = 0
+			modifier = {
+				NOR = {
+					has_title = title:c_lahur
+					has_title = title:c_delhi
+				}
+				add = 100
+			}
+		}
+	}
+
+	after = {
+		give_nickname = nick_the_great
+		add_prestige_experience = monumental_fame_gain
+		every_vassal = {
+			add_opinion = {
+				modifier = found_the_empire_of_hindustan_opinion
+				target = root
+			}
+			custom = found_the_empire_of_hindustan_decision_effects_vassal_opinion.tt
+		}
+		hidden_effect = {
+			title:e_hindustan = {
+				set_capital_county = root.capital_county
+			} #Regardless of outcome we still update the default capital for e_hindustan.
+			domicile ?= { move_domicile = root.top_liege.capital_province }
+		}
+		legend_seed_new_title_effect = yes
+	}
+	
+}
+
+#Someone else founded the Empire of Hindustan
+south_asia.0051 = {
+	type = character_event
+	title = south_asia.0051.t
+	desc = south_asia.0051.desc
+	theme = realm
+	override_background = { reference = bp2_study_indian }
+	left_portrait =	{
+		character = scope:founder
+		animation = sword_coup_degrace
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+
+	#
+	#Well, that happened.
+	option = {
+		name = {	#Other emperors are threatened.
+			trigger = {
+				highest_held_title_tier = tier_empire
+			}
+			text = south_asia.0051.a
+		}
+		name = {	#The old emperor of this region is not happy
+			trigger = { has_title = title:e_rajastan }
+			text = south_asia.0051.b
+		}
+		name = {
+			trigger = {
+				NOR = {
+					highest_held_title_tier = tier_empire
+					any_liege_or_above = { this = scope:founder }
+				}
+				faith.religion = religion:islam_religion
+			}
+			text = south_asia.0051.c 
+		}
+		name = {
+			trigger = {
+				NOR = {
+					highest_held_title_tier = tier_empire
+					any_liege_or_above = { this = scope:founder }
+					faith.religion = religion:islam_religion
+				}
+			}
+			text = south_asia.0051.d 
+		}
+		name = {
+			trigger = {
+				any_liege_or_above = { this = scope:founder }
+			}
+			text = south_asia.0051.e
+		}
+		ai_chance = {	#Solo option.
+			base = 100
+		}
+	}
+	
 }

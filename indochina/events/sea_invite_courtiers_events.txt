@@ -369,3 +369,89 @@ sea_invite_courtiers.0003 = {
 		}
 	}
 }
+
+sea_invite_courtiers.0004 = {
+	type = character_event
+	title = sea_invite_courtiers.0004.title
+	desc = sea_invite_courtiers.0004.desc
+
+	theme = realm
+
+	left_portrait = {
+		character = root
+		animation = idle
+	}
+	right_portrait = {
+		character = scope:target
+		animation = idle
+	}
+
+	trigger = { exists = capital_province } #If I lost it before I got this event, I shouldn't get a physician
+
+	immediate = {
+
+		every_realm_county = {
+			if = {
+				limit = { this.holder = root }
+				add_to_list = counties_list
+				add_to_list = counties_list
+			}
+			else = {
+				add_to_list = counties_list
+			}
+		}
+
+		random_in_list = {
+			list = counties_list
+			save_scope_as = target_county
+		}
+
+		# Create random courtier
+		create_character = {
+			employer = root
+			age = { 30 45 }
+			gender_female_chance = 0
+			faith = faith:alevi
+			culture = root.culture
+			random_traits_list = {
+				count = 1
+				education_martial_2 = {}
+				education_martial_3 = {}
+				education_martial_4 = {}
+			}
+			prowess = 10
+			#Personality
+			trait = janissary
+			trait = zealous
+		
+			random_traits_list = {
+				count = 1
+				loyal = {}
+				disloyal = {}
+				strong = {}
+				athletic = {}
+			}
+			save_scope_as = target
+		}
+	}
+
+	# Hire them
+	option = {
+		name = sea_invite_courtiers.0004.a
+		court_position_grant_effect = {
+			CANDIDATE = scope:target
+			POS = janissary_agha_court_position
+			EMPLOYER = root
+		}
+	}
+
+	# Don't hire them
+	option = {
+		name = sea_invite_courtiers.0004.b
+		hidden_effect = {
+			scope:target = {
+				move_to_pool = yes
+			}
+		}
+	}
+}

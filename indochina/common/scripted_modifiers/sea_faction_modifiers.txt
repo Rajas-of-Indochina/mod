@@ -1375,6 +1375,34 @@ common_faction_modifiers = {
 			has_struggle_phase_parameter = factions_more_common
 		}
 	}
+
+	# Armenian Struggle: Based on phase and stances of liege and vassal
+	modifier = {
+		add = 50
+		OR = {
+			AND = {
+				any_character_struggle = {
+					has_struggle_phase_parameter = strengthen_factions_against_romans
+				}
+				$FACTION_TARGET$ = { has_trait = pro_roman }
+				NOT = { has_trait = pro_roman }
+			}
+			AND = {
+				any_character_struggle = {
+					has_struggle_phase_parameter = strengthen_factions_against_persians
+				}
+				$FACTION_TARGET$ = { has_trait = pro_persian }
+				NOT = { has_trait = pro_persian }
+			}
+			AND = {
+				any_character_struggle = {
+					has_struggle_phase_parameter = strengthen_factions_against_armenians
+				}
+				$FACTION_TARGET$ = { has_trait = pro_armenian }
+				NOT = { has_trait = pro_armenian }
+			}
+		}
+	}
 }
 
 reduce_imperial_authority_faction_modifiers = {

@@ -1,4 +1,4 @@
-﻿
+
 task_conversion = {
 	position = councillor_court_chaplain
 
@@ -8,6 +8,13 @@ task_conversion = {
 	task_progress = task_progress_percentage
 	restart_on_finish = yes
 	highlight_own_realm = yes
+
+	asset = {
+		icon = "gfx/interface/icons/council_task_types/task_conversion.dds"
+		background = "gfx/interface/buttons/button_round_bg.dds"
+		frame = "gfx/interface/buttons/button_round_frame.dds"
+		glow = "gfx/particles/halo.dds"
+	}
 
 	effect_desc = {
 		desc = task_conversion_effect_desc
@@ -225,6 +232,67 @@ task_conversion = {
 				desc = fp3_struggle_ending_conversion_modifier_desc
 			}
 		}
+
+		# Armenian Struggle Phase Stuff
+		if = {
+			limit = {
+				exists = scope:county
+				OR = {
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_roman }
+						NOT = { armenian_struggle_is_roman_faith_trigger = { FAITH = scope:county.faith } }
+						armenian_struggle_is_roman_faith_trigger = { FAITH = scope:councillor_liege.faith }
+					}
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_persian }
+						NOT = { armenian_struggle_is_persian_faith_trigger = { FAITH = scope:county.faith } }
+						armenian_struggle_is_persian_faith_trigger = { FAITH = scope:councillor_liege.faith }
+					}
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_armenian }
+						NOT = { armenian_struggle_is_local_faith_trigger = { FAITH = scope:county.faith } }
+						armenian_struggle_is_local_faith_trigger = { FAITH = scope:councillor_liege.faith }
+					}
+				}
+			}
+			add = {
+				value = scope:councillor.boost_county_conversion_phase_bonus_value
+				desc = CHAPLAIN_CONVERT_COUNTY_STRUGGLE_BONUS
+			}
+		}
+		# Armenian Struggle Endings
+		if = {
+			limit = {
+				scope:county.title_province = { geographical_region = struggle_region_armenia }
+			}
+			if = {
+				# Roman Rule
+				limit = {
+					exists = global_var:armenian_struggle_ending
+					global_var:armenian_struggle_ending = flag:armenian_struggle_roman_rule
+					scope:councillor.top_liege.primary_title.state_faith ?= {
+						NOT = { this = scope:county.faith }
+						this = scope:councillor.top_liege.faith
+					}
+				}
+				add = {
+					value = scope:councillor.boost_county_conversion_phase_bonus_value
+					desc = armenian_struggle_roman_rule_state_faith_conversion_boost
+				}
+			}
+			else_if = {
+				# Armenian resurgence
+				limit = {
+					exists = global_var:armenian_struggle_ending
+					global_var:armenian_struggle_ending = flag:armenian_struggle_armenian_empire
+					armenian_struggle_is_local_faith_trigger = { FAITH = scope:councillor_liege.faith }
+				}
+				add = {
+					value = scope:councillor.boost_county_conversion_phase_bonus_value
+					desc = armenian_struggle_armenian_resurgence_conversion_boost
+				}
+			}
+		}
 		# Court events
 		if = {	#court.6010
 			limit = {
@@ -265,6 +333,24 @@ task_conversion = {
 		# Conversion speed game rules
 		if = {
 			limit = {
+				has_game_rule = no_faith_conversion
+			}
+			multiply = {
+				value = 0
+				desc = GAME_RULE_SLOWER_REASON
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = extremely_slow_faith_conversion_speed
+			}
+			multiply = {
+				value = 0.10 #significantly_slower_game_rule_value
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
+			}
+		}
+		if = {
+			limit = {
 				has_game_rule = slower_faith_conversion_speed
 			}
 			multiply = {
@@ -283,7 +369,13 @@ task_conversion = {
 		}
 		if = {
 			limit = {
-				has_game_rule = faster_faith_conversion_speed
+				OR = {
+					has_game_rule = faster_faith_conversion_speed
+					AND = {
+						has_game_rule = faster_faith_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
 			}
 			multiply = {
 				value = faster_game_rule_value
@@ -292,7 +384,14 @@ task_conversion = {
 		}
 		if = {
 			limit = {
-				has_game_rule = significantly_faster_faith_conversion_speed
+				OR = {
+					has_game_rule = significantly_faster_faith_conversion_speed
+					AND = {
+						has_game_rule = significantly_faster_faith_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
+
 			}
 			multiply = {
 				value = significantly_faster_game_rule_value
@@ -345,6 +444,7 @@ task_conversion = {
 	}
 
 	potential_county = {
+		NOT = { has_game_rule = no_faith_conversion }
 		scope:county = {
 			### Minority stuff ###
 			scope:councillor_liege = { has_realm_law_flag = may_convert_faith }

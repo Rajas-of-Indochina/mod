@@ -9,6 +9,13 @@ task_promote_culture = {
 	restart_on_finish = yes
 	highlight_own_realm = yes
 
+	asset = {
+		icon = "gfx/interface/icons/council_task_types/task_promote_culture.dds"
+		background = "gfx/interface/buttons/button_round_bg.dds"
+		frame = "gfx/interface/buttons/button_round_frame.dds"
+		glow = "gfx/particles/halo.dds"
+	}
+
 	effect_desc = {
 		desc = {
 			triggered_desc = {
@@ -149,6 +156,45 @@ task_promote_culture = {
 		}
 
 		add = steward_promote_culture_contextual_bonuses
+		## Bonuses
+		if = {
+			limit = {
+				exists = scope:county
+				OR = {
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_culture_conversion_in_region_proceeds_faster_roman }
+						NOT = { armenian_struggle_is_roman_culture_trigger = { CULTURE = scope:county.culture } }
+						armenian_struggle_is_roman_culture_trigger = { CULTURE = scope:councillor_liege.culture }
+					}
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_culture_conversion_in_region_proceeds_faster_persian }
+						NOT = { armenian_struggle_is_persian_culture_trigger = { CULTURE = scope:county.culture } }
+						armenian_struggle_is_persian_culture_trigger = { CULTURE = scope:councillor_liege.culture }
+					}
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_culture_conversion_in_region_proceeds_faster_armenian }
+						NOT = { armenian_struggle_is_local_culture_trigger = { CULTURE = scope:county.culture } }
+						armenian_struggle_is_local_culture_trigger = { CULTURE = scope:councillor_liege.culture }
+					}
+				}
+			}
+			add = {
+				value = conversion_culture_accepting_of_culture_change_due_to_struggle_phase_value
+				desc = STRUGGLE_EASIER_TO_CULTURE_CONVERT_DUE_TO_STRUGGLE_PHASE_MODIFIER
+			}
+		}
+		if = {
+			# Armenian Resurgence
+			limit = {
+				exists = global_var:armenian_struggle_ending
+				global_var:armenian_struggle_ending = flag:armenian_struggle_armenian_empire
+				armenian_struggle_is_local_culture_trigger = { CULTURE = scope:councillor_liege.culture }
+			}
+			add = {
+				value = scope:councillor.boost_county_conversion_phase_bonus_value
+				desc = armenian_struggle_armenian_resurgence_conversion_boost
+			}
+		}
 
 		if = { # Development reduces the speed. Should be the last non-multiply modifier applied to avoid negative values
 			limit = {
@@ -164,6 +210,15 @@ task_promote_culture = {
 		}
 
 		# Conversion speed game rules
+		if = {
+			limit = {
+				has_game_rule = no_culture_conversion
+			}
+			multiply = {
+				value = 0
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
+			}
+		}
 		if = {
 			limit = {
 				has_game_rule = slower_culture_conversion_speed
@@ -184,20 +239,42 @@ task_promote_culture = {
 		}
 		if = {
 			limit = {
-				has_game_rule = significantly_faster_culture_conversion_speed
+				has_game_rule = extremely_slow_culture_conversion_speed
 			}
 			multiply = {
-				value = significantly_faster_game_rule_value
-				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
+				value = 0.10 #significantly_slower_game_rule_value
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
 			}
 		}
 		if = {
 			limit = {
-				has_game_rule = faster_culture_conversion_speed
+				OR = {
+					has_game_rule = faster_culture_conversion_speed
+					AND = {
+						has_game_rule = faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
 			}
 			multiply = {
 				value = faster_game_rule_value
 				desc = GAME_RULE_FASTER_REASON
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_game_rule = significantly_faster_culture_conversion_speed
+					AND = {
+						has_game_rule = significantly_faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
+
+			}
+			multiply = {
+				value = significantly_faster_game_rule_value
+				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
 			}
 		}
 		# Faster conversion for FP2 Hostility ending, if county is in Iberia and culture was involved
@@ -292,6 +369,7 @@ task_promote_culture = {
 	}
 
 	potential_county = {
+		NOT = { has_game_rule = no_culture_conversion }
 		scope:county = {
 			### Minority stuff ###
 			scope:councillor_liege = { has_realm_law_flag = may_convert_culture }
@@ -752,6 +830,13 @@ task_promote_minority = {
 	restart_on_finish = yes
 	highlight_own_realm = yes
 
+	asset = {
+		icon = "gfx/interface/icons/council_task_types/task_promote_minority.dds"
+		background = "gfx/interface/buttons/button_round_bg.dds"
+		frame = "gfx/interface/buttons/button_round_frame.dds"
+		glow = "gfx/particles/halo.dds"
+	}
+
 	effect_desc = {
 		triggered_desc = {
 			trigger = { exists = scope:county.var:faith_to_convert }
@@ -847,6 +932,81 @@ task_promote_minority = {
 		}
 
 		add = steward_promote_culture_contextual_bonuses
+		## Bonuses
+		if = {
+			limit = {
+				exists = scope:county
+				exists = scope:county.var:culture_to_convert
+				OR = {
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_culture_conversion_in_region_proceeds_faster_roman }
+						NOT = { armenian_struggle_is_roman_culture_trigger = { CULTURE = scope:county.var:culture_to_convert } }
+						armenian_struggle_is_roman_culture_trigger = { CULTURE = scope:county.var:culture_to_convert }
+					}
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_culture_conversion_in_region_proceeds_faster_persian }
+						NOT = { armenian_struggle_is_persian_culture_trigger = { CULTURE = scope:county.var:culture_to_convert } }
+						armenian_struggle_is_persian_culture_trigger = { CULTURE = scope:county.var:culture_to_convert }
+					}
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_culture_conversion_in_region_proceeds_faster_armenian }
+						NOT = { armenian_struggle_is_local_culture_trigger = { CULTURE = scope:county.var:culture_to_convert.culture } }
+						armenian_struggle_is_local_culture_trigger = { CULTURE = scope:county.var:culture_to_convert }
+					}
+				}
+			}
+			add = {
+				value = conversion_culture_accepting_of_culture_change_due_to_struggle_phase_value
+				desc = STRUGGLE_EASIER_TO_CULTURE_CONVERT_DUE_TO_STRUGGLE_PHASE_MODIFIER
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:county
+				exists = scope:county.var:faith_to_convert
+				OR = {
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_roman }
+						NOT = { armenian_struggle_is_roman_faith_trigger = { FAITH = scope:county.faith } }
+						armenian_struggle_is_roman_faith_trigger = { FAITH = scope:county.var:faith_to_convert }
+					}
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_persian }
+						NOT = { armenian_struggle_is_persian_faith_trigger = { FAITH = scope:county.faith } }
+						armenian_struggle_is_persian_faith_trigger = { FAITH = scope:county.var:faith_to_convert }
+					}
+					scope:county = {
+						any_county_struggle = { has_struggle_phase_parameter = county_faith_conversion_in_region_proceeds_faster_armenian }
+						NOT = { armenian_struggle_is_local_faith_trigger = { FAITH = scope:county.faith } }
+						armenian_struggle_is_local_faith_trigger = { FAITH = scope:county.var:faith_to_convert }
+					}
+				}
+			}
+			add = {
+				value = conversion_culture_accepting_of_culture_change_due_to_struggle_phase_value
+				desc = CHAPLAIN_CONVERT_COUNTY_STRUGGLE_BONUS
+			}
+		}
+		
+		if = {
+			# Armenian Resurgence
+			limit = {
+				exists = global_var:armenian_struggle_ending
+				global_var:armenian_struggle_ending = flag:armenian_struggle_armenian_empire
+				trigger_if = {
+					limit = { exists = scope:county.var:culture_to_convert }
+					armenian_struggle_is_local_culture_trigger = { CULTURE = scope:county.var:culture_to_convert }
+				}
+				trigger_else_if = {
+					limit = { exists = scope:county.var:faith_to_convert }
+					armenian_struggle_is_local_faith_trigger = { FAITH = scope:county.var:faith_to_convert }
+				}
+			}
+			add = {
+				value = scope:councillor.boost_county_conversion_phase_bonus_value
+				desc = armenian_struggle_armenian_resurgence_conversion_boost
+			}
+		}
 
 		if = { # Development reduces the speed. Should be the last non-multiply modifier applied to avoid negative values
 			limit = {
@@ -862,6 +1022,16 @@ task_promote_minority = {
 		}
 
 		# Conversion speed game rules
+		if = {
+			limit = {
+				has_game_rule = no_culture_conversion
+			}
+			multiply = {
+				value = 0
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
+			}
+		}
+
 		if = {
 			limit = {
 				has_game_rule = slower_culture_conversion_speed
@@ -882,20 +1052,42 @@ task_promote_minority = {
 		}
 		if = {
 			limit = {
-				has_game_rule = significantly_faster_culture_conversion_speed
+				has_game_rule = extremely_slow_culture_conversion_speed
 			}
 			multiply = {
-				value = significantly_faster_game_rule_value
-				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
+				value = 0.10 #significantly_slower_game_rule_value
+				desc = GAME_RULE_EXTREMELY_SLOW_REASON
 			}
 		}
 		if = {
 			limit = {
-				has_game_rule = faster_culture_conversion_speed
+				OR = {
+					has_game_rule = faster_culture_conversion_speed
+					AND = {
+						has_game_rule = faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
 			}
 			multiply = {
 				value = faster_game_rule_value
 				desc = GAME_RULE_FASTER_REASON
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_game_rule = significantly_faster_culture_conversion_speed
+					AND = {
+						has_game_rule = significantly_faster_culture_conversion_speed_pl
+						scope:councillor.liege = { is_ai = no }
+					}
+				}
+
+			}
+			multiply = {
+				value = significantly_faster_game_rule_value
+				desc = GAME_RULE_SIGNIFICANTLY_FASTER_REASON
 			}
 		}
 
@@ -904,6 +1096,7 @@ task_promote_minority = {
 	}
 
 	potential_county = {
+		NOT = { has_game_rule = no_culture_conversion }
 		scope:county = {
 			### Minority stuff ###
 			scope:councillor_liege = {

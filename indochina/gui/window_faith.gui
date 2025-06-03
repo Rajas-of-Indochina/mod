@@ -141,12 +141,12 @@ window = {
 
 								size = { 50 50 }
 
-								datacontext = "[GetScriptedGui('minority_faith_map_effect')]"
+								datacontext = "[GetScriptedGui('minority_faiths_map_mode')]"
 
 								onclick = "[SetMapMode('minority_faiths_map_mode')]"
 								onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( FaithWindow.GetFaith.MakeScope ).End )]"
-								down = "[And( GetScriptedGui('minority_faith_map_effect').IsShown(GuiScope.End), IsMapMode('minority_faiths_map_mode') )]"
-								enabled = "[GetScriptedGui('minority_faith_map_effect').IsValid(GuiScope.End)]"
+								down = "[And( GetScriptedGui('minority_faiths_map_mode').IsShown(GuiScope.End), IsMapMode('minority_faiths_map_mode') )]"
+								enabled = "[GetScriptedGui('minority_faiths_map_mode').IsValid(GuiScope.End)]"
 
 								texture = "gfx/interface/buttons/button_round_frame.dds"
 
@@ -187,10 +187,10 @@ window = {
 							}
 						}
 
-						spacer = {
-							visible = "[ObjectsEqual( GetPlayer.GetFaith, Faith.Self )]"
-							size = { 40 0 }
-						}
+						# spacer = {
+						# 	visible = "[ObjectsEqual( GetPlayer.GetFaith, Faith.Self )]"
+						# 	size = { 40 0 }
+						# }
 						spacer = {
 							visible = "[Not(ObjectsEqual( GetPlayer.GetFaith, Faith.Self ))]"
 							size = { -10 0 }
@@ -230,6 +230,48 @@ window = {
 								text = "FAITH_VIEW_THEIR_VIEW"
 								align = nobaseline|center
 							}
+
+							text_single = {
+								visible = "[And( Not( Faith.GetReligion.HasPaganRoots ), Not( Faith.IsUnreformed ) )]"
+								text = "FAITH_VIEW_SUBHEADING"
+								align = nobaseline|center
+								alpha = 0.9
+							}
+				
+							text_single = {
+								visible = "[Faith.IsUnreformed]"
+								text = "FAITH_VIEW_UNREFORMED_SUBHEADING"
+								align = nobaseline|center
+								alpha = 0.8
+							}
+				
+							text_single = {
+								visible = "[And( Faith.GetReligion.HasPaganRoots, Not( Faith.IsUnreformed ) )]"
+								text = "FAITH_VIEW_REFORMED_SUBHEADING"
+								align = nobaseline|center
+								alpha = 0.8
+							}
+				
+							text_single = {
+								visible = "[GetScriptedGui('is_persian_aligned_faith').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', Faith.MakeScope ).End )]"
+								text = "[persian_faith|E]"
+								align = nobaseline|center
+								alpha = 0.8
+							}
+				
+							text_single = {
+								visible = "[GetScriptedGui('is_local_aligned_faith').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', Faith.MakeScope ).End )]"
+								text = "[local_faith|E]"
+								align = nobaseline|center
+								alpha = 0.8
+							}
+				
+							text_single = {
+								visible = "[GetScriptedGui('is_roman_aligned_faith').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'faith', Faith.MakeScope ).End )]"
+								text = "[roman_faith|E]"
+								align = nobaseline|center
+								alpha = 0.8
+							}
 						}
 
 						expand = {}
@@ -256,33 +298,6 @@ window = {
 						}
 					}
 				}
-			}
-
-			text_single = {
-				visible = "[And( Not( Faith.GetReligion.HasPaganRoots ), Not( Faith.IsUnreformed ) )]"
-				text = "FAITH_VIEW_SUBHEADING"
-				align = center
-				parentanchor = top|hcenter
-				position = {0 40}
-				alpha = 0.9
-			}
-
-			text_label_center = {
-				visible = "[Faith.IsUnreformed]"
-				text = "FAITH_VIEW_UNREFORMED_SUBHEADING"
-				align = center
-				parentanchor = top|hcenter
-				position = {0 40}
-				alpha = 0.8
-			}
-
-			text_label_center = {
-				visible = "[And( Faith.GetReligion.HasPaganRoots, Not( Faith.IsUnreformed ) )]"
-				text = "FAITH_VIEW_REFORMED_SUBHEADING"
-				align = center
-				parentanchor = top|hcenter
-				position = {0 40}
-				alpha = 0.8
 			}
 		}
 
@@ -531,12 +546,12 @@ window = {
 									datamodel = "[FaithWindow.GetGroupingHelper( 'main_group' ).GetGrouping]"
 									#spacing = 15
 									layoutpolicy_vertical = expanding
-									minimumsize = { 0 108 }
+									minimumsize = { 0 98 }
 
 									item = {
 										vbox = {
 											layoutpolicy_vertical = expanding
-											minimumsize = { 100 0 }
+											minimumsize = { 90 0 }
 											name = "doctrine_list_item"
 											datacontext = "[GuiFaithDoctrineItem.GetDoctrine]"
 											visible = "[FaithDoctrine.IsVisible]"
@@ -773,8 +788,43 @@ window = {
 								expand = {}
 							}
 
-							expand = {}
+							hbox = {
+								layoutpolicy_horizontal = expanding
 
+								button_round = {
+									datacontext = "[Faith.GetReligiousHead]"
+									visible = "[Faith.GetReligiousHead.IsValid]"
+
+									tooltip = "HOF_INTERACTIONS_BUTTON_TOOLTIP"
+									tooltip_visible = "[Not(IsInteractionMenuOpenForCharacterWithFilter(Character.Self, 'interaction_category_religion'))]"
+
+									onclick = "[ToggleFilteredCharacterInteractionMenu(Character.Self, 'interaction_category_religion')]"
+
+									button_icon = {
+										alwaystransparent = yes
+										parentanchor = center
+										size = { 30 30 }
+										texture = "gfx/interface/icons/flat_icons/character_interactions.dds"
+									}
+
+									text_single = {
+										parentanchor = bottom|hcenter
+										position = { 0 3 }
+										text = "[GetNumberOfValidInteractionsWithFilter(Character.Self, 'interaction_category_religion')]"
+										default_format = "#glow_color:{0.1,0.1,0.1,1.0}"
+
+										background = {
+											margin = { 5 0 }
+											margin_top = -5
+											using = Background_Area_Dark
+										}
+									}
+								}
+
+								expand = {}
+							}
+
+							expand = {}
 						}
 					}
 
@@ -850,7 +900,6 @@ window = {
 							layoutpolicy_horizontal = expanding
 							datacontext = "[Faith.GetReligiousHeadTitle]"
 							visible = "[Title.IsValid]"
-							margin_left = -5
 							spacing = 5
 
 							coa_title_tiny_crown = {
@@ -1031,7 +1080,7 @@ window = {
 
 									hbox = {
 										layoutpolicy_horizontal = expanding
-										spacing = 5
+										spacing = 10
 
 										coa_title_tiny = {}
 
@@ -1039,22 +1088,28 @@ window = {
 											name = "name_notheld"
 											visible = "[Not( GuiHolySiteItem.IsHeldByFaith )]"
 											layoutpolicy_horizontal = expanding
+											
 											text = "[HolySite.GetName]"
 											align = nobaseline
+											autoresize = no
 											default_format = "#low"
 											using = Font_Size_Big
-											autoresize = no
+											
+											margin_bottom = 5
 										}
 
 										text_single = {
 											name = "name_held"
 											visible = "[GuiHolySiteItem.IsHeldByFaith]"
 											layoutpolicy_horizontal = expanding
+											
 											text = "[HolySite.GetName]"
 											align = nobaseline
+											autoresize = no
 											default_format = "#high"
 											using = Font_Size_Big
-											autoresize = no
+											
+											margin_bottom = 5
 
 										}
 
@@ -1100,7 +1155,7 @@ window = {
 								vbox = {
 									layoutpolicy_horizontal = expanding
 									layoutpolicy_vertical = expanding
-									margin_top = 15
+									margin_top = 10
 
 									hbox = {
 										layoutpolicy_horizontal = expanding
@@ -1329,7 +1384,7 @@ window = {
 										text_single = {
 											name = "faith_name"
 											align = left|nobaseline
-											text = "[Faith.GetNameNoTooltip]"
+											text = "FAITH_COOLTIP_GETNAME"
 											using = Font_Size_Medium
 											default_format = "#high"
 											max_width = 240
