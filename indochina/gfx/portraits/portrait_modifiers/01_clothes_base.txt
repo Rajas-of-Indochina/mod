@@ -470,6 +470,142 @@ clothes_base = { # The lowest priority group of clothes with triggers based on r
         }
     }
 
+    #######################
+    ###  Austronesians  ###
+    #######################
+
+    austronesian_commoners = {
+        dna_modifiers = {
+            accessory = {
+                mode = add
+                gene = clothes
+                template = austronesian_commoner_clothes
+                range = { 0 1 } # For the randomness to work correctly
+            }
+            morph = {
+                mode = modify_multiply
+                gene = gene_bs_bust
+                value = 0.8
+                template = bust_clothes
+            }
+        }
+        weight = {
+            base = 0
+            modifier = {
+                add = 20
+                OR = {
+                    is_male = yes
+                    should_show_nudity = yes
+                }
+                portrait_commoner_clothing_trigger = {
+                    CULTURE_INPUT = austronesian
+                }
+            }
+        }
+    }
+
+    austronesian_low_nobles = {
+        dna_modifiers = {
+            accessory = {
+                mode = add
+                gene = clothes
+                template = austronesian_low_nobles_clothes
+                range = { 0 1 } # For the randomness to work correctly
+            }
+            morph = {
+                mode = modify_multiply
+                gene = gene_bs_bust
+                value = 0.8
+                template = bust_clothes
+            }
+        }
+        weight = {
+            base = 0
+            court_fashion_level_4_modifier = { INPUT_PARAMETER = austronesian }
+            modifier = {
+                add = 50
+                OR = {
+                    is_male = yes
+                    should_show_nudity = yes
+                }
+                portrait_low_nobles_clothing_trigger = {
+                    CULTURE_INPUT = austronesian
+                }
+            }
+        }
+    }
+
+    austronesian_high_nobles = {
+        dna_modifiers = {
+            accessory = {
+                mode = add
+                gene = clothes
+                template = austronesian_high_nobles_clothes
+                range = { 0 1 } # For the randomness to work correctly
+            }
+            morph = {
+                mode = modify_multiply
+                gene = gene_bs_bust
+                value = 0.8
+                template = bust_clothes
+            }
+        }
+        weight = {
+            base = 0
+            court_fashion_level_5_modifier = { INPUT_PARAMETER = austronesian }
+            modifier = {
+                add = 50
+                OR = {
+                    is_male = yes
+                    should_show_nudity = yes
+                }
+                portrait_high_nobles_clothing_trigger = {
+                    CULTURE_INPUT = austronesian
+                }
+            }
+        }
+    }
+
+    austronesian_royalty = {
+        dna_modifiers = {
+            accessory = {
+                mode = add
+                gene = clothes
+                template = austronesian_royalty_clothes
+                range = { 0 1 } # For the randomness to work correctly
+            }
+            morph = {
+                mode = modify_multiply
+                gene = gene_bs_bust
+                value = 0.8
+                template = bust_clothes
+            }
+        }
+        weight = {
+            base = 0
+            court_fashion_level_5_modifier = { INPUT_PARAMETER = austronesian }
+            modifier = {
+                add = 100
+                OR = {
+                    is_male = yes
+                    should_show_nudity = yes
+                }
+                portrait_royalty_clothing_trigger = {
+                    CULTURE_INPUT = austronesian
+                }
+            }
+            modifier = {
+                add = 100
+                OR = {
+                    is_male = yes
+                    should_show_nudity = yes
+                }
+                portrait_imperial_clothing_trigger = {
+                    CULTURE_INPUT = austronesian
+                }
+            }
+        }
+    }
 
 ## DDE HRE ##
 
@@ -1435,6 +1571,15 @@ clothes_base = { # The lowest priority group of clothes with triggers based on r
                     CULTURE_INPUT = indian
                 }
             }
+            # ROA Fallback
+            modifier = {
+                add = 20
+                is_female = yes
+                should_show_nudity = no
+                portrait_commoner_clothing_trigger = {
+                    CULTURE_INPUT = austronesian
+                }
+            }
         }
     }
 
@@ -1456,6 +1601,15 @@ clothes_base = { # The lowest priority group of clothes with triggers based on r
                     CULTURE_INPUT = indian
                 } 
             }
+            # ROA Fallback
+            modifier = {
+                add = 50
+                is_female = yes
+                should_show_nudity = no
+                portrait_low_nobles_clothing_trigger = {
+                    CULTURE_INPUT = austronesian
+                }
+            }
         }
     }
 
@@ -1476,6 +1630,15 @@ clothes_base = { # The lowest priority group of clothes with triggers based on r
                 portrait_high_nobles_clothing_trigger = { 
                     CULTURE_INPUT = indian
                 } 
+            }
+            # ROA Fallback
+            modifier = {
+                add = 50
+                is_female = yes
+                should_show_nudity = no
+                portrait_high_nobles_clothing_trigger = {
+                    CULTURE_INPUT = austronesian
+                }
             }
         }
     }
