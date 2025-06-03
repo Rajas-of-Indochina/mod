@@ -1,0 +1,40 @@
+﻿
+has_no_particular_noble_roots_trigger = {
+	custom_tooltip = {
+		text = has_no_particular_noble_roots_trigger
+		OR = {
+			is_lowborn = yes
+			AND = {
+				exists = dynasty
+				dynasty = {
+					any_dynasty_member = {
+						count <= 2
+					}
+				}
+			}
+			highest_held_title_tier <= tier_barony
+			government_has_flag = government_is_herder
+			government_has_flag = government_is_stateless
+		}
+		NOR = {
+			AND = {
+				highest_held_title_tier > tier_barony
+				NOR = {
+					government_has_flag = government_is_herder
+					government_has_flag = government_is_stateless
+				}
+			}
+			any_close_or_extended_family_member = {
+				highest_held_title_tier > tier_barony
+				NOR = {
+					government_has_flag = government_is_herder
+					government_has_flag = government_is_stateless
+				}
+			}
+			AND = {
+				exists = dynasty
+				dynasty.dynasty_prestige_level >= 2
+			}
+		}
+	}
+}
