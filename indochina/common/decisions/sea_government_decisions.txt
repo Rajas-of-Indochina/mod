@@ -53,56 +53,7 @@ embrace_anarchy_decision = {
 	}
 
 	effect = {
-		change_government = anarchist_government
-		# Create a titular duchy
-		# scope:new_title
-
-		capital_county = { save_scope_as = capital }
-
-		create_title_and_vassal_change = {
-			type = created
-			save_scope_as = change
-			add_claim_on_loss = no
-		}
-		if = {
-			limit = { highest_held_title_tier < tier_duchy }
-			create_dynamic_title = {
-				tier = duchy
-				name = ANARCHIST_TITLE_NAME
-			}
-			scope:new_title = {
-				set_destroy_on_gain_same_tier = yes
-				set_no_automatic_claims = yes
-				set_can_be_named_after_dynasty = no
-				change_title_holder = {
-					holder = ROOT
-					change = scope:change
-				}
-				save_scope_as = new_duchy
-			}
-		}
-
-		resolve_title_and_vassal_change = scope:change
-		# Generate a new CoA
-		## We do this in a separate block so that the effect has time to see that the title has a holder, since it'll error otherwise.
-		if = {
-			limit = { exists = scope:new_title }
-			scope:new_title = {
-				generate_coa = yes
-				set_color_from_title = root.capital_county
-			}
-		}
-
-		# Add elective succession title law
-		add_realm_law_skip_effects = single_heir_dynasty_house
-		primary_title = {
-			add_title_law = anarchist_elective_succession_law
-		}
-		every_held_title = {
-			limit = { tier = tier_county }
-			save_scope_as = title
-			root = { trigger_event = sea_title_event.2001 }
-		}
+		convert_to_stateless_effect = yes
 	}
 
 	ai_potential = {
