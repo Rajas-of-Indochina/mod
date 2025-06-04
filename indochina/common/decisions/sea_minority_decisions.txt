@@ -212,14 +212,25 @@ recruit_cultural_expert_decision = {
 		any_held_title = {
 			tier = tier_county
 			OR = {
-				NOT = { culture = ROOT.culture }
-				any_in_list = {
-					variable = culture_minorities_small
+				culture = {
+					culture_has_specialists = yes
 					NOT = { THIS = ROOT.culture }
 				}
-				any_in_list = {
-					variable = culture_minorities_large
-					NOT = { THIS = ROOT.culture }
+				AND = {
+					has_variable_list = culture_minorities_small
+					any_in_list = {
+						variable = culture_minorities_small
+						NOT = { THIS = ROOT.culture }
+						culture_has_specialists = yes
+					}
+				}
+				AND = {
+					has_variable_list = culture_minorities_large
+					any_in_list = {
+						variable = culture_minorities_large
+						NOT = { THIS = ROOT.culture }
+						culture_has_specialists = yes
+					}
 				}
 			}
 		}

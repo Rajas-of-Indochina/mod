@@ -580,23 +580,6 @@ scripted_effect setup_cultural_specialist_effect = {
 	}
 }
 
-scripted_effect create_cultural_specialist_effect = {
-	var:selected_culture = {
-		save_scope_as = culture
-	}
-	create_character = {
-		gender_female_chance = root_faith_dominant_gender_adjusted_female_chance
-		random_traits = yes
-		employer = ROOT
-		faith = root.faith
-		culture = scope:culture
-		employer = ROOT
-		save_scope_as = cultural_specialist
-	}
-	custom_tooltip = recruit_cultural_specialist_courtier_tt
-	culture_specialist_tooltip_builder = yes
-}
-
 scripted_effect apply_cultural_traits_effect = {
 	if = {
 		limit = { culture = { has_cultural_parameter = eunuch_trait_bonuses } }
@@ -1311,10 +1294,24 @@ minorities.4001 = {
 		name = minorities.1001.confirm
 		if = {
 			limit = { has_variable = selected_culture }
-			create_cultural_specialist_effect = yes
+			var:selected_culture = {
+				save_scope_as = culture
+			}
+			create_character = {
+				gender_female_chance = root_faith_dominant_gender_adjusted_female_chance
+				random_traits = yes
+				employer = ROOT
+				faith = root.faith
+				culture = scope:culture
+				employer = ROOT
+				save_scope_as = cultural_specialist
+			}
+			custom_tooltip = recruit_cultural_specialist_courtier_tt
+			culture_specialist_tooltip_builder = yes
+
 			scope:cultural_specialist = { apply_cultural_traits_effect = yes }
-			recruit_courtier = scope:cultural_specialist
-			custom_tooltip = newline.desc
+			#recruit_courtier = scope:cultural_specialist
+			#custom_tooltip = newline.desc
 			var:selected_culture = {
 				change_cultural_acceptance = {
 					value = 0.5
@@ -1322,8 +1319,8 @@ minorities.4001 = {
 					desc = recruited_local_specialist_desc
 				}
 			}
-			add_gold = {
-				value = medium_gold_loss
+			remove_short_term_gold = {
+				value = medium_gold_value
 				if = {
 					limit = {
 						OR = {
@@ -1333,6 +1330,12 @@ minorities.4001 = {
 					}
 					multiply = 0.5
 				}
+			}
+			send_interface_message = {
+				title = minorities.4001.arrival
+				desc = minorities.4001.arrival_desc
+				type = event_guest_good
+				left_icon = scope:cultural_specialist
 			}
 		}
 		else = {
