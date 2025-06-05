@@ -58,7 +58,7 @@
 		scope:recipient = {
 			trigger_if = {
 				limit = {
-					scope:actor.confederation = { has_variable = armenian_confederation }
+					scope:actor.confederation ?= { has_variable = armenian_confederation }
 				}
 				valid_armenian_confederation_member_trigger = { CHARACTER = scope:actor }
 			}
@@ -1079,7 +1079,7 @@
 			}
 			trigger_if = {
 				limit = {
-					scope:actor.confederation = { has_variable = armenian_confederation }
+					scope:actor.confederation ?= { has_variable = armenian_confederation }
 					scope:recipient = {
 						AND = {
 							capital_county.title_province = { geographical_region = struggle_region_armenia }
@@ -1107,7 +1107,7 @@
 				always = no
 			}
 			trigger_else = {
-				scope:actor.confederation = {
+				scope:actor.confederation ?= {
 					any_confederation_member = {
 						count >= 6
 						highest_held_title_tier >= tier_county
@@ -1494,7 +1494,7 @@
 			}
 			#Confederation already exists
 			else = {
-				scope:actor.confederation = {
+				scope:actor.confederation ?= {
 					save_scope_as = confederation
 				}
 				show_as_tooltip = {
@@ -1743,7 +1743,7 @@
 							primary_defender = scope:recipient
 						}
 						culture = scope:actor.culture
-						scope:actor.confederation = {
+						scope:actor.confederation ?= {
 							any_confederation_member = {
 								count >= 4
 								highest_held_title_tier >= tier_county
