@@ -79,7 +79,6 @@ window = {
 					onclick = "[GetVariableSystem.Clear( 'bookmark_succession' )]"
 					onclick = "[GetVariableSystem.Clear( 'bookmark_laws' )]"
 					onclick = "[MyRealmWindow.SetActiveTab( 'bookmark_domain' )]"
-					onclick = "[MyRealmWindow.ResetMapMode]"
 
 					tooltip = "MY_REALM_WINDOW_BOOKMARK_DOMAIN_TT"
 				}
@@ -168,7 +167,6 @@ window = {
 					onclick = "[GetVariableSystem.Clear( 'bookmark_succession' )]"
 					onclick = "[GetVariableSystem.Set( 'bookmark_laws', 'true' )]"
 					onclick = "[MyRealmWindow.SetActiveTab( 'bookmark_laws' )]"
-					onclick = "[MyRealmWindow.ResetMapMode]"
 
 					tooltip = "MY_REALM_WINDOW_BOOKMARK_LAWS_TT"
 				}
@@ -213,7 +211,6 @@ window = {
 					onclick = "[GetVariableSystem.Set( 'bookmark_succession', 'true' )]"
 					onclick = "[GetVariableSystem.Clear( 'bookmark_laws' )]"
 					onclick = "[MyRealmWindow.SetActiveTab( 'bookmark_succession' )]"
-					onclick = "[MyRealmWindow.ResetMapMode]"
 
 					tooltip = "MY_REALM_WINDOW_BOOKMARK_SUCCESSION_TT"
 				}
@@ -588,14 +585,14 @@ types MyRealmWindow
 
 									text_single = {
 										visible = "[GetPlayer.HasSuzerain]"
-										text = "MY_REALM_WINDOW_SUZERAIN_NAME"
+										text = "MY_REALM_WINDOW_SUZERAIN"
 										align = nobaseline
 										max_width = 280
 									}
 
 									text_single = {
 										visible = "[GetPlayer.HasLiege]"
-										text = "MY_REALM_WINDOW_LIEGE_NAME"
+										text = "MY_REALM_WINDOW_LIEGE"
 										align = nobaseline
 										max_width = 280
 									}
@@ -1145,11 +1142,11 @@ types MyRealmWindow
 					button_round = {
 						datacontext = "[MyRealmWindow.GetCharacter.GetLiege]"
 						datacontext = "[MyRealmWindow.GetCharacter.GetVassalContract]"
-						visible = "[Character.IsPlayerInteractionShown( 'vassal_modify_vassal_contract_interaction' )]"
+						visible = "[And( Character.IsPlayerInteractionShown( 'vassal_modify_vassal_contract_interaction' ), And( GetPlayer.HasLiege, GetPlayer.GetGovernment.IsType( 'feudal_government' ) ))]"
 
 						onclick = "[Character.OpenPlayerInteraction('vassal_modify_vassal_contract_interaction')]"
+
 						tooltip = "[Character.GetPlayerInteractionTooltip('vassal_modify_vassal_contract_interaction')]"
-						using = tooltip_se
 
 						button_feudal_contract = {
 							parentanchor = center
@@ -1158,41 +1155,10 @@ types MyRealmWindow
 						}
 					}
 
-					### MODIFY YOUR ADMIN VASSAL CONTRACT
-					button_round = {
-						datacontext = "[MyRealmWindow.GetCharacter.GetLiege]"
-						datacontext = "[MyRealmWindow.GetCharacter.GetVassalContract]"
-						visible = "[Character.IsPlayerInteractionShown( 'admin_vassal_modify_vassal_contract_interaction' )]"
-
-						onclick = "[Character.OpenPlayerInteraction('admin_vassal_modify_vassal_contract_interaction')]"
-						tooltip = "[Character.GetPlayerInteractionTooltip('admin_vassal_modify_vassal_contract_interaction')]"
-						using = tooltip_se
-
-						button_add_laws = {
-							parentanchor = center
-							alwaystransparent = yes
-						}
-					}
-
-					### MODIFY TRIBUTARY CONTRACT
-					button_round = {
-						datacontext = "[MyRealmWindow.GetCharacter.GetSuzerain]"
-						visible = "[GetPlayer.HasSuzerain]"
-
-						onclick = "[Character.OpenPlayerInteraction('subject_modify_tributary_contract_interaction')]"
-						tooltip = "[Character.GetPlayerInteractionTooltip('subject_modify_tributary_contract_interaction')]"
-						using = tooltip_se
-
-						button_feudal_contract = {
-							parentanchor = center
-							alwaystransparent = yes
-						}
-					}
-
 					### BREAK FREE OF SUZERAIN
 					button_round = {
 						datacontext = "[MyRealmWindow.GetCharacter.GetSuzerain]"
-						visible = no
+						visible = "[GetPlayer.HasSuzerain]"
 
 						onclick = "[Character.OpenPlayerInteraction('cease_paying_tribute_interaction')]"
 						enabled = "[Character.IsPlayerInteractionValid('cease_paying_tribute_interaction')]"
@@ -1493,8 +1459,37 @@ types MyRealmWindow
 				}
 			}
 
-			selection_glow = {
+			icon = {
+				name = "selection_glow"
 				visible = "[GuiLaw.IsEnacted]"
+				parentanchor = center
+				size = { 100% 100% }
+
+				state = {
+					trigger_on_create = yes
+
+					name = max_glow
+					next = min_glow
+					duration = 1
+					using = Animation_Curve_Default
+					alpha = 0.5
+				}
+
+				state = {
+					name = min_glow
+					next = max_glow
+					duration = 1.6
+					using = Animation_Curve_Default
+					alpha = 0.3
+				}
+
+				background = {
+					texture = "gfx/interface/component_effects/innovation_glow.dds"
+					margin = { 15 12 }
+					spriteType = Corneredstretched
+					spriteborder = { 30 30 }
+					tintcolor = { 1 0.8 0.6 1 }
+				}
 			}
 		}
 	}
@@ -2647,7 +2642,7 @@ types MyRealmWindow
 		expand = {}
 	}
 
-	type tooltip_my_realm_to_liege = container_my_realm_window_contribution_tooltip {
+	type tooltip_my_realm_to_liege = my_realm_window_contribution_tooltip {
 		datacontext = "[MyRealmWindow.GetCharacter]"
 
 		blockoverride "contribution_tooltip_header"
@@ -2658,7 +2653,7 @@ types MyRealmWindow
 		blockoverride "contribution_tooltip_content_suffix" {}
 	}
 
-	type container_my_realm_window_contribution_tooltip = container {
+	type my_realm_window_contribution_tooltip = widget {
 		alwaystransparent = no
 		using = GeneralTooltipSetup
 
@@ -3594,7 +3589,7 @@ types MyRealmWindow
 
 	type widget_my_realm_law_item = widget {
 		datacontext = "[GuiLawGroup]"
-		size = { 246 62 }
+		size = { 222 62 }
 
 		background = {
 			using = Background_Area
@@ -3827,7 +3822,7 @@ types MyRealmWindow
 
 				blockoverride "show_law"
 				{
-					visible = "[And( GuiLawGroup.IsAvailable, Or( GuiLawGroup.GetLawGroup.HasFlag( 'succession_order_laws' ), Or( GuiLawGroup.GetLawGroup.HasFlag( 'succession_gender_laws' ), GuiLawGroup.GetLawGroup.HasFlag( 'imperial_policy' ) ) ) )]"
+					visible = "[And( GuiLawGroup.IsAvailable, Or( GuiLawGroup.GetLawGroup.HasFlag( 'succession_order_laws' ), GuiLawGroup.GetLawGroup.HasFlag( 'succession_gender_laws' ) ) )]"
 				}
 			}
 

@@ -7,7 +7,195 @@
 			tax = {
 				value = 0
 			}
-			flag = religiously_protected
+			liege_modifier = {
+				monthly_piety = 0.1
+			}
+		}
+	}
+}
+
+mandala_government_taxes = {
+	display_mode = tree
+	icon = gold_icon
+	obligation_levels = {
+		mandala_tax_exempt = {
+			default = yes
+			position = { 0 0 }
+
+			tax = exempt_mandala_tax
+
+			ai_liege_desire = 1
+			ai_subject_desire = 5
+			score = 2
+		}
+		mandala_tax_low = {
+			parent = mandala_tax_exempt
+			position = { 1 0 }
+
+			tax = low_mandala_tax
+			subject_opinion = -5
+
+			ai_liege_desire = {
+				value = 2
+				if = {
+					limit = {
+						scope:liege = {
+							ai_should_focus_on_building_in_their_capital = yes
+						}
+						scope:subject = {
+							AND = {
+								government_has_flag = government_is_feudal
+								vassal_contract_obligation_level:feudal_government_taxes <= feudal_tax_exempt_level
+							}
+						}
+					}
+					add = 8
+				}
+			}
+			ai_subject_desire = 4
+			score = 1
+		}
+		mandala_tax_normal = {
+			parent = mandala_tax_low
+			position = { 2 0 }
+
+			tax = normal_mandala_tax
+			subject_opinion = -15
+
+			ai_liege_desire = {
+				value = 3
+				if = {
+					limit = {
+						scope:liege = {
+							ai_should_focus_on_building_in_their_capital = yes
+						}
+						scope:subject = {
+							AND = {
+								government_has_flag = government_is_feudal
+								vassal_contract_obligation_level:feudal_government_taxes <= feudal_tax_low_level
+							}
+						}
+					}
+					add = 7
+				}
+			}
+			ai_subject_desire = 3
+			score = 0
+		}
+		mandala_tax_high = {
+			parent = mandala_tax_normal
+			position = { 3 0 }
+
+			tax = high_mandala_tax
+			subject_opinion = -25
+
+			ai_liege_desire = {
+				value = 4
+				if = {
+					limit = {
+						scope:liege = {
+							ai_should_focus_on_building_in_their_capital = yes
+						}
+						scope:subject = {
+							AND = {
+								government_has_flag = government_is_feudal
+								vassal_contract_obligation_level:feudal_government_taxes <= feudal_tax_normal_level
+							}
+						}
+					}
+					add = 6
+				}
+			}
+			ai_subject_desire = 2
+			score = -1
+			flag = obligation_high_taxes
+		}
+		mandala_tax_extortionate = {
+			parent = mandala_tax_high
+			position = { 4 0 }
+
+			tax = extortionate_mandala_tax
+			subject_opinion = -40
+
+			ai_liege_desire = {
+				value = 5
+				if = {
+					limit = {
+						scope:liege = {
+							ai_should_focus_on_building_in_their_capital = yes
+						}
+						scope:subject = {
+							AND = {
+								government_has_flag = government_is_feudal
+								vassal_contract_obligation_level:feudal_government_taxes <= feudal_tax_high_level
+							}
+						}
+					}
+					add = 5
+				}
+			}
+			ai_subject_desire = 1
+			score = -2
+			flag = obligation_high_taxes
+		}
+	}
+}
+
+mandala_government_prestige = {
+	display_mode = tree
+	icon = prestige_icon
+	obligation_levels = {
+		prestige_transfer_none = {
+			position = { 0 0 }
+
+			prestige = 0
+
+			liege_modifier = {
+				monthly_piety = 0.1
+			}
+			subject_modifier = {
+				monthly_piety = -0.1
+			}
+
+			ai_liege_desire = 1
+			ai_subject_desire = 5
+			score = 2
+		}
+		prestige_transfer_normal = {
+			parent = prestige_transfer_none
+			position = { 1 0 }
+
+			prestige = 0.1
+			subject_opinion = -10
+
+			liege_modifier = {
+				monthly_piety = 0.2
+			}
+			subject_modifier = {
+				monthly_piety = -0.2
+			}
+
+			ai_liege_desire = 5
+			ai_subject_desire = 3
+			score = 1
+		}
+		prestige_transfer_high = {
+			parent = prestige_transfer_normal
+			position = { 2 0 }
+
+			prestige = 0.2
+			subject_opinion = -25
+
+			liege_modifier = {
+				monthly_piety = 0.3
+			}
+			subject_modifier = {
+				monthly_piety = -0.3
+			}
+
+			ai_liege_desire = 7
+			ai_subject_desire = 1
+			score = 0
 		}
 	}
 }

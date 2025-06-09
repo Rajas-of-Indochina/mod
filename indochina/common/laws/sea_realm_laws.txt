@@ -13,10 +13,12 @@ mandala_authority = {
 			glory_hound_opinion = 10
 			parochial_opinion = 10
 			courtly_opinion = 5
-			vassal_tax_contribution_add = 0.20
+
+			vassal_tax_contribution_add = 0.10
+			vassal_levy_contribution_add = 0.10
 
 			vassal_limit_min = 1
-			vassal_limit_max = 1
+			vassal_limit_max = 2
 		}
 		flag = can_have_tributaries
 		flag = title_revocation_allowed
@@ -41,10 +43,10 @@ mandala_authority = {
 			minority_opinion = -10
 
 			vassal_tax_contribution_add = 0.05
-			vassal_levy_contribution_add = 0.10
+			vassal_levy_contribution_add = 0.05
 
-			vassal_limit_min = 4
-			vassal_limit_max = 6 # 15
+			vassal_limit_min = 2
+			vassal_limit_max = 3
 		}
 		flag = vassal_retraction_allowed
 
@@ -65,11 +67,21 @@ mandala_authority = {
 					}
 				}
 			}
-			can_pass_law_ca1_trigger = yes
 		}
 
 		pass_cost = {
 			prestige = {
+				if = {
+					limit = {
+						NOR = {
+							has_realm_law = mandala_authority_2
+							has_realm_law = mandala_authority_3
+						}
+					}
+					add = increase_crown_authority_prestige_cost
+				}
+			}
+			piety = {
 				if = {
 					limit = {
 						NOR = {
@@ -114,8 +126,8 @@ mandala_authority = {
 			vassal_tax_contribution_add = 0.05
 			vassal_levy_contribution_add = 0.05
 
-			vassal_limit_min = 8
-			vassal_limit_max = 12 # 15
+			vassal_limit_min = 4
+			vassal_limit_max = 6
 		}
 
 		can_have = { realm_law_use_mandala_authority = yes }
@@ -138,11 +150,18 @@ mandala_authority = {
 					}
 				}
 			}
-			can_pass_law_ca2_trigger = yes
 		}
 
 		pass_cost = {
 			prestige = {
+				if = {
+					limit = {
+						NOT = { has_realm_law = mandala_authority_3 }
+					}
+					add = increase_crown_authority_prestige_cost
+				}
+			}
+			piety = {
 				if = {
 					limit = {
 						NOT = { has_realm_law = mandala_authority_3 }
@@ -184,8 +203,8 @@ mandala_authority = {
 			vassal_tax_contribution_add = 0.05
 			vassal_levy_contribution_add = 0.05
 
-			vassal_limit_min = 5
-			vassal_limit_max = 15
+			vassal_limit_min = 8
+			vassal_limit_max = 12
 		}
 		flag = uses_mandala_authority
 
@@ -210,11 +229,18 @@ mandala_authority = {
 					}
 				}
 			}
-			can_pass_law_ca3_trigger = yes
 		}
 
 		pass_cost = {
 			prestige = {
+				if = {
+					limit = {
+						NOT = { has_realm_law = mandala_authority_3 }
+					}
+					add = increase_crown_authority_prestige_cost
+				}
+			}
+			piety = {
 				if = {
 					limit = {
 						NOT = { has_realm_law = mandala_authority_3 }
