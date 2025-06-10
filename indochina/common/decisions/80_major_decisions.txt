@@ -75,6 +75,7 @@ convert_to_feudalism_liege_converted_decision = {
 			OR = {
 				government_has_flag = government_is_feudal
 				government_has_flag = government_is_clan
+				government_has_flag = government_is_mandala
 			}
 		}
 	}
@@ -94,7 +95,10 @@ convert_to_feudalism_liege_converted_decision = {
 			text = recent_conversion_to_tribalism
 			NOT = { has_character_flag = just_converted_to_tribalism }
 		}
-		custom_description = {
+	}
+
+	is_valid_showing_failures_only = {
+		custom_tooltip = {
 			text = permafrost_feudal_ban
 			NOT = { culture = { has_cultural_parameter = permafrost_cannot_become_feudal } }
 		}
@@ -176,9 +180,9 @@ convert_clan_to_feudalism_through_liege_decision = {
 	effect = {
 		trigger_event = major_decisions.0001
 		save_scope_as = actor
-		
+
 		change_government = feudal_government
-		
+
 		hidden_effect = {
 			every_vassal_or_below = {
 				limit = { government_has_flag = government_is_clan }
@@ -197,7 +201,7 @@ convert_clan_to_feudalism_through_liege_decision = {
 
 	ai_will_do = {
 		base = 0
-		
+
 		modifier = {
 			add = 100
 			opinion = {
@@ -257,9 +261,9 @@ convert_feudalism_to_clan_through_liege_decision = {
 	effect = {
 		trigger_event = major_decisions.0001
 		save_scope_as = actor
-		
+
 		change_government = clan_government
-		
+
 		hidden_effect = {
 			every_vassal_or_below = {
 				limit = { government_has_flag = government_is_feudal }
@@ -278,7 +282,7 @@ convert_feudalism_to_clan_through_liege_decision = {
 
 	ai_will_do = {
 		base = 0
-		
+
 		modifier = {
 			add = 100
 			opinion = {
@@ -355,8 +359,10 @@ convert_whole_realm_to_feudalism_decision = {
 				}
 			}
 		}
+	}
 
-		custom_description = {
+	is_valid_showing_failures_only = {
+		custom_tooltip = {
 			text = permafrost_feudal_ban
 			NOT = { culture = { has_cultural_parameter = permafrost_cannot_become_feudal } }
 		}
@@ -424,7 +430,7 @@ convert_to_tribalism_decision = {
 	}
 
 	is_valid = {
-		
+
 	}
 
 
@@ -774,7 +780,7 @@ strengthen_bloodline_decision = {
 	ai_will_do = {
 		base = 100
 	}
-}	
+}
 
 ##################################################
 # Dynasty of Many Crowns
@@ -874,8 +880,8 @@ found_kingdom_decision = {
 
 	is_shown = {
 		highest_held_title_tier = tier_duchy
-		NOT = { 
-			has_game_rule = off_custom_kingdoms 
+		NOT = {
+			has_game_rule = off_custom_kingdoms
 		}
 		is_landed_or_landless_administrative = yes
 		is_confederation_member = no
@@ -983,7 +989,7 @@ found_empire_decision = {
 				tier = tier_kingdom
 			}
 		}
-		NOT = { 
+		NOT = {
 			has_game_rule = off_custom_kingdoms
 		}
 		is_landed_or_landless_administrative = yes
@@ -1026,7 +1032,7 @@ found_empire_decision = {
 				}
 			}
 		}
-		
+
 		trigger_if = {
 			limit = {
 				government_has_flag = government_is_nomadic
@@ -1109,6 +1115,9 @@ found_empire_decision = {
 			hidden_effect = {
 				legend_seed_new_title_effect = yes
 			}
+		}
+		else = {
+			create_custom_empire_effect = yes
 		}
 		if = {
 			limit = {

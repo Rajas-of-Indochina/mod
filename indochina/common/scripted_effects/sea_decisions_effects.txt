@@ -4,100 +4,126 @@
 #####
 
 convert_whole_realm_to_feudalism_effect = {
-
-	## What do we convert to?
-
-	# IF independent, take gov depending on doctrines
-	# If not independent, depends on liege
-		# IF liege is feudal, become feudal
-		# If liege is clan, become clan
-		# If liege is neither, depends on doctrines
-
-	## Not independent, take liege's gov
+	#TOOLTIP INFO
+	#PLAYER EFFECTS
+	##Liege has clan? Convert to clan!
 	if = {
 		limit = {
 			is_independent_ruler = no
+			OR = {
+				liege = { government_has_flag = government_is_clan }
+				AND = {
+					liege = { government_has_flag = government_is_tribal }
+					religion = religion:islam_religion
+				}
+			}
 		}
+		change_government = clan_government
+	}
+	##Liege has mandala? Convert to mandala!
+	else_if = {
+		limit = {
+			is_independent_ruler = no
+			liege = { government_has_flag = government_is_mandala }
+		}
+		change_government = mandala_government
+	}
+	##Liege has feudal? Convert to feudal!
+	else_if = {
+		limit = {
+			is_independent_ruler = no
+			OR = {
+				liege = { government_has_flag = government_is_feudal }
+				AND = {
+					liege = { government_has_flag = government_is_tribal }
+					NOT = { religion = religion:islam_religion }
+				}
+			}
+		}
+		change_government = feudal_government
+	}
+	##You're an independent Muslim? Convert to clan!
+	else_if = {
+		limit = {
+			is_independent_ruler = yes
+			faith = { religion_tag = islam_religion }
+		}
+		change_government = clan_government
+	}
+	##You're an independent Southeast Asia? Convert to mandala!
+	else_if = {
+		limit = {
+			is_independent_ruler = yes
+			capital_county.title_province ?= {
+				OR = {
+					geographical_region = world_southeast_asia
+					geographical_region = world_burma
+				}
+			}
+		}
+		change_government = mandala_government
+	}
+	##You're an independent anything else? Convert to feudal!
+	else = { change_government = feudal_government }
+	if = {
+		limit = {
+			government_has_flag = government_is_tribal
+		}
+		##General
+		custom_tooltip = all_holding_will_change
+		##Liege has clan? Convert to clan!
 		if = {
 			limit = {
-				liege = { has_government = clan_government }
+				is_independent_ruler = no
+				liege = { government_has_flag = government_is_clan }
 			}
-			change_government = clan_government
+			custom_tooltip = clan_liege_vassals_will_convert
 		}
-		else_if = {
-			limit = {
-				liege = { has_government = feudal_government }
-			}
-			change_government = feudal_government
-		}
-		else_if = {
-			limit = {
-				liege = { has_government = mandala_government }
-			}
-			change_government = mandala_government
-		}
-		# Liege is tribal so take gov depending on faith doctrines
-		else = {
-			if = {
-				limit = {
-					faith = { has_doctrine = doctrine_right_to_rule_divine }
-				}
-				change_government = feudal_government
-			}
-			## doctrine_right_to_rule_rajadharma
-			else_if = {
-				limit = {
-					faith = { has_doctrine = doctrine_right_to_rule_rajadharma }
-				}
-				change_government = mandala_government
-			}
-			## doctrine_right_to_rule_material
-			else = {
-				change_government = clan_government
-			}
-		}
-	}
-	## Independent, take gov depending on faith doctrines
-	else = {
+		#Liege has mandala? Convert to mandala!
 		if = {
 			limit = {
-				faith = { has_doctrine = doctrine_right_to_rule_divine }
+				is_independent_ruler = no
+				liege = { government_has_flag = government_is_mandala }
 			}
-			change_government = feudal_government
+			custom_tooltip = mandala_liege_vassals_will_convert
 		}
-		## doctrine_right_to_rule_rajadharma
-		else_if = {
+		#Liege has feudal? Convert to feudal!
+		if = {
 			limit = {
-				faith = { has_doctrine = doctrine_right_to_rule_rajadharma }
+				is_independent_ruler = no
+				liege = { government_has_flag = government_is_feudal }
 			}
-			change_government = mandala_government
+			custom_tooltip = feudal_liege_vassals_will_convert
 		}
-		## doctrine_right_to_rule_material
-		else = {
-			change_government = clan_government
+		##If I am Islamic, we will become clan.
+		if = {
+			limit = {
+				is_independent_ruler = yes
+				faith = { religion_tag = islam_religion }
+			}
+			custom_tooltip = islamic_vassals_will_convert
 		}
-	}
-
-	##General
-	#custom_tooltip = all_holding_will_change
-
-	capital_county = {
-		title_province = {
-			if = {
-				limit = { has_holding_type = tribal_holding }
-				set_holding_type = castle_holding
-				add_province_modifier = {
-					modifier = converted_to_feudal_county_modifier
-					years = 10
+		##If I am Southeast Asian, we will become mandala.
+		if = {
+			limit = {
+				is_independent_ruler = yes
+				capital_county.title_province ?= {
+					OR = {
+						geographical_region = world_southeast_asia
+						geographical_region = world_burma
+					}
 				}
 			}
+			custom_tooltip = mandala_vassals_will_convert
+		}
+		##If I am not Islamic, we will become feudal.
+		else_if = {
+			limit = { is_independent_ruler = yes }
+			custom_tooltip = other_vassals_will_convert
 		}
 	}
 
-
-	##Sort out new laws.
 	hidden_effect = {
-
 		#Nuke tribal authorities.
 		if = {
 			limit = { has_realm_law = tribal_authority_0 }
@@ -117,30 +143,31 @@ convert_whole_realm_to_feudalism_effect = {
 		}
 		#Start off crown authorities.
 		if = {
-			limit = {
-				has_government = mandala_government
-				NOT = { has_realm_law = mandala_authority_0 }
+			limit = { has_government = mandala_government }
+			if = {
+				limit = {
+					NOT = { has_realm_law = mandala_authority_0 }
+				}
+				add_realm_law_skip_effects = mandala_authority_0
 			}
-			add_realm_law_skip_effects = mandala_authority_0
 		}
-		else_if = {
-			limit = {
-				NOT = { has_realm_law = crown_authority_0 }
+		else {
+			if = {
+				limit = {
+					NOT = { has_realm_law = crown_authority_0 }
+				}
+				add_realm_law_skip_effects = crown_authority_0
 			}
-			add_realm_law_skip_effects = crown_authority_0
 		}
-	}
 
-	#VASSAL EFFECTS
-	#Also convert every vassal.
-	hidden_effect = {
+		#Also convert every vassal.
 		#Liege has taken clan, so become clan.
 		if = {
 			limit = {
-				has_government = clan_government
+				government_has_flag = government_is_clan
 			}
-			every_vassal = {
-				limit = { has_government = tribal_government }
+			every_vassal_or_below = {
+				limit = { government_has_flag = government_is_tribal }
 				change_government = clan_government
 				#Nuke tribal authorities.
 				if = {
@@ -170,10 +197,10 @@ convert_whole_realm_to_feudalism_effect = {
 		#Liege has taken mandala, so become mandala.
 		if = {
 			limit = {
-				has_government = mandala_government
+				government_has_flag = government_is_mandala
 			}
-			every_vassal = {
-				limit = { has_government = tribal_government }
+			every_vassal_or_below = {
+				limit = { government_has_flag = government_is_tribal }
 				change_government = mandala_government
 				#Nuke tribal authorities.
 				if = {
@@ -200,10 +227,10 @@ convert_whole_realm_to_feudalism_effect = {
 				}
 			}
 		}
-		#Liege is not clan, become feudal.
+		#Liege is not clan or mandala, become feudal.
 		else = {
-			every_vassal = {
-				limit = { has_government = tribal_government }
+			every_vassal_or_below = {
+				limit = { government_has_flag = government_is_tribal }
 				change_government = feudal_government
 				#Nuke tribal authorities.
 				if = {
@@ -231,19 +258,218 @@ convert_whole_realm_to_feudalism_effect = {
 			}
 		}
 
-		every_vassal = {
-			capital_county = {
-				every_county_province = {
-					if = {
-						limit = { has_holding_type = tribal_holding }
-						set_holding_type = castle_holding
-						add_province_modifier = {
-							modifier = converted_to_feudal_county_modifier
-							years = 10
-						}
+		## Spawn holdings in tribal counties
+
+		every_sub_realm_county = { # Spawn temples in your holy sites
+			limit = {
+				any_county_province = {
+					has_holding_type = tribal_holding
+				}
+				NOT = {
+					any_county_province = {
+						has_holding_type = church_holding
+					}
+				}
+				any_county_province = {
+					has_holding = no
+					barony = {
+						is_holy_site_of = root.faith
 					}
 				}
 			}
+			random_county_province = {
+				limit = {
+					has_holding = no
+					barony_cannot_construct_holding = no
+					barony = {
+						is_holy_site_of = root.faith
+					}
+				}
+				set_holding_type = church_holding
+			}
+		}
+
+		every_sub_realm_county = { # Spawn a City
+			limit = {
+				any_county_province = {
+					has_holding_type = tribal_holding
+				}
+				any_county_province = {
+					has_holding = no
+				}
+				NOT = {
+					any_county_province = {
+						has_holding_type = city_holding
+					}
+				}
+			}
+			random_county_province = {
+				limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+					is_coastal = yes
+					has_special_building_slot = no
+					barony_cannot_construct_holding = no
+				}
+				alternative_limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+					has_special_building_slot = no
+					barony_cannot_construct_holding = no
+				}
+				alternative_limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+					barony_cannot_construct_holding = no
+				}
+				alternative_limit = {
+					has_holding = no
+					barony_cannot_construct_holding = no
+				}
+				random = {
+					chance = 60
+					modifier = {
+						add = county.development_level
+					}
+					modifier = {
+						add = 50
+						this.county = root.capital_county
+					}
+					modifier = {
+						add = 20
+						OR = {
+							terrain = floodplains
+							terrain = oasis
+							terrain = farmlands
+						}
+					}
+					set_holding_type = city_holding
+				}
+			}
+		}
+
+		every_sub_realm_county = { # Spawn a Temple
+			limit = {
+				any_county_province = {
+					has_holding_type = tribal_holding
+				}
+				any_county_province = {
+					has_holding = no
+				}
+				NOT = {
+					any_county_province = {
+						has_holding_type = church_holding
+					}
+				}
+			}
+			random_county_province = {
+				limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+					is_coastal = yes
+					has_special_building_slot = no
+					barony_cannot_construct_holding = no
+				}
+				alternative_limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+					has_special_building_slot = no
+					barony_cannot_construct_holding = no
+				}
+				alternative_limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+					barony_cannot_construct_holding = no
+				}
+				alternative_limit = {
+					has_holding = no
+					barony_cannot_construct_holding = no
+				}
+				random = {
+					chance = 50
+					modifier = {
+						add = county.development_level
+					}
+					modifier = {
+						add = 50
+						this.county = root.capital_county
+					}
+					modifier = {
+						add = 20
+						OR = {
+							terrain = floodplains
+							terrain = oasis
+							terrain = farmlands
+						}
+					}
+					set_holding_type = church_holding
+				}
+			}
+		}
+
+		##Sort out new buildings for liege and all vassals
+		every_realm_province = {
+			limit = {
+				has_holding_type = tribal_holding
+				NOT = { is_in_list = feudal_conversion }
+			}
+			add_to_list = feudal_conversion
+
+		}
+		every_vassal_or_below = {
+			every_realm_province = {
+				limit = {
+					has_holding_type = tribal_holding
+					NOT = { is_in_list = feudal_conversion }
+				}
+				add_to_list = feudal_conversion
+
+			}
+		}
+		every_in_list = {
+			list = feudal_conversion
+			set_variable = {
+				name = tribal_to_feudal_building_level
+				value = combined_building_level
+				days = 1
+			}
+			set_holding_type = castle_holding
+			while = {
+				limit = {
+					var:tribal_to_feudal_building_level > 1
+				}
+				generate_building = yes
+				change_variable = {
+					name = tribal_to_feudal_building_level
+					subtract = 1
+				}
+			}
+			remove_variable = tribal_to_feudal_building_level
+			remove_from_list = feudal_conversion
 		}
 	}
 }
@@ -981,7 +1207,7 @@ greco_buddhism_effect = {
 	faith:indo_hellenism = {
 		remove_doctrine = tenet_adaptive
 		add_doctrine = tenet_dharmic_pacifism
-		add_doctrine = doctrine_right_to_rule_rajadharma
+		#add_doctrine = doctrine_right_to_rule_rajadharma
 		add_doctrine = special_doctrine_is_buddhist_faith
 	}
 }
@@ -990,7 +1216,7 @@ greco_hinduism_effect = {
 	faith:indo_hellenism = {
 		remove_doctrine = tenet_adaptive
 		add_doctrine = tenet_monasticism
-		add_doctrine = doctrine_right_to_rule_rajadharma
+		#add_doctrine = doctrine_right_to_rule_rajadharma
 		add_doctrine = special_doctrine_is_hinduism_faith
 		add_doctrine = sampradaya_vaishnavism_doctrine
 	}
@@ -1000,7 +1226,7 @@ greco_zoroastrianism_effect = {
 	faith:indo_hellenism = {
 		remove_doctrine = doctrine_funeral_bewailment
 		add_doctrine = doctrine_funeral_sky_burial
-		add_doctrine = doctrine_right_to_rule_divine
+		#add_doctrine = doctrine_right_to_rule_divine
 		remove_doctrine = doctrine_no_head
 		add_doctrine = doctrine_spiritual_head
 	}
@@ -1017,7 +1243,7 @@ greco_zoroastrianism_effect = {
 
 indo_greek_flexibility = {
 	faith:indo_hellenism = {
-		add_doctrine = doctrine_right_to_rule_divine
+		#add_doctrine = doctrine_right_to_rule_divine
 		add_doctrine = tenet_unreformed_syncretism
 	}
 }
