@@ -212,6 +212,95 @@ convert_clan_to_feudalism_through_liege_decision = {
 	}
 }
 
+# Convert from Clan if your liege is Feudal
+convert_feudalism_to_mandala_through_liege_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	decision_group_type = major
+	desc = convert_feudalism_to_mandala_through_liege_decision_desc
+
+	ai_check_interval = 36
+
+	is_shown = {
+		OR = {
+			government_has_flag = government_is_clan
+			government_has_flag = government_is_feudal
+		}
+		is_independent_ruler = no
+		liege = {
+			government_has_flag = government_is_mandala
+		}
+	}
+
+	is_valid = {
+		custom_description = {
+			text = same_faith_as_liege
+			OR = {
+				religion = liege.religion
+				faith = {
+					faith_hostility_level = {
+						target = root.liege.faith
+						value >= faith_fully_accepted_level
+					}
+				}
+			}
+		}
+		custom_description = {
+			text = same_culture_as_liege
+			OR = {
+				culture = liege.culture
+				culture = {
+					cultural_acceptance = { target = root.liege.culture value >= 90 } # Essentially the same culture
+				}
+			}
+		}
+	}
+
+	cost = {
+		prestige = 150
+	}
+
+	effect = {
+		trigger_event = major_decisions.0001
+		save_scope_as = actor
+
+		change_government = mandala_government
+
+		hidden_effect = {
+			every_vassal_or_below = {
+				limit = {
+					OR = {
+						government_has_flag = government_is_clan
+						government_has_flag = government_is_feudal
+					}
+				}
+				change_government = mandala_government
+				trigger_event = {
+					id = major_decisions.0002
+					days = 3
+				}
+			}
+		}
+	}
+
+	ai_potential = {
+		prestige >= 150
+	}
+
+	ai_will_do = {
+		base = 0
+
+		modifier = {
+			add = 100
+			opinion = {
+				target = liege
+				value >= 0
+			}
+		}
+	}
+}
+
 # Convert from Feudal if your liege is Clan
 convert_feudalism_to_clan_through_liege_decision = {
 	picture = {
@@ -223,7 +312,10 @@ convert_feudalism_to_clan_through_liege_decision = {
 	ai_check_interval = 36
 
 	is_shown = {
-		government_has_flag = government_is_feudal
+		OR = {
+			government_has_flag = government_is_feudal
+			government_has_flag = government_is_mandala
+		}
 		is_independent_ruler = no
 		liege = {
 			government_has_flag = government_is_clan
@@ -266,7 +358,12 @@ convert_feudalism_to_clan_through_liege_decision = {
 
 		hidden_effect = {
 			every_vassal_or_below = {
-				limit = { government_has_flag = government_is_feudal }
+				limit = {
+					OR = {
+						government_has_flag = government_is_mandala
+						government_has_flag = government_is_feudal
+					}
+				}
 				change_government = clan_government
 				trigger_event = {
 					id = major_decisions.0002
@@ -317,6 +414,7 @@ convert_whole_realm_to_feudalism_decision = {
 				liege = {
 					NOR = {
 						government_has_flag = government_is_feudal
+						government_has_flag = government_is_mandala
 						government_has_flag = government_is_clan
 					}
 				}
@@ -336,12 +434,13 @@ convert_whole_realm_to_feudalism_decision = {
 			development_level >= convert_to_feudalism_development_requirement
 		}
 
-		custom_description = { #You need to have 70% of all (non-regional/unique) tribal innovations!
+		custom_description = { #You need to have 50% of all (non-regional/unique) tribal innovations!
 			text = has_all_tribal_innovations
 			subject = root.culture
 			culture = {
 				calc_true_if = {
-					amount >= 9
+					#amount >= 9
+					amount >= 7
 					has_innovation = innovation_motte
 					has_innovation = innovation_catapult
 					has_innovation = innovation_barracks
