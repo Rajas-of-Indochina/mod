@@ -159,7 +159,52 @@
         }
     }
 
-    austronesian_war_legwear = {
+    austronesian_war_legwear_low = {
+        dna_modifiers = {
+            accessory = {
+                mode = add
+                gene = legwear
+                template = austronesian_royalty_legwear # austronesian_high_nobility_legwear
+                accessory = male_legwear_secular_java_cfp_common_01
+                range = { 0 1 } # For the randomness to work correctly
+            }
+            accessory = {
+                mode = add
+                gene = special_legwear
+                template = special_legwear_shoe
+                range = { 0 1 } # For the randomness to work correctly
+            }
+        }
+        outfit_tags = { mena_war_legwear }
+        weight = {
+            base = 0
+            modifier = {
+                add = 50
+                portrait_armor_generic_trigger = yes
+                OR = {
+                    portrait_commoner_armor_trigger = {
+                        CULTURE_INPUT = austronesian
+                    }
+                    portrait_low_nobles_armor_trigger = {
+                        CULTURE_INPUT = austronesian
+                    }
+                }
+            }
+            modifier = {
+                add = 21        # So priests who are actively serving in a raised army as a commander or knight wear armor instead of priest robes
+                OR = {
+                    portrait_commoner_armor_in_army_trigger = {
+                        CULTURE_INPUT = austronesian
+                    }
+                    portrait_low_nobles_armor_in_army_trigger = {
+                        CULTURE_INPUT = austronesian
+                    }
+                }
+            }
+        }
+    }
+
+    austronesian_war_legwear_high = {
         dna_modifiers = {
             accessory = {
                 mode = add
@@ -172,10 +217,15 @@
         weight = {
             base = 0
             modifier = {
-                add = 101
-                portrait_wear_armor_trigger = yes
-                OR = {
-                    portrait_austronesian_clothing_trigger = yes
+                add = 50
+                portrait_high_nobles_armor_trigger = {
+                    CULTURE_INPUT = austronesian
+                }
+            }
+            modifier = {
+                add = 21        # So priests who are actively serving in a raised army as a commander or knight wear armor instead of priest robes
+                portrait_high_nobles_armor_in_army_trigger = {
+                    CULTURE_INPUT = austronesian
                 }
             }
         }
