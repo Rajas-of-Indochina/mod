@@ -1319,18 +1319,22 @@ minorities.4001 = {
 					desc = recruited_local_specialist_desc
 				}
 			}
-			remove_short_term_gold = {
-				value = medium_gold_value
-				if = {
-					limit = {
-						OR = {
-							has_government = anarchist_government
-							has_realm_law = cultural_minority_status_1
-						}
+
+			if = {
+				limit = {
+					OR = {
+						has_government = anarchist_government
+						has_realm_law = cultural_minority_status_1
 					}
-					multiply = 0.5
 				}
+				remove_short_term_gold = tiny_gold_value
+				add_prestige = minor_prestige_loss
 			}
+			else = {
+				remove_short_term_gold = minor_gold_value
+				add_prestige = medium_prestige_loss
+			}
+
 			send_interface_message = {
 				title = minorities.4001.arrival
 				desc = minorities.4001.arrival_desc

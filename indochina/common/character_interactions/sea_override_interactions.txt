@@ -38,6 +38,15 @@ incite_revolts_interaction = {
 	is_shown = {
 		NOT = { scope:recipient = scope:actor }
 		OR = {
+			scope:actor = {
+				is_landless_adventurer = yes
+				OR = {
+					any_claim = {
+						holder = scope:recipient
+					}
+					has_relation_rival = scope:recipient
+				}
+			}
 			AND = {
 				has_dlc_feature = the_fate_of_iberia
 				# Only available during Opportunity, Hostility and Tension phases
@@ -258,6 +267,7 @@ incite_revolts_interaction = {
 
 					hidden_effect = {
 						send_interface_toast = {
+							type = event_toast_effect_bad
 							title = incite_revolts_interaction_result.tt
 							left_icon = scope:chosen_county
 							right_icon = scope:recipient
@@ -326,6 +336,7 @@ incite_revolts_interaction = {
 
 					hidden_effect = {
 						send_interface_toast = {
+							type = event_toast_effect_good
 							title = incite_revolts_interaction_result.tt
 							left_icon = scope:chosen_county
 
@@ -358,7 +369,23 @@ incite_revolts_interaction = {
 			}
 		}
 
-		# TO DO POLISH: add a chance to be discovered depending on target's intrigue: leads to opinion loss and progress towards Rivalry
+		# for landless adventurers, add the county to a variable list to unlock a unique cb
+		scope:actor = {
+			if = {
+				limit = {
+					government_has_flag = government_is_landless_adventurer
+				}
+				laamp_rewards_apply_criminal_xp_effect = {
+					TRACK = bandit
+					XP_MIN = gallowsbait_xp_minor_gain
+					XP_MAX = gallowsbait_xp_medium_gain
+				}
+				add_to_variable_list = {
+					name = war_supported_counties_list
+					target = scope:chosen_county
+				}
+			}
+		}
 
 		# If we're a clan this interaction affects unity
 		add_clan_unity_interaction_effect = {
@@ -876,311 +903,9 @@ claim_throne_interaction = {
 	}
 }
 
-feudalize_tribal_holding_interaction = {
-	category = interaction_category_uncategorized
-	hidden = yes
-	special_interaction = feudalize_tribal_holding
-
-	desc = feudalize_tribal_holding_interaction_desc
-
-	target_type = title
-	target_filter = actor_domain_titles
-
-	auto_accept = yes
-
-	is_shown = {
-		scope:actor = {
-			this = scope:recipient
-			NOT = { government_has_flag = government_is_tribal }
-		}
-	}
-
-	can_be_picked_title = {
-		scope:target = {
-			holder = scope:actor
-			is_capital_barony = no # we'll use the county in that case
-			trigger_if = {
-				limit = { tier <= tier_county }
-				title_province = {
-					has_holding_type = tribal_holding
-				}
-			}
-			trigger_else = {
-				custom_description = {
-					text = "feudalize_tribal_holding_interaction_title_not_county_or_below"
-					always = no
-				}
-			}
-		}
-	}
-
-	has_valid_target_showing_failures_only = {
-		scope:target = {
-			trigger_if = {
-				limit = { tier <= tier_county }
-				title_province = {
-					barony_controller = scope:actor
-					has_ongoing_construction = no
-				}
-			}
-		}
-	}
-
-	cost = {
-		gold = {
-			scope:actor = {
-				add = {
-					value = scope:target.feudalize_tribal_holding_interaction_cost
-					desc = BASE
-				}
-				if = {
-					limit = { # More expensive for admin to make barbarians civilized...
-						government_has_flag = government_is_administrative
-					}
-					add = {
-						value = scope:target.feudalize_tribal_holding_interaction_cost
-						multiply = 0.25
-						desc = has_admin_government
-					}
-					if = {
-						limit = { # Admin get a bonus for high bureaucracy levels
-							OR = {
-								has_realm_law = imperial_bureaucracy_2
-								has_realm_law = imperial_bureaucracy_3
-							}
-						}
-						subtract = {
-							value = scope:target.feudalize_tribal_holding_interaction_cost
-							multiply = {
-								value = 0.1
-								if = {
-									limit = {
-										has_realm_law = imperial_bureaucracy_3
-									}
-									add = 0.15
-								}
-							}
-							desc = imperial_bureaucracy
-						}
-					}
-				}
-			}
-		}
-	}
-
-	on_accept = {
-		scope:actor = {
-			send_interface_toast = {
-				type = event_toast_effect_good
-				title = feudalize_tribal_holding_interaction_notification
-
-				right_icon = scope:actor
-
-				if = {
-					limit = { exists = scope:target.title_province }
-					scope:target.title_province = {
-						set_holding_type = castle_holding
-					}
-				}
-			}
-		}
-	}
-
-	ai_will_do = {
-		base = 1500
-	}
-}
-
-support_feudalize_tribal_holding_interaction = {
-	category = interaction_category_vassal
-	icon = request_funding_interaction
-
-	desc = support_feudalize_tribal_holding_interaction_desc
-
-	target_type = title
-	target_filter = recipient_domain_titles
-
-	auto_accept = yes
-
-	is_shown = {
-		scope:actor = {
-			NOT = { government_has_flag = government_is_tribal }
-		}
-		scope:recipient = {
-			target_is_liege_or_above = scope:actor
-			NOT = { government_has_flag = government_is_tribal }
-			NOT = { this = scope:actor }
-			any_held_title = {
-				tier <= tier_county
-				title_province = {
-					has_holding_type = tribal_holding
-				}
-			}
-		}
-	}
-
-	can_be_picked_title = {
-		scope:target = {
-			is_capital_barony = no # we'll use the county in that case
-			
-			trigger_if = {
-				limit = { tier <= tier_county }
-				title_province = {
-					barony_controller = scope:recipient
-					has_ongoing_construction = no
-				}
-			}
-		}
-	}
-
-	has_valid_target_showing_failures_only = {
-		scope:target = {
-			trigger_if = {
-				limit = { tier <= tier_county }
-				title_province = {
-					has_holding_type = tribal_holding
-				}
-			}
-			trigger_else = {
-				custom_description = {
-					text = "feudalize_tribal_holding_interaction_title_not_county_or_below"
-					always = no
-				}
-			}
-		}
-	}
-
-	cost = {
-		gold = {
-			scope:actor = {
-				add = {
-					value = scope:target.feudalize_tribal_holding_interaction_cost
-					desc = BASE
-				}
-				if = {
-					limit = { # More expensive for admin to make these barbarians civilized...
-						government_has_flag = government_is_administrative
-					}
-					add = {
-						value = scope:target.feudalize_tribal_holding_interaction_cost
-						multiply = 0.25
-						desc = has_admin_government
-					}
-					if = {
-						limit = { # Admin get a bonus for high bureaucracy levels
-							OR = {
-								has_realm_law = imperial_bureaucracy_2
-								has_realm_law = imperial_bureaucracy_3
-							}
-						}
-						subtract = {
-							value = scope:target.feudalize_tribal_holding_interaction_cost
-							multiply = {
-								value = 0.1
-								if = {
-									limit = {
-										has_realm_law = imperial_bureaucracy_3
-									}
-									add = 0.15
-								}
-							}
-							desc = imperial_bureaucracy
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	is_highlighted = {
-		# Highlight the interaction if we have the gold to spare
-		scope:actor = {
-			gold >= {
-				value = scope:target.feudalize_tribal_holding_interaction_cost
-				if = {
-					limit = { # More expensive for admin to convert these... Barbarians...
-						government_has_flag = government_is_administrative
-					}
-					multiply = {
-						value = 1.25
-						desc = has_admin_government
-					}
-				}
-			}
-		}
-	}
-
-	on_accept = {
-		scope:recipient = {
-			# Add some opinion to make it worthwhile
-			add_opinion = {
-				target = scope:actor
-				modifier = grateful_opinion
-				opinion = 15
-			}
-			
-			# Notify actor and recipient
-			scope:actor = {
-				send_interface_toast = {
-					type = event_toast_effect_good
-					title = feudalize_tribal_holding_interaction_notification
-
-					left_icon = scope:actor
-					right_icon = scope:target
-
-					if = {
-						limit = { exists = scope:target.title_province }
-						scope:target.title_province = {
-							set_holding_type = castle_holding
-						}
-					}
-				}
-			}
-		}
-		scope:actor = {
-			# If you are admin, you get some influence for your efforts
-			if = {
-				limit = { government_has_flag = government_is_administrative }
-				change_influence = medium_influence_gain
-			}
-		}
-	}
-	
-	# The AI doesn't check this very often - So if they have more important expenses, they will put their gold to better use first.
-	ai_frequency = 72
-	
-	ai_targets = {
-		ai_recipients = vassals
-		max = 10
-	}
-	
-	ai_potential = {
-		# Some basic triggers
-		is_at_war = no
-		is_adult = yes
-		# Warring AI don't do this - They want to spend their gold on war!
-		ai_has_warlike_personality = no
-		ai_has_conqueror_personality = no
-	}
-
-	ai_will_do = {
-		base = 25
-		modifier = {
-			scope:actor = { ai_has_economical_boom_personality = yes }
-			add = 50
-		}
-		# The AI only does this if they have plenty of gold to spare
-		modifier = {
-			scope:actor.gold <= { value = scope:target.feudalize_tribal_holding_interaction_cost multiply = 4 }
-			factor = 0
-		}
-	}
-}
-
 # AI ONLY - Interaction is referenced in code, please don't rename it used by AI from code
 support_candidacy_interaction = {
 	icon = support_candidacy
-	category = interaction_category_admin
 	common_interaction = yes
 	hidden = yes
 
@@ -1202,7 +927,10 @@ support_candidacy_interaction = {
 			tier >= tier_duchy
 			exists = holder
 			is_noble_family_title = no
-			holder.top_liege = scope:recipient
+			holder = {
+				top_liege = scope:recipient
+				has_realm_law_flag = appointment_type_succession
+			}
 		}
 	}
 
@@ -1219,9 +947,97 @@ support_candidacy_interaction = {
 	}
 
 	is_valid_showing_failures_only = {
-		any_valid_title_to_grant_trigger = {
-			CANDIDATE = scope:secondary_recipient
-			TOP_LIEGE = scope:recipient
+		scope:secondary_recipient ?= {
+			# This is broken out from any_valid_title_to_grant_trigger because of performance reasons
+			# When realms get really large, the AI needs a fixed pool of characters to promote
+			# Otherwise performance tanks significantly in the form of 'stutters'or smaller freezes
+			trigger_if = { # First, if the realm is enormous, restrict the candidate pool to the most immediate of family members
+				limit = {
+					scope:actor.top_liege.realm_size >= 250
+					NOR = {
+						this = scope:actor
+						scope:actor.primary_heir ?= this
+						scope:actor.house.house_head ?= this
+						is_close_family_of = scope:actor
+					}
+				}
+				static_group_filter = {
+					group = ai_filter
+					match = {
+						value = 1
+						subtract = {
+							add = scope:actor.top_liege.realm_size
+							multiply = 0.001
+							multiply = 3
+							min = 0.1
+							max = 0.9
+						}
+					}
+				}
+			}
+			trigger_else_if = { # Otherwise, go for close + extended family
+				limit = {
+					scope:actor.top_liege.realm_size >= 150
+					NOR = {
+						this = scope:actor
+						scope:actor.primary_heir ?= this
+						scope:actor.house.house_head ?= this
+						is_close_or_extended_family_of = scope:actor
+					}
+				}
+				static_group_filter = {
+					group = ai_filter
+					match = {
+						value = 1
+						subtract = {
+							add = scope:actor.top_liege.realm_size
+							multiply = 0.001
+							multiply = 3
+							min = 0.1
+							max = 0.9
+						}
+					}
+				}
+			}
+			trigger_else = {
+				always = yes
+			}
+			trigger_if = { # If the realm is large enough, the AI starts ignoring counties in their support
+				limit = {
+					scope:actor.top_liege.realm_size >= 150
+				}
+				save_temporary_scope_as = candidate_temp
+				custom_tooltip = {
+					text = support_candidacy_can_appoint_for_title_tt
+					scope:recipient.primary_title = {
+						any_in_de_jure_hierarchy = {
+							continue = {
+								tier > tier_duchy
+								tier <= tier_county
+							}
+
+							save_temporary_scope_as = title_temp
+							scope:candidate_temp = { can_appoint_for_title = scope:title_temp }
+						}
+					}
+				}
+			}
+			trigger_else = {
+				save_temporary_scope_as = candidate_temp
+				custom_tooltip = {
+					text = support_candidacy_can_appoint_for_title_tt
+					scope:recipient.primary_title = {
+						any_in_de_jure_hierarchy = {
+							continue = {
+								tier > tier_duchy
+							}
+
+							save_temporary_scope_as = title_temp
+							scope:candidate_temp = { can_appoint_for_title = scope:title_temp }
+						}
+					}
+				}
+			}
 		}
 		scope:actor = {
 			NOT = { is_at_war_with = scope:recipient }
@@ -1492,9 +1308,8 @@ support_candidacy_interaction = {
 		# No one promoting... ripe for the taking
 		modifier = {
 			scope:target = {
-				OR = {
-					has_title_law = acclamation_succession_law
-					has_title_law = appointment_succession_law
+				holder = {
+					has_realm_law_flag = appointment_type_succession
 				}
 				NOT = {
 					any_title_heir = {
@@ -1573,7 +1388,7 @@ support_candidacy_interaction = {
 		modifier = {
 			exists = scope:recipient.capital_province # Make sure the top liege has a capital
 			scope:target = {
-				title_capital_county ?= {
+				title_capital_county = {
 					squared_distance = {
 						target = scope:recipient.capital_province
 						value <= 130000
@@ -1599,9 +1414,8 @@ support_candidacy_interaction = {
 		# Promote only one house member for each title
 		modifier = {
 			scope:target = {
-				OR = {
-					has_title_law = acclamation_succession_law
-					has_title_law = appointment_succession_law
+				holder = {
+					has_realm_law_flag = appointment_type_succession
 				}
 				any_title_heir = {
 					exists = house

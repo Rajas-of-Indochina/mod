@@ -248,7 +248,6 @@ recruit_cultural_expert_decision = {
 
 	minimum_cost = {
 		gold = {
-			value = medium_gold_value
 			if = {
 				limit = {
 					OR = {
@@ -256,7 +255,24 @@ recruit_cultural_expert_decision = {
 						has_realm_law = cultural_minority_status_1
 					}
 				}
-				multiply = 0.5
+				value = tiny_gold_value
+			}
+			else = {
+				value = minor_gold_value
+			}
+		}
+		prestige = {
+			if = {
+				limit = {
+					OR = {
+						has_government = anarchist_government
+						has_realm_law = cultural_minority_status_1
+					}
+				}
+				value = minor_prestige_value
+			}
+			else = {
+				value = medium_prestige_loss
 			}
 		}
 	}
