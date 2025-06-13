@@ -1,0 +1,574 @@
+﻿namespace = alevi
+
+#TITLE SAYS ALEVI BUT WILL ALSO BE USED FOR BOLGHAR EVENTS
+
+alevi.0002 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				title:c_kyzistra = {
+					OR = {
+						culture = { 
+							has_cultural_pillar = language_turkic 
+						}
+						culture = { has_cultural_pillar = heritage_iranian }
+					}
+				}
+			}
+			title:c_kyzistra = { save_scope_as = province_alevi }
+		}
+		else_if = {
+			limit = {
+				title:c_cappadocia = {
+					OR = {
+						culture = { 
+							has_cultural_pillar = language_turkic 
+						}
+						culture = { has_cultural_pillar = heritage_iranian }				
+					}
+				}
+			}
+			title:c_cappadocia = { save_scope_as = province_alevi }
+		}
+		else_if = {
+			limit = {
+				title:c_kaisereia = {
+					OR = {
+						culture = { 
+							has_cultural_pillar = language_turkic 
+						}
+						culture = { has_cultural_pillar = heritage_iranian }				
+					}
+				}
+			}
+			title:c_kaisereia = { save_scope_as = province_alevi }
+		}
+		else_if = {
+			limit = {
+				title:c_charsianon = {
+					OR = {
+						culture = { has_cultural_pillar = heritage_iranian }
+						culture = { 
+							has_cultural_pillar = language_turkic 
+						}	
+					}
+				}
+			}
+			title:c_charsianon = { save_scope_as = province_alevi }
+		}
+		else = {
+			title:c_nishapur = { save_scope_as = province_alevi }
+		}
+		create_character = {
+			template = ROA_alevi_religious_leader_character
+			random_traits = no
+			save_scope_as = new_alevi
+		}
+		character:33922= {
+			save_scope_as = prophet_muhammad_roa
+		} 
+		character:ahmad_yasawi= {
+			save_scope_as = ahmad_yasawi_roa
+		} 
+		character:aslanbab= {
+			save_scope_as = aslanbab
+		} 
+		character:persian_scholars_3= {
+			save_scope_as = persian_scholars_3
+		} 		
+		scope:new_alevi = {
+			get_title = title:d_alevi
+		give_nickname = ROA_nick_haji_bektash_veli
+	add_trait_xp = {
+		trait = lifestyle_mystic
+		value = 100
+	}		
+		}
+		scope:province_alevi = {
+			set_county_faith = faith:alevi
+			every_neighboring_county = {
+				limit = {					
+					NOT = { faith = faith:alevi }
+					OR = {
+						culture = culture:oghuz
+						culture = culture:turkmen
+						culture = {
+							any_parent_culture_or_above = {
+								culture = culture:oghuz
+							}
+						}
+						culture = {
+							any_parent_culture_or_above = {
+								culture = culture:turkmen
+							}
+						}
+					}
+				}
+				random = {
+					chance = 30
+					set_county_faith = faith:alevi
+					holder = {
+						every_courtier_or_guest = {
+							limit = {
+								is_lowborn = yes
+							}
+							random = {
+								chance = 20
+								set_character_faith = faith:alevi
+							}
+						}
+					}
+					random_neighboring_county = {
+						limit = {
+							culture = { 
+								has_cultural_pillar = language_turkic 
+							}
+						}
+						set_county_faith = faith:alevi
+						holder = {
+							every_courtier_or_guest = {
+								limit = {
+									is_lowborn = yes
+								}
+								random = {
+									chance = 20
+									set_character_faith = faith:alevi
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+				random_county_in_region = {
+					region = world_central_asia 
+				
+					if = {
+						limit = {
+							culture = { 
+								has_cultural_pillar = language_turkic 
+							}
+							religion = religion:islam_religion				
+						}
+					set_county_faith = faith:alevi
+					}
+					else_if = {
+						random_county_in_region = {
+							region = world_khorasan
+						
+							if = {
+								limit = {
+									culture = { 
+										has_cultural_pillar = language_turkic 
+									}
+									religion = religion:islam_religion				
+								}
+							set_county_faith = faith:alevi
+							}
+						}						
+					}
+				}
+		every_ruler = {
+						limit = {
+							OR = {
+								any_held_title = {
+									tier = tier_county
+									any_county_province = {
+										OR = {
+											geographical_region = world_middle_east
+											geographical_region = world_central_asia
+											geographical_region = world_persian_empire
+											geographical_region = world_asia_minor
+										}
+									}
+								}								
+								AND = {
+						religion = religion:islam_religion
+							culture = { 
+								has_cultural_pillar = language_turkic 
+							}
+						}
+						}
+						}
+		trigger_event = alevi.0003
+		}
+	}
+
+}
+
+alevi.0003 = {
+	type = character_event
+	title = alevi.0003.t
+	desc = alevi.0003.desc
+	theme = learning
+
+	right_portrait = {
+		character = scope:new_alevi
+		animation = chaplain 
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Ok
+		name = alevi.0003.a
+		ai_chance = {
+			base = 100
+		}
+	}
+	
+	option = { # Ok
+		name = alevi.0003.b
+		trigger = {
+			OR = {
+				is_ai = no	
+			}
+		}
+		set_character_faith_with_conversion = faith:alevi
+	}
+
+}
+
+alevi.0004 = {
+	type = character_event
+	title = alevi.0004.t
+	desc = alevi.0004.desc
+
+	theme = realm
+
+	immediate = {
+		create_character = {
+			template = muslim_bolghar_envoy_character
+			random_traits = no
+			save_scope_as = muslim_bolghar_envoy
+		}
+		trigger_event = {}
+	}
+	
+	left_portrait = { 
+		character = root
+		animation = throne_room_ruler
+	}
+	right_portrait = { 
+		character = scope:muslim_bolghar_envoy
+		animation = throne_room_bow_1
+	}
+
+	option = {
+		name = alevi.0004.a
+
+		trigger_event = { 	
+			id = alevi.0005
+			delayed = yes
+		}
+		gold = 50
+	}
+}
+
+alevi.0005 = {
+	type = character_event
+	title = alevi.0005.t
+	desc = alevi.0005.desc
+
+	theme = realm
+	left_portrait = { 
+		character = root
+		animation = boredom
+	}
+	right_portrait = { 
+		character = scope:muslim_bolghar_envoy
+		animation = throne_room_bow_2
+	}
+
+	immediate = {
+
+	}
+
+	option = {
+		name = alevi.0005.a
+
+		trigger_event = { 	
+			id = alevi.0006
+			delayed = yes
+		}
+	}
+}
+
+alevi.0006 = {
+	type = character_event
+	title = alevi.0006.t
+	desc = alevi.0006.desc
+
+	theme = realm
+	left_portrait = { 
+		character = root
+		animation = admiration
+	}
+	right_portrait = { 
+		character = scope:muslim_bolghar_envoy
+		animation = throne_room_bow_1
+	}
+
+	immediate = {
+		
+	}
+
+	option = {
+		name = alevi.0006.a
+
+		trigger_event = { 	
+			id = alevi.0007
+			delayed = yes
+		}
+	}
+
+	option = {
+		name = alevi.0006.b
+	}
+}
+
+alevi.0007 = {
+	type = character_event
+	title = alevi.0007.t
+	desc = alevi.0007.desc
+
+	theme = realm
+	left_portrait = { 
+		character = root
+		animation = admiration
+	}
+	right_portrait = { 
+		character = scope:muslim_bolghar_envoy
+		animation = ecstasy
+	}
+
+	immediate = {
+		
+	}
+
+	option = {
+		name = alevi.0007.a
+
+		set_character_faith_with_conversion = faith:ashari
+		capital_county = {
+			change_development_level = 1
+		}
+		spawn_army = {
+			name = event_troop_default_name
+			levies = 300
+			men_at_arms = {
+				type = horse_archers
+				stacks = 2
+			}
+			location = root.capital_province
+			inheritable = yes
+		}
+		add_courtier = scope:muslim_bolghar_envoy
+		assign_council_task = {
+			council_task = council_task_court_chaplain
+			target = scope:muslim_bolghar_envoy
+			fire_on_actions = [yes]
+		}
+	}
+}
+
+alevi.0008 = {
+	hidden = yes
+
+	immediate = {
+		scope:muslim_bolghar_envoy = {
+			learn_language_of_culture = culture:bolghar
+		}			
+	}
+}
+
+alevi.0009 = {
+	type = character_event
+	title = alevi.0009.t
+	desc = alevi.0009.desc
+
+	theme = realm
+	left_portrait = { 
+		character = root
+		animation = admiration
+	}
+
+	immediate = {
+		
+	}
+
+	option = {
+		name = alevi.0009.a
+
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:bolghar_islam
+		}
+		trigger_event = { 	
+		id = alevi.0004
+		months = 2 
+	}
+	}
+}
+
+alevi.0010 = {
+	type = character_event
+	title = alevi.0010.t
+	desc = alevi.0010.desc
+
+	theme = byzantine
+	right_portrait = { 
+		character = root
+		animation = celebrate_sword
+	}
+		override_background = { reference = ep3_constantinople}
+
+	immediate = {
+		play_music_cue = sea_mood_turkic_track_13
+	}
+
+	option = {
+		name = alevi.0010.a
+
+		give_nickname = ROA_nick_the_fatih
+		add_trait = conqueror
+		add_trait = saint
+		add_martial_skill = 4
+		add_stewardship_skill = 1
+		add_diplomacy_skill = 1
+		add_prowess_skill = 1
+		spawn_army = {
+			levies = 900
+			men_at_arms = {
+				type = light_horsemen
+				stacks = 1
+			}
+			location = root.capital_province
+			uses_supply = yes
+			inheritable = no
+			name = event_troop_default_name
+		}
+		faith = {
+			change_fervor = {
+				value = medium_fervor_gain
+			}
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:become_fatih_decision
+		}			
+	}
+}
+
+alevi.0011 = {
+	type = character_event
+	title = alevi.0011.t
+	desc = alevi.0011.desc
+
+	theme = byzantine
+	right_portrait = { 
+		character = root
+		animation = admiration
+	}
+	left_portrait = { 
+		character = scope:scoped_fatih
+		animation = celebrate_sword
+	}	
+	override_background = { reference = ep3_constantinople}
+
+	immediate = {
+		play_music_cue = sea_mood_turkic_track_13
+	}
+
+	option = {
+		name = alevi.0011.a
+
+		add_piety = 10
+	}
+}
+
+alevi.0012 = {
+	type = character_event
+	title = alevi.0012.t
+	desc = alevi.0012.desc
+
+	theme = byzantine
+	right_portrait = { 
+		character = root
+		animation = shock
+	}
+	left_portrait = { 
+		character = scope:scoped_fatih
+		animation = celebrate_sword
+	}
+
+	override_background = { reference = ep3_constantinople}
+
+	immediate = {
+		play_music_cue = "mx_cue_negative"				
+	}
+
+	option = {
+		name = alevi.0012.a
+	
+	}
+}
+
+alevi.0013 = {
+	type = character_event
+	title = alevi.0013.t
+	desc = alevi.0013.desc
+
+	theme = byzantine
+	right_portrait = { 
+		character = root
+		animation = thinking
+	}
+	left_portrait = { 
+		character = scope:scoped_fatih
+		animation = celebrate_sword
+	}
+
+	override_background = { reference = ep3_constantinople}
+
+	immediate = {
+	
+	}
+
+	option = {
+		name = alevi.0013.a
+	
+	}
+}
+
+alevi.0014 = {
+	type = character_event
+	title = alevi.0014.t
+	desc = alevi.0014.desc
+
+	theme = byzantine
+	right_portrait = { 
+		character = root
+		animation = admiration
+	}
+	left_portrait = { 
+		character = scope:scoped_fatih
+		animation = celebrate_sword
+	}	
+	override_background = { reference = ep3_constantinople}
+
+	immediate = {
+		play_music_cue = sea_mood_turkic_track_13	
+	}
+
+	option = {
+		name = alevi.0014.a
+
+		add_piety = 10
+	}
+}
+
