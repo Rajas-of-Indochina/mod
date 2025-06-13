@@ -393,3 +393,59 @@ on_yearly_spawn_roa_historical_characters = {
 		}
 	}
 }
+
+on_yearly_alevi_check = { 
+	effect = {
+	if = {
+		limit = {
+		NOT = { has_global_variable = alevi_spawned_flag }
+		OR = {
+			any_county_in_region = {
+				region = world_asia_minor
+				culture = { 
+					has_cultural_pillar = language_turkic 
+				}
+				religion = religion:islam_religion				
+			}
+}
+}
+title:c_byzantion.holder = {
+	trigger_event = {
+		id = alevi.0002
+		years = { 30 50 } #change to 30-50 when all testing is done
+	}
+					}
+
+					set_global_variable = {
+						name = alevi_spawned_flag
+						value = yes
+					}
+}
+}
+}
+
+
+on_yearly_bolghar_check = { 
+	effect = {
+	if = {
+		limit = {
+		NOT = { has_global_variable = bolghar_islam_flag }
+		title:c_bolghar.holder = {
+			is_independent_ruler = yes
+			is_adult = yes
+			is_at_war = no
+		culture = culture:bolghar
+		NOT = { religion = religion:islam_religion }
+							}
+}
+title:c_bolghar.holder = {
+	trigger_event = {
+		id = alevi.0004
+		years = { 1 5 }
+	}
+					}
+
+	set_global_variable = bolghar_islam_flag
+}
+}
+}
