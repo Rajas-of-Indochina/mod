@@ -40,7 +40,7 @@ armenian_struggle_declare_stance = {
 		item = {
 			value = stance_pro_armenian
 			is_valid = { NOT = { has_trait = pro_armenian } }
-			current_description = stance_pro_armenian_desc
+			current_description = stance_pro_armenian_tooltip
 			localization = stance_pro_armenian_name
 			icon = "gfx/interface/icons/traits/peasant_leader.dds"
 			ai_chance = {
@@ -85,16 +85,16 @@ armenian_struggle_declare_stance = {
 						any_sub_realm_county = {
 							armenian_struggle_is_local_culture_trigger = { CULTURE = this.culture }
 						}
-						add = 10
 					}
+					add = 10
 				}
 				if = {
 					limit = {
 						any_sub_realm_county = {
 							armenian_struggle_is_local_faith_trigger = { FAITH = this.faith }
 						}
-						add = 10
 					}
+					add = 10
 				}
 				if = {
 					limit = {
@@ -160,7 +160,7 @@ armenian_struggle_declare_stance = {
 		item = {
 			value = stance_pro_roman
 			is_valid = { NOT = { has_trait = pro_roman } }
-			current_description = stance_pro_roman_desc
+			current_description = stance_pro_roman_tooltip
 			localization = stance_pro_roman_name
 			icon = "gfx/interface/icons/traits/augustus.dds"
 			ai_chance = {
@@ -195,16 +195,16 @@ armenian_struggle_declare_stance = {
 						any_sub_realm_county = {
 							armenian_struggle_is_roman_culture_trigger = { CULTURE = this.culture }
 						}
-						add = 10
 					}
+					add = 10
 				}
 				if = {
 					limit = {
 						any_sub_realm_county = {
 							armenian_struggle_is_roman_faith_trigger = { FAITH = this.faith }
 						}
-						add = 10
 					}
+					add = 10
 				}
 				if = {
 					limit = {
@@ -270,7 +270,7 @@ armenian_struggle_declare_stance = {
 		item = {
 			value = stance_pro_persian
 			is_valid = { NOT = { has_trait = pro_persian } }
-			current_description = stance_pro_persian_desc
+			current_description = stance_pro_persian_tooltip
 			localization = stance_pro_persian_name
 			icon = "gfx/interface/icons/traits/fp3_struggle_supporter.dds"
 			ai_chance = {
@@ -305,16 +305,16 @@ armenian_struggle_declare_stance = {
 						any_sub_realm_county = {
 							armenian_struggle_is_persian_culture_trigger = { CULTURE = this.culture }
 						}
-						add = 10
 					}
+					add = 10
 				}
 				if = {
 					limit = {
 						any_sub_realm_county = {
 							armenian_struggle_is_persian_faith_trigger = { FAITH = this.faith }
 						}
-						add = 10
 					}
+					add = 10
 				}
 				if = {
 					limit = {
@@ -441,7 +441,7 @@ armenian_struggle_declare_stance = {
 				random_character_struggle = {
 					limit = { is_struggle_type = armenian_struggle }
 					if = {
-						limit = { highest_held_title_tier = tier_county }
+						limit = { prev = { highest_held_title_tier = tier_county } }
 						activate_tiered_struggle_catalyst = {
 							BASE_CATALYST = catalyst_pro_roman_stance
 							TIER = county
@@ -449,7 +449,7 @@ armenian_struggle_declare_stance = {
 						}
 					}
 					else_if = {
-						limit = { highest_held_title_tier = tier_duchy }
+						limit = { prev = { highest_held_title_tier = tier_duchy } }
 						activate_tiered_struggle_catalyst = {
 							BASE_CATALYST = catalyst_pro_roman_stance
 							TIER = duchy
@@ -457,7 +457,7 @@ armenian_struggle_declare_stance = {
 						}
 					}
 					else_if = {
-						limit = { highest_held_title_tier = tier_kingdom }
+						limit = { prev = { highest_held_title_tier = tier_kingdom } }
 						activate_tiered_struggle_catalyst = {
 							BASE_CATALYST = catalyst_pro_roman_stance
 							TIER = kingdom
@@ -465,7 +465,7 @@ armenian_struggle_declare_stance = {
 						}
 					}
 					else_if = {
-						limit = { highest_held_title_tier = tier_empire }
+						limit = { prev = { highest_held_title_tier = tier_empire } }
 						activate_tiered_struggle_catalyst = {
 							BASE_CATALYST = catalyst_pro_roman_stance
 							TIER = empire
@@ -559,9 +559,9 @@ armenian_struggle_ending_roman_rule = {
 	decision_group_type = major
 	title = armenian_struggle_ending_roman_rule_decision
 	picture = {
-		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+		reference = "gfx/interface/illustrations/decisions/ep3_cerimonial_decision.dds"
 	}
-	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/fp2_decision_hostility.dds"
+	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/ep3_cerimonial_decision.dds"
 	desc = armenian_struggle_ending_roman_rule_decision_desc
 	selection_tooltip = armenian_struggle_ending_roman_rule_decision_tooltip
 	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
@@ -643,9 +643,9 @@ armenian_struggle_ending_persian_rule = {
 	decision_group_type = major
 	title = armenian_struggle_ending_persian_rule_decision
 	picture = {
-		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_conciliation.dds"
 	}
-	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/fp2_decision_hostility.dds"
+	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/fp2_decision_conciliation.dds"
 	desc = armenian_struggle_ending_persian_rule_decision_desc
 	selection_tooltip = armenian_struggle_ending_persian_rule_decision_tooltip
 	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
@@ -663,14 +663,8 @@ armenian_struggle_ending_persian_rule = {
 				highest_held_title_tier >= tier_kingdom
 			}
 		}
-		custom_tooltip = {
-			text = perso_arabic_culture_tt # has_iranian_heritage_group
-			armenian_struggle_is_persian_culture_trigger = { CULTURE = root.culture }
-		}
-		custom_tooltip = {
-			text = perso_arabic_faith_tt
-			armenian_struggle_is_persian_faith_trigger = { FAITH = root.faith }
-		}
+		armenian_struggle_is_persian_culture_trigger = { CULTURE = root.culture }
+		armenian_struggle_is_persian_faith_trigger = { FAITH = root.faith }
 		legitimacy_level >= 4
 
 		# Control more than 50% of all counties in the Armenian Struggle Region
@@ -906,9 +900,9 @@ armenian_struggle_ending_armenian_confederation = {
 	decision_group_type = major
 	title = armenian_struggle_ending_confederation_decision
 	picture = {
-		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+		reference = "gfx/interface/illustrations/decisions/fp3/fp3_decision_foundation.dds"
 	}
-	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/fp2_decision_hostility.dds"
+	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/fp3_decision_foundation.dds"
 	desc = armenian_struggle_ending_confederation_decision_desc
 	selection_tooltip = armenian_struggle_ending_confederation_decision_tooltip
 	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
@@ -927,9 +921,9 @@ armenian_struggle_ending_armenian_confederation = {
 			AND = {
 				religion = religion:christianity_religion
 				NOT = {
-					faith = {religious_head_title = title:k_orthodox}
-					faith = {religious_head_title = title:k_papal_state}
-					faith = {religious_head_title = title:d_georgian_patriarchate}
+					faith = { religious_head_title = title:k_orthodox }
+					faith = { religious_head_title = title:k_papal_state }
+					faith = { religious_head_title = title:d_georgian_patriarchate }
 				}
 			}
 			AND = {
@@ -945,11 +939,9 @@ armenian_struggle_ending_armenian_confederation = {
 			any_involved_ruler = {
 				count > 5
 				is_independent_ruler = yes
-				hidden_trigger = {
-					primary_title = { is_mercenary_company = no }
-					primary_title = { is_holy_order = no }
-					NOT = { this = root }
-				}
+				primary_title = { is_mercenary_company = no }
+				primary_title = { is_holy_order = no }
+				NOT = { this = root }
 				has_trait = pro_armenian
 				is_allied_to = root
 			}
@@ -1123,9 +1115,9 @@ armenian_struggle_ending_armenian_stalemate = {
 	decision_group_type = major
 	title = armenian_struggle_ending_armenian_stalemate_decision
 	picture = {
-		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_compromise.dds"
 	}
-	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/fp2_decision_hostility.dds"
+	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/fp2_decision_compromise.dds"
 	desc = armenian_struggle_ending_armenian_stalemate_decision_desc
 	selection_tooltip = armenian_struggle_ending_armenian_stalemate_decision_tooltip
 	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
@@ -1209,9 +1201,9 @@ armenian_struggle_ending_complicity = {
 	decision_group_type = major
 	title = armenian_struggle_ending_complicity_decision
 	picture = {
-		reference = "gfx/interface/illustrations/decisions/fp2_decision_struggle_hostility.dds"
+		reference = "gfx/interface/illustrations/decisions/fp3/fp3_decision_strength.dds"
 	}
-	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/fp2_decision_hostility.dds"
+	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/fp3_decision_strength.dds"
 	desc = {
 		first_valid = {
 			triggered_desc = {
