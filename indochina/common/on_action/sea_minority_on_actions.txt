@@ -1,15 +1,8 @@
 ﻿
-three_year_playable_pulse = {
-	on_actions = {
-		delay = { days = { 30 330 } }
-		spawn_large_minority_characters
-	}
-}
-
 five_year_playable_pulse = {
 	on_actions = {
 		delay = { days = { 30 330 } }
-		spawn_small_minority_characters
+		spawn_minority_characters
 	}
 }
 
@@ -175,227 +168,257 @@ do_minority_faith_growth = {
 }
 
 # Root is a count+ character
-spawn_large_minority_characters = {
+spawn_minority_characters = {
 	trigger = {
 		exists = root
 		exists = root.capital_province
 		any_sub_realm_county = {
 			OR = {
-				county_has_large_minority_culture_trigger = yes
-				county_has_large_minority_faith_trigger = yes
+				county_has_minority_culture_trigger = yes
+				county_has_minority_faith_trigger = yes
 			}
 		}
 	}
 	effect = {
-		every_courtier = {
+		every_courtier_or_guest = {
 			culture = { add_to_temporary_list = represented_cultures }
 			faith = { add_to_temporary_list = represented_faiths }
 		}
 
-		every_sub_realm_county = {
+		### Get a culture-faith combo based on a minority faith
+		every_held_title = {
 			limit = {
+				tier = tier_county
+				county_has_minority_faith_trigger = yes
 				OR = {
-					county_has_large_minority_culture_trigger = yes
-					county_has_large_minority_faith_trigger = yes
+					any_in_list = {
+						variable = faith_minorities_small
+						NOT = { is_in_list = represented_faiths }
+						# Temporary, don't currently want to ask if Jews can/should be other cultures/faiths and they're generally covered by base game mechanics anyway
+						is_endogamous_faith_trigger = no
+					}
+					any_in_list = {
+						variable = faith_minorities_large
+						NOT = { is_in_list = represented_faiths }
+						is_endogamous_faith_trigger = no
+					}
 				}
 			}
 
-			if = {
-				limit = { county_has_large_minority_faith_trigger = yes }
-
-				# get a random minority faith
-				every_in_list = {
-					variable = faith_minorities_large
+			## First get an unrepresented minority faith
+			every_in_list = {
+				variable = faith_minorities_large
+				if = {
+					limit = {
+						NOR = { is_in_list = represented_faiths }
+						is_endogamous_faith_trigger = no
+					}
+					add_to_temporary_list = potential_faiths
 					add_to_temporary_list = potential_faiths
 				}
-
-				random_in_list = {
-					list = potential_faiths
-					save_temporary_scope_as = faith_to_spawn
-				}
-
+			}
+			every_in_list = {
+				variable = faith_minorities_small
 				if = {
-					limit = { county_has_large_minority_culture_trigger = yes }
-
-					# randomly get a minority culture or the majority
-					every_in_list = {
-						variable = culture_minorities_large
-						add_to_temporary_list = potential_cultures
+					limit = {
+						NOR = { is_in_list = represented_faiths }
+						is_endogamous_faith_trigger = no
 					}
-					culture = {
-						add_to_temporary_list = potential_cultures
-						add_to_temporary_list = potential_cultures
-					}
-
-					random_in_list = {
-						list = potential_cultures
-						save_temporary_scope_as = culture_to_spawn
-					}
-				}
-				else = {
-					# get the majority culture
-					culture = { save_temporary_scope_as = culture_to_spawn }
+					add_to_temporary_list = potential_faiths
 				}
 			}
-			else_if = {
-				limit = {
-					county_has_large_minority_culture_trigger = yes
-				}
 
-				# get a random minority culture and the majority faith
+			## Next get any present culture
+			culture = {
+				add_to_temporary_list = potential_cultures
+				add_to_temporary_list = potential_cultures
+				add_to_temporary_list = potential_cultures
+				add_to_temporary_list = potential_cultures
+			}
+			if = {
+				limit = { county_has_non_endogamous_large_minority_culture_trigger = yes }
 				every_in_list = {
 					variable = culture_minorities_large
 					add_to_temporary_list = potential_cultures
+					add_to_temporary_list = potential_cultures
 				}
-
-				random_in_list = {
-					list = potential_cultures
-					save_temporary_scope_as = culture_to_spawn
-				}
-
-				faith = { save_temporary_scope_as = faith_to_spawn }
 			}
-
 			if = {
-				limit = {
-					exists = scope:faith_to_spawn
-					exists = scope:culture_to_spawn
-					NAND = {
-						scope:faith_to_spawn = { is_in_list = represented_faiths }
-						scope:culture_to_spawn = { is_in_list = represented_cultures }
-					}
-				}
-
-				create_character = {
-					employer = root
-					age = { 18 50 }
-					gender_female_chance = 50
-					random_traits = yes
-					faith = scope:faith_to_spawn
-					culture = scope:culture_to_spawn
-				}
-
-				scope:faith_to_spawn = { add_to_temporary_list = represented_faiths }
-				scope:culture_to_spawn = { add_to_temporary_list = represented_cultures }
-			}
-
-			clear_variable_list = potential_cultures
-			clear_variable_list = potential_faiths
-			clear_saved_scope = faith_to_spawn
-			clear_saved_scope = culture_to_spawn
-		}
-	}
-}
-
-# Root is a count+ character
-spawn_small_minority_characters = {
-	trigger = {
-		exists = root
-		exists = root.capital_province
-		any_sub_realm_county = {
-			OR = {
-				county_has_small_minority_culture_trigger = yes
-				county_has_small_minority_faith_trigger = yes
-			}
-		}
-	}
-	effect = {
-		every_courtier = {
-			culture = { add_to_temporary_list = represented_cultures }
-			faith = { add_to_temporary_list = represented_faiths }
-		}
-
-		every_sub_realm_county = {
-			limit = {
-				OR = {
-					county_has_small_minority_culture_trigger = yes
-					county_has_small_minority_faith_trigger = yes
-				}
-			}
-
-			if = {
-				limit = { county_has_small_minority_faith_trigger = yes }
-
-				# get a random minority faith
-				every_in_list = {
-					variable = faith_minorities_small
-					add_to_temporary_list = potential_faiths
-				}
-
-				random_in_list = {
-					list = potential_faiths
-					save_temporary_scope_as = faith_to_spawn
-				}
-
-				if = {
-					limit = { county_has_small_minority_culture_trigger = yes }
-
-					# randomly get a minority culture or the majority
-					every_in_list = {
-						variable = culture_minorities_small
-						add_to_temporary_list = potential_cultures
-					}
-					culture = {
-						add_to_temporary_list = potential_cultures
-						add_to_temporary_list = potential_cultures
-					}
-
-					random_in_list = {
-						list = potential_cultures
-						save_temporary_scope_as = culture_to_spawn
-					}
-				}
-				else = {
-					# get the majority culture
-					culture = { save_temporary_scope_as = culture_to_spawn }
-				}
-			}
-			else_if = {
-				limit = {
-					county_has_small_minority_culture_trigger = yes
-				}
-
-				# get a random minority culture and the majority faith
+				limit = { county_has_non_endogamous_small_minority_culture_trigger = yes }
 				every_in_list = {
 					variable = culture_minorities_small
 					add_to_temporary_list = potential_cultures
 				}
+			}
+		}
 
-				random_in_list = {
-					list = potential_cultures
-					save_temporary_scope_as = culture_to_spawn
+		if = {
+			limit = {
+				list_size = { list = potential_cultures value > 0 }
+				list_size = { list = potential_faiths value > 0 }
+			}
+			random_in_list = {
+				list = potential_cultures
+				save_scope_as = culture_to_spawn_option_1
+			}
+			random_in_list = {
+				list = potential_faiths
+				save_scope_as = faith_to_spawn_option_1
+			}
+		}
+
+		clear_variable_list = potential_cultures
+		clear_variable_list = potential_faiths
+
+		### Next get a culture-faith combo based on a minority culture
+		every_held_title = {
+			limit = {
+				tier = tier_county
+				county_has_minority_culture_trigger = yes
+				OR = {
+					any_in_list = {
+						variable = culture_minorities_small
+						NOT = { is_in_list = represented_cultures }
+						# Temporary, don't currently want to ask if Jews can/should be other faiths/cultures and they're generally covered by base game mechanics anyway
+						is_endogamous_culture_trigger = no
+					}
+					any_in_list = {
+						variable = culture_minorities_large
+						NOT = { is_in_list = represented_cultures }
+						is_endogamous_culture_trigger = no
+					}
 				}
-
-				faith = { save_temporary_scope_as = faith_to_spawn }
 			}
 
-			if = {
-				limit = {
-					exists = scope:faith_to_spawn
-					exists = scope:culture_to_spawn
-					NAND = {
-						scope:faith_to_spawn = { is_in_list = represented_faiths }
-						scope:culture_to_spawn = { is_in_list = represented_cultures }
+			## First get an unrepresented minority culture
+			every_in_list = {
+				variable = culture_minorities_large
+				if = {
+					limit = {
+						NOR = { is_in_list = represented_cultures }
+						is_endogamous_culture_trigger = no
 					}
+					add_to_temporary_list = potential_cultures
+					add_to_temporary_list = potential_cultures
+				}
+			}
+			every_in_list = {
+				variable = culture_minorities_small
+				if = {
+					limit = {
+						NOR = { is_in_list = represented_cultures }
+						is_endogamous_culture_trigger = no
+					}
+					add_to_temporary_list = potential_cultures
+				}
+			}
+
+			## Next get any present faith
+			faith = {
+				add_to_temporary_list = potential_faiths
+				add_to_temporary_list = potential_faiths
+				add_to_temporary_list = potential_faiths
+				add_to_temporary_list = potential_faiths
+			}
+			if = {
+				limit = { county_has_non_endogamous_large_minority_faith_trigger = yes }
+				every_in_list = {
+					variable = faith_minorities_large
+					add_to_temporary_list = potential_faiths
+					add_to_temporary_list = potential_faiths
+				}
+			}
+			if = {
+				limit = { county_has_non_endogamous_small_minority_faith_trigger = yes }
+				every_in_list = {
+					variable = faith_minorities_small
+					add_to_temporary_list = potential_faiths
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				list_size = { list = potential_faiths value > 0 }
+				list_size = { list = potential_cultures value > 0 }
+			}
+			random_in_list = {
+				list = potential_faiths
+				save_scope_as = faith_to_spawn_option_2
+			}
+			random_in_list = {
+				list = potential_cultures
+				save_scope_as = culture_to_spawn_option_2
+			}
+		}
+
+		clear_variable_list = potential_faiths
+		clear_variable_list = potential_cultures
+
+		random_in_list = {
+			list = potential_cultures
+			save_scope_as = culture_to_spawn_option_2
+		}
+		random_in_list = {
+			list = potential_faiths
+			save_scope_as = faith_to_spawn_option_2
+		}
+
+		random_list = {
+			50 = {
+				trigger = {
+					exists = scope:culture_to_spawn_option_1
+					exists = scope:faith_to_spawn_option_1
 				}
 
 				create_character = {
-					employer = root
-					age = { 18 50 }
+					age = { 18 45 }
 					gender_female_chance = 50
 					random_traits = yes
-					faith = scope:faith_to_spawn
-					culture = scope:culture_to_spawn
+					faith = scope:faith_to_spawn_option_1
+					culture = scope:culture_to_spawn_option_1
+					save_scope_as = minority_courtier
 				}
 
-				scope:faith_to_spawn = { add_to_temporary_list = represented_faiths }
-				scope:culture_to_spawn = { add_to_temporary_list = represented_cultures }
+				add_visiting_courtier = scope:minority_courtier
+				send_interface_message = {
+					title = minor_decisions.0001.t
+					desc = minor_decisions.0001.desc
+					type = event_prowess_good_desc
+					left_icon = scope:minority_courtier
+				}
 			}
+			50 = {
+				trigger = {
+					exists = scope:culture_to_spawn_option_2
+					exists = scope:faith_to_spawn_option_2
+				}
 
-			clear_variable_list = potential_cultures
-			clear_variable_list = potential_faiths
-			clear_saved_scope = faith_to_spawn
-			clear_saved_scope = culture_to_spawn
+				create_character = {
+					age = { 18 45 }
+					gender_female_chance = 50
+					random_traits = yes
+					faith = scope:faith_to_spawn_option_2
+					culture = scope:culture_to_spawn_option_2
+					save_scope_as = minority_courtier
+				}
+
+				add_visiting_courtier = scope:minority_courtier
+				send_interface_message = {
+					title = minor_decisions.0001.t
+					desc = minor_decisions.0001.desc
+					type = event_prowess_good_desc
+					left_icon = scope:minority_courtier
+				}
+			}
 		}
+
+		clear_variable_list = potential_cultures
+		clear_variable_list = potential_faiths
+		clear_saved_scope = culture_to_spawn_option_1
+		clear_saved_scope = faith_to_spawn_option_1
+		clear_saved_scope = culture_to_spawn_option_2
+		clear_saved_scope = faith_to_spawn_option_2
 	}
 }
+

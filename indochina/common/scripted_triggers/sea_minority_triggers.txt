@@ -90,6 +90,76 @@ county_has_large_minority_culture_trigger = {
     }
 }
 
+# Faith or culture which should probably not be mixing with outside cultures/faiths (mainly Jewish)
+# Scoped from a faith or culture
+is_endogamous_faith_trigger = {
+	OR = {
+		religion = religion:judaism_religion
+	}
+}
+is_endogamous_culture_trigger = {
+	OR = {
+		has_cultural_pillar = heritage_israelite
+	}
+}
+
+county_has_non_endogamous_minority_culture_trigger = {
+	OR = {
+		county_has_non_endogamous_small_minority_culture_trigger = yes
+		county_has_non_endogamous_large_minority_culture_trigger = yes
+	}
+}
+county_has_non_endogamous_small_minority_culture_trigger = {
+	has_variable_list = culture_minorities_small
+	variable_list_size = {
+        name = culture_minorities_small
+        value > 0
+    }
+    any_in_list = {
+    	list = culture_minorities_small
+    	is_endogamous_culture_trigger = no
+    }
+}
+county_has_non_endogamous_large_minority_culture_trigger = {
+	has_variable_list = culture_minorities_large
+	variable_list_size = {
+        name = culture_minorities_large
+        value > 0
+    }
+    any_in_list = {
+    	list = culture_minorities_large
+    	is_endogamous_culture_trigger = no
+    }
+}
+
+county_has_non_endogamous_minority_faith_trigger = {
+	OR = {
+		county_has_non_endogamous_small_minority_faith_trigger = yes
+		county_has_non_endogamous_large_minority_faith_trigger = yes
+	}
+}
+county_has_non_endogamous_small_minority_faith_trigger = {
+	has_variable_list = faith_minorities_small
+	variable_list_size = {
+        name = faith_minorities_small
+        value > 0
+    }
+    any_in_list = {
+    	list = faith_minorities_small
+    	is_endogamous_faith_trigger = no
+    }
+}
+county_has_non_endogamous_large_minority_faith_trigger = {
+	has_variable_list = faith_minorities_large
+	variable_list_size = {
+        name = faith_minorities_large
+        value > 0
+    }
+    any_in_list = {
+    	list = faith_minorities_large
+    	is_endogamous_faith_trigger = no
+    }
+}
 
 # $TRIGGER$ = any scripted trigger (mind scopes!)
 county_has_large_culture_minority_with_trigger = {
