@@ -23,6 +23,7 @@ tradition_maritime_mercantilism = {
 	parameters = {
 		next_level_trade_ports = yes
 		maritime_mercantilism_coastal_holdings = yes
+		maritime_mercantilism_avaricious_bonus = yes
 	}
 	character_modifier = {
 		republic_government_vassal_opinion = 10
@@ -68,6 +69,16 @@ tradition_maritime_mercantilism = {
 				}
 			}
 
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_maritime_mercantilism }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
@@ -87,14 +98,14 @@ tradition_maritime_mercantilism = {
 			}
 			add = 50
 		}
-		if = { # Make stacking a bit less common
+		if = { # Make stacking a bit more common
 			limit = {
 				OR = {
 					culture_tradition:tradition_seafaring = { is_in_list = traits }
 					culture_tradition:tradition_fishermen = { is_in_list = traits }
 				}
 			}
-			multiply = 0.75
+			multiply = 2
 		}
 		if = {
 			limit = {
@@ -110,6 +121,17 @@ tradition_maritime_mercantilism = {
 				}
 			}
 			multiply = 0
+		}
+		else_if = {
+			limit = {
+				any_culture_county = {
+					percent >= 0.6
+					any_county_province = {
+						is_coastal = yes
+					}
+				}
+			}
+			multiply = 2
 		}
 	}
 }
@@ -133,6 +155,8 @@ tradition_loyal_soldiers = {
 		extra_learn_language_success_chance_vs_liege = yes
 		loyal_trait_more_common = yes
 		more_hostage_acceptance_for_vassals = yes
+		nomadic_loyal_soldiers_obedience = yes
+		loyal_soldiers_internal_yurt_unlock = yes
 	}
 	character_modifier = {
 		opinion_of_liege = 10
@@ -204,12 +228,22 @@ tradition_loyal_soldiers = {
 				}
 			}
 
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_loyal_soldiers }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
 
 	ai_will_do = {
-		value = 100
+		value = 200
 		if = {
 			limit = {
 				is_divergent_culture = no
@@ -235,6 +269,9 @@ tradition_horse_lords = {
 			}
 			has_cultural_parameter = heritage_group_altaic
 		}
+		NOT = {
+			has_dlc_feature = khans_of_the_steppe
+		}
 	}
 
 	can_pick = {
@@ -257,20 +294,19 @@ tradition_horse_lords = {
 		can_recruit_open_specialist = yes
 		unlock_horse_pastures_building = yes
 		steppe_hunt_success_chance = yes
+		unlock_voluntary_laampdom = yes
 	}
 
 	character_modifier = {
 		light_cavalry_damage_mult = 0.1
 		light_cavalry_screen_mult = 0.1
-		steppe_cancel_negative_supply = yes
 		supply_duration = 1
 		movement_speed = 0.1
 		character_travel_speed_mult = 0.2
 		character_travel_safety_mult = 0.2
-		steppe_travel_danger = steppe_high_danger_reduction
 		movement_speed_land_raiding = 0.3
-		hostile_county_attrition_raiding = -0.5
-
+		hostile_county_attrition_raiding = -0.25
+		provisions_use_mult = -0.25
 	}
 
 	cost = {
@@ -293,6 +329,16 @@ tradition_horse_lords = {
 				}
 			}
 
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_horse_lords }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+
 			multiply = tradition_replacement_cost_if_relevant
 			#if = {
 			#	limit = {
@@ -310,7 +356,7 @@ tradition_horse_lords = {
 	}
 
 	ai_will_do = {
-		value = 100
+		value = 400
 	}
 }
 
@@ -333,6 +379,14 @@ tradition_agrarian = {
 						terrain = floodplains
 						terrain = plains
 					}
+				}
+			}
+		}
+		custom_tooltip = {
+			text = cultrad_not_nomadic_government_type
+			scope:character = {
+				NOT = {
+					government_has_flag = government_is_nomadic
 				}
 			}
 		}
@@ -397,12 +451,22 @@ tradition_agrarian = {
 				}
 			}
 
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_agrarian }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
 
 	ai_will_do = {
-		value = 100
+		value = 400
 		if = {
 			limit = {
 				NOT = {
@@ -447,8 +511,12 @@ tradition_mountaineers = {
 		NOR = {
 			has_cultural_pillar = heritage_somalian
 			has_cultural_pillar = heritage_east_african
-			has_cultural_tradition = tradition_horn_mountain_skirmishing
+			this = culture:georgian
+			any_parent_culture_or_above = {
+				this = culture:georgian
+			}
 			has_cultural_tradition = tradition_caucasian_wolves
+			has_cultural_tradition = tradition_horn_mountain_skirmishing
 			has_cultural_tradition = tradition_caucasian_tenacity
 			has_cultural_tradition = tradition_heirs_of_illuminator
 		}
@@ -472,6 +540,8 @@ tradition_mountaineers = {
 		rough_terrain_expert_trait_more_common = yes
 		mountain_trait_bonuses = yes
 		can_recruit_mountain_specialist = yes
+		resistant_to_mountain_privation = yes
+		mountains_nomadic_cultrad_stationing_bonus = yes
 	}
 	character_modifier = {
 		mountains_travel_danger = mountains_low_danger_reduction
@@ -523,11 +593,21 @@ tradition_mountaineers = {
 				}
 			}
 
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_mountaineers }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
 	ai_will_do = {
-		value = 100
+		value = 200
 		if = {
 			limit = {
 				NOT = {
@@ -546,6 +626,38 @@ tradition_mountaineers = {
 				}
 			}
 			multiply = 0
+		}
+		else_if = {
+			limit = {
+				scope:character.culture ?= {
+					any_culture_county = {
+						percent > 0.6
+						any_county_province = {
+							OR = {
+								terrain = mountains
+								terrain = desert_mountains
+							}
+						}
+					}
+				}
+			}
+			multiply = 6
+		}
+		else_if = {
+			limit = {
+				scope:character.culture ?= {
+					any_culture_county = {
+						percent > 0.4
+						any_county_province = {
+							OR = {
+								terrain = mountains
+								terrain = desert_mountains
+							}
+						}
+					}
+				}
+			}
+			multiply = 2
 		}
 	}
 }
@@ -642,12 +754,22 @@ tradition_horn_mountain_skirmishing = {
 				}
 			}
 
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_horn_mountain_skirmishing }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
 
 	ai_will_do = {
-		value = 100
+		value = 400
 		if = {
 			limit = {
 				NOT = {
@@ -767,6 +889,16 @@ tradition_caucasian_wolves = {
 				}
 			}
 
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_caucasian_wolves }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
@@ -814,6 +946,10 @@ tradition_isolationist = {
 		courtiers_less_likely_to_leave_same_culture_court = yes
 		dislikes_marrying_outside_of_culture = yes
 		ai_doesnt_marry_outside_culture = yes
+		less_likely_to_culture_convert = yes
+		less_plague_spread_culture = yes
+		cultrad_unlocks_t3_strengthen_sentries = yes
+		cultrad_unlocks_t3_redouble_guards = yes
 	}
 	culture_modifier = {
 		cultural_acceptance_gain_mult = -0.35
@@ -880,6 +1016,16 @@ tradition_isolationist = {
 				add = {
 					value = traditionalist_discount
 					desc = traditionalist_discount_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_isolationist }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
 				}
 			}
 
@@ -1001,12 +1147,22 @@ tradition_mountaineer_ruralism = {
 				}
 			}
 
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_mountaineer_ruralism }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
 
 	ai_will_do = {
-		value = 100
+		value = 400
 		if = {
 			limit = {
 				NOT = {
@@ -1024,6 +1180,20 @@ tradition_mountaineer_ruralism = {
 				}
 			}
 			multiply = 0
+		}
+		else_if = {
+			limit = {
+				any_culture_county = {
+					percent >= 0.6
+					any_county_province = {
+						OR = {
+							terrain = mountains
+							terrain = hills
+						}
+					}
+				}
+			}
+			multiply = 8
 		}
 	}
 }
@@ -1062,6 +1232,7 @@ tradition_highland_warriors = {
 		rough_terrain_expert_trait_more_common = yes
 		hill_trait_bonuses = yes
 		can_recruit_hill_specialist = yes
+		hills_nomadic_cultrad_stationing_bonus = yes
 	}
 	province_modifier = {
 		hills_levy_size = 0.1
@@ -1108,6 +1279,16 @@ tradition_highland_warriors = {
 				}
 			}
 
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_highland_warriors }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+
 			multiply = tradition_replacement_cost_if_relevant
 		}
 	}
@@ -1129,6 +1310,32 @@ tradition_highland_warriors = {
 				}
 			}
 			multiply = 0
+		}
+		else_if = {
+			limit = {
+				scope:character.culture ?= {
+					any_culture_county = {
+						percent > 0.6
+						any_county_province = {
+							terrain = hills
+						}
+					}
+				}
+			}
+			multiply = 6
+		}
+		else_if = {
+			limit = {
+				scope:character.culture ?= {
+					any_culture_county = {
+						percent > 0.4
+						any_county_province = {
+							terrain = hills
+						}
+					}
+				}
+			}
+			multiply = 2
 		}
 	}
 }
