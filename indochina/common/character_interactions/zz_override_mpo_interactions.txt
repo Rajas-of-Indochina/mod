@@ -1823,7 +1823,7 @@ offer_vassalization_interaction = {
 	is_valid_showing_failures_only = {
 		scope:actor = {
 			trigger_if = {
-				limit = {confederation ?= { has_variable = armenian_confederation }}
+				limit = { confederation ?= { has_variable = armenian_confederation } }
 			}
 			trigger_else = {
 				is_confederation_member = no
@@ -1832,7 +1832,7 @@ offer_vassalization_interaction = {
 		scope:recipient = {
 			is_at_war = no
 			trigger_if = {
-				limit = {confederation ?= { has_variable = armenian_confederation }}
+				limit = { confederation ?= { has_variable = armenian_confederation } }
 			}
 			trigger_else = {
 				is_confederation_member = no
@@ -1962,6 +1962,16 @@ offer_vassalization_interaction = {
 					culture = {
 						cultural_acceptance = { target = scope:recipient.culture value <= 90 }
 					}
+				}
+			}
+		}
+
+		modifier = { # Constant Rebellion
+			add = -100
+			desc = disloyal_subjects_interaction_reason
+			trigger = {
+				scope:recipient = {
+					culture = { has_cultural_parameter = harder_to_vassalize }
 				}
 			}
 		}
