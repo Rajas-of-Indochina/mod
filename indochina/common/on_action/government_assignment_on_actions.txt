@@ -49,6 +49,13 @@ on_government_assign_start = {
 
 		# Fix authority laws
 		every_ruler = {
+			limit = {
+				OR = {
+					has_government = anarchist_government
+					has_government = mandala_government
+				}
+			}
+
 			if = {
 				limit = {
 					has_government = mandala_government
@@ -74,6 +81,34 @@ on_government_assign_start = {
 					limit = { has_realm_law = crown_authority_3 }
 					remove_realm_law = crown_authority_3
 				}
+
+	            if = {
+	                limit = {
+	                    primary_title = title:k_palembang
+	                    game_start_date = 1066.9.15
+	                    NOT = { has_realm_law = mandala_authority_0 }
+	                }
+	                add_realm_law_skip_effects = mandala_authority_0
+	            }
+	            else_if = {
+	                limit = {
+	                    primary_title = title:k_melayu
+	                    game_start_date = 1178.10.1
+	                }
+	                add_realm_law_skip_effects = mandala_authority_1
+	            }
+	            else_if = {
+	                limit = { primary_title.tier = tier_duchy }
+	                add_realm_law_skip_effects = mandala_authority_1
+	            }
+	            else_if = {
+	                limit = { primary_title.tier = tier_kingdom }
+	                add_realm_law_skip_effects = mandala_authority_2
+	            }
+	            else_if = {
+	                limit = { primary_title.tier = tier_empire }
+	                add_realm_law_skip_effects = mandala_authority_2
+	            }
 			}
 			else_if = {
 				limit = {
