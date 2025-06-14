@@ -21,14 +21,10 @@ sea_invite_courtiers.0001 = {
 	trigger = { exists = capital_province } #If I lost it before I got this event, I shouldn't get a physician
 
 	immediate = {
-
-		every_realm_county = {
+		every_held_title = {
+			limit = { tier = tier_county }
 			if = {
-				limit = { this.holder = root }
-				add_to_list = counties_list
-				add_to_list = counties_list
-			}
-			else = {
+				limit = { holder = root }
 				add_to_list = counties_list
 			}
 		}
@@ -38,14 +34,88 @@ sea_invite_courtiers.0001 = {
 			save_scope_as = target_county
 		}
 
+		scope:target_county = {
+			if = {
+				limit = { county_has_minority_culture_trigger = yes }
+
+				culture = {
+					add_to_temporary_list = potential_cultures
+					add_to_temporary_list = potential_cultures
+					add_to_temporary_list = potential_cultures
+					add_to_temporary_list = potential_cultures
+				}
+
+				if = {
+					limit = { target_county = { county_has_large_minority_culture_trigger = yes } }
+					every_in_list = {
+						variable = culture_minorities_large
+						add_to_temporary_list = potential_cultures
+						add_to_temporary_list = potential_cultures
+					}
+				}
+
+				if = {
+					limit = { target_county = { county_has_small_minority_culture_trigger = yes } }
+					every_in_list = {
+						variable = culture_minorities_small
+						add_to_temporary_list = potential_cultures
+					}
+				}
+
+				random_in_list = {
+					list = potential_cultures
+					save_scope_as = target_culture
+				}
+			}
+			else = {
+				culture = { save_scope_as = target_culture }
+			}
+
+			if = {
+				limit = { county_has_minority_faith_trigger = yes }
+
+				faith = {
+					add_to_temporary_list = potential_faiths
+					add_to_temporary_list = potential_faiths
+					add_to_temporary_list = potential_faiths
+					add_to_temporary_list = potential_faiths
+				}
+
+				if = {
+					limit = { target_county = { county_has_large_minority_faith_trigger = yes } }
+					every_in_list = {
+						variable = faith_minorities_large
+						add_to_temporary_list = potential_faiths
+						add_to_temporary_list = potential_faiths
+					}
+				}
+
+				if = {
+					limit = { target_county = { county_has_small_minority_faith_trigger = yes } }
+					every_in_list = {
+						variable = faith_minorities_small
+						add_to_temporary_list = potential_faiths
+					}
+				}
+
+				random_in_list = {
+					list = potential_faiths
+					save_scope_as = target_faith
+				}
+			}
+			else = {
+				faith = { save_scope_as = target_faith }
+			}
+		}
+
 		# Create random courtier
 		create_character = {
 			employer = root
 			age = { 18 50 }
 			gender = male
 			random_traits = yes
-			faith = scope:target_county.faith
-			culture = scope:target_county.culture
+			faith = scope:target_faith
+			culture = scope:target_culture
 			dynasty = generate
 			save_scope_as = target
 		}
@@ -87,14 +157,10 @@ sea_invite_courtiers.0002 = {
 	trigger = { exists = capital_province } #If I lost it before I got this event, I shouldn't get a physician
 
 	immediate = {
-
-		every_realm_county = {
+		every_held_title = {
+			limit = { tier = tier_county }
 			if = {
-				limit = { this.holder = root }
-				add_to_list = counties_list
-				add_to_list = counties_list
-			}
-			else = {
+				limit = { holder = root }
 				add_to_list = counties_list
 			}
 		}
@@ -104,14 +170,88 @@ sea_invite_courtiers.0002 = {
 			save_scope_as = target_county
 		}
 
+		scope:target_county = {
+			if = {
+				limit = { county_has_minority_culture_trigger = yes }
+
+				culture = {
+					add_to_temporary_list = potential_cultures
+					add_to_temporary_list = potential_cultures
+					add_to_temporary_list = potential_cultures
+					add_to_temporary_list = potential_cultures
+				}
+
+				if = {
+					limit = { target_county = { county_has_large_minority_culture_trigger = yes } }
+					every_in_list = {
+						variable = culture_minorities_large
+						add_to_temporary_list = potential_cultures
+						add_to_temporary_list = potential_cultures
+					}
+				}
+
+				if = {
+					limit = { target_county = { county_has_small_minority_culture_trigger = yes } }
+					every_in_list = {
+						variable = culture_minorities_small
+						add_to_temporary_list = potential_cultures
+					}
+				}
+
+				random_in_list = {
+					list = potential_cultures
+					save_scope_as = target_culture
+				}
+			}
+			else = {
+				culture = { save_scope_as = target_culture }
+			}
+
+			if = {
+				limit = { county_has_minority_faith_trigger = yes }
+
+				faith = {
+					add_to_temporary_list = potential_faiths
+					add_to_temporary_list = potential_faiths
+					add_to_temporary_list = potential_faiths
+					add_to_temporary_list = potential_faiths
+				}
+
+				if = {
+					limit = { target_county = { county_has_large_minority_faith_trigger = yes } }
+					every_in_list = {
+						variable = faith_minorities_large
+						add_to_temporary_list = potential_faiths
+						add_to_temporary_list = potential_faiths
+					}
+				}
+
+				if = {
+					limit = { target_county = { county_has_small_minority_faith_trigger = yes } }
+					every_in_list = {
+						variable = faith_minorities_small
+						add_to_temporary_list = potential_faiths
+					}
+				}
+
+				random_in_list = {
+					list = potential_faiths
+					save_scope_as = target_faith
+				}
+			}
+			else = {
+				faith = { save_scope_as = target_faith }
+			}
+		}
+
 		# Create random courtier
 		create_character = {
 			employer = root
-			age = { 16 30 }
+			age = { 18 35 }
 			gender = female
 			random_traits = yes
-			faith = scope:target_county.faith
-			culture = scope:target_county.culture
+			faith = scope:target_faith
+			culture = scope:target_culture
 			dynasty = generate
 			save_scope_as = target
 		}
@@ -153,14 +293,10 @@ sea_invite_courtiers.0003 = {
 	trigger = { exists = capital_province } #If I lost it before I got this event, I shouldn't get a physician
 
 	immediate = {
-
-		every_realm_county = {
+		every_held_title = {
+			limit = { tier = tier_county }
 			if = {
-				limit = { this.holder = root }
-				add_to_list = counties_list
-				add_to_list = counties_list
-			}
-			else = {
+				limit = { holder = root }
 				add_to_list = counties_list
 			}
 		}
@@ -168,6 +304,44 @@ sea_invite_courtiers.0003 = {
 		random_in_list = {
 			list = counties_list
 			save_scope_as = target_county
+		}
+
+		scope:target_county = {
+			if = {
+				limit = { county_has_minority_culture_trigger = yes }
+
+				culture = {
+					add_to_temporary_list = potential_cultures
+					add_to_temporary_list = potential_cultures
+					add_to_temporary_list = potential_cultures
+					add_to_temporary_list = potential_cultures
+				}
+
+				if = {
+					limit = { target_county = { county_has_large_minority_culture_trigger = yes } }
+					every_in_list = {
+						variable = culture_minorities_large
+						add_to_temporary_list = potential_cultures
+						add_to_temporary_list = potential_cultures
+					}
+				}
+
+				if = {
+					limit = { target_county = { county_has_small_minority_culture_trigger = yes } }
+					every_in_list = {
+						variable = culture_minorities_small
+						add_to_temporary_list = potential_cultures
+					}
+				}
+
+				random_in_list = {
+					list = potential_cultures
+					save_scope_as = target_culture
+				}
+			}
+			else = {
+				culture = { save_scope_as = target_culture }
+			}
 		}
 
 		# Create random courtier
@@ -349,7 +523,7 @@ sea_invite_courtiers.0003 = {
 			}
 			random_traits = yes
 			faith = root.faith
-			culture = scope:target_county.culture
+			culture = scope:target_culture
 			save_scope_as = target
 		}
 	}
@@ -370,6 +544,7 @@ sea_invite_courtiers.0003 = {
 	}
 }
 
+# Invite Janissary
 sea_invite_courtiers.0004 = {
 	type = character_event
 	title = sea_invite_courtiers.0004.title
