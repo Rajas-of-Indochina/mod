@@ -18,7 +18,7 @@ give_temujin_land_effect = {
 			save_scope_as = title_change
 			add_claim_on_loss = no
 		}
-		title:c_uruud = {
+		title:c_khentii = {
 			change_title_holder = {
 				holder = scope:genghis_khan
 				change = scope:title_change
@@ -31,7 +31,7 @@ give_temujin_land_effect = {
 
 # A wild Genghis Khan appears!
 spawn_temujin_character_effect = {
-	title:c_uruud.title_province = {
+	title:c_khentii.title_province = {
 		save_scope_as = temujins_birthplace
 	}
 	if = {
@@ -577,11 +577,11 @@ spawn_temujin_character_effect = {
 			}
 		}
 	}
-	
+
 	if = {
 		limit = {
 			scope:temujin = {
-				is_ai = yes 
+				is_ai = yes
 			}
 		}
 		#Event for MPO dlc owners
@@ -664,7 +664,7 @@ form_the_mongol_empire_effect = {
 		}
 		resolve_title_and_vassal_change = scope:indpendence_change
 	}
-	
+
 	if = {
 		limit = {
 			capital_county = {
@@ -715,7 +715,7 @@ form_the_mongol_empire_effect = {
 			remove_realm_law = tribal_authority_3
 		}
 		add_realm_law_skip_effects = tribal_authority_2
-	
+
 		add_realm_law_skip_effects = high_partition_succession_law
 	}
 	if = {
@@ -739,6 +739,29 @@ form_the_mongol_empire_effect = {
 			remove_realm_law = nomadic_authority_4
 		}
 		add_realm_law_skip_effects = nomadic_authority_5
+		domicile ?= {
+			switch = {
+				trigger = has_domicile_building
+				yurt_main_01 = {
+					add_domicile_building = yurt_main_02
+					add_domicile_building = yurt_main_03
+					add_domicile_building = yurt_main_04
+					add_domicile_building = yurt_main_05
+				}
+				yurt_main_02 = {
+					add_domicile_building = yurt_main_03
+					add_domicile_building = yurt_main_04
+					add_domicile_building = yurt_main_05
+				}
+				yurt_main_03 = {
+					add_domicile_building = yurt_main_04
+					add_domicile_building = yurt_main_05
+				}
+				yurt_main_04 = {
+					add_domicile_building = yurt_main_05
+				}
+			}
+		}
 		if = {
 			limit = {
 				exists = domicile
@@ -753,6 +776,7 @@ form_the_mongol_empire_effect = {
 				add_domicile_building = mass_warfare_yurt_01
 				add_domicile_building = mass_warfare_yurt_02
 				add_domicile_building = mass_warfare_yurt_03
+				add_domicile_building = mass_warfare_yurt_04
 			}
 		}
 		if = {
@@ -769,6 +793,7 @@ form_the_mongol_empire_effect = {
 				add_domicile_building = character_warfare_yurt_01
 				add_domicile_building = character_warfare_yurt_02
 				add_domicile_building = character_warfare_yurt_03
+				add_domicile_building = character_warfare_yurt_04
 			}
 		}
 		domicile = {
@@ -1327,7 +1352,7 @@ spawn_mongol_successor_state_troops_effect = {
 			origin = capital_province
 		}
 	}
-	
+
 }
 
 ### Populating the life of Temujin...
@@ -1376,7 +1401,7 @@ spawn_temujins_court_effect = {
 		}
 		else = {
 			scope:temujin = { save_scope_as = great_khan_family_mother }
-			scope:borte = { save_scope_as = great_khan_family_father }		
+			scope:borte = { save_scope_as = great_khan_family_father }
 		}
 
 		# Create Jochi (son)...
@@ -1498,7 +1523,7 @@ spawn_temujins_court_effect = {
 		# Set friendship with Temujin
 		set_random_friendship_reason = { TARGET = scope:temujin }
 	}
-	
+
 	# Spawn some generic Bagathurs
 	create_character = {
 		gender_female_chance = temujin_soldier_female_chance
@@ -1556,7 +1581,7 @@ spawn_temujins_court_effect = {
 		faith = scope:temujin.faith
 		culture = scope:temujin.culture
 	}
-	
+
 	# Spawn some captured Han siege engineers
 	create_character = {
 		gender_female_chance = temujin_soldier_female_chance
@@ -1715,7 +1740,7 @@ spawn_dynamic_mongol_court_effect = {
 	recruit_three_nomadic_capital_characters_effect = {
 		NOMAD_TEMPLATE_CHARACTER = nomadic_commander_template
 	}
-	
+
 	# Spawn some generic Bagathurs
 	create_character = {
 		gender_female_chance = temujin_soldier_female_chance
@@ -1773,7 +1798,7 @@ spawn_dynamic_mongol_court_effect = {
 		faith = scope:temujin.faith
 		culture = scope:temujin.culture
 	}
-	
+
 	# Spawn some captured Han siege engineers
 	create_character = {
 		gender_female_chance = temujin_soldier_female_chance
@@ -2088,7 +2113,7 @@ assign_core_mongol_titles_to_heir_effect = {
 			NOT = { exists = global_var:handed_out_mongolia_in_mongol_succession }
 			NOT = { exists = title:e_mongolia.holder }
 		}
-		
+
 		# If the character doesn't hold any titles in the relevant
 		if = {
 			limit = {
@@ -2142,7 +2167,7 @@ assign_core_mongol_titles_to_heir_effect = {
 			}
 			resolve_title_and_vassal_change = scope:title_change
 		}
-		
+
 		# Create and grant title
 		create_title_and_vassal_change = {
 			type = granted
@@ -2173,7 +2198,7 @@ assign_core_mongol_titles_to_heir_effect = {
 	}
 	save_scope_as = mongolia_ruler
 	add_to_list = candidate_granted_title
-	
+
 	every_character_war = {
 		end_war = white_peace
 	}
@@ -2428,7 +2453,7 @@ grant_ilkhanate_effect = {
 		}
 		resolve_title_and_vassal_change = scope:title_change
 	}
-	
+
 	every_character_war = {
 		end_war = white_peace
 	}
@@ -2531,7 +2556,7 @@ grant_golden_horde_effect = {
 		name = golden_horde_handed_out
 		value = yes
 	}
-	
+
 	# Give the character the appropriate capital area, if possible
 	if = {
 		limit = {
@@ -2681,7 +2706,7 @@ grant_chagatai_effect = {
 		name = chagatai_handed_out
 		value = yes
 	}
-	
+
 	# Give the character the appropriate capital area, if possible
 	if = {
 		limit = {
@@ -2832,7 +2857,7 @@ grant_black_horde_effect = {
 		name = black_horde_handed_out
 		value = yes
 	}
-	
+
 	# Give the character the appropriate capital area, if possible
 	if = {
 		limit = {
@@ -2961,7 +2986,7 @@ grant_white_horde_effect = {
 		}
 		resolve_title_and_vassal_change = scope:title_change
 	}
-	
+
 	create_title_and_vassal_change = {
 		type = created
 		save_scope_as = title_change
@@ -2983,7 +3008,7 @@ grant_white_horde_effect = {
 		name = white_horde_handed_out
 		value = yes
 	}
-	
+
 	# Give the character the appropriate capital area, if possible
 	if = {
 		limit = {
@@ -3134,7 +3159,7 @@ grant_aarlud_khanate_effect = {
 		name = aarlud_khanate_handed_out
 		value = yes
 	}
-	
+
 	# Give the character the appropriate capital area, if possible
 	if = {
 		limit = {
@@ -3285,7 +3310,7 @@ grant_togskol_khanate_effect = {
 		name = togskol_khanate_handed_out
 		value = yes
 	}
-	
+
 	# Give the character the appropriate capital area, if possible
 	if = {
 		limit = {
@@ -3436,7 +3461,7 @@ grant_baruun_khanate_effect = {
 		name = baruun_khanate_handed_out
 		value = yes
 	}
-	
+
 	# Give the character the appropriate capital area, if possible
 	if = {
 		limit = {
@@ -3921,7 +3946,7 @@ set_correct_mongol_breakup_vassalage_effect = {
 			debug_log_scopes = no
 
 			save_scope_as = vassal
-			
+
 			# Note: the variables for counting counties is set before checking whether the relevant title will be created, to prevent null-reference errors later
 			set_global_variable = {
 				name = ilkhanate_county_count
@@ -4583,7 +4608,7 @@ shift_counties_on_mongol_succession_effect = {
 		save_scope_as = mongol_succession
 		add_claim_on_loss = no
 	}
-	
+
 	# Ilkhanate
 	if = {
 		limit = {
@@ -4793,7 +4818,7 @@ shift_counties_on_mongol_succession_effect = {
 			}
 		}
 	}
-	
+
 	# Extra backup safety
 	# Ilkhanate
 	if = {
@@ -5064,7 +5089,7 @@ shift_counties_on_mongol_succession_effect = {
 							geographical_region = special_mongol_empire_aarlud_khanate_region
 							geographical_region = special_mongol_empire_togskol_khanate_region
 							geographical_region = special_mongol_empire_baruun_khanate_region
-						} 
+						}
 					}
 				}
 				change_liege = {
@@ -5076,7 +5101,7 @@ shift_counties_on_mongol_succession_effect = {
 	}
 
 	resolve_title_and_vassal_change = scope:mongol_succession
-	
+
 	# Extra-extra cleanup
 	create_title_and_vassal_change = {
 		type = granted
@@ -7208,7 +7233,7 @@ shift_counties_on_mongol_succession_effect = {
 		}
 	}
 	resolve_title_and_vassal_change = scope:mongol_cleanup_succession
-	
+
 	every_in_list = { # If tengri, switch to an organized faith in your new realm
 		list = selected_mongol_heirs
 		limit = {
@@ -7240,13 +7265,13 @@ shift_counties_on_mongol_succession_effect = {
 		}
 	}
 }
-	
-	
+
+
 ### END Title creation effects
-	
+
 grant_suitable_title_to_candidate_effect = {
 	save_temporary_scope_as = candidate
-	
+
 	# Runs through available titles and grants an available one
 	random_list = {
 		# Ilkhanate
@@ -7446,7 +7471,7 @@ break_up_mongol_empire_effect = { # Intended to run in the Mongol Emperor's scop
 	every_tributary = {
 		add_to_list = mongol_tributaries
 	}
-	
+
 	every_held_title = { # Clean up excess kingdoms
 		limit = {
 			OR = {
@@ -7462,6 +7487,7 @@ break_up_mongol_empire_effect = { # Intended to run in the Mongol Emperor's scop
 	every_character_war = {
 		limit = {
 			primary_attacker = scope:old_mongol_emperor
+			is_white_peace_possible = yes
 		}
 		end_war = white_peace
 	}
@@ -7722,17 +7748,45 @@ break_up_mongol_empire_effect = { # Intended to run in the Mongol Emperor's scop
 	}
 
 	# Find the "main" heir
-	ordered_in_list = {
-		list = selected_mongol_heirs
-		order_by = mongol_breakup_succession_score
-		max = 1
 
-		debug_log = "Found Mongol main heir"
-		debug_log_scopes = yes
+	if = {
+		limit = {
+			is_ai = no
+			player_heir.dynasty ?= dynasty
+		}
+		player_heir = {
+			debug_log = "Found Mongol main heir"
+			debug_log_scopes = yes
 
-		assign_core_mongol_titles_to_heir_effect = yes
+			assign_core_mongol_titles_to_heir_effect = yes
 
-		remove_from_list = selected_mongol_heirs
+			remove_from_list = selected_mongol_heirs
+		}
+	}
+	else = {
+		ordered_in_list = {
+			list = selected_mongol_heirs
+			order_by = mongol_breakup_succession_score
+			max = 1
+
+			debug_log = "Found Mongol main heir"
+			debug_log_scopes = yes
+
+			assign_core_mongol_titles_to_heir_effect = yes
+
+			remove_from_list = selected_mongol_heirs
+		}
+	}
+
+	if = {
+		limit = {
+			is_ai = no
+			player_heir.dynasty ?= dynasty
+			player_heir = { highest_held_title_tier < tier_empire }
+		}
+		player_heir = {
+			grant_suitable_title_to_candidate_effect = yes
+		}
 	}
 
 	# Assign titles to everyone else
@@ -7744,7 +7798,7 @@ break_up_mongol_empire_effect = { # Intended to run in the Mongol Emperor's scop
 		debug_log = "Found another Mongol Heir"
 		debug_log_scopes = yes
 		grant_suitable_title_to_candidate_effect = yes
-		
+
 		debug_log = "Tried granting title to heir"
 	}
 
@@ -7771,12 +7825,19 @@ break_up_mongol_empire_effect = { # Intended to run in the Mongol Emperor's scop
 		else_if = {
 			limit = {
 				NOT = { exists = scope:successor_3 }
+				NOT = {
+					this = scope:successor_2
+				}
 			}
 			save_scope_as = successor_3
 		}
 		if = {
 			limit = {
 				NOT = { exists = scope:successor_4 }
+				NOR = {
+					this = scope:successor_2
+					this = scope:successor_3
+				}
 			}
 			save_scope_as = successor_4
 		}
@@ -7812,7 +7873,7 @@ break_up_mongol_empire_effect = { # Intended to run in the Mongol Emperor's scop
 			days = 1
 		}
 	}
-	
+
 	# Assign appropriate De Jure, so that the successors do not switch away from their empires immediately
 	if = {
 		limit = {
@@ -8165,66 +8226,84 @@ break_up_mongol_empire_effect = { # Intended to run in the Mongol Emperor's scop
 			days = 1
 		}
 	}
-	
+
 }
 
 # Special stuff for player Temüjin, disbursed in event conqueror.0001
-form_the_mongol_empire_player_effect = {
+temujin_conqueror_bonuses_effect = {
+	add_gold = 100
+	add_dread = medium_dread
+	add_prestige = 500
 	if = {
 		limit = {
-			is_independent_ruler = no
+			prestige_level < 2
 		}
-		create_title_and_vassal_change = {
-			type = independency
-			save_scope_as = indpendence_change
-			add_claim_on_loss = no
+		add_prestige_level = 2
+	}
+	else_if = {
+		limit = {
+			prestige_level < 3
 		}
-		becomes_independent = {
-			change = scope:indpendence_change
-		}
-		resolve_title_and_vassal_change = scope:indpendence_change
+		add_prestige_level = 1
 	}
-	#Create the title
-	create_title_and_vassal_change = {
-		type = created
-		save_scope_as = title_change
-		add_claim_on_loss = no
-	}
-	title:e_mongol_empire = {
-		change_title_holder = {
-			holder = root
-			change = scope:title_change
-		}
-	}
-	resolve_title_and_vassal_change = scope:title_change
-	capital_county.kingdom = {
-		set_de_jure_liege_title = title:e_mongol_empire
-	}
-	add_gold = 5000
-	add_dread = high_dread
-	add_prestige = 25000
-	domicile = {
-		change_herd = {
-			add = nomadic_authority_level_5_requirement
-		}
-	}
-	hidden_effect = {
-		if = {
-			limit = { has_realm_law = nomadic_authority_1 }
-			remove_realm_law = nomadic_authority_1
+	if = {
+		limit = {
+			government_has_flag = government_is_nomadic
 		}
 		if = {
-			limit = { has_realm_law = nomadic_authority_2 }
-			remove_realm_law = nomadic_authority_2
+			limit = {
+				OR = {
+					has_realm_law = nomadic_authority_4
+					has_realm_law = nomadic_authority_5
+				}
+			}
+			domicile = {
+				change_herd = {
+					add = nomadic_authority_level_2_requirement
+				}
+			}
 		}
-		if = {
-			limit = { has_realm_law = nomadic_authority_3 }
-			remove_realm_law = nomadic_authority_3
+		else = {
+			domicile = {
+				change_herd = {
+					value = nomadic_authority_level_4_requirement
+				}
+			}
 		}
+
 		if = {
-			limit = { has_realm_law = nomadic_authority_4 }
-			remove_realm_law = nomadic_authority_4
+			limit = {
+				NOR = {
+					has_realm_law = nomadic_authority_5
+					has_realm_law = nomadic_authority_4
+				}
+			}
+			hidden_effect = {
+				if = {
+					limit = { has_realm_law = nomadic_authority_1 }
+					remove_realm_law = nomadic_authority_1
+				}
+				if = {
+					limit = { has_realm_law = nomadic_authority_2 }
+					remove_realm_law = nomadic_authority_2
+				}
+				if = {
+					limit = { has_realm_law = nomadic_authority_3 }
+					remove_realm_law = nomadic_authority_3
+				}
+			}
+			add_realm_law_skip_effects = nomadic_authority_4
 		}
 	}
-	add_realm_law_skip_effects = nomadic_authority_5
+	if = {
+		limit = {
+			is_decision_on_cooldown = nomad_higher_tier_title_decision
+		}
+		remove_decision_cooldown = nomad_higher_tier_title_decision
+	}
+	custom_tooltip = temujin_horde_gathers_tt
+	trigger_event = {
+		id = mpo_greatest_of_khans.1010
+		months = { 3 9 }
+	}
 }
