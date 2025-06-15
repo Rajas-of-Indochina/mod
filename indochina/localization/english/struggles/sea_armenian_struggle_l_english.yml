@@ -6,6 +6,11 @@
  game_concept_communalist_factions:0 "Communalist Factions"
  game_concept_communalist_faction_desc:0 "The $game_concept_communalist_faction$ is populated by counties in which communalist faiths (faiths with [GetFaithDoctrine('tenet_communal_possessions').GetBaseName]) have a presence, either as a majority or [minority_faith|E]. If successful, they will promote their faiths in their counties and gain protection from conversion."
  is_openly_or_secretly_communalist:0 "Must be openly or secretly communalist"
+ FACTION_DEMAND_COMMUNALIST:0 "Communalist Uprising Demand"
+ FACTION_DEMAND_COMMUNALIST_ACCEPT_GRANT_INDEPENDENCE:0 "$FACTION_DEMAND_POPULIST_ACCEPT_GRANT_INDEPENDENCE$"
+ FACTION_DEMAND_COMMUNALIST_REFUSE:0 "You'll live under [ROOT.Char.GovernmentType.GetName] and you'll bloody like it!"
+ FACTION_DEMAND_COMMUNALIST_ACCEPTED:0 "Communalist Demands Accepted"
+ FACTION_DEMAND_COMMUNALIST_DESC:0 "$FACTION_DEMAND_LIBERTY_ACCEPTED_DESC$"
 
  armenian_struggle_is_persian_culture_trigger_tt:0 "[CULTURE.GetName] is a [persian_culture|E]"
  armenian_struggle_is_persian_faith_trigger_tt:0 "[FAITH.GetName] is a [persian_faith|E]"
@@ -158,6 +163,8 @@
  armenian_trade_tax_desc:0 "The [GetTrait('pro_persian').GetName(GetNullCharacter)] overlords of this county have levied heavy taxes on trade through here, extracting a great deal of wealth at the cost of the locals."
  tax_armenian_trade_routes:0 "Tax Armenian Trade Routes"
  tax_armenian_trade_routes_desc:0 "With Perso-Arabic dominance over Armanestan established, I can now reap the financial rewards: Heavy taxation. A great deal of wealth travels the roads through Armanestan and the surrounding areas, and it can all be mine, as long as I don't mind some unhappy local merchants."
+ tax_armenian_trade_routes_tooltip:0 "Levy taxes on Silk Road trade routes through Armenia."
+ tax_armenian_trade_routes_confirm:0 "$tax_armenian_trade_routes$"
  armenian_trade_tax_tt:0 "Every non-[THIS.Char.GetFaith.GetReligion.GetAdjective] Sub-Realm county gains #P [GetModifier('armenian_trade_tax').GetNameWithTooltip]#! for five years."
 
  armenian_struggle_ending_roman_rule_decision:0 "Province of Armenia"
@@ -264,9 +271,12 @@
 
  armenian_struggle.1100.t:0 "The Armenian Confederation"
  armenian_struggle.1100.desc:0 "Armenia is still fragmented and disunited, but we have at the very least been able to prove that we will not allow others to rule us unopposed. The struggle may be over, but the battle rages on, and perhaps someday, the empire of Tigranes may yet be reborn. Until then, the peoples of the Southern Caucacusus maintain a tenuous confederation against outsiders."
+ armenian_struggle.1100.a:0 "Armenia will never be conquered!"
  armenian_struggle.1101.t:0 "$armenian_struggle.1100.t$"
  armenian_struggle.1101.desc.pro_armenian:0 "We have repelled the worst of the invading forces, and the fragmented princedoms of Armenia have stood tall together against them. Though still disunited, we hae agreed to maintain a loose Confederation against outsiders that may seek to meddle in our affairs."
  armenian_struggle.1101.desc.anti_armenian:0 "The princes of Armenia have declared a Confederation. Though not a unified polity, they have promised to aid each other to repel any invaders foreign to the region, which will make our conquests more costly. Even now, Armenian peasants under foreign rule have begun agitating even more fervently for independence."
+ armenian_struggle.1101.a:0 "I see..."
+ 
 
  armenian_struggle.1200.t:0 "The Exarch in Armenia"
  armenian_struggle.1200.opening.pro_persian:0 "I can tell which way the wind iss blowing, and the wind is blowing in from the east and south, rich with spices from the far east carried along Persian trade routes."
@@ -274,9 +284,10 @@
  armenian_struggle.1200.desc:0 "There's no sense in fighting the wind when I could instead use it to fill my sails. This struggle for Armenia is pointless, and while others may spit on my name and call me a betrayer, I have secured my place as Prince of Armenia beneath my new liege."
  armenian_struggle.1200.a:0 "To new friends!"
  armenian_struggle.1201.t:0 "$armenian_struggle.1200.t$"
- armenian_struggle.1201.loser:0 "The wretched [collaborator.GetNameNicknamed] has decided to collaborate with [collaborator.GetLiege.GetName], placing Armenia at least nominally under [collaborator.GetLiege.GetHerHis] control with [collaborator.GetNameNoTooltip] as an exarch. The region has not been wholly united, but it doesn't matter. Victory has been claimed, sold to the highest bidder."
- armenian_struggle.1201.roman_winner:0 "At last, [collaborator.GetNameNicknamed] has seen sense and submitted to Roman rule! Being named Exarch and Despot of Armenia, [collaborator.GetSheHe] will rule on behalf of the Basileus, and will be empowered to further unify the region and strengthen our grip."
- armenian_struggle.1201.persian_winner:0  "At last, [collaborator.GetNameNicknamed] has seen sense and submitted to Persian rule! Being named Satrap of Armanestan, [collaborator.GetSheHe] will rule on behalf of the Shah, and will be empowered to further unify the region and strengthen our grip."
+ armenian_struggle.1201.desc.loser:0 "The wretched [collaborator.GetNameNicknamed] has decided to collaborate with [collaborator.GetLiege.GetName], placing Armenia at least nominally under [collaborator.GetLiege.GetHerHis] control with [collaborator.GetNameNoTooltip] as an exarch. The region has not been wholly united, but it doesn't matter. Victory has been claimed, sold to the highest bidder."
+ armenian_struggle.1201.desc.roman_winner:0 "At last, [collaborator.GetNameNicknamed] has seen sense and submitted to Roman rule! Being named Exarch and Despot of Armenia, [collaborator.GetSheHe] will rule on behalf of the Basileus, and will be empowered to further unify the region and strengthen our grip."
+ armenian_struggle.1201.desc.persian_winner:0  "At last, [collaborator.GetNameNicknamed] has seen sense and submitted to Persian rule! Being named Satrap of Armanestan, [collaborator.GetSheHe] will rule on behalf of the Shah, and will be empowered to further unify the region and strengthen our grip."
+ armenian_struggle.1201.a:0 "And so the struggle ends..."
 
  armenian_struggle.1300.t:0 "Pax Romana en Armenia"
  armenian_struggle.1300.desc:0 "Rome has established dominance of Armenia, ending a struggle that has outlived half our empire and half a dozen other foreign empires. While local princes and foreign emirs may claim to be rulers in Armenia, there is only one ruler #S of#! Armenia."
@@ -338,9 +349,6 @@
  PERSIAN_ARAB_CONQUEST_CB_NAME:0 "Perso-Arabic Conquest"
  PERSIAN_ARAB_CONQUEST_WAR_NAME:0 "$ORDER$ [ATTACKER.GetPrimaryTitle.GetAdjective] Conquest of the [TITLE.GetBaseName]"
  PERSIAN_ARAB_CONQUEST_WAR_NAME_BASE:0 "[ATTACKER.GetPrimaryTitle.GetAdjective][DEFENDER.GetPrimaryTitle.GetName]"
-
- armenian_struggle.2000.t:0 "Expanding $e_armenia$"
- armenian_struggle.2000.desc:0 "Yet another kingdom has come under the control of my mighty realm, and now that I control it, it is time to ensure that it remains eternally a part of $e_armenia$. But which kingdom will I integrate into my territory?"
 
  armenian_struggle.9999.t:0 "The Sultan's Reward"
  armenian_struggle.9999.desc:0 "As thanks for my assistance in crushing the Roman forces in the invasion of Armenia, the Sultan of the Seljuks has offered me land to rule over on his behalf in the newly-conquered region. The chance to become a powerful and respected Bey is one many would leap at, and if I don't accept, I am sure he would be able to find a suitable candidate.\n\nWill I trade in the freedom of the open road for a chance at power in Armenia?"
