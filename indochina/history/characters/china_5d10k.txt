@@ -372,6 +372,19 @@ gaobaoxu_jingnan = { # Gao Baoxu of Jingnan
 	}
 }
 
+qiankuan_wuyue = { # Father of Qian Liu
+	name = "Kuan"
+	religion = "shangqing" # ?
+	dynasty = wuyue_dqian
+	culture = "han" # Wu?
+
+	835.1.1 = {
+		birth = yes
+	}
+	895.1.1 = {
+		death = yes
+	}
+}
 qianliu_wuyue = { # Qian Liu of Wuyue
 	name = "Liu"
 	religion = "shangqing" # ?
@@ -446,12 +459,53 @@ qianchu_wuyue = { # Qian Hongchu of Wuyue
 		death = yes
 	}
 }
+wangnin_min = { # Father of Wang Shenzhi
+	name = "Nin"
+	religion = "shangqing" # ?
+	dynasty = min_dwang
+	culture = "min"
 
+	825.1.1 = { # Fictional
+		birth = yes
+	}
+	860.1.1 = { # Fictional
+		death = yes
+	}
+}
+wangchao_min = { # Brother of Wang Shenzhi
+	name = "Chao"
+	religion = "shangqing" # ?
+	dynasty = min_dwang
+	culture = "min"
+	father = wangnin_min
+
+	846.1.1 = {
+		birth = yes
+	}
+	898.1.1 = {
+		death = yes
+	}
+}
+wangshengui_min = { # Brother of Wang Shenzhi
+	name = "Shenzhi"
+	religion = "shangqing" # ?
+	dynasty = min_dwang
+	culture = "min"
+	father = wangnin_min
+
+	854.1.1 = { # Fictional
+		birth = yes
+	}
+	903.1.1 = {
+		death = yes
+	}
+}
 wangshenzhi_min = { # Wang Shenzhi of Min
 	name = "Shenzhi"
 	religion = "shangqing" # ?
 	dynasty = min_dwang
 	culture = "min"
+	father = wangnin_min
 
 	862.1.1 = {
 		birth = yes
@@ -532,8 +586,10 @@ wangyanxi_min = {
 wangjian_shu = { # Wang Jian of Shu
 	name = "Jian"
 	religion = "shangqing" # ?
-	# Wang dynasty
+	dynasty = fshu_wang
 	culture = "han"
+
+	trait = ambitious
 
 	847.1.1 = {
 		birth = yes
@@ -544,11 +600,25 @@ wangjian_shu = { # Wang Jian of Shu
 	}
 }
 
+mayuanfen_chu = { # Father of Ma Yin
+	name = "Yuanfen"
+	religion = "shangqing" # ?
+	dynasty = chu_dma
+	culture = "han"
+
+	823.1.1 = { # Fictional
+		birth = yes
+	}
+	890.1.1 = { # Fictional
+		death = yes
+	}
+}
 mayin_chu = { # Ma Yin of Chu
 	name = "Yin"
 	religion = "shangqing" # ?
 	dynasty = chu_dma
 	culture = "han"
+	father = mayuanfen_chu
 
 	853.1.1 = {
 		birth = yes
@@ -634,11 +704,25 @@ maxichong_chu = { # Ma Xichong of Chu
 	}
 }
 
+liguochang_tang = {
+	name = "Guochang"
+	religion = shangqing # ?
+	culture = shatuo
+	dynasty = latertang_d01
+
+	831.1.1 = { # Fictional date
+		birth = yes
+	}
+	887.1.1 = {
+		death = yes
+	}
+}
 likeyong_tang = {
 	name = "Keyong"
 	religion = shangqing # ?
 	culture = shatuo
 	dynasty = latertang_d01
+	father = liguochang_tang
 
 	856.1.1 = {
 		birth = yes
@@ -726,6 +810,8 @@ licongke_tang = { # Li Congke
 		effect = {
 			set_court_language = language_chinese
 			learn_language_of_culture = culture:han
+
+			domicile ?= { move_domicile = root.capital_province }
 		}
 	}
 	937.1.11 = {
@@ -835,11 +921,39 @@ mengchang_shu = {
 	}
 }
 
-liuyin_yue = { # Liu Yin of Southern Han (posthumously)
+liuanren_yue = { # Grandfather of Liu Yin and Liu Yan
+	name = "Anren" # Or Ren'an
+	religion = "shangqing" # ?
+	dynasty = han_dliu
+	culture = "han"
+
+	824.1.1 = { # Fictional
+		birth = yes
+	}
+	866.1.1 = { # Fictional
+		death = yes
+	}
+}
+liuqian_yue = { # Father of Liu Yin and Liu Yan
+	name = "Qian" # Or Zhiqian
+	religion = "shangqing" # ?
+	dynasty = han_dliu
+	culture = "han"
+	father = liuanren_yue
+
+	849.1.1 = { # Fictional
+		birth = yes
+	}
+	894.1.1 = {
+		death = yes
+	}
+}
+liuyin_yue = { # Liu Yin of Southern Han (posthumously), brother of Liu Yan
 	name = "Yin"
 	religion = "shangqing" # ?
 	dynasty = han_dliu
 	culture = "han"
+	father = liuqian_yue
 
 	874.1.1 = {
 		birth = yes
@@ -853,6 +967,7 @@ liuyan_han = {
 	culture = han
 	religion = shangqing # ?
 	dynasty = han_dliu
+	father = liuqian_yue
 
 	trait = education_martial_4
 
@@ -939,6 +1054,10 @@ shijingtang_jin = {
 	936.1.1 = {
 		# To offset the cost of declaring war
 		add_prestige = 1000
+
+		effect = {
+			domicile ?= { move_domicile = e_celestia_china.holder.capital_province }
+		}
 	}
 	942.7.28 = {
 		death = yes
@@ -1167,7 +1286,9 @@ guowei_zhou = {
 		birth = yes
 	}
 	936.1.1 = {
-		domicile ?= { move_domicile = root.top_liege.capital_province }
+		effect = {
+			domicile ?= { move_domicile = root.top_liege.capital_province }
+		}
 	}
 	# Reigned 951.2.11
 	954.2.22 = {
