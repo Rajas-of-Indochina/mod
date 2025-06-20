@@ -1,32 +1,122 @@
 ﻿
 ROA_setup_confederation_effect = {
 
-    title:c_abzakhia.holder = {
+#    title:c_abzakhia.holder = {
+#
+#    	title:c_temir.holder = { add_to_list = circassia_confederates }
+#    	title:c_uerp.holder = { add_to_list = circassia_confederates }
+#    	title:c_labeshkhua.holder = { add_to_list = circassia_confederates }
+#    	title:c_abazinia.holder = { add_to_list = circassia_confederates }
+#    	title:c_sapakhi.holder = { add_to_list = circassia_confederates }
+#    	title:c_labezhi.holder = { add_to_list = circassia_confederates }
+#    	title:c_boletuqo.holder = { add_to_list = circassia_confederates }
+#    	title:c_miyequap.holder = { add_to_list = circassia_confederates }
+#    	title:c_papagi.holder = { add_to_list = circassia_confederates }
+#
+#		add_character_flag = {
+#			flag = forming_confederation
+#			years = 5
+#		}
+#		create_confederation = {
+#			name = CIRCASSIA_CONFEDERATION_NAME
+#		}
+#
+#	    every_in_list = {
+#	        list = circassia_confederates
+#
+#	        scope:new_confederation = {
+#	            add_confederation_member = prev
+#	        }
+#	    }
+#	    remove_character_flag = forming_confederation
+#    }
 
-    	title:c_temir.holder = { add_to_list = cuman_confederates }
-    	title:c_uerp.holder = { add_to_list = cuman_confederates }
-    	title:c_labeshkhua.holder = { add_to_list = cuman_confederates }
-    	title:c_abazinia.holder = { add_to_list = cuman_confederates }
-    	title:c_sapakhi.holder = { add_to_list = cuman_confederates }
-    	title:c_labezhi.holder = { add_to_list = cuman_confederates }
-    	title:c_boletuqo.holder = { add_to_list = cuman_confederates }
-    	title:c_miyequap.holder = { add_to_list = cuman_confederates }
-    	title:c_papagi.holder = { add_to_list = cuman_confederates }
+	title:c_kyz-yar.holder = {
+
+		add_character_modifier = {
+			modifier = mpo_confederation_member_modifier
+			years = 5
+		}
+		capital_county ?= {
+			change_county_fertility = major_county_fertility_level_gain
+		}
+    	title:c_khortytsia.holder = { add_to_list = white_cumania_confederates }
+		title:d_kizilyedisan.holder = { add_to_list = white_cumania_confederates }
+		title:d_crimea.holder = { add_to_list = white_cumania_confederates }
 
 		add_character_flag = {
 			flag = forming_confederation
 			years = 5
 		}
 		create_confederation = {
-			name = CUMANIA_FEDERATION_NAME
+			name = WHITE_CUMANIA_NAME
+		}
+		scope:new_confederation = {
+			set_variable = {
+				name = confederation_culture
+				value = culture:cuman
+			}
 		}
 
 	    every_in_list = {
-	        list = cuman_confederates
+	        list = white_cumania_confederates
 
 	        scope:new_confederation = {
 	            add_confederation_member = prev
 	        }
+			add_character_modifier = {
+				modifier = mpo_confederation_member_modifier
+				years = 5
+			}
+			capital_county ?= {
+				change_county_fertility = major_county_fertility_level_gain
+			}
+	    }
+	    remove_character_flag = forming_confederation
+    }
+
+	title:d_don_valley.holder = {
+
+		add_character_modifier = {
+			modifier = mpo_confederation_member_modifier
+			years = 5
+		}
+		capital_county ?= {
+			change_county_fertility = major_county_fertility_level_gain
+		}
+    	title:d_tana.holder = { add_to_list = black_cumania_confederates }
+		title:d_khopyor.holder = { add_to_list = black_cumania_confederates }
+		title:d_azov.holder = { add_to_list = black_cumania_confederates }
+		title:d_sarkel.holder = { add_to_list = black_cumania_confederates }
+		title:d_khazaria.holder = { add_to_list = black_cumania_confederates }
+
+		add_character_flag = {
+			flag = forming_confederation
+			years = 5
+		}
+		create_confederation = {
+			name = BLACK_CUMANIA_NAME
+		}
+		scope:new_confederation = {
+			set_variable = {
+				name = confederation_culture
+				value = culture:cuman
+			}
+		}
+
+	    every_in_list = {
+	        list = black_cumania_confederates
+
+	        scope:new_confederation = {
+	            add_confederation_member = prev
+	        }
+			add_character_modifier = {
+				modifier = mpo_confederation_member_modifier
+				years = 5
+			}
+			capital_county ?= {
+				change_county_fertility = major_county_fertility_level_gain
+			}
 	    }
 	    remove_character_flag = forming_confederation
     }
@@ -1064,6 +1154,23 @@ ROA_936_tributary_setup_effect = {
 
 ROA_1066_tributary_setup_effect = {
 
+	#### Cumania
+	title:d_itil.holder = {
+		save_scope_as = suzerain
+		title:c_saray.holder = {
+			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
+		}
+	}
+	title:d_pecheneg.holder = {
+		save_scope_as = suzerain
+		title:c_yaitsk.holder = {
+			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
+		}
+		title:c_ukek.holder = {
+			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
+		}
+	}
+
 	#### Zhetysu
 	title:k_zhetysu.holder = {
 		save_scope_as = suzerain
@@ -1426,13 +1533,49 @@ ROA_1178_tributary_setup_effect = {
 	}
 	title:d_azov.holder = {
 		save_scope_as = suzerain
-		title:c_psizh.holder = {
+		title:c_psije.holder = {
 			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
 		}
 		title:c_temir.holder = {
 			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
 		}
 		title:c_uerp.holder = {
+			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
+		}
+		title:c_yegorlyk.holder = {
+			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
+		}
+	}
+	title:d_kizilyedisan.holder = {
+		save_scope_as = suzerain
+		title:c_tigheci.holder = {
+			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
+		}
+	}
+	title:d_itil.holder = {
+		save_scope_as = suzerain
+		title:c_zhankala.holder = {
+			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
+		}
+	}
+	title:d_pecheneg.holder = {
+		save_scope_as = suzerain
+		title:c_yaitsk.holder = {
+			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
+		}
+		title:c_ukek.holder = {
+			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
+		}
+	}
+	title:d_khazaria.holder = {
+		save_scope_as = suzerain
+		title:c_elista.holder = {
+			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
+		}
+	}
+	title:d_tana.holder = {
+		save_scope_as = suzerain
+		title:c_kuzeytorg.holder = {
 			break_subject_contract_and_establish_tributary_effect = { SUZERAIN = scope:suzerain TRIBUTARY = this }
 		}
 	}
