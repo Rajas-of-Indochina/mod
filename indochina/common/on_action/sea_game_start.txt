@@ -956,12 +956,30 @@ sea_optional_admin_realms = {
             limit = {
                 has_game_rule = historicity_extra_admin_liao_historic_1178
                 exists = title:e_kara_khitai.holder
+                has_dlc_feature = roads_to_power
             }
             title:e_kara_khitai = {
                 holder = {
-                    convert_to_administrative_from_feudalism_game_start_effect = yes
+                    change_government = administrative_government
+                    create_noble_family_effect = yes
                 }
                 set_state_faith = faith:mahayana
+
+                every_vassal_or_below = {
+                    limit = {
+                        highest_held_title_tier >= tier_county
+                        OR = {
+                            government_has_flag = government_is_feudal
+                            government_has_flag = government_is_clan
+                            government_has_flag = government_is_tribal
+                        }
+                        NOR = {
+                            this = title:k_khotan.holder
+                            this = title:k_dzungaria.holder
+                        }
+                    }
+                    change_to_administrative_effect = yes
+                }
             }
         }
 
