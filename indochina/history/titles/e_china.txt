@@ -1,11 +1,7 @@
 ﻿
 e_celestia_china = {
 
-	## Tang ##
-	618.1.1 = {
-		name = E_TANG
-		holder = tang001
-		# government = chinese_government
+	866.1.1 = {
 		government = administrative_government
 		succession_laws = {
 			single_heir_succession_law
@@ -30,7 +26,26 @@ e_celestia_china = {
 					add_realm_law_skip_effects = single_heir_succession_law
 				}
 			}
+			holder = {
+				save_scope_as = holder
+				if = {
+					limit = {
+						has_domicile = no
+					}
+					random_held_title = {
+						limit = { is_noble_family_title = yes }
+						scope:holder = { destroy_title = prev }
+					}
+					create_noble_family_effect = yes
+				}
+			}
 		}
+	}
+
+	## Tang ##
+	618.1.1 = {
+		name = E_TANG
+		holder = tang001
 	}
 	626.1.1 = {
 		holder = tang002
