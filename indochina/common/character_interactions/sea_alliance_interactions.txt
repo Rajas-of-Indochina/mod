@@ -934,13 +934,26 @@ call_ally_interaction = {
 			}
 		}
 
-		OR = {
+		# Normally cannot call liege or vassal
+		trigger_if = {
+			limit = {
+				NOR = {
+		   			# Unless mandala or stateless
+					scope:actor = { has_government = mandala_government }
+					scope:actor = { has_government = anarchist_government }
+
+					# Or you're an elevated confederation
+					scope:actor = {
+						primary_title = {
+							has_title_law = confederation_elective_succession_law
+						}
+					}
+				}
+			}
 			can_potentially_call_ally_trigger = {
 				WARRIOR = scope:actor
 				JOINER = scope:recipient
 			}
-			scope:actor = { has_government = mandala_government }
-			scope:actor = { has_government = anarchist_government }
 		}
 
 		# Cannot call a character of the "wrong" religion to a Great Holy War
