@@ -2734,23 +2734,25 @@ restore_ani_cathedral_decision = {
 	ai_check_interval = 120
 
 	is_shown = {
-		is_ruler = yes
-		NOT = {
-			religion = religion:islam_religion
-		}
-		OR = {
-			culture = {	this = culture:armenian }
-			culture = {
-				OR = {
-					any_parent_culture_or_above = {
-						culture = {	this = culture:armenian }
-					}
-					has_cultural_pillar = language_armenian
-				}
+		AND = {
+			is_ruler = yes
+			NOT = {
+				religion = religion:islam_religion
 			}
-			AND = {
-				religion = religion:christianity_religion
-				has_title = title:c_ani
+			OR = {
+				culture = {	this = culture:armenian }
+				culture = {
+					OR = {
+						any_parent_culture_or_above = {
+							culture = {	this = culture:armenian }
+						}
+						has_cultural_pillar = language_armenian
+					}
+				}
+				AND = {
+					religion = religion:christianity_religion
+					has_title = title:c_ani
+				}
 			}
 		}
 		title:b_ani.title_province = {
@@ -2763,13 +2765,10 @@ restore_ani_cathedral_decision = {
 		is_landed = yes
 		has_title = title:c_ani
 		religion = religion:christianity_religion
-		title:b_ani.title_province = {
-			has_building = ani_mosque
-		}
 	}
 
 	effect = {
-		trigger_event = caucasianroa.032
+		restore_ani_cathedral_effect
 	}
 
 	cost = {
