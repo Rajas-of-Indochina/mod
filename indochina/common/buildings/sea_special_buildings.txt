@@ -2943,50 +2943,64 @@ aghtamar_island_cathedral = {
 	flag = travel_point_of_interest_religious
 }
 
-ani_cathedral = {
+ani_temple = {
 	#asset = {
 	#}
+
 	construction_time = very_slow_construction_time
 
-	type_icon = "icon_structure_ani_cathedral.dds"
+	type_icon = "icon_structure_great_fire_temple.dds"
 
 	cost_gold = 1000
 
 	can_construct = {
-
+		OR = {
+			scope:holder = {
+				OR = {
+					religion = religion:zoroastrianism_religion
+					religion = religion:northcaucasian_religion
+					faith.religion = { is_in_family = rf_pagan }
+				}
+			}
+			custom_description = {
+				text = holy_site_building_trigger
+				barony = {
+					is_holy_site_of = scope:holder.faith
+				}
+			}
+		}
 	}
 
 	is_enabled = {
 		scope:holder = {
 			OR = {
-				religion = religion:christianity_religion
-				culture = culture:armenian
+				religion = religion:zoroastrianism_religion
+				religion = religion:northcaucasian_religion
+				faith.religion = { is_in_family = rf_pagan }
 			}
 		}
 	}
 
+	show_disabled = yes
+
 	character_modifier = {
-		monthly_piety = 0.4
-		religious_vassal_opinion = 10
-		zealot_opinion = 10
-		clergy_opinion = 10
+		monthly_piety = 0.2
 		same_faith_opinion = 5
-		same_culture_opinion = 5
 		monthly_dynasty_prestige_mult = 0.05
 	}
 	
 	county_modifier = {
-		development_growth = 0.2
-		development_growth_factor = 0.15
-		tax_mult = 0.3
+		development_growth = 0.1
+		development_growth_factor = 0.1
+		tax_mult = 0.1
 		county_opinion_add = 10
 	}
 
 	province_modifier = {
-		monthly_income = 1
+		monthly_income = 0.5
 	}
 
-	#next_building = ani_mosque
+	next_building = ani_cathedral
 
 	ai_value = {
 		base = 100
@@ -3001,8 +3015,163 @@ ani_cathedral = {
 	flag = travel_point_of_interest_religious
 }
 
-#ani_mosque = {
-#}
+
+ani_cathedral = {
+	#asset = {
+	#}
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "icon_structure_ani_cathedral.dds"
+
+	cost_gold = 1000
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+		OR = {
+			scope:holder = {
+				OR = {
+					religion = religion:christianity_religion
+					culture = culture:armenian
+				}
+			}
+			custom_description = {
+				text = holy_site_building_trigger
+				barony = {
+					is_holy_site_of = scope:holder.faith
+				}
+			}
+		}
+	}
+
+	is_enabled = {
+		scope:holder = {
+			OR = {
+				religion = religion:christianity_religion
+				culture = culture:armenian
+			}
+		}
+	}
+
+	show_disabled = yes
+
+	character_modifier = {
+		monthly_piety = 0.4
+		religious_vassal_opinion = 10
+		zealot_opinion = 10
+		clergy_opinion = 10
+		same_faith_opinion = 5
+		same_culture_opinion = 5
+		monthly_dynasty_prestige_mult = 0.05
+	}
+	
+	county_modifier = {
+		tax_mult = 0.3
+		development_growth = 0.2
+		development_growth_factor = 0.15
+		county_opinion_add = 10
+	}
+
+	province_modifier = {
+		monthly_income = 1
+	}
+
+	next_building = ani_mosque
+
+	ai_value = {
+		base = 100
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+	}
+	
+	type = special
+
+	flag = travel_point_of_interest_religious
+}
+
+ani_mosque = {
+	#asset = {
+	#}
+
+	construction_time = very_slow_construction_time
+
+	type_icon = "icon_structure_ani_cathedral.dds"
+
+	can_construct_potential = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+		OR = {
+			scope:holder = {
+				religion = religion:islam_religion
+			}
+			custom_description = {
+				text = holy_site_building_trigger
+				barony = {
+					is_holy_site_of = scope:holder.faith
+				}
+			}
+		}
+	}
+
+	is_enabled = {
+		custom_description = {
+			text = holy_site_muslim_or_holy_site_trigger
+			OR = {
+				scope:holder = {
+					religion = religion:islam_religion
+				}
+				custom_description = {
+					text = holy_site_building_trigger
+					barony = {
+						is_holy_site_of = scope:holder.faith
+					}
+				}
+			}
+		}
+	}
+
+	show_disabled = yes
+
+	cost_gold = 1000
+
+	character_modifier = {
+		monthly_piety = 0.4
+		religious_vassal_opinion = 10
+		zealot_opinion = 10
+		monthly_dynasty_prestige_mult = 0.05
+		monthly_county_control_growth_factor = 0.1
+		men_at_arms_maintenance = -0.1
+	}
+
+	county_modifier = {
+		tax_mult = 0.3
+		development_growth = 0.2
+		development_growth_factor = 0.2
+	}
+
+	province_modifier = {
+		monthly_income = 1.5
+	}
+
+	ai_value = {
+		base = 100
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+	}
+
+	type = special
+
+	flag = travel_point_of_interest_religious
+}
 
 uplistsikhe_cave_city = {
 	# asset = {
