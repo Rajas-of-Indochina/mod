@@ -2734,29 +2734,34 @@ restore_ani_cathedral_decision = {
 	ai_check_interval = 120
 
 	is_shown = {
-		AND = {
-			is_ruler = yes
-			NOT = {
-				religion = religion:islam_religion
-			}
-			OR = {
-				culture = {	this = culture:armenian }
-				culture = {
-					OR = {
-						any_parent_culture_or_above = {
-							culture = {	this = culture:armenian }
-						}
-						has_cultural_pillar = language_armenian
+		NOT = {
+			religion = religion:islam_religion
+		}
+		OR = {
+			culture = {	this = culture:armenian }
+			culture = {
+				OR = {
+					any_parent_culture_or_above = {
+						culture = {	this = culture:armenian }
 					}
-				}
-				AND = {
-					religion = religion:christianity_religion
-					has_title = title:c_ani
+					has_cultural_pillar = language_armenian
 				}
 			}
-			title:b_ani.title_province = {
-				has_building = ani_mosque
+			religion = religion:christianity_religion
+		}
+		capital_county.title_province = {
+			OR = {
+				geographical_region = world_armenia
+				geographical_region = custom_armenian_cilicia
+				geographical_region = world_azerbaijan
+				geographical_region = world_georgia
+				geographical_region = world_shirvan
+				geographical_region = world_asia_minor
+				geographical_region = world_north_caucasus
 			}
+		}
+		title:b_ani.title_province = {
+			has_building = ani_mosque
 		}
 	}
 
