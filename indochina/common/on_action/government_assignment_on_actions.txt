@@ -18,13 +18,19 @@ on_government_assign_start = {
 
 			if = {
 				limit = {
-					has_government = tribal_government
+					OR = {
+						has_government = tribal_government
+						has_government = anarchist_government
+					}
 					#is_independent_ruler = yes
 					highest_held_title_tier <= tier_duchy
 					culture = {
 						OR = {
 							AND = {
-								has_cultural_tradition = tradition_collective_lands
+								OR = {
+									has_cultural_tradition = tradition_collective_lands
+									has_cultural_parameter = allow_adopting_anarchism
+								}
 								NOT = {
 									this = culture:muong
 									has_cultural_parameter = heritage_group_austronesian
