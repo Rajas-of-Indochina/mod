@@ -2117,14 +2117,16 @@ unify_armenian_principalities_decision = {
 
 	is_shown = {
 		is_landed = yes
-		OR = {
+		AND = {
 			capital_county.title_province = { geographical_region = world_armenia }
-			culture = {
-				this = culture:armenian
-			}
-			culture = {
-				any_parent_culture_or_above = {
+			OR = {
+				culture = {
 					this = culture:armenian
+				}
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:armenian
+					}
 				}
 			}
 		}
@@ -2767,7 +2769,6 @@ restore_ani_cathedral_decision = {
 
 	is_valid = {
 		AND = {
-			is_ruler = yes
 			is_landed = yes
 			has_title = title:c_ani
 			religion = religion:christianity_religion
@@ -2775,6 +2776,7 @@ restore_ani_cathedral_decision = {
 	}
 
 	effect = {
+		custom_tooltip = restore_ani_cathedral_effect_tooltip
 		restore_ani_cathedral_effect
 	}
 
@@ -2797,6 +2799,82 @@ restore_ani_cathedral_decision = {
 		modifier = {
 			add = 20
 			has_trait = zealous
+		}
+	}
+}
+
+caucasus_build_tower_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_thamade.dds" # placeholder
+	}
+
+	ai_check_interval = 36
+
+	cooldown = { days = 7300 }
+
+	desc = caucasus_build_tower_decision_desc
+
+	is_shown = {
+		is_landed = yes
+		highest_held_title_tier > tier_barony
+		culture = {
+			has_cultural_tradition = tradition_highland_tower_architects
+		}
+	}
+
+	is_valid = {
+		culture = {
+			has_cultural_tradition = tradition_highland_tower_architects
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		hidden_effect = {
+			capital_county = { save_scope_as = caucasus_tower_county }
+		}
+		custom_tooltip = caucasus_build_tower_effect_tooltip
+		caucasus_build_tower_effect:0
+	}
+
+	cost = {
+		gold = medium_gold_value
+		prestige = minor_prestige_value
+	}
+
+	ai_potential = {
+		short_term_gold >= medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+		# add more possible influence
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = generous
+		}
+		modifier = {
+			add = -10
+			has_trait = greedy
+		}
+		modifier = {
+			add = 10
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 25
+			current_date >= 1200.1.1
 		}
 	}
 }
