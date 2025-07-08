@@ -1869,3 +1869,177 @@ RICE_sicily_attract_immigrants_effect = {
 	}
 	RICE_sicily_administer_frontier_ruling_class_bonus_effect = yes
 }
+
+RICE_setup_yazidi_flavor_pack_effect = {
+
+	############################################################
+	#
+	# RELIGION CHANGES
+	#
+	############################################################
+
+	# Mark some faiths to block conversion and be hidden till specific decisions are taken.
+	faith:yazidi = {
+		set_variable = { name = block_conversion_till_nebulous_circumstances }
+	}
+	# Yarsanism
+	faith:meshefaresism = {
+		set_variable = { name = block_conversion_till_nebulous_circumstances }
+	}
+	# Kurdish Paganism
+	# Shamsi Sect
+	# Alevis
+	# Arewordik
+
+	############################################################
+	#
+	# CULTURE CHANGES
+	#
+	############################################################
+
+	# Get rid of weird Brahui
+	every_ruler = {
+		limit = {
+			culture = culture:brahui
+		}
+		set_culture = culture:sindhi
+		every_vassal = {
+			limit = {
+				culture = culture:brahui
+			}
+			set_culture = culture:sindhi
+		}
+		every_courtier_or_guest = {
+			limit = {
+				culture = culture:brahui
+			}
+			set_culture = culture:sindhi
+		}
+	}
+
+	############################################################
+	#
+	# HISTORY CHANGES
+	#
+	############################################################
+
+	# Kurdish paganism and other stuff
+	title:c_istakhr = {
+		set_county_culture = culture:persian
+	}	
+	title:c_kermanshah = {
+		set_county_faith = faith:kitebacilweism
+		holder = {			
+			every_courtier_or_guest = {
+				limit = {
+					is_lowborn = yes
+					culture = culture:kurdish
+				}
+				random = {
+					chance = 20
+					set_character_faith = faith:kitebacilweism
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			game_start_date <= 1000
+		}	
+		title:c_masabadhan = {
+			set_county_faith = faith:kitebacilweism
+			holder = {			
+				every_courtier_or_guest = {
+					limit = {
+						is_lowborn = yes
+						culture = culture:kurdish
+					}
+					random = {
+						chance = 20
+						set_character_faith = faith:kitebacilweism
+					}
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			character:kurdish0001 = {
+				is_alive = yes
+				is_landed = yes
+			}
+		}
+		character:kurdish0001 = {
+			hidden_effect = {
+				RICE_jizya_contract_at_start_effect = yes
+			}
+		}
+	}
+	title:c_upper_khabur.holder = {
+		every_courtier_or_guest = {
+			limit = {
+				is_lowborn = yes
+			}
+			random = {
+				chance = 30
+				set_character_faith = faith:shamsi_pagan
+			}
+		}
+	}
+	title:c_tall_basma.holder = {
+		every_courtier_or_guest = {
+			limit = {
+				is_lowborn = yes
+			}
+			random = {
+				chance = 30
+				set_character_faith = faith:shamsi_pagan
+			}
+		}
+	}
+	title:c_amida.holder = {
+		every_courtier_or_guest = {
+			limit = {
+				is_lowborn = yes
+				culture = culture:armenian
+			}
+			random = {
+				chance = 30
+				set_character_faith = faith:urartuism
+			}
+		}
+	}
+	title:c_samosata.holder = {
+		every_courtier_or_guest = {
+			limit = {
+				is_lowborn = yes
+				culture = culture:armenian
+			}
+			random = {
+				chance = 30
+				set_character_faith = faith:urartuism
+			}
+		}
+	}
+
+	# Soraya's Iranian Fixes
+	# applied in RoA history changes
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+
+	# For 1066 bookmark
+	if = {
+		limit = {
+			game_start_date = 1066.9.15
+		}
+		# Give some territory to Tirahaye Kurds
+		character:RICE_kurdish_pagan_001 = {
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+			RICE_jizya_contract_at_start_effect = yes
+		}
+	}
+}

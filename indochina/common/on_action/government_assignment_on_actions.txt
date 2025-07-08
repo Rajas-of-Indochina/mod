@@ -24,7 +24,9 @@ on_government_assign_start = {
 					culture = {
 						OR = {
 							AND = {
-								has_cultural_tradition = tradition_collective_lands
+								OR = {
+									has_cultural_tradition = tradition_collective_lands
+								}
 								NOT = {
 									this = culture:muong
 									has_cultural_parameter = heritage_group_austronesian
@@ -42,6 +44,12 @@ on_government_assign_start = {
 							this = culture:moklen
 						}
 					}
+				}
+				convert_to_stateless_effect = yes
+			}
+			if = {
+				limit = {
+					has_government = anarchist_government
 				}
 				convert_to_stateless_effect = yes
 			}
@@ -147,7 +155,7 @@ set_anarchist_coas = {
 				has_government = anarchist_government
 				is_independent_ruler = yes
 				exists = capital_county
-				exists = primary_title
+				primary_title ?= { tier = tier_duchy }
 			}
 
 			primary_title = {
