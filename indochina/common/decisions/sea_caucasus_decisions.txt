@@ -520,9 +520,7 @@ circassian_decision.6 = {
 	}
 
 	effect = {
-
 		add_trait = thamade
-
 	}
 
 	ai_potential = {
@@ -2807,10 +2805,9 @@ caucasus_build_tower_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_caucasus_vainakh_towers.dds"
 	}
-
+	decision_group_type = major
 	desc = caucasus_build_tower_decision_desc
 	selection_tooltip = caucasus_build_tower_decision_tooltip
-	decision_group_type = major
 
 	cooldown = { days = 7300 }
 
@@ -2819,10 +2816,19 @@ caucasus_build_tower_decision = {
 		highest_held_title_tier > tier_barony
 		culture = {
 			has_cultural_tradition = tradition_highland_tower_architects
+			OR = {
+				has_cultural_pillar = heritage_ciscaucasian
+				has_cultural_pillar = heritage_aghvank
+				this = culture:svan
+				any_parent_culture_or_above = {
+					this = culture:svan
+				}
+			}
 		}
 	}
 
 	is_valid = {
+		is_landed = yes
 		culture = {
 			has_cultural_tradition = tradition_highland_tower_architects
 		}
