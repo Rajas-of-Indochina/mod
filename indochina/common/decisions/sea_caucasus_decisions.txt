@@ -2808,11 +2808,11 @@ caucasus_build_tower_decision = {
 		reference = "gfx/interface/illustrations/decisions/decision_caucasus_vainakh_towers.dds"
 	}
 
-	ai_check_interval = 36
+	desc = caucasus_build_tower_decision_desc
+	selection_tooltip = caucasus_build_tower_decision_tooltip
+	decision_group_type = major
 
 	cooldown = { days = 7300 }
-
-	desc = caucasus_build_tower_decision_desc
 
 	is_shown = {
 		is_landed = yes
@@ -2836,21 +2836,27 @@ caucasus_build_tower_decision = {
 		hidden_effect = {
 			capital_county = { save_scope_as = caucasus_tower_county }
 		}
+		set_variable = {
+			name = caucasus_build_tower_refund
+			value = medium_gold_value
+		}
+		show_as_tooltip = { caucasus_build_tower_effect = yes }
 		custom_tooltip = caucasus_build_tower_effect_tooltip
-		caucasus_build_tower_effect
+		trigger_event = caucasianroa.033
 	}
 
 	cost = {
 		gold = medium_gold_value
-		prestige = minor_prestige_value
 	}
+
+	ai_check_interval = 36
 
 	ai_potential = {
 		short_term_gold >= medium_gold_value
 	}
 
 	ai_will_do = {
-		base = 25
+		base = 40
 		# add more possible influence
 		modifier = {
 			add = 10
@@ -2873,7 +2879,15 @@ caucasus_build_tower_decision = {
 			has_trait = paranoid
 		}
 		modifier = {
-			add = 25
+			add = 5
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -5
+			has_trait = content
+		}
+		modifier = {
+			add = 20
 			current_date >= 1200.1.1
 		}
 	}
