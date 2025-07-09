@@ -1,14 +1,36 @@
 ﻿
 thalassocratic_coastal_holdings_value = 0.20
-
 thalassocratic_coastal_holdings_value_tt = {
 	value = maritime_mercantilism_coastal_holdings_value
 	multiply = 100
 }
 
 thalassocratic_non_coastal_holdings_value = -0.10
-
 thalassocratic_non_coastal_holdings_value_tt = {
 	value = maritime_mercantilism_coastal_holdings_value
 	multiply = 100
+}
+
+tribal_holding_fort_level_in_mountains_bonus_value = 1
+tribal_holding_fort_level_in_hills_bonus_value = 1
+
+caucasus_build_tower_county_preference_cap_value = {
+	value = 0
+	every_in_list = {
+		list = personally_held_counties_list
+		add = 1
+	}
+	max = 3
+}
+caucasus_build_tower_value = {
+	value = 0
+	if = {
+		limit = { caucasus_can_build_tower_title_scope_trigger = yes }
+		add = 25
+	}
+	add = this.development_level  # placeholder
+	if = {
+		limit = { exists = this.var:caucasus_tower_slot_occupied }
+		add = -100
+	}
 }
