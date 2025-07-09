@@ -2805,7 +2805,7 @@ caucasus_build_tower_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_caucasus_vainakh_towers.dds"
 	}
-	decision_group_type = major
+	decision_group_type = realm
 	desc = caucasus_build_tower_decision_desc
 	selection_tooltip = caucasus_build_tower_decision_tooltip
 
@@ -2813,28 +2813,12 @@ caucasus_build_tower_decision = {
 
 	is_shown = {
 		is_landed = yes
-		culture = {
-			OR = {
-				has_cultural_tradition = tradition_highland_tower_architects
-				has_cultural_pillar = heritage_ciscaucasian
-				has_cultural_pillar = heritage_aghvank
-				this = culture:svan
-				any_parent_culture_or_above = {
-					this = culture:svan
-				}
-			}
-		}
+		caucasus_can_build_tower_title_scope_trigger = yes
 	}
 
 	is_valid = {
 		is_landed = yes
-		culture = {
-			has_cultural_tradition = tradition_highland_tower_architects
-		}
-	}
-
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
+		caucasus_can_build_tower_title_scope_trigger = yes
 	}
 
 	effect = {
@@ -2843,7 +2827,7 @@ caucasus_build_tower_decision = {
 		}
 		set_variable = {
 			name = caucasus_build_tower_refund
-			value = medium_gold_value
+			value = 100
 		}
 		show_as_tooltip = { caucasus_build_tower_effect = yes }
 		custom_tooltip = caucasus_build_tower_effect_tooltip
@@ -2851,13 +2835,13 @@ caucasus_build_tower_decision = {
 	}
 
 	cost = {
-		gold = medium_gold_value
+		gold = 100
 	}
 
 	ai_check_interval = 36
 
 	ai_potential = {
-		short_term_gold >= medium_gold_value
+		short_term_gold >= 100
 	}
 
 	ai_will_do = {
