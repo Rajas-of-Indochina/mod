@@ -4,6 +4,7 @@
 
 # Caucasian decisions by Patlichan, edited by Shautora.
 # More decisions by Malonkey [Rajas of Asia Team]
+# IDK why we're even writing this i think its a leftover - patlichan
 
 avar_decision_sassanid = {
 	# Decision - Claim Sassanid heritage
@@ -2880,4 +2881,83 @@ caucasus_build_tower_decision = {
 			current_date >= 1200.1.1
 		}
 	}
+}
+
+circassian_sponsor_pirate_raid_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/circassian_pirates.dds"
+	}
+	decision_group_type = major
+	desc = circassian_sponsor_pirate_raid_decision_desc
+	selection_tooltip = circassian_sponsor_pirate_raid_decision_tooltip
+
+	cooldown = { days = 1 }
+    
+    cost = {
+        gold = 100
+        prestige = 100
+    }
+    
+    is_shown = {
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			culture = {
+				any_parent_culture_or_above = {
+					OR = {
+						culture = {	this = culture:circassian }
+						culture = {	this = culture:ubykh }
+					}
+				}
+			}
+		}
+        OR = {
+            independent_ruler = yes
+            tier = tier_duke
+        }
+    }
+    
+    is_valid = {
+        is_at_war = no
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			culture = {
+				any_parent_culture_or_above = {
+					OR = {
+						culture = {	this = culture:circassian }
+						culture = {	this = culture:ubykh }
+					}
+				}
+			}
+		}
+        OR = {
+            independent_ruler = yes
+            tier = tier_duke
+        }
+        NOT = { has_trait = compassionate }
+    }
+    
+    effect = {
+        
+			trigger_event = {
+			id = caucasianroa.035
+			days = 5 }
+    }
+    
+    ai_will_do = {
+        base = 10
+        modifier = {
+            add = 10
+            has_trait = ambitious
+        }
+        modifier = {
+            add = 20
+            has_trait = greedy
+        }
+        modifier = {
+            add = 10
+            gold >= 500  # More likely if wealthy
+        }
+    }
 }
