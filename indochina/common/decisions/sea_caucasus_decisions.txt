@@ -2725,83 +2725,6 @@ align_circassian_church_decision = {
 	}
 }
 
-restore_ani_cathedral_decision = {
-	# Decision - Restore Ani Cathedral
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
-	}
-	decision_group_type = major
-	desc = restore_ani_cathedral_decision_desc
-	ai_check_interval = 120
-
-	is_shown = {
-		NOT = {
-			religion = religion:islam_religion
-		}
-		OR = {
-			culture = {	this = culture:armenian }
-			culture = {
-				OR = {
-					any_parent_culture_or_above = {
-						culture = {	this = culture:armenian }
-					}
-					has_cultural_pillar = language_armenian
-				}
-			}
-			religion = religion:christianity_religion
-		}
-		capital_county.title_province = {
-			OR = {
-				geographical_region = world_armenia
-				geographical_region = custom_armenian_cilicia
-				geographical_region = world_azerbaijan
-				geographical_region = world_georgia
-				geographical_region = world_shirvan
-				geographical_region = world_asia_minor
-				geographical_region = world_north_caucasus
-			}
-		}
-		title:b_ani.title_province = {
-			has_building = ani_mosque
-		}
-	}
-
-	is_valid = {
-		AND = {
-			is_landed = yes
-			has_title = title:c_ani
-			religion = religion:christianity_religion
-		}
-	}
-
-	effect = {
-		custom_tooltip = restore_ani_cathedral_effect_tooltip
-		restore_ani_cathedral_effect
-	}
-
-	cost = {
-		gold = minor_gold_value
-		prestige = medium_prestige_value
-	}
-
-	ai_potential = {
-		religion = religion:christianity_religion
-		is_adult = yes
-	}
-
-	ai_will_do = {
-		base = 80
-		modifier = {
-			add = -10
-			has_trait = cynical
-		}
-		modifier = {
-			add = 20
-			has_trait = zealous
-		}
-	}
-}
-
 caucasus_build_tower_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_caucasus_vainakh_towers.dds"
@@ -2814,7 +2737,13 @@ caucasus_build_tower_decision = {
 
 	is_shown = {
 		is_landed = yes
-		caucasus_can_build_tower_title_scope_trigger = yes
+		culture = {
+			OR = {
+				this = culture:nakh
+				this = culture:svan
+				this = culture:paranakh
+			}
+		}
 	}
 
 	is_valid = {
@@ -2830,7 +2759,6 @@ caucasus_build_tower_decision = {
 			name = caucasus_build_tower_refund
 			value = 100
 		}
-		show_as_tooltip = { caucasus_build_tower_effect = yes }
 		custom_tooltip = caucasus_build_tower_effect_tooltip
 		trigger_event = caucasianroa.033
 	}
@@ -2960,4 +2888,81 @@ circassian_sponsor_pirate_raid_decision = {
             gold >= 500  # More likely if wealthy
         }
     }
+}
+
+restore_ani_cathedral_decision = {
+	# Decision - Restore Ani Cathedral
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds"
+	}
+	decision_group_type = major
+	desc = restore_ani_cathedral_decision_desc
+	ai_check_interval = 120
+
+	is_shown = {
+		NOT = {
+			religion = religion:islam_religion
+		}
+		OR = {
+			culture = {	this = culture:armenian }
+			culture = {
+				OR = {
+					any_parent_culture_or_above = {
+						culture = {	this = culture:armenian }
+					}
+					has_cultural_pillar = language_armenian
+				}
+			}
+			religion = religion:christianity_religion
+		}
+		capital_county.title_province = {
+			OR = {
+				geographical_region = world_armenia
+				geographical_region = custom_armenian_cilicia
+				geographical_region = world_azerbaijan
+				geographical_region = world_georgia
+				geographical_region = world_shirvan
+				geographical_region = world_asia_minor
+				geographical_region = world_north_caucasus
+			}
+		}
+		title:b_ani.title_province = {
+			has_building = ani_mosque
+		}
+	}
+
+	is_valid = {
+		AND = {
+			is_landed = yes
+			has_title = title:c_ani
+			religion = religion:christianity_religion
+		}
+	}
+
+	effect = {
+		custom_tooltip = restore_ani_cathedral_effect_tooltip
+		restore_ani_cathedral_effect
+	}
+
+	cost = {
+		gold = minor_gold_value
+		prestige = medium_prestige_value
+	}
+
+	ai_potential = {
+		religion = religion:christianity_religion
+		is_adult = yes
+	}
+
+	ai_will_do = {
+		base = 80
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = 20
+			has_trait = zealous
+		}
+	}
 }
