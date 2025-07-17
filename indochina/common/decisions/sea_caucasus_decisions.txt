@@ -2737,13 +2737,7 @@ caucasus_build_tower_decision = {
 
 	is_shown = {
 		is_landed = yes
-		culture = {
-			OR = {
-				this = culture:nakh
-				this = culture:svan
-				this = culture:paranakh
-			}
-		}
+		caucasus_can_build_tower_title_scope_trigger = yes
 	}
 
 	is_valid = {
@@ -2820,13 +2814,13 @@ circassian_sponsor_pirate_raid_decision = {
 	selection_tooltip = circassian_sponsor_pirate_raid_decision_tooltip
 
 	cooldown = { days = 1 }
-    
-    cost = {
-        gold = 100
-        prestige = 100
-    }
-    
-    is_shown = {
+	
+	cost = {
+		gold = medium_gold_value
+		prestige = minor_prestige_value
+	}
+	
+	is_shown = {
 		OR = {
 			culture = {	this = culture:circassian }
 			culture = {	this = culture:ubykh }
@@ -2839,14 +2833,14 @@ circassian_sponsor_pirate_raid_decision = {
 				}
 			}
 		}
-        OR = {
-            independent_ruler = yes
-            tier = tier_duke
-        }
-    }
-    
-    is_valid = {
-        is_at_war = no
+		OR = {
+			independent_ruler = yes
+			highest_held_title_tier = tier_duchy
+		}
+	}
+	
+	is_valid = {
+		is_at_war = no
 		OR = {
 			culture = {	this = culture:circassian }
 			culture = {	this = culture:ubykh }
@@ -2859,35 +2853,35 @@ circassian_sponsor_pirate_raid_decision = {
 				}
 			}
 		}
-        OR = {
-            independent_ruler = yes
-            tier = tier_duke
-        }
-        NOT = { has_trait = compassionate }
-    }
-    
-    effect = {
-        
-			trigger_event = {
+		OR = {
+			independent_ruler = yes
+			highest_held_title_tier = tier_duchy
+		}
+		NOT = { has_trait = compassionate }
+	}
+	
+	effect = {
+		trigger_event = {
 			id = caucasianroa.035
-			days = 5 }
-    }
-    
-    ai_will_do = {
-        base = 10
-        modifier = {
-            add = 10
-            has_trait = ambitious
-        }
-        modifier = {
-            add = 20
-            has_trait = greedy
-        }
-        modifier = {
-            add = 10
-            gold >= 500  # More likely if wealthy
-        }
-    }
+			days = 5
+		}
+	}
+	
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 20
+			has_trait = greedy
+		}
+		modifier = {
+			add = 10
+			gold >= 500  # More likely if wealthy
+		}
+	}
 }
 
 restore_ani_cathedral_decision = {
