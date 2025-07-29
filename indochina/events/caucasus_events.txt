@@ -1842,44 +1842,47 @@ caucasianroa.034 = {
 			limit = { tier = tier_county }
 			add_to_list = personally_held_counties_list
 		}
-		if = {
-			#limit = {}
-			ordered_in_list = {
-				list = personally_held_counties_list
-				max = caucasus_build_tower_county_preference_cap_value
-				order_by = caucasus_build_tower_value
-				if = {
-					limit = {
-						NOT = { exists = scope:location_a }
-					}
-					save_scope_as = location_a
+		ordered_in_list = {
+			list = personally_held_counties_list
+			max = caucasus_build_tower_county_preference_cap_value
+			order_by = caucasus_build_tower_value
+			if = {
+				limit = {
+					NOT = { exists = scope:location_a }
 				}
-				else_if = {
-					limit = {
-						NOR = {
-							this = scope:location_a
+				save_scope_as = location_a
+			}
+			else_if = {
+				limit = {
+					NOR = {
+						this = scope:location_a
+						exists = scope:location_b
+					}
+				}
+				save_scope_as = location_b
+			}
+			else_if = {
+				limit = {
+					NOR = {
+						this = scope:location_a
+						this = scope:location_b
+						exists = scope:location_c
+					}
+				}
+				save_scope_as = location_c
+			}
+			else_if = {
+				limit = {
+					NOT = {
+						OR = {
+							exists = scope:location_a
 							exists = scope:location_b
-						}
-					}
-					save_scope_as = location_b
-				}
-				else_if = {
-					limit = {
-						NOR = {
-							this = scope:location_a
-							this = scope:location_b
 							exists = scope:location_c
 						}
 					}
-					save_scope_as = location_c
 				}
+				capital_county = { save_scope_as = location_a }
 			}
-		}
-		else_if = {
-			limit = {
-				NOT = { exists = scope:location_a }
-			}
-			capital_county = { save_scope_as = location_a }
 		}
 		caucasus_build_tower_rewards_effect = yes
 	}
