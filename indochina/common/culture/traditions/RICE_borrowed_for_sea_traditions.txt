@@ -1,0 +1,133 @@
+﻿
+tradition_RICE_beyond_the_reach_of_eagles = {
+	category = regional
+
+	layers = {
+		0 = diplo
+		1 = mena
+		4 = RICE_beyond_the_reach_of_eagles.dds
+	}
+	
+	is_shown = {
+		any_culture_county = {
+			title_province = {
+				geographical_region = RICE_greater_pamir_region
+			}
+		}
+	}
+	can_pick = {
+		any_culture_county = {
+			count >= 3
+			title_province = {
+				geographical_region = RICE_greater_pamir_region
+			}
+		}
+	}
+	
+	parameters = {
+		unlimited_chinir_festival = yes
+		cheaper_pamir_watchtower_decision = yes
+		#hill_farms_building_bonuses = yes
+		unlock_RICE_pamir_tribesmen = yes
+	}
+	province_modifier = {
+		mountains_supply_limit_mult = 0.25
+		desert_mountains_supply_limit_mult = 0.25
+	}
+	character_modifier = {
+		monthly_county_control_decline_factor = -0.2
+		vassal_opinion = -5
+		defender_advantage = 2	
+		mountains_travel_danger = mountains_low_danger_reduction
+		desert_mountains_travel_danger = desert_mountains_low_danger_reduction	
+		ai_honor = 10
+	}	
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = { value = 25 }
+}
+
+tradition_RICE_white_huns = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = mena
+		4 = soldiers2.dds
+	}
+	
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		OR = {
+			this = culture:hephthalite
+			any_parent_culture_or_above = {
+				this = culture:hephthalite
+			}
+			scope:character = {
+				# Zunbils were Hephthalite remnants
+				religion = religion:zunism_religion	
+			}
+		}
+	}
+	can_pick = {
+		OR = {
+			this = culture:hephthalite
+			any_parent_culture_or_above = {
+				this = culture:hephthalite
+			}
+			scope:character = {
+				# Zunbils were Hephthalite remnants
+				religion = religion:zunism_religion	
+			}
+		}
+	}
+	
+	parameters = {
+		unlock_rice_decision_hephthalite_empire = yes
+		culture_can_raid_over_land_even_if_feudal = yes
+		republican_vassals_pay_more = yes		
+		unlock_RICE_pamir_tribesmen = yes
+	}
+
+	character_modifier = {
+		tribal_government_vassal_opinion = 5
+		monthly_county_control_decline_factor = -0.25
+	}	
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = { value = 50 }
+}
