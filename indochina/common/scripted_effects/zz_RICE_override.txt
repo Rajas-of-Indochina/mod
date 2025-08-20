@@ -1543,8 +1543,6 @@ RoA_RICE_setup_magadha_flavor_pack_effect = {
             add_doctrine = rice_mahayana_canon_doctrine
         }
     }
-
-
 }
 
 # call from county scope
@@ -2038,8 +2036,295 @@ RICE_setup_yazidi_flavor_pack_effect = {
 		}
 		# Give some territory to Tirahaye Kurds
 		character:RICE_kurdish_pagan_001 = {
-			RICE_setup_new_granted_ruler_bonuses_effect = yes
 			RICE_jizya_contract_at_start_effect = yes
+		}
+	}
+}
+
+RICE_setup_pamir_flavor_pack_effect = {
+
+	############################################################
+	#
+	# CULTURE CHANGES
+	#
+	############################################################
+	culture:brahui = {
+		set_name_list = name_list_brahui
+	}
+
+	# Below is based on Encyclopedia Iranica, citing Mahmud Kashgari who lived in the 11th century during the 1066 start date, so should be considered accurate enough for game purposes
+		# See https://iranicaonline.org/articles/sogdiana-iii-history-and-archeology and https://iranicaonline.org/articles/yaghnobi
+		# Latest Sogdian texts come from Talas (c_taraz), Kashgari mentions people there are bilingual in Sogdian and Turkic
+		# Per Encyclopedia Iranica, much of the area between Samarkand and Bukhara (c_dabusiya) was still Sogdian until 15th century, even if elites abandoned language
+		# Roughly areas where Yagnobi, a descendant of Sogdian, is spoken nowadays
+		# Actual Yagnobi valley is in mountainous terrain, Encyclopedia Iranica suggests it was once spoken in a wider area (c_zarafshan), however
+		# Area (c_oshrusana) of origin for Yagnobi dialect
+
+	if = {
+		limit = {
+			current_date > 700.1.1
+			current_date < 900.1.1
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_west-tokharestan
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_east-tokharestan
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_balkh
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_ghazna
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_rukhaj
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_zabulistan
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:afghan
+			SIZE = large
+			COUNTY = title:c_zamindawar
+		}
+	}
+	else_if = {
+		limit = {
+			current_date >= 900.1.1
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:khalaj
+			SIZE = small
+			COUNTY = title:c_ghazna
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:afghan
+			SIZE = small
+			COUNTY = title:c_zamindawar
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:afghan
+			SIZE = large
+			COUNTY = title:c_zabulistan
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:afghan
+			SIZE = large
+			COUNTY = title:c_rukhaj
+		}
+	}
+
+	if = {
+		limit = {
+			NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		}	
+		culture:hephthalite = {
+			add_culture_tradition = tradition_RICE_white_huns # White Huns
+			remove_variable = tradition_cooldown
+		}
+		culture:turco_hephthalite = {
+			add_culture_tradition = tradition_RICE_white_huns # White Huns
+			remove_variable = tradition_cooldown
+		}
+	}
+
+	culture:pamiri = {
+		add_culture_tradition = tradition_RICE_beyond_the_reach_of_eagles
+		remove_variable = tradition_cooldown
+	}
+	culture:burusho = {
+		add_culture_tradition = tradition_RICE_beyond_the_reach_of_eagles
+		remove_variable = tradition_cooldown
+	}
+	culture:nuristani = {
+		add_culture_tradition = tradition_RICE_beyond_the_reach_of_eagles
+		remove_variable = tradition_cooldown
+	}
+
+	############################################################
+	#
+	# RELIGION TERRITORY CHANGES
+	#
+	############################################################
+	
+	############################################################
+	#
+	# BUILDINGS
+	#
+	############################################################
+
+	############################################################
+	#
+	# HISTORICAL CHARACTERS
+	#
+	############################################################
+	
+	if = {
+		limit = {
+			current_date < 900.1.1
+			current_date > 800.1.1
+		}
+		# PAMIR
+		character:RICE_pamir_001 = {
+			save_scope_as = pamir_puteshan_king
+		}
+		character:RICE_pamir_002 = {
+			save_scope_as = pamir_wakhanshah_king
+		}
+		character:RICE_pamir_003 = {
+			save_scope_as = pamir_shugnanshah_king
+		}
+		character:RICE_pamir_004 = {
+			save_scope_as = pamir_shugnanshah_king_2
+		}
+		character:188712 = { # Firuz. Zunbils are pagan and independent until 870 CE, ID# 188710 is the cousin
+			add_gold = 25
+			add_piety = 100
+			add_prestige = 100
+		}
+		character:RICE_pamir_013 = { # Give titles and bonuses to Azur Jamshid
+			save_scope_as = azur_jamshid
+			add_gold = 50
+			add_piety = 1000
+			add_prestige = 1000
+			dynasty = { add_dynasty_prestige = 500 }
+			add_character_modifier = {
+				modifier = RICE_pamir_is_azur_jamshid
+			}
+		}
+	}
+		
+	if = {
+		limit = {
+			current_date > 1000.1.1
+			current_date < 1100.1.1
+		}
+		character:persian_scholars_3 = { # Make Nasir Khusraw better
+			add_character_modifier = {
+				modifier = RICE_pamir_nasir_khusraw
+			}
+			add_character_flag = do_not_generate_starting_family
+			save_scope_as = nasir_khusraw
+		}
+		character:248023 = {
+			save_scope_as = muhtajid_ruler
+		}
+		character:RICE_pamir_021 = { # Azur Jamshid's descendant
+			dynasty = { add_dynasty_prestige = 1000 }
+		}
+		# Ali ibn Asad, Nasir Khusraw's friend
+		character:badakhshanids_2 = { 
+			save_scope_as = ali_ibn_asad
+			trigger_event = pamir.0003
+		}
+	}
+
+	if = {
+		limit = {
+			current_date > 1150.1.1
+			current_date < 1200.1.1
+		}
+		character:RICE_pamir_023 = { # Azur Jamshid's descendant
+			dynasty = { add_dynasty_prestige = 1000 }
+		}
+	}
+
+
+	############################################################
+	#
+	# MISC
+	#
+	############################################################
+
+	if = {
+		limit = {
+			current_date >= 900.1.1
+		}
+		set_global_variable = {
+			name = khalaj_culture_creation
+			value = yes
+		}
+	}
+
+	every_ruler = {
+		limit = {
+			any_held_county = {
+				any_county_province = {
+					geographical_region = RICE_hephthalite_former_empire_region
+					culture = culture:turco_hephthalite
+				}
+			}
+		}
+		every_courtier_or_guest = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_turkic }
+					culture = { has_cultural_pillar = heritage_iranian }
+				}
+				is_lowborn = yes
+			}
+			random = {
+				chance = 33
+				set_culture = culture:turco_hephthalite
+			}
+		}
+	}
+
+	every_ruler = {
+		limit = {
+			any_held_county = {
+				any_county_province = {
+					geographical_region = RICE_hephthalite_former_empire_region
+					culture = culture:khalaj
+				}
+			}
+		}
+		every_courtier_or_guest = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_turkic }
+					culture = { has_cultural_pillar = heritage_iranian }
+				}
+				is_lowborn = yes
+			}
+			random = {
+				chance = 33
+				set_culture = culture:khalaj
+			}
+		}
+	}
+
+	every_ruler = {
+		limit = {
+			any_held_county = {
+				any_county_province = {
+					geographical_region = RICE_mini_pamir_region
+					culture = culture:nuristani
+				}
+			}
+		}
+		every_courtier_or_guest = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_indo_aryan }
+				is_lowborn = yes
+			}
+			random = {
+				chance = 33
+				set_culture = culture:nuristani
+			}
 		}
 	}
 }
