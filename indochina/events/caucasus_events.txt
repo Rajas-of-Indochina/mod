@@ -1929,31 +1929,6 @@ caucasianroa.035 = {
 	desc = caucasianroa.035.d
 	theme = feast_activity
 
-	immediate = {
-		create_character = {
-			age = { 30 50 }
-			location = root.capital_province
-			gender = male
-			dynasty = generate
-			culture = ROOT.culture
-			faith = ROOT.faith
-			random_traits = yes
-			trait = scarred
-			trait = viking #pirate
-			trait = adventurer
-			trait = gallowsbait
-			trait = greedy
-
-			after_creation = {
-				add_gold = { minor_gold_value medium_gold_value }
-				add_prestige = { minor_prestige_gain medium_prestige_gain }
-				add_piety = { minor_piety_gain }
-			}
-
-			save_scope_as = pirate_thamade
-		}
-	}
-
 	right_portrait = {
 		character = ROOT
 		animation = drink_goblet
@@ -1967,13 +1942,16 @@ caucasianroa.035 = {
 	option = {
 		name = caucasianroa.035.a 
 
+		custom_tooltip = {
+		text = sponsor_commence_customtooltip		
 		random_list = {
-            30 = { trigger_event = { id = caucasianroa.036 days = 5 } } # success
-            30 = { trigger_event = { id = caucasianroa.039 days = 5 } } # success
-            30 = { trigger_event = { id = caucasianroa.037 days = 5 } } # fail
+            30 = { trigger_event = { id = caucasianroa.036 days = 40 } } # success
+            30 = { trigger_event = { id = caucasianroa.039 days = 40 } } # success
+            30 = { trigger_event = { id = caucasianroa.037 days = 50 } } # fail
             10 = { trigger_event = { id = caucasianroa.040 days = 1 } } # fail
         }
 	}
+}
 }
 
 caucasianroa.038 = {
@@ -1982,31 +1960,6 @@ caucasianroa.038 = {
 	title = caucasianroa.038.t
 	desc = caucasianroa.038.d
 	theme = feast_activity
-
-	immediate = {
-		create_character = {
-			age = { 30 50 }
-			location = root.capital_province
-			gender = male
-			dynasty = generate
-			culture = ROOT.culture
-			faith = ROOT.faith
-			random_traits = yes
-			trait = scarred
-			trait = viking #pirate
-			trait = adventurer
-			trait = gallowsbait
-			trait = greedy
-
-			after_creation = {
-				add_gold = { minor_gold_value medium_gold_value }
-				add_prestige = { minor_prestige_gain medium_prestige_gain }
-				add_piety = { minor_piety_gain }
-			}
-
-			save_scope_as = pirate_thamade
-		}
-	}
 
 	right_portrait = {
 		character = ROOT
@@ -2021,21 +1974,24 @@ caucasianroa.038 = {
 	option = {
 		name = caucasianroa.038.a 
 
+		custom_tooltip = {
+		text = sponsor_commence_customtooltip
 		random_list = {
-            30 = { trigger_event = { id = caucasianroa.036 days = 5 } } # success
-            30 = { trigger_event = { id = caucasianroa.039 days = 5 } } # success
-            30 = { trigger_event = { id = caucasianroa.037 days = 5 } } # fail
+            30 = { trigger_event = { id = caucasianroa.036 days = 40 } } # success
+            30 = { trigger_event = { id = caucasianroa.039 days = 40 } } # success
+            30 = { trigger_event = { id = caucasianroa.037 days = 50 } } # fail
             10 = { trigger_event = { id = caucasianroa.040 days = 1 } } # fail
         }
 	}
+}
 		
 	option = {
 		name = caucasianroa.038.b 
 
 		random_list = {
-            25 = { trigger_event = { id = caucasianroa.036 days = 5 } } # success
-            25 = { trigger_event = { id = caucasianroa.039 days = 5 } } # success
-            30 = { trigger_event = { id = caucasianroa.037 days = 5 } } # fail
+            25 = { trigger_event = { id = caucasianroa.036 days = 40 } } # success
+            25 = { trigger_event = { id = caucasianroa.039 days = 40 } } # success
+            30 = { trigger_event = { id = caucasianroa.037 days = 50 } } # fail
             20 = { trigger_event = { id = caucasianroa.040 days = 1 } } # fail
         }
 	}
@@ -2106,8 +2062,8 @@ caucasianroa.037 = {
 caucasianroa.039 = {
 	# Sponsor Pirate Raid event succeed 2
 	type = character_event
-	title = caucasianroa.036.t
-	desc = caucasianroa.036.d
+	title = caucasianroa.039.t
+	desc = caucasianroa.039.d
 	theme = war
 	
 	right_portrait = {
@@ -2146,6 +2102,11 @@ caucasianroa.040 = {
 	title = caucasianroa.040.t
 	desc = caucasianroa.040.d
 	theme = war 
+
+	right_portrait = {
+		character = scope:pirate_thamade
+		animation = aggressive_dagger
+	}
 	
 	left_portrait = {
 		character = ROOT
@@ -2158,6 +2119,24 @@ caucasianroa.040 = {
 		add_prestige = -200
 		add_piety = -200
 		
+	}
+}
+
+caucasianroa.041 = {
+	# Sponsor Pirate Raid event
+	hidden = yes
+
+	immediate = {
+		create_character = {
+			location = root.location
+			template = pirate_thamade_character
+			random_traits = yes
+			save_scope_as = pirate_thamade
+		}
+		random_list = {
+            60 = { trigger_event = { id = caucasianroa.035 days = 10 } } # success bone
+            40 = { trigger_event = { id = caucasianroa.038 days = 10 } } # fail bone
+        }		
 	}
 }
 
