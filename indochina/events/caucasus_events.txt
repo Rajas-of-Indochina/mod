@@ -1927,19 +1927,118 @@ caucasianroa.035 = {
 	type = character_event
 	title = caucasianroa.035.t
 	desc = caucasianroa.035.d
-	theme = war
+	theme = feast_activity
+
+	immediate = {
+		create_character = {
+			employer = scope:player_scope
+			age = { 30 50 }
+			location = root.capital_province
+			gender = male
+			dynasty = generate
+			culture = scope:player_scope.culture
+			faith = scope:player_scope.faith
+			random_traits = yes
+			trait = scarred
+			trait = viking #pirate
+			trait = adventurer
+			trait = gallowsbait
+			trait = greedy
+
+			after_creation = {
+				add_gold = { minor_gold_value medium_gold_value }
+				add_prestige = { minor_prestige_gain medium_prestige_gain }
+				add_piety = { minor_piety_gain }
+			}
+
+			save_scope_as = pirate_thamade
+		}
+	}
+
+	right_portrait = {
+		character = ROOT
+		animation = drink_goblet
+	}
 	
 	left_portrait = {
-		character = ROOT
-		animation = personality_bold
+		character = scope:pirate_thamade
+		animation = war_attacker
 	}
 	
 	option = {
 		name = caucasianroa.035.a 
 
 		random_list = {
-            60 = { trigger_event = { id = caucasianroa.036 days = 5 } } # success
-            40 = { trigger_event = { id = caucasianroa.037 days = 5 } } # fail
+            30 = { trigger_event = { id = caucasianroa.036 days = 5 } } # success
+            30 = { trigger_event = { id = caucasianroa.039 days = 5 } } # success
+            30 = { trigger_event = { id = caucasianroa.037 days = 5 } } # fail
+            10 = { trigger_event = { id = caucasianroa.040 days = 1 } } # fail
+        }
+	}
+}
+
+caucasianroa.038 = {
+	# Sponsor Pirate Raid event p1.2
+	type = character_event
+	title = caucasianroa.038.t
+	desc = caucasianroa.038.d
+	theme = feast_activity
+
+	immediate = {
+		create_character = {
+			employer = scope:player_scope
+			age = { 30 50 }
+			location = root.capital_province
+			gender = male
+			dynasty = generate
+			culture = scope:player_scope.culture
+			faith = scope:player_scope.faith
+			random_traits = yes
+			trait = scarred
+			trait = viking #pirate
+			trait = adventurer
+			trait = gallowsbait
+			trait = greedy
+
+			after_creation = {
+				add_gold = { minor_gold_value medium_gold_value }
+				add_prestige = { minor_prestige_gain medium_prestige_gain }
+				add_piety = { minor_piety_gain }
+			}
+
+			save_scope_as = pirate_thamade
+		}
+	}
+
+	right_portrait = {
+		character = ROOT
+		animation = drink_goblet
+	}
+	
+	left_portrait = {
+		character = scope:pirate_thamade
+		animation = war_attacker
+	}
+	
+	option = {
+		name = caucasianroa.038.a 
+
+		random_list = {
+            30 = { trigger_event = { id = caucasianroa.036 days = 5 } } # success
+            30 = { trigger_event = { id = caucasianroa.039 days = 5 } } # success
+            30 = { trigger_event = { id = caucasianroa.037 days = 5 } } # fail
+            10 = { trigger_event = { id = caucasianroa.040 days = 1 } } # fail
+        }
+	}
+		
+	option = {
+		name = caucasianroa.038.b 
+
+		random_list = {
+            25 = { trigger_event = { id = caucasianroa.036 days = 5 } } # success
+            25 = { trigger_event = { id = caucasianroa.039 days = 5 } } # success
+            30 = { trigger_event = { id = caucasianroa.037 days = 5 } } # fail
+            20 = { trigger_event = { id = caucasianroa.040 days = 1 } } # fail
         }
 	}
 }
@@ -1951,13 +2050,80 @@ caucasianroa.036 = {
 	desc = caucasianroa.036.d
 	theme = war
 	
-	left_portrait = {
+	right_portrait = {
 		character = ROOT
-		animation = personality_bold
+		animation = ecstasy
+	}
+	
+	left_portrait = {
+		character = scope:pirate_thamade
+		animation = celebrate_dagger
 	}
 	
 	option = {
 		name = caucasianroa.036.a
+		
+		# Rewards
+        random_list = {
+            10 = { add_gold = 100 }
+            69 = { add_gold = 150 }
+            15 = { add_gold = 100 }
+            5  = { add_gold = 250 }
+            1  = { add_gold = 300 }			
+        }
+		add_prestige = 50
+		
+		if = {
+			limit = { NOT = { religion = { is_in_family = rf_pagan } } }
+			add_piety = -25
+		}
+	}
+}
+
+caucasianroa.037 = {
+	# Sponsor Pirate Raid event fail 1
+	type = character_event
+	title = caucasianroa.037.t
+	desc = caucasianroa.037.d
+	theme = war 
+	
+	right_portrait = {
+		character = ROOT
+		animation = shame
+	}
+
+
+	option = {
+		name = caucasianroa.037.a 
+		
+		add_prestige = -50
+		
+		if = {
+			limit = { NOT = { religion = { is_in_family = rf_pagan } } }
+			add_piety = -25
+		}
+	}
+}
+
+caucasianroa.039 = {
+	# Sponsor Pirate Raid event succeed 2
+	type = character_event
+	title = caucasianroa.036.t
+	desc = caucasianroa.036.d
+	theme = war
+	
+	right_portrait = {
+		character = ROOT
+		animation = ecstasy
+	}
+	
+	left_portrait = {
+		character = scope:pirate_thamade
+		animation = celebrate_dagger
+	}
+	
+	option = {
+		name = caucasianroa.039.a
 		
 		# Rewards
         random_list = {
@@ -1976,27 +2142,24 @@ caucasianroa.036 = {
 	}
 }
 
-caucasianroa.037 = {
-	# Sponsor Pirate Raid event fail 1
+caucasianroa.040 = {
+	# Sponsor Pirate Raid event fail 2 - argument
 	type = character_event
-	title = caucasianroa.037.t
-	desc = caucasianroa.037.d
+	title = caucasianroa.040.t
+	desc = caucasianroa.040.d
 	theme = war 
 	
 	left_portrait = {
 		character = ROOT
-		animation = personality_bold
+		animation = shock
 	}
 
 	option = {
-		name = caucasianroa.037.a 
+		name = caucasianroa.040.a 
 		
-		add_prestige = -50
+		add_prestige = -200
+		add_piety = -200
 		
-		if = {
-			limit = { NOT = { religion = { is_in_family = rf_pagan } } }
-			add_piety = -25
-		}
 	}
 }
 

@@ -2733,6 +2733,91 @@ align_circassian_church_decision = {
 	}
 }
 
+circassian_sponsor_pirate_raid_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/circassian_pirates.dds"
+	}
+	decision_group_type = realm
+	desc = circassian_sponsor_pirate_raid_decision_desc
+	selection_tooltip = circassian_sponsor_pirate_raid_decision_tooltip
+
+	cooldown = { days = 1 }
+
+	is_shown = {
+		is_landed = yes
+		capital_province = { geographical_region = world_north_caucasus }
+		any_held_county = { 
+			is_coastal = yes
+		}	
+		OR = {
+			culture = {	this = culture:circassian }
+			culture = {	this = culture:ubykh }
+			culture = {
+				any_parent_culture_or_above = {
+					OR = {
+						culture = {	this = culture:circassian }
+						culture = {	this = culture:ubykh }
+					}
+				}
+			}
+		}
+		OR = {
+			independent_ruler = yes
+			highest_held_title_tier = tier_duchy
+		}
+	}
+
+	is_valid = {
+		is_landed = yes
+		 is_at_war = no
+		 OR = {
+		culture = {	this = culture:circassian }
+		culture = {	this = culture:ubykh }
+		 	culture = {
+		 		any_parent_culture_or_above = {
+		 			OR = {
+		 				culture = {	this = culture:circassian }
+		 				culture = {	this = culture:ubykh }
+		 			}
+		 		}
+		 	}
+		 }
+		 OR = {
+		 	independent_ruler = yes
+		 	highest_held_title_tier = tier_duchy
+		 }
+		 NOT = { has_trait = compassionate }
+	}
+
+	effect = {
+		random_list = {
+            60 = { trigger_event = { id = caucasianroa.035 days = 30 } } # success bone
+            40 = { trigger_event = { id = caucasianroa.038 days = 30 } } # fail bone
+        }
+	}
+
+	cost = {
+	}
+
+	ai_check_interval = 36
+
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 20
+			has_trait = greedy
+		}
+		modifier = {
+			add = 10
+			gold >= 500  # More likely if wealthy
+		}
+	}
+}
+
 caucasus_build_tower_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_caucasus_vainakh_towers.dds"
@@ -2889,91 +2974,6 @@ restore_ani_cathedral_decision = {
 		modifier = {
 			add = 20
 			has_trait = zealous
-		}
-	}
-}
-
-circassian_sponsor_pirate_raid_decision = {
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/circassian_pirates.dds"
-	}
-	decision_group_type = major
-	desc = circassian_sponsor_pirate_raid_decision_desc
-	selection_tooltip = circassian_sponsor_pirate_raid_decision_tooltip
-
-	cooldown = { days = 1 } #change later
-	
-	cost = {
-		gold = medium_gold_value
-		prestige = minor_prestige_value
-		piety = minor_piety_value
-	}
-	
-	is_shown = {
-		is_landed = yes
-		# capital_province = { geographical_region = world_north_caucasus }
-		# any_held_county = { 
-		#	is_coastal = yes
-		# }	
-		# OR = {
-		#	culture = {	this = culture:circassian }
-		#	culture = {	this = culture:ubykh }
-		#	culture = {
-		#		any_parent_culture_or_above = {
-		#			OR = {
-		#				culture = {	this = culture:circassian }
-		#				culture = {	this = culture:ubykh }
-		#			}
-		#		}
-		#	}
-		# }
-		# OR = {
-		#	independent_ruler = yes
-		#	highest_held_title_tier = tier_duchy
-		# }
-	}
-	
-	is_valid = {
-		is_at_war = no
-		OR = {
-			culture = {	this = culture:circassian }
-			culture = {	this = culture:ubykh }
-			culture = {
-				any_parent_culture_or_above = {
-					OR = {
-						culture = {	this = culture:circassian }
-						culture = {	this = culture:ubykh }
-					}
-				}
-			}
-		}
-		OR = {
-			independent_ruler = yes
-			highest_held_title_tier = tier_duchy
-		}
-		NOT = { has_trait = compassionate }
-	}
-	
-	effect = {
-		trigger_event = {
-			id = caucasianroa.035
-			days = 5 #increase later
-		}
-	}
-	
-	ai_will_do = {
-		base = 10
-		modifier = {
-			add = 10
-			has_trait = ambitious
-		}
-		modifier = {
-			add = 20
-			has_trait = greedy
-		}
-		modifier = {
-			add = 10
-			gold >= 500  # More likely if wealthy
 		}
 	}
 }
