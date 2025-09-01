@@ -1,0 +1,542 @@
+﻿RICE_setup_yazidi_flavor_pack_effect = {
+
+	############################################################
+	#
+	# RELIGION CHANGES
+	#
+	############################################################
+
+	# Mark some faiths to block conversion and be hidden till specific decisions are taken.
+	faith:yazidi = {
+		set_variable = { name = block_conversion_till_nebulous_circumstances }
+	}
+	# Yarsanism
+	faith:meshefaresism = {
+		set_variable = { name = block_conversion_till_nebulous_circumstances }
+	}
+	# Kurdish Paganism
+	# Shamsi Sect
+	# Alevis
+	# Arewordik
+
+	############################################################
+	#
+	# CULTURE CHANGES
+	#
+	############################################################
+
+	# Get rid of weird Brahui
+	every_ruler = {
+		limit = {
+			culture = culture:brahui
+		}
+		set_culture = culture:sindhi
+		every_vassal = {
+			limit = {
+				culture = culture:brahui
+			}
+			set_culture = culture:sindhi
+		}
+		every_courtier_or_guest = {
+			limit = {
+				culture = culture:brahui
+			}
+			set_culture = culture:sindhi
+		}
+	}
+
+	############################################################
+	#
+	# HISTORY CHANGES
+	#
+	############################################################
+
+	# Kurdish paganism and other stuff
+	title:c_istakhr = {
+		set_county_culture = culture:persian
+	}	
+	title:c_kermanshah = {
+		set_county_faith = faith:kitebacilweism
+		holder = {			
+			every_courtier_or_guest = {
+				limit = {
+					is_lowborn = yes
+					culture = culture:kurdish
+				}
+				random = {
+					chance = 20
+					set_character_faith = faith:kitebacilweism
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			game_start_date <= 1000
+		}	
+		title:c_masabadhan = {
+			set_county_faith = faith:kitebacilweism
+			holder = {			
+				every_courtier_or_guest = {
+					limit = {
+						is_lowborn = yes
+						culture = culture:kurdish
+					}
+					random = {
+						chance = 20
+						set_character_faith = faith:kitebacilweism
+					}
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			character:kurdish0001 = {
+				is_alive = yes
+				is_landed = yes
+			}
+		}
+		character:kurdish0001 = {
+			hidden_effect = {
+				RICE_jizya_contract_at_start_effect = yes
+			}
+		}
+	}
+	title:c_upper_khabur.holder = {
+		every_courtier_or_guest = {
+			limit = {
+				is_lowborn = yes
+			}
+			random = {
+				chance = 30
+				set_character_faith = faith:shamsi_pagan
+			}
+		}
+	}
+	title:c_amida.holder = {
+		every_courtier_or_guest = {
+			limit = {
+				is_lowborn = yes
+				culture = culture:armenian
+			}
+			random = {
+				chance = 30
+				set_character_faith = faith:urartuism
+			}
+		}
+	}
+	title:c_samosata.holder = {
+		every_courtier_or_guest = {
+			limit = {
+				is_lowborn = yes
+				culture = culture:armenian
+			}
+			random = {
+				chance = 30
+				set_character_faith = faith:urartuism
+			}
+		}
+	}
+
+	# Soraya's Iranian Fixes
+	# applied in RoA history changes
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+
+	# For 1066 bookmark
+	if = {
+		limit = {
+			game_start_date = 1066.9.15
+		}
+		# Give some territory to Tirahaye Kurds
+		character:RICE_kurdish_pagan_001 = {
+			RICE_jizya_contract_at_start_effect = yes
+		}
+	}
+}
+
+RICE_setup_pamir_flavor_pack_effect = {
+
+	############################################################
+	#
+	# CULTURE CHANGES
+	#
+	############################################################
+	culture:brahui = {
+		set_name_list = name_list_brahui
+	}
+
+	# Below is based on Encyclopedia Iranica, citing Mahmud Kashgari who lived in the 11th century during the 1066 start date, so should be considered accurate enough for game purposes
+		# See https://iranicaonline.org/articles/sogdiana-iii-history-and-archeology and https://iranicaonline.org/articles/yaghnobi
+		# Latest Sogdian texts come from Talas (c_taraz), Kashgari mentions people there are bilingual in Sogdian and Turkic
+		# Per Encyclopedia Iranica, much of the area between Samarkand and Bukhara (c_dabusiya) was still Sogdian until 15th century, even if elites abandoned language
+		# Roughly areas where Yagnobi, a descendant of Sogdian, is spoken nowadays
+		# Actual Yagnobi valley is in mountainous terrain, Encyclopedia Iranica suggests it was once spoken in a wider area (c_zarafshan), however
+		# Area (c_oshrusana) of origin for Yagnobi dialect
+
+	if = {
+		limit = {
+			current_date > 700.1.1
+			current_date < 900.1.1
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_west-tokharestan
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_east-tokharestan
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_balkh
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_ghazna
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_rukhaj
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:turco_hephthalite
+			SIZE = large
+			COUNTY = title:c_zabulistan
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:afghan
+			SIZE = large
+			COUNTY = title:c_zamindawar
+		}
+	}
+	else_if = {
+		limit = {
+			current_date >= 900.1.1
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:khalaj
+			SIZE = small
+			COUNTY = title:c_ghazna
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:afghan
+			SIZE = small
+			COUNTY = title:c_zamindawar
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:afghan
+			SIZE = large
+			COUNTY = title:c_zabulistan
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:afghan
+			SIZE = large
+			COUNTY = title:c_rukhaj
+		}
+	}
+
+	if = {
+		limit = {
+			current_date > 1000.1.1
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:brahui
+			SIZE = large
+			COUNTY = title:c_sibi
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:brahui
+			SIZE = large
+			COUNTY = title:c_turan
+		}
+		add_culture_minority_effect = {
+			CULTURE = culture:brahui
+			SIZE = small
+			COUNTY = title:c_kalat
+		}
+	}
+
+	if = {
+		limit = {
+			NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		}	
+		culture:hephthalite = {
+			add_culture_tradition = tradition_RICE_white_huns # White Huns
+			remove_variable = tradition_cooldown
+		}
+		culture:turco_hephthalite = {
+			add_culture_tradition = tradition_RICE_white_huns # White Huns
+			remove_variable = tradition_cooldown
+		}
+	}
+
+	############################################################
+	#
+	# RELIGION TERRITORY CHANGES
+	#
+	############################################################
+
+	# applied in RoA province changes
+
+	############################################################
+	#
+	# BUILDINGS
+	#
+	############################################################
+
+	# applied in RoA province changes
+
+	############################################################
+	#
+	# MODIFIERS
+	#
+	############################################################
+
+	## Pamir Modifiers
+	title:c_pashai = {
+		add_county_modifier = {
+			modifier = RICE_pamir_land_of_the_kafirs
+		}
+	}
+	title:c_kunar = {
+		add_county_modifier = {
+			modifier = RICE_pamir_land_of_the_kafirs
+		}
+	}
+	title:c_kati = {
+		add_county_modifier = {
+			modifier = RICE_pamir_land_of_the_kafirs
+		}
+	}
+	title:c_waygal = {
+		add_county_modifier = {
+			modifier = RICE_pamir_land_of_the_kafirs
+		}
+	}
+	title:c_chitral = {
+		add_county_modifier = {
+			modifier = RICE_pamir_land_of_the_kafirs
+		}
+	}
+	title:c_kunar = {
+		add_county_modifier = {
+			modifier = RICE_pamir_land_of_the_kafirs
+		}
+	}
+	title:c_yasin = {
+		add_county_modifier = {
+			modifier = RICE_pamir_land_of_the_kafirs
+		}
+	}
+	title:c_hunza = {
+		add_county_modifier = {
+			modifier = RICE_pamir_land_of_the_kafirs
+			modifier = RICE_pamir_karakoram_watchposts_default
+		}
+	}
+	title:c_gilgit = {
+		add_county_modifier = {
+			modifier = RICE_pamir_karakoram_watchposts_default
+		}
+	}
+	title:c_astore = {
+		add_county_modifier = {
+			modifier = RICE_pamir_karakoram_watchposts_default
+		}
+	}
+	title:c_wakhan = {
+		add_county_modifier = {
+			modifier = RICE_pamir_wakhan_watchposts_default
+		}
+	}
+	title:c_sariq_qol = {
+		add_county_modifier = {
+			modifier = RICE_pamir_wakhan_watchposts_default
+		}
+	}
+	if = {
+		limit = {
+			current_date > 1000.1.1
+		}
+		title:c_kalat = {
+			add_county_modifier = {
+				modifier = RICE_pamir_brahui_tribes
+			}
+		}
+		title:c_sibi = {
+			add_county_modifier = {
+				modifier = RICE_pamir_brahui_tribes
+			}
+		}
+		title:c_turan = {
+			add_county_modifier = {
+				modifier = RICE_pamir_brahui_tribes
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_global_variable = RICE_game_started_on_TFE_start_date
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_pamir_zun_idol_has_been_restored
+		}
+		set_global_variable = {
+			name = RICE_pamir_bibi_fatima_not_known
+			value = yes
+		}
+		title:c_zamindawar = {
+			add_county_modifier = {
+				modifier = RICE_pamir_zun_idol_is_restored
+			}
+		}
+	}
+
+	############################################################
+	#
+	# HISTORICAL CHARACTERS
+	#
+	############################################################
+	
+	if = {
+		limit = {
+			current_date < 900.1.1
+			current_date > 800.1.1
+		}
+		# PAMIR
+		character:RICE_pamir_001 = {
+			save_scope_as = pamir_puteshan_king
+		}
+		character:RICE_pamir_002 = {
+			save_scope_as = pamir_wakhanshah_king
+		}
+		character:RICE_pamir_003 = {
+			save_scope_as = pamir_shugnanshah_king
+		}
+		character:RICE_pamir_004 = {
+			save_scope_as = pamir_shugnanshah_king_2
+		}
+		character:188712 = { # Firuz. Zunbils are pagan and independent until 870 CE, ID# 188710 is the cousin
+			add_gold = 25
+			add_piety = 100
+			add_prestige = 100
+		}
+		character:RICE_pamir_013 = { # Give titles and bonuses to Azur Jamshid
+			save_scope_as = azur_jamshid
+			add_gold = 50
+			add_piety = 1000
+			add_prestige = 1000
+			dynasty = { add_dynasty_prestige = 500 }
+			add_character_modifier = {
+				modifier = RICE_pamir_is_azur_jamshid
+			}
+		}
+	}
+		
+	if = {
+		limit = {
+			current_date > 1000.1.1
+			current_date < 1100.1.1
+		}
+		character:persian_scholars_3 = { # Make Nasir Khusraw better
+			add_character_modifier = {
+				modifier = RICE_pamir_nasir_khusraw
+			}
+			add_character_flag = do_not_generate_starting_family
+			save_scope_as = nasir_khusraw
+		}
+		character:248023 = {
+			save_scope_as = muhtajid_ruler
+		}
+		character:RICE_pamir_021 = { # Azur Jamshid's descendant
+			dynasty = { add_dynasty_prestige = 1000 }
+		}
+		# Ali ibn Asad, Nasir Khusraw's friend
+		character:badakhshanids_2 = { 
+			save_scope_as = ali_ibn_asad
+			trigger_event = pamir.0003
+		}
+	}
+
+	if = {
+		limit = {
+			current_date > 1150.1.1
+			current_date < 1200.1.1
+		}
+		character:RICE_pamir_023 = { # Azur Jamshid's descendant
+			dynasty = { add_dynasty_prestige = 1000 }
+		}
+	}
+
+
+	############################################################
+	#
+	# MISC+
+	#
+	############################################################
+
+	if = {
+		limit = {
+			current_date > 870.1.1
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_pamir_shri_badat_palace_destroyed
+		}
+		set_global_variable = {
+			name = RICE_pamir_azur_jamshid_passed_away
+			value = yes
+		}
+	}
+
+	if = {
+		limit = {
+			current_date >= 900.1.1
+		}
+		set_global_variable = {
+			name = khalaj_culture_creation
+			value = yes
+		}
+	}
+
+	if = {
+		limit = {
+			current_date > 1000.1.1
+		}
+		set_global_variable = {
+			name = RICE_pamir_nasir_khusraw_born_1066_start
+			value = yes
+		}
+		set_global_variable = {
+			name = RICE_pamir_brahui_migrations_happened
+			value = yes
+		}
+	}
+
+	if = {
+		limit = {
+			game_start_date >= 1075.1.1 # Nasir Khusraw's death IRL is uncertain but vanilla game puts it at 1075
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_pamir_nasir_khusraw_shrine_decision_done
+		}
+		title:c_badakhshan = {
+			add_county_modifier = {
+				modifier = RICE_pamir_nasir_khusraw_shrine
+			}
+		}
+	}
+}
