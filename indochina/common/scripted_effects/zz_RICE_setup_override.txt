@@ -553,6 +553,89 @@ RICE_setup_pamir_flavor_pack_effect = {
 	}
 }
 
+RoA_RICE_setup_magadha_flavor_pack_effect = {
+
+	############################################################
+	#
+	# CULTURE CHANGES
+	#
+	############################################################
+
+	# Bengali/Gaudi, Oriya, and Kamarupi changes are based on suggestions/research by Soraya
+	# Gaudi/Bengali culture
+		# Soraya says Philosopher Culture and Religious Patronage can be kept, but here are Soraya's notes anyways:
+		# Philosopher Culture: Early Medieval Bengal produced many great Buddhist theologians like Atisha, and also many Hindu ones like Chaitanya particularly in later periods
+		# Religious Patronage: Palas and Chandras be funding a lot of Viharas
+		# Soraya: Bengal be trading with SEA, and rivers were used in trade through which this tradition allows sailing
+		# Soraya: Bengal be full of rainforests yo, it should have more in-game but what can you do
+		# Soraya: Kulinism began in this period, and thus Brahmins and Kayasthas began a process of creating excessively prestigious North Indian ancestries for themselves and a strict code of exogamy, the "Kulin Pratha" should really have its own system in a potential Bengal flavor pack
+	# Oriya
+	# Kamrupi/Assamese
+
+	############################################################
+	#
+	# BUDDHIST DOCTRINE
+	#
+	############################################################\
+
+	if = {
+		limit = {
+			#is_tip_trigger = yes
+			exists = faith:vibhajyavada
+		}
+		faith:vibhajyavada = {
+			add_doctrine = rice_theravada_canon_doctrine
+		}
+	}
+	if = {
+		limit = {
+			#is_tip_trigger = yes
+			exists = faith:sarvastivada
+		}
+		faith:sarvastivada = {
+			add_doctrine = rice_mahayana_canon_doctrine
+		}
+	}
+	if = {
+		limit = {
+			#is_tip_trigger = yes
+			exists = faith:chan
+		}
+		faith:chan = {
+			add_doctrine = rice_mahayana_canon_doctrine
+		}
+	}
+	# Failsafe in case other mods add in other variations of Buddhism
+	religion:buddhism_religion = {
+		every_faith = {
+			limit = {
+				NOR = {
+					has_doctrine = rice_mahayana_canon_doctrine
+					has_doctrine = rice_theravada_canon_doctrine
+					has_doctrine = rice_vajrayana_canon_doctrine
+					has_doctrine = rice_pudgalavada_canon_doctrine
+				}
+			}
+			add_doctrine = rice_theravada_canon_doctrine
+		}
+	}
+
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+
+	title:c_magadha = {
+		add_county_modifier = {
+			modifier = RICE_magadha_rajgir_hot_springs_buddhist
+		}
+	}
+
+	# Pala Dynasty remnant
+}
+
 RICE_setup_bamian_flavor_pack_effect = {
 
 	############################################################
