@@ -4365,54 +4365,45 @@ setup_RICE_minorities = {
 			limit = {
 				title_province = { geographical_region = custom_sicily }
 			}
-			this = { save_temporary_scope_as = the_county_temp }
 			every_neighboring_county = {
 				if = {
-					limit = {
-						faith = {
-							NOT = { this = scope:the_county_temp.faith }
+					limit = { NOT = { faith = PREV.faith } }
+					faith = { save_scope_as = faith }
+					PREV = {
+						add_faith_minority_effect = {
+							FAITH = scope:faith
+							COUNTY = this
+							SIZE = small
 						}
 					}
-					faith = { add_to_list = neighboring_faiths }
 				}
 				if = {
-					limit = {
-						culture = {
-							NOT = { this = scope:the_county_temp.culture }
+					limit = { NOT = { culture = PREV.culture } }
+					culture = { save_scope_as = culture }
+					PREV = {
+						add_culture_minority_effect = {
+							CULTURE = scope:culture
+							COUNTY = this
+							SIZE = small
 						}
 					}
-					culture = { add_to_list = neighboring_cultures }
 				}
 			}
 			if = {
 				limit = { NOT = { faith = holder.faith } }
-				holder.faith = { add_to_list = neighboring_faiths }
+				add_faith_minority_effect = {
+					FAITH = holder.faith
+					COUNTY = this
+					SIZE = small
+				}
 			}
 			if = {
 				limit = { NOT = { culture = holder.culture } }
-				holder.faith = { add_to_list = neighboring_cultures }
-			}
-			every_in_list = {
-				list = neighboring_faiths
-				this = { save_temporary_scope_as = the_faith_temp }
-				scope:the_county_temp = {
-					add_to_variable_list = {
-						name = faith_minorities_small
-						target = scope:the_faith_temp
-					}
+				add_culture_minority_effect = {
+					CULTURE = holder.culture
+					COUNTY = this
+					SIZE = small
 				}
-				this = { remove_from_list = neighboring_faiths }
-			}
-			every_in_list = {
-				list = neighboring_cultures
-				this = { save_temporary_scope_as = the_culture_temp }
-				scope:the_county_temp = {
-					add_to_variable_list = {
-						name = culture_minorities_small
-						target = scope:the_culture_temp
-					}
-				}
-				this = { remove_from_list = neighboring_cultures }
 			}
 		}
 	}
