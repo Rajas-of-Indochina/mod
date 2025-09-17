@@ -159,6 +159,607 @@
 	}
 }
 
+
+RICE_setup_tarim_basin_flavor_pack_effect = {
+
+	#########################################################################
+	#
+	# BUILDING AND PROVINCE MODIFIERS
+	#
+	#########################################################################
+
+	# Add Mogao Caves
+	# Add Bezeklik Caves
+	# Add Kizil Caves
+	# Add Dafo Temple
+	if = {
+		limit = {
+			current_date >= 1098.1.1	
+			title:b_ganzhou = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_ganzhou.title_province = {
+			add_special_building = RICE_tarim_basin_dafo_temple
+		}
+	}
+	else = {
+		title:b_ganzhou.title_province = {
+			add_special_building_slot = RICE_tarim_basin_dafo_temple
+		}
+	}
+	# Add Khotan Jade Mines and other holdings
+
+	if = {
+		limit = {
+			current_date < 1000.1.1			
+		}
+		title:c_kucha = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_kuchean_music
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			has_global_variable = RICE_game_started_on_TFE_start_date
+		}
+		title:c_charkliq = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_dry_period
+			}
+		}
+		title:c_lop_nur = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_dry_period
+			}
+		}
+		title:c_qiemo = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_dry_period
+			}
+		}
+	}
+	else = {
+		title:c_charkliq = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_fluctuations
+			}
+		}
+		title:c_lop_nur = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_fluctuations
+			}
+		}
+		title:c_qiemo = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_fluctuations
+			}
+		}
+	}
+
+
+	#########################################################################
+	#
+	# CULTURE AND RELIGION STUFF
+	#
+	#########################################################################
+
+	# Set Wenmo culture, centered around Liangzhou	
+	# According to Xuanzang, Tocharian city-states were Hinayanists, specifically Sarvastivada
+	# However, Sarvastivada was a major influence on Mahayana and adopted many Mahayana idea, even if Sinic Mahayanists criticized some of its stances
+
+	culture:sogdian = {
+		remove_culture_tradition = tradition_horse_breeder
+		add_culture_tradition = tradition_RICE_silk_road
+		remove_variable = tradition_cooldown
+	}
+
+	culture:saka = {
+		set_culture_pillar = ethos_bureaucratic
+		if = {
+			limit = { has_cultural_tradition = tradition_horse_lords }
+			remove_culture_tradition = tradition_horse_lords
+		}
+		remove_culture_tradition = tradition_artisans
+		add_culture_tradition = tradition_language_scholars # Translators
+		add_culture_tradition = tradition_RICE_silk_road
+		remove_variable = tradition_cooldown
+	}		
+
+	culture:tocharian = {
+		add_culture_tradition = tradition_music_theory # Kuchean music is famous
+		if = {
+			limit = { has_cultural_tradition = tradition_philosopher_culture }
+			remove_culture_tradition = tradition_philosopher_culture
+		}
+		remove_culture_tradition = tradition_caravaneers
+		add_culture_tradition = tradition_RICE_silk_road
+		remove_variable = tradition_cooldown
+	}
+
+	culture:khitan = {
+		# Start of the Liao Dynasty
+		if = {
+			limit = {
+				game_start_date >= 916.1.1
+			}
+			add_culture_tradition = tradition_RICE_image_of_china
+			remove_variable = tradition_cooldown
+		}
+		set_culture_pillar = ethos_bureaucratic
+	}	
+
+	if = {
+		limit = {
+			exists = culture:khotanese
+		}
+		culture:khotanese = {
+			add_culture_tradition = tradition_RICE_silk_road
+			remove_variable = tradition_cooldown
+		}
+	}
+
+	culture:radhanite = {
+		add_culture_tradition = tradition_RICE_silk_road
+		remove_variable = tradition_cooldown
+	}
+
+	if = {
+		limit = {
+			exists = culture:soissons
+		}		
+		culture:bactrian = {
+			add_culture_tradition = tradition_RICE_silk_road
+			remove_variable = tradition_cooldown
+		}	
+	}
+
+	#########################################################################
+	#
+	# HISTORY TWEAKS
+	#
+	#########################################################################
+
+	# Set up Dunhuang vassals
+	if = {
+		limit = {
+			current_date > 865.1.1
+			current_date < 875.1.1	
+			NOT = { exists = global_var:hmi_immersion_pack_loaded }		
+		}
+		title:k_guiyi = {
+			add_title_law = male_only_law
+		}
+
+		# Fix up Zhang Yichao
+		character:206811 = {
+			save_scope_as = zhang_yichao
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_is_zhang_yichao
+			}
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_tarim_basin_zhang_clan
+				}
+			}
+		}
+
+		# Give Cao Yijin some more land and historical aspirations
+		character:1059714 = {
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_tarim_basin_cao_clan
+				}
+			}
+			save_scope_as = cao_yijin
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_aspiration_restore_order_guiyi
+			}
+			set_variable = {
+				name = RICE_historical_aspiration
+				value = flag:cao_yijin
+			}
+		}
+
+		character:RICE_zhai_003 = {
+			save_scope_as = zhai_farong
+		}
+		character:RICE_zhai_005 = {
+			save_scope_as = zhai_fengda_uncle
+		}
+		character:RICE_zhai_013 = {
+			save_scope_as = zhai_huaiguan
+		}
+		character:RICE_zhai_014 = {
+			save_scope_as = zhai_huaien
+		}
+		character:RICE_zhai_015 = {
+			save_scope_as = zhang_yichao_niece
+		}
+
+		# Give Zhai Huixin/Xin (Zhai Fengda's father) territory under the Caos
+		# Otherwise, he should already have it
+		character:RICE_zhai_004 = {
+			if = {
+				limit = {
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				get_title = title:c_hongliuyuan
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+				add_courtier = scope:zhai_fengda_uncle
+				add_courtier = scope:zhai_farong
+				add_courtier = scope:zhai_huaiguan
+				add_courtier = scope:zhai_huaien
+				add_courtier = scope:zhang_yichao_niece
+			}
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_tarim_basin_zhai_clan
+				}
+			}
+		}
+
+		# Li Mingzhen - give him all of the stuff in Ganzhou
+		character:304192 = {
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_tarim_basin_li_clan
+				}
+			}
+		}
+
+		# Suo Hanjun - give him Suzhou
+		character:RICE_suo_006 = {
+			if = {
+				limit = {
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				get_title = title:c_suzhou
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+			}
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_tarim_basin_suo_clan
+				}
+			}
+		}
+
+		# Li Mingda - Mingzhen's brother
+		character:RICE_li_005 = {
+			if = {
+				limit = {
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				get_title = title:c_baichengzi
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+			}
+		}
+
+		# Li Mingcheng (fictional name) - Mingzhen's other brother
+		character:RICE_li_006 = {
+			if = {
+				limit = {
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				get_title = title:b_jiayuguan
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+			}
+		}
+
+		# Zhu Zaiqing - give him Subei
+
+		# Yin Wentong - give him all of the stuff in Qilin, since he helped fight off the Tibetans
+		character:RICE_yin_001 = { 
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_tarim_basin_yin_clan
+				}
+			}
+			change_government = feudal_government
+		}
+
+		# Yin Jifeng - official under Zhang Yichao who later helped the Zhang family reclaim Guiyi
+		character:RICE_yin_003 = {
+			if = {
+				limit = {
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				get_title = title:c_yalong
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+				change_government = feudal_government
+			}
+		}
+
+		character:RICE_suo_007 = {
+			save_scope_as = suo_xun_daughter
+			create_betrothal = scope:cao_yijin
+		}
+
+		# Suo Xun - give him all of the stuff in Liangzhou
+
+		# Yan Yingda - give him Yumenguan
+		character:RICE_dunhuang_misc_005 = {
+			if = {
+				limit = {
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				get_title = title:b_yumenguan
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+			}
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_tarim_basin_yan_clan
+				}
+			}
+		}
+
+		# Suo Zhongxin - give him Baiting
+		if = {
+			limit = {
+				NOT = { has_dlc_feature = roads_to_power }
+			}
+			character:RICE_suo_005 = {
+				get_title = title:c_baiting
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+			}
+		}
+
+		# An Jingmin - Sogdian vice commissioner of Guiyi army
+		character:RICE_an_001 = {
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+			save_scope_as = an_jingmin
+			if = {
+				limit = {
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				change_government = feudal_government
+			}
+		}
+
+		# Fictitious Wenmo leader
+		# The Wenmo would establish an independent state in Liangzhou in 884
+		character:RICE_wenmo_001 = {
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+			RICE_dunhuang_wenmo_troop_spawn_effect = yes # Have him start with some troops so he could cause trouble if he wanted
+		}
+
+		# Gao Jinda - one of Zhang Yichao's OG commanders who was sent as his first envoy to the Tang Dynasty in 850 CE
+		character:RICE_dunhuang_misc_003 = { 
+			if = {
+				limit = {
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				get_title = title:c_dajing
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+			}
+			add_character_flag = RICE_gao_jinda
+		}
+
+		# Kang Tongxin - Sogdian magistrate Prefect of Guazhou at one point
+		character:RICE_kang_002 = { 
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+			save_scope_as = kang_master
+		}
+		
+		# Kang Shijun - Sogdian magistrate Prefect of Guazhou at one point
+		if = {
+			limit = {
+				NOT = { has_dlc_feature = roads_to_power }
+			}
+			character:RICE_kang_003 = { 
+				get_title = title:c_yulin_guiyi
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+			}
+		}
+
+		# Zhang Wenche - official who led the Guiyi envoy group to the Tang Dynasty alongside Song Runying in 887 CE, and *may* have led the coup against Zhang Huaishen in c. 890
+		character:RICE_dunhuang_misc_006 = { 
+			if = {
+				limit = {
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				get_title = title:c_huanzhouliangzhou
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+			}
+			add_character_flag = RICE_zhang_wenche
+		}
+
+		# Song Runying - Official who led the Guiyi envoy group to the Tang Dynasty alongside Zhang Wenche in 887 CE
+		character:RICE_song_001 = { 
+			if = {
+				limit = {
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				get_title = title:c_tiantishan
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+			}
+			add_character_flag = RICE_song_runying
+		}
+
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = change
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		title:c_khotan.holder = {
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_khotan_eight_protectors
+			}
+		}
+
+		# Fu Murong (or whoever's supposed to be the last Tuyuhun in-game)
+		character:247407 = {
+			add_character_flag = do_not_generate_starting_family
+		}
+
+		# Kill off fictional Dunhuang characters - RoA just makes them unlanded
+
+		title:k_guiyi.holder = {
+			every_vassal_or_below = {
+				limit = {
+					is_landed = no
+					domicile ?= {
+						is_domicile_type = estate
+					}
+				}
+				domicile ?= { move_domicile = title:b_shazhou.title_province }				
+			}
+		}
+
+		# If not running with Roads to Power, add in courtiers who would've been random Admin families
+		if = {
+			limit = {
+				NOT = { has_dlc_feature = roads_to_power }
+			}
+			if = {
+				limit = {
+					character:RICE_dunhuang_misc_001 = {
+						is_playable_character = no
+						is_ruler = no
+						NOT = { is_courtier_of = scope:zhang_yichao }
+					}
+				}
+				scope:zhang_yichao = {
+					add_courtier = character:RICE_dunhuang_misc_001
+				}
+			}
+			if = {
+				limit = {
+					character:RICE_dunhuang_misc_004 = {
+						is_playable_character = no
+						is_ruler = no
+						NOT = { is_courtier_of = scope:zhang_yichao }
+					}
+				}
+				scope:zhang_yichao = {
+					add_courtier = character:RICE_dunhuang_misc_004
+				}
+			}
+			if = {
+				limit = {
+					character:RICE_dunhuang_misc_007 = {
+						is_playable_character = no
+						is_ruler = no
+						NOT = { is_courtier_of = scope:zhang_yichao }
+					}
+				}
+				scope:zhang_yichao = {
+					add_courtier = character:RICE_dunhuang_misc_007
+				}
+			}
+		}
+	}
+
+	# 1066 start date shenanigans
+	if = {
+		limit = {
+			game_start_date > 1050.1.1
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_tarim_basin_fake_china_proclaimed_flag
+		}
+		set_global_variable = {
+			name = RICE_tarim_basin_khotan_eight_protectors_abandoned
+			value = yes
+		}
+		set_global_variable = {
+			name = RICE_ordam_mazar_festival_triggered
+			value = yes
+		}
+	}
+
+	# 1066 start date shenanigans
+	if = {
+		limit = {
+			game_start_date > 1050.1.1
+			game_start_date < 1100.1.1
+		}
+		character:3014 = {
+			# Not sure why he was made lustful in vanilla - couldn't find anything suggesting that in my research, though I might have missed something
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_tarim_basin_fake_china_dynasty
+				}
+			}
+		}
+	}
+
+	# Al-Kashgari/Turkic Dictionary stuff
+	if = {
+		limit = {
+			game_start_date >= 1029.5.8
+			game_start_date <= 1102.8.5
+		}
+		# Al-Kashgari
+		character:RICE_kashgar_001 = {
+			if = {
+				limit = {
+					has_playable_adventurer_dlc_trigger = no
+					NOT = { exists = global_var:hmi_immersion_pack_loaded }	
+				}
+				get_title = title:c_terek_pass
+			}
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_is_al_kashgari
+			}
+			set_variable = {
+				name = RICE_historical_aspiration
+				value = flag:al_kashgari
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			game_start_date < 1029.5.8
+		}
+		set_global_variable = {
+			name = RICE_anyone_can_write_turkic_dictionary
+			value = yes
+		}
+	}
+	else = {
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_tarim_basin_compile_turkic_dictionary_done
+		}
+	}
+
+	if = {
+		limit = {
+			game_start_date = 1178.10.1
+			NOT = { exists = global_var:hmi_immersion_pack_loaded }	
+		}
+		# Setting up Kara-Khitan and Yelu Zhilugu
+		# Zhilugu
+		#character:188912 - stuff here left up to BossDanger to handle
+		#character:188909 - stuff here left up to BossDanger to handle
+		#character:188910 - in RoA he is dead
+		# Setting up Wo Daochong, Tangut official + his son
+		if = {
+			limit = {
+				NOT = { has_dlc_feature = roads_to_power }
+			}
+			character:RICE_xixia_wo_002 = {
+				get_title = title:c_huanzhouliangzhou
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+			}
+		}
+		# Some Genghis Khan stuff because I dunno where else to put it
+		# Borte
+		# Hoelun
+	}
+}
+
+
 RICE_setup_pamir_flavor_pack_effect = {
 
 	############################################################
@@ -618,6 +1219,7 @@ RICE_setup_pamir_flavor_pack_effect = {
 	}
 }
 
+
 RICE_setup_magadha_flavor_pack_effect = {
 
 	############################################################
@@ -699,6 +1301,7 @@ RICE_setup_magadha_flavor_pack_effect = {
 
 	# Pala Dynasty remnant
 }
+
 
 RICE_setup_bamian_flavor_pack_effect = {
 
