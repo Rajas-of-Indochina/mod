@@ -2093,7 +2093,7 @@ caucasianroa.035 = {
 				30 = {
 					random_ruler = {
 						limit = {
-							NOT = {
+							NOR = {
 								is_allied_to = scope:circassian_raider
 								is_vassal_of = scope:circassian_raider
 							}
@@ -2114,11 +2114,11 @@ any_held_county = {
 				30 = {
 					random_ruler = {
 						limit = {
-							NOT = {
+							NOR = {
 								is_allied_to = scope:circassian_raider
 								is_vassal_of = scope:circassian_raider
 							}
-							any_realm_county = {
+							any_held_county = {
 								title_province = {
 									geographical_region = circassian_raid_region
 								}
@@ -2176,11 +2176,11 @@ caucasianroa.038 = {
 				15 = {
 					random_ruler = {
 						limit = {
-							NOT = {
+							NOR = {
 								is_allied_to = scope:circassian_raider
 								is_vassal_of = scope:circassian_raider
 							}
-							any_realm_county = {
+							any_held_county = {
 								title_province = {
 									geographical_region = circassian_raid_region
 								}
@@ -2197,11 +2197,11 @@ caucasianroa.038 = {
 				15 = {
 					random_ruler = {
 						limit = {
-							NOT = {
+							NOR = {
 								is_allied_to = scope:circassian_raider
 								is_vassal_of = scope:circassian_raider
 							}
-							any_realm_county = {
+							any_held_county = {
 								title_province = {
 									geographical_region = circassian_raid_region
 								}
@@ -2461,6 +2461,120 @@ caucasianroa.042 = {
 				years = 5
 			}
 		}
+	}
+}
+
+caucasianroa.043 = {
+	# Georgian church?
+	type = character_event
+	title = caucasianroa.043.t
+	desc = caucasianroa.043.d
+	theme = faith
+	right_portrait = {
+		character = ROOT
+		animation = personality_bold
+	}
+	option = {
+		name = caucasianroa.043.a
+			faith:circassian_christianity = {
+			set_religious_head_title = title:d_georgian_patriarchate
+			}
+		trigger_event = {
+			id = caucasianroa.044
+			days = 10
+		}
+	}
+	option = {
+		name = caucasianroa.043.b
+		add_piety = 50
+	}
+}
+
+caucasianroa.044 = {
+	# Georgian church!
+	type = character_event
+	title = caucasianroa.044.t
+	desc = caucasianroa.044.d
+	theme = faith
+	left_portrait = {
+		character = ROOT
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = ROOT.faith.religious_head
+		animation = personality_content
+	}
+	option = {
+		name = caucasianroa.044.a
+		save_scope_as = georgian_switcher
+		d_georgian_patriarchate.holder = {
+		save_scope_as = georgian_patriarch			
+		}
+		every_ruler = {
+			limit = {
+				is_landed_or_landless_administrative = yes
+				OR = {
+					capital_province = {
+						geographical_region = world_north_caucasus
+					}
+					domicile.domicile_location = {
+						geographical_region = world_north_caucasus
+					}
+					faith = faith:circassian_christianity
+				}
+				NOT = {
+					THIS = ROOT
+				}
+			}
+			trigger_event = caucasianroa.045
+		}
+
+	}
+}
+
+
+caucasianroa.045 = {
+	# Georgian church - inform others
+	type = character_event
+	title = caucasianroa.045.t
+	theme = faith
+	desc = {
+		desc = caucasianroa.045.desc.opening
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+					faith = faith:georgian_orthodox
+					faith = faith:mtielta
+					faith = faith:NEC_orthodox
+					}
+				}
+				desc = caucasianroa.045.desc.georgian
+			}
+			triggered_desc = {
+				trigger = {
+					faith = faith:circassian_christianity
+				}
+				desc = caucasianroa.045.desc.circassian
+			}
+			triggered_desc = {
+				trigger = {
+					faith = faith:orthodox
+				}
+				desc = caucasianroa.045.desc.greek
+			}
+		}
+	}
+	left_portrait = {
+		character = scope:georgian_switcher
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:georgian_patriarch
+		animation = personality_content
+	}
+	option = {
+		name = caucasianroa.045.a
 	}
 }
 

@@ -15,15 +15,16 @@
 }
 
 on_game_start_after_lobby = {
-    on_actions = {
+	on_actions = {
 		intro_event_action
 		character_intro_event_action
-    }
+		circassian_church_action
+	}
 }
 
 on_birthday = {
-	on_actions = { 
-		thamade_action 
+	on_actions = {
+		thamade_action
 	}
 }
 
@@ -45,19 +46,19 @@ on_birth_child = {
 }
 
 thamade_action = {
-    trigger = {
-	OR = {
-		is_ai = yes
-		is_courtier = yes
-	}
-	culture = {
+	trigger = {
 		OR = {
-			has_cultural_pillar = heritage_aghvank
-			has_cultural_pillar = heritage_ciscaucasian
+			is_ai = yes
+			is_courtier = yes
 		}
-	}
-	age > 50
-	OR = {
+		culture = {
+			OR = {
+				has_cultural_pillar = heritage_aghvank
+				has_cultural_pillar = heritage_ciscaucasian
+			}
+		}
+		age > 50
+		OR = {
 			has_trait = honest
 			has_trait = brave
 			has_trait = forgiving
@@ -65,7 +66,7 @@ thamade_action = {
 			has_trait = just
 			has_trait = patient
 			has_trait = compassionate
-	}
+		}
 		NOT = {
 			OR = {
 				has_trait = thamade
@@ -106,9 +107,9 @@ thamade_action = {
 			}
 		}
 	}
-    effect = {
+	effect = {
 		add_trait = thamade
-    }
+	}
 }
 
 armenianmerchants_action = {
@@ -122,12 +123,14 @@ armenianmerchants_action = {
 
 saladin_languages_action = {
 	trigger = {
-		character:226000 = { is_alive = yes }
+		character:226000 = {
+			is_alive = yes
+		}
 	}
 	effect = {
 		character:226000 = {
 			learn_language = language_turkic
-			learn_language = language_iranian	
+			learn_language = language_iranian
 		}
 	}
 }
@@ -137,49 +140,49 @@ ildeguzids_action_1178 = {
 		game_start_date >= 1178.1.1
 	}
 	effect = {
-	   character:144051 = {
-			set_culture = culture:kipchak 
+		character:144051 = {
+			set_culture = culture:kipchak
 			give_nickname = nick_shams_al_din
-	   }
-	   character:144052 = {
-		   set_culture = culture:turkish 
-	   }
-	   character:225015 = {
-		   set_culture = culture:turkish 
-	   }
-	   character:ildeguzid_1 = {
-		   set_culture = culture:turkish
-		   set_mother = character:inanj_khatun 
-	   }
-	   character:ildeguzid_2 = {
-		   set_culture = culture:turkish 
-	   }
-	   character:ildeguzid_3 = {
-		   set_culture = culture:turkish 
-	   }
-	   character:93295 = {
-		   set_culture = culture:turkish
-		   add_trait = disinherited
-		   add_trait = disputed_heritage
-		   add_trait = infertile #had no kids
-		   set_mother = character:inanj_khatun
-		   set_real_father = character:qutlugh_real_father
-	   }
-	   character:93296 = {
-		   set_culture = culture:turkish 
-		   set_father = character:144052
-		   change_first_name = Abu_Bakr
-		   give_nickname = ROA_nick_nusrat_al_din
-	   }
-	   character:93297 = {
-		   set_culture = culture:turkish 
-	   }
-	   character:93298 = {
-		   set_culture = culture:turkish 
-	   }
-	   character:93296 = {
-		   set_culture = culture:turkish 
-	   }
+		}
+		character:144052 = {
+			set_culture = culture:turkish
+		}
+		character:225015 = {
+			set_culture = culture:turkish
+		}
+		character:ildeguzid_1 = {
+			set_culture = culture:turkish
+			set_mother = character:inanj_khatun
+		}
+		character:ildeguzid_2 = {
+			set_culture = culture:turkish
+		}
+		character:ildeguzid_3 = {
+			set_culture = culture:turkish
+		}
+		character:93295 = {
+			set_culture = culture:turkish
+			add_trait = disinherited
+			add_trait = disputed_heritage
+			add_trait = infertile			#had no kids
+			set_mother = character:inanj_khatun
+			set_real_father = character:qutlugh_real_father
+		}
+		character:93296 = {
+			set_culture = culture:turkish
+			set_father = character:144052
+			change_first_name = Abu_Bakr
+			give_nickname = ROA_nick_nusrat_al_din
+		}
+		character:93297 = {
+			set_culture = culture:turkish
+		}
+		character:93298 = {
+			set_culture = culture:turkish
+		}
+		character:93296 = {
+			set_culture = culture:turkish
+		}
 	}
 }
 
@@ -190,8 +193,12 @@ ildeguzid_nickname_action = {
 			holder ?= {
 				has_any_nickname = no
 				religion = religion:islam_religion
-				NOT = { has_variable = ildeguzid_sultan_nickname_flag }
-				NOT = { has_variable = islamic_nicknames_decision_used }				
+				NOT = {
+					has_variable = ildeguzid_sultan_nickname_flag
+				}
+				NOT = {
+					has_variable = islamic_nicknames_decision_used
+				}
 				dynasty = dynasty:101876
 			}
 		}
@@ -199,46 +206,126 @@ ildeguzid_nickname_action = {
 	effect = {
 		title:k_adurbadagan.holder = {
 			random_list = {
-				200 = { give_nickname = ROA_nick_nusrat_al_din }	
-				200 = { give_nickname = nick_muzaffar_al_din }	
-				100 = { give_nickname = nick_shams_al_din }
-				50 = { give_nickname = nick_rukn_al_din }
-				50 = { give_nickname = nick_izz_al_din }
-				50 = { give_nickname = nick_ala_al_din }
-				50 = { give_nickname = nick_ghiyath_al_din }
-				50 = { give_nickname = ROA_nick_shuja_al_din }
-				50 = { give_nickname = ROA_nick_hussam_al_din }			
-				50 = { give_nickname = ROA_nick_falak_al_din }									
-				50 = { give_nickname = nick_alam_al_din }		
-				50 = { give_nickname = nick_asad_al_din }
-				50 = { give_nickname = nick_badr_al_din }
-				50 = { give_nickname = nick_baha_al_din }
-				50 = { give_nickname = nick_fakhr_al_din }
-				50 = { give_nickname = nick_ikhtiyar_al_din }
-				50 = { give_nickname = nick_imad_al_dawla }
-				50 = { give_nickname = nick_imad_al_din }
-				50 = { give_nickname = nick_jalal_al_din }
-				50 = { give_nickname = nick_kanz_al_dawla }
-				50 = { give_nickname = ROA_nick_imad_ad_dawlah }
-				50 = { give_nickname = nick_majd_al_din }
-				50 = { give_nickname = nick_mu_izz_al_din }
-				50 = { give_nickname = nick_muayyad_al_din }
-				50 = { give_nickname = nick_muayyid_al_din }
-				50 = { give_nickname = nick_mubaraz_al_din }
-				50 = { give_nickname = nick_muhyi_al_din }
-				50 = { give_nickname = nick_najm_al_din }
-				50 = { give_nickname = nick_nasir_al_din }
-				50 = { give_nickname = nick_nizam_al_din }
-				50 = { give_nickname = nick_nur_al_din }
-				50 = { give_nickname = nick_qutb_al_din }
-				50 = { give_nickname = nick_rashid_al_din }
-				50 = { give_nickname = nick_sayf_al_din }
-				50 = { give_nickname = nick_sayf_al_islam }
-				50 = { give_nickname = nick_sharaf_al_din }
-				50 = { give_nickname = nick_taj_al_din }
-				50 = { give_nickname = nick_yumm_al_din }
-				50 = { give_nickname = nick_zahir_al_din }
-				50 = { give_nickname = nick_zayn_al_din }
+				200 = {
+					give_nickname = ROA_nick_nusrat_al_din
+				}
+				200 = {
+					give_nickname = nick_muzaffar_al_din
+				}
+				100 = {
+					give_nickname = nick_shams_al_din
+				}
+				50 = {
+					give_nickname = nick_rukn_al_din
+				}
+				50 = {
+					give_nickname = nick_izz_al_din
+				}
+				50 = {
+					give_nickname = nick_ala_al_din
+				}
+				50 = {
+					give_nickname = nick_ghiyath_al_din
+				}
+				50 = {
+					give_nickname = ROA_nick_shuja_al_din
+				}
+				50 = {
+					give_nickname = ROA_nick_hussam_al_din
+				}
+				50 = {
+					give_nickname = ROA_nick_falak_al_din
+				}
+				50 = {
+					give_nickname = nick_alam_al_din
+				}
+				50 = {
+					give_nickname = nick_asad_al_din
+				}
+				50 = {
+					give_nickname = nick_badr_al_din
+				}
+				50 = {
+					give_nickname = nick_baha_al_din
+				}
+				50 = {
+					give_nickname = nick_fakhr_al_din
+				}
+				50 = {
+					give_nickname = nick_ikhtiyar_al_din
+				}
+				50 = {
+					give_nickname = nick_imad_al_dawla
+				}
+				50 = {
+					give_nickname = nick_imad_al_din
+				}
+				50 = {
+					give_nickname = nick_jalal_al_din
+				}
+				50 = {
+					give_nickname = nick_kanz_al_dawla
+				}
+				50 = {
+					give_nickname = ROA_nick_imad_ad_dawlah
+				}
+				50 = {
+					give_nickname = nick_majd_al_din
+				}
+				50 = {
+					give_nickname = nick_mu_izz_al_din
+				}
+				50 = {
+					give_nickname = nick_muayyad_al_din
+				}
+				50 = {
+					give_nickname = nick_muayyid_al_din
+				}
+				50 = {
+					give_nickname = nick_mubaraz_al_din
+				}
+				50 = {
+					give_nickname = nick_muhyi_al_din
+				}
+				50 = {
+					give_nickname = nick_najm_al_din
+				}
+				50 = {
+					give_nickname = nick_nasir_al_din
+				}
+				50 = {
+					give_nickname = nick_nizam_al_din
+				}
+				50 = {
+					give_nickname = nick_nur_al_din
+				}
+				50 = {
+					give_nickname = nick_qutb_al_din
+				}
+				50 = {
+					give_nickname = nick_rashid_al_din
+				}
+				50 = {
+					give_nickname = nick_sayf_al_din
+				}
+				50 = {
+					give_nickname = nick_sayf_al_islam
+				}
+				50 = {
+					give_nickname = nick_sharaf_al_din
+				}
+				50 = {
+					give_nickname = nick_taj_al_din
+				}
+				50 = {
+					give_nickname = nick_yumm_al_din
+				}
+				50 = {
+					give_nickname = nick_zahir_al_din
+				}
+				50 = {
+					give_nickname = nick_zayn_al_din
+				}
 			}
 			set_variable = ildeguzid_sultan_nickname_flag
 		}
@@ -248,64 +335,64 @@ ildeguzid_nickname_action = {
 cappadocian_action = {
 	effect = {
 		character:70502 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:70501 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:70500 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:70499 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:1712 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:20534 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:20536 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:41318 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:41319 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:41320 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:42000 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:42001 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:159278 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:145147 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:1734 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:1735 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:20525 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:215523 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:34428 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 		character:34429 = {
-			set_culture = culture:cappadocian 
+			set_culture = culture:cappadocian
 		}
 	}
 }
@@ -317,48 +404,119 @@ avar_nutsal_action = {
 			holder ?= {
 				has_any_nickname = no
 				religion = religion:islam_religion
-				culture = { has_name_list = name_list_avaric }
-				NOT = { has_variable = avar_nutsal_flag }
+				culture = {
+					has_name_list = name_list_avaric
+				}
+				NOT = {
+					has_variable = avar_nutsal_flag
+				}
 			}
 		}
 	}
 	effect = {
 		title:k_sarir_roa.holder = {
 			random_list = {
-				200 = { }
-				50 = { give_nickname = ROA_nick_abbas }
-				50 = { give_nickname = ROA_nick_ibrahim }
-				50 = { give_nickname = ROA_nick_muhammad }
-				50 = { give_nickname = ROA_nick_hamza }
-				50 = { give_nickname = ROA_nick_shaban }
-				50 = { give_nickname = ROA_nick_ahmad }
-				50 = { give_nickname = ROA_nick_mahdi }
-				50 = { give_nickname = ROA_nick_hussein }
-				50 = { give_nickname = ROA_nick_ali }
-				50 = { give_nickname = ROA_nick_mahmud }
-				50 = { give_nickname = ROA_nick_abulhassan }
-				50 = { give_nickname = ROA_nick_akbar }
-				50 = { give_nickname = ROA_nick_allahyar }
-				50 = { give_nickname = ROA_nick_amin }
-				50 = { give_nickname = ROA_nick_assad }
-				50 = { give_nickname = ROA_nick_davud }
-				50 = { give_nickname = ROA_nick_iskander }
-				50 = { give_nickname = ROA_nick_ismail }
-				50 = { give_nickname = ROA_nick_jahanshah }
-				50 = { give_nickname = ROA_nick_jamshid }
-				50 = { give_nickname = ROA_nick_javad }
-				50 = { give_nickname = ROA_nick_khosro }
-				50 = { give_nickname = ROA_nick_khudayar }
-				50 = { give_nickname = ROA_nick_khurshid }
-				50 = { give_nickname = ROA_nick_mustafa }
-				50 = { give_nickname = ROA_nick_muzaffar }
-				50 = { give_nickname = ROA_nick_suleyman }				
-				25 = { give_nickname = ROA_nick_amirsultan }
-				25 = { give_nickname = ROA_nick_amir_hamza }
-				25 = { give_nickname = ROA_nick_muhammad_shah }
-				25 = { give_nickname = ROA_nick_sultan_shah }
-				25 = { give_nickname = ROA_nick_mahmud_khan }
-				25 = { give_nickname = ROA_nick_ali_bek }
+				200 = {
+				}
+				50 = {
+					give_nickname = ROA_nick_abbas
+				}
+				50 = {
+					give_nickname = ROA_nick_ibrahim
+				}
+				50 = {
+					give_nickname = ROA_nick_muhammad
+				}
+				50 = {
+					give_nickname = ROA_nick_hamza
+				}
+				50 = {
+					give_nickname = ROA_nick_shaban
+				}
+				50 = {
+					give_nickname = ROA_nick_ahmad
+				}
+				50 = {
+					give_nickname = ROA_nick_mahdi
+				}
+				50 = {
+					give_nickname = ROA_nick_hussein
+				}
+				50 = {
+					give_nickname = ROA_nick_ali
+				}
+				50 = {
+					give_nickname = ROA_nick_mahmud
+				}
+				50 = {
+					give_nickname = ROA_nick_abulhassan
+				}
+				50 = {
+					give_nickname = ROA_nick_akbar
+				}
+				50 = {
+					give_nickname = ROA_nick_allahyar
+				}
+				50 = {
+					give_nickname = ROA_nick_amin
+				}
+				50 = {
+					give_nickname = ROA_nick_assad
+				}
+				50 = {
+					give_nickname = ROA_nick_davud
+				}
+				50 = {
+					give_nickname = ROA_nick_iskander
+				}
+				50 = {
+					give_nickname = ROA_nick_ismail
+				}
+				50 = {
+					give_nickname = ROA_nick_jahanshah
+				}
+				50 = {
+					give_nickname = ROA_nick_jamshid
+				}
+				50 = {
+					give_nickname = ROA_nick_javad
+				}
+				50 = {
+					give_nickname = ROA_nick_khosro
+				}
+				50 = {
+					give_nickname = ROA_nick_khudayar
+				}
+				50 = {
+					give_nickname = ROA_nick_khurshid
+				}
+				50 = {
+					give_nickname = ROA_nick_mustafa
+				}
+				50 = {
+					give_nickname = ROA_nick_muzaffar
+				}
+				50 = {
+					give_nickname = ROA_nick_suleyman
+				}
+				25 = {
+					give_nickname = ROA_nick_amirsultan
+				}
+				25 = {
+					give_nickname = ROA_nick_amir_hamza
+				}
+				25 = {
+					give_nickname = ROA_nick_muhammad_shah
+				}
+				25 = {
+					give_nickname = ROA_nick_sultan_shah
+				}
+				25 = {
+					give_nickname = ROA_nick_mahmud_khan
+				}
+				25 = {
+					give_nickname = ROA_nick_ali_bek
+				}
 			}
 			set_variable = avar_nutsal_flag
 		}
@@ -368,10 +526,10 @@ avar_nutsal_action = {
 roa_gold_give = {
 	effect = {
 		title:c_derbent.holder = {
-			add_gold = 50			
+			add_gold = 50
 			add_trait = content
 		}
-	}	
+	}
 }
 
 rum_sultan_nickname_action = {
@@ -381,8 +539,12 @@ rum_sultan_nickname_action = {
 			holder ?= {
 				has_any_nickname = no
 				religion = religion:islam_religion
-				NOT = { has_variable = rum_sultan_nickname_flag }
-				NOT = { has_variable = islamic_nicknames_decision_used }
+				NOT = {
+					has_variable = rum_sultan_nickname_flag
+				}
+				NOT = {
+					has_variable = islamic_nicknames_decision_used
+				}
 				house = house:house_seljuk
 			}
 		}
@@ -390,46 +552,126 @@ rum_sultan_nickname_action = {
 	effect = {
 		title:k_rum.holder = {
 			random_list = {
-				200 = { give_nickname = nick_rukn_al_din }
-				200 = { give_nickname = nick_izz_al_din }
-				200 = { give_nickname = nick_ala_al_din }
-				200 = { give_nickname = nick_ghiyath_al_din }
-				50 = { give_nickname = ROA_nick_shuja_al_din }
-				50 = { give_nickname = ROA_nick_hussam_al_din }				
-				50 = { give_nickname = ROA_nick_falak_al_din }				
-				50 = { give_nickname = ROA_nick_nusrat_al_din }							
-				50 = { give_nickname = nick_alam_al_din }		
-				50 = { give_nickname = nick_asad_al_din }
-				50 = { give_nickname = nick_badr_al_din }
-				50 = { give_nickname = nick_baha_al_din }
-				50 = { give_nickname = nick_fakhr_al_din }
-				50 = { give_nickname = nick_ikhtiyar_al_din }
-				50 = { give_nickname = nick_imad_al_dawla }
-				50 = { give_nickname = nick_imad_al_din }
-				50 = { give_nickname = nick_jalal_al_din }
-				50 = { give_nickname = nick_kanz_al_dawla }
-				50 = { give_nickname = ROA_nick_imad_ad_dawlah }
-				50 = { give_nickname = nick_majd_al_din }
-				50 = { give_nickname = nick_mu_izz_al_din }
-				50 = { give_nickname = nick_muayyad_al_din }
-				50 = { give_nickname = nick_muayyid_al_din }
-				50 = { give_nickname = nick_mubaraz_al_din }
-				50 = { give_nickname = nick_muhyi_al_din }
-				50 = { give_nickname = nick_muzaffar_al_din }
-				50 = { give_nickname = nick_najm_al_din }
-				50 = { give_nickname = nick_nasir_al_din }
-				50 = { give_nickname = nick_nizam_al_din }
-				50 = { give_nickname = nick_nur_al_din }
-				50 = { give_nickname = nick_qutb_al_din }
-				50 = { give_nickname = nick_rashid_al_din }
-				50 = { give_nickname = nick_sayf_al_din }
-				50 = { give_nickname = nick_sayf_al_islam }
-				50 = { give_nickname = nick_shams_al_din }
-				50 = { give_nickname = nick_sharaf_al_din }
-				50 = { give_nickname = nick_taj_al_din }
-				50 = { give_nickname = nick_yumm_al_din }
-				50 = { give_nickname = nick_zahir_al_din }
-				50 = { give_nickname = nick_zayn_al_din }
+				200 = {
+					give_nickname = nick_rukn_al_din
+				}
+				200 = {
+					give_nickname = nick_izz_al_din
+				}
+				200 = {
+					give_nickname = nick_ala_al_din
+				}
+				200 = {
+					give_nickname = nick_ghiyath_al_din
+				}
+				50 = {
+					give_nickname = ROA_nick_shuja_al_din
+				}
+				50 = {
+					give_nickname = ROA_nick_hussam_al_din
+				}
+				50 = {
+					give_nickname = ROA_nick_falak_al_din
+				}
+				50 = {
+					give_nickname = ROA_nick_nusrat_al_din
+				}
+				50 = {
+					give_nickname = nick_alam_al_din
+				}
+				50 = {
+					give_nickname = nick_asad_al_din
+				}
+				50 = {
+					give_nickname = nick_badr_al_din
+				}
+				50 = {
+					give_nickname = nick_baha_al_din
+				}
+				50 = {
+					give_nickname = nick_fakhr_al_din
+				}
+				50 = {
+					give_nickname = nick_ikhtiyar_al_din
+				}
+				50 = {
+					give_nickname = nick_imad_al_dawla
+				}
+				50 = {
+					give_nickname = nick_imad_al_din
+				}
+				50 = {
+					give_nickname = nick_jalal_al_din
+				}
+				50 = {
+					give_nickname = nick_kanz_al_dawla
+				}
+				50 = {
+					give_nickname = ROA_nick_imad_ad_dawlah
+				}
+				50 = {
+					give_nickname = nick_majd_al_din
+				}
+				50 = {
+					give_nickname = nick_mu_izz_al_din
+				}
+				50 = {
+					give_nickname = nick_muayyad_al_din
+				}
+				50 = {
+					give_nickname = nick_muayyid_al_din
+				}
+				50 = {
+					give_nickname = nick_mubaraz_al_din
+				}
+				50 = {
+					give_nickname = nick_muhyi_al_din
+				}
+				50 = {
+					give_nickname = nick_muzaffar_al_din
+				}
+				50 = {
+					give_nickname = nick_najm_al_din
+				}
+				50 = {
+					give_nickname = nick_nasir_al_din
+				}
+				50 = {
+					give_nickname = nick_nizam_al_din
+				}
+				50 = {
+					give_nickname = nick_nur_al_din
+				}
+				50 = {
+					give_nickname = nick_qutb_al_din
+				}
+				50 = {
+					give_nickname = nick_rashid_al_din
+				}
+				50 = {
+					give_nickname = nick_sayf_al_din
+				}
+				50 = {
+					give_nickname = nick_sayf_al_islam
+				}
+				50 = {
+					give_nickname = nick_shams_al_din
+				}
+				50 = {
+					give_nickname = nick_sharaf_al_din
+				}
+				50 = {
+					give_nickname = nick_taj_al_din
+				}
+				50 = {
+					give_nickname = nick_yumm_al_din
+				}
+				50 = {
+					give_nickname = nick_zahir_al_din
+				}
+				50 = {
+					give_nickname = nick_zayn_al_din
+				}
 			}
 			set_variable = rum_sultan_nickname_flag
 		}
@@ -442,43 +684,69 @@ abbasid_regnal_beginning_1178 = {
 	}
 	effect = {
 		character:3084 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:144064 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:227000 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:34022 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:34023 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:34024 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:34025 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:3080 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:34014 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:34015 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:34017 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:34018 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 		character:3086 = {
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 	}
 }
@@ -489,47 +757,115 @@ abbasid_regnal_check = {
 			exists = holder
 			holder ?= {
 				house = house:house_abbasid
-				NOT = { has_character_flag = has_regnal_name_abbasid }
+				NOT = {
+					has_character_flag = has_regnal_name_abbasid
+				}
 			}
 		}
 	}
 	effect = {
 		title:d_sunni.holder = {
 			random_list = {
-				60 = { 	change_first_name = Al-Nasir }
-				60 = { 	change_first_name = Al-Mustazhir }
-				60 = { 	change_first_name = Az-Zahir }
-				60 = { 	change_first_name = Al-Mustansir }
-				60 = { 	change_first_name = Al-Musta_sim }
-				60 = { 	change_first_name = Al-Hakim }
-				60 = { 	change_first_name = Al-Mustakfi }
-				60 = { 	change_first_name = Al-Musta_in }
-				60 = { 	change_first_name = Al-Mustamsik }
-				60 = { 	change_first_name = Al-Mustakfi }
-				50 = { 	change_first_name = As-Saffah }
-				50 = { 	change_first_name = Al-Hadi }
-				50 = { 	change_first_name = Al-Rashid }
-				50 = { 	change_first_name = Al-Amin }
-				50 = { 	change_first_name = Al-Wathiq }
-				50 = { 	change_first_name = Al-Mutawakkil }
-				50 = { 	change_first_name = Al-Muntasir }
-				50 = { 	change_first_name = Al-Musta_in }
-				50 = { 	change_first_name = Al-Mu_tazz }
-				50 = { 	change_first_name = Al-Muhtadi }
-				50 = { 	change_first_name = Al-Mu_tamid }
-				50 = { 	change_first_name = Al-Mu_tadid }
-				50 = { 	change_first_name = Al-Muktafi }
-				50 = { 	change_first_name = Al-Muqtadir }
-				50 = { 	change_first_name = Al-Qahir }
-				50 = { 	change_first_name = Ar-Radi }
-				50 = { 	change_first_name = Al-Muttaqi }
-				50 = { 	change_first_name = Al-Muti }
-				50 = { 	change_first_name = Al-Ta_i }
-				50 = { 	change_first_name = Al-Qa_im }
-				50 = { 	change_first_name = Al-Mustarshid }
-				50 = { 	change_first_name = Al-Mustanjid }
+				60 = {
+					change_first_name = Al-Nasir
+				}
+				60 = {
+					change_first_name = Al-Mustazhir
+				}
+				60 = {
+					change_first_name = Az-Zahir
+				}
+				60 = {
+					change_first_name = Al-Mustansir
+				}
+				60 = {
+					change_first_name = Al-Musta_sim
+				}
+				60 = {
+					change_first_name = Al-Hakim
+				}
+				60 = {
+					change_first_name = Al-Mustakfi
+				}
+				60 = {
+					change_first_name = Al-Musta_in
+				}
+				60 = {
+					change_first_name = Al-Mustamsik
+				}
+				60 = {
+					change_first_name = Al-Mustakfi
+				}
+				50 = {
+					change_first_name = As-Saffah
+				}
+				50 = {
+					change_first_name = Al-Hadi
+				}
+				50 = {
+					change_first_name = Al-Rashid
+				}
+				50 = {
+					change_first_name = Al-Amin
+				}
+				50 = {
+					change_first_name = Al-Wathiq
+				}
+				50 = {
+					change_first_name = Al-Mutawakkil
+				}
+				50 = {
+					change_first_name = Al-Muntasir
+				}
+				50 = {
+					change_first_name = Al-Musta_in
+				}
+				50 = {
+					change_first_name = Al-Mu_tazz
+				}
+				50 = {
+					change_first_name = Al-Muhtadi
+				}
+				50 = {
+					change_first_name = Al-Mu_tamid
+				}
+				50 = {
+					change_first_name = Al-Mu_tadid
+				}
+				50 = {
+					change_first_name = Al-Muktafi
+				}
+				50 = {
+					change_first_name = Al-Muqtadir
+				}
+				50 = {
+					change_first_name = Al-Qahir
+				}
+				50 = {
+					change_first_name = Ar-Radi
+				}
+				50 = {
+					change_first_name = Al-Muttaqi
+				}
+				50 = {
+					change_first_name = Al-Muti
+				}
+				50 = {
+					change_first_name = Al-Ta_i
+				}
+				50 = {
+					change_first_name = Al-Qa_im
+				}
+				50 = {
+					change_first_name = Al-Mustarshid
+				}
+				50 = {
+					change_first_name = Al-Mustanjid
+				}
 			}
-			add_character_flag = { flag = has_regnal_name_abbasid }
+			add_character_flag = {
+				flag = has_regnal_name_abbasid
+			}
 		}
 	}
 }
@@ -537,43 +873,69 @@ abbasid_regnal_check = {
 abkhazia_regnal_beginning = {
 	effect = {
 		character:70468 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:70465 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:1234366 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:1234366M ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:70466 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:70467 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:70471 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:70476 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:70474 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:70475 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:70470 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:1234364 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 		character:70469 ?= {
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 	}
 }
@@ -585,33 +947,73 @@ abkhazia_regnal_check = {
 			holder ?= {
 				dynasty = dynasty:101737
 				culture = culture:abkhaz
-				NOT = { has_character_flag = has_regnal_name_abkhazia }
+				NOT = {
+					has_character_flag = has_regnal_name_abkhazia
+				}
 			}
 		}
 	}
 	effect = {
 		title:k_abkhazia.holder = {
 			random_list = {
-				50 = { 	change_first_name = Yowan }
-				50 = { 	change_first_name = Konstantin }
-				50 = { 	change_first_name = Feodosi }
-				50 = { 	change_first_name = Lawan }
-				50 = { 	change_first_name = Garg }
-				50 = { 	change_first_name = Dirmit }
-				50 = { 	change_first_name = Istvine }
-				50 = { 	change_first_name = Barnuk }
-				50 = { 	change_first_name = Teodor }
-				50 = { 	change_first_name = Bagrat }
-				50 = { 	change_first_name = Adarnese }
-				50 = { 	change_first_name = Dawet }
-				50 = { 	change_first_name = Sumbat }
+				50 = {
+					change_first_name = Yowan
+				}
+				50 = {
+					change_first_name = Konstantin
+				}
+				50 = {
+					change_first_name = Feodosi
+				}
+				50 = {
+					change_first_name = Lawan
+				}
+				50 = {
+					change_first_name = Garg
+				}
+				50 = {
+					change_first_name = Dirmit
+				}
+				50 = {
+					change_first_name = Istvine
+				}
+				50 = {
+					change_first_name = Barnuk
+				}
+				50 = {
+					change_first_name = Teodor
+				}
+				50 = {
+					change_first_name = Bagrat
+				}
+				50 = {
+					change_first_name = Adarnese
+				}
+				50 = {
+					change_first_name = Dawet
+				}
+				50 = {
+					change_first_name = Sumbat
+				}
 			}
-			add_character_flag = { flag = has_regnal_name_abkhazia }
+			add_character_flag = {
+				flag = has_regnal_name_abkhazia
+			}
 		}
 	}
 }
 
-caucasus_character_events_action = { - will be added and polished in fututre events update
+caucasus_character_events_action = {
+	-
+	will
+	be
+	added
+	and
+	polished
+	in
+	fututre
+	events
+	update
 	effect = {
 		if = {
 			limit = {
@@ -647,8 +1049,12 @@ caucasus_character_events_action = { - will be added and polished in fututre eve
 				exists = character:sea_baghuashi_1
 				character:sea_baghuashi_1 = {
 					is_alive = yes
-					NOT = { is_landed = yes }
-					NOT = { has_title = title:c_argveti }
+					NOT = {
+						is_landed = yes
+					}
+					NOT = {
+						has_title = title:c_argveti
+					}
 				}
 			}
 			title:k_iberia.holder = {
@@ -809,7 +1215,8 @@ ramadan_calculator_action = {
 			title:c_mecca.holder = {
 				trigger_event = {
 					id = caucasianroa.998
-					days = 246  }
+					days = 246
+				}
 			}
 		}
 		if = {
@@ -819,7 +1226,8 @@ ramadan_calculator_action = {
 			title:c_mecca.holder = {
 				trigger_event = {
 					id = caucasianroa.998
-					days = 204  }
+					days = 204
+				}
 			}
 		}
 		if = {
@@ -829,7 +1237,8 @@ ramadan_calculator_action = {
 			title:c_mecca.holder = {
 				trigger_event = {
 					id = caucasianroa.998
-					days = 304  }
+					days = 304
+				}
 			}
 		}
 		if = {
@@ -839,7 +1248,24 @@ ramadan_calculator_action = {
 			title:c_mecca.holder = {
 				trigger_event = {
 					id = caucasianroa.998
-					days = 132  }
+					days = 132
+				}
+			}
+		}
+	}
+}
+
+circassian_church_action = {
+	effect = {
+		if = {
+			limit = {
+				game_start_date > 1150.1.1
+			}
+			character:circassian_tuqar = {
+				trigger_event = {
+					id = caucasianroa.043
+					days = 30
+				}
 			}
 		}
 	}
