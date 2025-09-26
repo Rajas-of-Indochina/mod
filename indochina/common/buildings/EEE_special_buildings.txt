@@ -1,0 +1,155 @@
+﻿
+EEE_bald_mountain = {
+	#asset = {
+	#}
+	construction_time = very_slow_construction_time
+
+	type_icon = "icon_structure_bald_mountain.dds"
+
+	can_construct = {
+	}
+
+	cost_gold = 1000
+
+	character_modifier = {
+		legitimacy_gain_mult = 0.01
+		monthly_piety = 0.15
+		monthly_county_control_growth_factor = 0.05
+	}
+
+	county_modifier = {
+		development_growth_factor = 0.05
+	}
+
+	province_modifier = {
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_2
+	}
+
+	#next_building = bald_mountain_monastery
+
+	ai_value = {
+		base = 100
+		culture_likely_to_fortify_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+	}
+
+	type = special
+
+	flag = travel_point_of_interest_religious # sacred mountain
+}
+
+EEE_temple_of_svetovit_arkona_01 = {
+	#asset = {
+	#}
+	construction_time = slow_construction_time
+
+	type_icon = "icon_structure_temple_of_svetovit_arkona.dds"
+
+	can_construct = {
+		custom_description = {
+			text = slavic_trigger
+			scope:holder = {
+				OR = {
+					religion = religion:slavic_religion
+				}
+			}
+		}
+	}
+
+	cost_gold = 1000
+
+	can_construct_potential = {
+	}
+	
+	can_construct = {
+		OR = {
+			scope:holder = {
+				religion = religion:slavic_religion
+			}
+			custom_description = {
+				text = holy_site_building_trigger
+				barony = {
+					is_holy_site_of = scope:holder.faith
+				}
+			}
+		}
+	}
+	
+	is_enabled = {
+		custom_description = {
+			text = holy_site_christian_or_holy_site_trigger
+			OR = {
+				scope:holder = {
+					religion = religion:slavic_religion
+				}
+				custom_description = {
+					text = holy_site_building_trigger
+					barony = {
+						is_holy_site_of = scope:holder.faith
+					}
+				}
+			}
+		}
+	}
+	
+	cost_gold = 1000
+	
+	character_modifier = {
+		monthly_piety = 0.25
+		monthly_dynasty_prestige_mult = 0.05
+		men_at_arms_maintenance = -0.1
+		knight_effectiveness_mult = 0.15
+	}
+	province_modifier = {
+		monthly_income = 1
+	}
+	county_modifier = {
+		tax_mult = 0.1
+		levy_size = 0.1
+		development_growth_factor = 0.2
+	}
+
+	#next_building = temple_of_svetovit_arkona_02
+	
+	ai_value = {
+		base = 100
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+	}
+	
+	type = special
+
+	flag = travel_point_of_interest_religious
+
+	character_modifier = {
+	}
+
+	county_holder_character_modifier = {
+		legitimacy_gain_mult = 0.01
+		monthly_piety = 0.2
+		same_faith_opinion = 2
+	}
+
+	county_modifier = {
+		development_growth_factor = 0.05
+		levy_size = 0.01
+	}
+
+	ai_value = {
+		base = 100
+		culture_likely_to_fortify_modifier = yes
+		modifier = { # Fill all building slots before going for special buildings
+			factor = 0
+			free_building_slots > 0
+		}
+	}
+
+	type = special
+
+	flag = travel_point_of_interest_religious # important place of worship
+}

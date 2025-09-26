@@ -34,7 +34,7 @@ yearly_global_pulse = {
 		ildeguzid_nickname_action
 		abbasid_regnal_check
 		abkhazia_regnal_check
-		#caucasus_character_events_action
+		caucasus_character_events_action
 	}
 }
 
@@ -611,25 +611,52 @@ abkhazia_regnal_check = {
 	}
 }
 
-#caucasus_character_events_action = { - will be added and polished in fututre events update
-	#effect = {
-		#if = {
-			#limit = { 
-				#current_date = 871.1.1
-				#exists = character:sea_baghuashi_1
-				#character:sea_baghuashi_1 = {
-					#is_alive = yes
-					#is_landed = yes
-					#has_title = title:c_argveti
-				#}
-				#exists = title:k_abkhazia
-			#}
-			#title:k_abkhazia.holder = {
-				#trigger_event = caucasianroa.029
-			#}
-		#}
-	#}
-#}
+caucasus_character_events_action = { - will be added and polished in fututre events update
+	effect = {
+		if = {
+			limit = {
+				NOT = {
+					has_global_variable = caucasus_baghuashi_exiled_global_variable
+				}
+				trigger = {
+					current_year < 872
+					current_year > 867
+				}
+				exists = title:k_abkhazia
+				exists = character:sea_baghuashi_1
+				character:sea_baghuashi_1 = {
+					is_alive = yes
+					is_landed = yes
+					has_title = title:c_argveti
+				}
+			}
+			title:k_abkhazia.holder = {
+				trigger_event = caucasianroa.029
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_global_variable = caucasus_baghuashi_in_kidekari_global_variable
+				}
+				trigger = {
+					current_year < 877
+					current_year > 871
+				}
+				exists = title:k_iberia
+				exists = character:sea_baghuashi_1
+				character:sea_baghuashi_1 = {
+					is_alive = yes
+					NOT = { is_landed = yes }
+					NOT = { has_title = title:c_argveti }
+				}
+			}
+			title:k_iberia.holder = {
+				trigger_event = caucasianroa.030
+			}
+		}
+	}
+}
 
 character_intro_event_action = {
 	effect = {

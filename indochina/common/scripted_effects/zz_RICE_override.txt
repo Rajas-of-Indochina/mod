@@ -881,6 +881,45 @@ RICE_pamir_reclaim_hephthalite_homeland_effect = {
 	}
 }
 
+# adding minorities too
+RICE_pamir_brahui_migration_effect = {
+	set_global_variable = {
+		name = RICE_pamir_brahui_migrations_happened
+		value = yes
+	}
+	custom_tooltip = RICE_pamir_brahui_migrations_happened_text
+	title:c_kalat = {
+		add_county_modifier = {
+			modifier = RICE_pamir_brahui_tribes
+		}
+	}
+	add_culture_minority_effect = {
+		CULTURE = culture:brahui
+		SIZE = small
+		COUNTY = title:c_kalat
+	}
+	title:c_sibi = {
+		add_county_modifier = {
+			modifier = RICE_pamir_brahui_tribes
+		}
+	}
+	add_culture_minority_effect = {
+		CULTURE = culture:brahui
+		SIZE = large
+		COUNTY = title:c_sibi
+	}
+	title:c_turan = {
+		add_county_modifier = {
+			modifier = RICE_pamir_brahui_tribes
+		}
+	}
+	add_culture_minority_effect = {
+		CULTURE = culture:brahui
+		SIZE = large
+		COUNTY = title:c_turan
+	}
+}
+
 # Instead of just converting to Han culture, you now convert to a Han hybrid of your culture if it exists,
 # else convert to any chinese-heritage offshoot of your culture if one exists
 # Else convert to any culture that diverged from yours and has the Sinicized Culture tradition if one exists
@@ -1456,93 +1495,6 @@ RICE_spawn_siberian_minorities_effect = {
 			}
 		}
 	}
-}
-
-# Deals with Buddhist Canons
-RoA_RICE_setup_magadha_flavor_pack_effect = {
-    title:c_magadha = {
-        add_county_modifier = {
-            modifier = RICE_magadha_rajgir_hot_springs_buddhist
-        }
-    }
-
-	if = {
-		limit = {
-			current_date > 1000.1.1
-		}
-        title:c_magadha.holder = {
-            get_title = title:c_gaya
-        }
-	}
-
-    faith:mahayana = {
-        add_doctrine = rice_mahayana_canon_doctrine
-    }
-	faith:phat_giao = {
-		add_doctrine = rice_mahayana_canon_doctrine
-	}
-	faith:zenzong = {
-		add_doctrine = rice_mahayana_canon_doctrine
-	}
-
-    faith:theravada = {
-        add_doctrine = rice_theravada_canon_doctrine
-    }
-
-	faith:vajrayana = {
-		add_doctrine = rice_vajrayana_canon_doctrine
-	}
-	faith:lamaism = { add_doctrine = rice_vajrayana_canon_doctrine }
-	faith:ari = {
-		add_doctrine = rice_vajrayana_canon_doctrine
-	}
-	faith:azhaliism = {
-		add_doctrine = rice_vajrayana_canon_doctrine
-	}
-	faith:pudgalavada = {
-		add_doctrine = rice_pudgalavada_canon_doctrine
-	}
-    if = {
-        limit = {
-            #is_tip_trigger = yes
-            exists = faith:vibhajyavada
-        }
-        faith:vibhajyavada = {
-            add_doctrine = rice_theravada_canon_doctrine
-        }
-    }
-    if = {
-        limit = {
-            #is_tip_trigger = yes
-            exists = faith:sarvastivada
-        }
-        faith:sarvastivada = {
-            add_doctrine = rice_mahayana_canon_doctrine
-        }
-    }
-    if = {
-        limit = {
-            #is_tip_trigger = yes
-            exists = faith:chan
-        }
-        faith:chan = {
-            add_doctrine = rice_mahayana_canon_doctrine
-        }
-    }
-    # Failsafe in case other mods add in other variations of Buddhism
-    religion:buddhism_religion = {
-        every_faith = {
-            limit = {
-                NOR = {
-                    has_doctrine = rice_mahayana_canon_doctrine
-                    has_doctrine = rice_theravada_canon_doctrine
-                    has_doctrine = rice_vajrayana_canon_doctrine
-                    has_doctrine = rice_pudgalavada_canon_doctrine
-                }
-            }
-            add_doctrine = rice_mahayana_canon_doctrine
-        }
-    }
 }
 
 # call from county scope
