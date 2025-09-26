@@ -38,7 +38,7 @@ struggle_persia_ending_assertion_decision = {
 			text = struggle_persia_ending_assertion.l
 			fp3_persia_supporter_rulers_count_value > fp3_persia_supporter_rulers_half_value
 		}
-
+		
 		custom_tooltip = {
 			text = struggle_persia_ending_assertion.2
 			struggle:persian_struggle = {
@@ -52,7 +52,7 @@ struggle_persia_ending_assertion_decision = {
 				}
 			}
 		}
-
+		
 		custom_tooltip = {
 			text = struggle_persia_ending_assertion.3
 			struggle:persian_struggle = {
@@ -70,7 +70,7 @@ struggle_persia_ending_assertion_decision = {
 				}
 			}
 		}
-
+		
 
 		# They need to be super pious
 		piety_level >= very_high_piety_level
@@ -107,11 +107,15 @@ struggle_persia_ending_assertion_decision = {
 				STRUGGLE = persian_struggle
 			}
 		}
+		if = {
+			limit = { has_ach_dlc_trigger = yes }
+			add_character_flag = ach_ended_struggle
+		}
 		show_as_tooltip = {
 			fp3_ending_effects_assertion = yes
 		}
 		trigger_event = fp3_struggle.0071
-
+		
 		if = { # If you can adopt admin government, show a tooltip to explain it - Actual effect is executed in the event
 			limit = {
 				has_dlc_feature = roads_to_power
@@ -125,7 +129,7 @@ struggle_persia_ending_assertion_decision = {
 		title:e_arabia = { remove_variable = struggle_block_dissolution_faction }
 
 	}
-
+	
 	ai_check_interval = 36
 	ai_potential = { always = yes }
 	ai_will_do = { base = 100 }
@@ -148,7 +152,7 @@ struggle_persia_ending_foundation_decision = {
 	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
 	is_invisible = yes
 	sort_order = 80
-
+	
 	is_valid_showing_failures_only = {
 		is_available_adult = yes
 		# Independent
@@ -168,7 +172,7 @@ struggle_persia_ending_foundation_decision = {
 				faith.religious_head = title:d_sunni.holder
 			}
 		}
-
+		
 		# HERE GOES THE SPECIFIC TRIGGERS FOR EACH OPTION - It goes here to make the buttons selectable (UI issue workaround)
 		trigger_if = { # CHALLENGER
 			limit = {  scope:struggle_persia_ending_foundation_decision_option_shia = yes }
@@ -449,6 +453,10 @@ struggle_persia_ending_foundation_decision = {
 				STRUGGLE = persian_struggle
 			}
 		}
+		if = {
+			limit = { has_ach_dlc_trigger = yes }
+			add_character_flag = ach_ended_struggle
+		}
 		if = { # Shia Caliphate
 			limit = { scope:struggle_persia_ending_foundation_decision_option_shia = yes }
 			custom_tooltip = struggle_persia_ending_foundation_decision_option.t.shia
@@ -482,7 +490,7 @@ struggle_persia_ending_foundation_decision = {
 		title:d_sunni = { remove_variable = struggle_block_dissolution_faction }
 		title:e_arabia = { remove_variable = struggle_block_dissolution_faction }
 	}
-
+	
 	ai_check_interval = 36
 	ai_potential = { always = yes }
 	ai_will_do = { base = 100 }
@@ -609,6 +617,10 @@ struggle_persia_ending_rekindle_iran_decision = {
 			}
 		}
 		if = {
+			limit = { has_ach_dlc_trigger = yes }
+			add_character_flag = ach_ended_struggle
+		}
+		if = {
 			limit = { scope:struggle_persia_ending_rekindle_iran_decision_option_secret_faith = yes }
 			if = {
 				limit = { exists = secret_faith }
@@ -652,7 +664,7 @@ favour_skilled_outsiders_decision = {
 	}
 	sort_order = 90
 	decision_group_type = courtier
-
+	
 	is_shown = {
 		has_fp3_dlc_trigger = yes
 		is_landed = yes
@@ -859,7 +871,7 @@ favour_skilled_outsiders_decision = {
 	}
 
 	cooldown = { years = 25 }
-
+	
 	cost = { prestige = favour_skilled_outsiders_decision_prestige_cost_value }
 
 	ai_check_interval = 24
@@ -1003,9 +1015,13 @@ fp3_sunder_the_caliphate_decision = {
 				ENDER = root
 				STRUGGLE = persian_struggle
 			}
-
+			
 		}
-
+		if = {
+			limit = { has_ach_dlc_trigger = yes }
+			add_character_flag = ach_ended_struggle
+		}
+		
 		title:d_sunni.holder = {
 			save_scope_as = the_caliph
 		}
@@ -1072,6 +1088,10 @@ fp3_become_clan_government_decision = {
 		legend_seed_struggle_ending_effect = {
 			ENDER = root
 			STRUGGLE = persian_struggle
+		}
+		if = {
+			limit = { has_ach_dlc_trigger = yes }
+			add_character_flag = ach_ended_struggle
 		}
 		show_as_tooltip ={
 			change_government = clan_government
