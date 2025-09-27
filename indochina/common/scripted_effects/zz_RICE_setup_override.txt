@@ -192,7 +192,8 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 
 	if = {
 		limit = {
-			current_date < 1000.1.1			
+			current_date < 1000.1.1
+			has_global_variable = is_RICE_loaded_global_variable	
 		}
 		title:c_kucha = {
 			add_county_modifier = {
@@ -204,6 +205,7 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 	if = {
 		limit = {
 			has_global_variable = RICE_game_started_on_TFE_start_date
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		title:c_charkliq = {
 			add_county_modifier = {
@@ -222,6 +224,9 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 		}
 	}
 	else = {
+		limit = {
+			has_global_variable = is_RICE_loaded_global_variable
+		}
 		title:c_charkliq = {
 			add_county_modifier = {
 				modifier = RICE_tarim_basin_lop_nur_fluctuations
@@ -252,8 +257,13 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 
 	culture:sogdian = {
 		remove_culture_tradition = tradition_horse_breeder
-		add_culture_tradition = tradition_RICE_silk_road
-		remove_variable = tradition_cooldown
+		if = {
+			limit = {
+				has_global_variable = is_RICE_loaded_global_variable
+			}
+			add_culture_tradition = tradition_RICE_silk_road
+		}
+			remove_variable = tradition_cooldown
 	}
 
 	culture:saka = {
@@ -264,7 +274,12 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 		}
 		remove_culture_tradition = tradition_artisans
 		add_culture_tradition = tradition_language_scholars # Translators
-		add_culture_tradition = tradition_RICE_silk_road
+		if = {
+			limit = {
+				has_global_variable = is_RICE_loaded_global_variable
+			}
+			add_culture_tradition = tradition_RICE_silk_road
+		}
 		remove_variable = tradition_cooldown
 	}		
 
@@ -274,8 +289,13 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 			limit = { has_cultural_tradition = tradition_philosopher_culture }
 			remove_culture_tradition = tradition_philosopher_culture
 		}
-		remove_culture_tradition = tradition_caravaneers
-		add_culture_tradition = tradition_RICE_silk_road
+		if = {
+			limit = {
+				has_global_variable = is_RICE_loaded_global_variable
+			}
+			remove_culture_tradition = tradition_caravaneers
+			add_culture_tradition = tradition_RICE_silk_road
+		}
 		remove_variable = tradition_cooldown
 	}
 
@@ -284,6 +304,7 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 		if = {
 			limit = {
 				game_start_date >= 916.1.1
+				has_global_variable = is_RICE_loaded_global_variable
 			}
 			add_culture_tradition = tradition_RICE_image_of_china
 			remove_variable = tradition_cooldown
@@ -294,6 +315,7 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 	if = {
 		limit = {
 			exists = culture:khotanese
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		culture:khotanese = {
 			add_culture_tradition = tradition_RICE_silk_road
@@ -302,6 +324,9 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 	}
 
 	culture:radhanite = {
+		limit = {
+			has_global_variable = is_RICE_loaded_global_variable
+		}
 		add_culture_tradition = tradition_RICE_silk_road
 		remove_variable = tradition_cooldown
 	}
@@ -309,6 +334,7 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 	if = {
 		limit = {
 			exists = culture:soissons
+			has_global_variable = is_RICE_loaded_global_variable
 		}		
 		culture:bactrian = {
 			add_culture_tradition = tradition_RICE_silk_road
@@ -336,12 +362,17 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 		# Fix up Zhang Yichao
 		character:206811 = {
 			save_scope_as = zhang_yichao
-			add_character_modifier = {
-				modifier = RICE_tarim_basin_is_zhang_yichao
-			}
-			dynasty = {
-				add_dynasty_modifier = {
-					modifier = RICE_tarim_basin_zhang_clan
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_is_zhang_yichao
+				}
+				dynasty = {
+					add_dynasty_modifier = {
+						modifier = RICE_tarim_basin_zhang_clan
+					}
 				}
 			}
 		}
@@ -350,26 +381,25 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 		character:1059714 = {
 			get_title = title:c_guazhou
 			RICE_setup_new_granted_ruler_bonuses_effect = yes
-			dynasty = {
-				add_dynasty_modifier = {
-					modifier = RICE_tarim_basin_cao_clan
+			save_scope_as = cao_yijin
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				dynasty = {
+					add_dynasty_modifier = {
+						modifier = RICE_tarim_basin_cao_clan
+					}
+				}
+				set_variable = {
+					name = RICE_historical_aspiration
+					value = flag:cao_yijin
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_aspiration_restore_order_guiyi
 				}
 			}
-			save_scope_as = cao_yijin
-			add_character_modifier = {
-				modifier = RICE_tarim_basin_aspiration_restore_order_guiyi
-			}
-		}	
-		character:1059714 = {
-			if = {
-				has_global_variable = is_RICE_loaded_global_variable
-			}
-			set_variable = {
-				name = RICE_historical_aspiration
-				value = flag:cao_yijin
-			}
 		}
-
 		character:RICE_zhai_003 = {
 			save_scope_as = zhai_farong
 		}
@@ -401,19 +431,29 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 				add_courtier = scope:zhai_huaien
 				add_courtier = scope:zhang_yichao_niece
 			}
-			dynasty = {
-				add_dynasty_modifier = {
-					modifier = RICE_tarim_basin_zhai_clan
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				dynasty = {
+					add_dynasty_modifier = {
+						modifier = RICE_tarim_basin_zhai_clan
+					}
 				}
 			}
 		}
 
 		# Li Mingzhen - give him all of the stuff in Ganzhou
 		character:304192 = {
-			RICE_setup_new_granted_ruler_bonuses_effect = yes
-			dynasty = {
-				add_dynasty_modifier = {
-					modifier = RICE_tarim_basin_li_clan
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+				dynasty = {
+					add_dynasty_modifier = {
+						modifier = RICE_tarim_basin_li_clan
+					}
 				}
 			}
 		}
@@ -427,9 +467,14 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 				get_title = title:c_baichengzi
 				RICE_setup_new_granted_ruler_bonuses_effect = yes
 			}
-			dynasty = {
-				add_dynasty_modifier = {
-					modifier = RICE_tarim_basin_suo_clan
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				dynasty = {
+					add_dynasty_modifier = {
+						modifier = RICE_tarim_basin_suo_clan
+					}
 				}
 			}
 		}
@@ -461,12 +506,16 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 		# Yin Wentong - give him all of the stuff in Qilin, since he helped fight off the Tibetans
 		character:RICE_yin_001 = { 
 			RICE_setup_new_granted_ruler_bonuses_effect = yes
-			dynasty = {
-				add_dynasty_modifier = {
-					modifier = RICE_tarim_basin_yin_clan
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				dynasty = {
+					add_dynasty_modifier = {
+						modifier = RICE_tarim_basin_yin_clan
+					}
 				}
 			}
-			change_government = feudal_government
 		}
 
 		# Yin Jifeng - official under Zhang Yichao who later helped the Zhang family reclaim Guiyi
@@ -497,9 +546,14 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 				get_title = title:b_yumenguan
 				RICE_setup_new_granted_ruler_bonuses_effect = yes
 			}
-			dynasty = {
-				add_dynasty_modifier = {
-					modifier = RICE_tarim_basin_yan_clan
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				dynasty = {
+					add_dynasty_modifier = {
+						modifier = RICE_tarim_basin_yan_clan
+					}
 				}
 			}
 		}
@@ -590,8 +644,13 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 		}
 
 		title:c_khotan.holder = {
-			add_character_modifier = {
-				modifier = RICE_tarim_basin_khotan_eight_protectors
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_khotan_eight_protectors
+				}
 			}
 		}
 
@@ -662,6 +721,7 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 	if = {
 		limit = {
 			game_start_date > 1050.1.1
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -682,6 +742,7 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 		limit = {
 			game_start_date > 1050.1.1
 			game_start_date < 1100.1.1
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		character:3014 = {
 			# Not sure why he was made lustful in vanilla - couldn't find anything suggesting that in my research, though I might have missed something
@@ -708,6 +769,11 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 				}
 				get_title = title:c_terek_pass
 			}
+		}
+		character:RICE_kashgar_001 = {
+			if = {
+				has_global_variable = is_RICE_loaded_global_variable
+			}
 			RICE_setup_new_granted_ruler_bonuses_effect = yes
 			add_character_modifier = {
 				modifier = RICE_tarim_basin_is_al_kashgari
@@ -718,9 +784,11 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 			}
 		}
 	}
+
 	else_if = {
 		limit = {
 			game_start_date < 1029.5.8
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		set_global_variable = {
 			name = RICE_anyone_can_write_turkic_dictionary
@@ -728,6 +796,9 @@ RICE_setup_tarim_basin_flavor_pack_effect = {
 		}
 	}
 	else = {
+		limit = {
+			has_global_variable = is_RICE_loaded_global_variable
+		}
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
 			target = flag:RICE_tarim_basin_compile_turkic_dictionary_done
@@ -923,70 +994,76 @@ RICE_setup_pamir_flavor_pack_effect = {
 	############################################################
 
 	## Pamir Modifiers
-	title:c_pashai = {
-		add_county_modifier = {
-			modifier = RICE_pamir_land_of_the_kafirs
+	if = {
+		limit = {
+			has_global_variable = is_RICE_loaded_global_variable
 		}
-	}
-	title:c_kunar = {
-		add_county_modifier = {
-			modifier = RICE_pamir_land_of_the_kafirs
+		title:c_pashai = {
+			add_county_modifier = {
+				modifier = RICE_pamir_land_of_the_kafirs
+			}
 		}
-	}
-	title:c_kati = {
-		add_county_modifier = {
-			modifier = RICE_pamir_land_of_the_kafirs
+		title:c_kunar = {
+			add_county_modifier = {
+				modifier = RICE_pamir_land_of_the_kafirs
+			}
 		}
-	}
-	title:c_waygal = {
-		add_county_modifier = {
-			modifier = RICE_pamir_land_of_the_kafirs
+		title:c_kati = {
+			add_county_modifier = {
+				modifier = RICE_pamir_land_of_the_kafirs
+			}
 		}
-	}
-	title:c_chitral = {
-		add_county_modifier = {
-			modifier = RICE_pamir_land_of_the_kafirs
+		title:c_waygal = {
+			add_county_modifier = {
+				modifier = RICE_pamir_land_of_the_kafirs
+			}
 		}
-	}
-	title:c_kunar = {
-		add_county_modifier = {
-			modifier = RICE_pamir_land_of_the_kafirs
+		title:c_chitral = {
+			add_county_modifier = {
+				modifier = RICE_pamir_land_of_the_kafirs
+			}
 		}
-	}
-	title:c_yasin = {
-		add_county_modifier = {
-			modifier = RICE_pamir_land_of_the_kafirs
+		title:c_kunar = {
+			add_county_modifier = {
+				modifier = RICE_pamir_land_of_the_kafirs
+			}
 		}
-	}
-	title:c_hunza = {
-		add_county_modifier = {
-			modifier = RICE_pamir_land_of_the_kafirs
-			modifier = RICE_pamir_karakoram_watchposts_default
+		title:c_yasin = {
+			add_county_modifier = {
+				modifier = RICE_pamir_land_of_the_kafirs
+			}
 		}
-	}
-	title:c_gilgit = {
-		add_county_modifier = {
-			modifier = RICE_pamir_karakoram_watchposts_default
+		title:c_hunza = {
+			add_county_modifier = {
+				modifier = RICE_pamir_land_of_the_kafirs
+				modifier = RICE_pamir_karakoram_watchposts_default
+			}
 		}
-	}
-	title:c_astore = {
-		add_county_modifier = {
-			modifier = RICE_pamir_karakoram_watchposts_default
+		title:c_gilgit = {
+			add_county_modifier = {
+				modifier = RICE_pamir_karakoram_watchposts_default
+			}
 		}
-	}
-	title:c_wakhan = {
-		add_county_modifier = {
-			modifier = RICE_pamir_wakhan_watchposts_default
+		title:c_astore = {
+			add_county_modifier = {
+				modifier = RICE_pamir_karakoram_watchposts_default
+			}
 		}
-	}
-	title:c_sariq_qol = {
-		add_county_modifier = {
-			modifier = RICE_pamir_wakhan_watchposts_default
+		title:c_wakhan = {
+			add_county_modifier = {
+				modifier = RICE_pamir_wakhan_watchposts_default
+			}
+		}
+		title:c_sariq_qol = {
+			add_county_modifier = {
+				modifier = RICE_pamir_wakhan_watchposts_default
+			}
 		}
 	}
 	if = {
 		limit = {
 			current_date > 1000.1.1
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		title:c_kalat = {
 			add_county_modifier = {
@@ -1007,6 +1084,7 @@ RICE_setup_pamir_flavor_pack_effect = {
 	if = {
 		limit = {
 			has_global_variable = RICE_game_started_on_TFE_start_date
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -1035,6 +1113,15 @@ RICE_setup_pamir_flavor_pack_effect = {
 			current_date > 800.1.1
 		}
 		# PAMIR
+		character:163099 = { # Give titles to Pamir Chieftains
+			save_scope_as = samanid_ruler
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				trigger_event = pamir.0001
+			}
+		}
 		character:RICE_pamir_001 = {
 			save_scope_as = pamir_puteshan_king
 		}
@@ -1054,24 +1141,58 @@ RICE_setup_pamir_flavor_pack_effect = {
 		}
 		character:RICE_pamir_013 = { # Give titles and bonuses to Azur Jamshid
 			save_scope_as = azur_jamshid
-			add_gold = 50
-			add_piety = 1000
-			add_prestige = 1000
-			dynasty = { add_dynasty_prestige = 500 }
-			add_character_modifier = {
-				modifier = RICE_pamir_is_azur_jamshid
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				add_gold = 50
+				add_piety = 1000
+				add_prestige = 1000
+				dynasty = { add_dynasty_prestige = 500 }
+				add_character_modifier = {
+					modifier = RICE_pamir_is_azur_jamshid
+				}
 			}
 		}
 	}
-		
+
+	if = {
+		limit = {
+			current_date < 900.1.1
+			current_date > 800.1.1
+		}
+		character:188712 = { # Firuz. Zunbils are pagan and independent until 870 CE, ID# 188710 is the cousin
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				add_gold = 25
+				add_piety = 100
+				add_prestige = 100
+				set_variable = {
+					name = RICE_historical_aspiration
+					value = flag:zunbil
+				}
+				add_character_modifier = {
+					modifier = RICE_pamir_aspiration_assert_zunbil_independence
+				}
+			}
+		}
+	}
+
 	if = {
 		limit = {
 			current_date > 1000.1.1
 			current_date < 1100.1.1
 		}
 		character:persian_scholars_3 = { # Make Nasir Khusraw better
-			add_character_modifier = {
-				modifier = RICE_pamir_nasir_khusraw
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				add_character_modifier = {
+					modifier = RICE_pamir_nasir_khusraw
+				}
 			}
 			add_character_flag = do_not_generate_starting_family
 			save_scope_as = nasir_khusraw
@@ -1083,9 +1204,14 @@ RICE_setup_pamir_flavor_pack_effect = {
 			dynasty = { add_dynasty_prestige = 1000 }
 		}
 		# Ali ibn Asad, Nasir Khusraw's friend
-		character:badakhshanids_2 = { 
+		character:badakhshanids_2 = {
 			save_scope_as = ali_ibn_asad
-			trigger_event = pamir.0003
+			if = {
+				limit = {
+					has_global_variable = is_RICE_loaded_global_variable
+				}
+				trigger_event = pamir.0003
+			}
 		}
 	}
 
@@ -1099,42 +1225,6 @@ RICE_setup_pamir_flavor_pack_effect = {
 		}
 	}
 
-	if = {
-		# this is here for now
-		limit = {
-			current_date < 900.1.1
-			current_date > 800.1.1
-		}
-		character:163099 = { # Give titles to Pamir Chieftains
-			trigger_event = pamir.0001
-			save_scope_as = samanid_ruler
-		}
-		character:188712 = { # Firuz. Zunbils are pagan and independent until 870 CE, ID# 188710 is the cousin
-			add_gold = 25
-			add_piety = 100
-			add_prestige = 100
-			add_character_modifier = {
-				modifier = RICE_pamir_aspiration_assert_zunbil_independence
-			}
-			set_variable = {
-				name = RICE_historical_aspiration
-				value = flag:zunbil
-			}
-		}
-	}
-	if = {
-		# this is here for now
-		limit = {
-			current_date > 1000.1.1
-			current_date < 1100.1.1
-		}
-		# Ali ibn Asad, Nasir Khusraw's friend
-		character:badakhshanids_2 = { 
-			save_scope_as = ali_ibn_asad
-			trigger_event = pamir.0003
-		}
-	}
-
 	############################################################
 	#
 	# MISC+
@@ -1144,6 +1234,7 @@ RICE_setup_pamir_flavor_pack_effect = {
 	if = {
 		limit = {
 			current_date > 870.1.1
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -1159,6 +1250,7 @@ RICE_setup_pamir_flavor_pack_effect = {
 		limit = {
 			current_date < 870.1.1
 			current_date > 840.1.1
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		title:c_gilgit = {
 			add_county_modifier = {
@@ -1169,6 +1261,7 @@ RICE_setup_pamir_flavor_pack_effect = {
 	if = {
 		limit = {
 			current_date > 870.1.1
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -1193,6 +1286,7 @@ RICE_setup_pamir_flavor_pack_effect = {
 	if = {
 		limit = {
 			current_date > 1000.1.1
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		set_global_variable = {
 			name = RICE_pamir_nasir_khusraw_born_1066_start
@@ -1207,6 +1301,7 @@ RICE_setup_pamir_flavor_pack_effect = {
 	if = {
 		limit = {
 			game_start_date >= 1075.1.1 # Nasir Khusraw's death IRL is uncertain but vanilla game puts it at 1075
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
@@ -1360,6 +1455,7 @@ RICE_setup_bamian_flavor_pack_effect = {
 	if = {
 		limit = {
 			game_start_date = 867.1.1
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		# Siman-Tov's modifier
 		character:RICE_bamian_jewish_005 = {
@@ -1371,6 +1467,7 @@ RICE_setup_bamian_flavor_pack_effect = {
 	else_if = {
 		limit = {
 			game_start_date = 1066.9.15
+			has_global_variable = is_RICE_loaded_global_variable
 		}
 		# Siman-Tov's modifier
 		character:RICE_bamian_jewish_003 = {
