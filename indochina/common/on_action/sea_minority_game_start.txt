@@ -1670,6 +1670,11 @@ set_minorities_game_start = {
 
 		## India and it's religious diversity
 		#========================
+		add_faith_minority_effect = {
+			FAITH = faith:kalikula_shaktism
+			SIZE = small
+			COUNTY = title:c_rajrappa
+		}
 		every_county = {
 			limit = {
 				title_province = { geographical_region = world_india }
@@ -3194,7 +3199,12 @@ set_minorities_game_start = {
 		}
 		add_culture_minority_effect = {
 			CULTURE = culture:circassian
-			SIZE = small
+			SIZE = large
+			COUNTY = title:c_kermenchik
+		}
+		add_faith_minority_effect = {
+			FAITH = faith:circassian_pagan
+			SIZE = large
 			COUNTY = title:c_kermenchik
 		}
 
@@ -4216,17 +4226,26 @@ setup_RICE_minorities = {
 		has_global_variable = is_RICE_loaded_global_variable
 	}
 	effect = {
+		# Iceland for 867
 		every_county = {
 			limit = {
-				has_county_modifier = RICE_pamir_brahui_tribes
+				kingdom = title:d_iceland
+				game_start_date >= 850.1.1
+				game_start_date <= 930.1.1
 			}
 			save_scope_as = county
 			add_culture_minority_effect = {
-				CULTURE = culture:brahui
+				CULTURE = culture:irish
+				SIZE = large
 				COUNTY = scope:county
-				SIZE = small
+			}
+			add_faith_minority_effect = {
+				FAITH = faith:insular_celtic
+				SIZE = large
+				COUNTY = scope:county
 			}
 		}
+		# Socotra
 		title:c_socotra = {
 			save_scope_as = county
 			if = {
@@ -4240,6 +4259,7 @@ setup_RICE_minorities = {
 			promote_culture_minority_effect = { CULTURE = culture:shona }
 			promote_culture_minority_effect = { CULTURE = culture:swahili }
 		}
+		# Yemen
 		title:c_zabid = {
 			save_scope_as = county
 			if = {
@@ -4302,6 +4322,7 @@ setup_RICE_minorities = {
 				promote_faith_minority_effect = { FAITH = faith:rabbinism }
 			}
 		}
+		# Persia
 		add_culture_minority_effect = {
 			COUNTY = title:c_tustar
 			CULTURE = culture:parsim
