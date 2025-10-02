@@ -378,12 +378,12 @@ set_minorities_game_start = {
 		}
 		add_faith_minority_effect = {
 			FAITH = faith:rabbinism
-			SIZE = large
+			SIZE = small
 			COUNTY = title:c_mahra
 		}
 		add_culture_minority_effect = {
 			CULTURE = culture:teimani
-			SIZE = large
+			SIZE = small
 			COUNTY = title:c_mahra
 		}
 		add_culture_minority_effect = {
@@ -395,17 +395,6 @@ set_minorities_game_start = {
 			COUNTY = title:c_zabid
 			CULTURE = culture:teimani
 			SIZE = small
-		}
-		add_faith_minority_effect = {
-			COUNTY = title:c_hamadan
-			FAITH = faith:rabbinism
-			SIZE = large
-		}
-		title:c_hamadan = {
-			every_neighboring_county = {
-				save_scope_as = county
-				promote_faith_minority_effect = { FAITH = faith:rabbinism }
-			}
 		}
 
 		if = {
@@ -1065,10 +1054,62 @@ set_minorities_game_start = {
 		}
 
 		# Persia
+		add_faith_minority_effect = {
+			COUNTY = title:c_ardestan
+			FAITH = faith:rabbinism
+			SIZE = small
+		}
+		add_faith_minority_effect = {
+			COUNTY = title:c_tustar
+			FAITH = faith:rabbinism
+			SIZE = small
+		}
+		add_faith_minority_effect = {
+			COUNTY = title:c_hamadan
+			FAITH = faith:rabbinism
+			SIZE = large
+		}
+		add_faith_minority_effect = {
+			FAITH = faith:rabbinism
+			SIZE = large
+			COUNTY = title:c_isfahan
+		}
+		title:c_hamadan = {
+			every_neighboring_county = {
+				save_scope_as = county
+				promote_faith_minority_effect = { FAITH = faith:rabbinism }
+			}
+		}
+		every_county = {
+			limit = {
+				kingdom = title:k_persia
+				county_has_specific_minority_faith_trigger = { FAITH = faith:rabbinism }
+			}
+			save_scope_as = county
+			if = {
+				limit = {
+					county_has_specific_small_minority_faith_trigger = { FAITH = faith:rabbinism }
+				}
+				add_culture_minority_effect = {
+					CULTURE = culture:parsim
+					COUNTY = scope:county
+					SIZE = small
+				}
+			}
+			else_if = {
+				limit = {
+					county_has_specific_large_minority_faith_trigger = { FAITH = faith:rabbinism }
+				}
+				add_culture_minority_effect = {
+					CULTURE = culture:parsim
+					COUNTY = scope:county
+					SIZE = large
+				}
+			}
+		}
 
 		if = {
-			limit = { game_start_date <= 1060.1.1 }
-
+			limit = { game_start_date >= 1060.1.1 }
 			add_faith_minority_effect = {
 				FAITH = faith:mazdayasna
 				SIZE = large
@@ -1078,18 +1119,6 @@ set_minorities_game_start = {
 
 		add_faith_minority_effect = {
 			FAITH = faith:rabbinism
-			SIZE = large
-			COUNTY = title:c_isfahan
-		}
-		add_culture_minority_effect = {
-			CULTURE = culture:radhanite
-			SIZE = large
-			COUNTY = title:c_isfahan
-		}
-
-
-		add_faith_minority_effect = {
-			FAITH = faith:rabbinism
 			SIZE = small
 			COUNTY = title:c_herat
 		}
@@ -1144,8 +1173,7 @@ set_minorities_game_start = {
 		}
 
 
-		#Radhanim
-
+		# Radhanites
 		add_faith_minority_effect = {
 			FAITH = faith:rabbinism
 			SIZE = small
@@ -1167,6 +1195,7 @@ set_minorities_game_start = {
 			SIZE = small
 			COUNTY = title:c_peremyshl
 		}
+
 		add_faith_minority_effect = {
 			FAITH = faith:rabbinism
 			SIZE = small
@@ -1197,7 +1226,6 @@ set_minorities_game_start = {
 
 
 		# Parsees
-
 		if = {
 			limit = { game_start_date <= 1066.1.1 }
 
@@ -1214,13 +1242,11 @@ set_minorities_game_start = {
 		}
 
 		# Roma
-
 		if = {
 			limit = {
 				#game_start_date >= 800.1.1
 				game_start_date <= 900.1.1
 			}
-
 			add_culture_minority_effect = {
 				CULTURE = culture:romani
 				SIZE = small
@@ -1282,7 +1308,6 @@ set_minorities_game_start = {
 				game_start_date >= 900.1.1
 				game_start_date <= 1000.1.1
 			}
-
 			add_culture_minority_effect = {
 				CULTURE = culture:romani
 				SIZE = small
@@ -1339,7 +1364,6 @@ set_minorities_game_start = {
 				game_start_date >= 1000.1.1
 				game_start_date <= 1100.1.1
 			}
-
 			add_culture_minority_effect = {
 				CULTURE = culture:romani
 				SIZE = small
@@ -1420,7 +1444,6 @@ set_minorities_game_start = {
 			limit = {
 				game_start_date >= 1100.1.1
 			}
-
 			add_culture_minority_effect = {
 				CULTURE = culture:romani
 				SIZE = small
@@ -1473,8 +1496,7 @@ set_minorities_game_start = {
 			}
 		}
 
-		#Vlachs (Aromanians, Megleno-Romanians, Istroromanians)
-
+		# Vlachs (Aromanians, Megleno-Romanians, Istroromanians)
 		add_culture_minority_effect = {
 			CULTURE = culture:vlach
 			SIZE = large
@@ -1643,7 +1665,7 @@ set_minorities_game_start = {
 			COUNTY = title:c_tripoli
 		}
 
-		#Greeks
+		# Greeks
 		add_culture_minority_effect = {
 			CULTURE = culture:greek
 			SIZE = small
@@ -1655,13 +1677,8 @@ set_minorities_game_start = {
 			COUNTY = title:c_beirut
 		}
 
-		#Syriacs
-
-		#Rus
-
-
 		## India and it's religious diversity
-		#========================
+		# ===================================
 		add_faith_minority_effect = {
 			FAITH = faith:kalikula_shaktism
 			SIZE = small
@@ -1714,111 +1731,7 @@ set_minorities_game_start = {
 			}
 		}
 
-		### RICE Sri Lanka Struggle-related minorities
-		if = {
-			limit = { has_global_variable = is_RICE_loaded_global_variable }
-
-			# Veddas
-
-			add_culture_minority_effect = {
-				CULTURE = culture:vedda
-				SIZE = large
-				COUNTY = title:c_dakhina_desa
-			}
-
-			add_culture_minority_effect = {
-				CULTURE = culture:vedda
-				SIZE = large
-				COUNTY = title:c_kandy
-			}
-
-			add_culture_minority_effect = {
-				CULTURE = culture:vedda
-				SIZE = large
-				COUNTY = title:c_rohana
-			}
-
-			add_culture_minority_effect = {
-				CULTURE = culture:vedda
-				SIZE = large
-				COUNTY = title:c_batticaloa
-			}
-
-			add_culture_minority_effect = {
-				CULTURE = culture:vedda
-				SIZE = large
-				COUNTY = title:c_phiti
-			}
-
-			add_culture_minority_effect = {
-				CULTURE = culture:vedda
-				SIZE = large
-				COUNTY = title:c_trincomalee
-			}
-
-			add_culture_minority_effect = {
-				CULTURE = culture:vedda
-				SIZE = large
-				COUNTY = title:c_jaffna
-			}
-
-			add_culture_minority_effect = {
-				CULTURE = culture:vedda
-				SIZE = large
-				COUNTY = title:c_kotte
-			}
-
-			add_faith_minority_effect = {
-				FAITH = faith:vedda_pagan
-				SIZE = large
-				COUNTY = title:c_dakhina_desa
-			}
-
-			add_faith_minority_effect = {
-				FAITH = faith:vedda_pagan
-				SIZE = large
-				COUNTY = title:c_kandy
-			}
-
-			add_faith_minority_effect = {
-				FAITH = faith:vedda_pagan
-				SIZE = large
-				COUNTY = title:c_rohana
-			}
-
-			add_faith_minority_effect = {
-				FAITH = faith:vedda_pagan
-				SIZE = large
-				COUNTY = title:c_batticaloa
-			}
-
-			add_faith_minority_effect = {
-				FAITH = faith:vedda_pagan
-				SIZE = large
-				COUNTY = title:c_phiti
-			}
-
-			add_faith_minority_effect = {
-				FAITH = faith:vedda_pagan
-				SIZE = large
-				COUNTY = title:c_trincomalee
-			}
-
-			add_faith_minority_effect = {
-				FAITH = faith:vedda_pagan
-				SIZE = large
-				COUNTY = title:c_jaffna
-			}
-
-			add_faith_minority_effect = {
-				FAITH = faith:vedda_pagan
-				SIZE = large
-				COUNTY = title:c_kotte
-			}
-		}
-
-		### ROA ###
-
+		## Other ##
 		if = {
 			limit = { game_start_date >= 1050.1.1 }
 
@@ -1828,7 +1741,6 @@ set_minorities_game_start = {
 				COUNTY = title:c_qianzhou_jiangxi_china
 			}
 		}
-
 
 		add_faith_minority_effect = {
 			FAITH = faith:manichean
@@ -1855,7 +1767,6 @@ set_minorities_game_start = {
 			SIZE = small
 			COUNTY = title:c_lanzhou_longxi_china
 		}
-
 
 		add_faith_minority_effect = {
 			FAITH = faith:manichean
@@ -1894,7 +1805,6 @@ set_minorities_game_start = {
 			COUNTY = title:c_bianzhou_china
 		}
 
-
 		add_faith_minority_effect = {
 			FAITH = faith:ashari
 			SIZE = small
@@ -1922,7 +1832,6 @@ set_minorities_game_start = {
 			COUNTY = title:c_lanzhou_longxi_china
 		}
 
-
 		add_faith_minority_effect = {
 			FAITH = faith:ashari
 			SIZE = small
@@ -1933,7 +1842,6 @@ set_minorities_game_start = {
 			SIZE = small
 			COUNTY = title:c_pasai
 		}
-
 
 		add_faith_minority_effect = {
 			FAITH = faith:ashari
@@ -4258,45 +4166,6 @@ setup_RICE_minorities = {
 			if = {
 				limit = { current_date <= 1000.1.1 }
 				promote_culture_minority_effect = { CULTURE = culture:himyarite }
-			}
-		}
-
-		# Persia
-		add_culture_minority_effect = {
-			COUNTY = title:c_tustar
-			CULTURE = culture:parsim
-			SIZE = small
-		}
-		add_faith_minority_effect = {
-			COUNTY = title:c_tustar
-			FAITH = faith:rabbinism
-			SIZE = small
-		}
-		every_county = {
-			limit = {
-				kingdom = title:k_persia
-				county_has_specific_minority_faith_trigger = { FAITH = faith:rabbinism }
-			}
-			save_scope_as = county
-			if = {
-				limit = {
-					county_has_specific_small_minority_faith_trigger = { FAITH = faith:rabbinism }
-				}
-				add_culture_minority_effect = {
-					CULTURE = culture:parsim
-					COUNTY = scope:county
-					SIZE = small
-				}
-			}
-			else_if = {
-				limit = {
-					county_has_specific_large_minority_faith_trigger = { FAITH = faith:rabbinism }
-				}
-				add_culture_minority_effect = {
-					CULTURE = culture:parsim
-					COUNTY = scope:county
-					SIZE = large
-				}
 			}
 		}
 
