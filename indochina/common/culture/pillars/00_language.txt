@@ -2590,6 +2590,39 @@ language_ayneha = {
 	color = songhai
 }
 
+language_albanian = {
+	type = language
+	is_shown = {
+		language_is_shown_trigger = {
+			LANGUAGE = language_albanian
+		}
+	}
+
+	parameters = {
+		language_branch_hellenic = yes
+		language_family_indo_european = yes
+	}
+
+
+	ai_will_do = {
+		value = 10
+		if = {
+			limit = { has_cultural_pillar = language_albanian }
+			multiply = same_language_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_branch_hellenic }
+			multiply = same_language_branch_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_family_indo_european }
+			multiply = same_language_family_choice_factor
+		}
+	}
+
+	color = { 0.5 0.5 0.8 }
+}
+
 # Dead languages
 language_egyptian = { #This represents the language of the Ancient Egpyptians so (r n k m.t) or "Egyptian"
 	type = language
@@ -2682,37 +2715,4 @@ language_ancient_greek = { #This represents Koine Greek or Attic Greek I guess.
 	}
 
 	color = trojan
-}
-
-language_albanian = {
-	type = language
-	is_shown = {
-		language_is_shown_trigger = {
-			LANGUAGE = language_albanian
-		}
-	}
-
-	parameters = {
-		language_branch_hellenic = yes
-		language_family_indo_european = yes
-	}
-
-
-	ai_will_do = {
-		value = 10
-		if = {
-			limit = { has_cultural_pillar = language_albanian }
-			multiply = same_language_choice_factor
-		}
-		else_if = {
-			limit = { has_cultural_parameter = language_branch_hellenic }
-			multiply = same_language_branch_choice_factor
-		}
-		else_if = {
-			limit = { has_cultural_parameter = language_family_indo_european }
-			multiply = same_language_family_choice_factor
-		}
-	}
-
-	color = { 0.5 0.5 0.8 }
 }
