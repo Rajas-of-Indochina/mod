@@ -333,33 +333,6 @@ set_minorities_game_start = {
 		}
 
 		### Yemen ###
-		every_county = {
-			limit = {
-				kingdom = title:k_yemen
-				county_has_specific_minority_faith_trigger = { FAITH = faith:rabbinism }
-			}
-			save_scope_as = county
-			if = {
-				limit = {
-					county_has_specific_small_minority_faith_trigger = { FAITH = faith:rabbinism }
-				}
-				add_culture_minority_effect = {
-					CULTURE = culture:teimani
-					COUNTY = scope:county
-					SIZE = small
-				}
-			}
-			else_if = {
-				limit = {
-					county_has_specific_large_minority_faith_trigger = { FAITH = faith:rabbinism }
-				}
-				add_culture_minority_effect = {
-					CULTURE = culture:teimani
-					COUNTY = scope:county
-					SIZE = large
-				}
-			}
-		}
 		add_faith_minority_effect = {
 			FAITH = faith:rabbinism
 			SIZE = large
@@ -394,6 +367,33 @@ set_minorities_game_start = {
 			FAITH = faith:rabbinism
 			SIZE = small
 			COUNTY = title:c_zabid
+		}
+		every_county = {
+			limit = {
+				kingdom = title:k_yemen
+				county_has_specific_minority_faith_trigger = { FAITH = faith:rabbinism }
+			}
+			save_scope_as = county
+			if = {
+				limit = {
+					county_has_specific_small_minority_faith_trigger = { FAITH = faith:rabbinism }
+				}
+				add_culture_minority_effect = {
+					CULTURE = culture:teimani
+					COUNTY = scope:county
+					SIZE = small
+				}
+			}
+			else_if = {
+				limit = {
+					county_has_specific_large_minority_faith_trigger = { FAITH = faith:rabbinism }
+				}
+				add_culture_minority_effect = {
+					CULTURE = culture:teimani
+					COUNTY = scope:county
+					SIZE = large
+				}
+			}
 		}
 
 		if = {
@@ -1081,7 +1081,11 @@ set_minorities_game_start = {
 		}
 		every_county = {
 			limit = {
-				kingdom = title:k_persia
+				OR = {
+					kingdom = title:k_persia
+					kingdom = title:k_adurbadagan
+					kingdom = title:k_daylam
+				}
 				county_has_specific_minority_faith_trigger = { FAITH = faith:rabbinism }
 			}
 			save_scope_as = county
