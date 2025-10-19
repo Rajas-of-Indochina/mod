@@ -119,6 +119,54 @@ set_minorities_game_start = {
 			COUNTY = title:c_kandy
 		}
 
+		# Daylam
+		add_faith_minority_effect = {
+			FAITH = faith:imami
+			SIZE = small
+			COUNTY = title:c_gilan
+		}
+		add_faith_minority_effect = {
+			FAITH = faith:imami
+			SIZE = small
+			COUNTY = title:c_talish
+		}
+		if = {
+			limit = {
+				game_start_date < 1000.1.1
+			}
+			every_county = {
+				save_scope_as = county
+				limit = {
+					duchy = title:d_tabaristan
+				}
+				add_faith_minority_effect = {
+					FAITH = faith:imami
+					SIZE = small
+					COUNTY = scope:county
+				}
+			}
+		}
+		if = {
+			limit = {
+				game_start_date >= 1000.1.1
+			}
+			add_faith_minority_effect = {
+				FAITH = faith:afridunism
+				SIZE = small
+				COUNTY = scope:c_baduspan
+			}
+		}
+		if = {
+			limit = {
+				game_start_date < 900.1.1
+			}
+			add_faith_minority_effect = {
+				FAITH = faith:nestorian
+				SIZE = small
+				COUNTY = scope:c_gilan
+			}
+		}
+
 		# Kurds + Yazidism
 		add_culture_minority_effect = {
 			CULTURE = culture:kurdish
