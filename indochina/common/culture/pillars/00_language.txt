@@ -249,6 +249,7 @@ language_burmese = {
 		}
 	}
 	parameters = {
+		language_group_lolo_burmese = yes
 		language_branch_tibeto_burman = yes
 		language_family_sino_tibetan = yes
 	}
@@ -257,6 +258,10 @@ language_burmese = {
 		if = {
 			limit = { has_cultural_pillar = language_burmese }
 			multiply = same_language_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_group_lolo_burmese }
+			multiply = same_language_group_choice_factor
 		}
 		else_if = {
 			limit = { has_cultural_parameter = language_branch_tibeto_burman }
@@ -1923,6 +1928,7 @@ language_tibetan = {
 		}
 	}
 	parameters = {
+		language_group_tibetic = yes
 		language_branch_tibeto_burman = yes
 		language_family_sino_tibetan = yes
 	}
@@ -1931,6 +1937,10 @@ language_tibetan = {
 		if = {
 			limit = { has_cultural_pillar = language_tibetan }
 			multiply = same_language_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_group_tibetic }
+			multiply = same_language_group_choice_factor
 		}
 		else_if = {
 			limit = { has_cultural_parameter = language_branch_tibeto_burman }
@@ -2664,7 +2674,7 @@ language_hunnic = { #All of the CCU components are speculative as Hunnish is an 
 		value = 10
 		if = {
 			limit = { has_cultural_pillar = language_hunnic }
-			multiply = 10
+			multiply = same_language_choice_factor
 		}
 		else_if = {
 			limit = { has_cultural_parameter = language_branch_mongolic }
