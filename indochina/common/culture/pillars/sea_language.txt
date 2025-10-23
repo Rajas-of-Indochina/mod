@@ -2180,6 +2180,41 @@ language_siraya = {
 
 
 ### Sino-Tibetan ###
+language_cai_long = {
+	type = language
+	is_shown = {
+		language_is_shown_trigger = {
+			LANGUAGE = language_cai_long
+		}
+	}
+	parameters = {
+		language_group_cai_long = yes
+		language_branch_bai = yes
+		language_family_sino_tibetan = yes
+	}
+	ai_will_do = {
+		value = 10
+		if = {
+			limit = { has_cultural_pillar = language_cai_long }
+			multiply = same_language_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_group_cai_long }
+			multiply = same_language_group_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_branch_bai }
+			multiply = same_language_branch_choice_factor
+		}
+		else_if = {
+			limit = { has_cultural_parameter = language_family_sino_tibetan }
+			multiply = same_language_family_choice_factor
+		}
+	}
+
+	color = cai_long
+}
+
 language_garo = {
 	type = language
 	is_shown = {
@@ -4056,36 +4091,6 @@ language_ainu = {
 	}
 
 	color = ainu
-}
-
-language_cai_long = {
-	type = language
-	is_shown = {
-		language_is_shown_trigger = {
-			LANGUAGE = language_cai_long
-		}
-	}
-	parameters = {
-		language_branch_bai = yes
-		language_family_sino_tibetan = yes
-	}
-	ai_will_do = {
-		value = 10
-		if = {
-			limit = { has_cultural_pillar = language_cai_long }
-			multiply = same_language_choice_factor
-		}
-		else_if = {
-			limit = { has_cultural_parameter = language_branch_bai }
-			multiply = same_language_branch_choice_factor
-		}
-		else_if = {
-			limit = { has_cultural_parameter = language_family_sino_tibetan }
-			multiply = same_language_family_choice_factor
-		}
-	}
-
-	color = cai_long
 }
 
 language_basmyl = {
